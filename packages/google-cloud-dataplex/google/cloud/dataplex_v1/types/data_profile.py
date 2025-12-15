@@ -428,9 +428,7 @@ class DataProfileResult(proto.Message):
                     proto.DOUBLE,
                     number=3,
                 )
-                top_n_values: MutableSequence[
-                    "DataProfileResult.Profile.Field.ProfileInfo.TopNValue"
-                ] = proto.RepeatedField(
+                top_n_values: MutableSequence["DataProfileResult.Profile.Field.ProfileInfo.TopNValue"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=4,
                     message="DataProfileResult.Profile.Field.ProfileInfo.TopNValue",
@@ -472,9 +470,7 @@ class DataProfileResult(proto.Message):
                 message="DataProfileResult.Profile.Field.ProfileInfo",
             )
 
-        fields: MutableSequence[
-            "DataProfileResult.Profile.Field"
-        ] = proto.RepeatedField(
+        fields: MutableSequence["DataProfileResult.Profile.Field"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="DataProfileResult.Profile.Field",
@@ -557,12 +553,10 @@ class DataProfileResult(proto.Message):
         number=6,
         message=PostScanActionsResult,
     )
-    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            message=datascans_common.DataScanCatalogPublishingStatus,
-        )
+    catalog_publishing_status: datascans_common.DataScanCatalogPublishingStatus = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=datascans_common.DataScanCatalogPublishingStatus,
     )
 
 

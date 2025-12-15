@@ -18,9 +18,7 @@ from google.cloud.batch import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.batch_v1.services.batch_service.async_client import (
-    BatchServiceAsyncClient,
-)
+from google.cloud.batch_v1.services.batch_service.async_client import BatchServiceAsyncClient
 from google.cloud.batch_v1.services.batch_service.client import BatchServiceClient
 from google.cloud.batch_v1.types.batch import (
     CancelJobRequest,
@@ -35,15 +33,7 @@ from google.cloud.batch_v1.types.batch import (
     ListTasksResponse,
     OperationMetadata,
 )
-from google.cloud.batch_v1.types.job import (
-    AllocationPolicy,
-    Job,
-    JobNotification,
-    JobStatus,
-    LogsPolicy,
-    ServiceAccount,
-    TaskGroup,
-)
+from google.cloud.batch_v1.types.job import AllocationPolicy, Job, JobNotification, JobStatus, LogsPolicy, ServiceAccount, TaskGroup
 from google.cloud.batch_v1.types.task import (
     ComputeResource,
     Environment,

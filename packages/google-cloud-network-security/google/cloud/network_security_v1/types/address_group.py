@@ -610,9 +610,7 @@ class ListAddressGroupReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    address_group_references: MutableSequence[
-        AddressGroupReference
-    ] = proto.RepeatedField(
+    address_group_references: MutableSequence[AddressGroupReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=AddressGroupReference,

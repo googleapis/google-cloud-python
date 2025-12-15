@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    content_bundle_messages,
-    content_bundle_service,
-)
+from google.ads.admanager_v1.types import content_bundle_messages, content_bundle_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseContentBundleServiceRestTransport
@@ -99,13 +96,8 @@ class ContentBundleServiceRestInterceptor:
     """
 
     def pre_get_content_bundle(
-        self,
-        request: content_bundle_service.GetContentBundleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        content_bundle_service.GetContentBundleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: content_bundle_service.GetContentBundleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[content_bundle_service.GetContentBundleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_content_bundle
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class ContentBundleServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_content_bundle(
-        self, response: content_bundle_messages.ContentBundle
-    ) -> content_bundle_messages.ContentBundle:
+    def post_get_content_bundle(self, response: content_bundle_messages.ContentBundle) -> content_bundle_messages.ContentBundle:
         """Post-rpc interceptor for get_content_bundle
 
         DEPRECATED. Please use the `post_get_content_bundle_with_metadata`
@@ -129,12 +119,8 @@ class ContentBundleServiceRestInterceptor:
         return response
 
     def post_get_content_bundle_with_metadata(
-        self,
-        response: content_bundle_messages.ContentBundle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        content_bundle_messages.ContentBundle, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: content_bundle_messages.ContentBundle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[content_bundle_messages.ContentBundle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_content_bundle
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -150,13 +136,8 @@ class ContentBundleServiceRestInterceptor:
         return response, metadata
 
     def pre_list_content_bundles(
-        self,
-        request: content_bundle_service.ListContentBundlesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        content_bundle_service.ListContentBundlesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: content_bundle_service.ListContentBundlesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[content_bundle_service.ListContentBundlesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_content_bundles
 
         Override in a subclass to manipulate the request or metadata
@@ -180,13 +161,8 @@ class ContentBundleServiceRestInterceptor:
         return response
 
     def post_list_content_bundles_with_metadata(
-        self,
-        response: content_bundle_service.ListContentBundlesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        content_bundle_service.ListContentBundlesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: content_bundle_service.ListContentBundlesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[content_bundle_service.ListContentBundlesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_content_bundles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -202,12 +178,8 @@ class ContentBundleServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +187,7 @@ class ContentBundleServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -306,31 +276,18 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ContentBundleServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetContentBundle(
-        _BaseContentBundleServiceRestTransport._BaseGetContentBundle,
-        ContentBundleServiceRestStub,
-    ):
+    class _GetContentBundle(_BaseContentBundleServiceRestTransport._BaseGetContentBundle, ContentBundleServiceRestStub):
         def __hash__(self):
             return hash("ContentBundleServiceRestTransport.GetContentBundle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -377,28 +334,16 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseContentBundleServiceRestTransport._BaseGetContentBundle._get_http_options()
-            )
+            http_options = _BaseContentBundleServiceRestTransport._BaseGetContentBundle._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_content_bundle(
-                request, metadata
-            )
-            transcoded_request = _BaseContentBundleServiceRestTransport._BaseGetContentBundle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_content_bundle(request, metadata)
+            transcoded_request = _BaseContentBundleServiceRestTransport._BaseGetContentBundle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContentBundleServiceRestTransport._BaseGetContentBundle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContentBundleServiceRestTransport._BaseGetContentBundle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -421,15 +366,8 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ContentBundleServiceRestTransport._GetContentBundle._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContentBundleServiceRestTransport._GetContentBundle._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -445,16 +383,10 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
 
             resp = self._interceptor.post_get_content_bundle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_content_bundle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_content_bundle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = content_bundle_messages.ContentBundle.to_json(
-                        response
-                    )
+                    response_payload = content_bundle_messages.ContentBundle.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -473,23 +405,12 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
                 )
             return resp
 
-    class _ListContentBundles(
-        _BaseContentBundleServiceRestTransport._BaseListContentBundles,
-        ContentBundleServiceRestStub,
-    ):
+    class _ListContentBundles(_BaseContentBundleServiceRestTransport._BaseListContentBundles, ContentBundleServiceRestStub):
         def __hash__(self):
             return hash("ContentBundleServiceRestTransport.ListContentBundles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -530,28 +451,16 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseContentBundleServiceRestTransport._BaseListContentBundles._get_http_options()
-            )
+            http_options = _BaseContentBundleServiceRestTransport._BaseListContentBundles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_content_bundles(
-                request, metadata
-            )
-            transcoded_request = _BaseContentBundleServiceRestTransport._BaseListContentBundles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_content_bundles(request, metadata)
+            transcoded_request = _BaseContentBundleServiceRestTransport._BaseListContentBundles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContentBundleServiceRestTransport._BaseListContentBundles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContentBundleServiceRestTransport._BaseListContentBundles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -574,15 +483,8 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ContentBundleServiceRestTransport._ListContentBundles._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContentBundleServiceRestTransport._ListContentBundles._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -598,18 +500,10 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
 
             resp = self._interceptor.post_list_content_bundles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_content_bundles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_content_bundles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        content_bundle_service.ListContentBundlesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = content_bundle_service.ListContentBundlesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -629,23 +523,13 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
             return resp
 
     @property
-    def get_content_bundle(
-        self,
-    ) -> Callable[
-        [content_bundle_service.GetContentBundleRequest],
-        content_bundle_messages.ContentBundle,
-    ]:
+    def get_content_bundle(self) -> Callable[[content_bundle_service.GetContentBundleRequest], content_bundle_messages.ContentBundle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetContentBundle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_content_bundles(
-        self,
-    ) -> Callable[
-        [content_bundle_service.ListContentBundlesRequest],
-        content_bundle_service.ListContentBundlesResponse,
-    ]:
+    def list_content_bundles(self) -> Callable[[content_bundle_service.ListContentBundlesRequest], content_bundle_service.ListContentBundlesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListContentBundles(self._session, self._host, self._interceptor)  # type: ignore
@@ -654,23 +538,12 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseContentBundleServiceRestTransport._BaseGetOperation,
-        ContentBundleServiceRestStub,
-    ):
+    class _GetOperation(_BaseContentBundleServiceRestTransport._BaseGetOperation, ContentBundleServiceRestStub):
         def __hash__(self):
             return hash("ContentBundleServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -708,26 +581,16 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseContentBundleServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseContentBundleServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseContentBundleServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContentBundleServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContentBundleServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContentBundleServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -751,12 +614,7 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
 
             # Send the request
             response = ContentBundleServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -768,9 +626,7 @@ class ContentBundleServiceRestTransport(_BaseContentBundleServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

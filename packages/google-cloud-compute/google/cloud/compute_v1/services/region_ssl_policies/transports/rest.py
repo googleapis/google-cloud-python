@@ -127,12 +127,8 @@ class RegionSslPoliciesRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionSslPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteRegionSslPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -154,9 +150,7 @@ class RegionSslPoliciesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -173,12 +167,8 @@ class RegionSslPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionSslPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRegionSslPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -200,9 +190,7 @@ class RegionSslPoliciesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.SslPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SslPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SslPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -219,12 +207,8 @@ class RegionSslPoliciesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionSslPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertRegionSslPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -246,9 +230,7 @@ class RegionSslPoliciesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -265,12 +247,8 @@ class RegionSslPoliciesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionSslPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionSslPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListRegionSslPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionSslPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -292,9 +270,7 @@ class RegionSslPoliciesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.SslPoliciesList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SslPoliciesList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SslPoliciesList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -311,13 +287,8 @@ class RegionSslPoliciesRestInterceptor:
         return response, metadata
 
     def pre_list_available_features(
-        self,
-        request: compute.ListAvailableFeaturesRegionSslPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListAvailableFeaturesRegionSslPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListAvailableFeaturesRegionSslPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListAvailableFeaturesRegionSslPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_available_features
 
         Override in a subclass to manipulate the request or metadata
@@ -341,13 +312,8 @@ class RegionSslPoliciesRestInterceptor:
         return response
 
     def post_list_available_features_with_metadata(
-        self,
-        response: compute.SslPoliciesListAvailableFeaturesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SslPoliciesListAvailableFeaturesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.SslPoliciesListAvailableFeaturesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SslPoliciesListAvailableFeaturesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_available_features
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -363,12 +329,8 @@ class RegionSslPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchRegionSslPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchRegionSslPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRegionSslPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -390,9 +352,7 @@ class RegionSslPoliciesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -492,30 +452,18 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionSslPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Delete(
-        _BaseRegionSslPoliciesRestTransport._BaseDelete, RegionSslPoliciesRestStub
-    ):
+    class _Delete(_BaseRegionSslPoliciesRestTransport._BaseDelete, RegionSslPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSslPoliciesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -573,30 +521,16 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionSslPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionSslPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseRegionSslPoliciesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionSslPoliciesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionSslPoliciesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionSslPoliciesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -620,12 +554,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             # Send the request
             response = RegionSslPoliciesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -641,12 +570,8 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -672,15 +597,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
             return hash("RegionSslPoliciesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -728,30 +645,16 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionSslPoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionSslPoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseRegionSslPoliciesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionSslPoliciesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionSslPoliciesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionSslPoliciesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -775,12 +678,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             # Send the request
             response = RegionSslPoliciesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -797,9 +695,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SslPolicy.to_json(response)
                 except:
@@ -820,22 +716,12 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionSslPoliciesRestTransport._BaseInsert, RegionSslPoliciesRestStub
-    ):
+    class _Insert(_BaseRegionSslPoliciesRestTransport._BaseInsert, RegionSslPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSslPoliciesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -894,36 +780,18 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionSslPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionSslPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseRegionSslPoliciesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionSslPoliciesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionSslPoliciesRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionSslPoliciesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionSslPoliciesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionSslPoliciesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -947,13 +815,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             # Send the request
             response = RegionSslPoliciesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -969,12 +831,8 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -995,22 +853,12 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
                 )
             return resp
 
-    class _List(
-        _BaseRegionSslPoliciesRestTransport._BaseList, RegionSslPoliciesRestStub
-    ):
+    class _List(_BaseRegionSslPoliciesRestTransport._BaseList, RegionSslPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSslPoliciesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1051,30 +899,16 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionSslPoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionSslPoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseRegionSslPoliciesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionSslPoliciesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionSslPoliciesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionSslPoliciesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1098,12 +932,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             # Send the request
             response = RegionSslPoliciesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1120,9 +949,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SslPoliciesList.to_json(response)
                 except:
@@ -1143,23 +970,12 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
                 )
             return resp
 
-    class _ListAvailableFeatures(
-        _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures,
-        RegionSslPoliciesRestStub,
-    ):
+    class _ListAvailableFeatures(_BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures, RegionSslPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSslPoliciesRestTransport.ListAvailableFeatures")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1200,28 +1016,16 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures._get_http_options()
-            )
+            http_options = _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_available_features(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_available_features(request, metadata)
+            transcoded_request = _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionSslPoliciesRestTransport._BaseListAvailableFeatures._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1244,15 +1048,8 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
                 )
 
             # Send the request
-            response = (
-                RegionSslPoliciesRestTransport._ListAvailableFeatures._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RegionSslPoliciesRestTransport._ListAvailableFeatures._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1268,18 +1065,10 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             resp = self._interceptor.post_list_available_features(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_available_features_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_available_features_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.SslPoliciesListAvailableFeaturesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = compute.SslPoliciesListAvailableFeaturesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1298,22 +1087,12 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
                 )
             return resp
 
-    class _Patch(
-        _BaseRegionSslPoliciesRestTransport._BasePatch, RegionSslPoliciesRestStub
-    ):
+    class _Patch(_BaseRegionSslPoliciesRestTransport._BasePatch, RegionSslPoliciesRestStub):
         def __hash__(self):
             return hash("RegionSslPoliciesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1372,36 +1151,18 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionSslPoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseRegionSslPoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseRegionSslPoliciesRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionSslPoliciesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionSslPoliciesRestTransport._BasePatch._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionSslPoliciesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionSslPoliciesRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionSslPoliciesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1425,13 +1186,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             # Send the request
             response = RegionSslPoliciesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1447,12 +1202,8 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1474,9 +1225,7 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionSslPolicyRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionSslPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
@@ -1488,17 +1237,13 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionSslPolicyRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionSslPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListRegionSslPoliciesRequest], compute.SslPoliciesList]:
+    def list(self) -> Callable[[compute.ListRegionSslPoliciesRequest], compute.SslPoliciesList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
@@ -1506,18 +1251,13 @@ class RegionSslPoliciesRestTransport(_BaseRegionSslPoliciesRestTransport):
     @property
     def list_available_features(
         self,
-    ) -> Callable[
-        [compute.ListAvailableFeaturesRegionSslPoliciesRequest],
-        compute.SslPoliciesListAvailableFeaturesResponse,
-    ]:
+    ) -> Callable[[compute.ListAvailableFeaturesRegionSslPoliciesRequest], compute.SslPoliciesListAvailableFeaturesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAvailableFeatures(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchRegionSslPolicyRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchRegionSslPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore

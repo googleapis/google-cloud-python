@@ -1021,9 +1021,7 @@ class AutonomousDatabaseProperties(proto.Message):
         number=48,
         enum=Role,
     )
-    scheduled_operation_details: MutableSequence[
-        "ScheduledOperationDetails"
-    ] = proto.RepeatedField(
+    scheduled_operation_details: MutableSequence["ScheduledOperationDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=64,
         message="ScheduledOperationDetails",
@@ -1082,9 +1080,7 @@ class AutonomousDatabaseProperties(proto.Message):
         number=68,
         message="EncryptionKey",
     )
-    encryption_key_history_entries: MutableSequence[
-        "EncryptionKeyHistoryEntry"
-    ] = proto.RepeatedField(
+    encryption_key_history_entries: MutableSequence["EncryptionKeyHistoryEntry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=69,
         message="EncryptionKeyHistoryEntry",

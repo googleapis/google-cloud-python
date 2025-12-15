@@ -37,12 +37,8 @@ import proto  # type: ignore
 
 from google.cloud.securitycenter_v2.types import securitycenter_service, simulation
 from google.cloud.securitycenter_v2.types import external_system as gcs_external_system
-from google.cloud.securitycenter_v2.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v2.types import (
-    resource_value_config as gcs_resource_value_config,
-)
+from google.cloud.securitycenter_v2.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v2.types import resource_value_config as gcs_resource_value_config
 from google.cloud.securitycenter_v2.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v2.types import bigquery_export
 from google.cloud.securitycenter_v2.types import finding
@@ -68,13 +64,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -84,10 +76,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -106,11 +95,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -289,18 +274,14 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -336,9 +317,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -361,9 +340,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -372,8 +349,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     def batch_create_resource_value_configs(
         self,
     ) -> Callable[
-        [securitycenter_service.BatchCreateResourceValueConfigsRequest],
-        Awaitable[securitycenter_service.BatchCreateResourceValueConfigsResponse],
+        [securitycenter_service.BatchCreateResourceValueConfigsRequest], Awaitable[securitycenter_service.BatchCreateResourceValueConfigsResponse]
     ]:
         r"""Return a callable for the batch create resource value
         configs method over gRPC.
@@ -393,9 +369,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_create_resource_value_configs" not in self._stubs:
-            self._stubs[
-                "batch_create_resource_value_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_create_resource_value_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/BatchCreateResourceValueConfigs",
                 request_serializer=securitycenter_service.BatchCreateResourceValueConfigsRequest.serialize,
                 response_deserializer=securitycenter_service.BatchCreateResourceValueConfigsResponse.deserialize,
@@ -403,12 +377,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["batch_create_resource_value_configs"]
 
     @property
-    def bulk_mute_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.BulkMuteFindingsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def bulk_mute_findings(self) -> Callable[[securitycenter_service.BulkMuteFindingsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the bulk mute findings method over gRPC.
 
         Kicks off an LRO to bulk mute findings for a parent
@@ -436,12 +405,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["bulk_mute_findings"]
 
     @property
-    def create_big_query_export(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateBigQueryExportRequest],
-        Awaitable[bigquery_export.BigQueryExport],
-    ]:
+    def create_big_query_export(self) -> Callable[[securitycenter_service.CreateBigQueryExportRequest], Awaitable[bigquery_export.BigQueryExport]]:
         r"""Return a callable for the create big query export method over gRPC.
 
         Creates a BigQuery export.
@@ -465,11 +429,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["create_big_query_export"]
 
     @property
-    def create_finding(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateFindingRequest], Awaitable[gcs_finding.Finding]
-    ]:
+    def create_finding(self) -> Callable[[securitycenter_service.CreateFindingRequest], Awaitable[gcs_finding.Finding]]:
         r"""Return a callable for the create finding method over gRPC.
 
         Creates a finding in a location. The corresponding
@@ -494,12 +454,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["create_finding"]
 
     @property
-    def create_mute_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateMuteConfigRequest],
-        Awaitable[gcs_mute_config.MuteConfig],
-    ]:
+    def create_mute_config(self) -> Callable[[securitycenter_service.CreateMuteConfigRequest], Awaitable[gcs_mute_config.MuteConfig]]:
         r"""Return a callable for the create mute config method over gRPC.
 
         Creates a mute config.
@@ -525,10 +480,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def create_notification_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.CreateNotificationConfigRequest],
-        Awaitable[gcs_notification_config.NotificationConfig],
-    ]:
+    ) -> Callable[[securitycenter_service.CreateNotificationConfigRequest], Awaitable[gcs_notification_config.NotificationConfig]]:
         r"""Return a callable for the create notification config method over gRPC.
 
         Creates a notification config.
@@ -544,9 +496,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_notification_config" not in self._stubs:
-            self._stubs[
-                "create_notification_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_notification_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/CreateNotificationConfig",
                 request_serializer=securitycenter_service.CreateNotificationConfigRequest.serialize,
                 response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
@@ -554,11 +504,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["create_notification_config"]
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.CreateSourceRequest], Awaitable[gcs_source.Source]
-    ]:
+    def create_source(self) -> Callable[[securitycenter_service.CreateSourceRequest], Awaitable[gcs_source.Source]]:
         r"""Return a callable for the create source method over gRPC.
 
         Creates a source.
@@ -582,11 +528,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["create_source"]
 
     @property
-    def delete_big_query_export(
-        self,
-    ) -> Callable[
-        [securitycenter_service.DeleteBigQueryExportRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_big_query_export(self) -> Callable[[securitycenter_service.DeleteBigQueryExportRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete big query export method over gRPC.
 
         Deletes an existing BigQuery export.
@@ -610,11 +552,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["delete_big_query_export"]
 
     @property
-    def delete_mute_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.DeleteMuteConfigRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_mute_config(self) -> Callable[[securitycenter_service.DeleteMuteConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete mute config method over gRPC.
 
         Deletes an existing mute config. If no location is
@@ -639,12 +577,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["delete_mute_config"]
 
     @property
-    def delete_notification_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.DeleteNotificationConfigRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_notification_config(self) -> Callable[[securitycenter_service.DeleteNotificationConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete notification config method over gRPC.
 
         Deletes a notification config.
@@ -660,9 +593,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_notification_config" not in self._stubs:
-            self._stubs[
-                "delete_notification_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_notification_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/DeleteNotificationConfig",
                 request_serializer=securitycenter_service.DeleteNotificationConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -670,12 +601,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["delete_notification_config"]
 
     @property
-    def delete_resource_value_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.DeleteResourceValueConfigRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_resource_value_config(self) -> Callable[[securitycenter_service.DeleteResourceValueConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete resource value config method over gRPC.
 
         Deletes a ResourceValueConfig.
@@ -691,9 +617,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_resource_value_config" not in self._stubs:
-            self._stubs[
-                "delete_resource_value_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_resource_value_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/DeleteResourceValueConfig",
                 request_serializer=securitycenter_service.DeleteResourceValueConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -701,12 +625,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["delete_resource_value_config"]
 
     @property
-    def get_big_query_export(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetBigQueryExportRequest],
-        Awaitable[bigquery_export.BigQueryExport],
-    ]:
+    def get_big_query_export(self) -> Callable[[securitycenter_service.GetBigQueryExportRequest], Awaitable[bigquery_export.BigQueryExport]]:
         r"""Return a callable for the get big query export method over gRPC.
 
         Gets a BigQuery export.
@@ -730,11 +649,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["get_big_query_export"]
 
     @property
-    def get_simulation(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetSimulationRequest], Awaitable[simulation.Simulation]
-    ]:
+    def get_simulation(self) -> Callable[[securitycenter_service.GetSimulationRequest], Awaitable[simulation.Simulation]]:
         r"""Return a callable for the get simulation method over gRPC.
 
         Get the simulation by name or the latest simulation
@@ -759,12 +674,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["get_simulation"]
 
     @property
-    def get_valued_resource(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetValuedResourceRequest],
-        Awaitable[valued_resource.ValuedResource],
-    ]:
+    def get_valued_resource(self) -> Callable[[securitycenter_service.GetValuedResourceRequest], Awaitable[valued_resource.ValuedResource]]:
         r"""Return a callable for the get valued resource method over gRPC.
 
         Get the valued resource by name
@@ -788,9 +698,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["get_valued_resource"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy on the specified
@@ -815,11 +723,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def get_mute_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GetMuteConfigRequest], Awaitable[mute_config.MuteConfig]
-    ]:
+    def get_mute_config(self) -> Callable[[securitycenter_service.GetMuteConfigRequest], Awaitable[mute_config.MuteConfig]]:
         r"""Return a callable for the get mute config method over gRPC.
 
         Gets a mute config. If no location is specified,
@@ -846,10 +750,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def get_notification_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.GetNotificationConfigRequest],
-        Awaitable[notification_config.NotificationConfig],
-    ]:
+    ) -> Callable[[securitycenter_service.GetNotificationConfigRequest], Awaitable[notification_config.NotificationConfig]]:
         r"""Return a callable for the get notification config method over gRPC.
 
         Gets a notification config.
@@ -875,10 +776,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def get_resource_value_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.GetResourceValueConfigRequest],
-        Awaitable[resource_value_config.ResourceValueConfig],
-    ]:
+    ) -> Callable[[securitycenter_service.GetResourceValueConfigRequest], Awaitable[resource_value_config.ResourceValueConfig]]:
         r"""Return a callable for the get resource value config method over gRPC.
 
         Gets a ResourceValueConfig.
@@ -902,9 +800,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["get_resource_value_config"]
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[securitycenter_service.GetSourceRequest], Awaitable[source.Source]]:
+    def get_source(self) -> Callable[[securitycenter_service.GetSourceRequest], Awaitable[source.Source]]:
         r"""Return a callable for the get source method over gRPC.
 
         Gets a source.
@@ -928,12 +824,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["get_source"]
 
     @property
-    def group_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GroupFindingsRequest],
-        Awaitable[securitycenter_service.GroupFindingsResponse],
-    ]:
+    def group_findings(self) -> Callable[[securitycenter_service.GroupFindingsRequest], Awaitable[securitycenter_service.GroupFindingsResponse]]:
         r"""Return a callable for the group findings method over gRPC.
 
         Filters an organization or source's findings and groups them by
@@ -974,10 +865,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_attack_paths(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListAttackPathsRequest],
-        Awaitable[securitycenter_service.ListAttackPathsResponse],
-    ]:
+    ) -> Callable[[securitycenter_service.ListAttackPathsRequest], Awaitable[securitycenter_service.ListAttackPathsResponse]]:
         r"""Return a callable for the list attack paths method over gRPC.
 
         Lists the attack paths for a set of simulation
@@ -1004,10 +892,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_big_query_exports(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListBigQueryExportsRequest],
-        Awaitable[securitycenter_service.ListBigQueryExportsResponse],
-    ]:
+    ) -> Callable[[securitycenter_service.ListBigQueryExportsRequest], Awaitable[securitycenter_service.ListBigQueryExportsResponse]]:
         r"""Return a callable for the list big query exports method over gRPC.
 
         Lists BigQuery exports. Note that when requesting
@@ -1036,12 +921,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["list_big_query_exports"]
 
     @property
-    def list_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListFindingsRequest],
-        Awaitable[securitycenter_service.ListFindingsResponse],
-    ]:
+    def list_findings(self) -> Callable[[securitycenter_service.ListFindingsRequest], Awaitable[securitycenter_service.ListFindingsResponse]]:
         r"""Return a callable for the list findings method over gRPC.
 
         Lists an organization or source's findings.
@@ -1076,10 +956,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_mute_configs(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListMuteConfigsRequest],
-        Awaitable[securitycenter_service.ListMuteConfigsResponse],
-    ]:
+    ) -> Callable[[securitycenter_service.ListMuteConfigsRequest], Awaitable[securitycenter_service.ListMuteConfigsResponse]]:
         r"""Return a callable for the list mute configs method over gRPC.
 
         Lists mute configs. If no location is specified,
@@ -1106,10 +983,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_notification_configs(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListNotificationConfigsRequest],
-        Awaitable[securitycenter_service.ListNotificationConfigsResponse],
-    ]:
+    ) -> Callable[[securitycenter_service.ListNotificationConfigsRequest], Awaitable[securitycenter_service.ListNotificationConfigsResponse]]:
         r"""Return a callable for the list notification configs method over gRPC.
 
         Lists notification configs.
@@ -1135,10 +1009,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_resource_value_configs(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListResourceValueConfigsRequest],
-        Awaitable[securitycenter_service.ListResourceValueConfigsResponse],
-    ]:
+    ) -> Callable[[securitycenter_service.ListResourceValueConfigsRequest], Awaitable[securitycenter_service.ListResourceValueConfigsResponse]]:
         r"""Return a callable for the list resource value configs method over gRPC.
 
         Lists all ResourceValueConfigs.
@@ -1154,9 +1025,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_resource_value_configs" not in self._stubs:
-            self._stubs[
-                "list_resource_value_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_resource_value_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/ListResourceValueConfigs",
                 request_serializer=securitycenter_service.ListResourceValueConfigsRequest.serialize,
                 response_deserializer=securitycenter_service.ListResourceValueConfigsResponse.deserialize,
@@ -1164,12 +1033,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["list_resource_value_configs"]
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListSourcesRequest],
-        Awaitable[securitycenter_service.ListSourcesResponse],
-    ]:
+    def list_sources(self) -> Callable[[securitycenter_service.ListSourcesRequest], Awaitable[securitycenter_service.ListSourcesResponse]]:
         r"""Return a callable for the list sources method over gRPC.
 
         Lists all sources belonging to an organization.
@@ -1195,10 +1059,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_valued_resources(
         self,
-    ) -> Callable[
-        [securitycenter_service.ListValuedResourcesRequest],
-        Awaitable[securitycenter_service.ListValuedResourcesResponse],
-    ]:
+    ) -> Callable[[securitycenter_service.ListValuedResourcesRequest], Awaitable[securitycenter_service.ListValuedResourcesResponse]]:
         r"""Return a callable for the list valued resources method over gRPC.
 
         Lists the valued resources for a set of simulation
@@ -1223,11 +1084,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["list_valued_resources"]
 
     @property
-    def set_finding_state(
-        self,
-    ) -> Callable[
-        [securitycenter_service.SetFindingStateRequest], Awaitable[finding.Finding]
-    ]:
+    def set_finding_state(self) -> Callable[[securitycenter_service.SetFindingStateRequest], Awaitable[finding.Finding]]:
         r"""Return a callable for the set finding state method over gRPC.
 
         Updates the state of a finding. If no location is
@@ -1252,9 +1109,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["set_finding_state"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on the specified
@@ -1279,9 +1134,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def set_mute(
-        self,
-    ) -> Callable[[securitycenter_service.SetMuteRequest], Awaitable[finding.Finding]]:
+    def set_mute(self) -> Callable[[securitycenter_service.SetMuteRequest], Awaitable[finding.Finding]]:
         r"""Return a callable for the set mute method over gRPC.
 
         Updates the mute state of a finding. If no location
@@ -1306,12 +1159,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["set_mute"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns the permissions that a caller has on the
@@ -1336,12 +1184,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["test_iam_permissions"]
 
     @property
-    def update_big_query_export(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateBigQueryExportRequest],
-        Awaitable[bigquery_export.BigQueryExport],
-    ]:
+    def update_big_query_export(self) -> Callable[[securitycenter_service.UpdateBigQueryExportRequest], Awaitable[bigquery_export.BigQueryExport]]:
         r"""Return a callable for the update big query export method over gRPC.
 
         Updates a BigQuery export.
@@ -1365,12 +1208,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["update_big_query_export"]
 
     @property
-    def update_external_system(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateExternalSystemRequest],
-        Awaitable[gcs_external_system.ExternalSystem],
-    ]:
+    def update_external_system(self) -> Callable[[securitycenter_service.UpdateExternalSystemRequest], Awaitable[gcs_external_system.ExternalSystem]]:
         r"""Return a callable for the update external system method over gRPC.
 
         Updates external system. This is for a given finding.
@@ -1396,11 +1234,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["update_external_system"]
 
     @property
-    def update_finding(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateFindingRequest], Awaitable[gcs_finding.Finding]
-    ]:
+    def update_finding(self) -> Callable[[securitycenter_service.UpdateFindingRequest], Awaitable[gcs_finding.Finding]]:
         r"""Return a callable for the update finding method over gRPC.
 
         Creates or updates a finding. If no location is
@@ -1427,12 +1261,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["update_finding"]
 
     @property
-    def update_mute_config(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateMuteConfigRequest],
-        Awaitable[gcs_mute_config.MuteConfig],
-    ]:
+    def update_mute_config(self) -> Callable[[securitycenter_service.UpdateMuteConfigRequest], Awaitable[gcs_mute_config.MuteConfig]]:
         r"""Return a callable for the update mute config method over gRPC.
 
         Updates a mute config. If no location is specified,
@@ -1459,10 +1288,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def update_notification_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.UpdateNotificationConfigRequest],
-        Awaitable[gcs_notification_config.NotificationConfig],
-    ]:
+    ) -> Callable[[securitycenter_service.UpdateNotificationConfigRequest], Awaitable[gcs_notification_config.NotificationConfig]]:
         r"""Return a callable for the update notification config method over gRPC.
 
         Updates a notification config. The following update fields are
@@ -1479,9 +1305,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_notification_config" not in self._stubs:
-            self._stubs[
-                "update_notification_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_notification_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateNotificationConfig",
                 request_serializer=securitycenter_service.UpdateNotificationConfigRequest.serialize,
                 response_deserializer=gcs_notification_config.NotificationConfig.deserialize,
@@ -1491,10 +1315,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def update_resource_value_config(
         self,
-    ) -> Callable[
-        [securitycenter_service.UpdateResourceValueConfigRequest],
-        Awaitable[gcs_resource_value_config.ResourceValueConfig],
-    ]:
+    ) -> Callable[[securitycenter_service.UpdateResourceValueConfigRequest], Awaitable[gcs_resource_value_config.ResourceValueConfig]]:
         r"""Return a callable for the update resource value config method over gRPC.
 
         Updates an existing ResourceValueConfigs with new
@@ -1511,9 +1332,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_resource_value_config" not in self._stubs:
-            self._stubs[
-                "update_resource_value_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_resource_value_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.securitycenter.v2.SecurityCenter/UpdateResourceValueConfig",
                 request_serializer=securitycenter_service.UpdateResourceValueConfigRequest.serialize,
                 response_deserializer=gcs_resource_value_config.ResourceValueConfig.deserialize,
@@ -1521,12 +1340,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["update_resource_value_config"]
 
     @property
-    def update_security_marks(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateSecurityMarksRequest],
-        Awaitable[gcs_security_marks.SecurityMarks],
-    ]:
+    def update_security_marks(self) -> Callable[[securitycenter_service.UpdateSecurityMarksRequest], Awaitable[gcs_security_marks.SecurityMarks]]:
         r"""Return a callable for the update security marks method over gRPC.
 
         Updates security marks. For Finding Security marks,
@@ -1553,11 +1367,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
         return self._stubs["update_security_marks"]
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateSourceRequest], Awaitable[gcs_source.Source]
-    ]:
+    def update_source(self) -> Callable[[securitycenter_service.UpdateSourceRequest], Awaitable[gcs_source.Source]]:
         r"""Return a callable for the update source method over gRPC.
 
         Updates a source.
@@ -1871,9 +1681,7 @@ class SecurityCenterGrpcAsyncIOTransport(SecurityCenterTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

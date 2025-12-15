@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.shopping.merchant_reviews_v1beta import gapic_version as package_version
 from google.shopping.merchant_reviews_v1beta.types import merchantreviews
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class MerchantReviewsServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -168,12 +158,7 @@ class MerchantReviewsServiceTransport(abc.ABC):
     @property
     def get_merchant_review(
         self,
-    ) -> Callable[
-        [merchantreviews.GetMerchantReviewRequest],
-        Union[
-            merchantreviews.MerchantReview, Awaitable[merchantreviews.MerchantReview]
-        ],
-    ]:
+    ) -> Callable[[merchantreviews.GetMerchantReviewRequest], Union[merchantreviews.MerchantReview, Awaitable[merchantreviews.MerchantReview]]]:
         raise NotImplementedError()
 
     @property
@@ -181,31 +166,18 @@ class MerchantReviewsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [merchantreviews.ListMerchantReviewsRequest],
-        Union[
-            merchantreviews.ListMerchantReviewsResponse,
-            Awaitable[merchantreviews.ListMerchantReviewsResponse],
-        ],
+        Union[merchantreviews.ListMerchantReviewsResponse, Awaitable[merchantreviews.ListMerchantReviewsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def insert_merchant_review(
         self,
-    ) -> Callable[
-        [merchantreviews.InsertMerchantReviewRequest],
-        Union[
-            merchantreviews.MerchantReview, Awaitable[merchantreviews.MerchantReview]
-        ],
-    ]:
+    ) -> Callable[[merchantreviews.InsertMerchantReviewRequest], Union[merchantreviews.MerchantReview, Awaitable[merchantreviews.MerchantReview]]]:
         raise NotImplementedError()
 
     @property
-    def delete_merchant_review(
-        self,
-    ) -> Callable[
-        [merchantreviews.DeleteMerchantReviewRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_merchant_review(self) -> Callable[[merchantreviews.DeleteMerchantReviewRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property

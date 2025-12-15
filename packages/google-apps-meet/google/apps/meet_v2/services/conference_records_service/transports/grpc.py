@@ -44,9 +44,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -56,10 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -78,11 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -216,18 +207,14 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -261,9 +248,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -322,9 +307,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_conference_record(
-        self,
-    ) -> Callable[[service.GetConferenceRecordRequest], resource.ConferenceRecord]:
+    def get_conference_record(self) -> Callable[[service.GetConferenceRecordRequest], resource.ConferenceRecord]:
         r"""Return a callable for the get conference record method over gRPC.
 
         Gets a conference record by conference ID.
@@ -348,11 +331,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["get_conference_record"]
 
     @property
-    def list_conference_records(
-        self,
-    ) -> Callable[
-        [service.ListConferenceRecordsRequest], service.ListConferenceRecordsResponse
-    ]:
+    def list_conference_records(self) -> Callable[[service.ListConferenceRecordsRequest], service.ListConferenceRecordsResponse]:
         r"""Return a callable for the list conference records method over gRPC.
 
         Lists the conference records. By default, ordered by
@@ -377,9 +356,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["list_conference_records"]
 
     @property
-    def get_participant(
-        self,
-    ) -> Callable[[service.GetParticipantRequest], resource.Participant]:
+    def get_participant(self) -> Callable[[service.GetParticipantRequest], resource.Participant]:
         r"""Return a callable for the get participant method over gRPC.
 
         Gets a participant by participant ID.
@@ -403,9 +380,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["get_participant"]
 
     @property
-    def list_participants(
-        self,
-    ) -> Callable[[service.ListParticipantsRequest], service.ListParticipantsResponse]:
+    def list_participants(self) -> Callable[[service.ListParticipantsRequest], service.ListParticipantsResponse]:
         r"""Return a callable for the list participants method over gRPC.
 
         Lists the participants in a conference record. By default,
@@ -433,9 +408,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["list_participants"]
 
     @property
-    def get_participant_session(
-        self,
-    ) -> Callable[[service.GetParticipantSessionRequest], resource.ParticipantSession]:
+    def get_participant_session(self) -> Callable[[service.GetParticipantSessionRequest], resource.ParticipantSession]:
         r"""Return a callable for the get participant session method over gRPC.
 
         Gets a participant session by participant session ID.
@@ -459,12 +432,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["get_participant_session"]
 
     @property
-    def list_participant_sessions(
-        self,
-    ) -> Callable[
-        [service.ListParticipantSessionsRequest],
-        service.ListParticipantSessionsResponse,
-    ]:
+    def list_participant_sessions(self) -> Callable[[service.ListParticipantSessionsRequest], service.ListParticipantSessionsResponse]:
         r"""Return a callable for the list participant sessions method over gRPC.
 
         Lists the participant sessions of a participant in a conference
@@ -493,9 +461,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["list_participant_sessions"]
 
     @property
-    def get_recording(
-        self,
-    ) -> Callable[[service.GetRecordingRequest], resource.Recording]:
+    def get_recording(self) -> Callable[[service.GetRecordingRequest], resource.Recording]:
         r"""Return a callable for the get recording method over gRPC.
 
         Gets a recording by recording ID.
@@ -519,9 +485,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["get_recording"]
 
     @property
-    def list_recordings(
-        self,
-    ) -> Callable[[service.ListRecordingsRequest], service.ListRecordingsResponse]:
+    def list_recordings(self) -> Callable[[service.ListRecordingsRequest], service.ListRecordingsResponse]:
         r"""Return a callable for the list recordings method over gRPC.
 
         Lists the recording resources from the conference
@@ -547,9 +511,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["list_recordings"]
 
     @property
-    def get_transcript(
-        self,
-    ) -> Callable[[service.GetTranscriptRequest], resource.Transcript]:
+    def get_transcript(self) -> Callable[[service.GetTranscriptRequest], resource.Transcript]:
         r"""Return a callable for the get transcript method over gRPC.
 
         Gets a transcript by transcript ID.
@@ -573,9 +535,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["get_transcript"]
 
     @property
-    def list_transcripts(
-        self,
-    ) -> Callable[[service.ListTranscriptsRequest], service.ListTranscriptsResponse]:
+    def list_transcripts(self) -> Callable[[service.ListTranscriptsRequest], service.ListTranscriptsResponse]:
         r"""Return a callable for the list transcripts method over gRPC.
 
         Lists the set of transcripts from the conference
@@ -601,9 +561,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["list_transcripts"]
 
     @property
-    def get_transcript_entry(
-        self,
-    ) -> Callable[[service.GetTranscriptEntryRequest], resource.TranscriptEntry]:
+    def get_transcript_entry(self) -> Callable[[service.GetTranscriptEntryRequest], resource.TranscriptEntry]:
         r"""Return a callable for the get transcript entry method over gRPC.
 
         Gets a ``TranscriptEntry`` resource by entry ID.
@@ -632,11 +590,7 @@ class ConferenceRecordsServiceGrpcTransport(ConferenceRecordsServiceTransport):
         return self._stubs["get_transcript_entry"]
 
     @property
-    def list_transcript_entries(
-        self,
-    ) -> Callable[
-        [service.ListTranscriptEntriesRequest], service.ListTranscriptEntriesResponse
-    ]:
+    def list_transcript_entries(self) -> Callable[[service.ListTranscriptEntriesRequest], service.ListTranscriptEntriesResponse]:
         r"""Return a callable for the list transcript entries method over gRPC.
 
         Lists the structured transcript entries per

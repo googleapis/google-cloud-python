@@ -46,13 +46,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +58,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +77,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -276,18 +265,14 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -323,9 +308,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -340,9 +323,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_catalog(
-        self,
-    ) -> Callable[[metastore.CreateCatalogRequest], Awaitable[metastore.Catalog]]:
+    def create_catalog(self) -> Callable[[metastore.CreateCatalogRequest], Awaitable[metastore.Catalog]]:
         r"""Return a callable for the create catalog method over gRPC.
 
         Creates a new catalog.
@@ -366,9 +347,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["create_catalog"]
 
     @property
-    def delete_catalog(
-        self,
-    ) -> Callable[[metastore.DeleteCatalogRequest], Awaitable[metastore.Catalog]]:
+    def delete_catalog(self) -> Callable[[metastore.DeleteCatalogRequest], Awaitable[metastore.Catalog]]:
         r"""Return a callable for the delete catalog method over gRPC.
 
         Deletes an existing catalog specified by the catalog
@@ -393,9 +372,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["delete_catalog"]
 
     @property
-    def get_catalog(
-        self,
-    ) -> Callable[[metastore.GetCatalogRequest], Awaitable[metastore.Catalog]]:
+    def get_catalog(self) -> Callable[[metastore.GetCatalogRequest], Awaitable[metastore.Catalog]]:
         r"""Return a callable for the get catalog method over gRPC.
 
         Gets the catalog specified by the resource name.
@@ -419,11 +396,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["get_catalog"]
 
     @property
-    def list_catalogs(
-        self,
-    ) -> Callable[
-        [metastore.ListCatalogsRequest], Awaitable[metastore.ListCatalogsResponse]
-    ]:
+    def list_catalogs(self) -> Callable[[metastore.ListCatalogsRequest], Awaitable[metastore.ListCatalogsResponse]]:
         r"""Return a callable for the list catalogs method over gRPC.
 
         List all catalogs in a specified project.
@@ -447,9 +420,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["list_catalogs"]
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[[metastore.CreateDatabaseRequest], Awaitable[metastore.Database]]:
+    def create_database(self) -> Callable[[metastore.CreateDatabaseRequest], Awaitable[metastore.Database]]:
         r"""Return a callable for the create database method over gRPC.
 
         Creates a new database.
@@ -473,9 +444,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["create_database"]
 
     @property
-    def delete_database(
-        self,
-    ) -> Callable[[metastore.DeleteDatabaseRequest], Awaitable[metastore.Database]]:
+    def delete_database(self) -> Callable[[metastore.DeleteDatabaseRequest], Awaitable[metastore.Database]]:
         r"""Return a callable for the delete database method over gRPC.
 
         Deletes an existing database specified by the
@@ -500,9 +469,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["delete_database"]
 
     @property
-    def update_database(
-        self,
-    ) -> Callable[[metastore.UpdateDatabaseRequest], Awaitable[metastore.Database]]:
+    def update_database(self) -> Callable[[metastore.UpdateDatabaseRequest], Awaitable[metastore.Database]]:
         r"""Return a callable for the update database method over gRPC.
 
         Updates an existing database specified by the
@@ -527,9 +494,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["update_database"]
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[[metastore.GetDatabaseRequest], Awaitable[metastore.Database]]:
+    def get_database(self) -> Callable[[metastore.GetDatabaseRequest], Awaitable[metastore.Database]]:
         r"""Return a callable for the get database method over gRPC.
 
         Gets the database specified by the resource name.
@@ -553,11 +518,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["get_database"]
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[
-        [metastore.ListDatabasesRequest], Awaitable[metastore.ListDatabasesResponse]
-    ]:
+    def list_databases(self) -> Callable[[metastore.ListDatabasesRequest], Awaitable[metastore.ListDatabasesResponse]]:
         r"""Return a callable for the list databases method over gRPC.
 
         List all databases in a specified catalog.
@@ -581,9 +542,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["list_databases"]
 
     @property
-    def create_table(
-        self,
-    ) -> Callable[[metastore.CreateTableRequest], Awaitable[metastore.Table]]:
+    def create_table(self) -> Callable[[metastore.CreateTableRequest], Awaitable[metastore.Table]]:
         r"""Return a callable for the create table method over gRPC.
 
         Creates a new table.
@@ -607,9 +566,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["create_table"]
 
     @property
-    def delete_table(
-        self,
-    ) -> Callable[[metastore.DeleteTableRequest], Awaitable[metastore.Table]]:
+    def delete_table(self) -> Callable[[metastore.DeleteTableRequest], Awaitable[metastore.Table]]:
         r"""Return a callable for the delete table method over gRPC.
 
         Deletes an existing table specified by the table ID.
@@ -633,9 +590,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["delete_table"]
 
     @property
-    def update_table(
-        self,
-    ) -> Callable[[metastore.UpdateTableRequest], Awaitable[metastore.Table]]:
+    def update_table(self) -> Callable[[metastore.UpdateTableRequest], Awaitable[metastore.Table]]:
         r"""Return a callable for the update table method over gRPC.
 
         Updates an existing table specified by the table ID.
@@ -659,9 +614,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["update_table"]
 
     @property
-    def rename_table(
-        self,
-    ) -> Callable[[metastore.RenameTableRequest], Awaitable[metastore.Table]]:
+    def rename_table(self) -> Callable[[metastore.RenameTableRequest], Awaitable[metastore.Table]]:
         r"""Return a callable for the rename table method over gRPC.
 
         Renames an existing table specified by the table ID.
@@ -685,9 +638,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["rename_table"]
 
     @property
-    def get_table(
-        self,
-    ) -> Callable[[metastore.GetTableRequest], Awaitable[metastore.Table]]:
+    def get_table(self) -> Callable[[metastore.GetTableRequest], Awaitable[metastore.Table]]:
         r"""Return a callable for the get table method over gRPC.
 
         Gets the table specified by the resource name.
@@ -711,11 +662,7 @@ class MetastoreServiceGrpcAsyncIOTransport(MetastoreServiceTransport):
         return self._stubs["get_table"]
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[
-        [metastore.ListTablesRequest], Awaitable[metastore.ListTablesResponse]
-    ]:
+    def list_tables(self) -> Callable[[metastore.ListTablesRequest], Awaitable[metastore.ListTablesResponse]]:
         r"""Return a callable for the list tables method over gRPC.
 
         List all tables in a specified database.

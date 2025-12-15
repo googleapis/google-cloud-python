@@ -48,31 +48,12 @@ from .attachment import (
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
-from .export import (
-    ExportArtifactMetadata,
-    ExportArtifactRequest,
-    ExportArtifactResponse,
-)
-from .file import (
-    DeleteFileRequest,
-    File,
-    GetFileRequest,
-    Hash,
-    ListFilesRequest,
-    ListFilesResponse,
-    UpdateFileRequest,
-)
+from .export import ExportArtifactMetadata, ExportArtifactRequest, ExportArtifactResponse
+from .file import DeleteFileRequest, File, GetFileRequest, Hash, ListFilesRequest, ListFilesResponse, UpdateFileRequest
 from .generic import GenericArtifact
 from .go import GoModule
 from .kfp_artifact import KfpArtifact
-from .package import (
-    DeletePackageRequest,
-    GetPackageRequest,
-    ListPackagesRequest,
-    ListPackagesResponse,
-    Package,
-    UpdatePackageRequest,
-)
+from .package import DeletePackageRequest, GetPackageRequest, ListPackagesRequest, ListPackagesResponse, Package, UpdatePackageRequest
 from .repository import (
     CleanupPolicy,
     CleanupPolicyCondition,
@@ -88,30 +69,10 @@ from .repository import (
     UpstreamPolicy,
     VirtualRepositoryConfig,
 )
-from .rule import (
-    CreateRuleRequest,
-    DeleteRuleRequest,
-    GetRuleRequest,
-    ListRulesRequest,
-    ListRulesResponse,
-    Rule,
-    UpdateRuleRequest,
-)
+from .rule import CreateRuleRequest, DeleteRuleRequest, GetRuleRequest, ListRulesRequest, ListRulesResponse, Rule, UpdateRuleRequest
 from .service import OperationMetadata
-from .settings import (
-    GetProjectSettingsRequest,
-    ProjectSettings,
-    UpdateProjectSettingsRequest,
-)
-from .tag import (
-    CreateTagRequest,
-    DeleteTagRequest,
-    GetTagRequest,
-    ListTagsRequest,
-    ListTagsResponse,
-    Tag,
-    UpdateTagRequest,
-)
+from .settings import GetProjectSettingsRequest, ProjectSettings, UpdateProjectSettingsRequest
+from .tag import CreateTagRequest, DeleteTagRequest, GetTagRequest, ListTagsRequest, ListTagsResponse, Tag, UpdateTagRequest
 from .version import (
     BatchDeleteVersionsMetadata,
     BatchDeleteVersionsRequest,

@@ -326,9 +326,7 @@ class ListInterceptEndpointGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intercept_endpoint_groups: MutableSequence[
-        "InterceptEndpointGroup"
-    ] = proto.RepeatedField(
+    intercept_endpoint_groups: MutableSequence["InterceptEndpointGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InterceptEndpointGroup",
@@ -709,9 +707,7 @@ class ListInterceptEndpointGroupAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intercept_endpoint_group_associations: MutableSequence[
-        "InterceptEndpointGroupAssociation"
-    ] = proto.RepeatedField(
+    intercept_endpoint_group_associations: MutableSequence["InterceptEndpointGroupAssociation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InterceptEndpointGroupAssociation",
@@ -768,12 +764,10 @@ class CreateInterceptEndpointGroupAssociationRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    intercept_endpoint_group_association: "InterceptEndpointGroupAssociation" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="InterceptEndpointGroupAssociation",
-        )
+    intercept_endpoint_group_association: "InterceptEndpointGroupAssociation" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InterceptEndpointGroupAssociation",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -804,12 +798,10 @@ class UpdateInterceptEndpointGroupAssociationRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    intercept_endpoint_group_association: "InterceptEndpointGroupAssociation" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="InterceptEndpointGroupAssociation",
-        )
+    intercept_endpoint_group_association: "InterceptEndpointGroupAssociation" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="InterceptEndpointGroupAssociation",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -973,9 +965,7 @@ class InterceptDeploymentGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_endpoint_groups: MutableSequence[
-        ConnectedEndpointGroup
-    ] = proto.RepeatedField(
+    connected_endpoint_groups: MutableSequence[ConnectedEndpointGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=ConnectedEndpointGroup,
@@ -1076,9 +1066,7 @@ class ListInterceptDeploymentGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    intercept_deployment_groups: MutableSequence[
-        "InterceptDeploymentGroup"
-    ] = proto.RepeatedField(
+    intercept_deployment_groups: MutableSequence["InterceptDeploymentGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InterceptDeploymentGroup",

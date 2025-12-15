@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import CmsMetadataKeyServiceTransport
-from .rest import (
-    CmsMetadataKeyServiceRestInterceptor,
-    CmsMetadataKeyServiceRestTransport,
-)
+from .rest import CmsMetadataKeyServiceRestInterceptor, CmsMetadataKeyServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CmsMetadataKeyServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CmsMetadataKeyServiceTransport]]
 _transport_registry["rest"] = CmsMetadataKeyServiceRestTransport
 
 __all__ = (

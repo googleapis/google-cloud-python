@@ -170,12 +170,8 @@ class ParticipantsRestInterceptor:
     """
 
     def pre_analyze_content(
-        self,
-        request: gcd_participant.AnalyzeContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_participant.AnalyzeContentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_participant.AnalyzeContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_participant.AnalyzeContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for analyze_content
 
         Override in a subclass to manipulate the request or metadata
@@ -183,9 +179,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_analyze_content(
-        self, response: gcd_participant.AnalyzeContentResponse
-    ) -> gcd_participant.AnalyzeContentResponse:
+    def post_analyze_content(self, response: gcd_participant.AnalyzeContentResponse) -> gcd_participant.AnalyzeContentResponse:
         """Post-rpc interceptor for analyze_content
 
         DEPRECATED. Please use the `post_analyze_content_with_metadata`
@@ -199,12 +193,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_analyze_content_with_metadata(
-        self,
-        response: gcd_participant.AnalyzeContentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_participant.AnalyzeContentResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcd_participant.AnalyzeContentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_participant.AnalyzeContentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for analyze_content
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -220,12 +210,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_compile_suggestion(
-        self,
-        request: participant.CompileSuggestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.CompileSuggestionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.CompileSuggestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.CompileSuggestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compile_suggestion
 
         Override in a subclass to manipulate the request or metadata
@@ -233,9 +219,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_compile_suggestion(
-        self, response: participant.CompileSuggestionResponse
-    ) -> participant.CompileSuggestionResponse:
+    def post_compile_suggestion(self, response: participant.CompileSuggestionResponse) -> participant.CompileSuggestionResponse:
         """Post-rpc interceptor for compile_suggestion
 
         DEPRECATED. Please use the `post_compile_suggestion_with_metadata`
@@ -249,12 +233,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_compile_suggestion_with_metadata(
-        self,
-        response: participant.CompileSuggestionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.CompileSuggestionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: participant.CompileSuggestionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.CompileSuggestionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compile_suggestion
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -270,13 +250,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_create_participant(
-        self,
-        request: gcd_participant.CreateParticipantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_participant.CreateParticipantRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_participant.CreateParticipantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_participant.CreateParticipantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_participant
 
         Override in a subclass to manipulate the request or metadata
@@ -284,9 +259,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_participant(
-        self, response: gcd_participant.Participant
-    ) -> gcd_participant.Participant:
+    def post_create_participant(self, response: gcd_participant.Participant) -> gcd_participant.Participant:
         """Post-rpc interceptor for create_participant
 
         DEPRECATED. Please use the `post_create_participant_with_metadata`
@@ -300,9 +273,7 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_create_participant_with_metadata(
-        self,
-        response: gcd_participant.Participant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_participant.Participant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_participant.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_participant
 
@@ -319,12 +290,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_get_participant(
-        self,
-        request: participant.GetParticipantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.GetParticipantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.GetParticipantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.GetParticipantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_participant
 
         Override in a subclass to manipulate the request or metadata
@@ -332,9 +299,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_participant(
-        self, response: participant.Participant
-    ) -> participant.Participant:
+    def post_get_participant(self, response: participant.Participant) -> participant.Participant:
         """Post-rpc interceptor for get_participant
 
         DEPRECATED. Please use the `post_get_participant_with_metadata`
@@ -348,9 +313,7 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_get_participant_with_metadata(
-        self,
-        response: participant.Participant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: participant.Participant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[participant.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_participant
 
@@ -367,12 +330,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_list_participants(
-        self,
-        request: participant.ListParticipantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.ListParticipantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.ListParticipantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.ListParticipantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_participants
 
         Override in a subclass to manipulate the request or metadata
@@ -380,9 +339,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_participants(
-        self, response: participant.ListParticipantsResponse
-    ) -> participant.ListParticipantsResponse:
+    def post_list_participants(self, response: participant.ListParticipantsResponse) -> participant.ListParticipantsResponse:
         """Post-rpc interceptor for list_participants
 
         DEPRECATED. Please use the `post_list_participants_with_metadata`
@@ -396,12 +353,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_list_participants_with_metadata(
-        self,
-        response: participant.ListParticipantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.ListParticipantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: participant.ListParticipantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.ListParticipantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_participants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -417,12 +370,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_list_suggestions(
-        self,
-        request: participant.ListSuggestionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.ListSuggestionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.ListSuggestionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.ListSuggestionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_suggestions
 
         Override in a subclass to manipulate the request or metadata
@@ -430,9 +379,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_suggestions(
-        self, response: participant.ListSuggestionsResponse
-    ) -> participant.ListSuggestionsResponse:
+    def post_list_suggestions(self, response: participant.ListSuggestionsResponse) -> participant.ListSuggestionsResponse:
         """Post-rpc interceptor for list_suggestions
 
         DEPRECATED. Please use the `post_list_suggestions_with_metadata`
@@ -446,12 +393,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_list_suggestions_with_metadata(
-        self,
-        response: participant.ListSuggestionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.ListSuggestionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: participant.ListSuggestionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.ListSuggestionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_suggestions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -467,12 +410,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_suggest_articles(
-        self,
-        request: participant.SuggestArticlesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestArticlesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.SuggestArticlesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestArticlesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suggest_articles
 
         Override in a subclass to manipulate the request or metadata
@@ -480,9 +419,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_suggest_articles(
-        self, response: participant.SuggestArticlesResponse
-    ) -> participant.SuggestArticlesResponse:
+    def post_suggest_articles(self, response: participant.SuggestArticlesResponse) -> participant.SuggestArticlesResponse:
         """Post-rpc interceptor for suggest_articles
 
         DEPRECATED. Please use the `post_suggest_articles_with_metadata`
@@ -496,12 +433,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_suggest_articles_with_metadata(
-        self,
-        response: participant.SuggestArticlesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestArticlesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: participant.SuggestArticlesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestArticlesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suggest_articles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -517,12 +450,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_suggest_faq_answers(
-        self,
-        request: participant.SuggestFaqAnswersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestFaqAnswersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.SuggestFaqAnswersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestFaqAnswersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suggest_faq_answers
 
         Override in a subclass to manipulate the request or metadata
@@ -530,9 +459,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_suggest_faq_answers(
-        self, response: participant.SuggestFaqAnswersResponse
-    ) -> participant.SuggestFaqAnswersResponse:
+    def post_suggest_faq_answers(self, response: participant.SuggestFaqAnswersResponse) -> participant.SuggestFaqAnswersResponse:
         """Post-rpc interceptor for suggest_faq_answers
 
         DEPRECATED. Please use the `post_suggest_faq_answers_with_metadata`
@@ -546,12 +473,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_suggest_faq_answers_with_metadata(
-        self,
-        response: participant.SuggestFaqAnswersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestFaqAnswersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: participant.SuggestFaqAnswersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestFaqAnswersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suggest_faq_answers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -567,13 +490,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_suggest_knowledge_assist(
-        self,
-        request: participant.SuggestKnowledgeAssistRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestKnowledgeAssistRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: participant.SuggestKnowledgeAssistRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestKnowledgeAssistRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suggest_knowledge_assist
 
         Override in a subclass to manipulate the request or metadata
@@ -581,9 +499,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_suggest_knowledge_assist(
-        self, response: participant.SuggestKnowledgeAssistResponse
-    ) -> participant.SuggestKnowledgeAssistResponse:
+    def post_suggest_knowledge_assist(self, response: participant.SuggestKnowledgeAssistResponse) -> participant.SuggestKnowledgeAssistResponse:
         """Post-rpc interceptor for suggest_knowledge_assist
 
         DEPRECATED. Please use the `post_suggest_knowledge_assist_with_metadata`
@@ -597,13 +513,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_suggest_knowledge_assist_with_metadata(
-        self,
-        response: participant.SuggestKnowledgeAssistResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestKnowledgeAssistResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: participant.SuggestKnowledgeAssistResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestKnowledgeAssistResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suggest_knowledge_assist
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -619,12 +530,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_suggest_smart_replies(
-        self,
-        request: participant.SuggestSmartRepliesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestSmartRepliesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: participant.SuggestSmartRepliesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestSmartRepliesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suggest_smart_replies
 
         Override in a subclass to manipulate the request or metadata
@@ -632,9 +539,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_suggest_smart_replies(
-        self, response: participant.SuggestSmartRepliesResponse
-    ) -> participant.SuggestSmartRepliesResponse:
+    def post_suggest_smart_replies(self, response: participant.SuggestSmartRepliesResponse) -> participant.SuggestSmartRepliesResponse:
         """Post-rpc interceptor for suggest_smart_replies
 
         DEPRECATED. Please use the `post_suggest_smart_replies_with_metadata`
@@ -648,12 +553,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_suggest_smart_replies_with_metadata(
-        self,
-        response: participant.SuggestSmartRepliesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        participant.SuggestSmartRepliesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: participant.SuggestSmartRepliesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[participant.SuggestSmartRepliesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suggest_smart_replies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -669,13 +570,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_update_participant(
-        self,
-        request: gcd_participant.UpdateParticipantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_participant.UpdateParticipantRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_participant.UpdateParticipantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_participant.UpdateParticipantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_participant
 
         Override in a subclass to manipulate the request or metadata
@@ -683,9 +579,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_participant(
-        self, response: gcd_participant.Participant
-    ) -> gcd_participant.Participant:
+    def post_update_participant(self, response: gcd_participant.Participant) -> gcd_participant.Participant:
         """Post-rpc interceptor for update_participant
 
         DEPRECATED. Please use the `post_update_participant_with_metadata`
@@ -699,9 +593,7 @@ class ParticipantsRestInterceptor:
         return response
 
     def post_update_participant_with_metadata(
-        self,
-        response: gcd_participant.Participant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_participant.Participant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_participant.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_participant
 
@@ -718,12 +610,8 @@ class ParticipantsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -731,9 +619,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -743,12 +629,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -756,9 +638,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -768,12 +648,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -791,12 +667,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -804,9 +676,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -816,12 +686,8 @@ class ParticipantsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -829,9 +695,7 @@ class ParticipantsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -921,30 +785,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ParticipantsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AnalyzeContent(
-        _BaseParticipantsRestTransport._BaseAnalyzeContent, ParticipantsRestStub
-    ):
+    class _AnalyzeContent(_BaseParticipantsRestTransport._BaseAnalyzeContent, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.AnalyzeContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -987,30 +839,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseAnalyzeContent._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_http_options()
 
             request, metadata = self._interceptor.pre_analyze_content(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseAnalyzeContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1034,13 +874,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._AnalyzeContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1056,16 +890,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_analyze_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_analyze_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_analyze_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcd_participant.AnalyzeContentResponse.to_json(
-                        response
-                    )
+                    response_payload = gcd_participant.AnalyzeContentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1084,10 +912,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _BidiStreamingAnalyzeContent(
-        _BaseParticipantsRestTransport._BaseBidiStreamingAnalyzeContent,
-        ParticipantsRestStub,
-    ):
+    class _BidiStreamingAnalyzeContent(_BaseParticipantsRestTransport._BaseBidiStreamingAnalyzeContent, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.BidiStreamingAnalyzeContent")
 
@@ -1099,26 +924,14 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method BidiStreamingAnalyzeContent is not available over REST transport"
-            )
+            raise NotImplementedError("Method BidiStreamingAnalyzeContent is not available over REST transport")
 
-    class _CompileSuggestion(
-        _BaseParticipantsRestTransport._BaseCompileSuggestion, ParticipantsRestStub
-    ):
+    class _CompileSuggestion(_BaseParticipantsRestTransport._BaseCompileSuggestion, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.CompileSuggestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1161,32 +974,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseCompileSuggestion._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_http_options()
 
-            request, metadata = self._interceptor.pre_compile_suggestion(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compile_suggestion(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseCompileSuggestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1210,13 +1009,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._CompileSuggestion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1232,16 +1025,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_compile_suggestion(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compile_suggestion_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compile_suggestion_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = participant.CompileSuggestionResponse.to_json(
-                        response
-                    )
+                    response_payload = participant.CompileSuggestionResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1260,22 +1047,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _CreateParticipant(
-        _BaseParticipantsRestTransport._BaseCreateParticipant, ParticipantsRestStub
-    ):
+    class _CreateParticipant(_BaseParticipantsRestTransport._BaseCreateParticipant, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.CreateParticipant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1318,32 +1095,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseCreateParticipant._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_participant(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseCreateParticipant._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_participant(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseCreateParticipant._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseCreateParticipant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseCreateParticipant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseCreateParticipant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseCreateParticipant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1367,13 +1130,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._CreateParticipant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1389,12 +1146,8 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_create_participant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_participant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_participant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_participant.Participant.to_json(response)
                 except:
@@ -1415,22 +1168,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _GetParticipant(
-        _BaseParticipantsRestTransport._BaseGetParticipant, ParticipantsRestStub
-    ):
+    class _GetParticipant(_BaseParticipantsRestTransport._BaseGetParticipant, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.GetParticipant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1472,26 +1215,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseGetParticipant._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseGetParticipant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseGetParticipant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParticipantsRestTransport._BaseGetParticipant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseGetParticipant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseGetParticipant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1515,12 +1248,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._GetParticipant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1536,12 +1264,8 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_get_participant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_participant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_participant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = participant.Participant.to_json(response)
                 except:
@@ -1562,22 +1286,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _ListParticipants(
-        _BaseParticipantsRestTransport._BaseListParticipants, ParticipantsRestStub
-    ):
+    class _ListParticipants(_BaseParticipantsRestTransport._BaseListParticipants, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.ListParticipants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1619,28 +1333,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseListParticipants._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseListParticipants._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_participants(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseListParticipants._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_participants(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseListParticipants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListParticipants._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseListParticipants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1664,12 +1366,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._ListParticipants._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1685,16 +1382,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_list_participants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_participants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_participants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = participant.ListParticipantsResponse.to_json(
-                        response
-                    )
+                    response_payload = participant.ListParticipantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1713,22 +1404,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _ListSuggestions(
-        _BaseParticipantsRestTransport._BaseListSuggestions, ParticipantsRestStub
-    ):
+    class _ListSuggestions(_BaseParticipantsRestTransport._BaseListSuggestions, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.ListSuggestions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1770,28 +1451,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseListSuggestions._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseListSuggestions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_suggestions(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseListSuggestions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_suggestions(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseListSuggestions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListSuggestions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseListSuggestions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1815,12 +1484,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._ListSuggestions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1836,16 +1500,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_list_suggestions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_suggestions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_suggestions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = participant.ListSuggestionsResponse.to_json(
-                        response
-                    )
+                    response_payload = participant.ListSuggestionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1864,10 +1522,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _StreamingAnalyzeContent(
-        _BaseParticipantsRestTransport._BaseStreamingAnalyzeContent,
-        ParticipantsRestStub,
-    ):
+    class _StreamingAnalyzeContent(_BaseParticipantsRestTransport._BaseStreamingAnalyzeContent, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.StreamingAnalyzeContent")
 
@@ -1879,26 +1534,14 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method StreamingAnalyzeContent is not available over REST transport"
-            )
+            raise NotImplementedError("Method StreamingAnalyzeContent is not available over REST transport")
 
-    class _SuggestArticles(
-        _BaseParticipantsRestTransport._BaseSuggestArticles, ParticipantsRestStub
-    ):
+    class _SuggestArticles(_BaseParticipantsRestTransport._BaseSuggestArticles, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.SuggestArticles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1941,32 +1584,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestArticles._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestArticles._get_http_options()
 
-            request, metadata = self._interceptor.pre_suggest_articles(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestArticles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_suggest_articles(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestArticles._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseSuggestArticles._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseSuggestArticles._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestArticles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestArticles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1990,13 +1619,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._SuggestArticles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2012,16 +1635,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_suggest_articles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suggest_articles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suggest_articles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = participant.SuggestArticlesResponse.to_json(
-                        response
-                    )
+                    response_payload = participant.SuggestArticlesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2040,22 +1657,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _SuggestFaqAnswers(
-        _BaseParticipantsRestTransport._BaseSuggestFaqAnswers, ParticipantsRestStub
-    ):
+    class _SuggestFaqAnswers(_BaseParticipantsRestTransport._BaseSuggestFaqAnswers, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.SuggestFaqAnswers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2098,32 +1705,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_http_options()
 
-            request, metadata = self._interceptor.pre_suggest_faq_answers(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_suggest_faq_answers(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestFaqAnswers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2147,13 +1740,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._SuggestFaqAnswers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2169,16 +1756,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_suggest_faq_answers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suggest_faq_answers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suggest_faq_answers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = participant.SuggestFaqAnswersResponse.to_json(
-                        response
-                    )
+                    response_payload = participant.SuggestFaqAnswersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2197,22 +1778,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _SuggestKnowledgeAssist(
-        _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist, ParticipantsRestStub
-    ):
+    class _SuggestKnowledgeAssist(_BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.SuggestKnowledgeAssist")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2255,32 +1826,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_http_options()
 
-            request, metadata = self._interceptor.pre_suggest_knowledge_assist(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_suggest_knowledge_assist(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestKnowledgeAssist._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2304,13 +1861,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._SuggestKnowledgeAssist._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2326,16 +1877,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_suggest_knowledge_assist(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suggest_knowledge_assist_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suggest_knowledge_assist_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        participant.SuggestKnowledgeAssistResponse.to_json(response)
-                    )
+                    response_payload = participant.SuggestKnowledgeAssistResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2354,22 +1899,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _SuggestSmartReplies(
-        _BaseParticipantsRestTransport._BaseSuggestSmartReplies, ParticipantsRestStub
-    ):
+    class _SuggestSmartReplies(_BaseParticipantsRestTransport._BaseSuggestSmartReplies, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.SuggestSmartReplies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2412,32 +1947,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_http_options()
 
-            request, metadata = self._interceptor.pre_suggest_smart_replies(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_suggest_smart_replies(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseSuggestSmartReplies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2461,13 +1982,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._SuggestSmartReplies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2483,16 +1998,10 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_suggest_smart_replies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suggest_smart_replies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suggest_smart_replies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = participant.SuggestSmartRepliesResponse.to_json(
-                        response
-                    )
+                    response_payload = participant.SuggestSmartRepliesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2511,22 +2020,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 )
             return resp
 
-    class _UpdateParticipant(
-        _BaseParticipantsRestTransport._BaseUpdateParticipant, ParticipantsRestStub
-    ):
+    class _UpdateParticipant(_BaseParticipantsRestTransport._BaseUpdateParticipant, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.UpdateParticipant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2569,32 +2068,18 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_participant(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_participant(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_transcoded_request(http_options, request)
 
-            body = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseUpdateParticipant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2618,13 +2103,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._UpdateParticipant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2640,12 +2119,8 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             resp = self._interceptor.post_update_participant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_participant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_participant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_participant.Participant.to_json(response)
                 except:
@@ -2667,11 +2142,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             return resp
 
     @property
-    def analyze_content(
-        self,
-    ) -> Callable[
-        [gcd_participant.AnalyzeContentRequest], gcd_participant.AnalyzeContentResponse
-    ]:
+    def analyze_content(self) -> Callable[[gcd_participant.AnalyzeContentRequest], gcd_participant.AnalyzeContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
@@ -2679,121 +2150,73 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     @property
     def bidi_streaming_analyze_content(
         self,
-    ) -> Callable[
-        [participant.BidiStreamingAnalyzeContentRequest],
-        participant.BidiStreamingAnalyzeContentResponse,
-    ]:
+    ) -> Callable[[participant.BidiStreamingAnalyzeContentRequest], participant.BidiStreamingAnalyzeContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BidiStreamingAnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def compile_suggestion(
-        self,
-    ) -> Callable[
-        [participant.CompileSuggestionRequest], participant.CompileSuggestionResponse
-    ]:
+    def compile_suggestion(self) -> Callable[[participant.CompileSuggestionRequest], participant.CompileSuggestionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CompileSuggestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_participant(
-        self,
-    ) -> Callable[
-        [gcd_participant.CreateParticipantRequest], gcd_participant.Participant
-    ]:
+    def create_participant(self) -> Callable[[gcd_participant.CreateParticipantRequest], gcd_participant.Participant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateParticipant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_participant(
-        self,
-    ) -> Callable[[participant.GetParticipantRequest], participant.Participant]:
+    def get_participant(self) -> Callable[[participant.GetParticipantRequest], participant.Participant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetParticipant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_participants(
-        self,
-    ) -> Callable[
-        [participant.ListParticipantsRequest], participant.ListParticipantsResponse
-    ]:
+    def list_participants(self) -> Callable[[participant.ListParticipantsRequest], participant.ListParticipantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListParticipants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_suggestions(
-        self,
-    ) -> Callable[
-        [participant.ListSuggestionsRequest], participant.ListSuggestionsResponse
-    ]:
+    def list_suggestions(self) -> Callable[[participant.ListSuggestionsRequest], participant.ListSuggestionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSuggestions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def streaming_analyze_content(
-        self,
-    ) -> Callable[
-        [participant.StreamingAnalyzeContentRequest],
-        participant.StreamingAnalyzeContentResponse,
-    ]:
+    def streaming_analyze_content(self) -> Callable[[participant.StreamingAnalyzeContentRequest], participant.StreamingAnalyzeContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StreamingAnalyzeContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def suggest_articles(
-        self,
-    ) -> Callable[
-        [participant.SuggestArticlesRequest], participant.SuggestArticlesResponse
-    ]:
+    def suggest_articles(self) -> Callable[[participant.SuggestArticlesRequest], participant.SuggestArticlesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuggestArticles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def suggest_faq_answers(
-        self,
-    ) -> Callable[
-        [participant.SuggestFaqAnswersRequest], participant.SuggestFaqAnswersResponse
-    ]:
+    def suggest_faq_answers(self) -> Callable[[participant.SuggestFaqAnswersRequest], participant.SuggestFaqAnswersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuggestFaqAnswers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def suggest_knowledge_assist(
-        self,
-    ) -> Callable[
-        [participant.SuggestKnowledgeAssistRequest],
-        participant.SuggestKnowledgeAssistResponse,
-    ]:
+    def suggest_knowledge_assist(self) -> Callable[[participant.SuggestKnowledgeAssistRequest], participant.SuggestKnowledgeAssistResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuggestKnowledgeAssist(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def suggest_smart_replies(
-        self,
-    ) -> Callable[
-        [participant.SuggestSmartRepliesRequest],
-        participant.SuggestSmartRepliesResponse,
-    ]:
+    def suggest_smart_replies(self) -> Callable[[participant.SuggestSmartRepliesRequest], participant.SuggestSmartRepliesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuggestSmartReplies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_participant(
-        self,
-    ) -> Callable[
-        [gcd_participant.UpdateParticipantRequest], gcd_participant.Participant
-    ]:
+    def update_participant(self) -> Callable[[gcd_participant.UpdateParticipantRequest], gcd_participant.Participant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateParticipant(self._session, self._host, self._interceptor)  # type: ignore
@@ -2802,22 +2225,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseParticipantsRestTransport._BaseGetLocation, ParticipantsRestStub
-    ):
+    class _GetLocation(_BaseParticipantsRestTransport._BaseGetLocation, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2855,30 +2268,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseParticipantsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseParticipantsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseParticipantsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseParticipantsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2902,12 +2301,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2919,9 +2313,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2946,22 +2338,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseParticipantsRestTransport._BaseListLocations, ParticipantsRestStub
-    ):
+    class _ListLocations(_BaseParticipantsRestTransport._BaseListLocations, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2999,26 +2381,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParticipantsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3042,12 +2414,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3059,9 +2426,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3086,22 +2451,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseParticipantsRestTransport._BaseCancelOperation, ParticipantsRestStub
-    ):
+    class _CancelOperation(_BaseParticipantsRestTransport._BaseCancelOperation, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3136,28 +2491,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseParticipantsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseParticipantsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3181,12 +2524,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3200,22 +2538,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseParticipantsRestTransport._BaseGetOperation, ParticipantsRestStub
-    ):
+    class _GetOperation(_BaseParticipantsRestTransport._BaseGetOperation, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3253,28 +2581,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParticipantsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseParticipantsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseParticipantsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3298,12 +2614,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3315,9 +2626,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3342,22 +2651,12 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseParticipantsRestTransport._BaseListOperations, ParticipantsRestStub
-    ):
+    class _ListOperations(_BaseParticipantsRestTransport._BaseListOperations, ParticipantsRestStub):
         def __hash__(self):
             return hash("ParticipantsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3395,26 +2694,16 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseParticipantsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseParticipantsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseParticipantsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseParticipantsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseParticipantsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseParticipantsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3438,12 +2727,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
 
             # Send the request
             response = ParticipantsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3455,9 +2739,7 @@ class ParticipantsRestTransport(_BaseParticipantsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -18,12 +18,8 @@ from google.cloud.bigquery_reservation import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_reservation_v1.services.reservation_service.async_client import (
-    ReservationServiceAsyncClient,
-)
-from google.cloud.bigquery_reservation_v1.services.reservation_service.client import (
-    ReservationServiceClient,
-)
+from google.cloud.bigquery_reservation_v1.services.reservation_service.async_client import ReservationServiceAsyncClient
+from google.cloud.bigquery_reservation_v1.services.reservation_service.client import ReservationServiceClient
 from google.cloud.bigquery_reservation_v1.types.reservation import (
     Assignment,
     BiReservation,

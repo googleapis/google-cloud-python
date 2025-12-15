@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -48,18 +37,8 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import pagers
-from google.cloud.websecurityscanner_v1beta.types import (
-    scan_run,
-    scan_run_error_trace,
-    scan_run_warning_trace,
-    web_security_scanner,
-)
-from google.cloud.websecurityscanner_v1beta.types import (
-    crawled_url,
-    finding,
-    finding_addon,
-    finding_type_stats,
-)
+from google.cloud.websecurityscanner_v1beta.types import scan_run, scan_run_error_trace, scan_run_warning_trace, web_security_scanner
+from google.cloud.websecurityscanner_v1beta.types import crawled_url, finding, finding_addon, finding_type_stats
 from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
 from google.cloud.websecurityscanner_v1beta.types import scan_config
 
@@ -96,35 +75,19 @@ class WebSecurityScannerAsyncClient:
     finding_path = staticmethod(WebSecurityScannerClient.finding_path)
     parse_finding_path = staticmethod(WebSecurityScannerClient.parse_finding_path)
     scan_config_path = staticmethod(WebSecurityScannerClient.scan_config_path)
-    parse_scan_config_path = staticmethod(
-        WebSecurityScannerClient.parse_scan_config_path
-    )
+    parse_scan_config_path = staticmethod(WebSecurityScannerClient.parse_scan_config_path)
     scan_run_path = staticmethod(WebSecurityScannerClient.scan_run_path)
     parse_scan_run_path = staticmethod(WebSecurityScannerClient.parse_scan_run_path)
-    common_billing_account_path = staticmethod(
-        WebSecurityScannerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        WebSecurityScannerClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(WebSecurityScannerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(WebSecurityScannerClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(WebSecurityScannerClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        WebSecurityScannerClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        WebSecurityScannerClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        WebSecurityScannerClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(WebSecurityScannerClient.parse_common_folder_path)
+    common_organization_path = staticmethod(WebSecurityScannerClient.common_organization_path)
+    parse_common_organization_path = staticmethod(WebSecurityScannerClient.parse_common_organization_path)
     common_project_path = staticmethod(WebSecurityScannerClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        WebSecurityScannerClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(WebSecurityScannerClient.parse_common_project_path)
     common_location_path = staticmethod(WebSecurityScannerClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        WebSecurityScannerClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(WebSecurityScannerClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -160,9 +123,7 @@ class WebSecurityScannerAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -229,13 +190,7 @@ class WebSecurityScannerAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                WebSecurityScannerTransport,
-                Callable[..., WebSecurityScannerTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, WebSecurityScannerTransport, Callable[..., WebSecurityScannerTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -295,20 +250,14 @@ class WebSecurityScannerAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.websecurityscanner_v1beta.WebSecurityScannerAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.websecurityscanner.v1beta.WebSecurityScanner",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -319,9 +268,7 @@ class WebSecurityScannerAsyncClient:
 
     async def create_scan_config(
         self,
-        request: Optional[
-            Union[web_security_scanner.CreateScanConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.CreateScanConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         scan_config: Optional[gcw_scan_config.ScanConfig] = None,
@@ -399,14 +346,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, scan_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -422,15 +364,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_scan_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -448,9 +386,7 @@ class WebSecurityScannerAsyncClient:
 
     async def delete_scan_config(
         self,
-        request: Optional[
-            Union[web_security_scanner.DeleteScanConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.DeleteScanConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -507,14 +443,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -528,15 +459,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_scan_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -551,9 +478,7 @@ class WebSecurityScannerAsyncClient:
 
     async def get_scan_config(
         self,
-        request: Optional[
-            Union[web_security_scanner.GetScanConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.GetScanConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -618,14 +543,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -639,15 +559,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_scan_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -665,9 +581,7 @@ class WebSecurityScannerAsyncClient:
 
     async def list_scan_configs(
         self,
-        request: Optional[
-            Union[web_security_scanner.ListScanConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.ListScanConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -734,14 +648,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -755,15 +664,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_scan_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_scan_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -792,9 +697,7 @@ class WebSecurityScannerAsyncClient:
 
     async def update_scan_config(
         self,
-        request: Optional[
-            Union[web_security_scanner.UpdateScanConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.UpdateScanConfigRequest, dict]] = None,
         *,
         scan_config: Optional[gcw_scan_config.ScanConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -874,14 +777,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [scan_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -897,17 +795,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_scan_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_scan_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("scan_config.name", request.scan_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("scan_config.name", request.scan_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -991,14 +883,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1012,15 +899,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.start_scan_run
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.start_scan_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1104,14 +987,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1125,15 +1003,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_scan_run
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_scan_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1220,14 +1094,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1241,15 +1110,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_scan_runs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_scan_runs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1344,14 +1209,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1365,15 +1225,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.stop_scan_run
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.stop_scan_run]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1391,9 +1247,7 @@ class WebSecurityScannerAsyncClient:
 
     async def list_crawled_urls(
         self,
-        request: Optional[
-            Union[web_security_scanner.ListCrawledUrlsRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.ListCrawledUrlsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1461,14 +1315,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1482,15 +1331,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_crawled_urls
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_crawled_urls]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1585,14 +1430,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1606,15 +1446,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_finding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_finding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1710,14 +1546,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, filter]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1733,15 +1564,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_findings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_findings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1770,9 +1597,7 @@ class WebSecurityScannerAsyncClient:
 
     async def list_finding_type_stats(
         self,
-        request: Optional[
-            Union[web_security_scanner.ListFindingTypeStatsRequest, dict]
-        ] = None,
+        request: Optional[Union[web_security_scanner.ListFindingTypeStatsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1835,14 +1660,9 @@ class WebSecurityScannerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1856,15 +1676,11 @@ class WebSecurityScannerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_finding_type_stats
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_finding_type_stats]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1887,9 +1703,7 @@ class WebSecurityScannerAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

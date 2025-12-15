@@ -18,37 +18,19 @@ from google.cloud.resourcemanager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.resourcemanager_v3.services.folders.async_client import (
-    FoldersAsyncClient,
-)
+from google.cloud.resourcemanager_v3.services.folders.async_client import FoldersAsyncClient
 from google.cloud.resourcemanager_v3.services.folders.client import FoldersClient
-from google.cloud.resourcemanager_v3.services.organizations.async_client import (
-    OrganizationsAsyncClient,
-)
-from google.cloud.resourcemanager_v3.services.organizations.client import (
-    OrganizationsClient,
-)
-from google.cloud.resourcemanager_v3.services.projects.async_client import (
-    ProjectsAsyncClient,
-)
+from google.cloud.resourcemanager_v3.services.organizations.async_client import OrganizationsAsyncClient
+from google.cloud.resourcemanager_v3.services.organizations.client import OrganizationsClient
+from google.cloud.resourcemanager_v3.services.projects.async_client import ProjectsAsyncClient
 from google.cloud.resourcemanager_v3.services.projects.client import ProjectsClient
-from google.cloud.resourcemanager_v3.services.tag_bindings.async_client import (
-    TagBindingsAsyncClient,
-)
-from google.cloud.resourcemanager_v3.services.tag_bindings.client import (
-    TagBindingsClient,
-)
-from google.cloud.resourcemanager_v3.services.tag_holds.async_client import (
-    TagHoldsAsyncClient,
-)
+from google.cloud.resourcemanager_v3.services.tag_bindings.async_client import TagBindingsAsyncClient
+from google.cloud.resourcemanager_v3.services.tag_bindings.client import TagBindingsClient
+from google.cloud.resourcemanager_v3.services.tag_holds.async_client import TagHoldsAsyncClient
 from google.cloud.resourcemanager_v3.services.tag_holds.client import TagHoldsClient
-from google.cloud.resourcemanager_v3.services.tag_keys.async_client import (
-    TagKeysAsyncClient,
-)
+from google.cloud.resourcemanager_v3.services.tag_keys.async_client import TagKeysAsyncClient
 from google.cloud.resourcemanager_v3.services.tag_keys.client import TagKeysClient
-from google.cloud.resourcemanager_v3.services.tag_values.async_client import (
-    TagValuesAsyncClient,
-)
+from google.cloud.resourcemanager_v3.services.tag_values.async_client import TagValuesAsyncClient
 from google.cloud.resourcemanager_v3.services.tag_values.client import TagValuesClient
 from google.cloud.resourcemanager_v3.types.folders import (
     CreateFolderMetadata,

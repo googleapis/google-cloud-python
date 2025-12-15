@@ -493,9 +493,7 @@ class WidgetMarkup(proto.Message):
             proto.STRING,
             number=1,
         )
-        parameters: MutableSequence[
-            "WidgetMarkup.FormAction.ActionParameter"
-        ] = proto.RepeatedField(
+        parameters: MutableSequence["WidgetMarkup.FormAction.ActionParameter"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="WidgetMarkup.FormAction.ActionParameter",

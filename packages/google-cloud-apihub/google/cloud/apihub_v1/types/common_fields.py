@@ -2802,12 +2802,10 @@ class AuthConfig(proto.Message):
             number=2,
             message="Secret",
         )
-        http_element_location: "AuthConfig.ApiKeyConfig.HttpElementLocation" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                enum="AuthConfig.ApiKeyConfig.HttpElementLocation",
-            )
+        http_element_location: "AuthConfig.ApiKeyConfig.HttpElementLocation" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="AuthConfig.ApiKeyConfig.HttpElementLocation",
         )
 
     google_service_account_config: "GoogleServiceAccountConfig" = proto.Field(

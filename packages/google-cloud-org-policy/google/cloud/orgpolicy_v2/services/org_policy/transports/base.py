@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.orgpolicy_v2 import gapic_version as package_version
 from google.cloud.orgpolicy_v2.types import constraint, orgpolicy
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class OrgPolicyTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -328,117 +318,63 @@ class OrgPolicyTransport(abc.ABC):
     @property
     def list_constraints(
         self,
-    ) -> Callable[
-        [orgpolicy.ListConstraintsRequest],
-        Union[
-            orgpolicy.ListConstraintsResponse,
-            Awaitable[orgpolicy.ListConstraintsResponse],
-        ],
-    ]:
+    ) -> Callable[[orgpolicy.ListConstraintsRequest], Union[orgpolicy.ListConstraintsResponse, Awaitable[orgpolicy.ListConstraintsResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_policies(
         self,
-    ) -> Callable[
-        [orgpolicy.ListPoliciesRequest],
-        Union[
-            orgpolicy.ListPoliciesResponse, Awaitable[orgpolicy.ListPoliciesResponse]
-        ],
-    ]:
+    ) -> Callable[[orgpolicy.ListPoliciesRequest], Union[orgpolicy.ListPoliciesResponse, Awaitable[orgpolicy.ListPoliciesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_policy(
-        self,
-    ) -> Callable[
-        [orgpolicy.GetPolicyRequest],
-        Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]],
-    ]:
+    def get_policy(self) -> Callable[[orgpolicy.GetPolicyRequest], Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def get_effective_policy(
-        self,
-    ) -> Callable[
-        [orgpolicy.GetEffectivePolicyRequest],
-        Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]],
-    ]:
+    def get_effective_policy(self) -> Callable[[orgpolicy.GetEffectivePolicyRequest], Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def create_policy(
-        self,
-    ) -> Callable[
-        [orgpolicy.CreatePolicyRequest],
-        Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]],
-    ]:
+    def create_policy(self) -> Callable[[orgpolicy.CreatePolicyRequest], Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def update_policy(
-        self,
-    ) -> Callable[
-        [orgpolicy.UpdatePolicyRequest],
-        Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]],
-    ]:
+    def update_policy(self) -> Callable[[orgpolicy.UpdatePolicyRequest], Union[orgpolicy.Policy, Awaitable[orgpolicy.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def delete_policy(
-        self,
-    ) -> Callable[
-        [orgpolicy.DeletePolicyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_policy(self) -> Callable[[orgpolicy.DeletePolicyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_custom_constraint(
         self,
-    ) -> Callable[
-        [orgpolicy.CreateCustomConstraintRequest],
-        Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]],
-    ]:
+    ) -> Callable[[orgpolicy.CreateCustomConstraintRequest], Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]]]:
         raise NotImplementedError()
 
     @property
     def update_custom_constraint(
         self,
-    ) -> Callable[
-        [orgpolicy.UpdateCustomConstraintRequest],
-        Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]],
-    ]:
+    ) -> Callable[[orgpolicy.UpdateCustomConstraintRequest], Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]]]:
         raise NotImplementedError()
 
     @property
     def get_custom_constraint(
         self,
-    ) -> Callable[
-        [orgpolicy.GetCustomConstraintRequest],
-        Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]],
-    ]:
+    ) -> Callable[[orgpolicy.GetCustomConstraintRequest], Union[constraint.CustomConstraint, Awaitable[constraint.CustomConstraint]]]:
         raise NotImplementedError()
 
     @property
     def list_custom_constraints(
         self,
     ) -> Callable[
-        [orgpolicy.ListCustomConstraintsRequest],
-        Union[
-            orgpolicy.ListCustomConstraintsResponse,
-            Awaitable[orgpolicy.ListCustomConstraintsResponse],
-        ],
+        [orgpolicy.ListCustomConstraintsRequest], Union[orgpolicy.ListCustomConstraintsResponse, Awaitable[orgpolicy.ListCustomConstraintsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_custom_constraint(
-        self,
-    ) -> Callable[
-        [orgpolicy.DeleteCustomConstraintRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_custom_constraint(self) -> Callable[[orgpolicy.DeleteCustomConstraintRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property

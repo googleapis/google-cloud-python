@@ -30,17 +30,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.apphub_v1 import gapic_version as package_version
-from google.cloud.apphub_v1.types import (
-    apphub_service,
-    application,
-    service,
-    service_project_attachment,
-    workload,
-)
+from google.cloud.apphub_v1.types import apphub_service, application, service, service_project_attachment, workload
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -102,23 +94,15 @@ class AppHubTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -479,10 +463,7 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.LookupServiceProjectAttachmentRequest],
-        Union[
-            apphub_service.LookupServiceProjectAttachmentResponse,
-            Awaitable[apphub_service.LookupServiceProjectAttachmentResponse],
-        ],
+        Union[apphub_service.LookupServiceProjectAttachmentResponse, Awaitable[apphub_service.LookupServiceProjectAttachmentResponse]],
     ]:
         raise NotImplementedError()
 
@@ -491,20 +472,14 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.ListServiceProjectAttachmentsRequest],
-        Union[
-            apphub_service.ListServiceProjectAttachmentsResponse,
-            Awaitable[apphub_service.ListServiceProjectAttachmentsResponse],
-        ],
+        Union[apphub_service.ListServiceProjectAttachmentsResponse, Awaitable[apphub_service.ListServiceProjectAttachmentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_service_project_attachment(
         self,
-    ) -> Callable[
-        [apphub_service.CreateServiceProjectAttachmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.CreateServiceProjectAttachmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -512,20 +487,14 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.GetServiceProjectAttachmentRequest],
-        Union[
-            service_project_attachment.ServiceProjectAttachment,
-            Awaitable[service_project_attachment.ServiceProjectAttachment],
-        ],
+        Union[service_project_attachment.ServiceProjectAttachment, Awaitable[service_project_attachment.ServiceProjectAttachment]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_service_project_attachment(
         self,
-    ) -> Callable[
-        [apphub_service.DeleteServiceProjectAttachmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.DeleteServiceProjectAttachmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -533,10 +502,7 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.DetachServiceProjectAttachmentRequest],
-        Union[
-            apphub_service.DetachServiceProjectAttachmentResponse,
-            Awaitable[apphub_service.DetachServiceProjectAttachmentResponse],
-        ],
+        Union[apphub_service.DetachServiceProjectAttachmentResponse, Awaitable[apphub_service.DetachServiceProjectAttachmentResponse]],
     ]:
         raise NotImplementedError()
 
@@ -545,20 +511,14 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.ListDiscoveredServicesRequest],
-        Union[
-            apphub_service.ListDiscoveredServicesResponse,
-            Awaitable[apphub_service.ListDiscoveredServicesResponse],
-        ],
+        Union[apphub_service.ListDiscoveredServicesResponse, Awaitable[apphub_service.ListDiscoveredServicesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_discovered_service(
         self,
-    ) -> Callable[
-        [apphub_service.GetDiscoveredServiceRequest],
-        Union[service.DiscoveredService, Awaitable[service.DiscoveredService]],
-    ]:
+    ) -> Callable[[apphub_service.GetDiscoveredServiceRequest], Union[service.DiscoveredService, Awaitable[service.DiscoveredService]]]:
         raise NotImplementedError()
 
     @property
@@ -566,59 +526,30 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.LookupDiscoveredServiceRequest],
-        Union[
-            apphub_service.LookupDiscoveredServiceResponse,
-            Awaitable[apphub_service.LookupDiscoveredServiceResponse],
-        ],
+        Union[apphub_service.LookupDiscoveredServiceResponse, Awaitable[apphub_service.LookupDiscoveredServiceResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def list_services(
         self,
-    ) -> Callable[
-        [apphub_service.ListServicesRequest],
-        Union[
-            apphub_service.ListServicesResponse,
-            Awaitable[apphub_service.ListServicesResponse],
-        ],
-    ]:
+    ) -> Callable[[apphub_service.ListServicesRequest], Union[apphub_service.ListServicesResponse, Awaitable[apphub_service.ListServicesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[
-        [apphub_service.CreateServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_service(self) -> Callable[[apphub_service.CreateServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[
-        [apphub_service.GetServiceRequest],
-        Union[service.Service, Awaitable[service.Service]],
-    ]:
+    def get_service(self) -> Callable[[apphub_service.GetServiceRequest], Union[service.Service, Awaitable[service.Service]]]:
         raise NotImplementedError()
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[
-        [apphub_service.UpdateServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_service(self) -> Callable[[apphub_service.UpdateServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[
-        [apphub_service.DeleteServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_service(self) -> Callable[[apphub_service.DeleteServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -626,20 +557,14 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.ListDiscoveredWorkloadsRequest],
-        Union[
-            apphub_service.ListDiscoveredWorkloadsResponse,
-            Awaitable[apphub_service.ListDiscoveredWorkloadsResponse],
-        ],
+        Union[apphub_service.ListDiscoveredWorkloadsResponse, Awaitable[apphub_service.ListDiscoveredWorkloadsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_discovered_workload(
         self,
-    ) -> Callable[
-        [apphub_service.GetDiscoveredWorkloadRequest],
-        Union[workload.DiscoveredWorkload, Awaitable[workload.DiscoveredWorkload]],
-    ]:
+    ) -> Callable[[apphub_service.GetDiscoveredWorkloadRequest], Union[workload.DiscoveredWorkload, Awaitable[workload.DiscoveredWorkload]]]:
         raise NotImplementedError()
 
     @property
@@ -647,10 +572,7 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [apphub_service.LookupDiscoveredWorkloadRequest],
-        Union[
-            apphub_service.LookupDiscoveredWorkloadResponse,
-            Awaitable[apphub_service.LookupDiscoveredWorkloadResponse],
-        ],
+        Union[apphub_service.LookupDiscoveredWorkloadResponse, Awaitable[apphub_service.LookupDiscoveredWorkloadResponse]],
     ]:
         raise NotImplementedError()
 
@@ -658,96 +580,60 @@ class AppHubTransport(abc.ABC):
     def list_workloads(
         self,
     ) -> Callable[
-        [apphub_service.ListWorkloadsRequest],
-        Union[
-            apphub_service.ListWorkloadsResponse,
-            Awaitable[apphub_service.ListWorkloadsResponse],
-        ],
+        [apphub_service.ListWorkloadsRequest], Union[apphub_service.ListWorkloadsResponse, Awaitable[apphub_service.ListWorkloadsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_workload(
         self,
-    ) -> Callable[
-        [apphub_service.CreateWorkloadRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.CreateWorkloadRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_workload(
-        self,
-    ) -> Callable[
-        [apphub_service.GetWorkloadRequest],
-        Union[workload.Workload, Awaitable[workload.Workload]],
-    ]:
+    def get_workload(self) -> Callable[[apphub_service.GetWorkloadRequest], Union[workload.Workload, Awaitable[workload.Workload]]]:
         raise NotImplementedError()
 
     @property
     def update_workload(
         self,
-    ) -> Callable[
-        [apphub_service.UpdateWorkloadRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.UpdateWorkloadRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_workload(
         self,
-    ) -> Callable[
-        [apphub_service.DeleteWorkloadRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.DeleteWorkloadRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_applications(
         self,
     ) -> Callable[
-        [apphub_service.ListApplicationsRequest],
-        Union[
-            apphub_service.ListApplicationsResponse,
-            Awaitable[apphub_service.ListApplicationsResponse],
-        ],
+        [apphub_service.ListApplicationsRequest], Union[apphub_service.ListApplicationsResponse, Awaitable[apphub_service.ListApplicationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_application(
         self,
-    ) -> Callable[
-        [apphub_service.CreateApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.CreateApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_application(
-        self,
-    ) -> Callable[
-        [apphub_service.GetApplicationRequest],
-        Union[application.Application, Awaitable[application.Application]],
-    ]:
+    def get_application(self) -> Callable[[apphub_service.GetApplicationRequest], Union[application.Application, Awaitable[application.Application]]]:
         raise NotImplementedError()
 
     @property
     def update_application(
         self,
-    ) -> Callable[
-        [apphub_service.UpdateApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.UpdateApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_application(
         self,
-    ) -> Callable[
-        [apphub_service.DeleteApplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[apphub_service.DeleteApplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -755,20 +641,14 @@ class AppHubTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -786,19 +666,13 @@ class AppHubTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -816,22 +690,13 @@ class AppHubTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

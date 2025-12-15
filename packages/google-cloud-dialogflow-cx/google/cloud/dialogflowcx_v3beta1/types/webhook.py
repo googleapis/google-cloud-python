@@ -337,9 +337,7 @@ class Webhook(proto.Message):
             proto.STRING,
             number=4,
         )
-        secret_versions_for_request_headers: MutableMapping[
-            str, "Webhook.GenericWebService.SecretVersionHeaderValue"
-        ] = proto.MapField(
+        secret_versions_for_request_headers: MutableMapping[str, "Webhook.GenericWebService.SecretVersionHeaderValue"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=20,
@@ -753,9 +751,7 @@ class WebhookRequest(proto.Message):
             proto.STRING,
             number=3,
         )
-        parameters: MutableMapping[
-            str, "WebhookRequest.IntentInfo.IntentParameterValue"
-        ] = proto.MapField(
+        parameters: MutableMapping[str, "WebhookRequest.IntentInfo.IntentParameterValue"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
@@ -930,19 +926,15 @@ class WebhookResponse(proto.Message):
             APPEND = 1
             REPLACE = 2
 
-        messages: MutableSequence[
-            response_message.ResponseMessage
-        ] = proto.RepeatedField(
+        messages: MutableSequence[response_message.ResponseMessage] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=response_message.ResponseMessage,
         )
-        merge_behavior: "WebhookResponse.FulfillmentResponse.MergeBehavior" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="WebhookResponse.FulfillmentResponse.MergeBehavior",
-            )
+        merge_behavior: "WebhookResponse.FulfillmentResponse.MergeBehavior" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="WebhookResponse.FulfillmentResponse.MergeBehavior",
         )
 
     fulfillment_response: FulfillmentResponse = proto.Field(
@@ -1107,9 +1099,7 @@ class PageInfo(proto.Message):
                 number=5,
             )
 
-        parameter_info: MutableSequence[
-            "PageInfo.FormInfo.ParameterInfo"
-        ] = proto.RepeatedField(
+        parameter_info: MutableSequence["PageInfo.FormInfo.ParameterInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="PageInfo.FormInfo.ParameterInfo",

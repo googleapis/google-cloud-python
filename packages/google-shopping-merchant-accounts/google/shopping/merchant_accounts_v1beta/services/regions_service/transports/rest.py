@@ -116,9 +116,7 @@ class RegionsServiceRestInterceptor:
     """
 
     def pre_create_region(
-        self,
-        request: regions.CreateRegionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: regions.CreateRegionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.CreateRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_region
 
@@ -141,9 +139,7 @@ class RegionsServiceRestInterceptor:
         return response
 
     def post_create_region_with_metadata(
-        self,
-        response: regions.Region,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: regions.Region, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_region
 
@@ -160,9 +156,7 @@ class RegionsServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_region(
-        self,
-        request: regions.DeleteRegionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: regions.DeleteRegionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.DeleteRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_region
 
@@ -172,9 +166,7 @@ class RegionsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_region(
-        self,
-        request: regions.GetRegionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: regions.GetRegionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.GetRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_region
 
@@ -197,9 +189,7 @@ class RegionsServiceRestInterceptor:
         return response
 
     def post_get_region_with_metadata(
-        self,
-        response: regions.Region,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: regions.Region, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_region
 
@@ -216,9 +206,7 @@ class RegionsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_regions(
-        self,
-        request: regions.ListRegionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: regions.ListRegionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.ListRegionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_regions
 
@@ -227,9 +215,7 @@ class RegionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_regions(
-        self, response: regions.ListRegionsResponse
-    ) -> regions.ListRegionsResponse:
+    def post_list_regions(self, response: regions.ListRegionsResponse) -> regions.ListRegionsResponse:
         """Post-rpc interceptor for list_regions
 
         DEPRECATED. Please use the `post_list_regions_with_metadata`
@@ -243,9 +229,7 @@ class RegionsServiceRestInterceptor:
         return response
 
     def post_list_regions_with_metadata(
-        self,
-        response: regions.ListRegionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: regions.ListRegionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.ListRegionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_regions
 
@@ -262,9 +246,7 @@ class RegionsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_region(
-        self,
-        request: regions.UpdateRegionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: regions.UpdateRegionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.UpdateRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_region
 
@@ -287,9 +269,7 @@ class RegionsServiceRestInterceptor:
         return response
 
     def post_update_region_with_metadata(
-        self,
-        response: regions.Region,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: regions.Region, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[regions.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_region
 
@@ -389,30 +369,18 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateRegion(
-        _BaseRegionsServiceRestTransport._BaseCreateRegion, RegionsServiceRestStub
-    ):
+    class _CreateRegion(_BaseRegionsServiceRestTransport._BaseCreateRegion, RegionsServiceRestStub):
         def __hash__(self):
             return hash("RegionsServiceRestTransport.CreateRegion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -460,30 +428,18 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseCreateRegion._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_http_options()
 
             request, metadata = self._interceptor.pre_create_region(request, metadata)
-            transcoded_request = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionsServiceRestTransport._BaseCreateRegion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -507,13 +463,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             # Send the request
             response = RegionsServiceRestTransport._CreateRegion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -529,12 +479,8 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             resp = self._interceptor.post_create_region(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_region_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_region_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = regions.Region.to_json(response)
                 except:
@@ -555,22 +501,12 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 )
             return resp
 
-    class _DeleteRegion(
-        _BaseRegionsServiceRestTransport._BaseDeleteRegion, RegionsServiceRestStub
-    ):
+    class _DeleteRegion(_BaseRegionsServiceRestTransport._BaseDeleteRegion, RegionsServiceRestStub):
         def __hash__(self):
             return hash("RegionsServiceRestTransport.DeleteRegion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -605,26 +541,16 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_region(request, metadata)
-            transcoded_request = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionsServiceRestTransport._BaseDeleteRegion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -648,12 +574,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             # Send the request
             response = RegionsServiceRestTransport._DeleteRegion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -661,22 +582,12 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetRegion(
-        _BaseRegionsServiceRestTransport._BaseGetRegion, RegionsServiceRestStub
-    ):
+    class _GetRegion(_BaseRegionsServiceRestTransport._BaseGetRegion, RegionsServiceRestStub):
         def __hash__(self):
             return hash("RegionsServiceRestTransport.GetRegion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -723,30 +634,16 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseGetRegion._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseGetRegion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_region(request, metadata)
-            transcoded_request = (
-                _BaseRegionsServiceRestTransport._BaseGetRegion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseGetRegion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionsServiceRestTransport._BaseGetRegion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionsServiceRestTransport._BaseGetRegion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -770,12 +667,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             # Send the request
             response = RegionsServiceRestTransport._GetRegion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -791,12 +683,8 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             resp = self._interceptor.post_get_region(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_region_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_region_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = regions.Region.to_json(response)
                 except:
@@ -817,22 +705,12 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 )
             return resp
 
-    class _ListRegions(
-        _BaseRegionsServiceRestTransport._BaseListRegions, RegionsServiceRestStub
-    ):
+    class _ListRegions(_BaseRegionsServiceRestTransport._BaseListRegions, RegionsServiceRestStub):
         def __hash__(self):
             return hash("RegionsServiceRestTransport.ListRegions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -871,26 +749,16 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                     Response message for the ``ListRegions`` method.
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseListRegions._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseListRegions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_regions(request, metadata)
-            transcoded_request = _BaseRegionsServiceRestTransport._BaseListRegions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseListRegions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionsServiceRestTransport._BaseListRegions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionsServiceRestTransport._BaseListRegions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -914,12 +782,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             # Send the request
             response = RegionsServiceRestTransport._ListRegions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -935,12 +798,8 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             resp = self._interceptor.post_list_regions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_regions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_regions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = regions.ListRegionsResponse.to_json(response)
                 except:
@@ -961,22 +820,12 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
                 )
             return resp
 
-    class _UpdateRegion(
-        _BaseRegionsServiceRestTransport._BaseUpdateRegion, RegionsServiceRestStub
-    ):
+    class _UpdateRegion(_BaseRegionsServiceRestTransport._BaseUpdateRegion, RegionsServiceRestStub):
         def __hash__(self):
             return hash("RegionsServiceRestTransport.UpdateRegion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1024,30 +873,18 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_http_options()
-            )
+            http_options = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_http_options()
 
             request, metadata = self._interceptor.pre_update_region(request, metadata)
-            transcoded_request = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionsServiceRestTransport._BaseUpdateRegion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1071,13 +908,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             # Send the request
             response = RegionsServiceRestTransport._UpdateRegion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1093,12 +924,8 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
 
             resp = self._interceptor.post_update_region(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_region_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_region_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = regions.Region.to_json(response)
                 except:
@@ -1138,9 +965,7 @@ class RegionsServiceRestTransport(_BaseRegionsServiceRestTransport):
         return self._GetRegion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_regions(
-        self,
-    ) -> Callable[[regions.ListRegionsRequest], regions.ListRegionsResponse]:
+    def list_regions(self) -> Callable[[regions.ListRegionsRequest], regions.ListRegionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRegions(self._session, self._host, self._interceptor)  # type: ignore

@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -221,18 +212,14 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -266,9 +253,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -335,19 +320,13 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [managed_kafka.ListClustersRequest], managed_kafka.ListClustersResponse
-    ]:
+    def list_clusters(self) -> Callable[[managed_kafka.ListClustersRequest], managed_kafka.ListClustersResponse]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists the clusters in a given project and location.
@@ -371,9 +350,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["list_clusters"]
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[managed_kafka.GetClusterRequest], resources.Cluster]:
+    def get_cluster(self) -> Callable[[managed_kafka.GetClusterRequest], resources.Cluster]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Returns the properties of a single cluster.
@@ -397,9 +374,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[managed_kafka.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[managed_kafka.CreateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a new cluster in a given project and
@@ -424,9 +399,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["create_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[managed_kafka.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[managed_kafka.UpdateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Updates the properties of a single cluster.
@@ -450,9 +423,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[managed_kafka.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[managed_kafka.DeleteClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes a single cluster.
@@ -476,9 +447,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def list_topics(
-        self,
-    ) -> Callable[[managed_kafka.ListTopicsRequest], managed_kafka.ListTopicsResponse]:
+    def list_topics(self) -> Callable[[managed_kafka.ListTopicsRequest], managed_kafka.ListTopicsResponse]:
         r"""Return a callable for the list topics method over gRPC.
 
         Lists the topics in a given cluster.
@@ -526,9 +495,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["get_topic"]
 
     @property
-    def create_topic(
-        self,
-    ) -> Callable[[managed_kafka.CreateTopicRequest], resources.Topic]:
+    def create_topic(self) -> Callable[[managed_kafka.CreateTopicRequest], resources.Topic]:
         r"""Return a callable for the create topic method over gRPC.
 
         Creates a new topic in a given project and location.
@@ -552,9 +519,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["create_topic"]
 
     @property
-    def update_topic(
-        self,
-    ) -> Callable[[managed_kafka.UpdateTopicRequest], resources.Topic]:
+    def update_topic(self) -> Callable[[managed_kafka.UpdateTopicRequest], resources.Topic]:
         r"""Return a callable for the update topic method over gRPC.
 
         Updates the properties of a single topic.
@@ -578,9 +543,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["update_topic"]
 
     @property
-    def delete_topic(
-        self,
-    ) -> Callable[[managed_kafka.DeleteTopicRequest], empty_pb2.Empty]:
+    def delete_topic(self) -> Callable[[managed_kafka.DeleteTopicRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete topic method over gRPC.
 
         Deletes a single topic.
@@ -604,12 +567,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["delete_topic"]
 
     @property
-    def list_consumer_groups(
-        self,
-    ) -> Callable[
-        [managed_kafka.ListConsumerGroupsRequest],
-        managed_kafka.ListConsumerGroupsResponse,
-    ]:
+    def list_consumer_groups(self) -> Callable[[managed_kafka.ListConsumerGroupsRequest], managed_kafka.ListConsumerGroupsResponse]:
         r"""Return a callable for the list consumer groups method over gRPC.
 
         Lists the consumer groups in a given cluster.
@@ -633,9 +591,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["list_consumer_groups"]
 
     @property
-    def get_consumer_group(
-        self,
-    ) -> Callable[[managed_kafka.GetConsumerGroupRequest], resources.ConsumerGroup]:
+    def get_consumer_group(self) -> Callable[[managed_kafka.GetConsumerGroupRequest], resources.ConsumerGroup]:
         r"""Return a callable for the get consumer group method over gRPC.
 
         Returns the properties of a single consumer group.
@@ -659,9 +615,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["get_consumer_group"]
 
     @property
-    def update_consumer_group(
-        self,
-    ) -> Callable[[managed_kafka.UpdateConsumerGroupRequest], resources.ConsumerGroup]:
+    def update_consumer_group(self) -> Callable[[managed_kafka.UpdateConsumerGroupRequest], resources.ConsumerGroup]:
         r"""Return a callable for the update consumer group method over gRPC.
 
         Updates the properties of a single consumer group.
@@ -685,9 +639,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["update_consumer_group"]
 
     @property
-    def delete_consumer_group(
-        self,
-    ) -> Callable[[managed_kafka.DeleteConsumerGroupRequest], empty_pb2.Empty]:
+    def delete_consumer_group(self) -> Callable[[managed_kafka.DeleteConsumerGroupRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete consumer group method over gRPC.
 
         Deletes a single consumer group.
@@ -711,9 +663,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["delete_consumer_group"]
 
     @property
-    def list_acls(
-        self,
-    ) -> Callable[[managed_kafka.ListAclsRequest], managed_kafka.ListAclsResponse]:
+    def list_acls(self) -> Callable[[managed_kafka.ListAclsRequest], managed_kafka.ListAclsResponse]:
         r"""Return a callable for the list acls method over gRPC.
 
         Lists the acls in a given cluster.
@@ -834,11 +784,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["delete_acl"]
 
     @property
-    def add_acl_entry(
-        self,
-    ) -> Callable[
-        [managed_kafka.AddAclEntryRequest], managed_kafka.AddAclEntryResponse
-    ]:
+    def add_acl_entry(self) -> Callable[[managed_kafka.AddAclEntryRequest], managed_kafka.AddAclEntryResponse]:
         r"""Return a callable for the add acl entry method over gRPC.
 
         Incremental update: Adds an acl entry to an acl.
@@ -863,11 +809,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
         return self._stubs["add_acl_entry"]
 
     @property
-    def remove_acl_entry(
-        self,
-    ) -> Callable[
-        [managed_kafka.RemoveAclEntryRequest], managed_kafka.RemoveAclEntryResponse
-    ]:
+    def remove_acl_entry(self) -> Callable[[managed_kafka.RemoveAclEntryRequest], managed_kafka.RemoveAclEntryResponse]:
         r"""Return a callable for the remove acl entry method over gRPC.
 
         Incremental update: Removes an acl entry from an acl.
@@ -949,9 +891,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -968,9 +908,7 @@ class ManagedKafkaGrpcTransport(ManagedKafkaTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -18,12 +18,8 @@ from google.cloud.servicemanagement import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.servicemanagement_v1.services.service_manager.async_client import (
-    ServiceManagerAsyncClient,
-)
-from google.cloud.servicemanagement_v1.services.service_manager.client import (
-    ServiceManagerClient,
-)
+from google.cloud.servicemanagement_v1.services.service_manager.async_client import ServiceManagerAsyncClient
+from google.cloud.servicemanagement_v1.services.service_manager.client import ServiceManagerClient
 from google.cloud.servicemanagement_v1.types.resources import (
     ChangeReport,
     ConfigFile,

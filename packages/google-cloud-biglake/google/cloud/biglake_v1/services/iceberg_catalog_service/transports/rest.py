@@ -119,13 +119,8 @@ class IcebergCatalogServiceRestInterceptor:
     """
 
     def pre_create_iceberg_catalog(
-        self,
-        request: iceberg_rest_catalog.CreateIcebergCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.CreateIcebergCatalogRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iceberg_rest_catalog.CreateIcebergCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.CreateIcebergCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_iceberg_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class IcebergCatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_iceberg_catalog(
-        self, response: iceberg_rest_catalog.IcebergCatalog
-    ) -> iceberg_rest_catalog.IcebergCatalog:
+    def post_create_iceberg_catalog(self, response: iceberg_rest_catalog.IcebergCatalog) -> iceberg_rest_catalog.IcebergCatalog:
         """Post-rpc interceptor for create_iceberg_catalog
 
         DEPRECATED. Please use the `post_create_iceberg_catalog_with_metadata`
@@ -149,12 +142,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response
 
     def post_create_iceberg_catalog_with_metadata(
-        self,
-        response: iceberg_rest_catalog.IcebergCatalog,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.IcebergCatalog, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: iceberg_rest_catalog.IcebergCatalog, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.IcebergCatalog, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_iceberg_catalog
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,13 +159,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_failover_iceberg_catalog(
-        self,
-        request: iceberg_rest_catalog.FailoverIcebergCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.FailoverIcebergCatalogRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iceberg_rest_catalog.FailoverIcebergCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.FailoverIcebergCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for failover_iceberg_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -200,13 +184,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response
 
     def post_failover_iceberg_catalog_with_metadata(
-        self,
-        response: iceberg_rest_catalog.FailoverIcebergCatalogResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.FailoverIcebergCatalogResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iceberg_rest_catalog.FailoverIcebergCatalogResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.FailoverIcebergCatalogResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for failover_iceberg_catalog
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -222,13 +201,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iceberg_catalog(
-        self,
-        request: iceberg_rest_catalog.GetIcebergCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.GetIcebergCatalogRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iceberg_rest_catalog.GetIcebergCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.GetIcebergCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iceberg_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -236,9 +210,7 @@ class IcebergCatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_iceberg_catalog(
-        self, response: iceberg_rest_catalog.IcebergCatalog
-    ) -> iceberg_rest_catalog.IcebergCatalog:
+    def post_get_iceberg_catalog(self, response: iceberg_rest_catalog.IcebergCatalog) -> iceberg_rest_catalog.IcebergCatalog:
         """Post-rpc interceptor for get_iceberg_catalog
 
         DEPRECATED. Please use the `post_get_iceberg_catalog_with_metadata`
@@ -252,12 +224,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response
 
     def post_get_iceberg_catalog_with_metadata(
-        self,
-        response: iceberg_rest_catalog.IcebergCatalog,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.IcebergCatalog, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: iceberg_rest_catalog.IcebergCatalog, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.IcebergCatalog, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iceberg_catalog
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -273,13 +241,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_list_iceberg_catalogs(
-        self,
-        request: iceberg_rest_catalog.ListIcebergCatalogsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.ListIcebergCatalogsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iceberg_rest_catalog.ListIcebergCatalogsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.ListIcebergCatalogsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_iceberg_catalogs
 
         Override in a subclass to manipulate the request or metadata
@@ -303,13 +266,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response
 
     def post_list_iceberg_catalogs_with_metadata(
-        self,
-        response: iceberg_rest_catalog.ListIcebergCatalogsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.ListIcebergCatalogsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iceberg_rest_catalog.ListIcebergCatalogsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.ListIcebergCatalogsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_iceberg_catalogs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -325,13 +283,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_update_iceberg_catalog(
-        self,
-        request: iceberg_rest_catalog.UpdateIcebergCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.UpdateIcebergCatalogRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iceberg_rest_catalog.UpdateIcebergCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.UpdateIcebergCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_iceberg_catalog
 
         Override in a subclass to manipulate the request or metadata
@@ -339,9 +292,7 @@ class IcebergCatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_iceberg_catalog(
-        self, response: iceberg_rest_catalog.IcebergCatalog
-    ) -> iceberg_rest_catalog.IcebergCatalog:
+    def post_update_iceberg_catalog(self, response: iceberg_rest_catalog.IcebergCatalog) -> iceberg_rest_catalog.IcebergCatalog:
         """Post-rpc interceptor for update_iceberg_catalog
 
         DEPRECATED. Please use the `post_update_iceberg_catalog_with_metadata`
@@ -355,12 +306,8 @@ class IcebergCatalogServiceRestInterceptor:
         return response
 
     def post_update_iceberg_catalog_with_metadata(
-        self,
-        response: iceberg_rest_catalog.IcebergCatalog,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iceberg_rest_catalog.IcebergCatalog, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: iceberg_rest_catalog.IcebergCatalog, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iceberg_rest_catalog.IcebergCatalog, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_iceberg_catalog
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -482,31 +429,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IcebergCatalogServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateIcebergCatalog(
-        _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog,
-        IcebergCatalogServiceRestStub,
-    ):
+    class _CreateIcebergCatalog(_BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog, IcebergCatalogServiceRestStub):
         def __hash__(self):
             return hash("IcebergCatalogServiceRestTransport.CreateIcebergCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -547,32 +481,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                     The Iceberg REST Catalog information.
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_iceberg_catalog(
-                request, metadata
-            )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_iceberg_catalog(request, metadata)
+            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_transcoded_request(http_options, request)
 
-            body = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIcebergCatalogServiceRestTransport._BaseCreateIcebergCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -595,16 +515,8 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                IcebergCatalogServiceRestTransport._CreateIcebergCatalog._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IcebergCatalogServiceRestTransport._CreateIcebergCatalog._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -620,16 +532,10 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             resp = self._interceptor.post_create_iceberg_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_iceberg_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_iceberg_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = iceberg_rest_catalog.IcebergCatalog.to_json(
-                        response
-                    )
+                    response_payload = iceberg_rest_catalog.IcebergCatalog.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -648,23 +554,12 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
             return resp
 
-    class _FailoverIcebergCatalog(
-        _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog,
-        IcebergCatalogServiceRestStub,
-    ):
+    class _FailoverIcebergCatalog(_BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog, IcebergCatalogServiceRestStub):
         def __hash__(self):
             return hash("IcebergCatalogServiceRestTransport.FailoverIcebergCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -707,32 +602,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_http_options()
 
-            request, metadata = self._interceptor.pre_failover_iceberg_catalog(
-                request, metadata
-            )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_failover_iceberg_catalog(request, metadata)
+            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_transcoded_request(http_options, request)
 
-            body = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIcebergCatalogServiceRestTransport._BaseFailoverIcebergCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -756,13 +637,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             # Send the request
             response = IcebergCatalogServiceRestTransport._FailoverIcebergCatalog._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -778,18 +653,10 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             resp = self._interceptor.post_failover_iceberg_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_failover_iceberg_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_failover_iceberg_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        iceberg_rest_catalog.FailoverIcebergCatalogResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = iceberg_rest_catalog.FailoverIcebergCatalogResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -808,23 +675,12 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
             return resp
 
-    class _GetIcebergCatalog(
-        _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog,
-        IcebergCatalogServiceRestStub,
-    ):
+    class _GetIcebergCatalog(_BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog, IcebergCatalogServiceRestStub):
         def __hash__(self):
             return hash("IcebergCatalogServiceRestTransport.GetIcebergCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -863,28 +719,16 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                     The Iceberg REST Catalog information.
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_iceberg_catalog(
-                request, metadata
-            )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_iceberg_catalog(request, metadata)
+            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIcebergCatalogServiceRestTransport._BaseGetIcebergCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -907,15 +751,8 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                IcebergCatalogServiceRestTransport._GetIcebergCatalog._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = IcebergCatalogServiceRestTransport._GetIcebergCatalog._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -931,16 +768,10 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             resp = self._interceptor.post_get_iceberg_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iceberg_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iceberg_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = iceberg_rest_catalog.IcebergCatalog.to_json(
-                        response
-                    )
+                    response_payload = iceberg_rest_catalog.IcebergCatalog.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -959,23 +790,12 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
             return resp
 
-    class _ListIcebergCatalogs(
-        _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs,
-        IcebergCatalogServiceRestStub,
-    ):
+    class _ListIcebergCatalogs(_BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs, IcebergCatalogServiceRestStub):
         def __hash__(self):
             return hash("IcebergCatalogServiceRestTransport.ListIcebergCatalogs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1016,28 +836,16 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_iceberg_catalogs(
-                request, metadata
-            )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_iceberg_catalogs(request, metadata)
+            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIcebergCatalogServiceRestTransport._BaseListIcebergCatalogs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1060,15 +868,8 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                IcebergCatalogServiceRestTransport._ListIcebergCatalogs._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = IcebergCatalogServiceRestTransport._ListIcebergCatalogs._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1084,18 +885,10 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             resp = self._interceptor.post_list_iceberg_catalogs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_iceberg_catalogs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_iceberg_catalogs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        iceberg_rest_catalog.ListIcebergCatalogsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = iceberg_rest_catalog.ListIcebergCatalogsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1114,23 +907,12 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
             return resp
 
-    class _UpdateIcebergCatalog(
-        _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog,
-        IcebergCatalogServiceRestStub,
-    ):
+    class _UpdateIcebergCatalog(_BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog, IcebergCatalogServiceRestStub):
         def __hash__(self):
             return hash("IcebergCatalogServiceRestTransport.UpdateIcebergCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1171,32 +953,18 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                     The Iceberg REST Catalog information.
             """
 
-            http_options = (
-                _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_http_options()
-            )
+            http_options = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_iceberg_catalog(
-                request, metadata
-            )
-            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_iceberg_catalog(request, metadata)
+            transcoded_request = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_transcoded_request(http_options, request)
 
-            body = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIcebergCatalogServiceRestTransport._BaseUpdateIcebergCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1219,16 +987,8 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                IcebergCatalogServiceRestTransport._UpdateIcebergCatalog._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IcebergCatalogServiceRestTransport._UpdateIcebergCatalog._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1244,16 +1004,10 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
 
             resp = self._interceptor.post_update_iceberg_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_iceberg_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_iceberg_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = iceberg_rest_catalog.IcebergCatalog.to_json(
-                        response
-                    )
+                    response_payload = iceberg_rest_catalog.IcebergCatalog.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1273,12 +1027,7 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
             return resp
 
     @property
-    def create_iceberg_catalog(
-        self,
-    ) -> Callable[
-        [iceberg_rest_catalog.CreateIcebergCatalogRequest],
-        iceberg_rest_catalog.IcebergCatalog,
-    ]:
+    def create_iceberg_catalog(self) -> Callable[[iceberg_rest_catalog.CreateIcebergCatalogRequest], iceberg_rest_catalog.IcebergCatalog]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIcebergCatalog(self._session, self._host, self._interceptor)  # type: ignore
@@ -1286,43 +1035,25 @@ class IcebergCatalogServiceRestTransport(_BaseIcebergCatalogServiceRestTransport
     @property
     def failover_iceberg_catalog(
         self,
-    ) -> Callable[
-        [iceberg_rest_catalog.FailoverIcebergCatalogRequest],
-        iceberg_rest_catalog.FailoverIcebergCatalogResponse,
-    ]:
+    ) -> Callable[[iceberg_rest_catalog.FailoverIcebergCatalogRequest], iceberg_rest_catalog.FailoverIcebergCatalogResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FailoverIcebergCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iceberg_catalog(
-        self,
-    ) -> Callable[
-        [iceberg_rest_catalog.GetIcebergCatalogRequest],
-        iceberg_rest_catalog.IcebergCatalog,
-    ]:
+    def get_iceberg_catalog(self) -> Callable[[iceberg_rest_catalog.GetIcebergCatalogRequest], iceberg_rest_catalog.IcebergCatalog]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIcebergCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_iceberg_catalogs(
-        self,
-    ) -> Callable[
-        [iceberg_rest_catalog.ListIcebergCatalogsRequest],
-        iceberg_rest_catalog.ListIcebergCatalogsResponse,
-    ]:
+    def list_iceberg_catalogs(self) -> Callable[[iceberg_rest_catalog.ListIcebergCatalogsRequest], iceberg_rest_catalog.ListIcebergCatalogsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIcebergCatalogs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_iceberg_catalog(
-        self,
-    ) -> Callable[
-        [iceberg_rest_catalog.UpdateIcebergCatalogRequest],
-        iceberg_rest_catalog.IcebergCatalog,
-    ]:
+    def update_iceberg_catalog(self) -> Callable[[iceberg_rest_catalog.UpdateIcebergCatalogRequest], iceberg_rest_catalog.IcebergCatalog]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIcebergCatalog(self._session, self._host, self._interceptor)  # type: ignore

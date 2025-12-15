@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.dataplex_v1 import gapic_version as package_version
 from google.cloud.dataplex_v1.types import catalog
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class CatalogServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -440,268 +430,131 @@ class CatalogServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.CreateEntryTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_entry_type(self) -> Callable[[catalog.CreateEntryTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.UpdateEntryTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_entry_type(self) -> Callable[[catalog.UpdateEntryTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.DeleteEntryTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_entry_type(self) -> Callable[[catalog.DeleteEntryTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_entry_types(
         self,
-    ) -> Callable[
-        [catalog.ListEntryTypesRequest],
-        Union[
-            catalog.ListEntryTypesResponse, Awaitable[catalog.ListEntryTypesResponse]
-        ],
-    ]:
+    ) -> Callable[[catalog.ListEntryTypesRequest], Union[catalog.ListEntryTypesResponse, Awaitable[catalog.ListEntryTypesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.GetEntryTypeRequest],
-        Union[catalog.EntryType, Awaitable[catalog.EntryType]],
-    ]:
+    def get_entry_type(self) -> Callable[[catalog.GetEntryTypeRequest], Union[catalog.EntryType, Awaitable[catalog.EntryType]]]:
         raise NotImplementedError()
 
     @property
-    def create_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.CreateAspectTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_aspect_type(self) -> Callable[[catalog.CreateAspectTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.UpdateAspectTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_aspect_type(self) -> Callable[[catalog.UpdateAspectTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.DeleteAspectTypeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_aspect_type(self) -> Callable[[catalog.DeleteAspectTypeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_aspect_types(
         self,
-    ) -> Callable[
-        [catalog.ListAspectTypesRequest],
-        Union[
-            catalog.ListAspectTypesResponse, Awaitable[catalog.ListAspectTypesResponse]
-        ],
-    ]:
+    ) -> Callable[[catalog.ListAspectTypesRequest], Union[catalog.ListAspectTypesResponse, Awaitable[catalog.ListAspectTypesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.GetAspectTypeRequest],
-        Union[catalog.AspectType, Awaitable[catalog.AspectType]],
-    ]:
+    def get_aspect_type(self) -> Callable[[catalog.GetAspectTypeRequest], Union[catalog.AspectType, Awaitable[catalog.AspectType]]]:
         raise NotImplementedError()
 
     @property
-    def create_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.CreateEntryGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_entry_group(self) -> Callable[[catalog.CreateEntryGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.UpdateEntryGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_entry_group(self) -> Callable[[catalog.UpdateEntryGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.DeleteEntryGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_entry_group(self) -> Callable[[catalog.DeleteEntryGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_entry_groups(
         self,
-    ) -> Callable[
-        [catalog.ListEntryGroupsRequest],
-        Union[
-            catalog.ListEntryGroupsResponse, Awaitable[catalog.ListEntryGroupsResponse]
-        ],
-    ]:
+    ) -> Callable[[catalog.ListEntryGroupsRequest], Union[catalog.ListEntryGroupsResponse, Awaitable[catalog.ListEntryGroupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.GetEntryGroupRequest],
-        Union[catalog.EntryGroup, Awaitable[catalog.EntryGroup]],
-    ]:
+    def get_entry_group(self) -> Callable[[catalog.GetEntryGroupRequest], Union[catalog.EntryGroup, Awaitable[catalog.EntryGroup]]]:
         raise NotImplementedError()
 
     @property
-    def create_entry(
-        self,
-    ) -> Callable[
-        [catalog.CreateEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]
-    ]:
+    def create_entry(self) -> Callable[[catalog.CreateEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]]:
         raise NotImplementedError()
 
     @property
-    def update_entry(
-        self,
-    ) -> Callable[
-        [catalog.UpdateEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]
-    ]:
+    def update_entry(self) -> Callable[[catalog.UpdateEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]]:
         raise NotImplementedError()
 
     @property
-    def delete_entry(
-        self,
-    ) -> Callable[
-        [catalog.DeleteEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]
-    ]:
+    def delete_entry(self) -> Callable[[catalog.DeleteEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]]:
         raise NotImplementedError()
 
     @property
-    def list_entries(
-        self,
-    ) -> Callable[
-        [catalog.ListEntriesRequest],
-        Union[catalog.ListEntriesResponse, Awaitable[catalog.ListEntriesResponse]],
-    ]:
+    def list_entries(self) -> Callable[[catalog.ListEntriesRequest], Union[catalog.ListEntriesResponse, Awaitable[catalog.ListEntriesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_entry(
-        self,
-    ) -> Callable[
-        [catalog.GetEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]
-    ]:
+    def get_entry(self) -> Callable[[catalog.GetEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]]:
         raise NotImplementedError()
 
     @property
-    def lookup_entry(
-        self,
-    ) -> Callable[
-        [catalog.LookupEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]
-    ]:
+    def lookup_entry(self) -> Callable[[catalog.LookupEntryRequest], Union[catalog.Entry, Awaitable[catalog.Entry]]]:
         raise NotImplementedError()
 
     @property
     def search_entries(
         self,
-    ) -> Callable[
-        [catalog.SearchEntriesRequest],
-        Union[catalog.SearchEntriesResponse, Awaitable[catalog.SearchEntriesResponse]],
-    ]:
+    ) -> Callable[[catalog.SearchEntriesRequest], Union[catalog.SearchEntriesResponse, Awaitable[catalog.SearchEntriesResponse]]]:
         raise NotImplementedError()
 
     @property
     def create_metadata_job(
         self,
-    ) -> Callable[
-        [catalog.CreateMetadataJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[catalog.CreateMetadataJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_metadata_job(
-        self,
-    ) -> Callable[
-        [catalog.GetMetadataJobRequest],
-        Union[catalog.MetadataJob, Awaitable[catalog.MetadataJob]],
-    ]:
+    def get_metadata_job(self) -> Callable[[catalog.GetMetadataJobRequest], Union[catalog.MetadataJob, Awaitable[catalog.MetadataJob]]]:
         raise NotImplementedError()
 
     @property
     def list_metadata_jobs(
         self,
-    ) -> Callable[
-        [catalog.ListMetadataJobsRequest],
-        Union[
-            catalog.ListMetadataJobsResponse,
-            Awaitable[catalog.ListMetadataJobsResponse],
-        ],
-    ]:
+    ) -> Callable[[catalog.ListMetadataJobsRequest], Union[catalog.ListMetadataJobsResponse, Awaitable[catalog.ListMetadataJobsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_metadata_job(
-        self,
-    ) -> Callable[
-        [catalog.CancelMetadataJobRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def cancel_metadata_job(self) -> Callable[[catalog.CancelMetadataJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_entry_link(
-        self,
-    ) -> Callable[
-        [catalog.CreateEntryLinkRequest],
-        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
-    ]:
+    def create_entry_link(self) -> Callable[[catalog.CreateEntryLinkRequest], Union[catalog.EntryLink, Awaitable[catalog.EntryLink]]]:
         raise NotImplementedError()
 
     @property
-    def delete_entry_link(
-        self,
-    ) -> Callable[
-        [catalog.DeleteEntryLinkRequest],
-        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
-    ]:
+    def delete_entry_link(self) -> Callable[[catalog.DeleteEntryLinkRequest], Union[catalog.EntryLink, Awaitable[catalog.EntryLink]]]:
         raise NotImplementedError()
 
     @property
-    def get_entry_link(
-        self,
-    ) -> Callable[
-        [catalog.GetEntryLinkRequest],
-        Union[catalog.EntryLink, Awaitable[catalog.EntryLink]],
-    ]:
+    def get_entry_link(self) -> Callable[[catalog.GetEntryLinkRequest], Union[catalog.EntryLink, Awaitable[catalog.EntryLink]]]:
         raise NotImplementedError()
 
     @property
@@ -709,20 +562,14 @@ class CatalogServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -740,22 +587,13 @@ class CatalogServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

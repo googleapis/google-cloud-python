@@ -74,17 +74,7 @@ from .logging_config import LoggingConfig
 from .message_bus import MessageBus
 from .network_config import NetworkConfig
 from .pipeline import Pipeline
-from .trigger import (
-    GKE,
-    CloudRun,
-    Destination,
-    EventFilter,
-    HttpEndpoint,
-    Pubsub,
-    StateCondition,
-    Transport,
-    Trigger,
-)
+from .trigger import GKE, CloudRun, Destination, EventFilter, HttpEndpoint, Pubsub, StateCondition, Transport, Trigger
 
 __all__ = (
     "Channel",

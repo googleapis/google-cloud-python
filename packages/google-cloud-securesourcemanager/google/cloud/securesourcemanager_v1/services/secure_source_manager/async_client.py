@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -88,15 +77,11 @@ class SecureSourceManagerAsyncClient:
     _DEFAULT_UNIVERSE = SecureSourceManagerClient._DEFAULT_UNIVERSE
 
     branch_rule_path = staticmethod(SecureSourceManagerClient.branch_rule_path)
-    parse_branch_rule_path = staticmethod(
-        SecureSourceManagerClient.parse_branch_rule_path
-    )
+    parse_branch_rule_path = staticmethod(SecureSourceManagerClient.parse_branch_rule_path)
     ca_pool_path = staticmethod(SecureSourceManagerClient.ca_pool_path)
     parse_ca_pool_path = staticmethod(SecureSourceManagerClient.parse_ca_pool_path)
     crypto_key_path = staticmethod(SecureSourceManagerClient.crypto_key_path)
-    parse_crypto_key_path = staticmethod(
-        SecureSourceManagerClient.parse_crypto_key_path
-    )
+    parse_crypto_key_path = staticmethod(SecureSourceManagerClient.parse_crypto_key_path)
     hook_path = staticmethod(SecureSourceManagerClient.hook_path)
     parse_hook_path = staticmethod(SecureSourceManagerClient.parse_hook_path)
     instance_path = staticmethod(SecureSourceManagerClient.instance_path)
@@ -104,53 +89,25 @@ class SecureSourceManagerAsyncClient:
     issue_path = staticmethod(SecureSourceManagerClient.issue_path)
     parse_issue_path = staticmethod(SecureSourceManagerClient.parse_issue_path)
     issue_comment_path = staticmethod(SecureSourceManagerClient.issue_comment_path)
-    parse_issue_comment_path = staticmethod(
-        SecureSourceManagerClient.parse_issue_comment_path
-    )
+    parse_issue_comment_path = staticmethod(SecureSourceManagerClient.parse_issue_comment_path)
     pull_request_path = staticmethod(SecureSourceManagerClient.pull_request_path)
-    parse_pull_request_path = staticmethod(
-        SecureSourceManagerClient.parse_pull_request_path
-    )
-    pull_request_comment_path = staticmethod(
-        SecureSourceManagerClient.pull_request_comment_path
-    )
-    parse_pull_request_comment_path = staticmethod(
-        SecureSourceManagerClient.parse_pull_request_comment_path
-    )
+    parse_pull_request_path = staticmethod(SecureSourceManagerClient.parse_pull_request_path)
+    pull_request_comment_path = staticmethod(SecureSourceManagerClient.pull_request_comment_path)
+    parse_pull_request_comment_path = staticmethod(SecureSourceManagerClient.parse_pull_request_comment_path)
     repository_path = staticmethod(SecureSourceManagerClient.repository_path)
-    parse_repository_path = staticmethod(
-        SecureSourceManagerClient.parse_repository_path
-    )
-    service_attachment_path = staticmethod(
-        SecureSourceManagerClient.service_attachment_path
-    )
-    parse_service_attachment_path = staticmethod(
-        SecureSourceManagerClient.parse_service_attachment_path
-    )
-    common_billing_account_path = staticmethod(
-        SecureSourceManagerClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        SecureSourceManagerClient.parse_common_billing_account_path
-    )
+    parse_repository_path = staticmethod(SecureSourceManagerClient.parse_repository_path)
+    service_attachment_path = staticmethod(SecureSourceManagerClient.service_attachment_path)
+    parse_service_attachment_path = staticmethod(SecureSourceManagerClient.parse_service_attachment_path)
+    common_billing_account_path = staticmethod(SecureSourceManagerClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(SecureSourceManagerClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SecureSourceManagerClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        SecureSourceManagerClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        SecureSourceManagerClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        SecureSourceManagerClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(SecureSourceManagerClient.parse_common_folder_path)
+    common_organization_path = staticmethod(SecureSourceManagerClient.common_organization_path)
+    parse_common_organization_path = staticmethod(SecureSourceManagerClient.parse_common_organization_path)
     common_project_path = staticmethod(SecureSourceManagerClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        SecureSourceManagerClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(SecureSourceManagerClient.parse_common_project_path)
     common_location_path = staticmethod(SecureSourceManagerClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        SecureSourceManagerClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(SecureSourceManagerClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -186,9 +143,7 @@ class SecureSourceManagerAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -255,13 +210,7 @@ class SecureSourceManagerAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                SecureSourceManagerTransport,
-                Callable[..., SecureSourceManagerTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, SecureSourceManagerTransport, Callable[..., SecureSourceManagerTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -321,20 +270,14 @@ class SecureSourceManagerAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.securesourcemanager_v1.SecureSourceManagerAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.securesourcemanager.v1.SecureSourceManager",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -345,9 +288,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_instances(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListInstancesRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListInstancesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -413,14 +354,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -434,15 +370,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_instances
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_instances]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -533,14 +465,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -554,15 +481,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -580,9 +503,7 @@ class SecureSourceManagerAsyncClient:
 
     async def create_instance(
         self,
-        request: Optional[
-            Union[secure_source_manager.CreateInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.CreateInstanceRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         instance: Optional[secure_source_manager.Instance] = None,
@@ -668,14 +589,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, instance, instance_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -693,15 +609,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -727,9 +639,7 @@ class SecureSourceManagerAsyncClient:
 
     async def delete_instance(
         self,
-        request: Optional[
-            Union[secure_source_manager.DeleteInstanceRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.DeleteInstanceRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -805,14 +715,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -826,15 +731,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_instance
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_instance]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -860,9 +761,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_repositories(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListRepositoriesRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListRepositoriesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -932,14 +831,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -953,15 +847,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_repositories
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_repositories]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -990,9 +880,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_repository(
         self,
-        request: Optional[
-            Union[secure_source_manager.GetRepositoryRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.GetRepositoryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1057,14 +945,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1078,15 +961,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_repository
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_repository]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1104,9 +983,7 @@ class SecureSourceManagerAsyncClient:
 
     async def create_repository(
         self,
-        request: Optional[
-            Union[secure_source_manager.CreateRepositoryRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.CreateRepositoryRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         repository: Optional[secure_source_manager.Repository] = None,
@@ -1199,14 +1076,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, repository, repository_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1224,15 +1096,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_repository
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_repository]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1258,9 +1126,7 @@ class SecureSourceManagerAsyncClient:
 
     async def update_repository(
         self,
-        request: Optional[
-            Union[secure_source_manager.UpdateRepositoryRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.UpdateRepositoryRequest, dict]] = None,
         *,
         repository: Optional[secure_source_manager.Repository] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1342,14 +1208,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [repository, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1365,17 +1226,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_repository
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_repository]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("repository.name", request.repository.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("repository.name", request.repository.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1401,9 +1256,7 @@ class SecureSourceManagerAsyncClient:
 
     async def delete_repository(
         self,
-        request: Optional[
-            Union[secure_source_manager.DeleteRepositoryRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.DeleteRepositoryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1482,14 +1335,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1503,15 +1351,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_repository
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_repository]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1605,14 +1449,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1626,15 +1465,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_hooks
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_hooks]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1727,14 +1562,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1752,9 +1582,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1868,14 +1696,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, hook, hook_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1893,15 +1716,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_hook
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_hook]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2011,14 +1830,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [hook, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2034,17 +1848,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_hook
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_hook]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("hook.name", request.hook.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("hook.name", request.hook.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2148,14 +1956,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2169,15 +1972,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_hook
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_hook]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2297,14 +2096,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -2315,15 +2109,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_iam_policy_repo
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_iam_policy_repo]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2435,14 +2225,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -2453,15 +2238,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_iam_policy_repo
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_iam_policy_repo]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2545,14 +2326,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -2563,15 +2339,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.test_iam_permissions_repo
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.test_iam_permissions_repo]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2589,9 +2361,7 @@ class SecureSourceManagerAsyncClient:
 
     async def create_branch_rule(
         self,
-        request: Optional[
-            Union[secure_source_manager.CreateBranchRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.CreateBranchRuleRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         branch_rule: Optional[secure_source_manager.BranchRule] = None,
@@ -2674,14 +2444,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, branch_rule, branch_rule_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2699,15 +2464,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_branch_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_branch_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2733,9 +2494,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_branch_rules(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListBranchRulesRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListBranchRulesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2802,14 +2561,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2823,15 +2577,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_branch_rules
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_branch_rules]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2860,9 +2610,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_branch_rule(
         self,
-        request: Optional[
-            Union[secure_source_manager.GetBranchRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.GetBranchRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2929,14 +2677,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2950,15 +2693,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_branch_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_branch_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2976,9 +2715,7 @@ class SecureSourceManagerAsyncClient:
 
     async def update_branch_rule(
         self,
-        request: Optional[
-            Union[secure_source_manager.UpdateBranchRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.UpdateBranchRuleRequest, dict]] = None,
         *,
         branch_rule: Optional[secure_source_manager.BranchRule] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3058,14 +2795,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [branch_rule, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3081,17 +2813,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_branch_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_branch_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("branch_rule.name", request.branch_rule.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("branch_rule.name", request.branch_rule.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3117,9 +2843,7 @@ class SecureSourceManagerAsyncClient:
 
     async def delete_branch_rule(
         self,
-        request: Optional[
-            Union[secure_source_manager.DeleteBranchRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.DeleteBranchRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3195,14 +2919,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3216,15 +2935,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_branch_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_branch_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3250,9 +2965,7 @@ class SecureSourceManagerAsyncClient:
 
     async def create_pull_request(
         self,
-        request: Optional[
-            Union[secure_source_manager.CreatePullRequestRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.CreatePullRequestRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         pull_request: Optional[secure_source_manager.PullRequest] = None,
@@ -3335,14 +3048,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, pull_request]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3358,15 +3066,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_pull_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_pull_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3392,9 +3096,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_pull_request(
         self,
-        request: Optional[
-            Union[secure_source_manager.GetPullRequestRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.GetPullRequestRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3461,14 +3163,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3482,15 +3179,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_pull_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_pull_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3508,9 +3201,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_pull_requests(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListPullRequestsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListPullRequestsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3579,14 +3270,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3600,15 +3286,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_pull_requests
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_pull_requests]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3637,9 +3319,7 @@ class SecureSourceManagerAsyncClient:
 
     async def update_pull_request(
         self,
-        request: Optional[
-            Union[secure_source_manager.UpdatePullRequestRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.UpdatePullRequestRequest, dict]] = None,
         *,
         pull_request: Optional[secure_source_manager.PullRequest] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3724,14 +3404,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [pull_request, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3747,17 +3422,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_pull_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_pull_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("pull_request.name", request.pull_request.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("pull_request.name", request.pull_request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3783,9 +3452,7 @@ class SecureSourceManagerAsyncClient:
 
     async def merge_pull_request(
         self,
-        request: Optional[
-            Union[secure_source_manager.MergePullRequestRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.MergePullRequestRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3856,14 +3523,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3877,15 +3539,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.merge_pull_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.merge_pull_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3911,9 +3569,7 @@ class SecureSourceManagerAsyncClient:
 
     async def open_pull_request(
         self,
-        request: Optional[
-            Union[secure_source_manager.OpenPullRequestRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.OpenPullRequestRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3984,14 +3640,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4005,15 +3656,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.open_pull_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.open_pull_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4039,9 +3686,7 @@ class SecureSourceManagerAsyncClient:
 
     async def close_pull_request(
         self,
-        request: Optional[
-            Union[secure_source_manager.ClosePullRequestRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ClosePullRequestRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4112,14 +3757,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4133,15 +3773,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.close_pull_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.close_pull_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4167,9 +3803,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_pull_request_file_diffs(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListPullRequestFileDiffsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListPullRequestFileDiffsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4241,20 +3875,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.ListPullRequestFileDiffsRequest
-        ):
+        if not isinstance(request, secure_source_manager.ListPullRequestFileDiffsRequest):
             request = secure_source_manager.ListPullRequestFileDiffsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -4264,15 +3891,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_pull_request_file_diffs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_pull_request_file_diffs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4365,17 +3988,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_tree
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_tree]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("repository", request.repository),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("repository", request.repository),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4465,17 +4082,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_blob
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_blob]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("repository", request.repository),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("repository", request.repository),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4574,14 +4185,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, issue]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4597,15 +4203,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4692,14 +4294,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4713,15 +4310,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4807,14 +4400,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4828,15 +4416,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_issues
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_issues]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4948,14 +4532,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [issue, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4971,17 +4550,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("issue.name", request.issue.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("issue.name", request.issue.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5084,14 +4657,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5105,15 +4673,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5209,14 +4773,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5230,15 +4789,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.open_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.open_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5334,14 +4889,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5355,15 +4905,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.close_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.close_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5389,9 +4935,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_pull_request_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.GetPullRequestCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.GetPullRequestCommentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5456,14 +5000,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5477,15 +5016,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_pull_request_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_pull_request_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5503,9 +5038,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_pull_request_comments(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListPullRequestCommentsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListPullRequestCommentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5574,20 +5107,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.ListPullRequestCommentsRequest
-        ):
+        if not isinstance(request, secure_source_manager.ListPullRequestCommentsRequest):
             request = secure_source_manager.ListPullRequestCommentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -5597,15 +5123,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_pull_request_comments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_pull_request_comments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5634,9 +5156,7 @@ class SecureSourceManagerAsyncClient:
 
     async def create_pull_request_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.CreatePullRequestCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.CreatePullRequestCommentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         pull_request_comment: Optional[secure_source_manager.PullRequestComment] = None,
@@ -5726,20 +5246,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, pull_request_comment]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.CreatePullRequestCommentRequest
-        ):
+        if not isinstance(request, secure_source_manager.CreatePullRequestCommentRequest):
             request = secure_source_manager.CreatePullRequestCommentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -5751,15 +5264,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_pull_request_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_pull_request_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5785,9 +5294,7 @@ class SecureSourceManagerAsyncClient:
 
     async def update_pull_request_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.UpdatePullRequestCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.UpdatePullRequestCommentRequest, dict]] = None,
         *,
         pull_request_comment: Optional[secure_source_manager.PullRequestComment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -5871,20 +5378,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [pull_request_comment, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.UpdatePullRequestCommentRequest
-        ):
+        if not isinstance(request, secure_source_manager.UpdatePullRequestCommentRequest):
             request = secure_source_manager.UpdatePullRequestCommentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -5896,17 +5396,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_pull_request_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_pull_request_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("pull_request_comment.name", request.pull_request_comment.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("pull_request_comment.name", request.pull_request_comment.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5932,9 +5426,7 @@ class SecureSourceManagerAsyncClient:
 
     async def delete_pull_request_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.DeletePullRequestCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.DeletePullRequestCommentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6014,20 +5506,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.DeletePullRequestCommentRequest
-        ):
+        if not isinstance(request, secure_source_manager.DeletePullRequestCommentRequest):
             request = secure_source_manager.DeletePullRequestCommentRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -6037,15 +5522,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_pull_request_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_pull_request_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6071,14 +5552,10 @@ class SecureSourceManagerAsyncClient:
 
     async def batch_create_pull_request_comments(
         self,
-        request: Optional[
-            Union[secure_source_manager.BatchCreatePullRequestCommentsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.BatchCreatePullRequestCommentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        requests: Optional[
-            MutableSequence[secure_source_manager.CreatePullRequestCommentRequest]
-        ] = None,
+        requests: Optional[MutableSequence[secure_source_manager.CreatePullRequestCommentRequest]] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6171,23 +5648,14 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, requests]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.BatchCreatePullRequestCommentsRequest
-        ):
-            request = secure_source_manager.BatchCreatePullRequestCommentsRequest(
-                request
-            )
+        if not isinstance(request, secure_source_manager.BatchCreatePullRequestCommentsRequest):
+            request = secure_source_manager.BatchCreatePullRequestCommentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -6198,15 +5666,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_create_pull_request_comments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_create_pull_request_comments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6232,9 +5696,7 @@ class SecureSourceManagerAsyncClient:
 
     async def resolve_pull_request_comments(
         self,
-        request: Optional[
-            Union[secure_source_manager.ResolvePullRequestCommentsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ResolvePullRequestCommentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         names: Optional[MutableSequence[str]] = None,
@@ -6321,20 +5783,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, names]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.ResolvePullRequestCommentsRequest
-        ):
+        if not isinstance(request, secure_source_manager.ResolvePullRequestCommentsRequest):
             request = secure_source_manager.ResolvePullRequestCommentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -6346,15 +5801,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.resolve_pull_request_comments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.resolve_pull_request_comments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6380,9 +5831,7 @@ class SecureSourceManagerAsyncClient:
 
     async def unresolve_pull_request_comments(
         self,
-        request: Optional[
-            Union[secure_source_manager.UnresolvePullRequestCommentsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.UnresolvePullRequestCommentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         names: Optional[MutableSequence[str]] = None,
@@ -6470,20 +5919,13 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, names]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, secure_source_manager.UnresolvePullRequestCommentsRequest
-        ):
+        if not isinstance(request, secure_source_manager.UnresolvePullRequestCommentsRequest):
             request = secure_source_manager.UnresolvePullRequestCommentsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -6495,15 +5937,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.unresolve_pull_request_comments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.unresolve_pull_request_comments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6529,9 +5967,7 @@ class SecureSourceManagerAsyncClient:
 
     async def create_issue_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.CreateIssueCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.CreateIssueCommentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         issue_comment: Optional[secure_source_manager.IssueComment] = None,
@@ -6615,14 +6051,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, issue_comment]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6638,15 +6069,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_issue_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_issue_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6672,9 +6099,7 @@ class SecureSourceManagerAsyncClient:
 
     async def get_issue_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.GetIssueCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.GetIssueCommentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6738,14 +6163,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6759,15 +6179,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_issue_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_issue_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6785,9 +6201,7 @@ class SecureSourceManagerAsyncClient:
 
     async def list_issue_comments(
         self,
-        request: Optional[
-            Union[secure_source_manager.ListIssueCommentsRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.ListIssueCommentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6855,14 +6269,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6876,15 +6285,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_issue_comments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_issue_comments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6913,9 +6318,7 @@ class SecureSourceManagerAsyncClient:
 
     async def update_issue_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.UpdateIssueCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.UpdateIssueCommentRequest, dict]] = None,
         *,
         issue_comment: Optional[secure_source_manager.IssueComment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -7001,14 +6404,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [issue_comment, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7024,17 +6422,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_issue_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_issue_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("issue_comment.name", request.issue_comment.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("issue_comment.name", request.issue_comment.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7060,9 +6452,7 @@ class SecureSourceManagerAsyncClient:
 
     async def delete_issue_comment(
         self,
-        request: Optional[
-            Union[secure_source_manager.DeleteIssueCommentRequest, dict]
-        ] = None,
+        request: Optional[Union[secure_source_manager.DeleteIssueCommentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7141,14 +6531,9 @@ class SecureSourceManagerAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7162,15 +6547,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_issue_comment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_issue_comment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7231,9 +6612,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7286,9 +6665,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7345,9 +6722,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7400,9 +6775,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7518,9 +6891,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7640,9 +7011,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7696,15 +7065,11 @@ class SecureSourceManagerAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7757,9 +7122,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7812,9 +7175,7 @@ class SecureSourceManagerAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7837,9 +7198,7 @@ class SecureSourceManagerAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

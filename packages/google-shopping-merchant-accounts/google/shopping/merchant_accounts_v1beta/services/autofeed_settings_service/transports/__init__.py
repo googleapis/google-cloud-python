@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import AutofeedSettingsServiceTransport
 from .grpc import AutofeedSettingsServiceGrpcTransport
 from .grpc_asyncio import AutofeedSettingsServiceGrpcAsyncIOTransport
-from .rest import (
-    AutofeedSettingsServiceRestInterceptor,
-    AutofeedSettingsServiceRestTransport,
-)
+from .rest import AutofeedSettingsServiceRestInterceptor, AutofeedSettingsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AutofeedSettingsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AutofeedSettingsServiceTransport]]
 _transport_registry["grpc"] = AutofeedSettingsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = AutofeedSettingsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = AutofeedSettingsServiceRestTransport

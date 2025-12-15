@@ -32,9 +32,7 @@ from google.cloud.monitoring_v3.types import service
 from google.cloud.monitoring_v3.types import service as gm_service
 from google.cloud.monitoring_v3.types import service_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +98,15 @@ class ServiceMonitoringServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -257,69 +247,41 @@ class ServiceMonitoringServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[
-        [service_service.CreateServiceRequest],
-        Union[gm_service.Service, Awaitable[gm_service.Service]],
-    ]:
+    def create_service(self) -> Callable[[service_service.CreateServiceRequest], Union[gm_service.Service, Awaitable[gm_service.Service]]]:
         raise NotImplementedError()
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[
-        [service_service.GetServiceRequest],
-        Union[service.Service, Awaitable[service.Service]],
-    ]:
+    def get_service(self) -> Callable[[service_service.GetServiceRequest], Union[service.Service, Awaitable[service.Service]]]:
         raise NotImplementedError()
 
     @property
     def list_services(
         self,
     ) -> Callable[
-        [service_service.ListServicesRequest],
-        Union[
-            service_service.ListServicesResponse,
-            Awaitable[service_service.ListServicesResponse],
-        ],
+        [service_service.ListServicesRequest], Union[service_service.ListServicesResponse, Awaitable[service_service.ListServicesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[
-        [service_service.UpdateServiceRequest],
-        Union[gm_service.Service, Awaitable[gm_service.Service]],
-    ]:
+    def update_service(self) -> Callable[[service_service.UpdateServiceRequest], Union[gm_service.Service, Awaitable[gm_service.Service]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[
-        [service_service.DeleteServiceRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_service(self) -> Callable[[service_service.DeleteServiceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_service_level_objective(
         self,
     ) -> Callable[
-        [service_service.CreateServiceLevelObjectiveRequest],
-        Union[service.ServiceLevelObjective, Awaitable[service.ServiceLevelObjective]],
+        [service_service.CreateServiceLevelObjectiveRequest], Union[service.ServiceLevelObjective, Awaitable[service.ServiceLevelObjective]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_service_level_objective(
         self,
-    ) -> Callable[
-        [service_service.GetServiceLevelObjectiveRequest],
-        Union[service.ServiceLevelObjective, Awaitable[service.ServiceLevelObjective]],
-    ]:
+    ) -> Callable[[service_service.GetServiceLevelObjectiveRequest], Union[service.ServiceLevelObjective, Awaitable[service.ServiceLevelObjective]]]:
         raise NotImplementedError()
 
     @property
@@ -327,10 +289,7 @@ class ServiceMonitoringServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service_service.ListServiceLevelObjectivesRequest],
-        Union[
-            service_service.ListServiceLevelObjectivesResponse,
-            Awaitable[service_service.ListServiceLevelObjectivesResponse],
-        ],
+        Union[service_service.ListServiceLevelObjectivesResponse, Awaitable[service_service.ListServiceLevelObjectivesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -338,18 +297,14 @@ class ServiceMonitoringServiceTransport(abc.ABC):
     def update_service_level_objective(
         self,
     ) -> Callable[
-        [service_service.UpdateServiceLevelObjectiveRequest],
-        Union[service.ServiceLevelObjective, Awaitable[service.ServiceLevelObjective]],
+        [service_service.UpdateServiceLevelObjectiveRequest], Union[service.ServiceLevelObjective, Awaitable[service.ServiceLevelObjective]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_service_level_objective(
         self,
-    ) -> Callable[
-        [service_service.DeleteServiceLevelObjectiveRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[service_service.DeleteServiceLevelObjectiveRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property

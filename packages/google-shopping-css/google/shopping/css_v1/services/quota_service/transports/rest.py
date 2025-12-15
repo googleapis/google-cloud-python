@@ -87,9 +87,7 @@ class QuotaServiceRestInterceptor:
     """
 
     def pre_list_quota_groups(
-        self,
-        request: quota.ListQuotaGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: quota.ListQuotaGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[quota.ListQuotaGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_quota_groups
 
@@ -98,9 +96,7 @@ class QuotaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_quota_groups(
-        self, response: quota.ListQuotaGroupsResponse
-    ) -> quota.ListQuotaGroupsResponse:
+    def post_list_quota_groups(self, response: quota.ListQuotaGroupsResponse) -> quota.ListQuotaGroupsResponse:
         """Post-rpc interceptor for list_quota_groups
 
         DEPRECATED. Please use the `post_list_quota_groups_with_metadata`
@@ -114,9 +110,7 @@ class QuotaServiceRestInterceptor:
         return response
 
     def post_list_quota_groups_with_metadata(
-        self,
-        response: quota.ListQuotaGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: quota.ListQuotaGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[quota.ListQuotaGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_quota_groups
 
@@ -213,30 +207,18 @@ class QuotaServiceRestTransport(_BaseQuotaServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or QuotaServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListQuotaGroups(
-        _BaseQuotaServiceRestTransport._BaseListQuotaGroups, QuotaServiceRestStub
-    ):
+    class _ListQuotaGroups(_BaseQuotaServiceRestTransport._BaseListQuotaGroups, QuotaServiceRestStub):
         def __hash__(self):
             return hash("QuotaServiceRestTransport.ListQuotaGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -278,28 +260,16 @@ class QuotaServiceRestTransport(_BaseQuotaServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseQuotaServiceRestTransport._BaseListQuotaGroups._get_http_options()
-            )
+            http_options = _BaseQuotaServiceRestTransport._BaseListQuotaGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_quota_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseQuotaServiceRestTransport._BaseListQuotaGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_quota_groups(request, metadata)
+            transcoded_request = _BaseQuotaServiceRestTransport._BaseListQuotaGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseQuotaServiceRestTransport._BaseListQuotaGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseQuotaServiceRestTransport._BaseListQuotaGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -323,12 +293,7 @@ class QuotaServiceRestTransport(_BaseQuotaServiceRestTransport):
 
             # Send the request
             response = QuotaServiceRestTransport._ListQuotaGroups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -344,12 +309,8 @@ class QuotaServiceRestTransport(_BaseQuotaServiceRestTransport):
 
             resp = self._interceptor.post_list_quota_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_quota_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_quota_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = quota.ListQuotaGroupsResponse.to_json(response)
                 except:
@@ -371,9 +332,7 @@ class QuotaServiceRestTransport(_BaseQuotaServiceRestTransport):
             return resp
 
     @property
-    def list_quota_groups(
-        self,
-    ) -> Callable[[quota.ListQuotaGroupsRequest], quota.ListQuotaGroupsResponse]:
+    def list_quota_groups(self) -> Callable[[quota.ListQuotaGroupsRequest], quota.ListQuotaGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQuotaGroups(self._session, self._host, self._interceptor)  # type: ignore

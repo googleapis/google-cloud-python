@@ -29,16 +29,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.retail_v2 import gapic_version as package_version
-from google.cloud.retail_v2.types import (
-    import_config,
-    purge_config,
-    user_event,
-    user_event_service,
-)
+from google.cloud.retail_v2.types import import_config, purge_config, user_event, user_event_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -100,23 +93,15 @@ class UserEventServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -213,48 +198,31 @@ class UserEventServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def write_user_event(
-        self,
-    ) -> Callable[
-        [user_event_service.WriteUserEventRequest],
-        Union[user_event.UserEvent, Awaitable[user_event.UserEvent]],
-    ]:
+    def write_user_event(self) -> Callable[[user_event_service.WriteUserEventRequest], Union[user_event.UserEvent, Awaitable[user_event.UserEvent]]]:
         raise NotImplementedError()
 
     @property
     def collect_user_event(
         self,
-    ) -> Callable[
-        [user_event_service.CollectUserEventRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    ) -> Callable[[user_event_service.CollectUserEventRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def purge_user_events(
         self,
-    ) -> Callable[
-        [purge_config.PurgeUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[purge_config.PurgeUserEventsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_user_events(
         self,
-    ) -> Callable[
-        [import_config.ImportUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[import_config.ImportUserEventsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def rejoin_user_events(
         self,
-    ) -> Callable[
-        [user_event_service.RejoinUserEventsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[user_event_service.RejoinUserEventsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -262,20 +230,14 @@ class UserEventServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

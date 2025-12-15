@@ -41,9 +41,7 @@ def sample_update_connection():
     # Initialize request argument(s)
     connection = dlp_v2.Connection()
     connection.cloud_sql.username_password.username = "username_value"
-    connection.cloud_sql.username_password.password_secret_version_name = (
-        "password_secret_version_name_value"
-    )
+    connection.cloud_sql.username_password.password_secret_version_name = "password_secret_version_name_value"
     connection.cloud_sql.max_connections = 1608
     connection.cloud_sql.database_engine = "DATABASE_ENGINE_POSTGRES"
     connection.state = "ERROR"

@@ -136,9 +136,7 @@ class ListCmsMetadataValuesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cms_metadata_values: MutableSequence[
-        cms_metadata_value_messages.CmsMetadataValue
-    ] = proto.RepeatedField(
+    cms_metadata_values: MutableSequence[cms_metadata_value_messages.CmsMetadataValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=cms_metadata_value_messages.CmsMetadataValue,

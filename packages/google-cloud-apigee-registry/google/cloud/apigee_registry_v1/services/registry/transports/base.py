@@ -34,9 +34,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.apigee_registry_v1 import gapic_version as package_version
 from google.cloud.apigee_registry_v1.types import registry_models, registry_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class RegistryTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -769,49 +759,23 @@ class RegistryTransport(abc.ABC):
     @property
     def list_apis(
         self,
-    ) -> Callable[
-        [registry_service.ListApisRequest],
-        Union[
-            registry_service.ListApisResponse,
-            Awaitable[registry_service.ListApisResponse],
-        ],
-    ]:
+    ) -> Callable[[registry_service.ListApisRequest], Union[registry_service.ListApisResponse, Awaitable[registry_service.ListApisResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_api(
-        self,
-    ) -> Callable[
-        [registry_service.GetApiRequest],
-        Union[registry_models.Api, Awaitable[registry_models.Api]],
-    ]:
+    def get_api(self) -> Callable[[registry_service.GetApiRequest], Union[registry_models.Api, Awaitable[registry_models.Api]]]:
         raise NotImplementedError()
 
     @property
-    def create_api(
-        self,
-    ) -> Callable[
-        [registry_service.CreateApiRequest],
-        Union[registry_models.Api, Awaitable[registry_models.Api]],
-    ]:
+    def create_api(self) -> Callable[[registry_service.CreateApiRequest], Union[registry_models.Api, Awaitable[registry_models.Api]]]:
         raise NotImplementedError()
 
     @property
-    def update_api(
-        self,
-    ) -> Callable[
-        [registry_service.UpdateApiRequest],
-        Union[registry_models.Api, Awaitable[registry_models.Api]],
-    ]:
+    def update_api(self) -> Callable[[registry_service.UpdateApiRequest], Union[registry_models.Api, Awaitable[registry_models.Api]]]:
         raise NotImplementedError()
 
     @property
-    def delete_api(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteApiRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_api(self) -> Callable[[registry_service.DeleteApiRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -819,113 +783,70 @@ class RegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [registry_service.ListApiVersionsRequest],
-        Union[
-            registry_service.ListApiVersionsResponse,
-            Awaitable[registry_service.ListApiVersionsResponse],
-        ],
+        Union[registry_service.ListApiVersionsResponse, Awaitable[registry_service.ListApiVersionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_api_version(
         self,
-    ) -> Callable[
-        [registry_service.GetApiVersionRequest],
-        Union[registry_models.ApiVersion, Awaitable[registry_models.ApiVersion]],
-    ]:
+    ) -> Callable[[registry_service.GetApiVersionRequest], Union[registry_models.ApiVersion, Awaitable[registry_models.ApiVersion]]]:
         raise NotImplementedError()
 
     @property
     def create_api_version(
         self,
-    ) -> Callable[
-        [registry_service.CreateApiVersionRequest],
-        Union[registry_models.ApiVersion, Awaitable[registry_models.ApiVersion]],
-    ]:
+    ) -> Callable[[registry_service.CreateApiVersionRequest], Union[registry_models.ApiVersion, Awaitable[registry_models.ApiVersion]]]:
         raise NotImplementedError()
 
     @property
     def update_api_version(
         self,
-    ) -> Callable[
-        [registry_service.UpdateApiVersionRequest],
-        Union[registry_models.ApiVersion, Awaitable[registry_models.ApiVersion]],
-    ]:
+    ) -> Callable[[registry_service.UpdateApiVersionRequest], Union[registry_models.ApiVersion, Awaitable[registry_models.ApiVersion]]]:
         raise NotImplementedError()
 
     @property
-    def delete_api_version(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteApiVersionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_api_version(self) -> Callable[[registry_service.DeleteApiVersionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_api_specs(
         self,
     ) -> Callable[
-        [registry_service.ListApiSpecsRequest],
-        Union[
-            registry_service.ListApiSpecsResponse,
-            Awaitable[registry_service.ListApiSpecsResponse],
-        ],
+        [registry_service.ListApiSpecsRequest], Union[registry_service.ListApiSpecsResponse, Awaitable[registry_service.ListApiSpecsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_api_spec(
-        self,
-    ) -> Callable[
-        [registry_service.GetApiSpecRequest],
-        Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]],
-    ]:
+    def get_api_spec(self) -> Callable[[registry_service.GetApiSpecRequest], Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]]]:
         raise NotImplementedError()
 
     @property
     def get_api_spec_contents(
         self,
-    ) -> Callable[
-        [registry_service.GetApiSpecContentsRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    ) -> Callable[[registry_service.GetApiSpecContentsRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def create_api_spec(
         self,
-    ) -> Callable[
-        [registry_service.CreateApiSpecRequest],
-        Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]],
-    ]:
+    ) -> Callable[[registry_service.CreateApiSpecRequest], Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]]]:
         raise NotImplementedError()
 
     @property
     def update_api_spec(
         self,
-    ) -> Callable[
-        [registry_service.UpdateApiSpecRequest],
-        Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]],
-    ]:
+    ) -> Callable[[registry_service.UpdateApiSpecRequest], Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]]]:
         raise NotImplementedError()
 
     @property
-    def delete_api_spec(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteApiSpecRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_api_spec(self) -> Callable[[registry_service.DeleteApiSpecRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def tag_api_spec_revision(
         self,
-    ) -> Callable[
-        [registry_service.TagApiSpecRevisionRequest],
-        Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]],
-    ]:
+    ) -> Callable[[registry_service.TagApiSpecRevisionRequest], Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]]]:
         raise NotImplementedError()
 
     @property
@@ -933,29 +854,20 @@ class RegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [registry_service.ListApiSpecRevisionsRequest],
-        Union[
-            registry_service.ListApiSpecRevisionsResponse,
-            Awaitable[registry_service.ListApiSpecRevisionsResponse],
-        ],
+        Union[registry_service.ListApiSpecRevisionsResponse, Awaitable[registry_service.ListApiSpecRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def rollback_api_spec(
         self,
-    ) -> Callable[
-        [registry_service.RollbackApiSpecRequest],
-        Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]],
-    ]:
+    ) -> Callable[[registry_service.RollbackApiSpecRequest], Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]]]:
         raise NotImplementedError()
 
     @property
     def delete_api_spec_revision(
         self,
-    ) -> Callable[
-        [registry_service.DeleteApiSpecRevisionRequest],
-        Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]],
-    ]:
+    ) -> Callable[[registry_service.DeleteApiSpecRevisionRequest], Union[registry_models.ApiSpec, Awaitable[registry_models.ApiSpec]]]:
         raise NotImplementedError()
 
     @property
@@ -963,56 +875,36 @@ class RegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [registry_service.ListApiDeploymentsRequest],
-        Union[
-            registry_service.ListApiDeploymentsResponse,
-            Awaitable[registry_service.ListApiDeploymentsResponse],
-        ],
+        Union[registry_service.ListApiDeploymentsResponse, Awaitable[registry_service.ListApiDeploymentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_api_deployment(
         self,
-    ) -> Callable[
-        [registry_service.GetApiDeploymentRequest],
-        Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]],
-    ]:
+    ) -> Callable[[registry_service.GetApiDeploymentRequest], Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]]]:
         raise NotImplementedError()
 
     @property
     def create_api_deployment(
         self,
-    ) -> Callable[
-        [registry_service.CreateApiDeploymentRequest],
-        Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]],
-    ]:
+    ) -> Callable[[registry_service.CreateApiDeploymentRequest], Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]]]:
         raise NotImplementedError()
 
     @property
     def update_api_deployment(
         self,
-    ) -> Callable[
-        [registry_service.UpdateApiDeploymentRequest],
-        Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]],
-    ]:
+    ) -> Callable[[registry_service.UpdateApiDeploymentRequest], Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]]]:
         raise NotImplementedError()
 
     @property
-    def delete_api_deployment(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteApiDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_api_deployment(self) -> Callable[[registry_service.DeleteApiDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def tag_api_deployment_revision(
         self,
-    ) -> Callable[
-        [registry_service.TagApiDeploymentRevisionRequest],
-        Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]],
-    ]:
+    ) -> Callable[[registry_service.TagApiDeploymentRevisionRequest], Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]]]:
         raise NotImplementedError()
 
     @property
@@ -1020,28 +912,21 @@ class RegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [registry_service.ListApiDeploymentRevisionsRequest],
-        Union[
-            registry_service.ListApiDeploymentRevisionsResponse,
-            Awaitable[registry_service.ListApiDeploymentRevisionsResponse],
-        ],
+        Union[registry_service.ListApiDeploymentRevisionsResponse, Awaitable[registry_service.ListApiDeploymentRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def rollback_api_deployment(
         self,
-    ) -> Callable[
-        [registry_service.RollbackApiDeploymentRequest],
-        Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]],
-    ]:
+    ) -> Callable[[registry_service.RollbackApiDeploymentRequest], Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]]]:
         raise NotImplementedError()
 
     @property
     def delete_api_deployment_revision(
         self,
     ) -> Callable[
-        [registry_service.DeleteApiDeploymentRevisionRequest],
-        Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]],
+        [registry_service.DeleteApiDeploymentRevisionRequest], Union[registry_models.ApiDeployment, Awaitable[registry_models.ApiDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -1049,57 +934,34 @@ class RegistryTransport(abc.ABC):
     def list_artifacts(
         self,
     ) -> Callable[
-        [registry_service.ListArtifactsRequest],
-        Union[
-            registry_service.ListArtifactsResponse,
-            Awaitable[registry_service.ListArtifactsResponse],
-        ],
+        [registry_service.ListArtifactsRequest], Union[registry_service.ListArtifactsResponse, Awaitable[registry_service.ListArtifactsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_artifact(
-        self,
-    ) -> Callable[
-        [registry_service.GetArtifactRequest],
-        Union[registry_models.Artifact, Awaitable[registry_models.Artifact]],
-    ]:
+    def get_artifact(self) -> Callable[[registry_service.GetArtifactRequest], Union[registry_models.Artifact, Awaitable[registry_models.Artifact]]]:
         raise NotImplementedError()
 
     @property
     def get_artifact_contents(
         self,
-    ) -> Callable[
-        [registry_service.GetArtifactContentsRequest],
-        Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]],
-    ]:
+    ) -> Callable[[registry_service.GetArtifactContentsRequest], Union[httpbody_pb2.HttpBody, Awaitable[httpbody_pb2.HttpBody]]]:
         raise NotImplementedError()
 
     @property
     def create_artifact(
         self,
-    ) -> Callable[
-        [registry_service.CreateArtifactRequest],
-        Union[registry_models.Artifact, Awaitable[registry_models.Artifact]],
-    ]:
+    ) -> Callable[[registry_service.CreateArtifactRequest], Union[registry_models.Artifact, Awaitable[registry_models.Artifact]]]:
         raise NotImplementedError()
 
     @property
     def replace_artifact(
         self,
-    ) -> Callable[
-        [registry_service.ReplaceArtifactRequest],
-        Union[registry_models.Artifact, Awaitable[registry_models.Artifact]],
-    ]:
+    ) -> Callable[[registry_service.ReplaceArtifactRequest], Union[registry_models.Artifact, Awaitable[registry_models.Artifact]]]:
         raise NotImplementedError()
 
     @property
-    def delete_artifact(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteArtifactRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_artifact(self) -> Callable[[registry_service.DeleteArtifactRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1107,20 +969,14 @@ class RegistryTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1138,19 +994,13 @@ class RegistryTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1168,22 +1018,13 @@ class RegistryTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -171,13 +171,8 @@ class TranslationServiceRestInterceptor:
     """
 
     def pre_batch_translate_document(
-        self,
-        request: translation_service.BatchTranslateDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.BatchTranslateDocumentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.BatchTranslateDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.BatchTranslateDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_translate_document
 
         Override in a subclass to manipulate the request or metadata
@@ -185,9 +180,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_translate_document(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_translate_document(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_translate_document
 
         DEPRECATED. Please use the `post_batch_translate_document_with_metadata`
@@ -201,9 +194,7 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_batch_translate_document_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_translate_document
 
@@ -220,13 +211,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_translate_text(
-        self,
-        request: translation_service.BatchTranslateTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.BatchTranslateTextRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.BatchTranslateTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.BatchTranslateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_translate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +220,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_translate_text(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_translate_text(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_translate_text
 
         DEPRECATED. Please use the `post_batch_translate_text_with_metadata`
@@ -250,9 +234,7 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_batch_translate_text_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_translate_text
 
@@ -269,13 +251,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_create_glossary(
-        self,
-        request: translation_service.CreateGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.CreateGlossaryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.CreateGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.CreateGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -283,9 +260,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_glossary(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_glossary(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_glossary
 
         DEPRECATED. Please use the `post_create_glossary_with_metadata`
@@ -299,9 +274,7 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_create_glossary_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_glossary
 
@@ -318,13 +291,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_glossary(
-        self,
-        request: translation_service.DeleteGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.DeleteGlossaryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.DeleteGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.DeleteGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -332,9 +300,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_glossary(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_glossary(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_glossary
 
         DEPRECATED. Please use the `post_delete_glossary_with_metadata`
@@ -348,9 +314,7 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_delete_glossary_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_glossary
 
@@ -367,13 +331,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_detect_language(
-        self,
-        request: translation_service.DetectLanguageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.DetectLanguageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.DetectLanguageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.DetectLanguageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for detect_language
 
         Override in a subclass to manipulate the request or metadata
@@ -381,9 +340,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_detect_language(
-        self, response: translation_service.DetectLanguageResponse
-    ) -> translation_service.DetectLanguageResponse:
+    def post_detect_language(self, response: translation_service.DetectLanguageResponse) -> translation_service.DetectLanguageResponse:
         """Post-rpc interceptor for detect_language
 
         DEPRECATED. Please use the `post_detect_language_with_metadata`
@@ -397,13 +354,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_detect_language_with_metadata(
-        self,
-        response: translation_service.DetectLanguageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.DetectLanguageResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: translation_service.DetectLanguageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.DetectLanguageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for detect_language
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -419,12 +371,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_glossary(
-        self,
-        request: translation_service.GetGlossaryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.GetGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: translation_service.GetGlossaryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.GetGlossaryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_glossary
 
         Override in a subclass to manipulate the request or metadata
@@ -432,9 +380,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_glossary(
-        self, response: translation_service.Glossary
-    ) -> translation_service.Glossary:
+    def post_get_glossary(self, response: translation_service.Glossary) -> translation_service.Glossary:
         """Post-rpc interceptor for get_glossary
 
         DEPRECATED. Please use the `post_get_glossary_with_metadata`
@@ -448,9 +394,7 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_get_glossary_with_metadata(
-        self,
-        response: translation_service.Glossary,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: translation_service.Glossary, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[translation_service.Glossary, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_glossary
 
@@ -467,13 +411,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_supported_languages(
-        self,
-        request: translation_service.GetSupportedLanguagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.GetSupportedLanguagesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.GetSupportedLanguagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.GetSupportedLanguagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_supported_languages
 
         Override in a subclass to manipulate the request or metadata
@@ -481,9 +420,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_supported_languages(
-        self, response: translation_service.SupportedLanguages
-    ) -> translation_service.SupportedLanguages:
+    def post_get_supported_languages(self, response: translation_service.SupportedLanguages) -> translation_service.SupportedLanguages:
         """Post-rpc interceptor for get_supported_languages
 
         DEPRECATED. Please use the `post_get_supported_languages_with_metadata`
@@ -497,12 +434,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_get_supported_languages_with_metadata(
-        self,
-        response: translation_service.SupportedLanguages,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.SupportedLanguages, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: translation_service.SupportedLanguages, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.SupportedLanguages, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_supported_languages
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -518,13 +451,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_glossaries(
-        self,
-        request: translation_service.ListGlossariesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.ListGlossariesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.ListGlossariesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.ListGlossariesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_glossaries
 
         Override in a subclass to manipulate the request or metadata
@@ -532,9 +460,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_glossaries(
-        self, response: translation_service.ListGlossariesResponse
-    ) -> translation_service.ListGlossariesResponse:
+    def post_list_glossaries(self, response: translation_service.ListGlossariesResponse) -> translation_service.ListGlossariesResponse:
         """Post-rpc interceptor for list_glossaries
 
         DEPRECATED. Please use the `post_list_glossaries_with_metadata`
@@ -548,13 +474,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_list_glossaries_with_metadata(
-        self,
-        response: translation_service.ListGlossariesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.ListGlossariesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: translation_service.ListGlossariesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.ListGlossariesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_glossaries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -570,12 +491,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_refine_text(
-        self,
-        request: translation_service.RefineTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.RefineTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: translation_service.RefineTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.RefineTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for refine_text
 
         Override in a subclass to manipulate the request or metadata
@@ -583,9 +500,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_refine_text(
-        self, response: translation_service.RefineTextResponse
-    ) -> translation_service.RefineTextResponse:
+    def post_refine_text(self, response: translation_service.RefineTextResponse) -> translation_service.RefineTextResponse:
         """Post-rpc interceptor for refine_text
 
         DEPRECATED. Please use the `post_refine_text_with_metadata`
@@ -599,12 +514,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_refine_text_with_metadata(
-        self,
-        response: translation_service.RefineTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.RefineTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: translation_service.RefineTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.RefineTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for refine_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -620,13 +531,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_translate_document(
-        self,
-        request: translation_service.TranslateDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.TranslateDocumentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.TranslateDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.TranslateDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for translate_document
 
         Override in a subclass to manipulate the request or metadata
@@ -634,9 +540,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_translate_document(
-        self, response: translation_service.TranslateDocumentResponse
-    ) -> translation_service.TranslateDocumentResponse:
+    def post_translate_document(self, response: translation_service.TranslateDocumentResponse) -> translation_service.TranslateDocumentResponse:
         """Post-rpc interceptor for translate_document
 
         DEPRECATED. Please use the `post_translate_document_with_metadata`
@@ -650,13 +554,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_translate_document_with_metadata(
-        self,
-        response: translation_service.TranslateDocumentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.TranslateDocumentResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: translation_service.TranslateDocumentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.TranslateDocumentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for translate_document
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -672,13 +571,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_translate_text(
-        self,
-        request: translation_service.TranslateTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.TranslateTextRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: translation_service.TranslateTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.TranslateTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for translate_text
 
         Override in a subclass to manipulate the request or metadata
@@ -686,9 +580,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_translate_text(
-        self, response: translation_service.TranslateTextResponse
-    ) -> translation_service.TranslateTextResponse:
+    def post_translate_text(self, response: translation_service.TranslateTextResponse) -> translation_service.TranslateTextResponse:
         """Post-rpc interceptor for translate_text
 
         DEPRECATED. Please use the `post_translate_text_with_metadata`
@@ -702,13 +594,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def post_translate_text_with_metadata(
-        self,
-        response: translation_service.TranslateTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        translation_service.TranslateTextResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: translation_service.TranslateTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[translation_service.TranslateTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for translate_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -724,12 +611,8 @@ class TranslationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -737,9 +620,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -749,12 +630,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -762,9 +639,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -774,12 +649,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -797,12 +668,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -820,12 +687,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -833,9 +696,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -845,12 +706,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -858,9 +715,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -870,12 +725,8 @@ class TranslationServiceRestInterceptor:
         return response
 
     def pre_wait_operation(
-        self,
-        request: operations_pb2.WaitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -883,9 +734,7 @@ class TranslationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_wait_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_wait_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the response
@@ -974,9 +823,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1036,30 +883,17 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 path_prefix="v3beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchTranslateDocument(
-        _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument,
-        TranslationServiceRestStub,
-    ):
+    class _BatchTranslateDocument(_BaseTranslationServiceRestTransport._BaseBatchTranslateDocument, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.BatchTranslateDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1102,32 +936,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_translate_document(
-                request, metadata
-            )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_translate_document(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1150,16 +970,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                TranslationServiceRestTransport._BatchTranslateDocument._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TranslationServiceRestTransport._BatchTranslateDocument._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1173,12 +985,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_batch_translate_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_translate_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_translate_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1199,23 +1007,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _BatchTranslateText(
-        _BaseTranslationServiceRestTransport._BaseBatchTranslateText,
-        TranslationServiceRestStub,
-    ):
+    class _BatchTranslateText(_BaseTranslationServiceRestTransport._BaseBatchTranslateText, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.BatchTranslateText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1258,32 +1055,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_translate_text(
-                request, metadata
-            )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_translate_text(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseBatchTranslateText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1306,16 +1089,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                TranslationServiceRestTransport._BatchTranslateText._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TranslationServiceRestTransport._BatchTranslateText._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1329,12 +1104,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_batch_translate_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_translate_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_translate_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1355,23 +1126,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _CreateGlossary(
-        _BaseTranslationServiceRestTransport._BaseCreateGlossary,
-        TranslationServiceRestStub,
-    ):
+    class _CreateGlossary(_BaseTranslationServiceRestTransport._BaseCreateGlossary, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.CreateGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1414,30 +1174,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_create_glossary(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseCreateGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1461,13 +1209,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._CreateGlossary._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1481,12 +1223,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_create_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1507,23 +1245,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _DeleteGlossary(
-        _BaseTranslationServiceRestTransport._BaseDeleteGlossary,
-        TranslationServiceRestStub,
-    ):
+    class _DeleteGlossary(_BaseTranslationServiceRestTransport._BaseDeleteGlossary, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.DeleteGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1565,26 +1292,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_glossary(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseDeleteGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1608,12 +1325,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._DeleteGlossary._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1627,12 +1339,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_delete_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1653,23 +1361,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _DetectLanguage(
-        _BaseTranslationServiceRestTransport._BaseDetectLanguage,
-        TranslationServiceRestStub,
-    ):
+    class _DetectLanguage(_BaseTranslationServiceRestTransport._BaseDetectLanguage, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.DetectLanguage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1712,30 +1409,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_http_options()
 
             request, metadata = self._interceptor.pre_detect_language(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseDetectLanguage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1759,13 +1444,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._DetectLanguage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1781,16 +1460,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_detect_language(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_detect_language_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_detect_language_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        translation_service.DetectLanguageResponse.to_json(response)
-                    )
+                    response_payload = translation_service.DetectLanguageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1809,23 +1482,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _GetGlossary(
-        _BaseTranslationServiceRestTransport._BaseGetGlossary,
-        TranslationServiceRestStub,
-    ):
+    class _GetGlossary(_BaseTranslationServiceRestTransport._BaseGetGlossary, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.GetGlossary")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1866,26 +1528,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseGetGlossary._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_http_options()
 
             request, metadata = self._interceptor.pre_get_glossary(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseGetGlossary._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1909,12 +1561,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._GetGlossary._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1930,12 +1577,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_get_glossary(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_glossary_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_glossary_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = translation_service.Glossary.to_json(response)
                 except:
@@ -1956,23 +1599,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _GetSupportedLanguages(
-        _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages,
-        TranslationServiceRestStub,
-    ):
+    class _GetSupportedLanguages(_BaseTranslationServiceRestTransport._BaseGetSupportedLanguages, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.GetSupportedLanguages")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2014,28 +1646,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_supported_languages(
-                request, metadata
-            )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_supported_languages(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseGetSupportedLanguages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2058,15 +1678,8 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                TranslationServiceRestTransport._GetSupportedLanguages._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TranslationServiceRestTransport._GetSupportedLanguages._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2082,16 +1695,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_get_supported_languages(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_supported_languages_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_supported_languages_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = translation_service.SupportedLanguages.to_json(
-                        response
-                    )
+                    response_payload = translation_service.SupportedLanguages.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2110,23 +1717,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _ListGlossaries(
-        _BaseTranslationServiceRestTransport._BaseListGlossaries,
-        TranslationServiceRestStub,
-    ):
+    class _ListGlossaries(_BaseTranslationServiceRestTransport._BaseListGlossaries, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.ListGlossaries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2165,26 +1761,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     Response message for ListGlossaries.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseListGlossaries._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_glossaries(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseListGlossaries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2208,12 +1794,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._ListGlossaries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2229,16 +1810,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_list_glossaries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_glossaries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_glossaries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        translation_service.ListGlossariesResponse.to_json(response)
-                    )
+                    response_payload = translation_service.ListGlossariesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2257,22 +1832,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _RefineText(
-        _BaseTranslationServiceRestTransport._BaseRefineText, TranslationServiceRestStub
-    ):
+    class _RefineText(_BaseTranslationServiceRestTransport._BaseRefineText, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.RefineText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2312,30 +1877,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     Response message for RefineText.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseRefineText._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseRefineText._get_http_options()
 
             request, metadata = self._interceptor.pre_refine_text(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseRefineText._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseRefineText._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseRefineText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseRefineText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseRefineText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseRefineText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2359,13 +1912,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._RefineText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2381,16 +1928,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_refine_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_refine_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_refine_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = translation_service.RefineTextResponse.to_json(
-                        response
-                    )
+                    response_payload = translation_service.RefineTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2409,23 +1950,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _TranslateDocument(
-        _BaseTranslationServiceRestTransport._BaseTranslateDocument,
-        TranslationServiceRestStub,
-    ):
+    class _TranslateDocument(_BaseTranslationServiceRestTransport._BaseTranslateDocument, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.TranslateDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2467,32 +1997,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_http_options()
 
-            request, metadata = self._interceptor.pre_translate_document(
-                request, metadata
-            )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_translate_document(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseTranslateDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2516,13 +2032,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._TranslateDocument._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2538,16 +2048,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_translate_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_translate_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_translate_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        translation_service.TranslateDocumentResponse.to_json(response)
-                    )
+                    response_payload = translation_service.TranslateDocumentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2566,23 +2070,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 )
             return resp
 
-    class _TranslateText(
-        _BaseTranslationServiceRestTransport._BaseTranslateText,
-        TranslationServiceRestStub,
-    ):
+    class _TranslateText(_BaseTranslationServiceRestTransport._BaseTranslateText, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.TranslateText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2623,30 +2116,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseTranslateText._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseTranslateText._get_http_options()
 
             request, metadata = self._interceptor.pre_translate_text(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateText._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseTranslateText._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseTranslateText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseTranslateText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseTranslateText._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseTranslateText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2670,13 +2151,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._TranslateText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2692,16 +2167,10 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             resp = self._interceptor.post_translate_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_translate_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_translate_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        translation_service.TranslateTextResponse.to_json(response)
-                    )
+                    response_payload = translation_service.TranslateTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2721,116 +2190,67 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             return resp
 
     @property
-    def batch_translate_document(
-        self,
-    ) -> Callable[
-        [translation_service.BatchTranslateDocumentRequest], operations_pb2.Operation
-    ]:
+    def batch_translate_document(self) -> Callable[[translation_service.BatchTranslateDocumentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchTranslateDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_translate_text(
-        self,
-    ) -> Callable[
-        [translation_service.BatchTranslateTextRequest], operations_pb2.Operation
-    ]:
+    def batch_translate_text(self) -> Callable[[translation_service.BatchTranslateTextRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchTranslateText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.CreateGlossaryRequest], operations_pb2.Operation
-    ]:
+    def create_glossary(self) -> Callable[[translation_service.CreateGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.DeleteGlossaryRequest], operations_pb2.Operation
-    ]:
+    def delete_glossary(self) -> Callable[[translation_service.DeleteGlossaryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def detect_language(
-        self,
-    ) -> Callable[
-        [translation_service.DetectLanguageRequest],
-        translation_service.DetectLanguageResponse,
-    ]:
+    def detect_language(self) -> Callable[[translation_service.DetectLanguageRequest], translation_service.DetectLanguageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DetectLanguage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.GetGlossaryRequest], translation_service.Glossary
-    ]:
+    def get_glossary(self) -> Callable[[translation_service.GetGlossaryRequest], translation_service.Glossary]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGlossary(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_supported_languages(
-        self,
-    ) -> Callable[
-        [translation_service.GetSupportedLanguagesRequest],
-        translation_service.SupportedLanguages,
-    ]:
+    def get_supported_languages(self) -> Callable[[translation_service.GetSupportedLanguagesRequest], translation_service.SupportedLanguages]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSupportedLanguages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_glossaries(
-        self,
-    ) -> Callable[
-        [translation_service.ListGlossariesRequest],
-        translation_service.ListGlossariesResponse,
-    ]:
+    def list_glossaries(self) -> Callable[[translation_service.ListGlossariesRequest], translation_service.ListGlossariesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGlossaries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def refine_text(
-        self,
-    ) -> Callable[
-        [translation_service.RefineTextRequest], translation_service.RefineTextResponse
-    ]:
+    def refine_text(self) -> Callable[[translation_service.RefineTextRequest], translation_service.RefineTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RefineText(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def translate_document(
-        self,
-    ) -> Callable[
-        [translation_service.TranslateDocumentRequest],
-        translation_service.TranslateDocumentResponse,
-    ]:
+    def translate_document(self) -> Callable[[translation_service.TranslateDocumentRequest], translation_service.TranslateDocumentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TranslateDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def translate_text(
-        self,
-    ) -> Callable[
-        [translation_service.TranslateTextRequest],
-        translation_service.TranslateTextResponse,
-    ]:
+    def translate_text(self) -> Callable[[translation_service.TranslateTextRequest], translation_service.TranslateTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TranslateText(self._session, self._host, self._interceptor)  # type: ignore
@@ -2839,23 +2259,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseTranslationServiceRestTransport._BaseGetLocation,
-        TranslationServiceRestStub,
-    ):
+    class _GetLocation(_BaseTranslationServiceRestTransport._BaseGetLocation, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2893,26 +2302,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2936,12 +2335,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2953,9 +2347,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2980,23 +2372,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseTranslationServiceRestTransport._BaseListLocations,
-        TranslationServiceRestStub,
-    ):
+    class _ListLocations(_BaseTranslationServiceRestTransport._BaseListLocations, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3034,26 +2415,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3077,12 +2448,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3094,9 +2460,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3121,23 +2485,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseTranslationServiceRestTransport._BaseCancelOperation,
-        TranslationServiceRestStub,
-    ):
+    class _CancelOperation(_BaseTranslationServiceRestTransport._BaseCancelOperation, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3173,32 +2526,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3222,13 +2561,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3242,23 +2575,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseTranslationServiceRestTransport._BaseDeleteOperation,
-        TranslationServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseTranslationServiceRestTransport._BaseDeleteOperation, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3293,28 +2615,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3338,12 +2648,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3357,23 +2662,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTranslationServiceRestTransport._BaseGetOperation,
-        TranslationServiceRestStub,
-    ):
+    class _GetOperation(_BaseTranslationServiceRestTransport._BaseGetOperation, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3411,26 +2705,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3454,12 +2738,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3471,9 +2750,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3498,23 +2775,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseTranslationServiceRestTransport._BaseListOperations,
-        TranslationServiceRestStub,
-    ):
+    class _ListOperations(_BaseTranslationServiceRestTransport._BaseListOperations, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3552,26 +2818,16 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3595,12 +2851,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3612,9 +2863,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3639,23 +2888,12 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
     def wait_operation(self):
         return self._WaitOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _WaitOperation(
-        _BaseTranslationServiceRestTransport._BaseWaitOperation,
-        TranslationServiceRestStub,
-    ):
+    class _WaitOperation(_BaseTranslationServiceRestTransport._BaseWaitOperation, TranslationServiceRestStub):
         def __hash__(self):
             return hash("TranslationServiceRestTransport.WaitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3694,30 +2932,18 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
                 operations_pb2.Operation: Response from WaitOperation method.
             """
 
-            http_options = (
-                _BaseTranslationServiceRestTransport._BaseWaitOperation._get_http_options()
-            )
+            http_options = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_wait_operation(request, metadata)
-            transcoded_request = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTranslationServiceRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3741,13 +2967,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
 
             # Send the request
             response = TranslationServiceRestTransport._WaitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3759,9 +2979,7 @@ class TranslationServiceRestTransport(_BaseTranslationServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

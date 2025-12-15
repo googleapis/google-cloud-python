@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.security.privateca_v1beta1 import gapic_version as package_version
 from google.cloud.security.privateca_v1beta1.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -251,87 +241,49 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_certificate(
-        self,
-    ) -> Callable[
-        [service.CreateCertificateRequest],
-        Union[resources.Certificate, Awaitable[resources.Certificate]],
-    ]:
+    def create_certificate(self) -> Callable[[service.CreateCertificateRequest], Union[resources.Certificate, Awaitable[resources.Certificate]]]:
         raise NotImplementedError()
 
     @property
-    def get_certificate(
-        self,
-    ) -> Callable[
-        [service.GetCertificateRequest],
-        Union[resources.Certificate, Awaitable[resources.Certificate]],
-    ]:
+    def get_certificate(self) -> Callable[[service.GetCertificateRequest], Union[resources.Certificate, Awaitable[resources.Certificate]]]:
         raise NotImplementedError()
 
     @property
     def list_certificates(
         self,
-    ) -> Callable[
-        [service.ListCertificatesRequest],
-        Union[
-            service.ListCertificatesResponse,
-            Awaitable[service.ListCertificatesResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListCertificatesRequest], Union[service.ListCertificatesResponse, Awaitable[service.ListCertificatesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def revoke_certificate(
-        self,
-    ) -> Callable[
-        [service.RevokeCertificateRequest],
-        Union[resources.Certificate, Awaitable[resources.Certificate]],
-    ]:
+    def revoke_certificate(self) -> Callable[[service.RevokeCertificateRequest], Union[resources.Certificate, Awaitable[resources.Certificate]]]:
         raise NotImplementedError()
 
     @property
-    def update_certificate(
-        self,
-    ) -> Callable[
-        [service.UpdateCertificateRequest],
-        Union[resources.Certificate, Awaitable[resources.Certificate]],
-    ]:
+    def update_certificate(self) -> Callable[[service.UpdateCertificateRequest], Union[resources.Certificate, Awaitable[resources.Certificate]]]:
         raise NotImplementedError()
 
     @property
     def activate_certificate_authority(
         self,
-    ) -> Callable[
-        [service.ActivateCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.ActivateCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_certificate_authority(
         self,
-    ) -> Callable[
-        [service.CreateCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def disable_certificate_authority(
         self,
-    ) -> Callable[
-        [service.DisableCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.DisableCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def enable_certificate_authority(
         self,
-    ) -> Callable[
-        [service.EnableCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.EnableCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -339,22 +291,14 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.FetchCertificateAuthorityCsrRequest],
-        Union[
-            service.FetchCertificateAuthorityCsrResponse,
-            Awaitable[service.FetchCertificateAuthorityCsrResponse],
-        ],
+        Union[service.FetchCertificateAuthorityCsrResponse, Awaitable[service.FetchCertificateAuthorityCsrResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_certificate_authority(
         self,
-    ) -> Callable[
-        [service.GetCertificateAuthorityRequest],
-        Union[
-            resources.CertificateAuthority, Awaitable[resources.CertificateAuthority]
-        ],
-    ]:
+    ) -> Callable[[service.GetCertificateAuthorityRequest], Union[resources.CertificateAuthority, Awaitable[resources.CertificateAuthority]]]:
         raise NotImplementedError()
 
     @property
@@ -362,49 +306,33 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListCertificateAuthoritiesRequest],
-        Union[
-            service.ListCertificateAuthoritiesResponse,
-            Awaitable[service.ListCertificateAuthoritiesResponse],
-        ],
+        Union[service.ListCertificateAuthoritiesResponse, Awaitable[service.ListCertificateAuthoritiesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def restore_certificate_authority(
         self,
-    ) -> Callable[
-        [service.RestoreCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.RestoreCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def schedule_delete_certificate_authority(
         self,
-    ) -> Callable[
-        [service.ScheduleDeleteCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.ScheduleDeleteCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_certificate_authority(
         self,
-    ) -> Callable[
-        [service.UpdateCertificateAuthorityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.UpdateCertificateAuthorityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_certificate_revocation_list(
         self,
     ) -> Callable[
-        [service.GetCertificateRevocationListRequest],
-        Union[
-            resources.CertificateRevocationList,
-            Awaitable[resources.CertificateRevocationList],
-        ],
+        [service.GetCertificateRevocationListRequest], Union[resources.CertificateRevocationList, Awaitable[resources.CertificateRevocationList]]
     ]:
         raise NotImplementedError()
 
@@ -413,41 +341,26 @@ class CertificateAuthorityServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListCertificateRevocationListsRequest],
-        Union[
-            service.ListCertificateRevocationListsResponse,
-            Awaitable[service.ListCertificateRevocationListsResponse],
-        ],
+        Union[service.ListCertificateRevocationListsResponse, Awaitable[service.ListCertificateRevocationListsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_certificate_revocation_list(
         self,
-    ) -> Callable[
-        [service.UpdateCertificateRevocationListRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.UpdateCertificateRevocationListRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_reusable_config(
         self,
-    ) -> Callable[
-        [service.GetReusableConfigRequest],
-        Union[resources.ReusableConfig, Awaitable[resources.ReusableConfig]],
-    ]:
+    ) -> Callable[[service.GetReusableConfigRequest], Union[resources.ReusableConfig, Awaitable[resources.ReusableConfig]]]:
         raise NotImplementedError()
 
     @property
     def list_reusable_configs(
         self,
-    ) -> Callable[
-        [service.ListReusableConfigsRequest],
-        Union[
-            service.ListReusableConfigsResponse,
-            Awaitable[service.ListReusableConfigsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListReusableConfigsRequest], Union[service.ListReusableConfigsResponse, Awaitable[service.ListReusableConfigsResponse]]]:
         raise NotImplementedError()
 
     @property

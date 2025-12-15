@@ -88,12 +88,8 @@ class CompletionRestInterceptor:
     """
 
     def pre_complete_query(
-        self,
-        request: completion_service.CompleteQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        completion_service.CompleteQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: completion_service.CompleteQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[completion_service.CompleteQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for complete_query
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +97,7 @@ class CompletionRestInterceptor:
         """
         return request, metadata
 
-    def post_complete_query(
-        self, response: completion_service.CompleteQueryResponse
-    ) -> completion_service.CompleteQueryResponse:
+    def post_complete_query(self, response: completion_service.CompleteQueryResponse) -> completion_service.CompleteQueryResponse:
         """Post-rpc interceptor for complete_query
 
         DEPRECATED. Please use the `post_complete_query_with_metadata`
@@ -117,13 +111,8 @@ class CompletionRestInterceptor:
         return response
 
     def post_complete_query_with_metadata(
-        self,
-        response: completion_service.CompleteQueryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        completion_service.CompleteQueryResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: completion_service.CompleteQueryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[completion_service.CompleteQueryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for complete_query
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -139,12 +128,8 @@ class CompletionRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -152,9 +137,7 @@ class CompletionRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -243,30 +226,18 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CompletionRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CompleteQuery(
-        _BaseCompletionRestTransport._BaseCompleteQuery, CompletionRestStub
-    ):
+    class _CompleteQuery(_BaseCompletionRestTransport._BaseCompleteQuery, CompletionRestStub):
         def __hash__(self):
             return hash("CompletionRestTransport.CompleteQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -305,30 +276,16 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
                     Response of auto-complete query.
             """
 
-            http_options = (
-                _BaseCompletionRestTransport._BaseCompleteQuery._get_http_options()
-            )
+            http_options = _BaseCompletionRestTransport._BaseCompleteQuery._get_http_options()
 
             request, metadata = self._interceptor.pre_complete_query(request, metadata)
-            transcoded_request = (
-                _BaseCompletionRestTransport._BaseCompleteQuery._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCompletionRestTransport._BaseCompleteQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCompletionRestTransport._BaseCompleteQuery._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCompletionRestTransport._BaseCompleteQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -352,12 +309,7 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
 
             # Send the request
             response = CompletionRestTransport._CompleteQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -373,16 +325,10 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
 
             resp = self._interceptor.post_complete_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_complete_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_complete_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = completion_service.CompleteQueryResponse.to_json(
-                        response
-                    )
+                    response_payload = completion_service.CompleteQueryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -402,12 +348,7 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
             return resp
 
     @property
-    def complete_query(
-        self,
-    ) -> Callable[
-        [completion_service.CompleteQueryRequest],
-        completion_service.CompleteQueryResponse,
-    ]:
+    def complete_query(self) -> Callable[[completion_service.CompleteQueryRequest], completion_service.CompleteQueryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CompleteQuery(self._session, self._host, self._interceptor)  # type: ignore
@@ -416,22 +357,12 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCompletionRestTransport._BaseGetOperation, CompletionRestStub
-    ):
+    class _GetOperation(_BaseCompletionRestTransport._BaseGetOperation, CompletionRestStub):
         def __hash__(self):
             return hash("CompletionRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -469,30 +400,16 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCompletionRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCompletionRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseCompletionRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCompletionRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCompletionRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCompletionRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -516,12 +433,7 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
 
             # Send the request
             response = CompletionRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -533,9 +445,7 @@ class CompletionRestTransport(_BaseCompletionRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

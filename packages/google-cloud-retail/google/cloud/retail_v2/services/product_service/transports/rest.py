@@ -177,13 +177,8 @@ class ProductServiceRestInterceptor:
     """
 
     def pre_add_fulfillment_places(
-        self,
-        request: product_service.AddFulfillmentPlacesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.AddFulfillmentPlacesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: product_service.AddFulfillmentPlacesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.AddFulfillmentPlacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_fulfillment_places
 
         Override in a subclass to manipulate the request or metadata
@@ -191,9 +186,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_add_fulfillment_places(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_fulfillment_places(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_fulfillment_places
 
         DEPRECATED. Please use the `post_add_fulfillment_places_with_metadata`
@@ -207,9 +200,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_add_fulfillment_places_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_fulfillment_places
 
@@ -226,13 +217,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_add_local_inventories(
-        self,
-        request: product_service.AddLocalInventoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.AddLocalInventoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: product_service.AddLocalInventoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.AddLocalInventoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_local_inventories
 
         Override in a subclass to manipulate the request or metadata
@@ -240,9 +226,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_add_local_inventories(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_local_inventories(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_local_inventories
 
         DEPRECATED. Please use the `post_add_local_inventories_with_metadata`
@@ -256,9 +240,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_add_local_inventories_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_local_inventories
 
@@ -275,12 +257,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_create_product(
-        self,
-        request: product_service.CreateProductRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.CreateProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: product_service.CreateProductRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.CreateProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_product
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +280,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_create_product_with_metadata(
-        self,
-        response: gcr_product.Product,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcr_product.Product, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcr_product.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_product
 
@@ -321,12 +297,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_product(
-        self,
-        request: product_service.DeleteProductRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.DeleteProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: product_service.DeleteProductRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.DeleteProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_product
 
         Override in a subclass to manipulate the request or metadata
@@ -335,12 +307,8 @@ class ProductServiceRestInterceptor:
         return request, metadata
 
     def pre_get_product(
-        self,
-        request: product_service.GetProductRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: product_service.GetProductRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_product
 
         Override in a subclass to manipulate the request or metadata
@@ -362,9 +330,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_get_product_with_metadata(
-        self,
-        response: product.Product,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: product.Product, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[product.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_product
 
@@ -381,12 +347,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_import_products(
-        self,
-        request: import_config.ImportProductsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        import_config.ImportProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: import_config.ImportProductsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[import_config.ImportProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_products
 
         Override in a subclass to manipulate the request or metadata
@@ -394,9 +356,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_products(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_products(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_products
 
         DEPRECATED. Please use the `post_import_products_with_metadata`
@@ -410,9 +370,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_import_products_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_products
 
@@ -429,12 +387,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_list_products(
-        self,
-        request: product_service.ListProductsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: product_service.ListProductsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_products
 
         Override in a subclass to manipulate the request or metadata
@@ -442,9 +396,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_products(
-        self, response: product_service.ListProductsResponse
-    ) -> product_service.ListProductsResponse:
+    def post_list_products(self, response: product_service.ListProductsResponse) -> product_service.ListProductsResponse:
         """Post-rpc interceptor for list_products
 
         DEPRECATED. Please use the `post_list_products_with_metadata`
@@ -458,12 +410,8 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_list_products_with_metadata(
-        self,
-        response: product_service.ListProductsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.ListProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: product_service.ListProductsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.ListProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_products
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -479,12 +427,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_purge_products(
-        self,
-        request: purge_config.PurgeProductsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        purge_config.PurgeProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: purge_config.PurgeProductsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[purge_config.PurgeProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_products
 
         Override in a subclass to manipulate the request or metadata
@@ -492,9 +436,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_purge_products(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_purge_products(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_products
 
         DEPRECATED. Please use the `post_purge_products_with_metadata`
@@ -508,9 +450,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_purge_products_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for purge_products
 
@@ -527,13 +467,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_remove_fulfillment_places(
-        self,
-        request: product_service.RemoveFulfillmentPlacesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.RemoveFulfillmentPlacesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: product_service.RemoveFulfillmentPlacesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.RemoveFulfillmentPlacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_fulfillment_places
 
         Override in a subclass to manipulate the request or metadata
@@ -541,9 +476,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_fulfillment_places(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_fulfillment_places(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_fulfillment_places
 
         DEPRECATED. Please use the `post_remove_fulfillment_places_with_metadata`
@@ -557,9 +490,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_remove_fulfillment_places_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_fulfillment_places
 
@@ -576,13 +507,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_remove_local_inventories(
-        self,
-        request: product_service.RemoveLocalInventoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.RemoveLocalInventoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: product_service.RemoveLocalInventoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.RemoveLocalInventoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_local_inventories
 
         Override in a subclass to manipulate the request or metadata
@@ -590,9 +516,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_local_inventories(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_local_inventories(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_local_inventories
 
         DEPRECATED. Please use the `post_remove_local_inventories_with_metadata`
@@ -606,9 +530,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_remove_local_inventories_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_local_inventories
 
@@ -625,12 +547,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_set_inventory(
-        self,
-        request: product_service.SetInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.SetInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: product_service.SetInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.SetInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -638,9 +556,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_inventory(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_set_inventory(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_inventory
 
         DEPRECATED. Please use the `post_set_inventory_with_metadata`
@@ -654,9 +570,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_set_inventory_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_inventory
 
@@ -673,12 +587,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_update_product(
-        self,
-        request: product_service.UpdateProductRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        product_service.UpdateProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: product_service.UpdateProductRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[product_service.UpdateProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_product
 
         Override in a subclass to manipulate the request or metadata
@@ -700,9 +610,7 @@ class ProductServiceRestInterceptor:
         return response
 
     def post_update_product_with_metadata(
-        self,
-        response: gcr_product.Product,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcr_product.Product, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcr_product.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_product
 
@@ -719,12 +627,8 @@ class ProductServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -732,9 +636,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -744,12 +646,8 @@ class ProductServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -757,9 +655,7 @@ class ProductServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -849,9 +745,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -911,30 +805,17 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddFulfillmentPlaces(
-        _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces,
-        ProductServiceRestStub,
-    ):
+    class _AddFulfillmentPlaces(_BaseProductServiceRestTransport._BaseAddFulfillmentPlaces, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.AddFulfillmentPlaces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -979,32 +860,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_fulfillment_places(
-                request, metadata
-            )
-            transcoded_request = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_fulfillment_places(request, metadata)
+            transcoded_request = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseAddFulfillmentPlaces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1028,13 +895,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._AddFulfillmentPlaces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1048,12 +909,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_add_fulfillment_places(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_fulfillment_places_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_fulfillment_places_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1074,23 +931,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _AddLocalInventories(
-        _BaseProductServiceRestTransport._BaseAddLocalInventories,
-        ProductServiceRestStub,
-    ):
+    class _AddLocalInventories(_BaseProductServiceRestTransport._BaseAddLocalInventories, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.AddLocalInventories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1135,32 +981,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseAddLocalInventories._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_local_inventories(
-                request, metadata
-            )
-            transcoded_request = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_local_inventories(request, metadata)
+            transcoded_request = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseAddLocalInventories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1184,13 +1016,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._AddLocalInventories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1204,12 +1030,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_add_local_inventories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_local_inventories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_local_inventories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1230,22 +1052,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _CreateProduct(
-        _BaseProductServiceRestTransport._BaseCreateProduct, ProductServiceRestStub
-    ):
+    class _CreateProduct(_BaseProductServiceRestTransport._BaseCreateProduct, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.CreateProduct")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1290,30 +1102,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseCreateProduct._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseCreateProduct._get_http_options()
 
             request, metadata = self._interceptor.pre_create_product(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseCreateProduct._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseCreateProduct._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseCreateProduct._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseCreateProduct._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseCreateProduct._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseCreateProduct._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1337,13 +1137,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._CreateProduct._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1359,12 +1153,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_create_product(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_product_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_product_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcr_product.Product.to_json(response)
                 except:
@@ -1385,22 +1175,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _DeleteProduct(
-        _BaseProductServiceRestTransport._BaseDeleteProduct, ProductServiceRestStub
-    ):
+    class _DeleteProduct(_BaseProductServiceRestTransport._BaseDeleteProduct, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.DeleteProduct")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1437,26 +1217,16 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseDeleteProduct._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseDeleteProduct._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_product(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseDeleteProduct._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseDeleteProduct._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseDeleteProduct._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseDeleteProduct._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1480,12 +1250,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._DeleteProduct._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1493,22 +1258,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetProduct(
-        _BaseProductServiceRestTransport._BaseGetProduct, ProductServiceRestStub
-    ):
+    class _GetProduct(_BaseProductServiceRestTransport._BaseGetProduct, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.GetProduct")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1552,28 +1307,16 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseGetProduct._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseGetProduct._get_http_options()
 
             request, metadata = self._interceptor.pre_get_product(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseGetProduct._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseGetProduct._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseProductServiceRestTransport._BaseGetProduct._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseProductServiceRestTransport._BaseGetProduct._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1597,12 +1340,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._GetProduct._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1618,12 +1356,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_get_product(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_product_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_product_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = product.Product.to_json(response)
                 except:
@@ -1644,22 +1378,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _ImportProducts(
-        _BaseProductServiceRestTransport._BaseImportProducts, ProductServiceRestStub
-    ):
+    class _ImportProducts(_BaseProductServiceRestTransport._BaseImportProducts, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.ImportProducts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1702,30 +1426,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseImportProducts._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseImportProducts._get_http_options()
 
             request, metadata = self._interceptor.pre_import_products(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseImportProducts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseImportProducts._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseImportProducts._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseImportProducts._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseImportProducts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseImportProducts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1749,13 +1461,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._ImportProducts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1769,12 +1475,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_import_products(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_products_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_products_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1795,22 +1497,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _ListProducts(
-        _BaseProductServiceRestTransport._BaseListProducts, ProductServiceRestStub
-    ):
+    class _ListProducts(_BaseProductServiceRestTransport._BaseListProducts, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.ListProducts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1854,26 +1546,16 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseListProducts._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseListProducts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_products(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseListProducts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseListProducts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseListProducts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseListProducts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1897,12 +1579,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._ListProducts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1918,16 +1595,10 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_list_products(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_products_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_products_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = product_service.ListProductsResponse.to_json(
-                        response
-                    )
+                    response_payload = product_service.ListProductsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1946,22 +1617,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _PurgeProducts(
-        _BaseProductServiceRestTransport._BasePurgeProducts, ProductServiceRestStub
-    ):
+    class _PurgeProducts(_BaseProductServiceRestTransport._BasePurgeProducts, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.PurgeProducts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2005,30 +1666,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BasePurgeProducts._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BasePurgeProducts._get_http_options()
 
             request, metadata = self._interceptor.pre_purge_products(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BasePurgeProducts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BasePurgeProducts._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BasePurgeProducts._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BasePurgeProducts._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BasePurgeProducts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BasePurgeProducts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2052,13 +1701,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._PurgeProducts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2072,12 +1715,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_purge_products(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_purge_products_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_products_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2098,23 +1737,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _RemoveFulfillmentPlaces(
-        _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces,
-        ProductServiceRestStub,
-    ):
+    class _RemoveFulfillmentPlaces(_BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.RemoveFulfillmentPlaces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2159,32 +1787,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_fulfillment_places(
-                request, metadata
-            )
-            transcoded_request = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_fulfillment_places(request, metadata)
+            transcoded_request = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseRemoveFulfillmentPlaces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2207,16 +1821,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ProductServiceRestTransport._RemoveFulfillmentPlaces._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ProductServiceRestTransport._RemoveFulfillmentPlaces._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2230,12 +1836,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_remove_fulfillment_places(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_fulfillment_places_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_fulfillment_places_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2256,23 +1858,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _RemoveLocalInventories(
-        _BaseProductServiceRestTransport._BaseRemoveLocalInventories,
-        ProductServiceRestStub,
-    ):
+    class _RemoveLocalInventories(_BaseProductServiceRestTransport._BaseRemoveLocalInventories, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.RemoveLocalInventories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2317,32 +1908,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_local_inventories(
-                request, metadata
-            )
-            transcoded_request = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_local_inventories(request, metadata)
+            transcoded_request = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseRemoveLocalInventories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2365,16 +1942,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ProductServiceRestTransport._RemoveLocalInventories._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ProductServiceRestTransport._RemoveLocalInventories._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2388,12 +1957,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_remove_local_inventories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_local_inventories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_local_inventories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2414,22 +1979,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _SetInventory(
-        _BaseProductServiceRestTransport._BaseSetInventory, ProductServiceRestStub
-    ):
+    class _SetInventory(_BaseProductServiceRestTransport._BaseSetInventory, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.SetInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2474,30 +2029,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseSetInventory._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseSetInventory._get_http_options()
 
             request, metadata = self._interceptor.pre_set_inventory(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseSetInventory._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseSetInventory._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseSetInventory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseSetInventory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseSetInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseSetInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2521,13 +2064,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._SetInventory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2541,12 +2078,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_set_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2567,22 +2100,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 )
             return resp
 
-    class _UpdateProduct(
-        _BaseProductServiceRestTransport._BaseUpdateProduct, ProductServiceRestStub
-    ):
+    class _UpdateProduct(_BaseProductServiceRestTransport._BaseUpdateProduct, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.UpdateProduct")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2627,30 +2150,18 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseUpdateProduct._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseUpdateProduct._get_http_options()
 
             request, metadata = self._interceptor.pre_update_product(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseUpdateProduct._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseUpdateProduct._get_transcoded_request(http_options, request)
 
-            body = _BaseProductServiceRestTransport._BaseUpdateProduct._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseProductServiceRestTransport._BaseUpdateProduct._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseUpdateProduct._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseUpdateProduct._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2674,13 +2185,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._UpdateProduct._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2696,12 +2201,8 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             resp = self._interceptor.post_update_product(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_product_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_product_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcr_product.Product.to_json(response)
                 except:
@@ -2723,107 +2224,73 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             return resp
 
     @property
-    def add_fulfillment_places(
-        self,
-    ) -> Callable[
-        [product_service.AddFulfillmentPlacesRequest], operations_pb2.Operation
-    ]:
+    def add_fulfillment_places(self) -> Callable[[product_service.AddFulfillmentPlacesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddFulfillmentPlaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def add_local_inventories(
-        self,
-    ) -> Callable[
-        [product_service.AddLocalInventoriesRequest], operations_pb2.Operation
-    ]:
+    def add_local_inventories(self) -> Callable[[product_service.AddLocalInventoriesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddLocalInventories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_product(
-        self,
-    ) -> Callable[[product_service.CreateProductRequest], gcr_product.Product]:
+    def create_product(self) -> Callable[[product_service.CreateProductRequest], gcr_product.Product]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateProduct(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_product(
-        self,
-    ) -> Callable[[product_service.DeleteProductRequest], empty_pb2.Empty]:
+    def delete_product(self) -> Callable[[product_service.DeleteProductRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProduct(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_product(
-        self,
-    ) -> Callable[[product_service.GetProductRequest], product.Product]:
+    def get_product(self) -> Callable[[product_service.GetProductRequest], product.Product]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProduct(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_products(
-        self,
-    ) -> Callable[[import_config.ImportProductsRequest], operations_pb2.Operation]:
+    def import_products(self) -> Callable[[import_config.ImportProductsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportProducts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [product_service.ListProductsRequest], product_service.ListProductsResponse
-    ]:
+    def list_products(self) -> Callable[[product_service.ListProductsRequest], product_service.ListProductsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProducts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def purge_products(
-        self,
-    ) -> Callable[[purge_config.PurgeProductsRequest], operations_pb2.Operation]:
+    def purge_products(self) -> Callable[[purge_config.PurgeProductsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PurgeProducts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_fulfillment_places(
-        self,
-    ) -> Callable[
-        [product_service.RemoveFulfillmentPlacesRequest], operations_pb2.Operation
-    ]:
+    def remove_fulfillment_places(self) -> Callable[[product_service.RemoveFulfillmentPlacesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveFulfillmentPlaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_local_inventories(
-        self,
-    ) -> Callable[
-        [product_service.RemoveLocalInventoriesRequest], operations_pb2.Operation
-    ]:
+    def remove_local_inventories(self) -> Callable[[product_service.RemoveLocalInventoriesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveLocalInventories(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_inventory(
-        self,
-    ) -> Callable[[product_service.SetInventoryRequest], operations_pb2.Operation]:
+    def set_inventory(self) -> Callable[[product_service.SetInventoryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_product(
-        self,
-    ) -> Callable[[product_service.UpdateProductRequest], gcr_product.Product]:
+    def update_product(self) -> Callable[[product_service.UpdateProductRequest], gcr_product.Product]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProduct(self._session, self._host, self._interceptor)  # type: ignore
@@ -2832,22 +2299,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseProductServiceRestTransport._BaseGetOperation, ProductServiceRestStub
-    ):
+    class _GetOperation(_BaseProductServiceRestTransport._BaseGetOperation, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2885,26 +2342,16 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2928,12 +2375,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2945,9 +2387,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2972,22 +2412,12 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseProductServiceRestTransport._BaseListOperations, ProductServiceRestStub
-    ):
+    class _ListOperations(_BaseProductServiceRestTransport._BaseListOperations, ProductServiceRestStub):
         def __hash__(self):
             return hash("ProductServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3025,26 +2455,16 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseProductServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseProductServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseProductServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3068,12 +2488,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
 
             # Send the request
             response = ProductServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3085,9 +2500,7 @@ class ProductServiceRestTransport(_BaseProductServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

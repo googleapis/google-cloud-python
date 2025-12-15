@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.privilegedaccessmanager_v1 import gapic_version as package_version
 from google.cloud.privilegedaccessmanager_v1.types import privilegedaccessmanager
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -251,10 +241,7 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [privilegedaccessmanager.CheckOnboardingStatusRequest],
-        Union[
-            privilegedaccessmanager.CheckOnboardingStatusResponse,
-            Awaitable[privilegedaccessmanager.CheckOnboardingStatusResponse],
-        ],
+        Union[privilegedaccessmanager.CheckOnboardingStatusResponse, Awaitable[privilegedaccessmanager.CheckOnboardingStatusResponse]],
     ]:
         raise NotImplementedError()
 
@@ -263,10 +250,7 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [privilegedaccessmanager.ListEntitlementsRequest],
-        Union[
-            privilegedaccessmanager.ListEntitlementsResponse,
-            Awaitable[privilegedaccessmanager.ListEntitlementsResponse],
-        ],
+        Union[privilegedaccessmanager.ListEntitlementsResponse, Awaitable[privilegedaccessmanager.ListEntitlementsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -275,10 +259,7 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [privilegedaccessmanager.SearchEntitlementsRequest],
-        Union[
-            privilegedaccessmanager.SearchEntitlementsResponse,
-            Awaitable[privilegedaccessmanager.SearchEntitlementsResponse],
-        ],
+        Union[privilegedaccessmanager.SearchEntitlementsResponse, Awaitable[privilegedaccessmanager.SearchEntitlementsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -286,39 +267,26 @@ class PrivilegedAccessManagerTransport(abc.ABC):
     def get_entitlement(
         self,
     ) -> Callable[
-        [privilegedaccessmanager.GetEntitlementRequest],
-        Union[
-            privilegedaccessmanager.Entitlement,
-            Awaitable[privilegedaccessmanager.Entitlement],
-        ],
+        [privilegedaccessmanager.GetEntitlementRequest], Union[privilegedaccessmanager.Entitlement, Awaitable[privilegedaccessmanager.Entitlement]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_entitlement(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.CreateEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.CreateEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_entitlement(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.DeleteEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.DeleteEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_entitlement(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.UpdateEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.UpdateEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -326,10 +294,7 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [privilegedaccessmanager.ListGrantsRequest],
-        Union[
-            privilegedaccessmanager.ListGrantsResponse,
-            Awaitable[privilegedaccessmanager.ListGrantsResponse],
-        ],
+        Union[privilegedaccessmanager.ListGrantsResponse, Awaitable[privilegedaccessmanager.ListGrantsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -338,56 +303,38 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [privilegedaccessmanager.SearchGrantsRequest],
-        Union[
-            privilegedaccessmanager.SearchGrantsResponse,
-            Awaitable[privilegedaccessmanager.SearchGrantsResponse],
-        ],
+        Union[privilegedaccessmanager.SearchGrantsResponse, Awaitable[privilegedaccessmanager.SearchGrantsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_grant(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.GetGrantRequest],
-        Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.GetGrantRequest], Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]]]:
         raise NotImplementedError()
 
     @property
     def create_grant(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.CreateGrantRequest],
-        Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.CreateGrantRequest], Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]]]:
         raise NotImplementedError()
 
     @property
     def approve_grant(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.ApproveGrantRequest],
-        Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.ApproveGrantRequest], Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]]]:
         raise NotImplementedError()
 
     @property
     def deny_grant(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.DenyGrantRequest],
-        Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.DenyGrantRequest], Union[privilegedaccessmanager.Grant, Awaitable[privilegedaccessmanager.Grant]]]:
         raise NotImplementedError()
 
     @property
     def revoke_grant(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.RevokeGrantRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[privilegedaccessmanager.RevokeGrantRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -395,20 +342,14 @@ class PrivilegedAccessManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -420,22 +361,13 @@ class PrivilegedAccessManagerTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

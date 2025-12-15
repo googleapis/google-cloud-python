@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import PhishingProtectionServiceV1Beta1Transport
 from .grpc import PhishingProtectionServiceV1Beta1GrpcTransport
 from .grpc_asyncio import PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
-from .rest import (
-    PhishingProtectionServiceV1Beta1RestInterceptor,
-    PhishingProtectionServiceV1Beta1RestTransport,
-)
+from .rest import PhishingProtectionServiceV1Beta1RestInterceptor, PhishingProtectionServiceV1Beta1RestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PhishingProtectionServiceV1Beta1Transport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PhishingProtectionServiceV1Beta1Transport]]
 _transport_registry["grpc"] = PhishingProtectionServiceV1Beta1GrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
 _transport_registry["rest"] = PhishingProtectionServiceV1Beta1RestTransport
 
 __all__ = (

@@ -19,19 +19,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -77,10 +65,7 @@ from google.cloud.iam_v3beta.types import (
     principal_access_boundary_policy_resources,
 )
 
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    PrincipalAccessBoundaryPoliciesTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, PrincipalAccessBoundaryPoliciesTransport
 from .transports.grpc import PrincipalAccessBoundaryPoliciesGrpcTransport
 from .transports.grpc_asyncio import PrincipalAccessBoundaryPoliciesGrpcAsyncIOTransport
 from .transports.rest import PrincipalAccessBoundaryPoliciesRestTransport
@@ -94,13 +79,9 @@ class PrincipalAccessBoundaryPoliciesClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[PrincipalAccessBoundaryPoliciesTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[PrincipalAccessBoundaryPoliciesTransport]]
     _transport_registry["grpc"] = PrincipalAccessBoundaryPoliciesGrpcTransport
-    _transport_registry[
-        "grpc_asyncio"
-    ] = PrincipalAccessBoundaryPoliciesGrpcAsyncIOTransport
+    _transport_registry["grpc_asyncio"] = PrincipalAccessBoundaryPoliciesGrpcAsyncIOTransport
     _transport_registry["rest"] = PrincipalAccessBoundaryPoliciesRestTransport
 
     def get_transport_class(
@@ -125,9 +106,7 @@ class PrincipalAccessBoundaryPoliciesClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class PrincipalAccessBoundaryPoliciesClient(
-    metaclass=PrincipalAccessBoundaryPoliciesClientMeta
-):
+class PrincipalAccessBoundaryPoliciesClient(metaclass=PrincipalAccessBoundaryPoliciesClientMeta):
     """Manages Identity and Access Management (IAM) principal access
     boundary policies.
     """
@@ -146,9 +125,7 @@ class PrincipalAccessBoundaryPoliciesClient(
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -156,20 +133,39 @@ class PrincipalAccessBoundaryPoliciesClient(
             return api_endpoint
 
         if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
+            return api_endpoint.replace("sandbox.googleapis.com", "mtls.sandbox.googleapis.com")
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "iam.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "iam.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
+
+    @staticmethod
+    def _use_client_cert_effective():
+        """Returns whether client certificate should be used for mTLS if the
+        google-auth version supports should_use_client_cert automatic mTLS enablement.
+
+        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
+
+        Returns:
+            bool: whether client certificate should be used for mTLS
+        Raises:
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        """
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+            return mtls.should_use_client_cert()
+        else:  # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be" " either `true` or `false`")
+            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -234,10 +230,7 @@ class PrincipalAccessBoundaryPoliciesClient(
     @staticmethod
     def parse_policy_binding_path(path: str) -> Dict[str, str]:
         """Parses a policy_binding path into its component segments."""
-        m = re.match(
-            r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/policyBindings/(?P<policy_binding>.+?)$",
-            path,
-        )
+        m = re.match(r"^organizations/(?P<organization>.+?)/locations/(?P<location>.+?)/policyBindings/(?P<policy_binding>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -340,9 +333,7 @@ class PrincipalAccessBoundaryPoliciesClient(
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -374,26 +365,17 @@ class PrincipalAccessBoundaryPoliciesClient(
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.", DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_client_cert = PrincipalAccessBoundaryPoliciesClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -402,9 +384,7 @@ class PrincipalAccessBoundaryPoliciesClient(
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -425,20 +405,12 @@ class PrincipalAccessBoundaryPoliciesClient(
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = PrincipalAccessBoundaryPoliciesClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -460,9 +432,7 @@ class PrincipalAccessBoundaryPoliciesClient(
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -478,27 +448,17 @@ class PrincipalAccessBoundaryPoliciesClient(
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = PrincipalAccessBoundaryPoliciesClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = PrincipalAccessBoundaryPoliciesClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = (
-                PrincipalAccessBoundaryPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=universe_domain
-                )
-            )
+            api_endpoint = PrincipalAccessBoundaryPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -533,19 +493,13 @@ class PrincipalAccessBoundaryPoliciesClient(
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
+    def _add_cred_info_for_auth_errors(self, error: core_exceptions.GoogleAPICallError) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -582,13 +536,7 @@ class PrincipalAccessBoundaryPoliciesClient(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                PrincipalAccessBoundaryPoliciesTransport,
-                Callable[..., PrincipalAccessBoundaryPoliciesTransport],
-            ]
-        ] = None,
+        transport: Optional[Union[str, PrincipalAccessBoundaryPoliciesTransport, Callable[..., PrincipalAccessBoundaryPoliciesTransport]]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -646,9 +594,7 @@ class PrincipalAccessBoundaryPoliciesClient(
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
@@ -657,16 +603,10 @@ class PrincipalAccessBoundaryPoliciesClient(
             self._use_mtls_endpoint,
             self._universe_domain_env,
         ) = PrincipalAccessBoundaryPoliciesClient._read_environment_variables()
-        self._client_cert_source = (
-            PrincipalAccessBoundaryPoliciesClient._get_client_cert_source(
-                self._client_options.client_cert_source, self._use_client_cert
-            )
+        self._client_cert_source = PrincipalAccessBoundaryPoliciesClient._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = (
-            PrincipalAccessBoundaryPoliciesClient._get_universe_domain(
-                universe_domain_opt, self._universe_domain_env
-            )
-        )
+        self._universe_domain = PrincipalAccessBoundaryPoliciesClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -678,60 +618,35 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
         # instance provides an extensibility point for unusual situations.
-        transport_provided = isinstance(
-            transport, PrincipalAccessBoundaryPoliciesTransport
-        )
+        transport_provided = isinstance(transport, PrincipalAccessBoundaryPoliciesTransport)
         if transport_provided:
             # transport is a PrincipalAccessBoundaryPoliciesTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, " "provide its credentials directly.")
             if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
+                raise ValueError("When providing a transport instance, provide its scopes " "directly.")
             self._transport = cast(PrincipalAccessBoundaryPoliciesTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or PrincipalAccessBoundaryPoliciesClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or PrincipalAccessBoundaryPoliciesClient._get_api_endpoint(
+            self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint
         )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[PrincipalAccessBoundaryPoliciesTransport],
-                Callable[..., PrincipalAccessBoundaryPoliciesTransport],
-            ] = (
+            transport_init: Union[Type[PrincipalAccessBoundaryPoliciesTransport], Callable[..., PrincipalAccessBoundaryPoliciesTransport]] = (
                 PrincipalAccessBoundaryPoliciesClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(
-                    Callable[..., PrincipalAccessBoundaryPoliciesTransport], transport
-                )
+                else cast(Callable[..., PrincipalAccessBoundaryPoliciesTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -747,20 +662,14 @@ class PrincipalAccessBoundaryPoliciesClient(
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.iam_v3beta.PrincipalAccessBoundaryPoliciesClient`.",
                     extra={
                         "serviceName": "google.iam.v3beta.PrincipalAccessBoundaryPolicies",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
@@ -771,17 +680,10 @@ class PrincipalAccessBoundaryPoliciesClient(
 
     def create_principal_access_boundary_policy(
         self,
-        request: Optional[
-            Union[
-                principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        principal_access_boundary_policy: Optional[
-            principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy
-        ] = None,
+        principal_access_boundary_policy: Optional[principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy] = None,
         principal_access_boundary_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -876,53 +778,31 @@ class PrincipalAccessBoundaryPoliciesClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            principal_access_boundary_policy,
-            principal_access_boundary_policy_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, principal_access_boundary_policy, principal_access_boundary_policy_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest,
-        ):
-            request = principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest(
-                request
-            )
+        if not isinstance(request, principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest):
+            request = principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
                 request.parent = parent
             if principal_access_boundary_policy is not None:
-                request.principal_access_boundary_policy = (
-                    principal_access_boundary_policy
-                )
+                request.principal_access_boundary_policy = principal_access_boundary_policy
             if principal_access_boundary_policy_id is not None:
-                request.principal_access_boundary_policy_id = (
-                    principal_access_boundary_policy_id
-                )
+                request.principal_access_boundary_policy_id = principal_access_boundary_policy_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_principal_access_boundary_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_principal_access_boundary_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -948,12 +828,7 @@ class PrincipalAccessBoundaryPoliciesClient(
 
     def get_principal_access_boundary_policy(
         self,
-        request: Optional[
-            Union[
-                principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1020,24 +895,14 @@ class PrincipalAccessBoundaryPoliciesClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest,
-        ):
-            request = principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest(
-                request
-            )
+        if not isinstance(request, principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest):
+            request = principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1045,15 +910,11 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_principal_access_boundary_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_principal_access_boundary_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1071,16 +932,9 @@ class PrincipalAccessBoundaryPoliciesClient(
 
     def update_principal_access_boundary_policy(
         self,
-        request: Optional[
-            Union[
-                principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest, dict]] = None,
         *,
-        principal_access_boundary_policy: Optional[
-            principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy
-        ] = None,
+        principal_access_boundary_policy: Optional[principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1160,50 +1014,29 @@ class PrincipalAccessBoundaryPoliciesClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [principal_access_boundary_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest,
-        ):
-            request = principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest(
-                request
-            )
+        if not isinstance(request, principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest):
+            request = principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if principal_access_boundary_policy is not None:
-                request.principal_access_boundary_policy = (
-                    principal_access_boundary_policy
-                )
+                request.principal_access_boundary_policy = principal_access_boundary_policy
             if update_mask is not None:
                 request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_principal_access_boundary_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_principal_access_boundary_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "principal_access_boundary_policy.name",
-                        request.principal_access_boundary_policy.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("principal_access_boundary_policy.name", request.principal_access_boundary_policy.name),)),
         )
 
         # Validate the universe domain.
@@ -1230,12 +1063,7 @@ class PrincipalAccessBoundaryPoliciesClient(
 
     def delete_principal_access_boundary_policy(
         self,
-        request: Optional[
-            Union[
-                principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1317,24 +1145,14 @@ class PrincipalAccessBoundaryPoliciesClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest,
-        ):
-            request = principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest(
-                request
-            )
+        if not isinstance(request, principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest):
+            request = principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1342,15 +1160,11 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_principal_access_boundary_policy
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_principal_access_boundary_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1376,12 +1190,7 @@ class PrincipalAccessBoundaryPoliciesClient(
 
     def list_principal_access_boundary_policies(
         self,
-        request: Optional[
-            Union[
-                principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1453,24 +1262,14 @@ class PrincipalAccessBoundaryPoliciesClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest,
-        ):
-            request = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest(
-                request
-            )
+        if not isinstance(request, principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest):
+            request = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1478,15 +1277,11 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_principal_access_boundary_policies
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_principal_access_boundary_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1515,12 +1310,7 @@ class PrincipalAccessBoundaryPoliciesClient(
 
     def search_principal_access_boundary_policy_bindings(
         self,
-        request: Optional[
-            Union[
-                principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1592,24 +1382,14 @@ class PrincipalAccessBoundaryPoliciesClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest,
-        ):
-            request = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest(
-                request
-            )
+        if not isinstance(request, principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest):
+            request = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -1617,15 +1397,11 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.search_principal_access_boundary_policy_bindings
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.search_principal_access_boundary_policy_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1702,9 +1478,7 @@ class PrincipalAccessBoundaryPoliciesClient(
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1725,9 +1499,7 @@ class PrincipalAccessBoundaryPoliciesClient(
             raise e
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

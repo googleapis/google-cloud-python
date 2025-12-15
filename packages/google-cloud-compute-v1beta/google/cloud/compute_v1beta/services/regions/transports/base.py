@@ -28,9 +28,7 @@ import google.protobuf
 from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class RegionsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -159,20 +149,11 @@ class RegionsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetRegionRequest], Union[compute.Region, Awaitable[compute.Region]]
-    ]:
+    def get(self) -> Callable[[compute.GetRegionRequest], Union[compute.Region, Awaitable[compute.Region]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionsRequest],
-        Union[compute.RegionList, Awaitable[compute.RegionList]],
-    ]:
+    def list(self) -> Callable[[compute.ListRegionsRequest], Union[compute.RegionList, Awaitable[compute.RegionList]]]:
         raise NotImplementedError()
 
     @property

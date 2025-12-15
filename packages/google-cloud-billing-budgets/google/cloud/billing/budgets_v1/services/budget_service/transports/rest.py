@@ -116,12 +116,8 @@ class BudgetServiceRestInterceptor:
     """
 
     def pre_create_budget(
-        self,
-        request: budget_service.CreateBudgetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        budget_service.CreateBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: budget_service.CreateBudgetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[budget_service.CreateBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -143,9 +139,7 @@ class BudgetServiceRestInterceptor:
         return response
 
     def post_create_budget_with_metadata(
-        self,
-        response: budget_model.Budget,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: budget_model.Budget, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[budget_model.Budget, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_budget
 
@@ -162,12 +156,8 @@ class BudgetServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_budget(
-        self,
-        request: budget_service.DeleteBudgetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        budget_service.DeleteBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: budget_service.DeleteBudgetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[budget_service.DeleteBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -176,12 +166,8 @@ class BudgetServiceRestInterceptor:
         return request, metadata
 
     def pre_get_budget(
-        self,
-        request: budget_service.GetBudgetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        budget_service.GetBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: budget_service.GetBudgetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[budget_service.GetBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -203,9 +189,7 @@ class BudgetServiceRestInterceptor:
         return response
 
     def post_get_budget_with_metadata(
-        self,
-        response: budget_model.Budget,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: budget_model.Budget, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[budget_model.Budget, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_budget
 
@@ -222,12 +206,8 @@ class BudgetServiceRestInterceptor:
         return response, metadata
 
     def pre_list_budgets(
-        self,
-        request: budget_service.ListBudgetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        budget_service.ListBudgetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: budget_service.ListBudgetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[budget_service.ListBudgetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_budgets
 
         Override in a subclass to manipulate the request or metadata
@@ -235,9 +215,7 @@ class BudgetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_budgets(
-        self, response: budget_service.ListBudgetsResponse
-    ) -> budget_service.ListBudgetsResponse:
+    def post_list_budgets(self, response: budget_service.ListBudgetsResponse) -> budget_service.ListBudgetsResponse:
         """Post-rpc interceptor for list_budgets
 
         DEPRECATED. Please use the `post_list_budgets_with_metadata`
@@ -251,12 +229,8 @@ class BudgetServiceRestInterceptor:
         return response
 
     def post_list_budgets_with_metadata(
-        self,
-        response: budget_service.ListBudgetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        budget_service.ListBudgetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: budget_service.ListBudgetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[budget_service.ListBudgetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_budgets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -272,12 +246,8 @@ class BudgetServiceRestInterceptor:
         return response, metadata
 
     def pre_update_budget(
-        self,
-        request: budget_service.UpdateBudgetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        budget_service.UpdateBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: budget_service.UpdateBudgetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[budget_service.UpdateBudgetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_budget
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +269,7 @@ class BudgetServiceRestInterceptor:
         return response
 
     def post_update_budget_with_metadata(
-        self,
-        response: budget_model.Budget,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: budget_model.Budget, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[budget_model.Budget, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_budget
 
@@ -399,30 +367,18 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or BudgetServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateBudget(
-        _BaseBudgetServiceRestTransport._BaseCreateBudget, BudgetServiceRestStub
-    ):
+    class _CreateBudget(_BaseBudgetServiceRestTransport._BaseCreateBudget, BudgetServiceRestStub):
         def __hash__(self):
             return hash("BudgetServiceRestTransport.CreateBudget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -471,30 +427,18 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBudgetServiceRestTransport._BaseCreateBudget._get_http_options()
-            )
+            http_options = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_http_options()
 
             request, metadata = self._interceptor.pre_create_budget(request, metadata)
-            transcoded_request = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_transcoded_request(http_options, request)
 
-            body = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBudgetServiceRestTransport._BaseCreateBudget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -518,13 +462,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             # Send the request
             response = BudgetServiceRestTransport._CreateBudget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -540,12 +478,8 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             resp = self._interceptor.post_create_budget(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_budget_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_budget_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = budget_model.Budget.to_json(response)
                 except:
@@ -566,22 +500,12 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 )
             return resp
 
-    class _DeleteBudget(
-        _BaseBudgetServiceRestTransport._BaseDeleteBudget, BudgetServiceRestStub
-    ):
+    class _DeleteBudget(_BaseBudgetServiceRestTransport._BaseDeleteBudget, BudgetServiceRestStub):
         def __hash__(self):
             return hash("BudgetServiceRestTransport.DeleteBudget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -616,26 +540,16 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_http_options()
-            )
+            http_options = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_budget(request, metadata)
-            transcoded_request = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBudgetServiceRestTransport._BaseDeleteBudget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -659,12 +573,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             # Send the request
             response = BudgetServiceRestTransport._DeleteBudget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -672,22 +581,12 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetBudget(
-        _BaseBudgetServiceRestTransport._BaseGetBudget, BudgetServiceRestStub
-    ):
+    class _GetBudget(_BaseBudgetServiceRestTransport._BaseGetBudget, BudgetServiceRestStub):
         def __hash__(self):
             return hash("BudgetServiceRestTransport.GetBudget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -735,30 +634,16 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBudgetServiceRestTransport._BaseGetBudget._get_http_options()
-            )
+            http_options = _BaseBudgetServiceRestTransport._BaseGetBudget._get_http_options()
 
             request, metadata = self._interceptor.pre_get_budget(request, metadata)
-            transcoded_request = (
-                _BaseBudgetServiceRestTransport._BaseGetBudget._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBudgetServiceRestTransport._BaseGetBudget._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBudgetServiceRestTransport._BaseGetBudget._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBudgetServiceRestTransport._BaseGetBudget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -782,12 +667,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             # Send the request
             response = BudgetServiceRestTransport._GetBudget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -803,12 +683,8 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             resp = self._interceptor.post_get_budget(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_budget_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_budget_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = budget_model.Budget.to_json(response)
                 except:
@@ -829,22 +705,12 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 )
             return resp
 
-    class _ListBudgets(
-        _BaseBudgetServiceRestTransport._BaseListBudgets, BudgetServiceRestStub
-    ):
+    class _ListBudgets(_BaseBudgetServiceRestTransport._BaseListBudgets, BudgetServiceRestStub):
         def __hash__(self):
             return hash("BudgetServiceRestTransport.ListBudgets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -883,28 +749,16 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                     Response for ListBudgets
             """
 
-            http_options = (
-                _BaseBudgetServiceRestTransport._BaseListBudgets._get_http_options()
-            )
+            http_options = _BaseBudgetServiceRestTransport._BaseListBudgets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_budgets(request, metadata)
-            transcoded_request = _BaseBudgetServiceRestTransport._BaseListBudgets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBudgetServiceRestTransport._BaseListBudgets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBudgetServiceRestTransport._BaseListBudgets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBudgetServiceRestTransport._BaseListBudgets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -928,12 +782,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             # Send the request
             response = BudgetServiceRestTransport._ListBudgets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -949,16 +798,10 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             resp = self._interceptor.post_list_budgets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_budgets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_budgets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = budget_service.ListBudgetsResponse.to_json(
-                        response
-                    )
+                    response_payload = budget_service.ListBudgetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -977,22 +820,12 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
                 )
             return resp
 
-    class _UpdateBudget(
-        _BaseBudgetServiceRestTransport._BaseUpdateBudget, BudgetServiceRestStub
-    ):
+    class _UpdateBudget(_BaseBudgetServiceRestTransport._BaseUpdateBudget, BudgetServiceRestStub):
         def __hash__(self):
             return hash("BudgetServiceRestTransport.UpdateBudget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1041,30 +874,18 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_http_options()
-            )
+            http_options = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_http_options()
 
             request, metadata = self._interceptor.pre_update_budget(request, metadata)
-            transcoded_request = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_transcoded_request(http_options, request)
 
-            body = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBudgetServiceRestTransport._BaseUpdateBudget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1088,13 +909,7 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             # Send the request
             response = BudgetServiceRestTransport._UpdateBudget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1110,12 +925,8 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
 
             resp = self._interceptor.post_update_budget(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_budget_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_budget_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = budget_model.Budget.to_json(response)
                 except:
@@ -1137,43 +948,31 @@ class BudgetServiceRestTransport(_BaseBudgetServiceRestTransport):
             return resp
 
     @property
-    def create_budget(
-        self,
-    ) -> Callable[[budget_service.CreateBudgetRequest], budget_model.Budget]:
+    def create_budget(self) -> Callable[[budget_service.CreateBudgetRequest], budget_model.Budget]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBudget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_budget(
-        self,
-    ) -> Callable[[budget_service.DeleteBudgetRequest], empty_pb2.Empty]:
+    def delete_budget(self) -> Callable[[budget_service.DeleteBudgetRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBudget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_budget(
-        self,
-    ) -> Callable[[budget_service.GetBudgetRequest], budget_model.Budget]:
+    def get_budget(self) -> Callable[[budget_service.GetBudgetRequest], budget_model.Budget]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBudget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_budgets(
-        self,
-    ) -> Callable[
-        [budget_service.ListBudgetsRequest], budget_service.ListBudgetsResponse
-    ]:
+    def list_budgets(self) -> Callable[[budget_service.ListBudgetsRequest], budget_service.ListBudgetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBudgets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_budget(
-        self,
-    ) -> Callable[[budget_service.UpdateBudgetRequest], budget_model.Budget]:
+    def update_budget(self) -> Callable[[budget_service.UpdateBudgetRequest], budget_model.Budget]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBudget(self._session, self._host, self._interceptor)  # type: ignore

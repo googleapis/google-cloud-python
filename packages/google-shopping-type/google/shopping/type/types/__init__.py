@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .types import (
-    Channel,
-    CustomAttribute,
-    Destination,
-    Price,
-    ReportingContext,
-    Weight,
-)
+from .types import Channel, CustomAttribute, Destination, Price, ReportingContext, Weight
 
 __all__ = (
     "Channel",

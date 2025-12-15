@@ -1936,13 +1936,11 @@ class SelectionInput(proto.Message):
             UNKNOWN = 0
             USER = 1
 
-        common_data_source: "SelectionInput.PlatformDataSource.CommonDataSource" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                oneof="data_source",
-                enum="SelectionInput.PlatformDataSource.CommonDataSource",
-            )
+        common_data_source: "SelectionInput.PlatformDataSource.CommonDataSource" = proto.Field(
+            proto.ENUM,
+            number=1,
+            oneof="data_source",
+            enum="SelectionInput.PlatformDataSource.CommonDataSource",
         )
 
     name: str = proto.Field(

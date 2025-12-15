@@ -235,12 +235,8 @@ class NotebookServiceRestInterceptor:
     """
 
     def pre_create_environment(
-        self,
-        request: service.CreateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -248,9 +244,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
 
         DEPRECATED. Please use the `post_create_environment_with_metadata`
@@ -264,9 +258,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_create_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_environment
 
@@ -283,9 +275,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_create_instance(
-        self,
-        request: service.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
@@ -294,9 +284,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -310,9 +298,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -329,12 +315,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_environment(
-        self,
-        request: service.DeleteEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DeleteEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -342,9 +324,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_environment
 
         DEPRECATED. Please use the `post_delete_environment_with_metadata`
@@ -358,9 +338,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_delete_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_environment
 
@@ -377,9 +355,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: service.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
@@ -388,9 +364,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -404,9 +378,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -423,9 +395,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_get_environment(
-        self,
-        request: service.GetEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_environment
 
@@ -434,9 +404,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_environment(
-        self, response: environment.Environment
-    ) -> environment.Environment:
+    def post_get_environment(self, response: environment.Environment) -> environment.Environment:
         """Post-rpc interceptor for get_environment
 
         DEPRECATED. Please use the `post_get_environment_with_metadata`
@@ -450,9 +418,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_get_environment_with_metadata(
-        self,
-        response: environment.Environment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: environment.Environment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[environment.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_environment
 
@@ -469,9 +435,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: service.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -494,9 +458,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: instance.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: instance.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -513,12 +475,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_is_instance_upgradeable(
-        self,
-        request: service.IsInstanceUpgradeableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.IsInstanceUpgradeableRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.IsInstanceUpgradeableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.IsInstanceUpgradeableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for is_instance_upgradeable
 
         Override in a subclass to manipulate the request or metadata
@@ -526,9 +484,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_is_instance_upgradeable(
-        self, response: service.IsInstanceUpgradeableResponse
-    ) -> service.IsInstanceUpgradeableResponse:
+    def post_is_instance_upgradeable(self, response: service.IsInstanceUpgradeableResponse) -> service.IsInstanceUpgradeableResponse:
         """Post-rpc interceptor for is_instance_upgradeable
 
         DEPRECATED. Please use the `post_is_instance_upgradeable_with_metadata`
@@ -542,12 +498,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_is_instance_upgradeable_with_metadata(
-        self,
-        response: service.IsInstanceUpgradeableResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.IsInstanceUpgradeableResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.IsInstanceUpgradeableResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.IsInstanceUpgradeableResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for is_instance_upgradeable
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -563,12 +515,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_list_environments(
-        self,
-        request: service.ListEnvironmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListEnvironmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_environments
 
         Override in a subclass to manipulate the request or metadata
@@ -576,9 +524,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_environments(
-        self, response: service.ListEnvironmentsResponse
-    ) -> service.ListEnvironmentsResponse:
+    def post_list_environments(self, response: service.ListEnvironmentsResponse) -> service.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
 
         DEPRECATED. Please use the `post_list_environments_with_metadata`
@@ -592,12 +538,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_list_environments_with_metadata(
-        self,
-        response: service.ListEnvironmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListEnvironmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_environments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -613,9 +555,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: service.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
@@ -624,9 +564,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: service.ListInstancesResponse
-    ) -> service.ListInstancesResponse:
+    def post_list_instances(self, response: service.ListInstancesResponse) -> service.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -640,9 +578,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: service.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
@@ -659,12 +595,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_register_instance(
-        self,
-        request: service.RegisterInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.RegisterInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.RegisterInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.RegisterInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for register_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -672,9 +604,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_register_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_register_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for register_instance
 
         DEPRECATED. Please use the `post_register_instance_with_metadata`
@@ -688,9 +618,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_register_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for register_instance
 
@@ -707,12 +635,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_report_instance_info(
-        self,
-        request: service.ReportInstanceInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ReportInstanceInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ReportInstanceInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ReportInstanceInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for report_instance_info
 
         Override in a subclass to manipulate the request or metadata
@@ -720,9 +644,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_report_instance_info(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_report_instance_info(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for report_instance_info
 
         DEPRECATED. Please use the `post_report_instance_info_with_metadata`
@@ -736,9 +658,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_report_instance_info_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for report_instance_info
 
@@ -755,9 +675,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_reset_instance(
-        self,
-        request: service.ResetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ResetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ResetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_instance
 
@@ -766,9 +684,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reset_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_instance
 
         DEPRECATED. Please use the `post_reset_instance_with_metadata`
@@ -782,9 +698,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_reset_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_instance
 
@@ -801,12 +715,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_set_instance_accelerator(
-        self,
-        request: service.SetInstanceAcceleratorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SetInstanceAcceleratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.SetInstanceAcceleratorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SetInstanceAcceleratorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_instance_accelerator
 
         Override in a subclass to manipulate the request or metadata
@@ -814,9 +724,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_instance_accelerator(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_set_instance_accelerator(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_instance_accelerator
 
         DEPRECATED. Please use the `post_set_instance_accelerator_with_metadata`
@@ -830,9 +738,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_set_instance_accelerator_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_instance_accelerator
 
@@ -849,12 +755,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_set_instance_labels(
-        self,
-        request: service.SetInstanceLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SetInstanceLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.SetInstanceLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SetInstanceLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_instance_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -862,9 +764,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_instance_labels(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_set_instance_labels(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_instance_labels
 
         DEPRECATED. Please use the `post_set_instance_labels_with_metadata`
@@ -878,9 +778,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_set_instance_labels_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_instance_labels
 
@@ -897,12 +795,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_set_instance_machine_type(
-        self,
-        request: service.SetInstanceMachineTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.SetInstanceMachineTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.SetInstanceMachineTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.SetInstanceMachineTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_instance_machine_type
 
         Override in a subclass to manipulate the request or metadata
@@ -910,9 +804,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_set_instance_machine_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_set_instance_machine_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for set_instance_machine_type
 
         DEPRECATED. Please use the `post_set_instance_machine_type_with_metadata`
@@ -926,9 +818,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_set_instance_machine_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_instance_machine_type
 
@@ -945,9 +835,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_start_instance(
-        self,
-        request: service.StartInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.StartInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.StartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_instance
 
@@ -956,9 +844,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_start_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_instance
 
         DEPRECATED. Please use the `post_start_instance_with_metadata`
@@ -972,9 +858,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_start_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_instance
 
@@ -991,9 +875,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_stop_instance(
-        self,
-        request: service.StopInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.StopInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.StopInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_instance
 
@@ -1002,9 +884,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_instance
 
         DEPRECATED. Please use the `post_stop_instance_with_metadata`
@@ -1018,9 +898,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_stop_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_instance
 
@@ -1037,9 +915,7 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_upgrade_instance(
-        self,
-        request: service.UpgradeInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpgradeInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpgradeInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upgrade_instance
 
@@ -1048,9 +924,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_upgrade_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_upgrade_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance
 
         DEPRECATED. Please use the `post_upgrade_instance_with_metadata`
@@ -1064,9 +938,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_upgrade_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upgrade_instance
 
@@ -1083,12 +955,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_upgrade_instance_internal(
-        self,
-        request: service.UpgradeInstanceInternalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpgradeInstanceInternalRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpgradeInstanceInternalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpgradeInstanceInternalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upgrade_instance_internal
 
         Override in a subclass to manipulate the request or metadata
@@ -1096,9 +964,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_upgrade_instance_internal(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_upgrade_instance_internal(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_instance_internal
 
         DEPRECATED. Please use the `post_upgrade_instance_internal_with_metadata`
@@ -1112,9 +978,7 @@ class NotebookServiceRestInterceptor:
         return response
 
     def post_upgrade_instance_internal_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upgrade_instance_internal
 
@@ -1131,12 +995,8 @@ class NotebookServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1144,9 +1004,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1156,12 +1014,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1169,9 +1023,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1181,12 +1033,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1204,12 +1052,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1227,13 +1071,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1241,9 +1080,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -1253,12 +1090,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1276,12 +1109,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1299,12 +1128,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1312,9 +1137,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1324,12 +1147,8 @@ class NotebookServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1337,9 +1156,7 @@ class NotebookServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1428,9 +1245,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1483,30 +1298,17 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 path_prefix="v1beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateEnvironment(
-        _BaseNotebookServiceRestTransport._BaseCreateEnvironment,
-        NotebookServiceRestStub,
-    ):
+    class _CreateEnvironment(_BaseNotebookServiceRestTransport._BaseCreateEnvironment, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.CreateEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1550,32 +1352,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_environment(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseCreateEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1599,13 +1387,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._CreateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1619,12 +1401,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_create_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1645,22 +1423,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _CreateInstance(
-        _BaseNotebookServiceRestTransport._BaseCreateInstance, NotebookServiceRestStub
-    ):
+    class _CreateInstance(_BaseNotebookServiceRestTransport._BaseCreateInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1704,30 +1472,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1751,13 +1507,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1771,12 +1521,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1797,23 +1543,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEnvironment(
-        _BaseNotebookServiceRestTransport._BaseDeleteEnvironment,
-        NotebookServiceRestStub,
-    ):
+    class _DeleteEnvironment(_BaseNotebookServiceRestTransport._BaseDeleteEnvironment, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.DeleteEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1856,28 +1591,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_environment(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseDeleteEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1901,12 +1624,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._DeleteEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1920,12 +1638,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_delete_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1946,22 +1660,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _DeleteInstance(
-        _BaseNotebookServiceRestTransport._BaseDeleteInstance, NotebookServiceRestStub
-    ):
+    class _DeleteInstance(_BaseNotebookServiceRestTransport._BaseDeleteInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2004,26 +1708,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2047,12 +1741,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2066,12 +1755,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2092,22 +1777,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _GetEnvironment(
-        _BaseNotebookServiceRestTransport._BaseGetEnvironment, NotebookServiceRestStub
-    ):
+    class _GetEnvironment(_BaseNotebookServiceRestTransport._BaseGetEnvironment, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.GetEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2150,26 +1825,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_environment(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseGetEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2193,12 +1858,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._GetEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2214,12 +1874,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_get_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = environment.Environment.to_json(response)
                 except:
@@ -2240,22 +1896,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseNotebookServiceRestTransport._BaseGetInstance, NotebookServiceRestStub
-    ):
+    class _GetInstance(_BaseNotebookServiceRestTransport._BaseGetInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2297,26 +1943,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2340,12 +1976,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2361,12 +1992,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = instance.Instance.to_json(response)
                 except:
@@ -2387,23 +2014,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _IsInstanceUpgradeable(
-        _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable,
-        NotebookServiceRestStub,
-    ):
+    class _IsInstanceUpgradeable(_BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.IsInstanceUpgradeable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2445,28 +2061,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_http_options()
 
-            request, metadata = self._interceptor.pre_is_instance_upgradeable(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_is_instance_upgradeable(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseIsInstanceUpgradeable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2489,15 +2093,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                NotebookServiceRestTransport._IsInstanceUpgradeable._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = NotebookServiceRestTransport._IsInstanceUpgradeable._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2513,16 +2110,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_is_instance_upgradeable(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_is_instance_upgradeable_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_is_instance_upgradeable_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.IsInstanceUpgradeableResponse.to_json(
-                        response
-                    )
+                    response_payload = service.IsInstanceUpgradeableResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2541,22 +2132,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _ListEnvironments(
-        _BaseNotebookServiceRestTransport._BaseListEnvironments, NotebookServiceRestStub
-    ):
+    class _ListEnvironments(_BaseNotebookServiceRestTransport._BaseListEnvironments, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.ListEnvironments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2595,28 +2176,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                     Response for listing environments.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseListEnvironments._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseListEnvironments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_environments(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseListEnvironments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_environments(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseListEnvironments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseListEnvironments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseListEnvironments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2640,12 +2209,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._ListEnvironments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2661,16 +2225,10 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_list_environments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_environments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_environments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListEnvironmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListEnvironmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2689,22 +2247,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseNotebookServiceRestTransport._BaseListInstances, NotebookServiceRestStub
-    ):
+    class _ListInstances(_BaseNotebookServiceRestTransport._BaseListInstances, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2746,26 +2294,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2789,12 +2327,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2810,12 +2343,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListInstancesResponse.to_json(response)
                 except:
@@ -2836,22 +2365,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _RegisterInstance(
-        _BaseNotebookServiceRestTransport._BaseRegisterInstance, NotebookServiceRestStub
-    ):
+    class _RegisterInstance(_BaseNotebookServiceRestTransport._BaseRegisterInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.RegisterInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2895,32 +2414,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_register_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_register_instance(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseRegisterInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2944,13 +2449,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._RegisterInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2964,12 +2463,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_register_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_register_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_register_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2990,23 +2485,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _ReportInstanceInfo(
-        _BaseNotebookServiceRestTransport._BaseReportInstanceInfo,
-        NotebookServiceRestStub,
-    ):
+    class _ReportInstanceInfo(_BaseNotebookServiceRestTransport._BaseReportInstanceInfo, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.ReportInstanceInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3050,32 +2534,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_report_instance_info(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_report_instance_info(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseReportInstanceInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3099,13 +2569,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._ReportInstanceInfo._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3119,12 +2583,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_report_instance_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_report_instance_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_report_instance_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3145,22 +2605,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _ResetInstance(
-        _BaseNotebookServiceRestTransport._BaseResetInstance, NotebookServiceRestStub
-    ):
+    class _ResetInstance(_BaseNotebookServiceRestTransport._BaseResetInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.ResetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3204,30 +2654,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseResetInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseResetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_reset_instance(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseResetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseResetInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseResetInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseResetInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseResetInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseResetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3251,13 +2689,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._ResetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3271,12 +2703,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_reset_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3297,23 +2725,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _SetInstanceAccelerator(
-        _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator,
-        NotebookServiceRestStub,
-    ):
+    class _SetInstanceAccelerator(_BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.SetInstanceAccelerator")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3357,32 +2774,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_instance_accelerator(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_instance_accelerator(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseSetInstanceAccelerator._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3405,16 +2808,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                NotebookServiceRestTransport._SetInstanceAccelerator._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NotebookServiceRestTransport._SetInstanceAccelerator._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3428,12 +2823,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_set_instance_accelerator(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_instance_accelerator_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_instance_accelerator_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3454,23 +2845,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _SetInstanceLabels(
-        _BaseNotebookServiceRestTransport._BaseSetInstanceLabels,
-        NotebookServiceRestStub,
-    ):
+    class _SetInstanceLabels(_BaseNotebookServiceRestTransport._BaseSetInstanceLabels, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.SetInstanceLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3513,32 +2893,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_instance_labels(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_instance_labels(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseSetInstanceLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3562,13 +2928,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._SetInstanceLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3582,12 +2942,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_set_instance_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_instance_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_instance_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3608,23 +2964,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _SetInstanceMachineType(
-        _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType,
-        NotebookServiceRestStub,
-    ):
+    class _SetInstanceMachineType(_BaseNotebookServiceRestTransport._BaseSetInstanceMachineType, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.SetInstanceMachineType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3668,32 +3013,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_instance_machine_type(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_instance_machine_type(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseSetInstanceMachineType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3716,16 +3047,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                NotebookServiceRestTransport._SetInstanceMachineType._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NotebookServiceRestTransport._SetInstanceMachineType._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3739,12 +3062,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_set_instance_machine_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_instance_machine_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_instance_machine_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3765,22 +3084,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _StartInstance(
-        _BaseNotebookServiceRestTransport._BaseStartInstance, NotebookServiceRestStub
-    ):
+    class _StartInstance(_BaseNotebookServiceRestTransport._BaseStartInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.StartInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3824,30 +3133,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseStartInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseStartInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_start_instance(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseStartInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseStartInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseStartInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseStartInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseStartInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseStartInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3871,13 +3168,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._StartInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3891,12 +3182,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_start_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3917,22 +3204,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _StopInstance(
-        _BaseNotebookServiceRestTransport._BaseStopInstance, NotebookServiceRestStub
-    ):
+    class _StopInstance(_BaseNotebookServiceRestTransport._BaseStopInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.StopInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3976,30 +3253,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseStopInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseStopInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_instance(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseStopInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseStopInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseStopInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseStopInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseStopInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseStopInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4023,13 +3288,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._StopInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4043,12 +3302,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_stop_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4069,22 +3324,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _UpgradeInstance(
-        _BaseNotebookServiceRestTransport._BaseUpgradeInstance, NotebookServiceRestStub
-    ):
+    class _UpgradeInstance(_BaseNotebookServiceRestTransport._BaseUpgradeInstance, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.UpgradeInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4128,32 +3373,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_upgrade_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_upgrade_instance(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseUpgradeInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4177,13 +3408,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._UpgradeInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4197,12 +3422,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_upgrade_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upgrade_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upgrade_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4223,23 +3444,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
             return resp
 
-    class _UpgradeInstanceInternal(
-        _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal,
-        NotebookServiceRestStub,
-    ):
+    class _UpgradeInstanceInternal(_BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.UpgradeInstanceInternal")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4283,32 +3493,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_http_options()
 
-            request, metadata = self._interceptor.pre_upgrade_instance_internal(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_upgrade_instance_internal(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseUpgradeInstanceInternal._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4331,16 +3527,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                NotebookServiceRestTransport._UpgradeInstanceInternal._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = NotebookServiceRestTransport._UpgradeInstanceInternal._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4354,12 +3542,8 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             resp = self._interceptor.post_upgrade_instance_internal(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upgrade_instance_internal_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upgrade_instance_internal_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4381,41 +3565,31 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             return resp
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
+    def create_environment(self) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
+    def delete_environment(self) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[service.GetEnvironmentRequest], environment.Environment]:
+    def get_environment(self) -> Callable[[service.GetEnvironmentRequest], environment.Environment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEnvironment(self._session, self._host, self._interceptor)  # type: ignore
@@ -4427,107 +3601,79 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def is_instance_upgradeable(
-        self,
-    ) -> Callable[
-        [service.IsInstanceUpgradeableRequest], service.IsInstanceUpgradeableResponse
-    ]:
+    def is_instance_upgradeable(self) -> Callable[[service.IsInstanceUpgradeableRequest], service.IsInstanceUpgradeableResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IsInstanceUpgradeable(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
+    def list_environments(self) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEnvironments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def register_instance(
-        self,
-    ) -> Callable[[service.RegisterInstanceRequest], operations_pb2.Operation]:
+    def register_instance(self) -> Callable[[service.RegisterInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RegisterInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def report_instance_info(
-        self,
-    ) -> Callable[[service.ReportInstanceInfoRequest], operations_pb2.Operation]:
+    def report_instance_info(self) -> Callable[[service.ReportInstanceInfoRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReportInstanceInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_instance(
-        self,
-    ) -> Callable[[service.ResetInstanceRequest], operations_pb2.Operation]:
+    def reset_instance(self) -> Callable[[service.ResetInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_instance_accelerator(
-        self,
-    ) -> Callable[[service.SetInstanceAcceleratorRequest], operations_pb2.Operation]:
+    def set_instance_accelerator(self) -> Callable[[service.SetInstanceAcceleratorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetInstanceAccelerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_instance_labels(
-        self,
-    ) -> Callable[[service.SetInstanceLabelsRequest], operations_pb2.Operation]:
+    def set_instance_labels(self) -> Callable[[service.SetInstanceLabelsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetInstanceLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_instance_machine_type(
-        self,
-    ) -> Callable[[service.SetInstanceMachineTypeRequest], operations_pb2.Operation]:
+    def set_instance_machine_type(self) -> Callable[[service.SetInstanceMachineTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetInstanceMachineType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_instance(
-        self,
-    ) -> Callable[[service.StartInstanceRequest], operations_pb2.Operation]:
+    def start_instance(self) -> Callable[[service.StartInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_instance(
-        self,
-    ) -> Callable[[service.StopInstanceRequest], operations_pb2.Operation]:
+    def stop_instance(self) -> Callable[[service.StopInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upgrade_instance(
-        self,
-    ) -> Callable[[service.UpgradeInstanceRequest], operations_pb2.Operation]:
+    def upgrade_instance(self) -> Callable[[service.UpgradeInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpgradeInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upgrade_instance_internal(
-        self,
-    ) -> Callable[[service.UpgradeInstanceInternalRequest], operations_pb2.Operation]:
+    def upgrade_instance_internal(self) -> Callable[[service.UpgradeInstanceInternalRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpgradeInstanceInternal(self._session, self._host, self._interceptor)  # type: ignore
@@ -4536,22 +3682,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseNotebookServiceRestTransport._BaseGetLocation, NotebookServiceRestStub
-    ):
+    class _GetLocation(_BaseNotebookServiceRestTransport._BaseGetLocation, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4589,26 +3725,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4632,12 +3758,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4649,9 +3770,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4676,22 +3795,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseNotebookServiceRestTransport._BaseListLocations, NotebookServiceRestStub
-    ):
+    class _ListLocations(_BaseNotebookServiceRestTransport._BaseListLocations, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4729,26 +3838,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4772,12 +3871,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4789,9 +3883,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4816,22 +3908,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseNotebookServiceRestTransport._BaseGetIamPolicy, NotebookServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseNotebookServiceRestTransport._BaseGetIamPolicy, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4869,26 +3951,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4912,12 +3984,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4929,9 +3996,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4956,22 +4021,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseNotebookServiceRestTransport._BaseSetIamPolicy, NotebookServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseNotebookServiceRestTransport._BaseSetIamPolicy, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5010,30 +4065,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5057,13 +4100,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5075,9 +4112,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5102,23 +4137,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseNotebookServiceRestTransport._BaseTestIamPermissions,
-        NotebookServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseNotebookServiceRestTransport._BaseTestIamPermissions, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5157,32 +4181,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5206,13 +4216,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5224,9 +4228,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5251,22 +4253,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseNotebookServiceRestTransport._BaseCancelOperation, NotebookServiceRestStub
-    ):
+    class _CancelOperation(_BaseNotebookServiceRestTransport._BaseCancelOperation, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5302,32 +4294,18 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5351,13 +4329,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5371,22 +4343,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseNotebookServiceRestTransport._BaseDeleteOperation, NotebookServiceRestStub
-    ):
+    class _DeleteOperation(_BaseNotebookServiceRestTransport._BaseDeleteOperation, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5421,28 +4383,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5466,12 +4416,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5485,22 +4430,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseNotebookServiceRestTransport._BaseGetOperation, NotebookServiceRestStub
-    ):
+    class _GetOperation(_BaseNotebookServiceRestTransport._BaseGetOperation, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5538,26 +4473,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5581,12 +4506,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5598,9 +4518,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5625,22 +4543,12 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseNotebookServiceRestTransport._BaseListOperations, NotebookServiceRestStub
-    ):
+    class _ListOperations(_BaseNotebookServiceRestTransport._BaseListOperations, NotebookServiceRestStub):
         def __hash__(self):
             return hash("NotebookServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5678,26 +4586,16 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseNotebookServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseNotebookServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseNotebookServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNotebookServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNotebookServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNotebookServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5721,12 +4619,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
 
             # Send the request
             response = NotebookServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5738,9 +4631,7 @@ class NotebookServiceRestTransport(_BaseNotebookServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

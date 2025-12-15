@@ -38,9 +38,7 @@ from google.cloud.video.stitcher_v1.types import (
     vod_configs,
 )
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -102,23 +100,15 @@ class VideoStitcherServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -332,10 +322,7 @@ class VideoStitcherServiceTransport(abc.ABC):
     @property
     def create_cdn_key(
         self,
-    ) -> Callable[
-        [video_stitcher_service.CreateCdnKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.CreateCdnKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -343,56 +330,34 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListCdnKeysRequest],
-        Union[
-            video_stitcher_service.ListCdnKeysResponse,
-            Awaitable[video_stitcher_service.ListCdnKeysResponse],
-        ],
+        Union[video_stitcher_service.ListCdnKeysResponse, Awaitable[video_stitcher_service.ListCdnKeysResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_cdn_key(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetCdnKeyRequest],
-        Union[cdn_keys.CdnKey, Awaitable[cdn_keys.CdnKey]],
-    ]:
+    def get_cdn_key(self) -> Callable[[video_stitcher_service.GetCdnKeyRequest], Union[cdn_keys.CdnKey, Awaitable[cdn_keys.CdnKey]]]:
         raise NotImplementedError()
 
     @property
     def delete_cdn_key(
         self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteCdnKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.DeleteCdnKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_cdn_key(
         self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateCdnKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.UpdateCdnKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_vod_session(
         self,
-    ) -> Callable[
-        [video_stitcher_service.CreateVodSessionRequest],
-        Union[sessions.VodSession, Awaitable[sessions.VodSession]],
-    ]:
+    ) -> Callable[[video_stitcher_service.CreateVodSessionRequest], Union[sessions.VodSession, Awaitable[sessions.VodSession]]]:
         raise NotImplementedError()
 
     @property
-    def get_vod_session(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodSessionRequest],
-        Union[sessions.VodSession, Awaitable[sessions.VodSession]],
-    ]:
+    def get_vod_session(self) -> Callable[[video_stitcher_service.GetVodSessionRequest], Union[sessions.VodSession, Awaitable[sessions.VodSession]]]:
         raise NotImplementedError()
 
     @property
@@ -400,10 +365,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListVodStitchDetailsRequest],
-        Union[
-            video_stitcher_service.ListVodStitchDetailsResponse,
-            Awaitable[video_stitcher_service.ListVodStitchDetailsResponse],
-        ],
+        Union[video_stitcher_service.ListVodStitchDetailsResponse, Awaitable[video_stitcher_service.ListVodStitchDetailsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -411,10 +373,7 @@ class VideoStitcherServiceTransport(abc.ABC):
     def get_vod_stitch_detail(
         self,
     ) -> Callable[
-        [video_stitcher_service.GetVodStitchDetailRequest],
-        Union[
-            stitch_details.VodStitchDetail, Awaitable[stitch_details.VodStitchDetail]
-        ],
+        [video_stitcher_service.GetVodStitchDetailRequest], Union[stitch_details.VodStitchDetail, Awaitable[stitch_details.VodStitchDetail]]
     ]:
         raise NotImplementedError()
 
@@ -423,20 +382,14 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListVodAdTagDetailsRequest],
-        Union[
-            video_stitcher_service.ListVodAdTagDetailsResponse,
-            Awaitable[video_stitcher_service.ListVodAdTagDetailsResponse],
-        ],
+        Union[video_stitcher_service.ListVodAdTagDetailsResponse, Awaitable[video_stitcher_service.ListVodAdTagDetailsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_vod_ad_tag_detail(
         self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodAdTagDetailRequest],
-        Union[ad_tag_details.VodAdTagDetail, Awaitable[ad_tag_details.VodAdTagDetail]],
-    ]:
+    ) -> Callable[[video_stitcher_service.GetVodAdTagDetailRequest], Union[ad_tag_details.VodAdTagDetail, Awaitable[ad_tag_details.VodAdTagDetail]]]:
         raise NotImplementedError()
 
     @property
@@ -444,10 +397,7 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListLiveAdTagDetailsRequest],
-        Union[
-            video_stitcher_service.ListLiveAdTagDetailsResponse,
-            Awaitable[video_stitcher_service.ListLiveAdTagDetailsResponse],
-        ],
+        Union[video_stitcher_service.ListLiveAdTagDetailsResponse, Awaitable[video_stitcher_service.ListLiveAdTagDetailsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -455,20 +405,14 @@ class VideoStitcherServiceTransport(abc.ABC):
     def get_live_ad_tag_detail(
         self,
     ) -> Callable[
-        [video_stitcher_service.GetLiveAdTagDetailRequest],
-        Union[
-            ad_tag_details.LiveAdTagDetail, Awaitable[ad_tag_details.LiveAdTagDetail]
-        ],
+        [video_stitcher_service.GetLiveAdTagDetailRequest], Union[ad_tag_details.LiveAdTagDetail, Awaitable[ad_tag_details.LiveAdTagDetail]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_slate(
         self,
-    ) -> Callable[
-        [video_stitcher_service.CreateSlateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.CreateSlateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -476,65 +420,42 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListSlatesRequest],
-        Union[
-            video_stitcher_service.ListSlatesResponse,
-            Awaitable[video_stitcher_service.ListSlatesResponse],
-        ],
+        Union[video_stitcher_service.ListSlatesResponse, Awaitable[video_stitcher_service.ListSlatesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_slate(
-        self,
-    ) -> Callable[
-        [video_stitcher_service.GetSlateRequest],
-        Union[slates.Slate, Awaitable[slates.Slate]],
-    ]:
+    def get_slate(self) -> Callable[[video_stitcher_service.GetSlateRequest], Union[slates.Slate, Awaitable[slates.Slate]]]:
         raise NotImplementedError()
 
     @property
     def update_slate(
         self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateSlateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.UpdateSlateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_slate(
         self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteSlateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.DeleteSlateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_live_session(
         self,
-    ) -> Callable[
-        [video_stitcher_service.CreateLiveSessionRequest],
-        Union[sessions.LiveSession, Awaitable[sessions.LiveSession]],
-    ]:
+    ) -> Callable[[video_stitcher_service.CreateLiveSessionRequest], Union[sessions.LiveSession, Awaitable[sessions.LiveSession]]]:
         raise NotImplementedError()
 
     @property
     def get_live_session(
         self,
-    ) -> Callable[
-        [video_stitcher_service.GetLiveSessionRequest],
-        Union[sessions.LiveSession, Awaitable[sessions.LiveSession]],
-    ]:
+    ) -> Callable[[video_stitcher_service.GetLiveSessionRequest], Union[sessions.LiveSession, Awaitable[sessions.LiveSession]]]:
         raise NotImplementedError()
 
     @property
     def create_live_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.CreateLiveConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.CreateLiveConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -542,47 +463,32 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListLiveConfigsRequest],
-        Union[
-            video_stitcher_service.ListLiveConfigsResponse,
-            Awaitable[video_stitcher_service.ListLiveConfigsResponse],
-        ],
+        Union[video_stitcher_service.ListLiveConfigsResponse, Awaitable[video_stitcher_service.ListLiveConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_live_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.GetLiveConfigRequest],
-        Union[live_configs.LiveConfig, Awaitable[live_configs.LiveConfig]],
-    ]:
+    ) -> Callable[[video_stitcher_service.GetLiveConfigRequest], Union[live_configs.LiveConfig, Awaitable[live_configs.LiveConfig]]]:
         raise NotImplementedError()
 
     @property
     def delete_live_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteLiveConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.DeleteLiveConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_live_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateLiveConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.UpdateLiveConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_vod_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.CreateVodConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.CreateVodConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -590,38 +496,26 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [video_stitcher_service.ListVodConfigsRequest],
-        Union[
-            video_stitcher_service.ListVodConfigsResponse,
-            Awaitable[video_stitcher_service.ListVodConfigsResponse],
-        ],
+        Union[video_stitcher_service.ListVodConfigsResponse, Awaitable[video_stitcher_service.ListVodConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_vod_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.GetVodConfigRequest],
-        Union[vod_configs.VodConfig, Awaitable[vod_configs.VodConfig]],
-    ]:
+    ) -> Callable[[video_stitcher_service.GetVodConfigRequest], Union[vod_configs.VodConfig, Awaitable[vod_configs.VodConfig]]]:
         raise NotImplementedError()
 
     @property
     def delete_vod_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.DeleteVodConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.DeleteVodConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_vod_config(
         self,
-    ) -> Callable[
-        [video_stitcher_service.UpdateVodConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[video_stitcher_service.UpdateVodConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -629,20 +523,14 @@ class VideoStitcherServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

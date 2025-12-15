@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.gke_multicloud_v1 import gapic_version as package_version
 from google.cloud.gke_multicloud_v1.types import aws_resources, aws_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class AwsClustersTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -334,49 +324,29 @@ class AwsClustersTransport(abc.ABC):
     @property
     def create_aws_cluster(
         self,
-    ) -> Callable[
-        [aws_service.CreateAwsClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.CreateAwsClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_aws_cluster(
         self,
-    ) -> Callable[
-        [aws_service.UpdateAwsClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.UpdateAwsClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_aws_cluster(
-        self,
-    ) -> Callable[
-        [aws_service.GetAwsClusterRequest],
-        Union[aws_resources.AwsCluster, Awaitable[aws_resources.AwsCluster]],
-    ]:
+    def get_aws_cluster(self) -> Callable[[aws_service.GetAwsClusterRequest], Union[aws_resources.AwsCluster, Awaitable[aws_resources.AwsCluster]]]:
         raise NotImplementedError()
 
     @property
     def list_aws_clusters(
         self,
-    ) -> Callable[
-        [aws_service.ListAwsClustersRequest],
-        Union[
-            aws_service.ListAwsClustersResponse,
-            Awaitable[aws_service.ListAwsClustersResponse],
-        ],
-    ]:
+    ) -> Callable[[aws_service.ListAwsClustersRequest], Union[aws_service.ListAwsClustersResponse, Awaitable[aws_service.ListAwsClustersResponse]]]:
         raise NotImplementedError()
 
     @property
     def delete_aws_cluster(
         self,
-    ) -> Callable[
-        [aws_service.DeleteAwsClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.DeleteAwsClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -384,10 +354,7 @@ class AwsClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [aws_service.GenerateAwsClusterAgentTokenRequest],
-        Union[
-            aws_service.GenerateAwsClusterAgentTokenResponse,
-            Awaitable[aws_service.GenerateAwsClusterAgentTokenResponse],
-        ],
+        Union[aws_service.GenerateAwsClusterAgentTokenResponse, Awaitable[aws_service.GenerateAwsClusterAgentTokenResponse]],
     ]:
         raise NotImplementedError()
 
@@ -396,95 +363,64 @@ class AwsClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [aws_service.GenerateAwsAccessTokenRequest],
-        Union[
-            aws_service.GenerateAwsAccessTokenResponse,
-            Awaitable[aws_service.GenerateAwsAccessTokenResponse],
-        ],
+        Union[aws_service.GenerateAwsAccessTokenResponse, Awaitable[aws_service.GenerateAwsAccessTokenResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_aws_node_pool(
         self,
-    ) -> Callable[
-        [aws_service.CreateAwsNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.CreateAwsNodePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_aws_node_pool(
         self,
-    ) -> Callable[
-        [aws_service.UpdateAwsNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.UpdateAwsNodePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def rollback_aws_node_pool_update(
         self,
-    ) -> Callable[
-        [aws_service.RollbackAwsNodePoolUpdateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.RollbackAwsNodePoolUpdateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_aws_node_pool(
         self,
-    ) -> Callable[
-        [aws_service.GetAwsNodePoolRequest],
-        Union[aws_resources.AwsNodePool, Awaitable[aws_resources.AwsNodePool]],
-    ]:
+    ) -> Callable[[aws_service.GetAwsNodePoolRequest], Union[aws_resources.AwsNodePool, Awaitable[aws_resources.AwsNodePool]]]:
         raise NotImplementedError()
 
     @property
     def list_aws_node_pools(
         self,
     ) -> Callable[
-        [aws_service.ListAwsNodePoolsRequest],
-        Union[
-            aws_service.ListAwsNodePoolsResponse,
-            Awaitable[aws_service.ListAwsNodePoolsResponse],
-        ],
+        [aws_service.ListAwsNodePoolsRequest], Union[aws_service.ListAwsNodePoolsResponse, Awaitable[aws_service.ListAwsNodePoolsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_aws_node_pool(
         self,
-    ) -> Callable[
-        [aws_service.DeleteAwsNodePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[aws_service.DeleteAwsNodePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_aws_open_id_config(
         self,
-    ) -> Callable[
-        [aws_service.GetAwsOpenIdConfigRequest],
-        Union[aws_resources.AwsOpenIdConfig, Awaitable[aws_resources.AwsOpenIdConfig]],
-    ]:
+    ) -> Callable[[aws_service.GetAwsOpenIdConfigRequest], Union[aws_resources.AwsOpenIdConfig, Awaitable[aws_resources.AwsOpenIdConfig]]]:
         raise NotImplementedError()
 
     @property
     def get_aws_json_web_keys(
         self,
-    ) -> Callable[
-        [aws_service.GetAwsJsonWebKeysRequest],
-        Union[aws_resources.AwsJsonWebKeys, Awaitable[aws_resources.AwsJsonWebKeys]],
-    ]:
+    ) -> Callable[[aws_service.GetAwsJsonWebKeysRequest], Union[aws_resources.AwsJsonWebKeys, Awaitable[aws_resources.AwsJsonWebKeys]]]:
         raise NotImplementedError()
 
     @property
     def get_aws_server_config(
         self,
-    ) -> Callable[
-        [aws_service.GetAwsServerConfigRequest],
-        Union[aws_resources.AwsServerConfig, Awaitable[aws_resources.AwsServerConfig]],
-    ]:
+    ) -> Callable[[aws_service.GetAwsServerConfigRequest], Union[aws_resources.AwsServerConfig, Awaitable[aws_resources.AwsServerConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -492,20 +428,14 @@ class AwsClustersTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

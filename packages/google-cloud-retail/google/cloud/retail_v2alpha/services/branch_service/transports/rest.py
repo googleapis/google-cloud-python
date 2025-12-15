@@ -97,12 +97,8 @@ class BranchServiceRestInterceptor:
     """
 
     def pre_get_branch(
-        self,
-        request: branch_service.GetBranchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        branch_service.GetBranchRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: branch_service.GetBranchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[branch_service.GetBranchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_branch
 
         Override in a subclass to manipulate the request or metadata
@@ -141,12 +137,8 @@ class BranchServiceRestInterceptor:
         return response, metadata
 
     def pre_list_branches(
-        self,
-        request: branch_service.ListBranchesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        branch_service.ListBranchesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: branch_service.ListBranchesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[branch_service.ListBranchesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_branches
 
         Override in a subclass to manipulate the request or metadata
@@ -154,9 +146,7 @@ class BranchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_branches(
-        self, response: branch_service.ListBranchesResponse
-    ) -> branch_service.ListBranchesResponse:
+    def post_list_branches(self, response: branch_service.ListBranchesResponse) -> branch_service.ListBranchesResponse:
         """Post-rpc interceptor for list_branches
 
         DEPRECATED. Please use the `post_list_branches_with_metadata`
@@ -170,12 +160,8 @@ class BranchServiceRestInterceptor:
         return response
 
     def post_list_branches_with_metadata(
-        self,
-        response: branch_service.ListBranchesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        branch_service.ListBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: branch_service.ListBranchesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[branch_service.ListBranchesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_branches
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -191,12 +177,8 @@ class BranchServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +186,7 @@ class BranchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -216,12 +196,8 @@ class BranchServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -229,9 +205,7 @@ class BranchServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -326,30 +300,18 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or BranchServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetBranch(
-        _BaseBranchServiceRestTransport._BaseGetBranch, BranchServiceRestStub
-    ):
+    class _GetBranch(_BaseBranchServiceRestTransport._BaseGetBranch, BranchServiceRestStub):
         def __hash__(self):
             return hash("BranchServiceRestTransport.GetBranch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -392,30 +354,16 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBranchServiceRestTransport._BaseGetBranch._get_http_options()
-            )
+            http_options = _BaseBranchServiceRestTransport._BaseGetBranch._get_http_options()
 
             request, metadata = self._interceptor.pre_get_branch(request, metadata)
-            transcoded_request = (
-                _BaseBranchServiceRestTransport._BaseGetBranch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBranchServiceRestTransport._BaseGetBranch._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBranchServiceRestTransport._BaseGetBranch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBranchServiceRestTransport._BaseGetBranch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -439,12 +387,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             # Send the request
             response = BranchServiceRestTransport._GetBranch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -460,12 +403,8 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             resp = self._interceptor.post_get_branch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_branch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_branch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = branch.Branch.to_json(response)
                 except:
@@ -486,22 +425,12 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
                 )
             return resp
 
-    class _ListBranches(
-        _BaseBranchServiceRestTransport._BaseListBranches, BranchServiceRestStub
-    ):
+    class _ListBranches(_BaseBranchServiceRestTransport._BaseListBranches, BranchServiceRestStub):
         def __hash__(self):
             return hash("BranchServiceRestTransport.ListBranches")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -545,26 +474,16 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseBranchServiceRestTransport._BaseListBranches._get_http_options()
-            )
+            http_options = _BaseBranchServiceRestTransport._BaseListBranches._get_http_options()
 
             request, metadata = self._interceptor.pre_list_branches(request, metadata)
-            transcoded_request = _BaseBranchServiceRestTransport._BaseListBranches._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBranchServiceRestTransport._BaseListBranches._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBranchServiceRestTransport._BaseListBranches._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBranchServiceRestTransport._BaseListBranches._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -588,12 +507,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             # Send the request
             response = BranchServiceRestTransport._ListBranches._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -609,16 +523,10 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             resp = self._interceptor.post_list_branches(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_branches_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_branches_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = branch_service.ListBranchesResponse.to_json(
-                        response
-                    )
+                    response_payload = branch_service.ListBranchesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -644,11 +552,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
         return self._GetBranch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_branches(
-        self,
-    ) -> Callable[
-        [branch_service.ListBranchesRequest], branch_service.ListBranchesResponse
-    ]:
+    def list_branches(self) -> Callable[[branch_service.ListBranchesRequest], branch_service.ListBranchesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBranches(self._session, self._host, self._interceptor)  # type: ignore
@@ -657,22 +561,12 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseBranchServiceRestTransport._BaseGetOperation, BranchServiceRestStub
-    ):
+    class _GetOperation(_BaseBranchServiceRestTransport._BaseGetOperation, BranchServiceRestStub):
         def __hash__(self):
             return hash("BranchServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -710,26 +604,16 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseBranchServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseBranchServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseBranchServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBranchServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBranchServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBranchServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -753,12 +637,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             # Send the request
             response = BranchServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -770,9 +649,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -797,22 +674,12 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseBranchServiceRestTransport._BaseListOperations, BranchServiceRestStub
-    ):
+    class _ListOperations(_BaseBranchServiceRestTransport._BaseListOperations, BranchServiceRestStub):
         def __hash__(self):
             return hash("BranchServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -850,26 +717,16 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseBranchServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseBranchServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseBranchServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBranchServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBranchServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBranchServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -893,12 +750,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
 
             # Send the request
             response = BranchServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -910,9 +762,7 @@ class BranchServiceRestTransport(_BaseBranchServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

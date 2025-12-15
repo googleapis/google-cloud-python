@@ -167,13 +167,8 @@ class ReservationsRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListReservationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListReservationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListReservationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListReservationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +176,7 @@ class ReservationsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.ReservationAggregatedList
-    ) -> compute.ReservationAggregatedList:
+    def post_aggregated_list(self, response: compute.ReservationAggregatedList) -> compute.ReservationAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -197,12 +190,8 @@ class ReservationsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.ReservationAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ReservationAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.ReservationAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ReservationAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -218,12 +207,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -245,9 +230,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -264,9 +247,7 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -289,9 +270,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Reservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Reservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -308,12 +287,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetIamPolicyReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -335,9 +310,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -354,12 +327,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -381,9 +350,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -400,12 +367,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListReservationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListReservationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListReservationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListReservationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -427,9 +390,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.ReservationList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.ReservationList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ReservationList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -446,13 +407,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_perform_maintenance(
-        self,
-        request: compute.PerformMaintenanceReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PerformMaintenanceReservationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PerformMaintenanceReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PerformMaintenanceReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for perform_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -460,9 +416,7 @@ class ReservationsRestInterceptor:
         """
         return request, metadata
 
-    def post_perform_maintenance(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_perform_maintenance(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for perform_maintenance
 
         DEPRECATED. Please use the `post_perform_maintenance_with_metadata`
@@ -476,9 +430,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_perform_maintenance_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for perform_maintenance
 
@@ -495,12 +447,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_resize(
-        self,
-        request: compute.ResizeReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ResizeReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ResizeReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ResizeReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resize
 
         Override in a subclass to manipulate the request or metadata
@@ -522,9 +470,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_resize_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resize
 
@@ -541,12 +487,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetIamPolicyReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -568,9 +510,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -587,13 +527,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsReservationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -601,9 +536,7 @@ class ReservationsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -617,12 +550,8 @@ class ReservationsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -638,12 +567,8 @@ class ReservationsRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdateReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdateReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.UpdateReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdateReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -665,9 +590,7 @@ class ReservationsRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -767,30 +690,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ReservationsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseReservationsRestTransport._BaseAggregatedList, ReservationsRestStub
-    ):
+    class _AggregatedList(_BaseReservationsRestTransport._BaseAggregatedList, ReservationsRestStub):
         def __hash__(self):
             return hash("ReservationsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -831,26 +742,16 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                     Contains a list of reservations.
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseReservationsRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationsRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -874,12 +775,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -895,16 +791,10 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.ReservationAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.ReservationAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -928,15 +818,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return hash("ReservationsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -994,30 +876,16 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseReservationsRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1040,14 +908,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
 
             # Send the request
-            response = ReservationsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ReservationsRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1062,12 +923,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1093,15 +950,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return hash("ReservationsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1151,25 +1000,13 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             http_options = _BaseReservationsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseReservationsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1192,14 +1029,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
 
             # Send the request
-            response = ReservationsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ReservationsRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1215,9 +1045,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Reservation.to_json(response)
                 except:
@@ -1238,22 +1066,12 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseReservationsRestTransport._BaseGetIamPolicy, ReservationsRestStub
-    ):
+    class _GetIamPolicy(_BaseReservationsRestTransport._BaseGetIamPolicy, ReservationsRestStub):
         def __hash__(self):
             return hash("ReservationsRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1317,28 +1135,16 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseReservationsRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1362,12 +1168,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1383,12 +1184,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1414,15 +1211,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return hash("ReservationsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1481,34 +1270,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseReservationsRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1532,13 +1305,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1554,12 +1321,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1585,15 +1348,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return hash("ReservationsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1637,25 +1392,13 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             http_options = _BaseReservationsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseReservationsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1678,14 +1421,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
 
             # Send the request
-            response = ReservationsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ReservationsRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1701,9 +1437,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.ReservationList.to_json(response)
                 except:
@@ -1724,22 +1458,12 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
             return resp
 
-    class _PerformMaintenance(
-        _BaseReservationsRestTransport._BasePerformMaintenance, ReservationsRestStub
-    ):
+    class _PerformMaintenance(_BaseReservationsRestTransport._BasePerformMaintenance, ReservationsRestStub):
         def __hash__(self):
             return hash("ReservationsRestTransport.PerformMaintenance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1798,32 +1522,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BasePerformMaintenance._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BasePerformMaintenance._get_http_options()
 
-            request, metadata = self._interceptor.pre_perform_maintenance(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationsRestTransport._BasePerformMaintenance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_perform_maintenance(request, metadata)
+            transcoded_request = _BaseReservationsRestTransport._BasePerformMaintenance._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationsRestTransport._BasePerformMaintenance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationsRestTransport._BasePerformMaintenance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationsRestTransport._BasePerformMaintenance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationsRestTransport._BasePerformMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1847,13 +1557,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._PerformMaintenance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1869,12 +1573,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_perform_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1900,15 +1600,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return hash("ReservationsRestTransport.Resize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1967,34 +1659,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseResize._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseResize._get_http_options()
 
             request, metadata = self._interceptor.pre_resize(request, metadata)
-            transcoded_request = (
-                _BaseReservationsRestTransport._BaseResize._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseResize._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationsRestTransport._BaseResize._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationsRestTransport._BaseResize._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseResize._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseResize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2018,13 +1694,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._Resize._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2040,12 +1710,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_resize(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resize_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resize_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2066,22 +1732,12 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseReservationsRestTransport._BaseSetIamPolicy, ReservationsRestStub
-    ):
+    class _SetIamPolicy(_BaseReservationsRestTransport._BaseSetIamPolicy, ReservationsRestStub):
         def __hash__(self):
             return hash("ReservationsRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2146,34 +1802,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseReservationsRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseReservationsRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseReservationsRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2197,13 +1837,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2219,12 +1853,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2245,22 +1875,12 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseReservationsRestTransport._BaseTestIamPermissions, ReservationsRestStub
-    ):
+    class _TestIamPermissions(_BaseReservationsRestTransport._BaseTestIamPermissions, ReservationsRestStub):
         def __hash__(self):
             return hash("ReservationsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2302,32 +1922,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseReservationsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2351,13 +1957,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2373,12 +1973,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -2404,15 +2000,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return hash("ReservationsRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2471,34 +2059,18 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationsRestTransport._BaseUpdate._get_http_options()
-            )
+            http_options = _BaseReservationsRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BaseReservationsRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReservationsRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationsRestTransport._BaseUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationsRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReservationsRestTransport._BaseUpdate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReservationsRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2522,13 +2094,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             # Send the request
             response = ReservationsRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2544,12 +2110,8 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2571,11 +2133,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListReservationsRequest], compute.ReservationAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListReservationsRequest], compute.ReservationAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
@@ -2593,9 +2151,7 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyReservationRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyReservationRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -2607,17 +2163,13 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListReservationsRequest], compute.ReservationList]:
+    def list(self) -> Callable[[compute.ListReservationsRequest], compute.ReservationList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def perform_maintenance(
-        self,
-    ) -> Callable[[compute.PerformMaintenanceReservationRequest], compute.Operation]:
+    def perform_maintenance(self) -> Callable[[compute.PerformMaintenanceReservationRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PerformMaintenance(self._session, self._host, self._interceptor)  # type: ignore
@@ -2629,19 +2181,13 @@ class ReservationsRestTransport(_BaseReservationsRestTransport):
         return self._Resize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyReservationRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyReservationRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsReservationRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsReservationRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

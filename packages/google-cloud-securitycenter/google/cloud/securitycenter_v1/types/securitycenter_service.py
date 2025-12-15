@@ -32,26 +32,14 @@ from google.cloud.securitycenter_v1.types import (
     effective_event_threat_detection_custom_module,
     effective_security_health_analytics_custom_module,
 )
-from google.cloud.securitycenter_v1.types import (
-    event_threat_detection_custom_module as gcs_event_threat_detection_custom_module,
-)
-from google.cloud.securitycenter_v1.types import (
-    event_threat_detection_custom_module_validation_errors,
-)
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module as gcs_event_threat_detection_custom_module
+from google.cloud.securitycenter_v1.types import event_threat_detection_custom_module_validation_errors
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
-from google.cloud.securitycenter_v1.types import (
-    notification_config as gcs_notification_config,
-)
-from google.cloud.securitycenter_v1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1.types import (
-    resource_value_config as gcs_resource_value_config,
-)
+from google.cloud.securitycenter_v1.types import notification_config as gcs_notification_config
+from google.cloud.securitycenter_v1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1.types import resource_value_config as gcs_resource_value_config
 from google.cloud.securitycenter_v1.types import security_health_analytics_custom_config
-from google.cloud.securitycenter_v1.types import (
-    security_health_analytics_custom_module as gcs_security_health_analytics_custom_module,
-)
+from google.cloud.securitycenter_v1.types import security_health_analytics_custom_module as gcs_security_health_analytics_custom_module
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import asset as gcs_asset
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
@@ -366,9 +354,7 @@ class BatchCreateResourceValueConfigsResponse(proto.Message):
             The resource value configs created
     """
 
-    resource_value_configs: MutableSequence[
-        gcs_resource_value_config.ResourceValueConfig
-    ] = proto.RepeatedField(
+    resource_value_configs: MutableSequence[gcs_resource_value_config.ResourceValueConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_resource_value_config.ResourceValueConfig,
@@ -464,9 +450,7 @@ class ListResourceValueConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    resource_value_configs: MutableSequence[
-        gcs_resource_value_config.ResourceValueConfig
-    ] = proto.RepeatedField(
+    resource_value_configs: MutableSequence[gcs_resource_value_config.ResourceValueConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_resource_value_config.ResourceValueConfig,
@@ -1422,9 +1406,7 @@ class ListValuedResourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    valued_resources: MutableSequence[
-        valued_resource.ValuedResource
-    ] = proto.RepeatedField(
+    valued_resources: MutableSequence[valued_resource.ValuedResource] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=valued_resource.ValuedResource,
@@ -1666,9 +1648,7 @@ class ListNotificationConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    notification_configs: MutableSequence[
-        gcs_notification_config.NotificationConfig
-    ] = proto.RepeatedField(
+    notification_configs: MutableSequence[gcs_notification_config.NotificationConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcs_notification_config.NotificationConfig,
@@ -2563,12 +2543,10 @@ class ListFindingsResponse(proto.Message):
             number=1,
             message=gcs_finding.Finding,
         )
-        state_change: "ListFindingsResponse.ListFindingsResult.StateChange" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="ListFindingsResponse.ListFindingsResult.StateChange",
-            )
+        state_change: "ListFindingsResponse.ListFindingsResult.StateChange" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ListFindingsResponse.ListFindingsResult.StateChange",
         )
         resource: "ListFindingsResponse.ListFindingsResult.Resource" = proto.Field(
             proto.MESSAGE,
@@ -3141,9 +3119,7 @@ class ListBigQueryExportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    big_query_exports: MutableSequence[
-        bigquery_export.BigQueryExport
-    ] = proto.RepeatedField(
+    big_query_exports: MutableSequence[bigquery_export.BigQueryExport] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=bigquery_export.BigQueryExport,

@@ -18,12 +18,8 @@ from google.cloud.recaptchaenterprise import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.async_client import (
-    RecaptchaEnterpriseServiceAsyncClient,
-)
-from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.client import (
-    RecaptchaEnterpriseServiceClient,
-)
+from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.async_client import RecaptchaEnterpriseServiceAsyncClient
+from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.client import RecaptchaEnterpriseServiceClient
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AccountDefenderAssessment,
     AccountVerificationInfo,

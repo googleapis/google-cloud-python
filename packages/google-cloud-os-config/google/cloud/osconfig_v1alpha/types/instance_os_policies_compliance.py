@@ -127,9 +127,7 @@ class InstanceOSPoliciesCompliance(proto.Message):
             number=4,
             enum=config_common.OSPolicyComplianceState,
         )
-        os_policy_resource_compliances: MutableSequence[
-            config_common.OSPolicyResourceCompliance
-        ] = proto.RepeatedField(
+        os_policy_resource_compliances: MutableSequence[config_common.OSPolicyResourceCompliance] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=config_common.OSPolicyResourceCompliance,
@@ -255,9 +253,7 @@ class ListInstanceOSPoliciesCompliancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instance_os_policies_compliances: MutableSequence[
-        "InstanceOSPoliciesCompliance"
-    ] = proto.RepeatedField(
+    instance_os_policies_compliances: MutableSequence["InstanceOSPoliciesCompliance"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="InstanceOSPoliciesCompliance",

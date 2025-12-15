@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import CloudControlsPartnerMonitoringTransport
 from .grpc import CloudControlsPartnerMonitoringGrpcTransport
 from .grpc_asyncio import CloudControlsPartnerMonitoringGrpcAsyncIOTransport
-from .rest import (
-    CloudControlsPartnerMonitoringRestInterceptor,
-    CloudControlsPartnerMonitoringRestTransport,
-)
+from .rest import CloudControlsPartnerMonitoringRestInterceptor, CloudControlsPartnerMonitoringRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CloudControlsPartnerMonitoringTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CloudControlsPartnerMonitoringTransport]]
 _transport_registry["grpc"] = CloudControlsPartnerMonitoringGrpcTransport
 _transport_registry["grpc_asyncio"] = CloudControlsPartnerMonitoringGrpcAsyncIOTransport
 _transport_registry["rest"] = CloudControlsPartnerMonitoringRestTransport

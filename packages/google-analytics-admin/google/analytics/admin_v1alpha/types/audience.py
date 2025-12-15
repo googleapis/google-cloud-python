@@ -166,12 +166,10 @@ class AudienceDimensionOrMetricFilter(proto.Message):
             CONTAINS = 4
             FULL_REGEXP = 5
 
-        match_type: "AudienceDimensionOrMetricFilter.StringFilter.MatchType" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="AudienceDimensionOrMetricFilter.StringFilter.MatchType",
-            )
+        match_type: "AudienceDimensionOrMetricFilter.StringFilter.MatchType" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AudienceDimensionOrMetricFilter.StringFilter.MatchType",
         )
         value: str = proto.Field(
             proto.STRING,
@@ -267,12 +265,10 @@ class AudienceDimensionOrMetricFilter(proto.Message):
             LESS_THAN = 2
             GREATER_THAN = 4
 
-        operation: "AudienceDimensionOrMetricFilter.NumericFilter.Operation" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="AudienceDimensionOrMetricFilter.NumericFilter.Operation",
-            )
+        operation: "AudienceDimensionOrMetricFilter.NumericFilter.Operation" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="AudienceDimensionOrMetricFilter.NumericFilter.Operation",
         )
         value: "AudienceDimensionOrMetricFilter.NumericValue" = proto.Field(
             proto.MESSAGE,
@@ -457,9 +453,7 @@ class AudienceFilterExpressionList(proto.Message):
             A list of Audience filter expressions.
     """
 
-    filter_expressions: MutableSequence[
-        "AudienceFilterExpression"
-    ] = proto.RepeatedField(
+    filter_expressions: MutableSequence["AudienceFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AudienceFilterExpression",

@@ -103,12 +103,8 @@ class DiskTypesRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListDiskTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListDiskTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AggregatedListDiskTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListDiskTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -116,9 +112,7 @@ class DiskTypesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.DiskTypeAggregatedList
-    ) -> compute.DiskTypeAggregatedList:
+    def post_aggregated_list(self, response: compute.DiskTypeAggregatedList) -> compute.DiskTypeAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -132,9 +126,7 @@ class DiskTypesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.DiskTypeAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.DiskTypeAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DiskTypeAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
@@ -151,9 +143,7 @@ class DiskTypesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetDiskTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetDiskTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetDiskTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -176,9 +166,7 @@ class DiskTypesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.DiskType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.DiskType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DiskType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -195,9 +183,7 @@ class DiskTypesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListDiskTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListDiskTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListDiskTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -220,9 +206,7 @@ class DiskTypesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.DiskTypeList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.DiskTypeList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DiskTypeList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -322,30 +306,18 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DiskTypesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseDiskTypesRestTransport._BaseAggregatedList, DiskTypesRestStub
-    ):
+    class _AggregatedList(_BaseDiskTypesRestTransport._BaseAggregatedList, DiskTypesRestStub):
         def __hash__(self):
             return hash("DiskTypesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -386,30 +358,16 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
 
             """
 
-            http_options = (
-                _BaseDiskTypesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseDiskTypesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = (
-                _BaseDiskTypesRestTransport._BaseAggregatedList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDiskTypesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDiskTypesRestTransport._BaseAggregatedList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDiskTypesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -433,12 +391,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
 
             # Send the request
             response = DiskTypesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -454,12 +407,8 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.DiskTypeAggregatedList.to_json(response)
                 except:
@@ -485,15 +434,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             return hash("DiskTypesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -548,23 +489,13 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             http_options = _BaseDiskTypesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseDiskTypesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDiskTypesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDiskTypesRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDiskTypesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -587,14 +518,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
                 )
 
             # Send the request
-            response = DiskTypesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = DiskTypesRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -610,9 +534,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.DiskType.to_json(response)
                 except:
@@ -638,15 +560,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             return hash("DiskTypesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -689,23 +603,13 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             http_options = _BaseDiskTypesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseDiskTypesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDiskTypesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDiskTypesRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDiskTypesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -728,14 +632,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
                 )
 
             # Send the request
-            response = DiskTypesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = DiskTypesRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -751,9 +648,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.DiskTypeList.to_json(response)
                 except:
@@ -775,11 +670,7 @@ class DiskTypesRestTransport(_BaseDiskTypesRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListDiskTypesRequest], compute.DiskTypeAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListDiskTypesRequest], compute.DiskTypeAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore

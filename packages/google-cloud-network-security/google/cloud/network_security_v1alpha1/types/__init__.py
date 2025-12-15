@@ -225,12 +225,7 @@ from .sse_realm import (
     SACAttachment,
     SACRealm,
 )
-from .tls import (
-    CertificateProvider,
-    CertificateProviderInstance,
-    GrpcEndpoint,
-    ValidationCA,
-)
+from .tls import CertificateProvider, CertificateProviderInstance, GrpcEndpoint, ValidationCA
 from .tls_inspection_policy import (
     CreateTlsInspectionPolicyRequest,
     DeleteTlsInspectionPolicyRequest,

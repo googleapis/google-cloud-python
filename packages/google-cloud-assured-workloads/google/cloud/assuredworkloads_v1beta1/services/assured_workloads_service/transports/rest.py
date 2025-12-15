@@ -133,12 +133,8 @@ class AssuredWorkloadsServiceRestInterceptor:
     """
 
     def pre_create_workload(
-        self,
-        request: assuredworkloads.CreateWorkloadRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        assuredworkloads.CreateWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: assuredworkloads.CreateWorkloadRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[assuredworkloads.CreateWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -146,9 +142,7 @@ class AssuredWorkloadsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_workload(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_workload(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_workload
 
         DEPRECATED. Please use the `post_create_workload_with_metadata`
@@ -162,9 +156,7 @@ class AssuredWorkloadsServiceRestInterceptor:
         return response
 
     def post_create_workload_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_workload
 
@@ -181,12 +173,8 @@ class AssuredWorkloadsServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_workload(
-        self,
-        request: assuredworkloads.DeleteWorkloadRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        assuredworkloads.DeleteWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: assuredworkloads.DeleteWorkloadRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[assuredworkloads.DeleteWorkloadRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_workload
 
         Override in a subclass to manipulate the request or metadata
@@ -195,13 +183,8 @@ class AssuredWorkloadsServiceRestInterceptor:
         return request, metadata
 
     def pre_restrict_allowed_resources(
-        self,
-        request: assuredworkloads.RestrictAllowedResourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        assuredworkloads.RestrictAllowedResourcesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: assuredworkloads.RestrictAllowedResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[assuredworkloads.RestrictAllowedResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restrict_allowed_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -225,13 +208,8 @@ class AssuredWorkloadsServiceRestInterceptor:
         return response
 
     def post_restrict_allowed_resources_with_metadata(
-        self,
-        response: assuredworkloads.RestrictAllowedResourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        assuredworkloads.RestrictAllowedResourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: assuredworkloads.RestrictAllowedResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[assuredworkloads.RestrictAllowedResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restrict_allowed_resources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -247,12 +225,8 @@ class AssuredWorkloadsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -260,9 +234,7 @@ class AssuredWorkloadsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -272,12 +244,8 @@ class AssuredWorkloadsServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -285,9 +253,7 @@ class AssuredWorkloadsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -376,9 +342,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -418,17 +382,12 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 path_prefix="v1beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AnalyzeWorkloadMove(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseAnalyzeWorkloadMove,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _AnalyzeWorkloadMove(_BaseAssuredWorkloadsServiceRestTransport._BaseAnalyzeWorkloadMove, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.AnalyzeWorkloadMove")
 
@@ -440,27 +399,14 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> assuredworkloads.AnalyzeWorkloadMoveResponse:
-            raise NotImplementedError(
-                "Method AnalyzeWorkloadMove is not available over REST transport"
-            )
+            raise NotImplementedError("Method AnalyzeWorkloadMove is not available over REST transport")
 
-    class _CreateWorkload(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _CreateWorkload(_BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.CreateWorkload")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -503,30 +449,18 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_create_workload(request, metadata)
-            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_transcoded_request(http_options, request)
 
-            body = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseCreateWorkload._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -549,16 +483,8 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                AssuredWorkloadsServiceRestTransport._CreateWorkload._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AssuredWorkloadsServiceRestTransport._CreateWorkload._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -572,12 +498,8 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             resp = self._interceptor.post_create_workload(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_workload_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_workload_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -598,23 +520,12 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 )
             return resp
 
-    class _DeleteWorkload(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _DeleteWorkload(_BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.DeleteWorkload")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -649,26 +560,16 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_workload(request, metadata)
-            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseDeleteWorkload._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -691,15 +592,8 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                AssuredWorkloadsServiceRestTransport._DeleteWorkload._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AssuredWorkloadsServiceRestTransport._DeleteWorkload._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -707,10 +601,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetWorkload(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseGetWorkload,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _GetWorkload(_BaseAssuredWorkloadsServiceRestTransport._BaseGetWorkload, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.GetWorkload")
 
@@ -722,14 +613,9 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> assuredworkloads.Workload:
-            raise NotImplementedError(
-                "Method GetWorkload is not available over REST transport"
-            )
+            raise NotImplementedError("Method GetWorkload is not available over REST transport")
 
-    class _ListWorkloads(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseListWorkloads,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _ListWorkloads(_BaseAssuredWorkloadsServiceRestTransport._BaseListWorkloads, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.ListWorkloads")
 
@@ -741,27 +627,14 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> assuredworkloads.ListWorkloadsResponse:
-            raise NotImplementedError(
-                "Method ListWorkloads is not available over REST transport"
-            )
+            raise NotImplementedError("Method ListWorkloads is not available over REST transport")
 
-    class _RestrictAllowedResources(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _RestrictAllowedResources(_BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.RestrictAllowedResources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -806,32 +679,20 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_http_options()
 
-            request, metadata = self._interceptor.pre_restrict_allowed_resources(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_restrict_allowed_resources(request, metadata)
             transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseRestrictAllowedResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -855,13 +716,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             # Send the request
             response = AssuredWorkloadsServiceRestTransport._RestrictAllowedResources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -877,18 +732,10 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             resp = self._interceptor.post_restrict_allowed_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restrict_allowed_resources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restrict_allowed_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        assuredworkloads.RestrictAllowedResourcesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = assuredworkloads.RestrictAllowedResourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -907,10 +754,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 )
             return resp
 
-    class _UpdateWorkload(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseUpdateWorkload,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _UpdateWorkload(_BaseAssuredWorkloadsServiceRestTransport._BaseUpdateWorkload, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.UpdateWorkload")
 
@@ -922,51 +766,34 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> assuredworkloads.Workload:
-            raise NotImplementedError(
-                "Method UpdateWorkload is not available over REST transport"
-            )
+            raise NotImplementedError("Method UpdateWorkload is not available over REST transport")
 
     @property
-    def analyze_workload_move(
-        self,
-    ) -> Callable[
-        [assuredworkloads.AnalyzeWorkloadMoveRequest],
-        assuredworkloads.AnalyzeWorkloadMoveResponse,
-    ]:
+    def analyze_workload_move(self) -> Callable[[assuredworkloads.AnalyzeWorkloadMoveRequest], assuredworkloads.AnalyzeWorkloadMoveResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AnalyzeWorkloadMove(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_workload(
-        self,
-    ) -> Callable[[assuredworkloads.CreateWorkloadRequest], operations_pb2.Operation]:
+    def create_workload(self) -> Callable[[assuredworkloads.CreateWorkloadRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkload(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_workload(
-        self,
-    ) -> Callable[[assuredworkloads.DeleteWorkloadRequest], empty_pb2.Empty]:
+    def delete_workload(self) -> Callable[[assuredworkloads.DeleteWorkloadRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkload(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_workload(
-        self,
-    ) -> Callable[[assuredworkloads.GetWorkloadRequest], assuredworkloads.Workload]:
+    def get_workload(self) -> Callable[[assuredworkloads.GetWorkloadRequest], assuredworkloads.Workload]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkload(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_workloads(
-        self,
-    ) -> Callable[
-        [assuredworkloads.ListWorkloadsRequest], assuredworkloads.ListWorkloadsResponse
-    ]:
+    def list_workloads(self) -> Callable[[assuredworkloads.ListWorkloadsRequest], assuredworkloads.ListWorkloadsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkloads(self._session, self._host, self._interceptor)  # type: ignore
@@ -974,18 +801,13 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
     @property
     def restrict_allowed_resources(
         self,
-    ) -> Callable[
-        [assuredworkloads.RestrictAllowedResourcesRequest],
-        assuredworkloads.RestrictAllowedResourcesResponse,
-    ]:
+    ) -> Callable[[assuredworkloads.RestrictAllowedResourcesRequest], assuredworkloads.RestrictAllowedResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestrictAllowedResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_workload(
-        self,
-    ) -> Callable[[assuredworkloads.UpdateWorkloadRequest], assuredworkloads.Workload]:
+    def update_workload(self) -> Callable[[assuredworkloads.UpdateWorkloadRequest], assuredworkloads.Workload]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWorkload(self._session, self._host, self._interceptor)  # type: ignore
@@ -994,23 +816,12 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _GetOperation(_BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1048,26 +859,16 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1091,12 +892,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
 
             # Send the request
             response = AssuredWorkloadsServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1108,9 +904,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1135,23 +929,12 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations,
-        AssuredWorkloadsServiceRestStub,
-    ):
+    class _ListOperations(_BaseAssuredWorkloadsServiceRestTransport._BaseListOperations, AssuredWorkloadsServiceRestStub):
         def __hash__(self):
             return hash("AssuredWorkloadsServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1189,26 +972,16 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssuredWorkloadsServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1231,15 +1004,8 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                AssuredWorkloadsServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AssuredWorkloadsServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1251,9 +1017,7 @@ class AssuredWorkloadsServiceRestTransport(_BaseAssuredWorkloadsServiceRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

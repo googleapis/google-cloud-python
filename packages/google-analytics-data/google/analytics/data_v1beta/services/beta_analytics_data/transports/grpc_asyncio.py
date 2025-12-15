@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -268,18 +257,14 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -315,9 +300,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -340,20 +323,13 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def run_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunReportRequest],
-        Awaitable[analytics_data_api.RunReportResponse],
-    ]:
+    def run_report(self) -> Callable[[analytics_data_api.RunReportRequest], Awaitable[analytics_data_api.RunReportResponse]]:
         r"""Return a callable for the run report method over gRPC.
 
         Returns a customized report of your Google Analytics event data.
@@ -388,12 +364,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         return self._stubs["run_report"]
 
     @property
-    def run_pivot_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunPivotReportRequest],
-        Awaitable[analytics_data_api.RunPivotReportResponse],
-    ]:
+    def run_pivot_report(self) -> Callable[[analytics_data_api.RunPivotReportRequest], Awaitable[analytics_data_api.RunPivotReportResponse]]:
         r"""Return a callable for the run pivot report method over gRPC.
 
         Returns a customized pivot report of your Google
@@ -422,12 +393,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         return self._stubs["run_pivot_report"]
 
     @property
-    def batch_run_reports(
-        self,
-    ) -> Callable[
-        [analytics_data_api.BatchRunReportsRequest],
-        Awaitable[analytics_data_api.BatchRunReportsResponse],
-    ]:
+    def batch_run_reports(self) -> Callable[[analytics_data_api.BatchRunReportsRequest], Awaitable[analytics_data_api.BatchRunReportsResponse]]:
         r"""Return a callable for the batch run reports method over gRPC.
 
         Returns multiple reports in a batch. All reports must
@@ -454,10 +420,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
     @property
     def batch_run_pivot_reports(
         self,
-    ) -> Callable[
-        [analytics_data_api.BatchRunPivotReportsRequest],
-        Awaitable[analytics_data_api.BatchRunPivotReportsResponse],
-    ]:
+    ) -> Callable[[analytics_data_api.BatchRunPivotReportsRequest], Awaitable[analytics_data_api.BatchRunPivotReportsResponse]]:
         r"""Return a callable for the batch run pivot reports method over gRPC.
 
         Returns multiple pivot reports in a batch. All
@@ -482,11 +445,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         return self._stubs["batch_run_pivot_reports"]
 
     @property
-    def get_metadata(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetMetadataRequest], Awaitable[analytics_data_api.Metadata]
-    ]:
+    def get_metadata(self) -> Callable[[analytics_data_api.GetMetadataRequest], Awaitable[analytics_data_api.Metadata]]:
         r"""Return a callable for the get metadata method over gRPC.
 
         Returns metadata for dimensions and metrics available in
@@ -520,12 +479,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         return self._stubs["get_metadata"]
 
     @property
-    def run_realtime_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunRealtimeReportRequest],
-        Awaitable[analytics_data_api.RunRealtimeReportResponse],
-    ]:
+    def run_realtime_report(self) -> Callable[[analytics_data_api.RunRealtimeReportRequest], Awaitable[analytics_data_api.RunRealtimeReportResponse]]:
         r"""Return a callable for the run realtime report method over gRPC.
 
         Returns a customized report of realtime event data for your
@@ -560,10 +514,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
     @property
     def check_compatibility(
         self,
-    ) -> Callable[
-        [analytics_data_api.CheckCompatibilityRequest],
-        Awaitable[analytics_data_api.CheckCompatibilityResponse],
-    ]:
+    ) -> Callable[[analytics_data_api.CheckCompatibilityRequest], Awaitable[analytics_data_api.CheckCompatibilityResponse]]:
         r"""Return a callable for the check compatibility method over gRPC.
 
         This compatibility method lists dimensions and
@@ -599,12 +550,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         return self._stubs["check_compatibility"]
 
     @property
-    def create_audience_export(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CreateAudienceExportRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_audience_export(self) -> Callable[[analytics_data_api.CreateAudienceExportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create audience export method over gRPC.
 
         Creates an audience export for later retrieval. This method
@@ -657,10 +603,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
     @property
     def query_audience_export(
         self,
-    ) -> Callable[
-        [analytics_data_api.QueryAudienceExportRequest],
-        Awaitable[analytics_data_api.QueryAudienceExportResponse],
-    ]:
+    ) -> Callable[[analytics_data_api.QueryAudienceExportRequest], Awaitable[analytics_data_api.QueryAudienceExportResponse]]:
         r"""Return a callable for the query audience export method over gRPC.
 
         Retrieves an audience export of users. After creating an
@@ -703,12 +646,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
         return self._stubs["query_audience_export"]
 
     @property
-    def get_audience_export(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetAudienceExportRequest],
-        Awaitable[analytics_data_api.AudienceExport],
-    ]:
+    def get_audience_export(self) -> Callable[[analytics_data_api.GetAudienceExportRequest], Awaitable[analytics_data_api.AudienceExport]]:
         r"""Return a callable for the get audience export method over gRPC.
 
         Gets configuration metadata about a specific audience export.
@@ -747,10 +685,7 @@ class BetaAnalyticsDataGrpcAsyncIOTransport(BetaAnalyticsDataTransport):
     @property
     def list_audience_exports(
         self,
-    ) -> Callable[
-        [analytics_data_api.ListAudienceExportsRequest],
-        Awaitable[analytics_data_api.ListAudienceExportsResponse],
-    ]:
+    ) -> Callable[[analytics_data_api.ListAudienceExportsRequest], Awaitable[analytics_data_api.ListAudienceExportsResponse]]:
         r"""Return a callable for the list audience exports method over gRPC.
 
         Lists all audience exports for a property. This method can be

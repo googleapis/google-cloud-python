@@ -356,9 +356,7 @@ class ListRecurringAudienceListsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    recurring_audience_lists: MutableSequence[
-        "RecurringAudienceList"
-    ] = proto.RepeatedField(
+    recurring_audience_lists: MutableSequence["RecurringAudienceList"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RecurringAudienceList",
@@ -1340,9 +1338,7 @@ class ReportTask(proto.Message):
             proto.INT64,
             number=8,
         )
-        metric_aggregations: MutableSequence[
-            data.MetricAggregation
-        ] = proto.RepeatedField(
+        metric_aggregations: MutableSequence[data.MetricAggregation] = proto.RepeatedField(
             proto.ENUM,
             number=9,
             enum=data.MetricAggregation,

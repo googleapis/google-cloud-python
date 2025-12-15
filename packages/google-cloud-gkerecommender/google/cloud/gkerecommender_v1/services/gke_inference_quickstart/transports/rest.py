@@ -127,13 +127,8 @@ class GkeInferenceQuickstartRestInterceptor:
     """
 
     def pre_fetch_benchmarking_data(
-        self,
-        request: gkerecommender.FetchBenchmarkingDataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchBenchmarkingDataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gkerecommender.FetchBenchmarkingDataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchBenchmarkingDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_benchmarking_data
 
         Override in a subclass to manipulate the request or metadata
@@ -141,9 +136,7 @@ class GkeInferenceQuickstartRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_benchmarking_data(
-        self, response: gkerecommender.FetchBenchmarkingDataResponse
-    ) -> gkerecommender.FetchBenchmarkingDataResponse:
+    def post_fetch_benchmarking_data(self, response: gkerecommender.FetchBenchmarkingDataResponse) -> gkerecommender.FetchBenchmarkingDataResponse:
         """Post-rpc interceptor for fetch_benchmarking_data
 
         DEPRECATED. Please use the `post_fetch_benchmarking_data_with_metadata`
@@ -157,13 +150,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response
 
     def post_fetch_benchmarking_data_with_metadata(
-        self,
-        response: gkerecommender.FetchBenchmarkingDataResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchBenchmarkingDataResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkerecommender.FetchBenchmarkingDataResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchBenchmarkingDataResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_benchmarking_data
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -179,12 +167,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response, metadata
 
     def pre_fetch_models(
-        self,
-        request: gkerecommender.FetchModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkerecommender.FetchModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_models
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +176,7 @@ class GkeInferenceQuickstartRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_models(
-        self, response: gkerecommender.FetchModelsResponse
-    ) -> gkerecommender.FetchModelsResponse:
+    def post_fetch_models(self, response: gkerecommender.FetchModelsResponse) -> gkerecommender.FetchModelsResponse:
         """Post-rpc interceptor for fetch_models
 
         DEPRECATED. Please use the `post_fetch_models_with_metadata`
@@ -208,12 +190,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response
 
     def post_fetch_models_with_metadata(
-        self,
-        response: gkerecommender.FetchModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkerecommender.FetchModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_models
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -229,12 +207,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response, metadata
 
     def pre_fetch_model_servers(
-        self,
-        request: gkerecommender.FetchModelServersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchModelServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkerecommender.FetchModelServersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchModelServersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_model_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -242,9 +216,7 @@ class GkeInferenceQuickstartRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_model_servers(
-        self, response: gkerecommender.FetchModelServersResponse
-    ) -> gkerecommender.FetchModelServersResponse:
+    def post_fetch_model_servers(self, response: gkerecommender.FetchModelServersResponse) -> gkerecommender.FetchModelServersResponse:
         """Post-rpc interceptor for fetch_model_servers
 
         DEPRECATED. Please use the `post_fetch_model_servers_with_metadata`
@@ -258,13 +230,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response
 
     def post_fetch_model_servers_with_metadata(
-        self,
-        response: gkerecommender.FetchModelServersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchModelServersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkerecommender.FetchModelServersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchModelServersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_model_servers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -280,13 +247,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response, metadata
 
     def pre_fetch_model_server_versions(
-        self,
-        request: gkerecommender.FetchModelServerVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchModelServerVersionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gkerecommender.FetchModelServerVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchModelServerVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_model_server_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -310,13 +272,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response
 
     def post_fetch_model_server_versions_with_metadata(
-        self,
-        response: gkerecommender.FetchModelServerVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchModelServerVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkerecommender.FetchModelServerVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchModelServerVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_model_server_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -332,12 +289,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response, metadata
 
     def pre_fetch_profiles(
-        self,
-        request: gkerecommender.FetchProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gkerecommender.FetchProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -345,9 +298,7 @@ class GkeInferenceQuickstartRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_profiles(
-        self, response: gkerecommender.FetchProfilesResponse
-    ) -> gkerecommender.FetchProfilesResponse:
+    def post_fetch_profiles(self, response: gkerecommender.FetchProfilesResponse) -> gkerecommender.FetchProfilesResponse:
         """Post-rpc interceptor for fetch_profiles
 
         DEPRECATED. Please use the `post_fetch_profiles_with_metadata`
@@ -361,12 +312,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response
 
     def post_fetch_profiles_with_metadata(
-        self,
-        response: gkerecommender.FetchProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.FetchProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gkerecommender.FetchProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.FetchProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -382,13 +329,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response, metadata
 
     def pre_generate_optimized_manifest(
-        self,
-        request: gkerecommender.GenerateOptimizedManifestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.GenerateOptimizedManifestRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gkerecommender.GenerateOptimizedManifestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.GenerateOptimizedManifestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_optimized_manifest
 
         Override in a subclass to manipulate the request or metadata
@@ -412,13 +354,8 @@ class GkeInferenceQuickstartRestInterceptor:
         return response
 
     def post_generate_optimized_manifest_with_metadata(
-        self,
-        response: gkerecommender.GenerateOptimizedManifestResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gkerecommender.GenerateOptimizedManifestResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gkerecommender.GenerateOptimizedManifestResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gkerecommender.GenerateOptimizedManifestResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_optimized_manifest
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -516,31 +453,18 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GkeInferenceQuickstartRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _FetchBenchmarkingData(
-        _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData,
-        GkeInferenceQuickstartRestStub,
-    ):
+    class _FetchBenchmarkingData(_BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData, GkeInferenceQuickstartRestStub):
         def __hash__(self):
             return hash("GkeInferenceQuickstartRestTransport.FetchBenchmarkingData")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -583,32 +507,18 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             """
 
-            http_options = (
-                _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_http_options()
-            )
+            http_options = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_benchmarking_data(
-                request, metadata
-            )
-            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_benchmarking_data(request, metadata)
+            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_transcoded_request(http_options, request)
 
-            body = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchBenchmarkingData._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -632,13 +542,7 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             # Send the request
             response = GkeInferenceQuickstartRestTransport._FetchBenchmarkingData._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -654,16 +558,10 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             resp = self._interceptor.post_fetch_benchmarking_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_benchmarking_data_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_benchmarking_data_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gkerecommender.FetchBenchmarkingDataResponse.to_json(response)
-                    )
+                    response_payload = gkerecommender.FetchBenchmarkingDataResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -682,23 +580,12 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
                 )
             return resp
 
-    class _FetchModels(
-        _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels,
-        GkeInferenceQuickstartRestStub,
-    ):
+    class _FetchModels(_BaseGkeInferenceQuickstartRestTransport._BaseFetchModels, GkeInferenceQuickstartRestStub):
         def __hash__(self):
             return hash("GkeInferenceQuickstartRestTransport.FetchModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -740,26 +627,16 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             """
 
-            http_options = (
-                _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels._get_http_options()
-            )
+            http_options = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_models(request, metadata)
-            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -783,12 +660,7 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             # Send the request
             response = GkeInferenceQuickstartRestTransport._FetchModels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -804,16 +676,10 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             resp = self._interceptor.post_fetch_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkerecommender.FetchModelsResponse.to_json(
-                        response
-                    )
+                    response_payload = gkerecommender.FetchModelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -832,23 +698,12 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
                 )
             return resp
 
-    class _FetchModelServers(
-        _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers,
-        GkeInferenceQuickstartRestStub,
-    ):
+    class _FetchModelServers(_BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers, GkeInferenceQuickstartRestStub):
         def __hash__(self):
             return hash("GkeInferenceQuickstartRestTransport.FetchModelServers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -890,28 +745,16 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             """
 
-            http_options = (
-                _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers._get_http_options()
-            )
+            http_options = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_model_servers(
-                request, metadata
-            )
-            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_model_servers(request, metadata)
+            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -934,15 +777,8 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
                 )
 
             # Send the request
-            response = (
-                GkeInferenceQuickstartRestTransport._FetchModelServers._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GkeInferenceQuickstartRestTransport._FetchModelServers._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -958,16 +794,10 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             resp = self._interceptor.post_fetch_model_servers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_model_servers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_model_servers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkerecommender.FetchModelServersResponse.to_json(
-                        response
-                    )
+                    response_payload = gkerecommender.FetchModelServersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -986,23 +816,12 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
                 )
             return resp
 
-    class _FetchModelServerVersions(
-        _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions,
-        GkeInferenceQuickstartRestStub,
-    ):
+    class _FetchModelServerVersions(_BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions, GkeInferenceQuickstartRestStub):
         def __hash__(self):
             return hash("GkeInferenceQuickstartRestTransport.FetchModelServerVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1045,28 +864,16 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             """
 
-            http_options = (
-                _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions._get_http_options()
-            )
+            http_options = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_model_server_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_model_server_versions(request, metadata)
+            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchModelServerVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1090,12 +897,7 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             # Send the request
             response = GkeInferenceQuickstartRestTransport._FetchModelServerVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1111,18 +913,10 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             resp = self._interceptor.post_fetch_model_server_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_model_server_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_model_server_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gkerecommender.FetchModelServerVersionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = gkerecommender.FetchModelServerVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1141,23 +935,12 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
                 )
             return resp
 
-    class _FetchProfiles(
-        _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles,
-        GkeInferenceQuickstartRestStub,
-    ):
+    class _FetchProfiles(_BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles, GkeInferenceQuickstartRestStub):
         def __hash__(self):
             return hash("GkeInferenceQuickstartRestTransport.FetchProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1200,30 +983,18 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             """
 
-            http_options = (
-                _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_http_options()
-            )
+            http_options = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_profiles(request, metadata)
-            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_transcoded_request(http_options, request)
 
-            body = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseFetchProfiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1247,13 +1018,7 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             # Send the request
             response = GkeInferenceQuickstartRestTransport._FetchProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1269,16 +1034,10 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             resp = self._interceptor.post_fetch_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gkerecommender.FetchProfilesResponse.to_json(
-                        response
-                    )
+                    response_payload = gkerecommender.FetchProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1297,23 +1056,12 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
                 )
             return resp
 
-    class _GenerateOptimizedManifest(
-        _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest,
-        GkeInferenceQuickstartRestStub,
-    ):
+    class _GenerateOptimizedManifest(_BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest, GkeInferenceQuickstartRestStub):
         def __hash__(self):
             return hash("GkeInferenceQuickstartRestTransport.GenerateOptimizedManifest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1357,32 +1105,20 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             """
 
-            http_options = (
-                _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_http_options()
-            )
+            http_options = _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_optimized_manifest(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_generate_optimized_manifest(request, metadata)
             transcoded_request = _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGkeInferenceQuickstartRestTransport._BaseGenerateOptimizedManifest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1406,13 +1142,7 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             # Send the request
             response = GkeInferenceQuickstartRestTransport._GenerateOptimizedManifest._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1428,18 +1158,10 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
 
             resp = self._interceptor.post_generate_optimized_manifest(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_optimized_manifest_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_optimized_manifest_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gkerecommender.GenerateOptimizedManifestResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = gkerecommender.GenerateOptimizedManifestResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1459,33 +1181,19 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
             return resp
 
     @property
-    def fetch_benchmarking_data(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchBenchmarkingDataRequest],
-        gkerecommender.FetchBenchmarkingDataResponse,
-    ]:
+    def fetch_benchmarking_data(self) -> Callable[[gkerecommender.FetchBenchmarkingDataRequest], gkerecommender.FetchBenchmarkingDataResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchBenchmarkingData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_models(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchModelsRequest], gkerecommender.FetchModelsResponse
-    ]:
+    def fetch_models(self) -> Callable[[gkerecommender.FetchModelsRequest], gkerecommender.FetchModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_model_servers(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchModelServersRequest],
-        gkerecommender.FetchModelServersResponse,
-    ]:
+    def fetch_model_servers(self) -> Callable[[gkerecommender.FetchModelServersRequest], gkerecommender.FetchModelServersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchModelServers(self._session, self._host, self._interceptor)  # type: ignore
@@ -1493,20 +1201,13 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
     @property
     def fetch_model_server_versions(
         self,
-    ) -> Callable[
-        [gkerecommender.FetchModelServerVersionsRequest],
-        gkerecommender.FetchModelServerVersionsResponse,
-    ]:
+    ) -> Callable[[gkerecommender.FetchModelServerVersionsRequest], gkerecommender.FetchModelServerVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchModelServerVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_profiles(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchProfilesRequest], gkerecommender.FetchProfilesResponse
-    ]:
+    def fetch_profiles(self) -> Callable[[gkerecommender.FetchProfilesRequest], gkerecommender.FetchProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchProfiles(self._session, self._host, self._interceptor)  # type: ignore
@@ -1514,10 +1215,7 @@ class GkeInferenceQuickstartRestTransport(_BaseGkeInferenceQuickstartRestTranspo
     @property
     def generate_optimized_manifest(
         self,
-    ) -> Callable[
-        [gkerecommender.GenerateOptimizedManifestRequest],
-        gkerecommender.GenerateOptimizedManifestResponse,
-    ]:
+    ) -> Callable[[gkerecommender.GenerateOptimizedManifestRequest], gkerecommender.GenerateOptimizedManifestResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateOptimizedManifest(self._session, self._host, self._interceptor)  # type: ignore

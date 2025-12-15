@@ -18,24 +18,12 @@ from google.cloud.network_management import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.network_management_v1.services.organization_vpc_flow_logs_service.async_client import (
-    OrganizationVpcFlowLogsServiceAsyncClient,
-)
-from google.cloud.network_management_v1.services.organization_vpc_flow_logs_service.client import (
-    OrganizationVpcFlowLogsServiceClient,
-)
-from google.cloud.network_management_v1.services.reachability_service.async_client import (
-    ReachabilityServiceAsyncClient,
-)
-from google.cloud.network_management_v1.services.reachability_service.client import (
-    ReachabilityServiceClient,
-)
-from google.cloud.network_management_v1.services.vpc_flow_logs_service.async_client import (
-    VpcFlowLogsServiceAsyncClient,
-)
-from google.cloud.network_management_v1.services.vpc_flow_logs_service.client import (
-    VpcFlowLogsServiceClient,
-)
+from google.cloud.network_management_v1.services.organization_vpc_flow_logs_service.async_client import OrganizationVpcFlowLogsServiceAsyncClient
+from google.cloud.network_management_v1.services.organization_vpc_flow_logs_service.client import OrganizationVpcFlowLogsServiceClient
+from google.cloud.network_management_v1.services.reachability_service.async_client import ReachabilityServiceAsyncClient
+from google.cloud.network_management_v1.services.reachability_service.client import ReachabilityServiceClient
+from google.cloud.network_management_v1.services.vpc_flow_logs_service.async_client import VpcFlowLogsServiceAsyncClient
+from google.cloud.network_management_v1.services.vpc_flow_logs_service.client import VpcFlowLogsServiceClient
 from google.cloud.network_management_v1.types.connectivity_test import (
     ConnectivityTest,
     Endpoint,
@@ -103,10 +91,7 @@ from google.cloud.network_management_v1.types.vpc_flow_logs import (
     ShowEffectiveFlowLogsConfigsResponse,
     UpdateVpcFlowLogsConfigRequest,
 )
-from google.cloud.network_management_v1.types.vpc_flow_logs_config import (
-    EffectiveVpcFlowLogsConfig,
-    VpcFlowLogsConfig,
-)
+from google.cloud.network_management_v1.types.vpc_flow_logs_config import EffectiveVpcFlowLogsConfig, VpcFlowLogsConfig
 
 __all__ = (
     "OrganizationVpcFlowLogsServiceClient",

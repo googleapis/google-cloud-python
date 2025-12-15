@@ -18,9 +18,7 @@ from google.cloud.vmmigration import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.vmmigration_v1.services.vm_migration.async_client import (
-    VmMigrationAsyncClient,
-)
+from google.cloud.vmmigration_v1.services.vm_migration.async_client import VmMigrationAsyncClient
 from google.cloud.vmmigration_v1.services.vm_migration.client import VmMigrationClient
 from google.cloud.vmmigration_v1.types.vmmigration import (
     AdaptationModifier,

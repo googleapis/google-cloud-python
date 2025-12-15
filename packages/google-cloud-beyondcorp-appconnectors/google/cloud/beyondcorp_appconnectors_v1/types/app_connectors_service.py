@@ -21,9 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.beyondcorp_appconnectors_v1.types import (
-    resource_info as gcba_resource_info,
-)
+from google.cloud.beyondcorp_appconnectors_v1.types import resource_info as gcba_resource_info
 
 __protobuf__ = proto.module(
     package="google.cloud.beyondcorp.appconnectors.v1",

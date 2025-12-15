@@ -30,10 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.iam_v3.types import (
-    principal_access_boundary_policies_service,
-    principal_access_boundary_policy_resources,
-)
+from google.cloud.iam_v3.types import principal_access_boundary_policies_service, principal_access_boundary_policy_resources
 
 from .base import DEFAULT_CLIENT_INFO, PrincipalAccessBoundaryPoliciesTransport
 
@@ -49,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -112,9 +100,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class PrincipalAccessBoundaryPoliciesGrpcTransport(
-    PrincipalAccessBoundaryPoliciesTransport
-):
+class PrincipalAccessBoundaryPoliciesGrpcTransport(PrincipalAccessBoundaryPoliciesTransport):
     """gRPC backend transport for PrincipalAccessBoundaryPolicies.
 
     Manages Identity and Access Management (IAM) principal access
@@ -225,18 +211,14 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -270,9 +252,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -339,9 +319,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -349,12 +327,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
     @property
     def create_principal_access_boundary_policy(
         self,
-    ) -> Callable[
-        [
-            principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest
-        ],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create principal access
         boundary policy method over gRPC.
 
@@ -372,9 +345,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_principal_access_boundary_policy" not in self._stubs:
-            self._stubs[
-                "create_principal_access_boundary_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_principal_access_boundary_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PrincipalAccessBoundaryPolicies/CreatePrincipalAccessBoundaryPolicy",
                 request_serializer=principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -385,9 +356,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
     def get_principal_access_boundary_policy(
         self,
     ) -> Callable[
-        [
-            principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest
-        ],
+        [principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest],
         principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy,
     ]:
         r"""Return a callable for the get principal access boundary
@@ -406,9 +375,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_principal_access_boundary_policy" not in self._stubs:
-            self._stubs[
-                "get_principal_access_boundary_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_principal_access_boundary_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PrincipalAccessBoundaryPolicies/GetPrincipalAccessBoundaryPolicy",
                 request_serializer=principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest.serialize,
                 response_deserializer=principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy.deserialize,
@@ -418,12 +385,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
     @property
     def update_principal_access_boundary_policy(
         self,
-    ) -> Callable[
-        [
-            principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest
-        ],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update principal access
         boundary policy method over gRPC.
 
@@ -440,9 +402,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_principal_access_boundary_policy" not in self._stubs:
-            self._stubs[
-                "update_principal_access_boundary_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_principal_access_boundary_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PrincipalAccessBoundaryPolicies/UpdatePrincipalAccessBoundaryPolicy",
                 request_serializer=principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -452,12 +412,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
     @property
     def delete_principal_access_boundary_policy(
         self,
-    ) -> Callable[
-        [
-            principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest
-        ],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete principal access
         boundary policy method over gRPC.
 
@@ -474,9 +429,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_principal_access_boundary_policy" not in self._stubs:
-            self._stubs[
-                "delete_principal_access_boundary_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_principal_access_boundary_policy"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PrincipalAccessBoundaryPolicies/DeletePrincipalAccessBoundaryPolicy",
                 request_serializer=principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -487,9 +440,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
     def list_principal_access_boundary_policies(
         self,
     ) -> Callable[
-        [
-            principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest
-        ],
+        [principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest],
         principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse,
     ]:
         r"""Return a callable for the list principal access boundary
@@ -508,9 +459,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_principal_access_boundary_policies" not in self._stubs:
-            self._stubs[
-                "list_principal_access_boundary_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_principal_access_boundary_policies"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PrincipalAccessBoundaryPolicies/ListPrincipalAccessBoundaryPolicies",
                 request_serializer=principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest.serialize,
                 response_deserializer=principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse.deserialize,
@@ -521,9 +470,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
     def search_principal_access_boundary_policy_bindings(
         self,
     ) -> Callable[
-        [
-            principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest
-        ],
+        [principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest],
         principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse,
     ]:
         r"""Return a callable for the search principal access
@@ -544,9 +491,7 @@ class PrincipalAccessBoundaryPoliciesGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_principal_access_boundary_policy_bindings" not in self._stubs:
-            self._stubs[
-                "search_principal_access_boundary_policy_bindings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_principal_access_boundary_policy_bindings"] = self._logged_channel.unary_unary(
                 "/google.iam.v3.PrincipalAccessBoundaryPolicies/SearchPrincipalAccessBoundaryPolicyBindings",
                 request_serializer=principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest.serialize,
                 response_deserializer=principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse.deserialize,

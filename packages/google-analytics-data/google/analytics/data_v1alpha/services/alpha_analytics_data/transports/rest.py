@@ -192,13 +192,8 @@ class AlphaAnalyticsDataRestInterceptor:
     """
 
     def pre_create_audience_list(
-        self,
-        request: analytics_data_api.CreateAudienceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.CreateAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.CreateAudienceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.CreateAudienceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_audience_list
 
         Override in a subclass to manipulate the request or metadata
@@ -206,9 +201,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_create_audience_list(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_audience_list(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_audience_list
 
         DEPRECATED. Please use the `post_create_audience_list_with_metadata`
@@ -222,9 +215,7 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_create_audience_list_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_audience_list
 
@@ -241,13 +232,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_create_recurring_audience_list(
-        self,
-        request: analytics_data_api.CreateRecurringAudienceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.CreateRecurringAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.CreateRecurringAudienceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.CreateRecurringAudienceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_recurring_audience_list
 
         Override in a subclass to manipulate the request or metadata
@@ -255,9 +241,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_create_recurring_audience_list(
-        self, response: analytics_data_api.RecurringAudienceList
-    ) -> analytics_data_api.RecurringAudienceList:
+    def post_create_recurring_audience_list(self, response: analytics_data_api.RecurringAudienceList) -> analytics_data_api.RecurringAudienceList:
         """Post-rpc interceptor for create_recurring_audience_list
 
         DEPRECATED. Please use the `post_create_recurring_audience_list_with_metadata`
@@ -271,13 +255,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_create_recurring_audience_list_with_metadata(
-        self,
-        response: analytics_data_api.RecurringAudienceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RecurringAudienceList,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.RecurringAudienceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RecurringAudienceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_recurring_audience_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,13 +272,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_create_report_task(
-        self,
-        request: analytics_data_api.CreateReportTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.CreateReportTaskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.CreateReportTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.CreateReportTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_report_task
 
         Override in a subclass to manipulate the request or metadata
@@ -307,9 +281,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_create_report_task(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_report_task(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_report_task
 
         DEPRECATED. Please use the `post_create_report_task_with_metadata`
@@ -323,9 +295,7 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_create_report_task_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_report_task
 
@@ -342,13 +312,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_get_audience_list(
-        self,
-        request: analytics_data_api.GetAudienceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.GetAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.GetAudienceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.GetAudienceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_audience_list
 
         Override in a subclass to manipulate the request or metadata
@@ -356,9 +321,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_get_audience_list(
-        self, response: analytics_data_api.AudienceList
-    ) -> analytics_data_api.AudienceList:
+    def post_get_audience_list(self, response: analytics_data_api.AudienceList) -> analytics_data_api.AudienceList:
         """Post-rpc interceptor for get_audience_list
 
         DEPRECATED. Please use the `post_get_audience_list_with_metadata`
@@ -372,12 +335,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_get_audience_list_with_metadata(
-        self,
-        response: analytics_data_api.AudienceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.AudienceList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: analytics_data_api.AudienceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.AudienceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_audience_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -393,13 +352,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_get_property_quotas_snapshot(
-        self,
-        request: analytics_data_api.GetPropertyQuotasSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.GetPropertyQuotasSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.GetPropertyQuotasSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.GetPropertyQuotasSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_property_quotas_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -407,9 +361,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_get_property_quotas_snapshot(
-        self, response: analytics_data_api.PropertyQuotasSnapshot
-    ) -> analytics_data_api.PropertyQuotasSnapshot:
+    def post_get_property_quotas_snapshot(self, response: analytics_data_api.PropertyQuotasSnapshot) -> analytics_data_api.PropertyQuotasSnapshot:
         """Post-rpc interceptor for get_property_quotas_snapshot
 
         DEPRECATED. Please use the `post_get_property_quotas_snapshot_with_metadata`
@@ -423,13 +375,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_get_property_quotas_snapshot_with_metadata(
-        self,
-        response: analytics_data_api.PropertyQuotasSnapshot,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.PropertyQuotasSnapshot,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.PropertyQuotasSnapshot, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.PropertyQuotasSnapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_property_quotas_snapshot
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -445,13 +392,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_get_recurring_audience_list(
-        self,
-        request: analytics_data_api.GetRecurringAudienceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.GetRecurringAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.GetRecurringAudienceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.GetRecurringAudienceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_recurring_audience_list
 
         Override in a subclass to manipulate the request or metadata
@@ -459,9 +401,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_get_recurring_audience_list(
-        self, response: analytics_data_api.RecurringAudienceList
-    ) -> analytics_data_api.RecurringAudienceList:
+    def post_get_recurring_audience_list(self, response: analytics_data_api.RecurringAudienceList) -> analytics_data_api.RecurringAudienceList:
         """Post-rpc interceptor for get_recurring_audience_list
 
         DEPRECATED. Please use the `post_get_recurring_audience_list_with_metadata`
@@ -475,13 +415,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_get_recurring_audience_list_with_metadata(
-        self,
-        response: analytics_data_api.RecurringAudienceList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RecurringAudienceList,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.RecurringAudienceList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RecurringAudienceList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_recurring_audience_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -497,12 +432,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_get_report_task(
-        self,
-        request: analytics_data_api.GetReportTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.GetReportTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: analytics_data_api.GetReportTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.GetReportTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_report_task
 
         Override in a subclass to manipulate the request or metadata
@@ -510,9 +441,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report_task(
-        self, response: analytics_data_api.ReportTask
-    ) -> analytics_data_api.ReportTask:
+    def post_get_report_task(self, response: analytics_data_api.ReportTask) -> analytics_data_api.ReportTask:
         """Post-rpc interceptor for get_report_task
 
         DEPRECATED. Please use the `post_get_report_task_with_metadata`
@@ -526,9 +455,7 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_get_report_task_with_metadata(
-        self,
-        response: analytics_data_api.ReportTask,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: analytics_data_api.ReportTask, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[analytics_data_api.ReportTask, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report_task
 
@@ -545,13 +472,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_list_audience_lists(
-        self,
-        request: analytics_data_api.ListAudienceListsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListAudienceListsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.ListAudienceListsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListAudienceListsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_audience_lists
 
         Override in a subclass to manipulate the request or metadata
@@ -559,9 +481,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_list_audience_lists(
-        self, response: analytics_data_api.ListAudienceListsResponse
-    ) -> analytics_data_api.ListAudienceListsResponse:
+    def post_list_audience_lists(self, response: analytics_data_api.ListAudienceListsResponse) -> analytics_data_api.ListAudienceListsResponse:
         """Post-rpc interceptor for list_audience_lists
 
         DEPRECATED. Please use the `post_list_audience_lists_with_metadata`
@@ -575,13 +495,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_list_audience_lists_with_metadata(
-        self,
-        response: analytics_data_api.ListAudienceListsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListAudienceListsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.ListAudienceListsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListAudienceListsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_audience_lists
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -597,13 +512,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_list_recurring_audience_lists(
-        self,
-        request: analytics_data_api.ListRecurringAudienceListsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListRecurringAudienceListsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.ListRecurringAudienceListsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListRecurringAudienceListsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_recurring_audience_lists
 
         Override in a subclass to manipulate the request or metadata
@@ -627,13 +537,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_list_recurring_audience_lists_with_metadata(
-        self,
-        response: analytics_data_api.ListRecurringAudienceListsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListRecurringAudienceListsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.ListRecurringAudienceListsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListRecurringAudienceListsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_recurring_audience_lists
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -649,13 +554,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_list_report_tasks(
-        self,
-        request: analytics_data_api.ListReportTasksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListReportTasksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.ListReportTasksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListReportTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_report_tasks
 
         Override in a subclass to manipulate the request or metadata
@@ -663,9 +563,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_list_report_tasks(
-        self, response: analytics_data_api.ListReportTasksResponse
-    ) -> analytics_data_api.ListReportTasksResponse:
+    def post_list_report_tasks(self, response: analytics_data_api.ListReportTasksResponse) -> analytics_data_api.ListReportTasksResponse:
         """Post-rpc interceptor for list_report_tasks
 
         DEPRECATED. Please use the `post_list_report_tasks_with_metadata`
@@ -679,13 +577,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_list_report_tasks_with_metadata(
-        self,
-        response: analytics_data_api.ListReportTasksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.ListReportTasksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.ListReportTasksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.ListReportTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_report_tasks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -701,13 +594,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_query_audience_list(
-        self,
-        request: analytics_data_api.QueryAudienceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.QueryAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.QueryAudienceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.QueryAudienceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_audience_list
 
         Override in a subclass to manipulate the request or metadata
@@ -715,9 +603,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_query_audience_list(
-        self, response: analytics_data_api.QueryAudienceListResponse
-    ) -> analytics_data_api.QueryAudienceListResponse:
+    def post_query_audience_list(self, response: analytics_data_api.QueryAudienceListResponse) -> analytics_data_api.QueryAudienceListResponse:
         """Post-rpc interceptor for query_audience_list
 
         DEPRECATED. Please use the `post_query_audience_list_with_metadata`
@@ -731,13 +617,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_query_audience_list_with_metadata(
-        self,
-        response: analytics_data_api.QueryAudienceListResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.QueryAudienceListResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.QueryAudienceListResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.QueryAudienceListResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_audience_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -753,13 +634,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_query_report_task(
-        self,
-        request: analytics_data_api.QueryReportTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.QueryReportTaskRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.QueryReportTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.QueryReportTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_report_task
 
         Override in a subclass to manipulate the request or metadata
@@ -767,9 +643,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_query_report_task(
-        self, response: analytics_data_api.QueryReportTaskResponse
-    ) -> analytics_data_api.QueryReportTaskResponse:
+    def post_query_report_task(self, response: analytics_data_api.QueryReportTaskResponse) -> analytics_data_api.QueryReportTaskResponse:
         """Post-rpc interceptor for query_report_task
 
         DEPRECATED. Please use the `post_query_report_task_with_metadata`
@@ -783,13 +657,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_query_report_task_with_metadata(
-        self,
-        response: analytics_data_api.QueryReportTaskResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.QueryReportTaskResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.QueryReportTaskResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.QueryReportTaskResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_report_task
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -805,13 +674,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_run_funnel_report(
-        self,
-        request: analytics_data_api.RunFunnelReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunFunnelReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.RunFunnelReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunFunnelReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_funnel_report
 
         Override in a subclass to manipulate the request or metadata
@@ -819,9 +683,7 @@ class AlphaAnalyticsDataRestInterceptor:
         """
         return request, metadata
 
-    def post_run_funnel_report(
-        self, response: analytics_data_api.RunFunnelReportResponse
-    ) -> analytics_data_api.RunFunnelReportResponse:
+    def post_run_funnel_report(self, response: analytics_data_api.RunFunnelReportResponse) -> analytics_data_api.RunFunnelReportResponse:
         """Post-rpc interceptor for run_funnel_report
 
         DEPRECATED. Please use the `post_run_funnel_report_with_metadata`
@@ -835,13 +697,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_run_funnel_report_with_metadata(
-        self,
-        response: analytics_data_api.RunFunnelReportResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.RunFunnelReportResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.RunFunnelReportResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.RunFunnelReportResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_funnel_report
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -857,13 +714,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response, metadata
 
     def pre_sheet_export_audience_list(
-        self,
-        request: analytics_data_api.SheetExportAudienceListRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.SheetExportAudienceListRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: analytics_data_api.SheetExportAudienceListRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.SheetExportAudienceListRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for sheet_export_audience_list
 
         Override in a subclass to manipulate the request or metadata
@@ -887,13 +739,8 @@ class AlphaAnalyticsDataRestInterceptor:
         return response
 
     def post_sheet_export_audience_list_with_metadata(
-        self,
-        response: analytics_data_api.SheetExportAudienceListResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        analytics_data_api.SheetExportAudienceListResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: analytics_data_api.SheetExportAudienceListResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[analytics_data_api.SheetExportAudienceListResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for sheet_export_audience_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -988,9 +835,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1017,30 +862,17 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 path_prefix="v1alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _CreateAudienceList(_BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.CreateAudienceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1084,32 +916,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_audience_list(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_audience_list(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateAudienceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1132,16 +950,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                AlphaAnalyticsDataRestTransport._CreateAudienceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AlphaAnalyticsDataRestTransport._CreateAudienceList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1155,12 +965,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_create_audience_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_audience_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_audience_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1181,23 +987,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _CreateRecurringAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _CreateRecurringAudienceList(_BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.CreateRecurringAudienceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1246,32 +1041,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_recurring_audience_list(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_recurring_audience_list(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateRecurringAudienceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1295,13 +1076,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._CreateRecurringAudienceList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1317,19 +1092,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_create_recurring_audience_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_recurring_audience_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_recurring_audience_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = analytics_data_api.RecurringAudienceList.to_json(
-                        response
-                    )
+                    response_payload = analytics_data_api.RecurringAudienceList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1348,23 +1114,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _CreateReportTask(
-        _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _CreateReportTask(_BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.CreateReportTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1407,32 +1162,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_report_task(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_report_task(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseCreateReportTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1456,13 +1197,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._CreateReportTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1476,12 +1211,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_create_report_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_report_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_report_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1502,23 +1233,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _GetAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _GetAudienceList(_BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.GetAudienceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1563,28 +1283,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_audience_list(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_audience_list(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetAudienceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1608,12 +1316,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._GetAudienceList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1629,12 +1332,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_get_audience_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_audience_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_audience_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = analytics_data_api.AudienceList.to_json(response)
                 except:
@@ -1655,23 +1354,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _GetPropertyQuotasSnapshot(
-        _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _GetPropertyQuotasSnapshot(_BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.GetPropertyQuotasSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1715,28 +1403,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_property_quotas_snapshot(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_property_quotas_snapshot(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetPropertyQuotasSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1760,12 +1436,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._GetPropertyQuotasSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1781,16 +1452,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_get_property_quotas_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_property_quotas_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_property_quotas_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.PropertyQuotasSnapshot.to_json(response)
-                    )
+                    response_payload = analytics_data_api.PropertyQuotasSnapshot.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1809,23 +1474,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _GetRecurringAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _GetRecurringAudienceList(_BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.GetRecurringAudienceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1874,28 +1528,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_recurring_audience_list(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_recurring_audience_list(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetRecurringAudienceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1918,15 +1560,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                AlphaAnalyticsDataRestTransport._GetRecurringAudienceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AlphaAnalyticsDataRestTransport._GetRecurringAudienceList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1942,16 +1577,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_get_recurring_audience_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_recurring_audience_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_recurring_audience_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = analytics_data_api.RecurringAudienceList.to_json(
-                        response
-                    )
+                    response_payload = analytics_data_api.RecurringAudienceList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1970,23 +1599,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _GetReportTask(
-        _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _GetReportTask(_BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.GetReportTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2026,26 +1644,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                     A specific report task configuration.
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_http_options()
 
             request, metadata = self._interceptor.pre_get_report_task(request, metadata)
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseGetReportTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2069,12 +1677,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._GetReportTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2090,12 +1693,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_get_report_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_report_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_report_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = analytics_data_api.ReportTask.to_json(response)
                 except:
@@ -2116,23 +1715,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _ListAudienceLists(
-        _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _ListAudienceLists(_BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.ListAudienceLists")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2174,28 +1762,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_audience_lists(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_audience_lists(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListAudienceLists._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2219,12 +1795,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._ListAudienceLists._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2240,16 +1811,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_list_audience_lists(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_audience_lists_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_audience_lists_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.ListAudienceListsResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.ListAudienceListsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2268,23 +1833,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _ListRecurringAudienceLists(
-        _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _ListRecurringAudienceLists(_BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.ListRecurringAudienceLists")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2327,28 +1881,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_recurring_audience_lists(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_recurring_audience_lists(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListRecurringAudienceLists._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2372,12 +1914,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._ListRecurringAudienceLists._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2393,21 +1930,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_list_recurring_audience_lists(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_recurring_audience_lists_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_recurring_audience_lists_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.ListRecurringAudienceListsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = analytics_data_api.ListRecurringAudienceListsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2426,23 +1952,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _ListReportTasks(
-        _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _ListReportTasks(_BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.ListReportTasks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2484,28 +1999,16 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_report_tasks(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_report_tasks(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseListReportTasks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2529,12 +2032,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._ListReportTasks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2550,16 +2048,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_list_report_tasks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_report_tasks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_report_tasks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.ListReportTasksResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.ListReportTasksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2578,23 +2070,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _QueryAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _QueryAudienceList(_BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.QueryAudienceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2635,32 +2116,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                     A list of users in an audience list.
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_audience_list(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_audience_list(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseQueryAudienceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2684,13 +2151,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._QueryAudienceList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2706,16 +2167,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_query_audience_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_audience_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_audience_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.QueryAudienceListResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.QueryAudienceListResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2734,23 +2189,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _QueryReportTask(
-        _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _QueryReportTask(_BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.QueryReportTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2793,32 +2237,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_report_task(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_report_task(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseQueryReportTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2842,13 +2272,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._QueryReportTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2864,16 +2288,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_query_report_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_report_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_report_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.QueryReportTaskResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.QueryReportTaskResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2892,23 +2310,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _RunFunnelReport(
-        _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _RunFunnelReport(_BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.RunFunnelReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2952,32 +2359,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_funnel_report(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_funnel_report(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseRunFunnelReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3001,13 +2394,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             # Send the request
             response = AlphaAnalyticsDataRestTransport._RunFunnelReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3023,16 +2410,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_run_funnel_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_funnel_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_funnel_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.RunFunnelReportResponse.to_json(response)
-                    )
+                    response_payload = analytics_data_api.RunFunnelReportResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3051,23 +2432,12 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
             return resp
 
-    class _SheetExportAudienceList(
-        _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList,
-        AlphaAnalyticsDataRestStub,
-    ):
+    class _SheetExportAudienceList(_BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList, AlphaAnalyticsDataRestStub):
         def __hash__(self):
             return hash("AlphaAnalyticsDataRestTransport.SheetExportAudienceList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3111,32 +2481,18 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             """
 
-            http_options = (
-                _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_http_options()
-            )
+            http_options = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_http_options()
 
-            request, metadata = self._interceptor.pre_sheet_export_audience_list(
-                request, metadata
-            )
-            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_sheet_export_audience_list(request, metadata)
+            transcoded_request = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_transcoded_request(http_options, request)
 
-            body = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAlphaAnalyticsDataRestTransport._BaseSheetExportAudienceList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3159,16 +2515,8 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
                 )
 
             # Send the request
-            response = (
-                AlphaAnalyticsDataRestTransport._SheetExportAudienceList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AlphaAnalyticsDataRestTransport._SheetExportAudienceList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3184,18 +2532,10 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
 
             resp = self._interceptor.post_sheet_export_audience_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_sheet_export_audience_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_sheet_export_audience_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        analytics_data_api.SheetExportAudienceListResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = analytics_data_api.SheetExportAudienceListResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3215,11 +2555,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
             return resp
 
     @property
-    def create_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CreateAudienceListRequest], operations_pb2.Operation
-    ]:
+    def create_audience_list(self) -> Callable[[analytics_data_api.CreateAudienceListRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAudienceList(self._session, self._host, self._interceptor)  # type: ignore
@@ -3227,30 +2563,19 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
     @property
     def create_recurring_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.CreateRecurringAudienceListRequest],
-        analytics_data_api.RecurringAudienceList,
-    ]:
+    ) -> Callable[[analytics_data_api.CreateRecurringAudienceListRequest], analytics_data_api.RecurringAudienceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRecurringAudienceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_report_task(
-        self,
-    ) -> Callable[
-        [analytics_data_api.CreateReportTaskRequest], operations_pb2.Operation
-    ]:
+    def create_report_task(self) -> Callable[[analytics_data_api.CreateReportTaskRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReportTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetAudienceListRequest], analytics_data_api.AudienceList
-    ]:
+    def get_audience_list(self) -> Callable[[analytics_data_api.GetAudienceListRequest], analytics_data_api.AudienceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudienceList(self._session, self._host, self._interceptor)  # type: ignore
@@ -3258,42 +2583,25 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
     @property
     def get_property_quotas_snapshot(
         self,
-    ) -> Callable[
-        [analytics_data_api.GetPropertyQuotasSnapshotRequest],
-        analytics_data_api.PropertyQuotasSnapshot,
-    ]:
+    ) -> Callable[[analytics_data_api.GetPropertyQuotasSnapshotRequest], analytics_data_api.PropertyQuotasSnapshot]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPropertyQuotasSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_recurring_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetRecurringAudienceListRequest],
-        analytics_data_api.RecurringAudienceList,
-    ]:
+    def get_recurring_audience_list(self) -> Callable[[analytics_data_api.GetRecurringAudienceListRequest], analytics_data_api.RecurringAudienceList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRecurringAudienceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_report_task(
-        self,
-    ) -> Callable[
-        [analytics_data_api.GetReportTaskRequest], analytics_data_api.ReportTask
-    ]:
+    def get_report_task(self) -> Callable[[analytics_data_api.GetReportTaskRequest], analytics_data_api.ReportTask]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReportTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_audience_lists(
-        self,
-    ) -> Callable[
-        [analytics_data_api.ListAudienceListsRequest],
-        analytics_data_api.ListAudienceListsResponse,
-    ]:
+    def list_audience_lists(self) -> Callable[[analytics_data_api.ListAudienceListsRequest], analytics_data_api.ListAudienceListsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAudienceLists(self._session, self._host, self._interceptor)  # type: ignore
@@ -3301,54 +2609,31 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
     @property
     def list_recurring_audience_lists(
         self,
-    ) -> Callable[
-        [analytics_data_api.ListRecurringAudienceListsRequest],
-        analytics_data_api.ListRecurringAudienceListsResponse,
-    ]:
+    ) -> Callable[[analytics_data_api.ListRecurringAudienceListsRequest], analytics_data_api.ListRecurringAudienceListsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRecurringAudienceLists(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_report_tasks(
-        self,
-    ) -> Callable[
-        [analytics_data_api.ListReportTasksRequest],
-        analytics_data_api.ListReportTasksResponse,
-    ]:
+    def list_report_tasks(self) -> Callable[[analytics_data_api.ListReportTasksRequest], analytics_data_api.ListReportTasksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReportTasks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_audience_list(
-        self,
-    ) -> Callable[
-        [analytics_data_api.QueryAudienceListRequest],
-        analytics_data_api.QueryAudienceListResponse,
-    ]:
+    def query_audience_list(self) -> Callable[[analytics_data_api.QueryAudienceListRequest], analytics_data_api.QueryAudienceListResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryAudienceList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_report_task(
-        self,
-    ) -> Callable[
-        [analytics_data_api.QueryReportTaskRequest],
-        analytics_data_api.QueryReportTaskResponse,
-    ]:
+    def query_report_task(self) -> Callable[[analytics_data_api.QueryReportTaskRequest], analytics_data_api.QueryReportTaskResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryReportTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_funnel_report(
-        self,
-    ) -> Callable[
-        [analytics_data_api.RunFunnelReportRequest],
-        analytics_data_api.RunFunnelReportResponse,
-    ]:
+    def run_funnel_report(self) -> Callable[[analytics_data_api.RunFunnelReportRequest], analytics_data_api.RunFunnelReportResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunFunnelReport(self._session, self._host, self._interceptor)  # type: ignore
@@ -3356,10 +2641,7 @@ class AlphaAnalyticsDataRestTransport(_BaseAlphaAnalyticsDataRestTransport):
     @property
     def sheet_export_audience_list(
         self,
-    ) -> Callable[
-        [analytics_data_api.SheetExportAudienceListRequest],
-        analytics_data_api.SheetExportAudienceListResponse,
-    ]:
+    ) -> Callable[[analytics_data_api.SheetExportAudienceListRequest], analytics_data_api.SheetExportAudienceListResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SheetExportAudienceList(self._session, self._host, self._interceptor)  # type: ignore

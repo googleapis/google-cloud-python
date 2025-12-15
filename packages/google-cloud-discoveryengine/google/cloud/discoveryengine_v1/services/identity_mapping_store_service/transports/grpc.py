@@ -30,9 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store as gcd_identity_mapping_store,
-)
+from google.cloud.discoveryengine_v1.types import identity_mapping_store as gcd_identity_mapping_store
 from google.cloud.discoveryengine_v1.types import identity_mapping_store_service
 from google.cloud.discoveryengine_v1.types import identity_mapping_store
 
@@ -50,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +212,14 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +253,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -337,9 +320,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -347,10 +328,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
     @property
     def create_identity_mapping_store(
         self,
-    ) -> Callable[
-        [identity_mapping_store_service.CreateIdentityMappingStoreRequest],
-        gcd_identity_mapping_store.IdentityMappingStore,
-    ]:
+    ) -> Callable[[identity_mapping_store_service.CreateIdentityMappingStoreRequest], gcd_identity_mapping_store.IdentityMappingStore]:
         r"""Return a callable for the create identity mapping store method over gRPC.
 
         Creates a new Identity Mapping Store.
@@ -366,9 +344,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_identity_mapping_store" not in self._stubs:
-            self._stubs[
-                "create_identity_mapping_store"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_identity_mapping_store"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/CreateIdentityMappingStore",
                 request_serializer=identity_mapping_store_service.CreateIdentityMappingStoreRequest.serialize,
                 response_deserializer=gcd_identity_mapping_store.IdentityMappingStore.deserialize,
@@ -378,10 +354,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
     @property
     def get_identity_mapping_store(
         self,
-    ) -> Callable[
-        [identity_mapping_store_service.GetIdentityMappingStoreRequest],
-        identity_mapping_store.IdentityMappingStore,
-    ]:
+    ) -> Callable[[identity_mapping_store_service.GetIdentityMappingStoreRequest], identity_mapping_store.IdentityMappingStore]:
         r"""Return a callable for the get identity mapping store method over gRPC.
 
         Gets the Identity Mapping Store.
@@ -397,9 +370,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_identity_mapping_store" not in self._stubs:
-            self._stubs[
-                "get_identity_mapping_store"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_identity_mapping_store"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/GetIdentityMappingStore",
                 request_serializer=identity_mapping_store_service.GetIdentityMappingStoreRequest.serialize,
                 response_deserializer=identity_mapping_store.IdentityMappingStore.deserialize,
@@ -407,12 +378,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         return self._stubs["get_identity_mapping_store"]
 
     @property
-    def delete_identity_mapping_store(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.DeleteIdentityMappingStoreRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_identity_mapping_store(self) -> Callable[[identity_mapping_store_service.DeleteIdentityMappingStoreRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete identity mapping store method over gRPC.
 
         Deletes the Identity Mapping Store.
@@ -428,9 +394,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_identity_mapping_store" not in self._stubs:
-            self._stubs[
-                "delete_identity_mapping_store"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_identity_mapping_store"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/DeleteIdentityMappingStore",
                 request_serializer=identity_mapping_store_service.DeleteIdentityMappingStoreRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -438,12 +402,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         return self._stubs["delete_identity_mapping_store"]
 
     @property
-    def import_identity_mappings(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.ImportIdentityMappingsRequest],
-        operations_pb2.Operation,
-    ]:
+    def import_identity_mappings(self) -> Callable[[identity_mapping_store_service.ImportIdentityMappingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import identity mappings method over gRPC.
 
         Imports a list of Identity Mapping Entries to an
@@ -468,12 +427,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         return self._stubs["import_identity_mappings"]
 
     @property
-    def purge_identity_mappings(
-        self,
-    ) -> Callable[
-        [identity_mapping_store_service.PurgeIdentityMappingsRequest],
-        operations_pb2.Operation,
-    ]:
+    def purge_identity_mappings(self) -> Callable[[identity_mapping_store_service.PurgeIdentityMappingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the purge identity mappings method over gRPC.
 
         Purges specified or all Identity Mapping Entries from
@@ -500,10 +454,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
     @property
     def list_identity_mappings(
         self,
-    ) -> Callable[
-        [identity_mapping_store_service.ListIdentityMappingsRequest],
-        identity_mapping_store_service.ListIdentityMappingsResponse,
-    ]:
+    ) -> Callable[[identity_mapping_store_service.ListIdentityMappingsRequest], identity_mapping_store_service.ListIdentityMappingsResponse]:
         r"""Return a callable for the list identity mappings method over gRPC.
 
         Lists Identity Mappings in an Identity Mapping Store.
@@ -530,8 +481,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
     def list_identity_mapping_stores(
         self,
     ) -> Callable[
-        [identity_mapping_store_service.ListIdentityMappingStoresRequest],
-        identity_mapping_store_service.ListIdentityMappingStoresResponse,
+        [identity_mapping_store_service.ListIdentityMappingStoresRequest], identity_mapping_store_service.ListIdentityMappingStoresResponse
     ]:
         r"""Return a callable for the list identity mapping stores method over gRPC.
 
@@ -548,9 +498,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_identity_mapping_stores" not in self._stubs:
-            self._stubs[
-                "list_identity_mapping_stores"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_identity_mapping_stores"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1.IdentityMappingStoreService/ListIdentityMappingStores",
                 request_serializer=identity_mapping_store_service.ListIdentityMappingStoresRequest.serialize,
                 response_deserializer=identity_mapping_store_service.ListIdentityMappingStoresResponse.deserialize,
@@ -597,9 +545,7 @@ class IdentityMappingStoreServiceGrpcTransport(IdentityMappingStoreServiceTransp
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

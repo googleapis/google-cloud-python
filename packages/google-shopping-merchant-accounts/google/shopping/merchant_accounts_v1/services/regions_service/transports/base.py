@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.shopping.merchant_accounts_v1 import gapic_version as package_version
 from google.shopping.merchant_accounts_v1.types import regions
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class RegionsServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -186,78 +176,39 @@ class RegionsServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_region(
-        self,
-    ) -> Callable[
-        [regions.GetRegionRequest], Union[regions.Region, Awaitable[regions.Region]]
-    ]:
+    def get_region(self) -> Callable[[regions.GetRegionRequest], Union[regions.Region, Awaitable[regions.Region]]]:
         raise NotImplementedError()
 
     @property
-    def create_region(
-        self,
-    ) -> Callable[
-        [regions.CreateRegionRequest], Union[regions.Region, Awaitable[regions.Region]]
-    ]:
+    def create_region(self) -> Callable[[regions.CreateRegionRequest], Union[regions.Region, Awaitable[regions.Region]]]:
         raise NotImplementedError()
 
     @property
     def batch_create_regions(
         self,
-    ) -> Callable[
-        [regions.BatchCreateRegionsRequest],
-        Union[
-            regions.BatchCreateRegionsResponse,
-            Awaitable[regions.BatchCreateRegionsResponse],
-        ],
-    ]:
+    ) -> Callable[[regions.BatchCreateRegionsRequest], Union[regions.BatchCreateRegionsResponse, Awaitable[regions.BatchCreateRegionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_region(
-        self,
-    ) -> Callable[
-        [regions.UpdateRegionRequest], Union[regions.Region, Awaitable[regions.Region]]
-    ]:
+    def update_region(self) -> Callable[[regions.UpdateRegionRequest], Union[regions.Region, Awaitable[regions.Region]]]:
         raise NotImplementedError()
 
     @property
     def batch_update_regions(
         self,
-    ) -> Callable[
-        [regions.BatchUpdateRegionsRequest],
-        Union[
-            regions.BatchUpdateRegionsResponse,
-            Awaitable[regions.BatchUpdateRegionsResponse],
-        ],
-    ]:
+    ) -> Callable[[regions.BatchUpdateRegionsRequest], Union[regions.BatchUpdateRegionsResponse, Awaitable[regions.BatchUpdateRegionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_region(
-        self,
-    ) -> Callable[
-        [regions.DeleteRegionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_region(self) -> Callable[[regions.DeleteRegionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def batch_delete_regions(
-        self,
-    ) -> Callable[
-        [regions.BatchDeleteRegionsRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def batch_delete_regions(self) -> Callable[[regions.BatchDeleteRegionsRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def list_regions(
-        self,
-    ) -> Callable[
-        [regions.ListRegionsRequest],
-        Union[regions.ListRegionsResponse, Awaitable[regions.ListRegionsResponse]],
-    ]:
+    def list_regions(self) -> Callable[[regions.ListRegionsRequest], Union[regions.ListRegionsResponse, Awaitable[regions.ListRegionsResponse]]]:
         raise NotImplementedError()
 
     @property

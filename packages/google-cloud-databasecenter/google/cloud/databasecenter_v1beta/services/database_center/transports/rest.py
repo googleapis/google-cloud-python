@@ -87,9 +87,7 @@ class DatabaseCenterRestInterceptor:
     """
 
     def pre_query_products(
-        self,
-        request: service.QueryProductsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.QueryProductsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.QueryProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_products
 
@@ -98,9 +96,7 @@ class DatabaseCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_query_products(
-        self, response: service.QueryProductsResponse
-    ) -> service.QueryProductsResponse:
+    def post_query_products(self, response: service.QueryProductsResponse) -> service.QueryProductsResponse:
         """Post-rpc interceptor for query_products
 
         DEPRECATED. Please use the `post_query_products_with_metadata`
@@ -114,9 +110,7 @@ class DatabaseCenterRestInterceptor:
         return response
 
     def post_query_products_with_metadata(
-        self,
-        response: service.QueryProductsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.QueryProductsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.QueryProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_products
 
@@ -213,30 +207,18 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DatabaseCenterRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _QueryProducts(
-        _BaseDatabaseCenterRestTransport._BaseQueryProducts, DatabaseCenterRestStub
-    ):
+    class _QueryProducts(_BaseDatabaseCenterRestTransport._BaseQueryProducts, DatabaseCenterRestStub):
         def __hash__(self):
             return hash("DatabaseCenterRestTransport.QueryProducts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -278,26 +260,16 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatabaseCenterRestTransport._BaseQueryProducts._get_http_options()
-            )
+            http_options = _BaseDatabaseCenterRestTransport._BaseQueryProducts._get_http_options()
 
             request, metadata = self._interceptor.pre_query_products(request, metadata)
-            transcoded_request = _BaseDatabaseCenterRestTransport._BaseQueryProducts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDatabaseCenterRestTransport._BaseQueryProducts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatabaseCenterRestTransport._BaseQueryProducts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatabaseCenterRestTransport._BaseQueryProducts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -321,12 +293,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
 
             # Send the request
             response = DatabaseCenterRestTransport._QueryProducts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -342,12 +309,8 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
 
             resp = self._interceptor.post_query_products(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_products_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_products_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.QueryProductsResponse.to_json(response)
                 except:
@@ -369,9 +332,7 @@ class DatabaseCenterRestTransport(_BaseDatabaseCenterRestTransport):
             return resp
 
     @property
-    def query_products(
-        self,
-    ) -> Callable[[service.QueryProductsRequest], service.QueryProductsResponse]:
+    def query_products(self) -> Callable[[service.QueryProductsRequest], service.QueryProductsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryProducts(self._session, self._host, self._interceptor)  # type: ignore

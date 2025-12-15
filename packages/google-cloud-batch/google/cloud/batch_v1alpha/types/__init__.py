@@ -33,17 +33,7 @@ from .batch import (
     UpdateJobRequest,
     UpdateResourceAllowanceRequest,
 )
-from .job import (
-    AllocationPolicy,
-    Job,
-    JobDependency,
-    JobNotification,
-    JobStatus,
-    LogsPolicy,
-    ResourceUsage,
-    ServiceAccount,
-    TaskGroup,
-)
+from .job import AllocationPolicy, Job, JobDependency, JobNotification, JobStatus, LogsPolicy, ResourceUsage, ServiceAccount, TaskGroup
 from .notification import Notification
 from .resource_allowance import (
     CalendarPeriod,
@@ -53,18 +43,7 @@ from .resource_allowance import (
     UsageResourceAllowanceSpec,
     UsageResourceAllowanceStatus,
 )
-from .task import (
-    ComputeResource,
-    Environment,
-    LifecyclePolicy,
-    Runnable,
-    StatusEvent,
-    Task,
-    TaskExecution,
-    TaskResourceUsage,
-    TaskSpec,
-    TaskStatus,
-)
+from .task import ComputeResource, Environment, LifecyclePolicy, Runnable, StatusEvent, Task, TaskExecution, TaskResourceUsage, TaskSpec, TaskStatus
 from .volume import GCS, NFS, PD, Volume
 
 __all__ = (

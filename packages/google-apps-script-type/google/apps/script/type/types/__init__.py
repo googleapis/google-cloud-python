@@ -14,17 +14,8 @@
 # limitations under the License.
 #
 from .addon_widget_set import AddOnWidgetSet
-from .extension_point import (
-    HomepageExtensionPoint,
-    MenuItemExtensionPoint,
-    UniversalActionExtensionPoint,
-)
-from .script_manifest import (
-    CommonAddOnManifest,
-    HttpAuthorizationHeader,
-    HttpOptions,
-    LayoutProperties,
-)
+from .extension_point import HomepageExtensionPoint, MenuItemExtensionPoint, UniversalActionExtensionPoint
+from .script_manifest import CommonAddOnManifest, HttpAuthorizationHeader, HttpOptions, LayoutProperties
 
 __all__ = (
     "AddOnWidgetSet",

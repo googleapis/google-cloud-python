@@ -123,13 +123,8 @@ class DataStoreServiceRestInterceptor:
     """
 
     def pre_create_data_store(
-        self,
-        request: data_store_service.CreateDataStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_store_service.CreateDataStoreRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_store_service.CreateDataStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_store_service.CreateDataStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_store
 
         Override in a subclass to manipulate the request or metadata
@@ -137,9 +132,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_store(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_data_store(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_data_store
 
         DEPRECATED. Please use the `post_create_data_store_with_metadata`
@@ -153,9 +146,7 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def post_create_data_store_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_store
 
@@ -172,13 +163,8 @@ class DataStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_store(
-        self,
-        request: data_store_service.DeleteDataStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_store_service.DeleteDataStoreRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_store_service.DeleteDataStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_store_service.DeleteDataStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_store
 
         Override in a subclass to manipulate the request or metadata
@@ -186,9 +172,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_data_store(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_data_store(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_data_store
 
         DEPRECATED. Please use the `post_delete_data_store_with_metadata`
@@ -202,9 +186,7 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def post_delete_data_store_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_data_store
 
@@ -221,12 +203,8 @@ class DataStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_get_data_store(
-        self,
-        request: data_store_service.GetDataStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_store_service.GetDataStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_store_service.GetDataStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_store_service.GetDataStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_store
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +212,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_store(
-        self, response: data_store.DataStore
-    ) -> data_store.DataStore:
+    def post_get_data_store(self, response: data_store.DataStore) -> data_store.DataStore:
         """Post-rpc interceptor for get_data_store
 
         DEPRECATED. Please use the `post_get_data_store_with_metadata`
@@ -250,9 +226,7 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def post_get_data_store_with_metadata(
-        self,
-        response: data_store.DataStore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: data_store.DataStore, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[data_store.DataStore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_store
 
@@ -269,13 +243,8 @@ class DataStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_stores(
-        self,
-        request: data_store_service.ListDataStoresRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_store_service.ListDataStoresRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_store_service.ListDataStoresRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_store_service.ListDataStoresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_stores
 
         Override in a subclass to manipulate the request or metadata
@@ -283,9 +252,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_stores(
-        self, response: data_store_service.ListDataStoresResponse
-    ) -> data_store_service.ListDataStoresResponse:
+    def post_list_data_stores(self, response: data_store_service.ListDataStoresResponse) -> data_store_service.ListDataStoresResponse:
         """Post-rpc interceptor for list_data_stores
 
         DEPRECATED. Please use the `post_list_data_stores_with_metadata`
@@ -299,13 +266,8 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def post_list_data_stores_with_metadata(
-        self,
-        response: data_store_service.ListDataStoresResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_store_service.ListDataStoresResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_store_service.ListDataStoresResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_store_service.ListDataStoresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_stores
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -321,13 +283,8 @@ class DataStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_store(
-        self,
-        request: data_store_service.UpdateDataStoreRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_store_service.UpdateDataStoreRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_store_service.UpdateDataStoreRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_store_service.UpdateDataStoreRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_store
 
         Override in a subclass to manipulate the request or metadata
@@ -335,9 +292,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_store(
-        self, response: gcd_data_store.DataStore
-    ) -> gcd_data_store.DataStore:
+    def post_update_data_store(self, response: gcd_data_store.DataStore) -> gcd_data_store.DataStore:
         """Post-rpc interceptor for update_data_store
 
         DEPRECATED. Please use the `post_update_data_store_with_metadata`
@@ -351,9 +306,7 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def post_update_data_store_with_metadata(
-        self,
-        response: gcd_data_store.DataStore,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_data_store.DataStore, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_data_store.DataStore, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_store
 
@@ -370,12 +323,8 @@ class DataStoreServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -393,12 +342,8 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -406,9 +351,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -418,12 +361,8 @@ class DataStoreServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -431,9 +370,7 @@ class DataStoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -524,9 +461,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -708,30 +643,17 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDataStore(
-        _BaseDataStoreServiceRestTransport._BaseCreateDataStore,
-        DataStoreServiceRestStub,
-    ):
+    class _CreateDataStore(_BaseDataStoreServiceRestTransport._BaseCreateDataStore, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.CreateDataStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -776,32 +698,18 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_store(
-                request, metadata
-            )
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_store(request, metadata)
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_transcoded_request(http_options, request)
 
-            body = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseCreateDataStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -825,13 +733,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._CreateDataStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -845,12 +747,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             resp = self._interceptor.post_create_data_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -871,23 +769,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataStore(
-        _BaseDataStoreServiceRestTransport._BaseDeleteDataStore,
-        DataStoreServiceRestStub,
-    ):
+    class _DeleteDataStore(_BaseDataStoreServiceRestTransport._BaseDeleteDataStore, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.DeleteDataStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -931,28 +818,16 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_store(
-                request, metadata
-            )
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_store(request, metadata)
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseDeleteDataStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -976,12 +851,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._DeleteDataStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -995,12 +865,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             resp = self._interceptor.post_delete_data_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_data_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_data_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1021,22 +887,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 )
             return resp
 
-    class _GetDataStore(
-        _BaseDataStoreServiceRestTransport._BaseGetDataStore, DataStoreServiceRestStub
-    ):
+    class _GetDataStore(_BaseDataStoreServiceRestTransport._BaseGetDataStore, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.GetDataStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1079,26 +935,16 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_store(request, metadata)
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseGetDataStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1122,12 +968,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._GetDataStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1143,12 +984,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             resp = self._interceptor.post_get_data_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = data_store.DataStore.to_json(response)
                 except:
@@ -1169,22 +1006,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 )
             return resp
 
-    class _ListDataStores(
-        _BaseDataStoreServiceRestTransport._BaseListDataStores, DataStoreServiceRestStub
-    ):
+    class _ListDataStores(_BaseDataStoreServiceRestTransport._BaseListDataStores, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.ListDataStores")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1228,28 +1055,16 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseListDataStores._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_stores(
-                request, metadata
-            )
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_stores(request, metadata)
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseListDataStores._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1273,12 +1088,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._ListDataStores._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1294,16 +1104,10 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             resp = self._interceptor.post_list_data_stores(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_stores_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_stores_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        data_store_service.ListDataStoresResponse.to_json(response)
-                    )
+                    response_payload = data_store_service.ListDataStoresResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1322,23 +1126,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataStore(
-        _BaseDataStoreServiceRestTransport._BaseUpdateDataStore,
-        DataStoreServiceRestStub,
-    ):
+    class _UpdateDataStore(_BaseDataStoreServiceRestTransport._BaseUpdateDataStore, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.UpdateDataStore")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1382,32 +1175,18 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_store(
-                request, metadata
-            )
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_store(request, metadata)
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_transcoded_request(http_options, request)
 
-            body = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseUpdateDataStore._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1431,13 +1210,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._UpdateDataStore._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1453,12 +1226,8 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             resp = self._interceptor.post_update_data_store(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_store_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_store_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_data_store.DataStore.to_json(response)
                 except:
@@ -1480,50 +1249,31 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             return resp
 
     @property
-    def create_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.CreateDataStoreRequest], operations_pb2.Operation
-    ]:
+    def create_data_store(self) -> Callable[[data_store_service.CreateDataStoreRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.DeleteDataStoreRequest], operations_pb2.Operation
-    ]:
+    def delete_data_store(self) -> Callable[[data_store_service.DeleteDataStoreRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_store(
-        self,
-    ) -> Callable[[data_store_service.GetDataStoreRequest], data_store.DataStore]:
+    def get_data_store(self) -> Callable[[data_store_service.GetDataStoreRequest], data_store.DataStore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_stores(
-        self,
-    ) -> Callable[
-        [data_store_service.ListDataStoresRequest],
-        data_store_service.ListDataStoresResponse,
-    ]:
+    def list_data_stores(self) -> Callable[[data_store_service.ListDataStoresRequest], data_store_service.ListDataStoresResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataStores(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_store(
-        self,
-    ) -> Callable[
-        [data_store_service.UpdateDataStoreRequest], gcd_data_store.DataStore
-    ]:
+    def update_data_store(self) -> Callable[[data_store_service.UpdateDataStoreRequest], gcd_data_store.DataStore]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataStore(self._session, self._host, self._interceptor)  # type: ignore
@@ -1532,23 +1282,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataStoreServiceRestTransport._BaseCancelOperation,
-        DataStoreServiceRestStub,
-    ):
+    class _CancelOperation(_BaseDataStoreServiceRestTransport._BaseCancelOperation, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1584,32 +1323,18 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1633,13 +1358,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1653,22 +1372,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataStoreServiceRestTransport._BaseGetOperation, DataStoreServiceRestStub
-    ):
+    class _GetOperation(_BaseDataStoreServiceRestTransport._BaseGetOperation, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1706,26 +1415,16 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1749,12 +1448,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1766,9 +1460,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1793,22 +1485,12 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataStoreServiceRestTransport._BaseListOperations, DataStoreServiceRestStub
-    ):
+    class _ListOperations(_BaseDataStoreServiceRestTransport._BaseListOperations, DataStoreServiceRestStub):
         def __hash__(self):
             return hash("DataStoreServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1846,26 +1528,16 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataStoreServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataStoreServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataStoreServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataStoreServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataStoreServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataStoreServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1889,12 +1561,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
 
             # Send the request
             response = DataStoreServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1906,9 +1573,7 @@ class DataStoreServiceRestTransport(_BaseDataStoreServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

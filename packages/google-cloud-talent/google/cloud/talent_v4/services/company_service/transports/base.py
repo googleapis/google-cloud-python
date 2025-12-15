@@ -32,9 +32,7 @@ from google.cloud.talent_v4.types import company
 from google.cloud.talent_v4.types import company as gct_company
 from google.cloud.talent_v4.types import company_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class CompanyServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -212,60 +202,33 @@ class CompanyServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_company(
-        self,
-    ) -> Callable[
-        [company_service.CreateCompanyRequest],
-        Union[gct_company.Company, Awaitable[gct_company.Company]],
-    ]:
+    def create_company(self) -> Callable[[company_service.CreateCompanyRequest], Union[gct_company.Company, Awaitable[gct_company.Company]]]:
         raise NotImplementedError()
 
     @property
-    def get_company(
-        self,
-    ) -> Callable[
-        [company_service.GetCompanyRequest],
-        Union[company.Company, Awaitable[company.Company]],
-    ]:
+    def get_company(self) -> Callable[[company_service.GetCompanyRequest], Union[company.Company, Awaitable[company.Company]]]:
         raise NotImplementedError()
 
     @property
-    def update_company(
-        self,
-    ) -> Callable[
-        [company_service.UpdateCompanyRequest],
-        Union[gct_company.Company, Awaitable[gct_company.Company]],
-    ]:
+    def update_company(self) -> Callable[[company_service.UpdateCompanyRequest], Union[gct_company.Company, Awaitable[gct_company.Company]]]:
         raise NotImplementedError()
 
     @property
-    def delete_company(
-        self,
-    ) -> Callable[
-        [company_service.DeleteCompanyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_company(self) -> Callable[[company_service.DeleteCompanyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_companies(
         self,
     ) -> Callable[
-        [company_service.ListCompaniesRequest],
-        Union[
-            company_service.ListCompaniesResponse,
-            Awaitable[company_service.ListCompaniesResponse],
-        ],
+        [company_service.ListCompaniesRequest], Union[company_service.ListCompaniesResponse, Awaitable[company_service.ListCompaniesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

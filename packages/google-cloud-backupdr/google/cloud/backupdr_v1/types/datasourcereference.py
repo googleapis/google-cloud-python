@@ -283,9 +283,7 @@ class ListDataSourceReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_source_references: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
+    data_source_references: MutableSequence["DataSourceReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataSourceReference",
@@ -395,9 +393,7 @@ class FetchDataSourceReferencesForResourceTypeResponse(proto.Message):
     def raw_page(self):
         return self
 
-    data_source_references: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
+    data_source_references: MutableSequence["DataSourceReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DataSourceReference",

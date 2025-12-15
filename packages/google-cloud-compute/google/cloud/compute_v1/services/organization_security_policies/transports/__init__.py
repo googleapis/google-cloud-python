@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import OrganizationSecurityPoliciesTransport
-from .rest import (
-    OrganizationSecurityPoliciesRestInterceptor,
-    OrganizationSecurityPoliciesRestTransport,
-)
+from .rest import OrganizationSecurityPoliciesRestInterceptor, OrganizationSecurityPoliciesRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[OrganizationSecurityPoliciesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[OrganizationSecurityPoliciesTransport]]
 _transport_registry["rest"] = OrganizationSecurityPoliciesRestTransport
 
 __all__ = (

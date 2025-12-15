@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -221,18 +212,14 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -266,9 +253,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -335,17 +320,13 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[service.ListInstancesRequest], service.ListInstancesResponse]:
         r"""Return a callable for the list instances method over gRPC.
 
         Lists instances in a given project and location.
@@ -393,9 +374,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["get_instance"]
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[service.CreateInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create instance method over gRPC.
 
         Creates a new Instance in a given project and
@@ -420,9 +399,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["create_instance"]
 
     @property
-    def register_instance(
-        self,
-    ) -> Callable[[service.RegisterInstanceRequest], operations_pb2.Operation]:
+    def register_instance(self) -> Callable[[service.RegisterInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the register instance method over gRPC.
 
         Registers an existing legacy notebook instance to the
@@ -451,9 +428,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["register_instance"]
 
     @property
-    def set_instance_accelerator(
-        self,
-    ) -> Callable[[service.SetInstanceAcceleratorRequest], operations_pb2.Operation]:
+    def set_instance_accelerator(self) -> Callable[[service.SetInstanceAcceleratorRequest], operations_pb2.Operation]:
         r"""Return a callable for the set instance accelerator method over gRPC.
 
         Updates the guest accelerators of a single Instance.
@@ -477,9 +452,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["set_instance_accelerator"]
 
     @property
-    def set_instance_machine_type(
-        self,
-    ) -> Callable[[service.SetInstanceMachineTypeRequest], operations_pb2.Operation]:
+    def set_instance_machine_type(self) -> Callable[[service.SetInstanceMachineTypeRequest], operations_pb2.Operation]:
         r"""Return a callable for the set instance machine type method over gRPC.
 
         Updates the machine type of a single Instance.
@@ -503,9 +476,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["set_instance_machine_type"]
 
     @property
-    def set_instance_labels(
-        self,
-    ) -> Callable[[service.SetInstanceLabelsRequest], operations_pb2.Operation]:
+    def set_instance_labels(self) -> Callable[[service.SetInstanceLabelsRequest], operations_pb2.Operation]:
         r"""Return a callable for the set instance labels method over gRPC.
 
         Updates the labels of an Instance.
@@ -529,9 +500,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["set_instance_labels"]
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete instance method over gRPC.
 
         Deletes a single Instance.
@@ -555,9 +524,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["delete_instance"]
 
     @property
-    def start_instance(
-        self,
-    ) -> Callable[[service.StartInstanceRequest], operations_pb2.Operation]:
+    def start_instance(self) -> Callable[[service.StartInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the start instance method over gRPC.
 
         Starts a notebook instance.
@@ -581,9 +548,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["start_instance"]
 
     @property
-    def stop_instance(
-        self,
-    ) -> Callable[[service.StopInstanceRequest], operations_pb2.Operation]:
+    def stop_instance(self) -> Callable[[service.StopInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the stop instance method over gRPC.
 
         Stops a notebook instance.
@@ -607,9 +572,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["stop_instance"]
 
     @property
-    def reset_instance(
-        self,
-    ) -> Callable[[service.ResetInstanceRequest], operations_pb2.Operation]:
+    def reset_instance(self) -> Callable[[service.ResetInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the reset instance method over gRPC.
 
         Resets a notebook instance.
@@ -633,9 +596,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["reset_instance"]
 
     @property
-    def report_instance_info(
-        self,
-    ) -> Callable[[service.ReportInstanceInfoRequest], operations_pb2.Operation]:
+    def report_instance_info(self) -> Callable[[service.ReportInstanceInfoRequest], operations_pb2.Operation]:
         r"""Return a callable for the report instance info method over gRPC.
 
         Allows notebook instances to
@@ -663,11 +624,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["report_instance_info"]
 
     @property
-    def is_instance_upgradeable(
-        self,
-    ) -> Callable[
-        [service.IsInstanceUpgradeableRequest], service.IsInstanceUpgradeableResponse
-    ]:
+    def is_instance_upgradeable(self) -> Callable[[service.IsInstanceUpgradeableRequest], service.IsInstanceUpgradeableResponse]:
         r"""Return a callable for the is instance upgradeable method over gRPC.
 
         Check if a notebook instance is upgradable.
@@ -692,9 +649,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["is_instance_upgradeable"]
 
     @property
-    def upgrade_instance(
-        self,
-    ) -> Callable[[service.UpgradeInstanceRequest], operations_pb2.Operation]:
+    def upgrade_instance(self) -> Callable[[service.UpgradeInstanceRequest], operations_pb2.Operation]:
         r"""Return a callable for the upgrade instance method over gRPC.
 
         Upgrades a notebook instance to the latest version.
@@ -719,9 +674,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["upgrade_instance"]
 
     @property
-    def upgrade_instance_internal(
-        self,
-    ) -> Callable[[service.UpgradeInstanceInternalRequest], operations_pb2.Operation]:
+    def upgrade_instance_internal(self) -> Callable[[service.UpgradeInstanceInternalRequest], operations_pb2.Operation]:
         r"""Return a callable for the upgrade instance internal method over gRPC.
 
         Allows notebook instances to
@@ -748,9 +701,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["upgrade_instance_internal"]
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
+    def list_environments(self) -> Callable[[service.ListEnvironmentsRequest], service.ListEnvironmentsResponse]:
         r"""Return a callable for the list environments method over gRPC.
 
         Lists environments in a project.
@@ -774,9 +725,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["list_environments"]
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[service.GetEnvironmentRequest], environment.Environment]:
+    def get_environment(self) -> Callable[[service.GetEnvironmentRequest], environment.Environment]:
         r"""Return a callable for the get environment method over gRPC.
 
         Gets details of a single Environment.
@@ -800,9 +749,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["get_environment"]
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
+    def create_environment(self) -> Callable[[service.CreateEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create environment method over gRPC.
 
         Creates a new Environment.
@@ -826,9 +773,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["create_environment"]
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
+    def delete_environment(self) -> Callable[[service.DeleteEnvironmentRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete environment method over gRPC.
 
         Deletes a single Environment.
@@ -908,9 +853,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -927,9 +870,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1014,10 +955,7 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

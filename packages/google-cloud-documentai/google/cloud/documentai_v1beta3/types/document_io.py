@@ -215,12 +215,10 @@ class DocumentOutputConfig(proto.Message):
             number=2,
             message=field_mask_pb2.FieldMask,
         )
-        sharding_config: "DocumentOutputConfig.GcsOutputConfig.ShardingConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="DocumentOutputConfig.GcsOutputConfig.ShardingConfig",
-            )
+        sharding_config: "DocumentOutputConfig.GcsOutputConfig.ShardingConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="DocumentOutputConfig.GcsOutputConfig.ShardingConfig",
         )
 
     gcs_output_config: GcsOutputConfig = proto.Field(

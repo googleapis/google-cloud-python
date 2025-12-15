@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +261,14 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +304,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -344,17 +327,13 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_tool(
-        self,
-    ) -> Callable[[gcdc_tool.CreateToolRequest], Awaitable[gcdc_tool.Tool]]:
+    def create_tool(self) -> Callable[[gcdc_tool.CreateToolRequest], Awaitable[gcdc_tool.Tool]]:
         r"""Return a callable for the create tool method over gRPC.
 
         Creates a [Tool][google.cloud.dialogflow.cx.v3beta1.Tool] in the
@@ -379,9 +358,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["create_tool"]
 
     @property
-    def list_tools(
-        self,
-    ) -> Callable[[tool.ListToolsRequest], Awaitable[tool.ListToolsResponse]]:
+    def list_tools(self) -> Callable[[tool.ListToolsRequest], Awaitable[tool.ListToolsResponse]]:
         r"""Return a callable for the list tools method over gRPC.
 
         Returns a list of
@@ -407,9 +384,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["list_tools"]
 
     @property
-    def export_tools(
-        self,
-    ) -> Callable[[tool.ExportToolsRequest], Awaitable[operations_pb2.Operation]]:
+    def export_tools(self) -> Callable[[tool.ExportToolsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export tools method over gRPC.
 
         Exports the selected tools.
@@ -458,9 +433,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["get_tool"]
 
     @property
-    def update_tool(
-        self,
-    ) -> Callable[[gcdc_tool.UpdateToolRequest], Awaitable[gcdc_tool.Tool]]:
+    def update_tool(self) -> Callable[[gcdc_tool.UpdateToolRequest], Awaitable[gcdc_tool.Tool]]:
         r"""Return a callable for the update tool method over gRPC.
 
         Update the specified
@@ -485,9 +458,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["update_tool"]
 
     @property
-    def delete_tool(
-        self,
-    ) -> Callable[[tool.DeleteToolRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_tool(self) -> Callable[[tool.DeleteToolRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete tool method over gRPC.
 
         Deletes a specified
@@ -512,11 +483,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["delete_tool"]
 
     @property
-    def list_tool_versions(
-        self,
-    ) -> Callable[
-        [tool.ListToolVersionsRequest], Awaitable[tool.ListToolVersionsResponse]
-    ]:
+    def list_tool_versions(self) -> Callable[[tool.ListToolVersionsRequest], Awaitable[tool.ListToolVersionsResponse]]:
         r"""Return a callable for the list tool versions method over gRPC.
 
         List versions of the specified
@@ -541,9 +508,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["list_tool_versions"]
 
     @property
-    def create_tool_version(
-        self,
-    ) -> Callable[[tool.CreateToolVersionRequest], Awaitable[tool.ToolVersion]]:
+    def create_tool_version(self) -> Callable[[tool.CreateToolVersionRequest], Awaitable[tool.ToolVersion]]:
         r"""Return a callable for the create tool version method over gRPC.
 
         Creates a version for the specified
@@ -568,9 +533,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["create_tool_version"]
 
     @property
-    def get_tool_version(
-        self,
-    ) -> Callable[[tool.GetToolVersionRequest], Awaitable[tool.ToolVersion]]:
+    def get_tool_version(self) -> Callable[[tool.GetToolVersionRequest], Awaitable[tool.ToolVersion]]:
         r"""Return a callable for the get tool version method over gRPC.
 
         Retrieves the specified version of the
@@ -595,9 +558,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["get_tool_version"]
 
     @property
-    def delete_tool_version(
-        self,
-    ) -> Callable[[tool.DeleteToolVersionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_tool_version(self) -> Callable[[tool.DeleteToolVersionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete tool version method over gRPC.
 
         Deletes the specified version of the
@@ -622,11 +583,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
         return self._stubs["delete_tool_version"]
 
     @property
-    def restore_tool_version(
-        self,
-    ) -> Callable[
-        [tool.RestoreToolVersionRequest], Awaitable[tool.RestoreToolVersionResponse]
-    ]:
+    def restore_tool_version(self) -> Callable[[tool.RestoreToolVersionRequest], Awaitable[tool.RestoreToolVersionResponse]]:
         r"""Return a callable for the restore tool version method over gRPC.
 
         Retrieves the specified version of the Tool and
@@ -785,9 +742,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -804,9 +759,7 @@ class ToolsGrpcAsyncIOTransport(ToolsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -103,12 +103,8 @@ class SnapshotsV1Beta3RestInterceptor:
     """
 
     def pre_delete_snapshot(
-        self,
-        request: snapshots.DeleteSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        snapshots.DeleteSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: snapshots.DeleteSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[snapshots.DeleteSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -116,9 +112,7 @@ class SnapshotsV1Beta3RestInterceptor:
         """
         return request, metadata
 
-    def post_delete_snapshot(
-        self, response: snapshots.DeleteSnapshotResponse
-    ) -> snapshots.DeleteSnapshotResponse:
+    def post_delete_snapshot(self, response: snapshots.DeleteSnapshotResponse) -> snapshots.DeleteSnapshotResponse:
         """Post-rpc interceptor for delete_snapshot
 
         DEPRECATED. Please use the `post_delete_snapshot_with_metadata`
@@ -132,12 +126,8 @@ class SnapshotsV1Beta3RestInterceptor:
         return response
 
     def post_delete_snapshot_with_metadata(
-        self,
-        response: snapshots.DeleteSnapshotResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        snapshots.DeleteSnapshotResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: snapshots.DeleteSnapshotResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[snapshots.DeleteSnapshotResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_snapshot
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -153,9 +143,7 @@ class SnapshotsV1Beta3RestInterceptor:
         return response, metadata
 
     def pre_get_snapshot(
-        self,
-        request: snapshots.GetSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: snapshots.GetSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshots.GetSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_snapshot
 
@@ -178,9 +166,7 @@ class SnapshotsV1Beta3RestInterceptor:
         return response
 
     def post_get_snapshot_with_metadata(
-        self,
-        response: snapshots.Snapshot,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: snapshots.Snapshot, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshots.Snapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_snapshot
 
@@ -197,9 +183,7 @@ class SnapshotsV1Beta3RestInterceptor:
         return response, metadata
 
     def pre_list_snapshots(
-        self,
-        request: snapshots.ListSnapshotsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: snapshots.ListSnapshotsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[snapshots.ListSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_snapshots
 
@@ -208,9 +192,7 @@ class SnapshotsV1Beta3RestInterceptor:
         """
         return request, metadata
 
-    def post_list_snapshots(
-        self, response: snapshots.ListSnapshotsResponse
-    ) -> snapshots.ListSnapshotsResponse:
+    def post_list_snapshots(self, response: snapshots.ListSnapshotsResponse) -> snapshots.ListSnapshotsResponse:
         """Post-rpc interceptor for list_snapshots
 
         DEPRECATED. Please use the `post_list_snapshots_with_metadata`
@@ -224,12 +206,8 @@ class SnapshotsV1Beta3RestInterceptor:
         return response
 
     def post_list_snapshots_with_metadata(
-        self,
-        response: snapshots.ListSnapshotsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        snapshots.ListSnapshotsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: snapshots.ListSnapshotsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[snapshots.ListSnapshotsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_snapshots
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -325,30 +303,18 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SnapshotsV1Beta3RestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteSnapshot(
-        _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot, SnapshotsV1Beta3RestStub
-    ):
+    class _DeleteSnapshot(_BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot, SnapshotsV1Beta3RestStub):
         def __hash__(self):
             return hash("SnapshotsV1Beta3RestTransport.DeleteSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -387,26 +353,16 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                     Response from deleting a snapshot.
             """
 
-            http_options = (
-                _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_http_options()
-            )
+            http_options = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
-            transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSnapshotsV1Beta3RestTransport._BaseDeleteSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -430,12 +386,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
 
             # Send the request
             response = SnapshotsV1Beta3RestTransport._DeleteSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -451,16 +402,10 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
 
             resp = self._interceptor.post_delete_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = snapshots.DeleteSnapshotResponse.to_json(
-                        response
-                    )
+                    response_payload = snapshots.DeleteSnapshotResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -479,22 +424,12 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                 )
             return resp
 
-    class _GetSnapshot(
-        _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot, SnapshotsV1Beta3RestStub
-    ):
+    class _GetSnapshot(_BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot, SnapshotsV1Beta3RestStub):
         def __hash__(self):
             return hash("SnapshotsV1Beta3RestTransport.GetSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -534,26 +469,16 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                     Represents a snapshot of a job.
             """
 
-            http_options = (
-                _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_http_options()
-            )
+            http_options = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
-            transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSnapshotsV1Beta3RestTransport._BaseGetSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -577,12 +502,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
 
             # Send the request
             response = SnapshotsV1Beta3RestTransport._GetSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -598,12 +518,8 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
 
             resp = self._interceptor.post_get_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = snapshots.Snapshot.to_json(response)
                 except:
@@ -624,22 +540,12 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                 )
             return resp
 
-    class _ListSnapshots(
-        _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots, SnapshotsV1Beta3RestStub
-    ):
+    class _ListSnapshots(_BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots, SnapshotsV1Beta3RestStub):
         def __hash__(self):
             return hash("SnapshotsV1Beta3RestTransport.ListSnapshots")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -678,26 +584,16 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
                     List of snapshots.
             """
 
-            http_options = (
-                _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_http_options()
-            )
+            http_options = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_http_options()
 
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
-            transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSnapshotsV1Beta3RestTransport._BaseListSnapshots._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -721,12 +617,7 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
 
             # Send the request
             response = SnapshotsV1Beta3RestTransport._ListSnapshots._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -742,12 +633,8 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
 
             resp = self._interceptor.post_list_snapshots(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_snapshots_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_snapshots_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = snapshots.ListSnapshotsResponse.to_json(response)
                 except:
@@ -769,25 +656,19 @@ class SnapshotsV1Beta3RestTransport(_BaseSnapshotsV1Beta3RestTransport):
             return resp
 
     @property
-    def delete_snapshot(
-        self,
-    ) -> Callable[[snapshots.DeleteSnapshotRequest], snapshots.DeleteSnapshotResponse]:
+    def delete_snapshot(self) -> Callable[[snapshots.DeleteSnapshotRequest], snapshots.DeleteSnapshotResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_snapshot(
-        self,
-    ) -> Callable[[snapshots.GetSnapshotRequest], snapshots.Snapshot]:
+    def get_snapshot(self) -> Callable[[snapshots.GetSnapshotRequest], snapshots.Snapshot]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_snapshots(
-        self,
-    ) -> Callable[[snapshots.ListSnapshotsRequest], snapshots.ListSnapshotsResponse]:
+    def list_snapshots(self) -> Callable[[snapshots.ListSnapshotsRequest], snapshots.ListSnapshotsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSnapshots(self._session, self._host, self._interceptor)  # type: ignore

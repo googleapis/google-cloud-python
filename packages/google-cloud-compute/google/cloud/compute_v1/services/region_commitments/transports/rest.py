@@ -119,13 +119,8 @@ class RegionCommitmentsRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListRegionCommitmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListRegionCommitmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListRegionCommitmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListRegionCommitmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class RegionCommitmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.CommitmentAggregatedList
-    ) -> compute.CommitmentAggregatedList:
+    def post_aggregated_list(self, response: compute.CommitmentAggregatedList) -> compute.CommitmentAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -149,12 +142,8 @@ class RegionCommitmentsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.CommitmentAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.CommitmentAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.CommitmentAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.CommitmentAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,12 +159,8 @@ class RegionCommitmentsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRegionCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -197,9 +182,7 @@ class RegionCommitmentsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Commitment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Commitment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Commitment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -216,12 +199,8 @@ class RegionCommitmentsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertRegionCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -243,9 +222,7 @@ class RegionCommitmentsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -262,12 +239,8 @@ class RegionCommitmentsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionCommitmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionCommitmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListRegionCommitmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionCommitmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +262,7 @@ class RegionCommitmentsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.CommitmentList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.CommitmentList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.CommitmentList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -308,12 +279,8 @@ class RegionCommitmentsRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdateRegionCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdateRegionCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.UpdateRegionCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdateRegionCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -335,9 +302,7 @@ class RegionCommitmentsRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -437,31 +402,18 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionCommitmentsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseRegionCommitmentsRestTransport._BaseAggregatedList,
-        RegionCommitmentsRestStub,
-    ):
+    class _AggregatedList(_BaseRegionCommitmentsRestTransport._BaseAggregatedList, RegionCommitmentsRestStub):
         def __hash__(self):
             return hash("RegionCommitmentsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -502,26 +454,16 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionCommitmentsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseRegionCommitmentsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseRegionCommitmentsRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionCommitmentsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionCommitmentsRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionCommitmentsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -545,12 +487,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             # Send the request
             response = RegionCommitmentsRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -566,16 +503,10 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.CommitmentAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.CommitmentAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -599,15 +530,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
             return hash("RegionCommitmentsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -658,30 +581,16 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionCommitmentsRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionCommitmentsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseRegionCommitmentsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionCommitmentsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionCommitmentsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionCommitmentsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -705,12 +614,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             # Send the request
             response = RegionCommitmentsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -727,9 +631,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Commitment.to_json(response)
                 except:
@@ -750,22 +652,12 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionCommitmentsRestTransport._BaseInsert, RegionCommitmentsRestStub
-    ):
+    class _Insert(_BaseRegionCommitmentsRestTransport._BaseInsert, RegionCommitmentsRestStub):
         def __hash__(self):
             return hash("RegionCommitmentsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -824,36 +716,18 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionCommitmentsRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionCommitmentsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseRegionCommitmentsRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionCommitmentsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionCommitmentsRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionCommitmentsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionCommitmentsRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionCommitmentsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -877,13 +751,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             # Send the request
             response = RegionCommitmentsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -899,12 +767,8 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -925,22 +789,12 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
                 )
             return resp
 
-    class _List(
-        _BaseRegionCommitmentsRestTransport._BaseList, RegionCommitmentsRestStub
-    ):
+    class _List(_BaseRegionCommitmentsRestTransport._BaseList, RegionCommitmentsRestStub):
         def __hash__(self):
             return hash("RegionCommitmentsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -983,30 +837,16 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionCommitmentsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionCommitmentsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseRegionCommitmentsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionCommitmentsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionCommitmentsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionCommitmentsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1030,12 +870,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             # Send the request
             response = RegionCommitmentsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1052,9 +887,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.CommitmentList.to_json(response)
                 except:
@@ -1075,22 +908,12 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
                 )
             return resp
 
-    class _Update(
-        _BaseRegionCommitmentsRestTransport._BaseUpdate, RegionCommitmentsRestStub
-    ):
+    class _Update(_BaseRegionCommitmentsRestTransport._BaseUpdate, RegionCommitmentsRestStub):
         def __hash__(self):
             return hash("RegionCommitmentsRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1149,36 +972,18 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionCommitmentsRestTransport._BaseUpdate._get_http_options()
-            )
+            http_options = _BaseRegionCommitmentsRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BaseRegionCommitmentsRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionCommitmentsRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionCommitmentsRestTransport._BaseUpdate._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionCommitmentsRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionCommitmentsRestTransport._BaseUpdate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionCommitmentsRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1202,13 +1007,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             # Send the request
             response = RegionCommitmentsRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1224,12 +1023,8 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1251,12 +1046,7 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListRegionCommitmentsRequest],
-        compute.CommitmentAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListRegionCommitmentsRequest], compute.CommitmentAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
@@ -1268,25 +1058,19 @@ class RegionCommitmentsRestTransport(_BaseRegionCommitmentsRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionCommitmentRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionCommitmentRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListRegionCommitmentsRequest], compute.CommitmentList]:
+    def list(self) -> Callable[[compute.ListRegionCommitmentsRequest], compute.CommitmentList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update(
-        self,
-    ) -> Callable[[compute.UpdateRegionCommitmentRequest], compute.Operation]:
+    def update(self) -> Callable[[compute.UpdateRegionCommitmentRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore

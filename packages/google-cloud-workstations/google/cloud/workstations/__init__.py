@@ -18,9 +18,7 @@ from google.cloud.workstations import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.workstations_v1.services.workstations.async_client import (
-    WorkstationsAsyncClient,
-)
+from google.cloud.workstations_v1.services.workstations.async_client import WorkstationsAsyncClient
 from google.cloud.workstations_v1.services.workstations.client import WorkstationsClient
 from google.cloud.workstations_v1.types.workstations import (
     CreateWorkstationClusterRequest,

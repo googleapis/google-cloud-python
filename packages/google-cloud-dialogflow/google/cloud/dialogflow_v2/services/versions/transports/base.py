@@ -32,9 +32,7 @@ from google.cloud.dialogflow_v2 import gapic_version as package_version
 from google.cloud.dialogflow_v2.types import version
 from google.cloud.dialogflow_v2.types import version as gcd_version
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class VersionsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -202,47 +192,23 @@ class VersionsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_versions(
-        self,
-    ) -> Callable[
-        [version.ListVersionsRequest],
-        Union[version.ListVersionsResponse, Awaitable[version.ListVersionsResponse]],
-    ]:
+    def list_versions(self) -> Callable[[version.ListVersionsRequest], Union[version.ListVersionsResponse, Awaitable[version.ListVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_version(
-        self,
-    ) -> Callable[
-        [version.GetVersionRequest], Union[version.Version, Awaitable[version.Version]]
-    ]:
+    def get_version(self) -> Callable[[version.GetVersionRequest], Union[version.Version, Awaitable[version.Version]]]:
         raise NotImplementedError()
 
     @property
-    def create_version(
-        self,
-    ) -> Callable[
-        [gcd_version.CreateVersionRequest],
-        Union[gcd_version.Version, Awaitable[gcd_version.Version]],
-    ]:
+    def create_version(self) -> Callable[[gcd_version.CreateVersionRequest], Union[gcd_version.Version, Awaitable[gcd_version.Version]]]:
         raise NotImplementedError()
 
     @property
-    def update_version(
-        self,
-    ) -> Callable[
-        [gcd_version.UpdateVersionRequest],
-        Union[gcd_version.Version, Awaitable[gcd_version.Version]],
-    ]:
+    def update_version(self) -> Callable[[gcd_version.UpdateVersionRequest], Union[gcd_version.Version, Awaitable[gcd_version.Version]]]:
         raise NotImplementedError()
 
     @property
-    def delete_version(
-        self,
-    ) -> Callable[
-        [version.DeleteVersionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_version(self) -> Callable[[version.DeleteVersionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -250,20 +216,14 @@ class VersionsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -275,22 +235,13 @@ class VersionsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

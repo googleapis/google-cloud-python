@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -111,46 +100,22 @@ class AccessApprovalAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = AccessApprovalClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = AccessApprovalClient._DEFAULT_UNIVERSE
 
-    access_approval_service_account_path = staticmethod(
-        AccessApprovalClient.access_approval_service_account_path
-    )
-    parse_access_approval_service_account_path = staticmethod(
-        AccessApprovalClient.parse_access_approval_service_account_path
-    )
-    access_approval_settings_path = staticmethod(
-        AccessApprovalClient.access_approval_settings_path
-    )
-    parse_access_approval_settings_path = staticmethod(
-        AccessApprovalClient.parse_access_approval_settings_path
-    )
+    access_approval_service_account_path = staticmethod(AccessApprovalClient.access_approval_service_account_path)
+    parse_access_approval_service_account_path = staticmethod(AccessApprovalClient.parse_access_approval_service_account_path)
+    access_approval_settings_path = staticmethod(AccessApprovalClient.access_approval_settings_path)
+    parse_access_approval_settings_path = staticmethod(AccessApprovalClient.parse_access_approval_settings_path)
     approval_request_path = staticmethod(AccessApprovalClient.approval_request_path)
-    parse_approval_request_path = staticmethod(
-        AccessApprovalClient.parse_approval_request_path
-    )
-    common_billing_account_path = staticmethod(
-        AccessApprovalClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AccessApprovalClient.parse_common_billing_account_path
-    )
+    parse_approval_request_path = staticmethod(AccessApprovalClient.parse_approval_request_path)
+    common_billing_account_path = staticmethod(AccessApprovalClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AccessApprovalClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AccessApprovalClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AccessApprovalClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AccessApprovalClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AccessApprovalClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(AccessApprovalClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AccessApprovalClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AccessApprovalClient.parse_common_organization_path)
     common_project_path = staticmethod(AccessApprovalClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        AccessApprovalClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(AccessApprovalClient.parse_common_project_path)
     common_location_path = staticmethod(AccessApprovalClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        AccessApprovalClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(AccessApprovalClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -186,9 +151,7 @@ class AccessApprovalAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -255,9 +218,7 @@ class AccessApprovalAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, AccessApprovalTransport, Callable[..., AccessApprovalTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AccessApprovalTransport, Callable[..., AccessApprovalTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -317,20 +278,14 @@ class AccessApprovalAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.accessapproval_v1.AccessApprovalAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.accessapproval.v1.AccessApproval",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -341,9 +296,7 @@ class AccessApprovalAsyncClient:
 
     async def list_approval_requests(
         self,
-        request: Optional[
-            Union[accessapproval.ListApprovalRequestsMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.ListApprovalRequestsMessage, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -414,14 +367,9 @@ class AccessApprovalAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -435,15 +383,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_approval_requests
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_approval_requests]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -535,14 +479,9 @@ class AccessApprovalAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -556,15 +495,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_approval_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_approval_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -582,9 +517,7 @@ class AccessApprovalAsyncClient:
 
     async def approve_approval_request(
         self,
-        request: Optional[
-            Union[accessapproval.ApproveApprovalRequestMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.ApproveApprovalRequestMessage, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -647,15 +580,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.approve_approval_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.approve_approval_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -673,9 +602,7 @@ class AccessApprovalAsyncClient:
 
     async def dismiss_approval_request(
         self,
-        request: Optional[
-            Union[accessapproval.DismissApprovalRequestMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.DismissApprovalRequestMessage, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -743,15 +670,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.dismiss_approval_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.dismiss_approval_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -769,9 +692,7 @@ class AccessApprovalAsyncClient:
 
     async def invalidate_approval_request(
         self,
-        request: Optional[
-            Union[accessapproval.InvalidateApprovalRequestMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.InvalidateApprovalRequestMessage, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -838,15 +759,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.invalidate_approval_request
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.invalidate_approval_request]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -864,9 +781,7 @@ class AccessApprovalAsyncClient:
 
     async def get_access_approval_settings(
         self,
-        request: Optional[
-            Union[accessapproval.GetAccessApprovalSettingsMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.GetAccessApprovalSettingsMessage, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -932,14 +847,9 @@ class AccessApprovalAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -953,15 +863,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_access_approval_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_access_approval_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -979,9 +885,7 @@ class AccessApprovalAsyncClient:
 
     async def update_access_approval_settings(
         self,
-        request: Optional[
-            Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.UpdateAccessApprovalSettingsMessage, dict]] = None,
         *,
         settings: Optional[accessapproval.AccessApprovalSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1062,14 +966,9 @@ class AccessApprovalAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1085,17 +984,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_access_approval_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_access_approval_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("settings.name", request.settings.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("settings.name", request.settings.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1113,9 +1006,7 @@ class AccessApprovalAsyncClient:
 
     async def delete_access_approval_settings(
         self,
-        request: Optional[
-            Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.DeleteAccessApprovalSettingsMessage, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1176,14 +1067,9 @@ class AccessApprovalAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1197,15 +1083,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_access_approval_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_access_approval_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1220,9 +1102,7 @@ class AccessApprovalAsyncClient:
 
     async def get_access_approval_service_account(
         self,
-        request: Optional[
-            Union[accessapproval.GetAccessApprovalServiceAccountMessage, dict]
-        ] = None,
+        request: Optional[Union[accessapproval.GetAccessApprovalServiceAccountMessage, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1289,20 +1169,13 @@ class AccessApprovalAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, accessapproval.GetAccessApprovalServiceAccountMessage
-        ):
+        if not isinstance(request, accessapproval.GetAccessApprovalServiceAccountMessage):
             request = accessapproval.GetAccessApprovalServiceAccountMessage(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1312,15 +1185,11 @@ class AccessApprovalAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_access_approval_service_account
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_access_approval_service_account]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1343,9 +1212,7 @@ class AccessApprovalAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

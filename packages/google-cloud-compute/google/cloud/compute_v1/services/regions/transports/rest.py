@@ -95,9 +95,7 @@ class RegionsRestInterceptor:
     """
 
     def pre_get(
-        self,
-        request: compute.GetRegionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetRegionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetRegionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -120,9 +118,7 @@ class RegionsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Region,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Region, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Region, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -139,9 +135,7 @@ class RegionsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListRegionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListRegionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -164,9 +158,7 @@ class RegionsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.RegionList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.RegionList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.RegionList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -266,9 +258,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionsRestInterceptor()
@@ -279,15 +269,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             return hash("RegionsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -334,23 +316,13 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             http_options = _BaseRegionsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseRegionsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionsRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -373,14 +345,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
                 )
 
             # Send the request
-            response = RegionsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = RegionsRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -396,9 +361,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Region.to_json(response)
                 except:
@@ -424,15 +387,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             return hash("RegionsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -475,23 +430,13 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             http_options = _BaseRegionsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseRegionsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionsRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -514,14 +459,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
                 )
 
             # Send the request
-            response = RegionsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = RegionsRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -537,9 +475,7 @@ class RegionsRestTransport(_BaseRegionsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.RegionList.to_json(response)
                 except:

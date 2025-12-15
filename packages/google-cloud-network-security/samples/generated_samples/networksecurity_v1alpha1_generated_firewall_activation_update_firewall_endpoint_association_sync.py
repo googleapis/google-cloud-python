@@ -39,9 +39,7 @@ def sample_update_firewall_endpoint_association():
     client = network_security_v1alpha1.FirewallActivationClient()
 
     # Initialize request argument(s)
-    firewall_endpoint_association = (
-        network_security_v1alpha1.FirewallEndpointAssociation()
-    )
+    firewall_endpoint_association = network_security_v1alpha1.FirewallEndpointAssociation()
     firewall_endpoint_association.network = "network_value"
     firewall_endpoint_association.firewall_endpoint = "firewall_endpoint_value"
 

@@ -29,9 +29,7 @@ import google.protobuf
 from google.ads.admanager_v1 import gapic_version as package_version
 from google.ads.admanager_v1.types import ad_unit_messages, ad_unit_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class AdUnitServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -201,54 +191,29 @@ class AdUnitServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_ad_unit(
-        self,
-    ) -> Callable[
-        [ad_unit_service.GetAdUnitRequest],
-        Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]],
-    ]:
+    def get_ad_unit(self) -> Callable[[ad_unit_service.GetAdUnitRequest], Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]]]:
         raise NotImplementedError()
 
     @property
     def list_ad_units(
         self,
-    ) -> Callable[
-        [ad_unit_service.ListAdUnitsRequest],
-        Union[
-            ad_unit_service.ListAdUnitsResponse,
-            Awaitable[ad_unit_service.ListAdUnitsResponse],
-        ],
-    ]:
+    ) -> Callable[[ad_unit_service.ListAdUnitsRequest], Union[ad_unit_service.ListAdUnitsResponse, Awaitable[ad_unit_service.ListAdUnitsResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_ad_unit_sizes(
         self,
     ) -> Callable[
-        [ad_unit_service.ListAdUnitSizesRequest],
-        Union[
-            ad_unit_service.ListAdUnitSizesResponse,
-            Awaitable[ad_unit_service.ListAdUnitSizesResponse],
-        ],
+        [ad_unit_service.ListAdUnitSizesRequest], Union[ad_unit_service.ListAdUnitSizesResponse, Awaitable[ad_unit_service.ListAdUnitSizesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_ad_unit(
-        self,
-    ) -> Callable[
-        [ad_unit_service.CreateAdUnitRequest],
-        Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]],
-    ]:
+    def create_ad_unit(self) -> Callable[[ad_unit_service.CreateAdUnitRequest], Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]]]:
         raise NotImplementedError()
 
     @property
-    def update_ad_unit(
-        self,
-    ) -> Callable[
-        [ad_unit_service.UpdateAdUnitRequest],
-        Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]],
-    ]:
+    def update_ad_unit(self) -> Callable[[ad_unit_service.UpdateAdUnitRequest], Union[ad_unit_messages.AdUnit, Awaitable[ad_unit_messages.AdUnit]]]:
         raise NotImplementedError()
 
     @property
@@ -256,10 +221,7 @@ class AdUnitServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [ad_unit_service.BatchCreateAdUnitsRequest],
-        Union[
-            ad_unit_service.BatchCreateAdUnitsResponse,
-            Awaitable[ad_unit_service.BatchCreateAdUnitsResponse],
-        ],
+        Union[ad_unit_service.BatchCreateAdUnitsResponse, Awaitable[ad_unit_service.BatchCreateAdUnitsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -268,10 +230,7 @@ class AdUnitServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [ad_unit_service.BatchUpdateAdUnitsRequest],
-        Union[
-            ad_unit_service.BatchUpdateAdUnitsResponse,
-            Awaitable[ad_unit_service.BatchUpdateAdUnitsResponse],
-        ],
+        Union[ad_unit_service.BatchUpdateAdUnitsResponse, Awaitable[ad_unit_service.BatchUpdateAdUnitsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -280,10 +239,7 @@ class AdUnitServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [ad_unit_service.BatchActivateAdUnitsRequest],
-        Union[
-            ad_unit_service.BatchActivateAdUnitsResponse,
-            Awaitable[ad_unit_service.BatchActivateAdUnitsResponse],
-        ],
+        Union[ad_unit_service.BatchActivateAdUnitsResponse, Awaitable[ad_unit_service.BatchActivateAdUnitsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -292,10 +248,7 @@ class AdUnitServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [ad_unit_service.BatchDeactivateAdUnitsRequest],
-        Union[
-            ad_unit_service.BatchDeactivateAdUnitsResponse,
-            Awaitable[ad_unit_service.BatchDeactivateAdUnitsResponse],
-        ],
+        Union[ad_unit_service.BatchDeactivateAdUnitsResponse, Awaitable[ad_unit_service.BatchDeactivateAdUnitsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -304,20 +257,14 @@ class AdUnitServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [ad_unit_service.BatchArchiveAdUnitsRequest],
-        Union[
-            ad_unit_service.BatchArchiveAdUnitsResponse,
-            Awaitable[ad_unit_service.BatchArchiveAdUnitsResponse],
-        ],
+        Union[ad_unit_service.BatchArchiveAdUnitsResponse, Awaitable[ad_unit_service.BatchArchiveAdUnitsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

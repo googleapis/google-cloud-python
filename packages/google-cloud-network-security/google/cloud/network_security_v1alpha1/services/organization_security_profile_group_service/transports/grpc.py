@@ -32,10 +32,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group,
-    security_profile_group_service,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group, security_profile_group_service
 
 from .base import DEFAULT_CLIENT_INFO, OrganizationSecurityProfileGroupServiceTransport
 
@@ -51,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -114,9 +102,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class OrganizationSecurityProfileGroupServiceGrpcTransport(
-    OrganizationSecurityProfileGroupServiceTransport
-):
+class OrganizationSecurityProfileGroupServiceGrpcTransport(OrganizationSecurityProfileGroupServiceTransport):
     """gRPC backend transport for OrganizationSecurityProfileGroupService.
 
     Organization SecurityProfileGroup is created under
@@ -227,18 +213,14 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -272,9 +254,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -341,9 +321,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -352,8 +330,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
     def list_security_profile_groups(
         self,
     ) -> Callable[
-        [security_profile_group_service.ListSecurityProfileGroupsRequest],
-        security_profile_group_service.ListSecurityProfileGroupsResponse,
+        [security_profile_group_service.ListSecurityProfileGroupsRequest], security_profile_group_service.ListSecurityProfileGroupsResponse
     ]:
         r"""Return a callable for the list security profile groups method over gRPC.
 
@@ -371,9 +348,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_security_profile_groups" not in self._stubs:
-            self._stubs[
-                "list_security_profile_groups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_security_profile_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/ListSecurityProfileGroups",
                 request_serializer=security_profile_group_service.ListSecurityProfileGroupsRequest.serialize,
                 response_deserializer=security_profile_group_service.ListSecurityProfileGroupsResponse.deserialize,
@@ -383,10 +358,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
     @property
     def get_security_profile_group(
         self,
-    ) -> Callable[
-        [security_profile_group_service.GetSecurityProfileGroupRequest],
-        security_profile_group.SecurityProfileGroup,
-    ]:
+    ) -> Callable[[security_profile_group_service.GetSecurityProfileGroupRequest], security_profile_group.SecurityProfileGroup]:
         r"""Return a callable for the get security profile group method over gRPC.
 
         Gets details of a single SecurityProfileGroup.
@@ -402,9 +374,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_security_profile_group" not in self._stubs:
-            self._stubs[
-                "get_security_profile_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_security_profile_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/GetSecurityProfileGroup",
                 request_serializer=security_profile_group_service.GetSecurityProfileGroupRequest.serialize,
                 response_deserializer=security_profile_group.SecurityProfileGroup.deserialize,
@@ -412,12 +382,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["get_security_profile_group"]
 
     @property
-    def create_security_profile_group(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.CreateSecurityProfileGroupRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_security_profile_group(self) -> Callable[[security_profile_group_service.CreateSecurityProfileGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the create security profile group method over gRPC.
 
         Creates a new SecurityProfileGroup in a given
@@ -434,9 +399,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_security_profile_group" not in self._stubs:
-            self._stubs[
-                "create_security_profile_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_security_profile_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/CreateSecurityProfileGroup",
                 request_serializer=security_profile_group_service.CreateSecurityProfileGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -444,12 +407,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["create_security_profile_group"]
 
     @property
-    def update_security_profile_group(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.UpdateSecurityProfileGroupRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_security_profile_group(self) -> Callable[[security_profile_group_service.UpdateSecurityProfileGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the update security profile group method over gRPC.
 
         Updates the parameters of a single
@@ -466,9 +424,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_security_profile_group" not in self._stubs:
-            self._stubs[
-                "update_security_profile_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_security_profile_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/UpdateSecurityProfileGroup",
                 request_serializer=security_profile_group_service.UpdateSecurityProfileGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -476,12 +432,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["update_security_profile_group"]
 
     @property
-    def delete_security_profile_group(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.DeleteSecurityProfileGroupRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_security_profile_group(self) -> Callable[[security_profile_group_service.DeleteSecurityProfileGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete security profile group method over gRPC.
 
         Deletes a single SecurityProfileGroup.
@@ -497,9 +448,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_security_profile_group" not in self._stubs:
-            self._stubs[
-                "delete_security_profile_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_security_profile_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService/DeleteSecurityProfileGroup",
                 request_serializer=security_profile_group_service.DeleteSecurityProfileGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -509,10 +458,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
     @property
     def list_security_profiles(
         self,
-    ) -> Callable[
-        [security_profile_group_service.ListSecurityProfilesRequest],
-        security_profile_group_service.ListSecurityProfilesResponse,
-    ]:
+    ) -> Callable[[security_profile_group_service.ListSecurityProfilesRequest], security_profile_group_service.ListSecurityProfilesResponse]:
         r"""Return a callable for the list security profiles method over gRPC.
 
         Lists SecurityProfiles in a given organization and
@@ -537,12 +483,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["list_security_profiles"]
 
     @property
-    def get_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.GetSecurityProfileRequest],
-        security_profile_group.SecurityProfile,
-    ]:
+    def get_security_profile(self) -> Callable[[security_profile_group_service.GetSecurityProfileRequest], security_profile_group.SecurityProfile]:
         r"""Return a callable for the get security profile method over gRPC.
 
         Gets details of a single SecurityProfile.
@@ -566,12 +507,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["get_security_profile"]
 
     @property
-    def create_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.CreateSecurityProfileRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_security_profile(self) -> Callable[[security_profile_group_service.CreateSecurityProfileRequest], operations_pb2.Operation]:
         r"""Return a callable for the create security profile method over gRPC.
 
         Creates a new SecurityProfile in a given organization
@@ -596,12 +532,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["create_security_profile"]
 
     @property
-    def update_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.UpdateSecurityProfileRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_security_profile(self) -> Callable[[security_profile_group_service.UpdateSecurityProfileRequest], operations_pb2.Operation]:
         r"""Return a callable for the update security profile method over gRPC.
 
         Updates the parameters of a single SecurityProfile.
@@ -625,12 +556,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
         return self._stubs["update_security_profile"]
 
     @property
-    def delete_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.DeleteSecurityProfileRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_security_profile(self) -> Callable[[security_profile_group_service.DeleteSecurityProfileRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete security profile method over gRPC.
 
         Deletes a single SecurityProfile.
@@ -710,9 +636,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -729,9 +653,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -816,10 +738,7 @@ class OrganizationSecurityProfileGroupServiceGrpcTransport(
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

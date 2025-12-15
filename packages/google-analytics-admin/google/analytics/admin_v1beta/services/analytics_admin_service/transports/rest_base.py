@@ -72,20 +72,14 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAcknowledgeUserDataCollection:
@@ -96,11 +90,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -115,9 +105,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.AcknowledgeUserDataCollectionRequest.pb(
-                request
-            )
+            pb_request = analytics_admin.AcknowledgeUserDataCollectionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -125,9 +113,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -138,11 +124,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseAcknowledgeUserDataCollection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -155,11 +137,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -182,9 +160,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -195,11 +171,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomDimension._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -212,11 +184,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -239,9 +207,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -252,11 +218,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseArchiveCustomMetric._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -269,11 +231,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -296,9 +254,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -309,11 +265,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateConversionEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -326,11 +278,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -353,9 +301,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -366,11 +312,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomDimension._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -383,11 +325,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -410,9 +348,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -423,11 +359,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateCustomMetric._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -440,11 +372,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -467,9 +395,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -480,11 +406,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateDataStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -497,11 +419,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -524,9 +442,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -537,11 +453,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateFirebaseLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -554,11 +466,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -581,9 +489,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -594,11 +500,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateGoogleAdsLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -611,11 +513,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -638,9 +536,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -651,11 +547,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateKeyEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -668,11 +560,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -687,9 +575,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.CreateMeasurementProtocolSecretRequest.pb(
-                request
-            )
+            pb_request = analytics_admin.CreateMeasurementProtocolSecretRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -697,9 +583,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -710,11 +594,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateMeasurementProtocolSecret._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -727,11 +607,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -754,9 +630,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -767,11 +641,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseCreateProperty._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -784,11 +654,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -814,11 +680,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteAccount._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -831,11 +693,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -861,11 +719,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteConversionEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -878,11 +732,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -908,11 +758,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteDataStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -925,11 +771,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -955,11 +797,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteFirebaseLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -972,11 +810,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1002,11 +836,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteGoogleAdsLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1019,11 +849,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1049,11 +875,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteKeyEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1066,11 +888,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1084,9 +902,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.DeleteMeasurementProtocolSecretRequest.pb(
-                request
-            )
+            pb_request = analytics_admin.DeleteMeasurementProtocolSecretRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1098,11 +914,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteMeasurementProtocolSecret._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1115,11 +927,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1145,11 +953,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseDeleteProperty._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1162,11 +966,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1192,11 +992,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetAccount._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1209,11 +1005,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1239,11 +1031,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetConversionEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1256,11 +1044,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1286,11 +1070,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetCustomDimension._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1303,11 +1083,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1333,11 +1109,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetCustomMetric._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1350,11 +1122,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1380,11 +1148,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetDataRetentionSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1397,11 +1161,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1427,11 +1187,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetDataSharingSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1444,11 +1200,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1474,11 +1226,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetDataStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1491,11 +1239,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1521,11 +1265,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetKeyEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1538,11 +1278,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1568,11 +1304,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetMeasurementProtocolSecret._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1585,11 +1317,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1615,11 +1343,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseGetProperty._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1696,11 +1420,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1726,11 +1446,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListConversionEvents._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1743,11 +1459,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1773,11 +1485,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListCustomDimensions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1790,11 +1498,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1820,11 +1524,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListCustomMetrics._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1837,11 +1537,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1867,11 +1563,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListDataStreams._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1884,11 +1576,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1914,11 +1602,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListFirebaseLinks._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1931,11 +1615,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1961,11 +1641,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListGoogleAdsLinks._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1978,11 +1654,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2008,11 +1680,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListKeyEvents._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2025,11 +1693,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2043,9 +1707,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.ListMeasurementProtocolSecretsRequest.pb(
-                request
-            )
+            pb_request = analytics_admin.ListMeasurementProtocolSecretsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2057,11 +1719,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListMeasurementProtocolSecrets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2076,11 +1734,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2106,11 +1760,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseListProperties._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2140,9 +1790,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2187,9 +1835,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2212,11 +1858,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2239,9 +1881,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2252,11 +1892,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseSearchChangeHistoryEvents._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2271,11 +1907,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2298,9 +1930,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2311,11 +1941,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateAccount._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2330,11 +1956,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2357,9 +1979,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2370,11 +1990,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateConversionEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2389,11 +2005,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2416,9 +2028,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2429,11 +2039,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomDimension._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2448,11 +2054,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2475,9 +2077,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2488,11 +2088,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateCustomMetric._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2507,11 +2103,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2534,9 +2126,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2547,11 +2137,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataRetentionSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2566,11 +2152,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2593,9 +2175,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2606,11 +2186,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateDataStream._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2625,11 +2201,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2652,9 +2224,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2665,11 +2235,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateGoogleAdsLink._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2684,11 +2250,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2711,9 +2273,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2724,11 +2284,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateKeyEvent._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2743,11 +2299,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2762,9 +2314,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = analytics_admin.UpdateMeasurementProtocolSecretRequest.pb(
-                request
-            )
+            pb_request = analytics_admin.UpdateMeasurementProtocolSecretRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2772,9 +2322,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2785,11 +2333,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateMeasurementProtocolSecret._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2804,11 +2348,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2831,9 +2371,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2844,11 +2382,7 @@ class _BaseAnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAnalyticsAdminServiceRestTransport._BaseUpdateProperty._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

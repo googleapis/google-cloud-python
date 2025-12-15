@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -301,18 +290,14 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -348,9 +333,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -367,10 +350,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
     @property
     def list_approval_requests(
         self,
-    ) -> Callable[
-        [accessapproval.ListApprovalRequestsMessage],
-        Awaitable[accessapproval.ListApprovalRequestsResponse],
-    ]:
+    ) -> Callable[[accessapproval.ListApprovalRequestsMessage], Awaitable[accessapproval.ListApprovalRequestsResponse]]:
         r"""Return a callable for the list approval requests method over gRPC.
 
         Lists approval requests associated with a project,
@@ -397,12 +377,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         return self._stubs["list_approval_requests"]
 
     @property
-    def get_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.GetApprovalRequestMessage],
-        Awaitable[accessapproval.ApprovalRequest],
-    ]:
+    def get_approval_request(self) -> Callable[[accessapproval.GetApprovalRequestMessage], Awaitable[accessapproval.ApprovalRequest]]:
         r"""Return a callable for the get approval request method over gRPC.
 
         Gets an approval request. Returns NOT_FOUND if the request does
@@ -427,12 +402,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         return self._stubs["get_approval_request"]
 
     @property
-    def approve_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.ApproveApprovalRequestMessage],
-        Awaitable[accessapproval.ApprovalRequest],
-    ]:
+    def approve_approval_request(self) -> Callable[[accessapproval.ApproveApprovalRequestMessage], Awaitable[accessapproval.ApprovalRequest]]:
         r"""Return a callable for the approve approval request method over gRPC.
 
         Approves a request and returns the updated ApprovalRequest.
@@ -460,12 +430,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         return self._stubs["approve_approval_request"]
 
     @property
-    def dismiss_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.DismissApprovalRequestMessage],
-        Awaitable[accessapproval.ApprovalRequest],
-    ]:
+    def dismiss_approval_request(self) -> Callable[[accessapproval.DismissApprovalRequestMessage], Awaitable[accessapproval.ApprovalRequest]]:
         r"""Return a callable for the dismiss approval request method over gRPC.
 
         Dismisses a request. Returns the updated ApprovalRequest.
@@ -498,12 +463,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         return self._stubs["dismiss_approval_request"]
 
     @property
-    def invalidate_approval_request(
-        self,
-    ) -> Callable[
-        [accessapproval.InvalidateApprovalRequestMessage],
-        Awaitable[accessapproval.ApprovalRequest],
-    ]:
+    def invalidate_approval_request(self) -> Callable[[accessapproval.InvalidateApprovalRequestMessage], Awaitable[accessapproval.ApprovalRequest]]:
         r"""Return a callable for the invalidate approval request method over gRPC.
 
         Invalidates an existing ApprovalRequest. Returns the updated
@@ -527,9 +487,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "invalidate_approval_request" not in self._stubs:
-            self._stubs[
-                "invalidate_approval_request"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["invalidate_approval_request"] = self._logged_channel.unary_unary(
                 "/google.cloud.accessapproval.v1.AccessApproval/InvalidateApprovalRequest",
                 request_serializer=accessapproval.InvalidateApprovalRequestMessage.serialize,
                 response_deserializer=accessapproval.ApprovalRequest.deserialize,
@@ -539,10 +497,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
     @property
     def get_access_approval_settings(
         self,
-    ) -> Callable[
-        [accessapproval.GetAccessApprovalSettingsMessage],
-        Awaitable[accessapproval.AccessApprovalSettings],
-    ]:
+    ) -> Callable[[accessapproval.GetAccessApprovalSettingsMessage], Awaitable[accessapproval.AccessApprovalSettings]]:
         r"""Return a callable for the get access approval settings method over gRPC.
 
         Gets the settings associated with a project, folder,
@@ -559,9 +514,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "get_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_access_approval_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalSettings",
                 request_serializer=accessapproval.GetAccessApprovalSettingsMessage.serialize,
                 response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
@@ -571,10 +524,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
     @property
     def update_access_approval_settings(
         self,
-    ) -> Callable[
-        [accessapproval.UpdateAccessApprovalSettingsMessage],
-        Awaitable[accessapproval.AccessApprovalSettings],
-    ]:
+    ) -> Callable[[accessapproval.UpdateAccessApprovalSettingsMessage], Awaitable[accessapproval.AccessApprovalSettings]]:
         r"""Return a callable for the update access approval
         settings method over gRPC.
 
@@ -593,9 +543,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "update_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_access_approval_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.accessapproval.v1.AccessApproval/UpdateAccessApprovalSettings",
                 request_serializer=accessapproval.UpdateAccessApprovalSettingsMessage.serialize,
                 response_deserializer=accessapproval.AccessApprovalSettings.deserialize,
@@ -603,11 +551,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         return self._stubs["update_access_approval_settings"]
 
     @property
-    def delete_access_approval_settings(
-        self,
-    ) -> Callable[
-        [accessapproval.DeleteAccessApprovalSettingsMessage], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_access_approval_settings(self) -> Callable[[accessapproval.DeleteAccessApprovalSettingsMessage], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete access approval
         settings method over gRPC.
 
@@ -631,9 +575,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_access_approval_settings" not in self._stubs:
-            self._stubs[
-                "delete_access_approval_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_access_approval_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.accessapproval.v1.AccessApproval/DeleteAccessApprovalSettings",
                 request_serializer=accessapproval.DeleteAccessApprovalSettingsMessage.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -643,10 +585,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
     @property
     def get_access_approval_service_account(
         self,
-    ) -> Callable[
-        [accessapproval.GetAccessApprovalServiceAccountMessage],
-        Awaitable[accessapproval.AccessApprovalServiceAccount],
-    ]:
+    ) -> Callable[[accessapproval.GetAccessApprovalServiceAccountMessage], Awaitable[accessapproval.AccessApprovalServiceAccount]]:
         r"""Return a callable for the get access approval service
         account method over gRPC.
 
@@ -665,9 +604,7 @@ class AccessApprovalGrpcAsyncIOTransport(AccessApprovalTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_access_approval_service_account" not in self._stubs:
-            self._stubs[
-                "get_access_approval_service_account"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_access_approval_service_account"] = self._logged_channel.unary_unary(
                 "/google.cloud.accessapproval.v1.AccessApproval/GetAccessApprovalServiceAccount",
                 request_serializer=accessapproval.GetAccessApprovalServiceAccountMessage.serialize,
                 response_deserializer=accessapproval.AccessApprovalServiceAccount.deserialize,

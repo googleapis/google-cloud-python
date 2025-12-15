@@ -38,12 +38,7 @@ from .delivery_api import (
     UpdateDeliveryVehicleRequest,
     UpdateTaskRequest,
 )
-from .delivery_vehicles import (
-    DeliveryVehicle,
-    LocationInfo,
-    VehicleJourneySegment,
-    VehicleStop,
-)
+from .delivery_vehicles import DeliveryVehicle, LocationInfo, VehicleJourneySegment, VehicleStop
 from .header import DeliveryRequestHeader
 from .task_tracking_info import TaskTrackingInfo
 from .tasks import Task, TaskTrackingViewConfig

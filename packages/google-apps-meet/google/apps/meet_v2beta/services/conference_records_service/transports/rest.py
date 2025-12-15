@@ -175,12 +175,8 @@ class ConferenceRecordsServiceRestInterceptor:
     """
 
     def pre_get_conference_record(
-        self,
-        request: service.GetConferenceRecordRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetConferenceRecordRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetConferenceRecordRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetConferenceRecordRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_conference_record
 
         Override in a subclass to manipulate the request or metadata
@@ -188,9 +184,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_conference_record(
-        self, response: resource.ConferenceRecord
-    ) -> resource.ConferenceRecord:
+    def post_get_conference_record(self, response: resource.ConferenceRecord) -> resource.ConferenceRecord:
         """Post-rpc interceptor for get_conference_record
 
         DEPRECATED. Please use the `post_get_conference_record_with_metadata`
@@ -204,9 +198,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_get_conference_record_with_metadata(
-        self,
-        response: resource.ConferenceRecord,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.ConferenceRecord, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.ConferenceRecord, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_conference_record
 
@@ -223,9 +215,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_participant(
-        self,
-        request: service.GetParticipantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetParticipantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetParticipantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_participant
 
@@ -234,9 +224,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_participant(
-        self, response: resource.Participant
-    ) -> resource.Participant:
+    def post_get_participant(self, response: resource.Participant) -> resource.Participant:
         """Post-rpc interceptor for get_participant
 
         DEPRECATED. Please use the `post_get_participant_with_metadata`
@@ -250,9 +238,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_get_participant_with_metadata(
-        self,
-        response: resource.Participant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Participant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Participant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_participant
 
@@ -269,12 +255,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_participant_session(
-        self,
-        request: service.GetParticipantSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetParticipantSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetParticipantSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetParticipantSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_participant_session
 
         Override in a subclass to manipulate the request or metadata
@@ -282,9 +264,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_participant_session(
-        self, response: resource.ParticipantSession
-    ) -> resource.ParticipantSession:
+    def post_get_participant_session(self, response: resource.ParticipantSession) -> resource.ParticipantSession:
         """Post-rpc interceptor for get_participant_session
 
         DEPRECATED. Please use the `post_get_participant_session_with_metadata`
@@ -298,9 +278,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_get_participant_session_with_metadata(
-        self,
-        response: resource.ParticipantSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.ParticipantSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.ParticipantSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_participant_session
 
@@ -317,9 +295,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_recording(
-        self,
-        request: service.GetRecordingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetRecordingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetRecordingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_recording
 
@@ -342,9 +318,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_get_recording_with_metadata(
-        self,
-        response: resource.Recording,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Recording, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Recording, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_recording
 
@@ -361,9 +335,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_transcript(
-        self,
-        request: service.GetTranscriptRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetTranscriptRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetTranscriptRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_transcript
 
@@ -386,9 +358,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_get_transcript_with_metadata(
-        self,
-        response: resource.Transcript,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.Transcript, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.Transcript, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_transcript
 
@@ -405,12 +375,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_transcript_entry(
-        self,
-        request: service.GetTranscriptEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetTranscriptEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetTranscriptEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetTranscriptEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_transcript_entry
 
         Override in a subclass to manipulate the request or metadata
@@ -418,9 +384,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_transcript_entry(
-        self, response: resource.TranscriptEntry
-    ) -> resource.TranscriptEntry:
+    def post_get_transcript_entry(self, response: resource.TranscriptEntry) -> resource.TranscriptEntry:
         """Post-rpc interceptor for get_transcript_entry
 
         DEPRECATED. Please use the `post_get_transcript_entry_with_metadata`
@@ -434,9 +398,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_get_transcript_entry_with_metadata(
-        self,
-        response: resource.TranscriptEntry,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resource.TranscriptEntry, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resource.TranscriptEntry, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_transcript_entry
 
@@ -453,12 +415,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_conference_records(
-        self,
-        request: service.ListConferenceRecordsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListConferenceRecordsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListConferenceRecordsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListConferenceRecordsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_conference_records
 
         Override in a subclass to manipulate the request or metadata
@@ -466,9 +424,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_conference_records(
-        self, response: service.ListConferenceRecordsResponse
-    ) -> service.ListConferenceRecordsResponse:
+    def post_list_conference_records(self, response: service.ListConferenceRecordsResponse) -> service.ListConferenceRecordsResponse:
         """Post-rpc interceptor for list_conference_records
 
         DEPRECATED. Please use the `post_list_conference_records_with_metadata`
@@ -482,12 +438,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_list_conference_records_with_metadata(
-        self,
-        response: service.ListConferenceRecordsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListConferenceRecordsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListConferenceRecordsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListConferenceRecordsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_conference_records
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -503,12 +455,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_participants(
-        self,
-        request: service.ListParticipantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListParticipantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListParticipantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListParticipantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_participants
 
         Override in a subclass to manipulate the request or metadata
@@ -516,9 +464,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_participants(
-        self, response: service.ListParticipantsResponse
-    ) -> service.ListParticipantsResponse:
+    def post_list_participants(self, response: service.ListParticipantsResponse) -> service.ListParticipantsResponse:
         """Post-rpc interceptor for list_participants
 
         DEPRECATED. Please use the `post_list_participants_with_metadata`
@@ -532,12 +478,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_list_participants_with_metadata(
-        self,
-        response: service.ListParticipantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListParticipantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListParticipantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListParticipantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_participants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -553,12 +495,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_participant_sessions(
-        self,
-        request: service.ListParticipantSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListParticipantSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListParticipantSessionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListParticipantSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_participant_sessions
 
         Override in a subclass to manipulate the request or metadata
@@ -566,9 +504,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_participant_sessions(
-        self, response: service.ListParticipantSessionsResponse
-    ) -> service.ListParticipantSessionsResponse:
+    def post_list_participant_sessions(self, response: service.ListParticipantSessionsResponse) -> service.ListParticipantSessionsResponse:
         """Post-rpc interceptor for list_participant_sessions
 
         DEPRECATED. Please use the `post_list_participant_sessions_with_metadata`
@@ -582,12 +518,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_list_participant_sessions_with_metadata(
-        self,
-        response: service.ListParticipantSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListParticipantSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListParticipantSessionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListParticipantSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_participant_sessions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -603,9 +535,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_recordings(
-        self,
-        request: service.ListRecordingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListRecordingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListRecordingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_recordings
 
@@ -614,9 +544,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_recordings(
-        self, response: service.ListRecordingsResponse
-    ) -> service.ListRecordingsResponse:
+    def post_list_recordings(self, response: service.ListRecordingsResponse) -> service.ListRecordingsResponse:
         """Post-rpc interceptor for list_recordings
 
         DEPRECATED. Please use the `post_list_recordings_with_metadata`
@@ -630,9 +558,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_list_recordings_with_metadata(
-        self,
-        response: service.ListRecordingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListRecordingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListRecordingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_recordings
 
@@ -649,12 +575,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_transcript_entries(
-        self,
-        request: service.ListTranscriptEntriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListTranscriptEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListTranscriptEntriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListTranscriptEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_transcript_entries
 
         Override in a subclass to manipulate the request or metadata
@@ -662,9 +584,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_transcript_entries(
-        self, response: service.ListTranscriptEntriesResponse
-    ) -> service.ListTranscriptEntriesResponse:
+    def post_list_transcript_entries(self, response: service.ListTranscriptEntriesResponse) -> service.ListTranscriptEntriesResponse:
         """Post-rpc interceptor for list_transcript_entries
 
         DEPRECATED. Please use the `post_list_transcript_entries_with_metadata`
@@ -678,12 +598,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_list_transcript_entries_with_metadata(
-        self,
-        response: service.ListTranscriptEntriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListTranscriptEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListTranscriptEntriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListTranscriptEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_transcript_entries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -699,9 +615,7 @@ class ConferenceRecordsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_transcripts(
-        self,
-        request: service.ListTranscriptsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListTranscriptsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListTranscriptsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_transcripts
 
@@ -710,9 +624,7 @@ class ConferenceRecordsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_transcripts(
-        self, response: service.ListTranscriptsResponse
-    ) -> service.ListTranscriptsResponse:
+    def post_list_transcripts(self, response: service.ListTranscriptsResponse) -> service.ListTranscriptsResponse:
         """Post-rpc interceptor for list_transcripts
 
         DEPRECATED. Please use the `post_list_transcripts_with_metadata`
@@ -726,12 +638,8 @@ class ConferenceRecordsServiceRestInterceptor:
         return response
 
     def post_list_transcripts_with_metadata(
-        self,
-        response: service.ListTranscriptsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListTranscriptsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListTranscriptsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListTranscriptsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_transcripts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -826,31 +734,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ConferenceRecordsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetConferenceRecord(
-        _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _GetConferenceRecord(_BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.GetConferenceRecord")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -891,28 +786,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_conference_record(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_conference_record(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetConferenceRecord._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -936,12 +819,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             # Send the request
             response = ConferenceRecordsServiceRestTransport._GetConferenceRecord._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -957,12 +835,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_get_conference_record(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_conference_record_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_conference_record_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.ConferenceRecord.to_json(response)
                 except:
@@ -983,23 +857,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _GetParticipant(
-        _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _GetParticipant(_BaseConferenceRecordsServiceRestTransport._BaseGetParticipant, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.GetParticipant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1040,26 +903,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_participant(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1082,15 +935,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._GetParticipant._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._GetParticipant._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1106,12 +952,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_get_participant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_participant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_participant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Participant.to_json(response)
                 except:
@@ -1132,23 +974,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _GetParticipantSession(
-        _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _GetParticipantSession(_BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.GetParticipantSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1196,28 +1027,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_participant_session(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_participant_session(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetParticipantSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1241,12 +1060,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             # Send the request
             response = ConferenceRecordsServiceRestTransport._GetParticipantSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1262,12 +1076,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_get_participant_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_participant_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_participant_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.ParticipantSession.to_json(response)
                 except:
@@ -1288,23 +1098,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _GetRecording(
-        _BaseConferenceRecordsServiceRestTransport._BaseGetRecording,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _GetRecording(_BaseConferenceRecordsServiceRestTransport._BaseGetRecording, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.GetRecording")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1346,26 +1145,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_http_options()
 
             request, metadata = self._interceptor.pre_get_recording(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetRecording._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1388,15 +1177,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._GetRecording._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._GetRecording._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1412,12 +1194,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_get_recording(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_recording_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_recording_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Recording.to_json(response)
                 except:
@@ -1438,23 +1216,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _GetTranscript(
-        _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _GetTranscript(_BaseConferenceRecordsServiceRestTransport._BaseGetTranscript, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.GetTranscript")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1497,26 +1264,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_http_options()
 
             request, metadata = self._interceptor.pre_get_transcript(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscript._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1539,15 +1296,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._GetTranscript._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._GetTranscript._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1563,12 +1313,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_get_transcript(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_transcript_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_transcript_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.Transcript.to_json(response)
                 except:
@@ -1589,23 +1335,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _GetTranscriptEntry(
-        _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _GetTranscriptEntry(_BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.GetTranscriptEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1647,28 +1382,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_transcript_entry(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_transcript_entry(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseGetTranscriptEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1691,15 +1414,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._GetTranscriptEntry._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._GetTranscriptEntry._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1715,12 +1431,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_get_transcript_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_transcript_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_transcript_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resource.TranscriptEntry.to_json(response)
                 except:
@@ -1741,23 +1453,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _ListConferenceRecords(
-        _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _ListConferenceRecords(_BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.ListConferenceRecords")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1799,28 +1500,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_conference_records(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_conference_records(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListConferenceRecords._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1844,12 +1533,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             # Send the request
             response = ConferenceRecordsServiceRestTransport._ListConferenceRecords._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1865,16 +1549,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_list_conference_records(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_conference_records_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_conference_records_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListConferenceRecordsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListConferenceRecordsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1893,23 +1571,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _ListParticipants(
-        _BaseConferenceRecordsServiceRestTransport._BaseListParticipants,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _ListParticipants(_BaseConferenceRecordsServiceRestTransport._BaseListParticipants, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.ListParticipants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1949,28 +1616,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     Response of ListParticipants method.
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_participants(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_participants(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1993,15 +1648,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._ListParticipants._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._ListParticipants._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2017,16 +1665,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_list_participants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_participants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_participants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListParticipantsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListParticipantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2045,23 +1687,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _ListParticipantSessions(
-        _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _ListParticipantSessions(_BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.ListParticipantSessions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2102,28 +1733,18 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     Response of ListParticipants method.
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_participant_sessions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_participant_sessions(request, metadata)
             transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListParticipantSessions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2147,12 +1768,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             # Send the request
             response = ConferenceRecordsServiceRestTransport._ListParticipantSessions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2168,16 +1784,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_list_participant_sessions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_participant_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_participant_sessions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListParticipantSessionsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListParticipantSessionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2196,23 +1806,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _ListRecordings(
-        _BaseConferenceRecordsServiceRestTransport._BaseListRecordings,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _ListRecordings(_BaseConferenceRecordsServiceRestTransport._BaseListRecordings, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.ListRecordings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2251,26 +1850,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     Response for ListRecordings method.
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_recordings(request, metadata)
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListRecordings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2293,15 +1882,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._ListRecordings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._ListRecordings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2317,12 +1899,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_list_recordings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_recordings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_recordings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListRecordingsResponse.to_json(response)
                 except:
@@ -2343,23 +1921,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _ListTranscriptEntries(
-        _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _ListTranscriptEntries(_BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.ListTranscriptEntries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2401,28 +1968,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_transcript_entries(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_transcript_entries(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscriptEntries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2446,12 +2001,7 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             # Send the request
             response = ConferenceRecordsServiceRestTransport._ListTranscriptEntries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2467,16 +2017,10 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_list_transcript_entries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_transcript_entries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_transcript_entries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListTranscriptEntriesResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListTranscriptEntriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2495,23 +2039,12 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
             return resp
 
-    class _ListTranscripts(
-        _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts,
-        ConferenceRecordsServiceRestStub,
-    ):
+    class _ListTranscripts(_BaseConferenceRecordsServiceRestTransport._BaseListTranscripts, ConferenceRecordsServiceRestStub):
         def __hash__(self):
             return hash("ConferenceRecordsServiceRestTransport.ListTranscripts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2550,28 +2083,16 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                     Response for ListTranscripts method.
             """
 
-            http_options = (
-                _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_http_options()
-            )
+            http_options = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_transcripts(
-                request, metadata
-            )
-            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_transcripts(request, metadata)
+            transcoded_request = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConferenceRecordsServiceRestTransport._BaseListTranscripts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2594,15 +2115,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
                 )
 
             # Send the request
-            response = (
-                ConferenceRecordsServiceRestTransport._ListTranscripts._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConferenceRecordsServiceRestTransport._ListTranscripts._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2618,12 +2132,8 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
 
             resp = self._interceptor.post_list_transcripts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_transcripts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_transcripts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListTranscriptsResponse.to_json(response)
                 except:
@@ -2645,104 +2155,73 @@ class ConferenceRecordsServiceRestTransport(_BaseConferenceRecordsServiceRestTra
             return resp
 
     @property
-    def get_conference_record(
-        self,
-    ) -> Callable[[service.GetConferenceRecordRequest], resource.ConferenceRecord]:
+    def get_conference_record(self) -> Callable[[service.GetConferenceRecordRequest], resource.ConferenceRecord]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConferenceRecord(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_participant(
-        self,
-    ) -> Callable[[service.GetParticipantRequest], resource.Participant]:
+    def get_participant(self) -> Callable[[service.GetParticipantRequest], resource.Participant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetParticipant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_participant_session(
-        self,
-    ) -> Callable[[service.GetParticipantSessionRequest], resource.ParticipantSession]:
+    def get_participant_session(self) -> Callable[[service.GetParticipantSessionRequest], resource.ParticipantSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetParticipantSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_recording(
-        self,
-    ) -> Callable[[service.GetRecordingRequest], resource.Recording]:
+    def get_recording(self) -> Callable[[service.GetRecordingRequest], resource.Recording]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRecording(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_transcript(
-        self,
-    ) -> Callable[[service.GetTranscriptRequest], resource.Transcript]:
+    def get_transcript(self) -> Callable[[service.GetTranscriptRequest], resource.Transcript]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTranscript(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_transcript_entry(
-        self,
-    ) -> Callable[[service.GetTranscriptEntryRequest], resource.TranscriptEntry]:
+    def get_transcript_entry(self) -> Callable[[service.GetTranscriptEntryRequest], resource.TranscriptEntry]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTranscriptEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_conference_records(
-        self,
-    ) -> Callable[
-        [service.ListConferenceRecordsRequest], service.ListConferenceRecordsResponse
-    ]:
+    def list_conference_records(self) -> Callable[[service.ListConferenceRecordsRequest], service.ListConferenceRecordsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConferenceRecords(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_participants(
-        self,
-    ) -> Callable[[service.ListParticipantsRequest], service.ListParticipantsResponse]:
+    def list_participants(self) -> Callable[[service.ListParticipantsRequest], service.ListParticipantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListParticipants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_participant_sessions(
-        self,
-    ) -> Callable[
-        [service.ListParticipantSessionsRequest],
-        service.ListParticipantSessionsResponse,
-    ]:
+    def list_participant_sessions(self) -> Callable[[service.ListParticipantSessionsRequest], service.ListParticipantSessionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListParticipantSessions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_recordings(
-        self,
-    ) -> Callable[[service.ListRecordingsRequest], service.ListRecordingsResponse]:
+    def list_recordings(self) -> Callable[[service.ListRecordingsRequest], service.ListRecordingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRecordings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_transcript_entries(
-        self,
-    ) -> Callable[
-        [service.ListTranscriptEntriesRequest], service.ListTranscriptEntriesResponse
-    ]:
+    def list_transcript_entries(self) -> Callable[[service.ListTranscriptEntriesRequest], service.ListTranscriptEntriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTranscriptEntries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_transcripts(
-        self,
-    ) -> Callable[[service.ListTranscriptsRequest], service.ListTranscriptsResponse]:
+    def list_transcripts(self) -> Callable[[service.ListTranscriptsRequest], service.ListTranscriptsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTranscripts(self._session, self._host, self._interceptor)  # type: ignore

@@ -35,23 +35,11 @@ from .ingestion_service import (
 )
 from .item_parameter import ItemParameter
 from .match_rate import MatchRateRange
-from .processing_errors import (
-    ErrorCount,
-    ErrorInfo,
-    ProcessingErrorReason,
-    ProcessingWarningReason,
-    WarningCount,
-    WarningInfo,
-)
+from .processing_errors import ErrorCount, ErrorInfo, ProcessingErrorReason, ProcessingWarningReason, WarningCount, WarningInfo
 from .request_status_per_destination import RequestStatusPerDestination
 from .terms_of_service import TermsOfService, TermsOfServiceStatus
 from .user_data import AddressInfo, UserData, UserIdentifier
-from .user_properties import (
-    CustomerType,
-    CustomerValueBucket,
-    UserProperties,
-    UserProperty,
-)
+from .user_properties import CustomerType, CustomerValueBucket, UserProperties, UserProperty
 
 __all__ = (
     "AudienceMember",

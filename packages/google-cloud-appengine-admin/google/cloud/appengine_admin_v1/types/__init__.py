@@ -77,12 +77,7 @@ from .appengine import (
 )
 from .application import Application, UrlDispatchRule
 from .audit_data import AuditData, CreateVersionMethod, UpdateServiceMethod
-from .certificate import (
-    AuthorizedCertificate,
-    CertificateRawData,
-    ManagedCertificate,
-    ManagementStatus,
-)
+from .certificate import AuthorizedCertificate, CertificateRawData, ManagedCertificate, ManagementStatus
 from .deploy import CloudBuildOptions, ContainerInfo, Deployment, FileInfo, ZipInfo
 from .domain import AuthorizedDomain
 from .domain_mapping import DomainMapping, ResourceRecord, SslSettings

@@ -51,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -89,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -276,18 +265,14 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -323,9 +308,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -348,20 +331,13 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def process_document(
-        self,
-    ) -> Callable[
-        [document_processor_service.ProcessRequest],
-        Awaitable[document_processor_service.ProcessResponse],
-    ]:
+    def process_document(self) -> Callable[[document_processor_service.ProcessRequest], Awaitable[document_processor_service.ProcessResponse]]:
         r"""Return a callable for the process document method over gRPC.
 
         Processes a single document.
@@ -385,12 +361,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["process_document"]
 
     @property
-    def batch_process_documents(
-        self,
-    ) -> Callable[
-        [document_processor_service.BatchProcessRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def batch_process_documents(self) -> Callable[[document_processor_service.BatchProcessRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch process documents method over gRPC.
 
         LRO endpoint to batch process many documents. The output is
@@ -417,10 +388,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def fetch_processor_types(
         self,
-    ) -> Callable[
-        [document_processor_service.FetchProcessorTypesRequest],
-        Awaitable[document_processor_service.FetchProcessorTypesResponse],
-    ]:
+    ) -> Callable[[document_processor_service.FetchProcessorTypesRequest], Awaitable[document_processor_service.FetchProcessorTypesResponse]]:
         r"""Return a callable for the fetch processor types method over gRPC.
 
         Fetches processor types. Note that we don't use
@@ -448,10 +416,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def list_processor_types(
         self,
-    ) -> Callable[
-        [document_processor_service.ListProcessorTypesRequest],
-        Awaitable[document_processor_service.ListProcessorTypesResponse],
-    ]:
+    ) -> Callable[[document_processor_service.ListProcessorTypesRequest], Awaitable[document_processor_service.ListProcessorTypesResponse]]:
         r"""Return a callable for the list processor types method over gRPC.
 
         Lists the processor types that exist.
@@ -475,12 +440,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["list_processor_types"]
 
     @property
-    def get_processor_type(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorTypeRequest],
-        Awaitable[processor_type.ProcessorType],
-    ]:
+    def get_processor_type(self) -> Callable[[document_processor_service.GetProcessorTypeRequest], Awaitable[processor_type.ProcessorType]]:
         r"""Return a callable for the get processor type method over gRPC.
 
         Gets a processor type detail.
@@ -506,10 +466,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def list_processors(
         self,
-    ) -> Callable[
-        [document_processor_service.ListProcessorsRequest],
-        Awaitable[document_processor_service.ListProcessorsResponse],
-    ]:
+    ) -> Callable[[document_processor_service.ListProcessorsRequest], Awaitable[document_processor_service.ListProcessorsResponse]]:
         r"""Return a callable for the list processors method over gRPC.
 
         Lists all processors which belong to this project.
@@ -533,11 +490,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["list_processors"]
 
     @property
-    def get_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorRequest], Awaitable[processor.Processor]
-    ]:
+    def get_processor(self) -> Callable[[document_processor_service.GetProcessorRequest], Awaitable[processor.Processor]]:
         r"""Return a callable for the get processor method over gRPC.
 
         Gets a processor detail.
@@ -561,12 +514,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["get_processor"]
 
     @property
-    def train_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.TrainProcessorVersionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def train_processor_version(self) -> Callable[[document_processor_service.TrainProcessorVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the train processor version method over gRPC.
 
         Trains a new processor version. Operation metadata is returned
@@ -592,12 +540,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["train_processor_version"]
 
     @property
-    def get_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetProcessorVersionRequest],
-        Awaitable[processor.ProcessorVersion],
-    ]:
+    def get_processor_version(self) -> Callable[[document_processor_service.GetProcessorVersionRequest], Awaitable[processor.ProcessorVersion]]:
         r"""Return a callable for the get processor version method over gRPC.
 
         Gets a processor version detail.
@@ -623,10 +566,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def list_processor_versions(
         self,
-    ) -> Callable[
-        [document_processor_service.ListProcessorVersionsRequest],
-        Awaitable[document_processor_service.ListProcessorVersionsResponse],
-    ]:
+    ) -> Callable[[document_processor_service.ListProcessorVersionsRequest], Awaitable[document_processor_service.ListProcessorVersionsResponse]]:
         r"""Return a callable for the list processor versions method over gRPC.
 
         Lists all versions of a processor.
@@ -650,12 +590,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["list_processor_versions"]
 
     @property
-    def delete_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.DeleteProcessorVersionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_processor_version(self) -> Callable[[document_processor_service.DeleteProcessorVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete processor version method over gRPC.
 
         Deletes the processor version, all artifacts under
@@ -680,12 +615,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["delete_processor_version"]
 
     @property
-    def deploy_processor_version(
-        self,
-    ) -> Callable[
-        [document_processor_service.DeployProcessorVersionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def deploy_processor_version(self) -> Callable[[document_processor_service.DeployProcessorVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the deploy processor version method over gRPC.
 
         Deploys the processor version.
@@ -711,10 +641,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def undeploy_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.UndeployProcessorVersionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[document_processor_service.UndeployProcessorVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the undeploy processor version method over gRPC.
 
         Undeploys the processor version.
@@ -730,9 +657,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undeploy_processor_version" not in self._stubs:
-            self._stubs[
-                "undeploy_processor_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["undeploy_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1.DocumentProcessorService/UndeployProcessorVersion",
                 request_serializer=document_processor_service.UndeployProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -740,12 +665,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["undeploy_processor_version"]
 
     @property
-    def create_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.CreateProcessorRequest],
-        Awaitable[gcd_processor.Processor],
-    ]:
+    def create_processor(self) -> Callable[[document_processor_service.CreateProcessorRequest], Awaitable[gcd_processor.Processor]]:
         r"""Return a callable for the create processor method over gRPC.
 
         Creates a processor from the
@@ -776,12 +696,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["create_processor"]
 
     @property
-    def delete_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.DeleteProcessorRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_processor(self) -> Callable[[document_processor_service.DeleteProcessorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete processor method over gRPC.
 
         Deletes the processor, unloads all deployed model
@@ -807,12 +722,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["delete_processor"]
 
     @property
-    def enable_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.EnableProcessorRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def enable_processor(self) -> Callable[[document_processor_service.EnableProcessorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the enable processor method over gRPC.
 
         Enables a processor
@@ -836,12 +746,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["enable_processor"]
 
     @property
-    def disable_processor(
-        self,
-    ) -> Callable[
-        [document_processor_service.DisableProcessorRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def disable_processor(self) -> Callable[[document_processor_service.DisableProcessorRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the disable processor method over gRPC.
 
         Disables a processor
@@ -867,10 +772,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def set_default_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.SetDefaultProcessorVersionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[document_processor_service.SetDefaultProcessorVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the set default processor version method over gRPC.
 
         Set the default (active) version of a
@@ -891,9 +793,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_default_processor_version" not in self._stubs:
-            self._stubs[
-                "set_default_processor_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["set_default_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1.DocumentProcessorService/SetDefaultProcessorVersion",
                 request_serializer=document_processor_service.SetDefaultProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -901,12 +801,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["set_default_processor_version"]
 
     @property
-    def review_document(
-        self,
-    ) -> Callable[
-        [document_processor_service.ReviewDocumentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def review_document(self) -> Callable[[document_processor_service.ReviewDocumentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the review document method over gRPC.
 
         Send a document for Human Review. The input document
@@ -933,10 +828,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def evaluate_processor_version(
         self,
-    ) -> Callable[
-        [document_processor_service.EvaluateProcessorVersionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[document_processor_service.EvaluateProcessorVersionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the evaluate processor version method over gRPC.
 
         Evaluates a ProcessorVersion against annotated
@@ -953,9 +845,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "evaluate_processor_version" not in self._stubs:
-            self._stubs[
-                "evaluate_processor_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["evaluate_processor_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.documentai.v1.DocumentProcessorService/EvaluateProcessorVersion",
                 request_serializer=document_processor_service.EvaluateProcessorVersionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -963,12 +853,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
         return self._stubs["evaluate_processor_version"]
 
     @property
-    def get_evaluation(
-        self,
-    ) -> Callable[
-        [document_processor_service.GetEvaluationRequest],
-        Awaitable[evaluation.Evaluation],
-    ]:
+    def get_evaluation(self) -> Callable[[document_processor_service.GetEvaluationRequest], Awaitable[evaluation.Evaluation]]:
         r"""Return a callable for the get evaluation method over gRPC.
 
         Retrieves a specific evaluation.
@@ -994,10 +879,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def list_evaluations(
         self,
-    ) -> Callable[
-        [document_processor_service.ListEvaluationsRequest],
-        Awaitable[document_processor_service.ListEvaluationsResponse],
-    ]:
+    ) -> Callable[[document_processor_service.ListEvaluationsRequest], Awaitable[document_processor_service.ListEvaluationsResponse]]:
         r"""Return a callable for the list evaluations method over gRPC.
 
         Retrieves a set of evaluations for a given processor
@@ -1241,9 +1123,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1260,9 +1140,7 @@ class DocumentProcessorServiceGrpcAsyncIOTransport(DocumentProcessorServiceTrans
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

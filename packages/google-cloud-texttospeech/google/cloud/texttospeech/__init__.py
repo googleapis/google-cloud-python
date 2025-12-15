@@ -18,18 +18,10 @@ from google.cloud.texttospeech import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.texttospeech_v1.services.text_to_speech.async_client import (
-    TextToSpeechAsyncClient,
-)
-from google.cloud.texttospeech_v1.services.text_to_speech.client import (
-    TextToSpeechClient,
-)
-from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.async_client import (
-    TextToSpeechLongAudioSynthesizeAsyncClient,
-)
-from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.client import (
-    TextToSpeechLongAudioSynthesizeClient,
-)
+from google.cloud.texttospeech_v1.services.text_to_speech.async_client import TextToSpeechAsyncClient
+from google.cloud.texttospeech_v1.services.text_to_speech.client import TextToSpeechClient
+from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.async_client import TextToSpeechLongAudioSynthesizeAsyncClient
+from google.cloud.texttospeech_v1.services.text_to_speech_long_audio_synthesize.client import TextToSpeechLongAudioSynthesizeClient
 from google.cloud.texttospeech_v1.types.cloud_tts import (
     AdvancedVoiceOptions,
     AudioConfig,
@@ -55,11 +47,7 @@ from google.cloud.texttospeech_v1.types.cloud_tts import (
     VoiceCloneParams,
     VoiceSelectionParams,
 )
-from google.cloud.texttospeech_v1.types.cloud_tts_lrs import (
-    SynthesizeLongAudioMetadata,
-    SynthesizeLongAudioRequest,
-    SynthesizeLongAudioResponse,
-)
+from google.cloud.texttospeech_v1.types.cloud_tts_lrs import SynthesizeLongAudioMetadata, SynthesizeLongAudioRequest, SynthesizeLongAudioResponse
 
 __all__ = (
     "TextToSpeechClient",

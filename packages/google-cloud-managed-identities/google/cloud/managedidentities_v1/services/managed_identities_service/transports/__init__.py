@@ -21,9 +21,7 @@ from .grpc import ManagedIdentitiesServiceGrpcTransport
 from .grpc_asyncio import ManagedIdentitiesServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ManagedIdentitiesServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ManagedIdentitiesServiceTransport]]
 _transport_registry["grpc"] = ManagedIdentitiesServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = ManagedIdentitiesServiceGrpcAsyncIOTransport
 

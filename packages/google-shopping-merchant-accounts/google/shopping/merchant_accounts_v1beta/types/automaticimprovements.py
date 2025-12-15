@@ -289,13 +289,11 @@ class AutomaticImageImprovements(proto.Message):
             optional=True,
         )
 
-    account_image_improvements_settings: ImageImprovementsAccountLevelSettings = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            optional=True,
-            message=ImageImprovementsAccountLevelSettings,
-        )
+    account_image_improvements_settings: ImageImprovementsAccountLevelSettings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        optional=True,
+        message=ImageImprovementsAccountLevelSettings,
     )
     effective_allow_automatic_image_improvements: bool = proto.Field(
         proto.BOOL,

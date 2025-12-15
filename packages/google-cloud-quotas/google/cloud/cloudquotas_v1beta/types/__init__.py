@@ -23,21 +23,8 @@ from .cloudquotas import (
     ListQuotaPreferencesResponse,
     UpdateQuotaPreferenceRequest,
 )
-from .quota_adjuster_settings import (
-    GetQuotaAdjusterSettingsRequest,
-    QuotaAdjusterSettings,
-    UpdateQuotaAdjusterSettingsRequest,
-)
-from .resources import (
-    DimensionsInfo,
-    QuotaConfig,
-    QuotaDetails,
-    QuotaIncreaseEligibility,
-    QuotaInfo,
-    QuotaPreference,
-    QuotaSafetyCheck,
-    RolloutInfo,
-)
+from .quota_adjuster_settings import GetQuotaAdjusterSettingsRequest, QuotaAdjusterSettings, UpdateQuotaAdjusterSettingsRequest
+from .resources import DimensionsInfo, QuotaConfig, QuotaDetails, QuotaIncreaseEligibility, QuotaInfo, QuotaPreference, QuotaSafetyCheck, RolloutInfo
 
 __all__ = (
     "CreateQuotaPreferenceRequest",

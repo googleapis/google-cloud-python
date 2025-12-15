@@ -29,9 +29,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.services import zone_operations
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class ReservationsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -208,104 +198,50 @@ class ReservationsTransport(abc.ABC):
     def aggregated_list(
         self,
     ) -> Callable[
-        [compute.AggregatedListReservationsRequest],
-        Union[
-            compute.ReservationAggregatedList,
-            Awaitable[compute.ReservationAggregatedList],
-        ],
+        [compute.AggregatedListReservationsRequest], Union[compute.ReservationAggregatedList, Awaitable[compute.ReservationAggregatedList]]
     ]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteReservationRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteReservationRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetReservationRequest],
-        Union[compute.Reservation, Awaitable[compute.Reservation]],
-    ]:
+    def get(self) -> Callable[[compute.GetReservationRequest], Union[compute.Reservation, Awaitable[compute.Reservation]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.GetIamPolicyReservationRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyReservationRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertReservationRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertReservationRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListReservationsRequest],
-        Union[compute.ReservationList, Awaitable[compute.ReservationList]],
-    ]:
+    def list(self) -> Callable[[compute.ListReservationsRequest], Union[compute.ReservationList, Awaitable[compute.ReservationList]]]:
         raise NotImplementedError()
 
     @property
-    def perform_maintenance(
-        self,
-    ) -> Callable[
-        [compute.PerformMaintenanceReservationRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def perform_maintenance(self) -> Callable[[compute.PerformMaintenanceReservationRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def resize(
-        self,
-    ) -> Callable[
-        [compute.ResizeReservationRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def resize(self) -> Callable[[compute.ResizeReservationRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.SetIamPolicyReservationRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyReservationRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [compute.TestIamPermissionsReservationRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
-    ]:
+    ) -> Callable[[compute.TestIamPermissionsReservationRequest], Union[compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateReservationRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateReservationRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

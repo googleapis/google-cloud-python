@@ -54,14 +54,7 @@ from .discuss_service import (
     MessagePrompt,
 )
 from .file import File, VideoMetadata
-from .file_service import (
-    CreateFileRequest,
-    CreateFileResponse,
-    DeleteFileRequest,
-    GetFileRequest,
-    ListFilesRequest,
-    ListFilesResponse,
-)
+from .file_service import CreateFileRequest, CreateFileResponse, DeleteFileRequest, GetFileRequest, ListFilesRequest, ListFilesResponse
 from .generative_service import (
     AttributionSourceId,
     BatchEmbedContentsRequest,
@@ -126,16 +119,7 @@ from .permission_service import (
     UpdatePermissionRequest,
 )
 from .prediction_service import PredictRequest, PredictResponse
-from .retriever import (
-    Chunk,
-    ChunkData,
-    Condition,
-    Corpus,
-    CustomMetadata,
-    Document,
-    MetadataFilter,
-    StringList,
-)
+from .retriever import Chunk, ChunkData, Condition, Corpus, CustomMetadata, Document, MetadataFilter, StringList
 from .retriever_service import (
     BatchCreateChunksRequest,
     BatchCreateChunksResponse,
@@ -166,13 +150,7 @@ from .retriever_service import (
     UpdateCorpusRequest,
     UpdateDocumentRequest,
 )
-from .safety import (
-    ContentFilter,
-    HarmCategory,
-    SafetyFeedback,
-    SafetyRating,
-    SafetySetting,
-)
+from .safety import ContentFilter, HarmCategory, SafetyFeedback, SafetyRating, SafetySetting
 from .text_service import (
     BatchEmbedTextRequest,
     BatchEmbedTextResponse,

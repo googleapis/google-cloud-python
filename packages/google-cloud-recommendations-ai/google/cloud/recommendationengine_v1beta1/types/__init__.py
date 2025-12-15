@@ -44,14 +44,7 @@ from .prediction_apikey_registry_service import (
     PredictionApiKeyRegistration,
 )
 from .prediction_service import PredictRequest, PredictResponse
-from .user_event import (
-    EventDetail,
-    ProductDetail,
-    ProductEventDetail,
-    PurchaseTransaction,
-    UserEvent,
-    UserInfo,
-)
+from .user_event import EventDetail, ProductDetail, ProductEventDetail, PurchaseTransaction, UserEvent, UserInfo
 from .user_event_service import (
     CollectUserEventRequest,
     ListUserEventsRequest,

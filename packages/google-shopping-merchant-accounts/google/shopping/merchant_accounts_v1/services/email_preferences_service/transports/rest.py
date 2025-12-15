@@ -95,13 +95,8 @@ class EmailPreferencesServiceRestInterceptor:
     """
 
     def pre_get_email_preferences(
-        self,
-        request: emailpreferences.GetEmailPreferencesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        emailpreferences.GetEmailPreferencesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: emailpreferences.GetEmailPreferencesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[emailpreferences.GetEmailPreferencesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_email_preferences
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class EmailPreferencesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_email_preferences(
-        self, response: emailpreferences.EmailPreferences
-    ) -> emailpreferences.EmailPreferences:
+    def post_get_email_preferences(self, response: emailpreferences.EmailPreferences) -> emailpreferences.EmailPreferences:
         """Post-rpc interceptor for get_email_preferences
 
         DEPRECATED. Please use the `post_get_email_preferences_with_metadata`
@@ -125,12 +118,8 @@ class EmailPreferencesServiceRestInterceptor:
         return response
 
     def post_get_email_preferences_with_metadata(
-        self,
-        response: emailpreferences.EmailPreferences,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        emailpreferences.EmailPreferences, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: emailpreferences.EmailPreferences, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[emailpreferences.EmailPreferences, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_email_preferences
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,13 +135,8 @@ class EmailPreferencesServiceRestInterceptor:
         return response, metadata
 
     def pre_update_email_preferences(
-        self,
-        request: emailpreferences.UpdateEmailPreferencesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        emailpreferences.UpdateEmailPreferencesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: emailpreferences.UpdateEmailPreferencesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[emailpreferences.UpdateEmailPreferencesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_email_preferences
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +144,7 @@ class EmailPreferencesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_email_preferences(
-        self, response: emailpreferences.EmailPreferences
-    ) -> emailpreferences.EmailPreferences:
+    def post_update_email_preferences(self, response: emailpreferences.EmailPreferences) -> emailpreferences.EmailPreferences:
         """Post-rpc interceptor for update_email_preferences
 
         DEPRECATED. Please use the `post_update_email_preferences_with_metadata`
@@ -176,12 +158,8 @@ class EmailPreferencesServiceRestInterceptor:
         return response
 
     def post_update_email_preferences_with_metadata(
-        self,
-        response: emailpreferences.EmailPreferences,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        emailpreferences.EmailPreferences, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: emailpreferences.EmailPreferences, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[emailpreferences.EmailPreferences, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_email_preferences
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -276,31 +254,18 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or EmailPreferencesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetEmailPreferences(
-        _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences,
-        EmailPreferencesServiceRestStub,
-    ):
+    class _GetEmailPreferences(_BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences, EmailPreferencesServiceRestStub):
         def __hash__(self):
             return hash("EmailPreferencesServiceRestTransport.GetEmailPreferences")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -345,28 +310,16 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences._get_http_options()
-            )
+            http_options = _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_email_preferences(
-                request, metadata
-            )
-            transcoded_request = _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_email_preferences(request, metadata)
+            transcoded_request = _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEmailPreferencesServiceRestTransport._BaseGetEmailPreferences._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -389,15 +342,8 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                EmailPreferencesServiceRestTransport._GetEmailPreferences._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EmailPreferencesServiceRestTransport._GetEmailPreferences._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -413,16 +359,10 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
 
             resp = self._interceptor.post_get_email_preferences(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_email_preferences_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_email_preferences_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = emailpreferences.EmailPreferences.to_json(
-                        response
-                    )
+                    response_payload = emailpreferences.EmailPreferences.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -441,23 +381,12 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
                 )
             return resp
 
-    class _UpdateEmailPreferences(
-        _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences,
-        EmailPreferencesServiceRestStub,
-    ):
+    class _UpdateEmailPreferences(_BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences, EmailPreferencesServiceRestStub):
         def __hash__(self):
             return hash("EmailPreferencesServiceRestTransport.UpdateEmailPreferences")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -503,32 +432,18 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_http_options()
-            )
+            http_options = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_email_preferences(
-                request, metadata
-            )
-            transcoded_request = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_email_preferences(request, metadata)
+            transcoded_request = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_transcoded_request(http_options, request)
 
-            body = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEmailPreferencesServiceRestTransport._BaseUpdateEmailPreferences._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -552,13 +467,7 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
 
             # Send the request
             response = EmailPreferencesServiceRestTransport._UpdateEmailPreferences._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -574,16 +483,10 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
 
             resp = self._interceptor.post_update_email_preferences(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_email_preferences_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_email_preferences_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = emailpreferences.EmailPreferences.to_json(
-                        response
-                    )
+                    response_payload = emailpreferences.EmailPreferences.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -603,22 +506,13 @@ class EmailPreferencesServiceRestTransport(_BaseEmailPreferencesServiceRestTrans
             return resp
 
     @property
-    def get_email_preferences(
-        self,
-    ) -> Callable[
-        [emailpreferences.GetEmailPreferencesRequest], emailpreferences.EmailPreferences
-    ]:
+    def get_email_preferences(self) -> Callable[[emailpreferences.GetEmailPreferencesRequest], emailpreferences.EmailPreferences]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEmailPreferences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_email_preferences(
-        self,
-    ) -> Callable[
-        [emailpreferences.UpdateEmailPreferencesRequest],
-        emailpreferences.EmailPreferences,
-    ]:
+    def update_email_preferences(self) -> Callable[[emailpreferences.UpdateEmailPreferencesRequest], emailpreferences.EmailPreferences]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEmailPreferences(self._session, self._host, self._interceptor)  # type: ignore

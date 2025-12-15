@@ -443,9 +443,7 @@ class Tool(proto.Message):
 
             """
 
-        data_store_connections: MutableSequence[
-            data_store_connection.DataStoreConnection
-        ] = proto.RepeatedField(
+        data_store_connections: MutableSequence[data_store_connection.DataStoreConnection] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=data_store_connection.DataStoreConnection,
@@ -594,12 +592,10 @@ class Tool(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                operation: "Tool.ConnectorTool.Action.EntityOperation.OperationType" = (
-                    proto.Field(
-                        proto.ENUM,
-                        number=2,
-                        enum="Tool.ConnectorTool.Action.EntityOperation.OperationType",
-                    )
+                operation: "Tool.ConnectorTool.Action.EntityOperation.OperationType" = proto.Field(
+                    proto.ENUM,
+                    number=2,
+                    enum="Tool.ConnectorTool.Action.EntityOperation.OperationType",
                 )
 
             connection_action_id: str = proto.Field(
@@ -767,12 +763,10 @@ class Tool(proto.Message):
                 OAUTH_GRANT_TYPE_UNSPECIFIED = 0
                 CLIENT_CREDENTIAL = 1
 
-            oauth_grant_type: "Tool.Authentication.OAuthConfig.OauthGrantType" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="Tool.Authentication.OAuthConfig.OauthGrantType",
-                )
+            oauth_grant_type: "Tool.Authentication.OAuthConfig.OauthGrantType" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Tool.Authentication.OAuthConfig.OauthGrantType",
             )
             client_id: str = proto.Field(
                 proto.STRING,
@@ -897,13 +891,11 @@ class Tool(proto.Message):
             oneof="auth_config",
             message="Tool.Authentication.OAuthConfig",
         )
-        service_agent_auth_config: "Tool.Authentication.ServiceAgentAuthConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="auth_config",
-                message="Tool.Authentication.ServiceAgentAuthConfig",
-            )
+        service_agent_auth_config: "Tool.Authentication.ServiceAgentAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="auth_config",
+            message="Tool.Authentication.ServiceAgentAuthConfig",
         )
         bearer_token_config: "Tool.Authentication.BearerTokenConfig" = proto.Field(
             proto.MESSAGE,
@@ -911,13 +903,11 @@ class Tool(proto.Message):
             oneof="auth_config",
             message="Tool.Authentication.BearerTokenConfig",
         )
-        service_account_auth_config: "Tool.Authentication.ServiceAccountAuthConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                oneof="auth_config",
-                message="Tool.Authentication.ServiceAccountAuthConfig",
-            )
+        service_account_auth_config: "Tool.Authentication.ServiceAccountAuthConfig" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="auth_config",
+            message="Tool.Authentication.ServiceAccountAuthConfig",
         )
 
     class TLSConfig(proto.Message):
@@ -1061,21 +1051,17 @@ class Tool(proto.Message):
                 number=3,
             )
 
-        oauth2_auth_code_config: "Tool.EndUserAuthConfig.Oauth2AuthCodeConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="end_user_auth_config",
-                message="Tool.EndUserAuthConfig.Oauth2AuthCodeConfig",
-            )
+        oauth2_auth_code_config: "Tool.EndUserAuthConfig.Oauth2AuthCodeConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="end_user_auth_config",
+            message="Tool.EndUserAuthConfig.Oauth2AuthCodeConfig",
         )
-        oauth2_jwt_bearer_config: "Tool.EndUserAuthConfig.Oauth2JwtBearerConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="end_user_auth_config",
-                message="Tool.EndUserAuthConfig.Oauth2JwtBearerConfig",
-            )
+        oauth2_jwt_bearer_config: "Tool.EndUserAuthConfig.Oauth2JwtBearerConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="end_user_auth_config",
+            message="Tool.EndUserAuthConfig.Oauth2JwtBearerConfig",
         )
 
     name: str = proto.Field(

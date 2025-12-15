@@ -18,12 +18,8 @@ from google.cloud.video.live_stream import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.video.live_stream_v1.services.livestream_service.async_client import (
-    LivestreamServiceAsyncClient,
-)
-from google.cloud.video.live_stream_v1.services.livestream_service.client import (
-    LivestreamServiceClient,
-)
+from google.cloud.video.live_stream_v1.services.livestream_service.async_client import LivestreamServiceAsyncClient
+from google.cloud.video.live_stream_v1.services.livestream_service.client import LivestreamServiceClient
 from google.cloud.video.live_stream_v1.types.outputs import (
     AudioStream,
     Distribution,

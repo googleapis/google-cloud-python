@@ -45,24 +45,9 @@ from .audio_config import (
     TextToSpeechSettings,
     VoiceSelectionParams,
 )
-from .changelog import (
-    Changelog,
-    GetChangelogRequest,
-    ListChangelogsRequest,
-    ListChangelogsResponse,
-)
-from .data_store_connection import (
-    DataStoreConnection,
-    DataStoreConnectionSignals,
-    DataStoreType,
-    DocumentProcessingMode,
-)
-from .deployment import (
-    Deployment,
-    GetDeploymentRequest,
-    ListDeploymentsRequest,
-    ListDeploymentsResponse,
-)
+from .changelog import Changelog, GetChangelogRequest, ListChangelogsRequest, ListChangelogsResponse
+from .data_store_connection import DataStoreConnection, DataStoreConnectionSignals, DataStoreType, DocumentProcessingMode
+from .deployment import Deployment, GetDeploymentRequest, ListDeploymentsRequest, ListDeploymentsResponse
 from .entity_type import (
     CreateEntityTypeRequest,
     DeleteEntityTypeRequest,

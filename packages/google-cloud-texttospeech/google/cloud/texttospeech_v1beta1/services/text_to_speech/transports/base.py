@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.texttospeech_v1beta1 import gapic_version as package_version
 from google.cloud.texttospeech_v1beta1.types import cloud_tts
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class TextToSpeechTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -171,35 +161,20 @@ class TextToSpeechTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_voices(
-        self,
-    ) -> Callable[
-        [cloud_tts.ListVoicesRequest],
-        Union[cloud_tts.ListVoicesResponse, Awaitable[cloud_tts.ListVoicesResponse]],
-    ]:
+    def list_voices(self) -> Callable[[cloud_tts.ListVoicesRequest], Union[cloud_tts.ListVoicesResponse, Awaitable[cloud_tts.ListVoicesResponse]]]:
         raise NotImplementedError()
 
     @property
     def synthesize_speech(
         self,
-    ) -> Callable[
-        [cloud_tts.SynthesizeSpeechRequest],
-        Union[
-            cloud_tts.SynthesizeSpeechResponse,
-            Awaitable[cloud_tts.SynthesizeSpeechResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_tts.SynthesizeSpeechRequest], Union[cloud_tts.SynthesizeSpeechResponse, Awaitable[cloud_tts.SynthesizeSpeechResponse]]]:
         raise NotImplementedError()
 
     @property
     def streaming_synthesize(
         self,
     ) -> Callable[
-        [cloud_tts.StreamingSynthesizeRequest],
-        Union[
-            cloud_tts.StreamingSynthesizeResponse,
-            Awaitable[cloud_tts.StreamingSynthesizeResponse],
-        ],
+        [cloud_tts.StreamingSynthesizeRequest], Union[cloud_tts.StreamingSynthesizeResponse, Awaitable[cloud_tts.StreamingSynthesizeResponse]]
     ]:
         raise NotImplementedError()
 
@@ -208,20 +183,14 @@ class TextToSpeechTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

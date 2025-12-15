@@ -139,9 +139,7 @@ class ListPrivateAuctionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_auctions: MutableSequence[
-        private_auction_messages.PrivateAuction
-    ] = proto.RepeatedField(
+    private_auctions: MutableSequence[private_auction_messages.PrivateAuction] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=private_auction_messages.PrivateAuction,

@@ -22,9 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.geminidataanalytics_v1alpha.types import context as gcg_context
-from google.cloud.geminidataanalytics_v1alpha.types import (
-    credentials as gcg_credentials,
-)
+from google.cloud.geminidataanalytics_v1alpha.types import credentials as gcg_credentials
 from google.cloud.geminidataanalytics_v1alpha.types import datasource
 
 __protobuf__ = proto.module(

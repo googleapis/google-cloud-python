@@ -67,14 +67,7 @@ from .jobs import (
     TransformSummary,
     UpdateJobRequest,
 )
-from .messages import (
-    AutoscalingEvent,
-    JobMessage,
-    JobMessageImportance,
-    ListJobMessagesRequest,
-    ListJobMessagesResponse,
-    StructuredMessage,
-)
+from .messages import AutoscalingEvent, JobMessage, JobMessageImportance, ListJobMessagesRequest, ListJobMessagesResponse, StructuredMessage
 from .metrics import (
     ExecutionState,
     GetJobExecutionDetailsRequest,

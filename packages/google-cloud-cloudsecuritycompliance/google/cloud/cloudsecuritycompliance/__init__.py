@@ -18,32 +18,16 @@ from google.cloud.cloudsecuritycompliance import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from google.cloud.cloudsecuritycompliance_v1.services.audit.async_client import (
-    AuditAsyncClient,
-)
+from google.cloud.cloudsecuritycompliance_v1.services.audit.async_client import AuditAsyncClient
 from google.cloud.cloudsecuritycompliance_v1.services.audit.client import AuditClient
-from google.cloud.cloudsecuritycompliance_v1.services.cm_enrollment_service.async_client import (
-    CmEnrollmentServiceAsyncClient,
-)
-from google.cloud.cloudsecuritycompliance_v1.services.cm_enrollment_service.client import (
-    CmEnrollmentServiceClient,
-)
-from google.cloud.cloudsecuritycompliance_v1.services.config.async_client import (
-    ConfigAsyncClient,
-)
+from google.cloud.cloudsecuritycompliance_v1.services.cm_enrollment_service.async_client import CmEnrollmentServiceAsyncClient
+from google.cloud.cloudsecuritycompliance_v1.services.cm_enrollment_service.client import CmEnrollmentServiceClient
+from google.cloud.cloudsecuritycompliance_v1.services.config.async_client import ConfigAsyncClient
 from google.cloud.cloudsecuritycompliance_v1.services.config.client import ConfigClient
-from google.cloud.cloudsecuritycompliance_v1.services.deployment.async_client import (
-    DeploymentAsyncClient,
-)
-from google.cloud.cloudsecuritycompliance_v1.services.deployment.client import (
-    DeploymentClient,
-)
-from google.cloud.cloudsecuritycompliance_v1.services.monitoring.async_client import (
-    MonitoringAsyncClient,
-)
-from google.cloud.cloudsecuritycompliance_v1.services.monitoring.client import (
-    MonitoringClient,
-)
+from google.cloud.cloudsecuritycompliance_v1.services.deployment.async_client import DeploymentAsyncClient
+from google.cloud.cloudsecuritycompliance_v1.services.deployment.client import DeploymentClient
+from google.cloud.cloudsecuritycompliance_v1.services.monitoring.async_client import MonitoringAsyncClient
+from google.cloud.cloudsecuritycompliance_v1.services.monitoring.client import MonitoringClient
 from google.cloud.cloudsecuritycompliance_v1.types.audit import (
     BucketDestination,
     CloudControlAuditDetails,

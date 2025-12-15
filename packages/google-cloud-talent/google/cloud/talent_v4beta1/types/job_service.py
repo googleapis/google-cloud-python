@@ -869,12 +869,10 @@ class SearchJobsRequest(proto.Message):
             HIGH = 5
             EXTREME = 6
 
-        importance_level: "SearchJobsRequest.CustomRankingInfo.ImportanceLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="SearchJobsRequest.CustomRankingInfo.ImportanceLevel",
-            )
+        importance_level: "SearchJobsRequest.CustomRankingInfo.ImportanceLevel" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="SearchJobsRequest.CustomRankingInfo.ImportanceLevel",
         )
         ranking_expression: str = proto.Field(
             proto.STRING,
@@ -1096,9 +1094,7 @@ class SearchJobsResponse(proto.Message):
         number=1,
         message=MatchingJob,
     )
-    histogram_query_results: MutableSequence[
-        histogram.HistogramQueryResult
-    ] = proto.RepeatedField(
+    histogram_query_results: MutableSequence[histogram.HistogramQueryResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=histogram.HistogramQueryResult,

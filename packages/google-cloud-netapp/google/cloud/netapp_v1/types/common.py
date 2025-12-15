@@ -162,9 +162,7 @@ class LocationMetadata(proto.Message):
         number=1,
         enum="ServiceLevel",
     )
-    supported_flex_performance: MutableSequence[
-        "FlexPerformance"
-    ] = proto.RepeatedField(
+    supported_flex_performance: MutableSequence["FlexPerformance"] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum="FlexPerformance",

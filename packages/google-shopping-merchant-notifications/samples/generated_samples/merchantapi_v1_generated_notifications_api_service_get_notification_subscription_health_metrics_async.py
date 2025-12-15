@@ -44,9 +44,7 @@ async def sample_get_notification_subscription_health_metrics():
     )
 
     # Make the request
-    response = await client.get_notification_subscription_health_metrics(
-        request=request
-    )
+    response = await client.get_notification_subscription_health_metrics(request=request)
 
     # Handle the response
     print(response)

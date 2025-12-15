@@ -317,15 +317,7 @@ from .sip_trunk import (
     SipTrunk,
     UpdateSipTrunkRequest,
 )
-from .tool import (
-    CreateToolRequest,
-    DeleteToolRequest,
-    GetToolRequest,
-    ListToolsRequest,
-    ListToolsResponse,
-    Tool,
-    UpdateToolRequest,
-)
+from .tool import CreateToolRequest, DeleteToolRequest, GetToolRequest, ListToolsRequest, ListToolsResponse, Tool, UpdateToolRequest
 from .tool_call import ToolCall, ToolCallResult
 from .validation_result import ValidationError, ValidationResult
 from .version import (

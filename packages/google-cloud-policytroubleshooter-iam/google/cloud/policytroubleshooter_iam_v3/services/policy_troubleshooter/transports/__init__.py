@@ -22,9 +22,7 @@ from .grpc_asyncio import PolicyTroubleshooterGrpcAsyncIOTransport
 from .rest import PolicyTroubleshooterRestInterceptor, PolicyTroubleshooterRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PolicyTroubleshooterTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PolicyTroubleshooterTransport]]
 _transport_registry["grpc"] = PolicyTroubleshooterGrpcTransport
 _transport_registry["grpc_asyncio"] = PolicyTroubleshooterGrpcAsyncIOTransport
 _transport_registry["rest"] = PolicyTroubleshooterRestTransport

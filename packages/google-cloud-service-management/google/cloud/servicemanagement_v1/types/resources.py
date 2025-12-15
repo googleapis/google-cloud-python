@@ -309,9 +309,7 @@ class ChangeReport(proto.Message):
             visibility.rules[selector='LibraryService.CreateBook'].restriction
     """
 
-    config_changes: MutableSequence[
-        config_change_pb2.ConfigChange
-    ] = proto.RepeatedField(
+    config_changes: MutableSequence[config_change_pb2.ConfigChange] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=config_change_pb2.ConfigChange,

@@ -131,12 +131,10 @@ class CreateEntitySignalsMappingRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    entity_signals_mapping: entity_signals_mapping_messages.EntitySignalsMapping = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=entity_signals_mapping_messages.EntitySignalsMapping,
-        )
+    entity_signals_mapping: entity_signals_mapping_messages.EntitySignalsMapping = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=entity_signals_mapping_messages.EntitySignalsMapping,
     )
 
 
@@ -154,12 +152,10 @@ class UpdateEntitySignalsMappingRequest(proto.Message):
             Required. The list of fields to update.
     """
 
-    entity_signals_mapping: entity_signals_mapping_messages.EntitySignalsMapping = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=entity_signals_mapping_messages.EntitySignalsMapping,
-        )
+    entity_signals_mapping: entity_signals_mapping_messages.EntitySignalsMapping = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=entity_signals_mapping_messages.EntitySignalsMapping,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -198,9 +194,7 @@ class ListEntitySignalsMappingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_signals_mappings: MutableSequence[
-        entity_signals_mapping_messages.EntitySignalsMapping
-    ] = proto.RepeatedField(
+    entity_signals_mappings: MutableSequence[entity_signals_mapping_messages.EntitySignalsMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=entity_signals_mapping_messages.EntitySignalsMapping,
@@ -233,9 +227,7 @@ class BatchCreateEntitySignalsMappingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "CreateEntitySignalsMappingRequest"
-    ] = proto.RepeatedField(
+    requests: MutableSequence["CreateEntitySignalsMappingRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="CreateEntitySignalsMappingRequest",
@@ -250,9 +242,7 @@ class BatchCreateEntitySignalsMappingsResponse(proto.Message):
             The ``EntitySignalsMapping`` objects created.
     """
 
-    entity_signals_mappings: MutableSequence[
-        entity_signals_mapping_messages.EntitySignalsMapping
-    ] = proto.RepeatedField(
+    entity_signals_mappings: MutableSequence[entity_signals_mapping_messages.EntitySignalsMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=entity_signals_mapping_messages.EntitySignalsMapping,
@@ -277,9 +267,7 @@ class BatchUpdateEntitySignalsMappingsRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    requests: MutableSequence[
-        "UpdateEntitySignalsMappingRequest"
-    ] = proto.RepeatedField(
+    requests: MutableSequence["UpdateEntitySignalsMappingRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="UpdateEntitySignalsMappingRequest",
@@ -294,9 +282,7 @@ class BatchUpdateEntitySignalsMappingsResponse(proto.Message):
             The ``EntitySignalsMapping`` objects updated.
     """
 
-    entity_signals_mappings: MutableSequence[
-        entity_signals_mapping_messages.EntitySignalsMapping
-    ] = proto.RepeatedField(
+    entity_signals_mappings: MutableSequence[entity_signals_mapping_messages.EntitySignalsMapping] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=entity_signals_mapping_messages.EntitySignalsMapping,

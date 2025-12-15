@@ -22,12 +22,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.bigquery_migration_v2alpha.types import (
-    assessment_task,
-    migration_error_details,
-    migration_metrics,
-    translation_task,
-)
+from google.cloud.bigquery_migration_v2alpha.types import assessment_task, migration_error_details, migration_metrics, translation_task
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2alpha",
@@ -352,9 +347,7 @@ class MigrationSubtask(proto.Message):
         number=6,
         message=error_details_pb2.ErrorInfo,
     )
-    resource_error_details: MutableSequence[
-        migration_error_details.ResourceErrorDetail
-    ] = proto.RepeatedField(
+    resource_error_details: MutableSequence[migration_error_details.ResourceErrorDetail] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=migration_error_details.ResourceErrorDetail,
@@ -394,13 +387,11 @@ class MigrationTaskOrchestrationResult(proto.Message):
             This field is a member of `oneof`_ ``details``.
     """
 
-    assessment_details: assessment_task.AssessmentOrchestrationResultDetails = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            oneof="details",
-            message=assessment_task.AssessmentOrchestrationResultDetails,
-        )
+    assessment_details: assessment_task.AssessmentOrchestrationResultDetails = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="details",
+        message=assessment_task.AssessmentOrchestrationResultDetails,
     )
 
 

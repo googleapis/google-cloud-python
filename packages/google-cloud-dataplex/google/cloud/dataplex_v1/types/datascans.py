@@ -21,14 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dataplex_v1.types import (
-    data_discovery,
-    data_documentation,
-    data_profile,
-    data_quality,
-    processing,
-    resources,
-)
+from google.cloud.dataplex_v1.types import data_discovery, data_documentation, data_profile, data_quality, processing, resources
 
 __protobuf__ = proto.module(
     package="google.cloud.dataplex.v1",

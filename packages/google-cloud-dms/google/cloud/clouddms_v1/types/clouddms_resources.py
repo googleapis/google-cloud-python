@@ -338,13 +338,11 @@ class PostgreSqlConnectionProfile(proto.Message):
         oneof="connectivity",
         message="StaticIpConnectivity",
     )
-    private_service_connect_connectivity: "PrivateServiceConnectConnectivity" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=101,
-            oneof="connectivity",
-            message="PrivateServiceConnectConnectivity",
-        )
+    private_service_connect_connectivity: "PrivateServiceConnectConnectivity" = proto.Field(
+        proto.MESSAGE,
+        number=101,
+        oneof="connectivity",
+        message="PrivateServiceConnectConnectivity",
     )
 
 
@@ -1018,12 +1016,10 @@ class AlloyDbSettings(proto.Message):
             proto.STRING,
             number=1,
         )
-        machine_config: "AlloyDbSettings.PrimaryInstanceSettings.MachineConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                message="AlloyDbSettings.PrimaryInstanceSettings.MachineConfig",
-            )
+        machine_config: "AlloyDbSettings.PrimaryInstanceSettings.MachineConfig" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message="AlloyDbSettings.PrimaryInstanceSettings.MachineConfig",
         )
         database_flags: MutableMapping[str, str] = proto.MapField(
             proto.STRING,
@@ -1538,12 +1534,10 @@ class MigrationJob(proto.Message):
             OPTIMAL = 2
             MAX = 3
 
-        dump_parallel_level: "MigrationJob.PerformanceConfig.DumpParallelLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="MigrationJob.PerformanceConfig.DumpParallelLevel",
-            )
+        dump_parallel_level: "MigrationJob.PerformanceConfig.DumpParallelLevel" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="MigrationJob.PerformanceConfig.DumpParallelLevel",
         )
 
     name: str = proto.Field(

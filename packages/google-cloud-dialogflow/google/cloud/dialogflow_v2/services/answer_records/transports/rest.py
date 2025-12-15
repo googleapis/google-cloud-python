@@ -98,12 +98,8 @@ class AnswerRecordsRestInterceptor:
     """
 
     def pre_list_answer_records(
-        self,
-        request: answer_record.ListAnswerRecordsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        answer_record.ListAnswerRecordsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: answer_record.ListAnswerRecordsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[answer_record.ListAnswerRecordsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_answer_records
 
         Override in a subclass to manipulate the request or metadata
@@ -111,9 +107,7 @@ class AnswerRecordsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_answer_records(
-        self, response: answer_record.ListAnswerRecordsResponse
-    ) -> answer_record.ListAnswerRecordsResponse:
+    def post_list_answer_records(self, response: answer_record.ListAnswerRecordsResponse) -> answer_record.ListAnswerRecordsResponse:
         """Post-rpc interceptor for list_answer_records
 
         DEPRECATED. Please use the `post_list_answer_records_with_metadata`
@@ -127,12 +121,8 @@ class AnswerRecordsRestInterceptor:
         return response
 
     def post_list_answer_records_with_metadata(
-        self,
-        response: answer_record.ListAnswerRecordsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        answer_record.ListAnswerRecordsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: answer_record.ListAnswerRecordsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[answer_record.ListAnswerRecordsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_answer_records
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -148,13 +138,8 @@ class AnswerRecordsRestInterceptor:
         return response, metadata
 
     def pre_update_answer_record(
-        self,
-        request: gcd_answer_record.UpdateAnswerRecordRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_answer_record.UpdateAnswerRecordRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_answer_record.UpdateAnswerRecordRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_answer_record.UpdateAnswerRecordRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_answer_record
 
         Override in a subclass to manipulate the request or metadata
@@ -162,9 +147,7 @@ class AnswerRecordsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_answer_record(
-        self, response: gcd_answer_record.AnswerRecord
-    ) -> gcd_answer_record.AnswerRecord:
+    def post_update_answer_record(self, response: gcd_answer_record.AnswerRecord) -> gcd_answer_record.AnswerRecord:
         """Post-rpc interceptor for update_answer_record
 
         DEPRECATED. Please use the `post_update_answer_record_with_metadata`
@@ -178,9 +161,7 @@ class AnswerRecordsRestInterceptor:
         return response
 
     def post_update_answer_record_with_metadata(
-        self,
-        response: gcd_answer_record.AnswerRecord,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_answer_record.AnswerRecord, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_answer_record.AnswerRecord, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_answer_record
 
@@ -197,12 +178,8 @@ class AnswerRecordsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -210,9 +187,7 @@ class AnswerRecordsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -222,12 +197,8 @@ class AnswerRecordsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -235,9 +206,7 @@ class AnswerRecordsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -247,12 +216,8 @@ class AnswerRecordsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -270,12 +235,8 @@ class AnswerRecordsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -283,9 +244,7 @@ class AnswerRecordsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -295,12 +254,8 @@ class AnswerRecordsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -308,9 +263,7 @@ class AnswerRecordsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -400,30 +353,18 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AnswerRecordsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListAnswerRecords(
-        _BaseAnswerRecordsRestTransport._BaseListAnswerRecords, AnswerRecordsRestStub
-    ):
+    class _ListAnswerRecords(_BaseAnswerRecordsRestTransport._BaseListAnswerRecords, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.ListAnswerRecords")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -465,28 +406,16 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseListAnswerRecords._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseListAnswerRecords._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_answer_records(
-                request, metadata
-            )
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseListAnswerRecords._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_answer_records(request, metadata)
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseListAnswerRecords._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnswerRecordsRestTransport._BaseListAnswerRecords._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseListAnswerRecords._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -510,12 +439,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._ListAnswerRecords._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -531,16 +455,10 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             resp = self._interceptor.post_list_answer_records(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_answer_records_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_answer_records_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = answer_record.ListAnswerRecordsResponse.to_json(
-                        response
-                    )
+                    response_payload = answer_record.ListAnswerRecordsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -559,22 +477,12 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
                 )
             return resp
 
-    class _UpdateAnswerRecord(
-        _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord, AnswerRecordsRestStub
-    ):
+    class _UpdateAnswerRecord(_BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.UpdateAnswerRecord")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -647,32 +555,18 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_answer_record(
-                request, metadata
-            )
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_answer_record(request, metadata)
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_transcoded_request(http_options, request)
 
-            body = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseUpdateAnswerRecord._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -696,13 +590,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._UpdateAnswerRecord._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -718,12 +606,8 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             resp = self._interceptor.post_update_answer_record(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_answer_record_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_answer_record_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_answer_record.AnswerRecord.to_json(response)
                 except:
@@ -745,22 +629,13 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             return resp
 
     @property
-    def list_answer_records(
-        self,
-    ) -> Callable[
-        [answer_record.ListAnswerRecordsRequest],
-        answer_record.ListAnswerRecordsResponse,
-    ]:
+    def list_answer_records(self) -> Callable[[answer_record.ListAnswerRecordsRequest], answer_record.ListAnswerRecordsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAnswerRecords(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_answer_record(
-        self,
-    ) -> Callable[
-        [gcd_answer_record.UpdateAnswerRecordRequest], gcd_answer_record.AnswerRecord
-    ]:
+    def update_answer_record(self) -> Callable[[gcd_answer_record.UpdateAnswerRecordRequest], gcd_answer_record.AnswerRecord]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAnswerRecord(self._session, self._host, self._interceptor)  # type: ignore
@@ -769,22 +644,12 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseAnswerRecordsRestTransport._BaseGetLocation, AnswerRecordsRestStub
-    ):
+    class _GetLocation(_BaseAnswerRecordsRestTransport._BaseGetLocation, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -822,28 +687,16 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAnswerRecordsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -867,12 +720,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -884,9 +732,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -911,22 +757,12 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseAnswerRecordsRestTransport._BaseListLocations, AnswerRecordsRestStub
-    ):
+    class _ListLocations(_BaseAnswerRecordsRestTransport._BaseListLocations, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -964,26 +800,16 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnswerRecordsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1007,12 +833,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1024,9 +845,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1051,22 +870,12 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAnswerRecordsRestTransport._BaseCancelOperation, AnswerRecordsRestStub
-    ):
+    class _CancelOperation(_BaseAnswerRecordsRestTransport._BaseCancelOperation, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1101,28 +910,16 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnswerRecordsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1146,12 +943,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1165,22 +957,12 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAnswerRecordsRestTransport._BaseGetOperation, AnswerRecordsRestStub
-    ):
+    class _GetOperation(_BaseAnswerRecordsRestTransport._BaseGetOperation, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1218,26 +1000,16 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnswerRecordsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1261,12 +1033,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1278,9 +1045,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1305,22 +1070,12 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAnswerRecordsRestTransport._BaseListOperations, AnswerRecordsRestStub
-    ):
+    class _ListOperations(_BaseAnswerRecordsRestTransport._BaseListOperations, AnswerRecordsRestStub):
         def __hash__(self):
             return hash("AnswerRecordsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1358,26 +1113,16 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAnswerRecordsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAnswerRecordsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAnswerRecordsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAnswerRecordsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnswerRecordsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnswerRecordsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1401,12 +1146,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
 
             # Send the request
             response = AnswerRecordsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1418,9 +1158,7 @@ class AnswerRecordsRestTransport(_BaseAnswerRecordsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

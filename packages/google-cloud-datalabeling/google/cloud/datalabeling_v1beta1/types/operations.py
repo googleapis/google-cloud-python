@@ -268,13 +268,11 @@ class LabelOperationMetadata(proto.Message):
             was created.
     """
 
-    image_classification_details: "LabelImageClassificationOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            oneof="details",
-            message="LabelImageClassificationOperationMetadata",
-        )
+    image_classification_details: "LabelImageClassificationOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="details",
+        message="LabelImageClassificationOperationMetadata",
     )
     image_bounding_box_details: "LabelImageBoundingBoxOperationMetadata" = proto.Field(
         proto.MESSAGE,
@@ -282,13 +280,11 @@ class LabelOperationMetadata(proto.Message):
         oneof="details",
         message="LabelImageBoundingBoxOperationMetadata",
     )
-    image_bounding_poly_details: "LabelImageBoundingPolyOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=11,
-            oneof="details",
-            message="LabelImageBoundingPolyOperationMetadata",
-        )
+    image_bounding_poly_details: "LabelImageBoundingPolyOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="details",
+        message="LabelImageBoundingPolyOperationMetadata",
     )
     image_oriented_bounding_box_details: "LabelImageOrientedBoundingBoxOperationMetadata" = proto.Field(
         proto.MESSAGE,
@@ -308,29 +304,23 @@ class LabelOperationMetadata(proto.Message):
         oneof="details",
         message="LabelImageSegmentationOperationMetadata",
     )
-    video_classification_details: "LabelVideoClassificationOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="details",
-            message="LabelVideoClassificationOperationMetadata",
-        )
+    video_classification_details: "LabelVideoClassificationOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="details",
+        message="LabelVideoClassificationOperationMetadata",
     )
-    video_object_detection_details: "LabelVideoObjectDetectionOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=6,
-            oneof="details",
-            message="LabelVideoObjectDetectionOperationMetadata",
-        )
+    video_object_detection_details: "LabelVideoObjectDetectionOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="details",
+        message="LabelVideoObjectDetectionOperationMetadata",
     )
-    video_object_tracking_details: "LabelVideoObjectTrackingOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="details",
-            message="LabelVideoObjectTrackingOperationMetadata",
-        )
+    video_object_tracking_details: "LabelVideoObjectTrackingOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="details",
+        message="LabelVideoObjectTrackingOperationMetadata",
     )
     video_event_details: "LabelVideoEventOperationMetadata" = proto.Field(
         proto.MESSAGE,
@@ -338,21 +328,17 @@ class LabelOperationMetadata(proto.Message):
         oneof="details",
         message="LabelVideoEventOperationMetadata",
     )
-    text_classification_details: "LabelTextClassificationOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=9,
-            oneof="details",
-            message="LabelTextClassificationOperationMetadata",
-        )
+    text_classification_details: "LabelTextClassificationOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="details",
+        message="LabelTextClassificationOperationMetadata",
     )
-    text_entity_extraction_details: "LabelTextEntityExtractionOperationMetadata" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=13,
-            oneof="details",
-            message="LabelTextEntityExtractionOperationMetadata",
-        )
+    text_entity_extraction_details: "LabelTextEntityExtractionOperationMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="details",
+        message="LabelTextEntityExtractionOperationMetadata",
     )
     progress_percent: int = proto.Field(
         proto.INT32,

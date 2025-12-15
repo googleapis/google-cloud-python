@@ -20,9 +20,7 @@ from .base import TargetHttpsProxiesTransport
 from .rest import TargetHttpsProxiesRestInterceptor, TargetHttpsProxiesRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[TargetHttpsProxiesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TargetHttpsProxiesTransport]]
 _transport_registry["rest"] = TargetHttpsProxiesRestTransport
 
 __all__ = (

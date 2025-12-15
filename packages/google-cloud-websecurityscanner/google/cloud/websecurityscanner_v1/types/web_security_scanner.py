@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.websecurityscanner_v1.types import (
-    finding_type_stats as gcw_finding_type_stats,
-)
+from google.cloud.websecurityscanner_v1.types import finding_type_stats as gcw_finding_type_stats
 from google.cloud.websecurityscanner_v1.types import scan_config as gcw_scan_config
 from google.cloud.websecurityscanner_v1.types import crawled_url, finding
 from google.cloud.websecurityscanner_v1.types import scan_run
@@ -474,9 +472,7 @@ class ListFindingTypeStatsResponse(proto.Message):
             The list of FindingTypeStats returned.
     """
 
-    finding_type_stats: MutableSequence[
-        gcw_finding_type_stats.FindingTypeStats
-    ] = proto.RepeatedField(
+    finding_type_stats: MutableSequence[gcw_finding_type_stats.FindingTypeStats] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcw_finding_type_stats.FindingTypeStats,

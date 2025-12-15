@@ -21,10 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    custom_tuning_model,
-    import_config,
-)
+from google.cloud.discoveryengine_v1alpha.types import custom_tuning_model, import_config
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -68,9 +65,7 @@ class ListCustomModelsResponse(proto.Message):
             List of custom tuning models.
     """
 
-    models: MutableSequence[
-        custom_tuning_model.CustomTuningModel
-    ] = proto.RepeatedField(
+    models: MutableSequence[custom_tuning_model.CustomTuningModel] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_tuning_model.CustomTuningModel,

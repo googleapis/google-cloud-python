@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -114,12 +102,7 @@ class GroupAssetsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[securitycenter_service.GroupResult]:
@@ -190,12 +173,7 @@ class GroupAssetsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[securitycenter_service.GroupResult]:
@@ -270,12 +248,7 @@ class GroupFindingsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[securitycenter_service.GroupResult]:
@@ -342,18 +315,11 @@ class GroupFindingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.GroupFindingsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.GroupFindingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[securitycenter_service.GroupResult]:
@@ -428,17 +394,10 @@ class ListAssetsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
+    def __iter__(self) -> Iterator[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
         for page in self.pages:
             yield from page.list_assets_results
 
@@ -506,17 +465,10 @@ class ListAssetsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
+    def __aiter__(self) -> AsyncIterator[securitycenter_service.ListAssetsResponse.ListAssetsResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.list_assets_results:
@@ -548,10 +500,7 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-        ],
+        method: Callable[..., securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse],
         request: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
         response: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
         *,
@@ -577,9 +526,7 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -589,27 +536,14 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-    ]:
+    def pages(self) -> Iterator[securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-    ]:
+    def __iter__(self) -> Iterator[security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule]:
         for page in self.pages:
             yield from page.security_health_analytics_custom_modules
 
@@ -637,12 +571,7 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse]],
         request: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
         response: securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
         *,
@@ -668,9 +597,7 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -680,27 +607,14 @@ class ListDescendantSecurityHealthAnalyticsCustomModulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListDescendantSecurityHealthAnalyticsCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-    ]:
+    def __aiter__(self) -> AsyncIterator[security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.security_health_analytics_custom_modules:
@@ -772,17 +686,10 @@ class ListFindingsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
+    def __iter__(self) -> Iterator[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
         for page in self.pages:
             yield from page.list_findings_results
 
@@ -850,17 +757,10 @@ class ListFindingsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
+    def __aiter__(self) -> AsyncIterator[securitycenter_service.ListFindingsResponse.ListFindingsResult]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.list_findings_results:
@@ -932,12 +832,7 @@ class ListMuteConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[mute_config.MuteConfig]:
@@ -968,9 +863,7 @@ class ListMuteConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[securitycenter_service.ListMuteConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListMuteConfigsResponse]],
         request: securitycenter_service.ListMuteConfigsRequest,
         response: securitycenter_service.ListMuteConfigsResponse,
         *,
@@ -1006,18 +899,11 @@ class ListMuteConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListMuteConfigsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListMuteConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[mute_config.MuteConfig]:
@@ -1092,12 +978,7 @@ class ListNotificationConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[notification_config.NotificationConfig]:
@@ -1128,9 +1009,7 @@ class ListNotificationConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[securitycenter_service.ListNotificationConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListNotificationConfigsResponse]],
         request: securitycenter_service.ListNotificationConfigsRequest,
         response: securitycenter_service.ListNotificationConfigsResponse,
         *,
@@ -1166,18 +1045,11 @@ class ListNotificationConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListNotificationConfigsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListNotificationConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[notification_config.NotificationConfig]:
@@ -1212,10 +1084,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-        ],
+        method: Callable[..., securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse],
         request: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
         response: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
         *,
@@ -1241,9 +1110,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1253,27 +1120,14 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-    ]:
+    def pages(self) -> Iterator[securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
-    ]:
+    def __iter__(self) -> Iterator[effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule]:
         for page in self.pages:
             yield from page.effective_security_health_analytics_custom_modules
 
@@ -1301,12 +1155,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse]],
         request: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
         response: securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
         *,
@@ -1332,9 +1181,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1344,27 +1191,14 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule
-    ]:
+    def __aiter__(self) -> AsyncIterator[effective_security_health_analytics_custom_module.EffectiveSecurityHealthAnalyticsCustomModule]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.effective_security_health_analytics_custom_modules:
@@ -1396,9 +1230,7 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse
-        ],
+        method: Callable[..., securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse],
         request: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
         response: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
         *,
@@ -1424,11 +1256,7 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(
-                request
-            )
-        )
+        self._request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1438,27 +1266,14 @@ class ListSecurityHealthAnalyticsCustomModulesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse
-    ]:
+    def pages(self) -> Iterator[securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-    ]:
+    def __iter__(self) -> Iterator[security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule]:
         for page in self.pages:
             yield from page.security_health_analytics_custom_modules
 
@@ -1486,12 +1301,7 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse]],
         request: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest,
         response: securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse,
         *,
@@ -1517,11 +1327,7 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(
-                request
-            )
-        )
+        self._request = securitycenter_service.ListSecurityHealthAnalyticsCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1531,27 +1337,14 @@ class ListSecurityHealthAnalyticsCustomModulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListSecurityHealthAnalyticsCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule
-    ]:
+    def __aiter__(self) -> AsyncIterator[security_health_analytics_custom_module.SecurityHealthAnalyticsCustomModule]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.security_health_analytics_custom_modules:
@@ -1623,12 +1416,7 @@ class ListSourcesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[source.Source]:
@@ -1699,12 +1487,7 @@ class ListSourcesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[source.Source]:
@@ -1779,12 +1562,7 @@ class ListBigQueryExportsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[bigquery_export.BigQueryExport]:
@@ -1815,9 +1593,7 @@ class ListBigQueryExportsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[securitycenter_service.ListBigQueryExportsResponse]
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListBigQueryExportsResponse]],
         request: securitycenter_service.ListBigQueryExportsRequest,
         response: securitycenter_service.ListBigQueryExportsResponse,
         *,
@@ -1853,18 +1629,11 @@ class ListBigQueryExportsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListBigQueryExportsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListBigQueryExportsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[bigquery_export.BigQueryExport]:
@@ -1899,10 +1668,7 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
-        ],
+        method: Callable[..., securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse],
         request: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
         response: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
         *,
@@ -1928,9 +1694,7 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1940,27 +1704,14 @@ class ListDescendantEventThreatDetectionCustomModulesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
-    ]:
+    def pages(self) -> Iterator[securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        event_threat_detection_custom_module.EventThreatDetectionCustomModule
-    ]:
+    def __iter__(self) -> Iterator[event_threat_detection_custom_module.EventThreatDetectionCustomModule]:
         for page in self.pages:
             yield from page.event_threat_detection_custom_modules
 
@@ -1988,12 +1739,7 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse]],
         request: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest,
         response: securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse,
         *,
@@ -2019,9 +1765,7 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListDescendantEventThreatDetectionCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2031,27 +1775,14 @@ class ListDescendantEventThreatDetectionCustomModulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListDescendantEventThreatDetectionCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        event_threat_detection_custom_module.EventThreatDetectionCustomModule
-    ]:
+    def __aiter__(self) -> AsyncIterator[event_threat_detection_custom_module.EventThreatDetectionCustomModule]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.event_threat_detection_custom_modules:
@@ -2083,9 +1814,7 @@ class ListEventThreatDetectionCustomModulesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., securitycenter_service.ListEventThreatDetectionCustomModulesResponse
-        ],
+        method: Callable[..., securitycenter_service.ListEventThreatDetectionCustomModulesResponse],
         request: securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
         response: securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
         *,
@@ -2111,9 +1840,7 @@ class ListEventThreatDetectionCustomModulesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(request)
-        )
+        self._request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2123,25 +1850,14 @@ class ListEventThreatDetectionCustomModulesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[securitycenter_service.ListEventThreatDetectionCustomModulesResponse]:
+    def pages(self) -> Iterator[securitycenter_service.ListEventThreatDetectionCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        event_threat_detection_custom_module.EventThreatDetectionCustomModule
-    ]:
+    def __iter__(self) -> Iterator[event_threat_detection_custom_module.EventThreatDetectionCustomModule]:
         for page in self.pages:
             yield from page.event_threat_detection_custom_modules
 
@@ -2169,12 +1885,7 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                securitycenter_service.ListEventThreatDetectionCustomModulesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListEventThreatDetectionCustomModulesResponse]],
         request: securitycenter_service.ListEventThreatDetectionCustomModulesRequest,
         response: securitycenter_service.ListEventThreatDetectionCustomModulesResponse,
         *,
@@ -2200,9 +1911,7 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            securitycenter_service.ListEventThreatDetectionCustomModulesRequest(request)
-        )
+        self._request = securitycenter_service.ListEventThreatDetectionCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2212,27 +1921,14 @@ class ListEventThreatDetectionCustomModulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        securitycenter_service.ListEventThreatDetectionCustomModulesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListEventThreatDetectionCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        event_threat_detection_custom_module.EventThreatDetectionCustomModule
-    ]:
+    def __aiter__(self) -> AsyncIterator[event_threat_detection_custom_module.EventThreatDetectionCustomModule]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.event_threat_detection_custom_modules:
@@ -2264,10 +1960,7 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
-        ],
+        method: Callable[..., securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse],
         request: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
         response: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
         *,
@@ -2293,9 +1986,7 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2305,27 +1996,14 @@ class ListEffectiveEventThreatDetectionCustomModulesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
-    ]:
+    def pages(self) -> Iterator[securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[
-        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
-    ]:
+    def __iter__(self) -> Iterator[effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule]:
         for page in self.pages:
             yield from page.effective_event_threat_detection_custom_modules
 
@@ -2353,12 +2031,7 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse]],
         request: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest,
         response: securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse,
         *,
@@ -2384,9 +2057,7 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(
-            request
-        )
+        self._request = securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2396,27 +2067,14 @@ class ListEffectiveEventThreatDetectionCustomModulesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListEffectiveEventThreatDetectionCustomModulesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule
-    ]:
+    def __aiter__(self) -> AsyncIterator[effective_event_threat_detection_custom_module.EffectiveEventThreatDetectionCustomModule]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.effective_event_threat_detection_custom_modules:
@@ -2484,18 +2142,11 @@ class ListResourceValueConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[securitycenter_service.ListResourceValueConfigsResponse]:
+    def pages(self) -> Iterator[securitycenter_service.ListResourceValueConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[resource_value_config.ResourceValueConfig]:
@@ -2526,9 +2177,7 @@ class ListResourceValueConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[securitycenter_service.ListResourceValueConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListResourceValueConfigsResponse]],
         request: securitycenter_service.ListResourceValueConfigsRequest,
         response: securitycenter_service.ListResourceValueConfigsResponse,
         *,
@@ -2564,18 +2213,11 @@ class ListResourceValueConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListResourceValueConfigsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListResourceValueConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[resource_value_config.ResourceValueConfig]:
@@ -2650,12 +2292,7 @@ class ListValuedResourcesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[valued_resource.ValuedResource]:
@@ -2686,9 +2323,7 @@ class ListValuedResourcesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[securitycenter_service.ListValuedResourcesResponse]
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListValuedResourcesResponse]],
         request: securitycenter_service.ListValuedResourcesRequest,
         response: securitycenter_service.ListValuedResourcesResponse,
         *,
@@ -2724,18 +2359,11 @@ class ListValuedResourcesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListValuedResourcesResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListValuedResourcesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[valued_resource.ValuedResource]:
@@ -2810,12 +2438,7 @@ class ListAttackPathsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[attack_path.AttackPath]:
@@ -2846,9 +2469,7 @@ class ListAttackPathsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[securitycenter_service.ListAttackPathsResponse]
-        ],
+        method: Callable[..., Awaitable[securitycenter_service.ListAttackPathsResponse]],
         request: securitycenter_service.ListAttackPathsRequest,
         response: securitycenter_service.ListAttackPathsResponse,
         *,
@@ -2884,18 +2505,11 @@ class ListAttackPathsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[securitycenter_service.ListAttackPathsResponse]:
+    async def pages(self) -> AsyncIterator[securitycenter_service.ListAttackPathsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[attack_path.AttackPath]:

@@ -407,16 +407,12 @@ class Framework(proto.Message):
         number=10,
         enum="CloudProvider",
     )
-    supported_target_resource_types: MutableSequence[
-        "TargetResourceType"
-    ] = proto.RepeatedField(
+    supported_target_resource_types: MutableSequence["TargetResourceType"] = proto.RepeatedField(
         proto.ENUM,
         number=11,
         enum="TargetResourceType",
     )
-    supported_enforcement_modes: MutableSequence[
-        "EnforcementMode"
-    ] = proto.RepeatedField(
+    supported_enforcement_modes: MutableSequence["EnforcementMode"] = proto.RepeatedField(
         proto.ENUM,
         number=13,
         enum="EnforcementMode",
@@ -603,9 +599,7 @@ class CloudControl(proto.Message):
         proto.STRING,
         number=5,
     )
-    supported_enforcement_modes: MutableSequence[
-        "EnforcementMode"
-    ] = proto.RepeatedField(
+    supported_enforcement_modes: MutableSequence["EnforcementMode"] = proto.RepeatedField(
         proto.ENUM,
         number=7,
         enum="EnforcementMode",
@@ -652,9 +646,7 @@ class CloudControl(proto.Message):
         number=17,
         message=timestamp_pb2.Timestamp,
     )
-    supported_target_resource_types: MutableSequence[
-        "TargetResourceType"
-    ] = proto.RepeatedField(
+    supported_target_resource_types: MutableSequence["TargetResourceType"] = proto.RepeatedField(
         proto.ENUM,
         number=18,
         enum="TargetResourceType",
@@ -740,9 +732,7 @@ class ParameterSpec(proto.Message):
         number=6,
         message="ParamValue",
     )
-    substitution_rules: MutableSequence[
-        "ParameterSubstitutionRule"
-    ] = proto.RepeatedField(
+    substitution_rules: MutableSequence["ParameterSubstitutionRule"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ParameterSubstitutionRule",

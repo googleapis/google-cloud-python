@@ -20,13 +20,7 @@ from .attack_exposure import AttackExposure
 from .attack_path import AttackPath
 from .backup_disaster_recovery import BackupDisasterRecovery
 from .bigquery_export import BigQueryExport
-from .cloud_armor import (
-    AdaptiveProtection,
-    Attack,
-    CloudArmor,
-    Requests,
-    SecurityPolicy,
-)
+from .cloud_armor import AdaptiveProtection, Attack, CloudArmor, Requests, SecurityPolicy
 from .cloud_dlp_data_profile import CloudDlpDataProfile
 from .cloud_dlp_inspection import CloudDlpInspection
 from .compliance import Compliance
@@ -34,18 +28,10 @@ from .connection import Connection
 from .contact_details import Contact, ContactDetails
 from .container import Container
 from .database import Database
-from .effective_event_threat_detection_custom_module import (
-    EffectiveEventThreatDetectionCustomModule,
-)
-from .effective_security_health_analytics_custom_module import (
-    EffectiveSecurityHealthAnalyticsCustomModule,
-)
+from .effective_event_threat_detection_custom_module import EffectiveEventThreatDetectionCustomModule
+from .effective_security_health_analytics_custom_module import EffectiveSecurityHealthAnalyticsCustomModule
 from .event_threat_detection_custom_module import EventThreatDetectionCustomModule
-from .event_threat_detection_custom_module_validation_errors import (
-    CustomModuleValidationError,
-    CustomModuleValidationErrors,
-    Position,
-)
+from .event_threat_detection_custom_module_validation_errors import CustomModuleValidationError, CustomModuleValidationErrors, Position
 from .exfiltration import ExfilResource, Exfiltration
 from .external_system import ExternalSystem
 from .file import File
@@ -163,14 +149,7 @@ from .simulation import Simulation
 from .source import Source
 from .toxic_combination import ToxicCombination
 from .valued_resource import ResourceValueConfigMetadata, ValuedResource
-from .vulnerability import (
-    Cve,
-    Cvssv3,
-    Package,
-    Reference,
-    SecurityBulletin,
-    Vulnerability,
-)
+from .vulnerability import Cve, Cvssv3, Package, Reference, SecurityBulletin, Vulnerability
 
 __all__ = (
     "Access",

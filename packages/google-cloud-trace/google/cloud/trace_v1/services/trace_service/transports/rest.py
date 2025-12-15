@@ -100,9 +100,7 @@ class TraceServiceRestInterceptor:
     """
 
     def pre_get_trace(
-        self,
-        request: trace.GetTraceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: trace.GetTraceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[trace.GetTraceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_trace
 
@@ -142,9 +140,7 @@ class TraceServiceRestInterceptor:
         return response, metadata
 
     def pre_list_traces(
-        self,
-        request: trace.ListTracesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: trace.ListTracesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[trace.ListTracesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_traces
 
@@ -153,9 +149,7 @@ class TraceServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_traces(
-        self, response: trace.ListTracesResponse
-    ) -> trace.ListTracesResponse:
+    def post_list_traces(self, response: trace.ListTracesResponse) -> trace.ListTracesResponse:
         """Post-rpc interceptor for list_traces
 
         DEPRECATED. Please use the `post_list_traces_with_metadata`
@@ -169,9 +163,7 @@ class TraceServiceRestInterceptor:
         return response
 
     def post_list_traces_with_metadata(
-        self,
-        response: trace.ListTracesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: trace.ListTracesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[trace.ListTracesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_traces
 
@@ -188,9 +180,7 @@ class TraceServiceRestInterceptor:
         return response, metadata
 
     def pre_patch_traces(
-        self,
-        request: trace.PatchTracesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: trace.PatchTracesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[trace.PatchTracesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch_traces
 
@@ -284,9 +274,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TraceServiceRestInterceptor()
@@ -297,15 +285,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             return hash("TraceServiceRestTransport.GetTrace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -349,30 +329,16 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTraceServiceRestTransport._BaseGetTrace._get_http_options()
-            )
+            http_options = _BaseTraceServiceRestTransport._BaseGetTrace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_trace(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BaseGetTrace._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTraceServiceRestTransport._BaseGetTrace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BaseGetTrace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTraceServiceRestTransport._BaseGetTrace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -396,12 +362,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             # Send the request
             response = TraceServiceRestTransport._GetTrace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -417,12 +378,8 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             resp = self._interceptor.post_get_trace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_trace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_trace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = trace.Trace.to_json(response)
                 except:
@@ -443,22 +400,12 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                 )
             return resp
 
-    class _ListTraces(
-        _BaseTraceServiceRestTransport._BaseListTraces, TraceServiceRestStub
-    ):
+    class _ListTraces(_BaseTraceServiceRestTransport._BaseListTraces, TraceServiceRestStub):
         def __hash__(self):
             return hash("TraceServiceRestTransport.ListTraces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -498,30 +445,16 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                     The response message for the ``ListTraces`` method.
             """
 
-            http_options = (
-                _BaseTraceServiceRestTransport._BaseListTraces._get_http_options()
-            )
+            http_options = _BaseTraceServiceRestTransport._BaseListTraces._get_http_options()
 
             request, metadata = self._interceptor.pre_list_traces(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BaseListTraces._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTraceServiceRestTransport._BaseListTraces._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BaseListTraces._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTraceServiceRestTransport._BaseListTraces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -545,12 +478,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             # Send the request
             response = TraceServiceRestTransport._ListTraces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -566,12 +494,8 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             resp = self._interceptor.post_list_traces(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_traces_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_traces_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = trace.ListTracesResponse.to_json(response)
                 except:
@@ -592,22 +516,12 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                 )
             return resp
 
-    class _PatchTraces(
-        _BaseTraceServiceRestTransport._BasePatchTraces, TraceServiceRestStub
-    ):
+    class _PatchTraces(_BaseTraceServiceRestTransport._BasePatchTraces, TraceServiceRestStub):
         def __hash__(self):
             return hash("TraceServiceRestTransport.PatchTraces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -643,36 +557,18 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_http_options()
-            )
+            http_options = _BaseTraceServiceRestTransport._BasePatchTraces._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_traces(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTraceServiceRestTransport._BasePatchTraces._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTraceServiceRestTransport._BasePatchTraces._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BasePatchTraces._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTraceServiceRestTransport._BasePatchTraces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -696,13 +592,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             # Send the request
             response = TraceServiceRestTransport._PatchTraces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -717,9 +607,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
         return self._GetTrace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_traces(
-        self,
-    ) -> Callable[[trace.ListTracesRequest], trace.ListTracesResponse]:
+    def list_traces(self) -> Callable[[trace.ListTracesRequest], trace.ListTracesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTraces(self._session, self._host, self._interceptor)  # type: ignore

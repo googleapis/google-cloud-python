@@ -131,9 +131,7 @@ class Promotion(proto.Message):
         proto.STRING,
         number=4,
     )
-    redemption_channel: MutableSequence[
-        promotions_common.RedemptionChannel
-    ] = proto.RepeatedField(
+    redemption_channel: MutableSequence[promotions_common.RedemptionChannel] = proto.RepeatedField(
         proto.ENUM,
         number=5,
         enum=promotions_common.RedemptionChannel,

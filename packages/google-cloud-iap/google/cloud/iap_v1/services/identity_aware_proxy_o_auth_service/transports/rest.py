@@ -140,9 +140,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
     """
 
     def pre_create_brand(
-        self,
-        request: service.CreateBrandRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateBrandRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateBrandRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_brand
 
@@ -182,13 +180,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response, metadata
 
     def pre_create_identity_aware_proxy_client(
-        self,
-        request: service.CreateIdentityAwareProxyClientRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateIdentityAwareProxyClientRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.CreateIdentityAwareProxyClientRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateIdentityAwareProxyClientRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_identity_aware_proxy_client
 
         Override in a subclass to manipulate the request or metadata
@@ -196,9 +189,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_identity_aware_proxy_client(
-        self, response: service.IdentityAwareProxyClient
-    ) -> service.IdentityAwareProxyClient:
+    def post_create_identity_aware_proxy_client(self, response: service.IdentityAwareProxyClient) -> service.IdentityAwareProxyClient:
         """Post-rpc interceptor for create_identity_aware_proxy_client
 
         DEPRECATED. Please use the `post_create_identity_aware_proxy_client_with_metadata`
@@ -212,12 +203,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response
 
     def post_create_identity_aware_proxy_client_with_metadata(
-        self,
-        response: service.IdentityAwareProxyClient,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.IdentityAwareProxyClient, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_identity_aware_proxy_client
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -233,13 +220,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_identity_aware_proxy_client(
-        self,
-        request: service.DeleteIdentityAwareProxyClientRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteIdentityAwareProxyClientRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.DeleteIdentityAwareProxyClientRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteIdentityAwareProxyClientRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_identity_aware_proxy_client
 
         Override in a subclass to manipulate the request or metadata
@@ -248,9 +230,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return request, metadata
 
     def pre_get_brand(
-        self,
-        request: service.GetBrandRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetBrandRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetBrandRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_brand
 
@@ -290,13 +270,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response, metadata
 
     def pre_get_identity_aware_proxy_client(
-        self,
-        request: service.GetIdentityAwareProxyClientRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetIdentityAwareProxyClientRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.GetIdentityAwareProxyClientRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetIdentityAwareProxyClientRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_identity_aware_proxy_client
 
         Override in a subclass to manipulate the request or metadata
@@ -304,9 +279,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_identity_aware_proxy_client(
-        self, response: service.IdentityAwareProxyClient
-    ) -> service.IdentityAwareProxyClient:
+    def post_get_identity_aware_proxy_client(self, response: service.IdentityAwareProxyClient) -> service.IdentityAwareProxyClient:
         """Post-rpc interceptor for get_identity_aware_proxy_client
 
         DEPRECATED. Please use the `post_get_identity_aware_proxy_client_with_metadata`
@@ -320,12 +293,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response
 
     def post_get_identity_aware_proxy_client_with_metadata(
-        self,
-        response: service.IdentityAwareProxyClient,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.IdentityAwareProxyClient, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_identity_aware_proxy_client
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -341,9 +310,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response, metadata
 
     def pre_list_brands(
-        self,
-        request: service.ListBrandsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListBrandsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListBrandsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_brands
 
@@ -352,9 +319,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_brands(
-        self, response: service.ListBrandsResponse
-    ) -> service.ListBrandsResponse:
+    def post_list_brands(self, response: service.ListBrandsResponse) -> service.ListBrandsResponse:
         """Post-rpc interceptor for list_brands
 
         DEPRECATED. Please use the `post_list_brands_with_metadata`
@@ -368,9 +333,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response
 
     def post_list_brands_with_metadata(
-        self,
-        response: service.ListBrandsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListBrandsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListBrandsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_brands
 
@@ -387,13 +350,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response, metadata
 
     def pre_list_identity_aware_proxy_clients(
-        self,
-        request: service.ListIdentityAwareProxyClientsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListIdentityAwareProxyClientsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ListIdentityAwareProxyClientsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListIdentityAwareProxyClientsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_identity_aware_proxy_clients
 
         Override in a subclass to manipulate the request or metadata
@@ -417,13 +375,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response
 
     def post_list_identity_aware_proxy_clients_with_metadata(
-        self,
-        response: service.ListIdentityAwareProxyClientsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListIdentityAwareProxyClientsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.ListIdentityAwareProxyClientsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListIdentityAwareProxyClientsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_identity_aware_proxy_clients
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -439,13 +392,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response, metadata
 
     def pre_reset_identity_aware_proxy_client_secret(
-        self,
-        request: service.ResetIdentityAwareProxyClientSecretRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ResetIdentityAwareProxyClientSecretRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ResetIdentityAwareProxyClientSecretRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ResetIdentityAwareProxyClientSecretRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_identity_aware_proxy_client_secret
 
         Override in a subclass to manipulate the request or metadata
@@ -453,9 +401,7 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_identity_aware_proxy_client_secret(
-        self, response: service.IdentityAwareProxyClient
-    ) -> service.IdentityAwareProxyClient:
+    def post_reset_identity_aware_proxy_client_secret(self, response: service.IdentityAwareProxyClient) -> service.IdentityAwareProxyClient:
         """Post-rpc interceptor for reset_identity_aware_proxy_client_secret
 
         DEPRECATED. Please use the `post_reset_identity_aware_proxy_client_secret_with_metadata`
@@ -469,12 +415,8 @@ class IdentityAwareProxyOAuthServiceRestInterceptor:
         return response
 
     def post_reset_identity_aware_proxy_client_secret_with_metadata(
-        self,
-        response: service.IdentityAwareProxyClient,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.IdentityAwareProxyClient, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.IdentityAwareProxyClient, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_identity_aware_proxy_client_secret
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -497,9 +439,7 @@ class IdentityAwareProxyOAuthServiceRestStub:
     _interceptor: IdentityAwareProxyOAuthServiceRestInterceptor
 
 
-class IdentityAwareProxyOAuthServiceRestTransport(
-    _BaseIdentityAwareProxyOAuthServiceRestTransport
-):
+class IdentityAwareProxyOAuthServiceRestTransport(_BaseIdentityAwareProxyOAuthServiceRestTransport):
     """REST backend synchronous transport for IdentityAwareProxyOAuthService.
 
     API to programmatically create, list and retrieve Identity
@@ -573,33 +513,18 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or IdentityAwareProxyOAuthServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or IdentityAwareProxyOAuthServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateBrand(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand,
-        IdentityAwareProxyOAuthServiceRestStub,
-    ):
+    class _CreateBrand(_BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand, IdentityAwareProxyOAuthServiceRestStub):
         def __hash__(self):
             return hash("IdentityAwareProxyOAuthServiceRestTransport.CreateBrand")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -642,30 +567,18 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_http_options()
 
             request, metadata = self._interceptor.pre_create_brand(request, metadata)
-            transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_transcoded_request(http_options, request)
 
-            body = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateBrand._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -688,16 +601,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                IdentityAwareProxyOAuthServiceRestTransport._CreateBrand._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IdentityAwareProxyOAuthServiceRestTransport._CreateBrand._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -713,12 +618,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_create_brand(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_brand_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_brand_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Brand.to_json(response)
                 except:
@@ -740,24 +641,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             return resp
 
     class _CreateIdentityAwareProxyClient(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient,
-        IdentityAwareProxyOAuthServiceRestStub,
+        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient, IdentityAwareProxyOAuthServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "IdentityAwareProxyOAuthServiceRestTransport.CreateIdentityAwareProxyClient"
-            )
+            return hash("IdentityAwareProxyOAuthServiceRestTransport.CreateIdentityAwareProxyClient")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -801,35 +691,22 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_identity_aware_proxy_client(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_identity_aware_proxy_client(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseCreateIdentityAwareProxyClient._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -853,13 +730,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._CreateIdentityAwareProxyClient._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -875,19 +746,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_create_identity_aware_proxy_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_identity_aware_proxy_client_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_identity_aware_proxy_client_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.IdentityAwareProxyClient.to_json(
-                        response
-                    )
+                    response_payload = service.IdentityAwareProxyClient.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -907,24 +769,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             return resp
 
     class _DeleteIdentityAwareProxyClient(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient,
-        IdentityAwareProxyOAuthServiceRestStub,
+        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient, IdentityAwareProxyOAuthServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "IdentityAwareProxyOAuthServiceRestTransport.DeleteIdentityAwareProxyClient"
-            )
+            return hash("IdentityAwareProxyOAuthServiceRestTransport.DeleteIdentityAwareProxyClient")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -961,16 +812,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_identity_aware_proxy_client(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_identity_aware_proxy_client(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseDeleteIdentityAwareProxyClient._get_transcoded_request(
                 http_options, request
             )
@@ -980,12 +824,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1009,12 +849,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._DeleteIdentityAwareProxyClient._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1022,23 +857,12 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetBrand(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand,
-        IdentityAwareProxyOAuthServiceRestStub,
-    ):
+    class _GetBrand(_BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand, IdentityAwareProxyOAuthServiceRestStub):
         def __hash__(self):
             return hash("IdentityAwareProxyOAuthServiceRestTransport.GetBrand")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1080,26 +904,16 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_http_options()
 
             request, metadata = self._interceptor.pre_get_brand(request, metadata)
-            transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetBrand._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1122,15 +936,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                IdentityAwareProxyOAuthServiceRestTransport._GetBrand._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = IdentityAwareProxyOAuthServiceRestTransport._GetBrand._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1146,12 +953,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_get_brand(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_brand_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_brand_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Brand.to_json(response)
                 except:
@@ -1173,24 +976,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             return resp
 
     class _GetIdentityAwareProxyClient(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient,
-        IdentityAwareProxyOAuthServiceRestStub,
+        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient, IdentityAwareProxyOAuthServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "IdentityAwareProxyOAuthServiceRestTransport.GetIdentityAwareProxyClient"
-            )
+            return hash("IdentityAwareProxyOAuthServiceRestTransport.GetIdentityAwareProxyClient")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1233,13 +1025,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_identity_aware_proxy_client(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_identity_aware_proxy_client(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseGetIdentityAwareProxyClient._get_transcoded_request(
                 http_options, request
             )
@@ -1249,12 +1037,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1278,12 +1062,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._GetIdentityAwareProxyClient._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1299,19 +1078,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_get_identity_aware_proxy_client(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_identity_aware_proxy_client_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_identity_aware_proxy_client_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.IdentityAwareProxyClient.to_json(
-                        response
-                    )
+                    response_payload = service.IdentityAwareProxyClient.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1330,23 +1100,12 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 )
             return resp
 
-    class _ListBrands(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands,
-        IdentityAwareProxyOAuthServiceRestStub,
-    ):
+    class _ListBrands(_BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands, IdentityAwareProxyOAuthServiceRestStub):
         def __hash__(self):
             return hash("IdentityAwareProxyOAuthServiceRestTransport.ListBrands")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1385,26 +1144,16 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                     Response message for ListBrands.
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_http_options()
 
             request, metadata = self._interceptor.pre_list_brands(request, metadata)
-            transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListBrands._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1427,15 +1176,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                IdentityAwareProxyOAuthServiceRestTransport._ListBrands._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = IdentityAwareProxyOAuthServiceRestTransport._ListBrands._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1451,12 +1193,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_list_brands(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_brands_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_brands_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListBrandsResponse.to_json(response)
                 except:
@@ -1478,24 +1216,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             return resp
 
     class _ListIdentityAwareProxyClients(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients,
-        IdentityAwareProxyOAuthServiceRestStub,
+        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients, IdentityAwareProxyOAuthServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "IdentityAwareProxyOAuthServiceRestTransport.ListIdentityAwareProxyClients"
-            )
+            return hash("IdentityAwareProxyOAuthServiceRestTransport.ListIdentityAwareProxyClients")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1538,13 +1265,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_identity_aware_proxy_clients(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_identity_aware_proxy_clients(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseListIdentityAwareProxyClients._get_transcoded_request(
                 http_options, request
             )
@@ -1554,12 +1277,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1583,12 +1302,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._ListIdentityAwareProxyClients._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1604,19 +1318,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_list_identity_aware_proxy_clients(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_identity_aware_proxy_clients_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_identity_aware_proxy_clients_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.ListIdentityAwareProxyClientsResponse.to_json(response)
-                    )
+                    response_payload = service.ListIdentityAwareProxyClientsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1636,24 +1341,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
             return resp
 
     class _ResetIdentityAwareProxyClientSecret(
-        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret,
-        IdentityAwareProxyOAuthServiceRestStub,
+        _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret, IdentityAwareProxyOAuthServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "IdentityAwareProxyOAuthServiceRestTransport.ResetIdentityAwareProxyClientSecret"
-            )
+            return hash("IdentityAwareProxyOAuthServiceRestTransport.ResetIdentityAwareProxyClientSecret")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1697,16 +1391,9 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_http_options()
-            )
+            http_options = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_reset_identity_aware_proxy_client_secret(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_reset_identity_aware_proxy_client_secret(request, metadata)
             transcoded_request = _BaseIdentityAwareProxyOAuthServiceRestTransport._BaseResetIdentityAwareProxyClientSecret._get_transcoded_request(
                 http_options, request
             )
@@ -1720,12 +1407,8 @@ class IdentityAwareProxyOAuthServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1749,13 +1432,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             # Send the request
             response = IdentityAwareProxyOAuthServiceRestTransport._ResetIdentityAwareProxyClientSecret._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1771,19 +1448,10 @@ class IdentityAwareProxyOAuthServiceRestTransport(
 
             resp = self._interceptor.post_reset_identity_aware_proxy_client_secret(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_reset_identity_aware_proxy_client_secret_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_identity_aware_proxy_client_secret_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.IdentityAwareProxyClient.to_json(
-                        response
-                    )
+                    response_payload = service.IdentityAwareProxyClient.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1809,20 +1477,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         return self._CreateBrand(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_identity_aware_proxy_client(
-        self,
-    ) -> Callable[
-        [service.CreateIdentityAwareProxyClientRequest],
-        service.IdentityAwareProxyClient,
-    ]:
+    def create_identity_aware_proxy_client(self) -> Callable[[service.CreateIdentityAwareProxyClientRequest], service.IdentityAwareProxyClient]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIdentityAwareProxyClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_identity_aware_proxy_client(
-        self,
-    ) -> Callable[[service.DeleteIdentityAwareProxyClientRequest], empty_pb2.Empty]:
+    def delete_identity_aware_proxy_client(self) -> Callable[[service.DeleteIdentityAwareProxyClientRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIdentityAwareProxyClient(self._session, self._host, self._interceptor)  # type: ignore
@@ -1834,19 +1495,13 @@ class IdentityAwareProxyOAuthServiceRestTransport(
         return self._GetBrand(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_identity_aware_proxy_client(
-        self,
-    ) -> Callable[
-        [service.GetIdentityAwareProxyClientRequest], service.IdentityAwareProxyClient
-    ]:
+    def get_identity_aware_proxy_client(self) -> Callable[[service.GetIdentityAwareProxyClientRequest], service.IdentityAwareProxyClient]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIdentityAwareProxyClient(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_brands(
-        self,
-    ) -> Callable[[service.ListBrandsRequest], service.ListBrandsResponse]:
+    def list_brands(self) -> Callable[[service.ListBrandsRequest], service.ListBrandsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBrands(self._session, self._host, self._interceptor)  # type: ignore
@@ -1854,10 +1509,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     @property
     def list_identity_aware_proxy_clients(
         self,
-    ) -> Callable[
-        [service.ListIdentityAwareProxyClientsRequest],
-        service.ListIdentityAwareProxyClientsResponse,
-    ]:
+    ) -> Callable[[service.ListIdentityAwareProxyClientsRequest], service.ListIdentityAwareProxyClientsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIdentityAwareProxyClients(self._session, self._host, self._interceptor)  # type: ignore
@@ -1865,10 +1517,7 @@ class IdentityAwareProxyOAuthServiceRestTransport(
     @property
     def reset_identity_aware_proxy_client_secret(
         self,
-    ) -> Callable[
-        [service.ResetIdentityAwareProxyClientSecretRequest],
-        service.IdentityAwareProxyClient,
-    ]:
+    ) -> Callable[[service.ResetIdentityAwareProxyClientSecretRequest], service.IdentityAwareProxyClient]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetIdentityAwareProxyClientSecret(self._session, self._host, self._interceptor)  # type: ignore

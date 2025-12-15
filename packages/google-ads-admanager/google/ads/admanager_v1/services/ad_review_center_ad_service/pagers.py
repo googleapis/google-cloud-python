@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    ad_review_center_ad_messages,
-    ad_review_center_ad_service,
-)
+from google.ads.admanager_v1.types import ad_review_center_ad_messages, ad_review_center_ad_service
 
 
 class SearchAdReviewCenterAdsPager:
@@ -64,9 +49,7 @@ class SearchAdReviewCenterAdsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., ad_review_center_ad_service.SearchAdReviewCenterAdsResponse
-        ],
+        method: Callable[..., ad_review_center_ad_service.SearchAdReviewCenterAdsResponse],
         request: ad_review_center_ad_service.SearchAdReviewCenterAdsRequest,
         response: ad_review_center_ad_service.SearchAdReviewCenterAdsResponse,
         *,
@@ -92,9 +75,7 @@ class SearchAdReviewCenterAdsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = ad_review_center_ad_service.SearchAdReviewCenterAdsRequest(
-            request
-        )
+        self._request = ad_review_center_ad_service.SearchAdReviewCenterAdsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,18 +85,11 @@ class SearchAdReviewCenterAdsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[ad_review_center_ad_service.SearchAdReviewCenterAdsResponse]:
+    def pages(self) -> Iterator[ad_review_center_ad_service.SearchAdReviewCenterAdsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[ad_review_center_ad_messages.AdReviewCenterAd]:

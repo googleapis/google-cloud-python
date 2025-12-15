@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.visionai_v1 import gapic_version as package_version
 from google.cloud.visionai_v1.types import lva_resources, lva_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class LiveVideoAnalyticsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -267,11 +257,7 @@ class LiveVideoAnalyticsTransport(abc.ABC):
     def list_public_operators(
         self,
     ) -> Callable[
-        [lva_service.ListPublicOperatorsRequest],
-        Union[
-            lva_service.ListPublicOperatorsResponse,
-            Awaitable[lva_service.ListPublicOperatorsResponse],
-        ],
+        [lva_service.ListPublicOperatorsRequest], Union[lva_service.ListPublicOperatorsResponse, Awaitable[lva_service.ListPublicOperatorsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -279,165 +265,80 @@ class LiveVideoAnalyticsTransport(abc.ABC):
     def resolve_operator_info(
         self,
     ) -> Callable[
-        [lva_service.ResolveOperatorInfoRequest],
-        Union[
-            lva_service.ResolveOperatorInfoResponse,
-            Awaitable[lva_service.ResolveOperatorInfoResponse],
-        ],
+        [lva_service.ResolveOperatorInfoRequest], Union[lva_service.ResolveOperatorInfoResponse, Awaitable[lva_service.ResolveOperatorInfoResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_operators(
         self,
-    ) -> Callable[
-        [lva_service.ListOperatorsRequest],
-        Union[
-            lva_service.ListOperatorsResponse,
-            Awaitable[lva_service.ListOperatorsResponse],
-        ],
-    ]:
+    ) -> Callable[[lva_service.ListOperatorsRequest], Union[lva_service.ListOperatorsResponse, Awaitable[lva_service.ListOperatorsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_operator(
-        self,
-    ) -> Callable[
-        [lva_service.GetOperatorRequest],
-        Union[lva_resources.Operator, Awaitable[lva_resources.Operator]],
-    ]:
+    def get_operator(self) -> Callable[[lva_service.GetOperatorRequest], Union[lva_resources.Operator, Awaitable[lva_resources.Operator]]]:
         raise NotImplementedError()
 
     @property
-    def create_operator(
-        self,
-    ) -> Callable[
-        [lva_service.CreateOperatorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_operator(self) -> Callable[[lva_service.CreateOperatorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_operator(
-        self,
-    ) -> Callable[
-        [lva_service.UpdateOperatorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_operator(self) -> Callable[[lva_service.UpdateOperatorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_operator(
-        self,
-    ) -> Callable[
-        [lva_service.DeleteOperatorRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_operator(self) -> Callable[[lva_service.DeleteOperatorRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_analyses(
         self,
-    ) -> Callable[
-        [lva_service.ListAnalysesRequest],
-        Union[
-            lva_service.ListAnalysesResponse,
-            Awaitable[lva_service.ListAnalysesResponse],
-        ],
-    ]:
+    ) -> Callable[[lva_service.ListAnalysesRequest], Union[lva_service.ListAnalysesResponse, Awaitable[lva_service.ListAnalysesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_analysis(
-        self,
-    ) -> Callable[
-        [lva_service.GetAnalysisRequest],
-        Union[lva_resources.Analysis, Awaitable[lva_resources.Analysis]],
-    ]:
+    def get_analysis(self) -> Callable[[lva_service.GetAnalysisRequest], Union[lva_resources.Analysis, Awaitable[lva_resources.Analysis]]]:
         raise NotImplementedError()
 
     @property
-    def create_analysis(
-        self,
-    ) -> Callable[
-        [lva_service.CreateAnalysisRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_analysis(self) -> Callable[[lva_service.CreateAnalysisRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_analysis(
-        self,
-    ) -> Callable[
-        [lva_service.UpdateAnalysisRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_analysis(self) -> Callable[[lva_service.UpdateAnalysisRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_analysis(
-        self,
-    ) -> Callable[
-        [lva_service.DeleteAnalysisRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_analysis(self) -> Callable[[lva_service.DeleteAnalysisRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_processes(
         self,
-    ) -> Callable[
-        [lva_service.ListProcessesRequest],
-        Union[
-            lva_service.ListProcessesResponse,
-            Awaitable[lva_service.ListProcessesResponse],
-        ],
-    ]:
+    ) -> Callable[[lva_service.ListProcessesRequest], Union[lva_service.ListProcessesResponse, Awaitable[lva_service.ListProcessesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_process(
-        self,
-    ) -> Callable[
-        [lva_service.GetProcessRequest],
-        Union[lva_resources.Process, Awaitable[lva_resources.Process]],
-    ]:
+    def get_process(self) -> Callable[[lva_service.GetProcessRequest], Union[lva_resources.Process, Awaitable[lva_resources.Process]]]:
         raise NotImplementedError()
 
     @property
-    def create_process(
-        self,
-    ) -> Callable[
-        [lva_service.CreateProcessRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_process(self) -> Callable[[lva_service.CreateProcessRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_process(
-        self,
-    ) -> Callable[
-        [lva_service.UpdateProcessRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_process(self) -> Callable[[lva_service.UpdateProcessRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_process(
-        self,
-    ) -> Callable[
-        [lva_service.DeleteProcessRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_process(self) -> Callable[[lva_service.DeleteProcessRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_run_process(
         self,
-    ) -> Callable[
-        [lva_service.BatchRunProcessRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[lva_service.BatchRunProcessRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -445,20 +346,14 @@ class LiveVideoAnalyticsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

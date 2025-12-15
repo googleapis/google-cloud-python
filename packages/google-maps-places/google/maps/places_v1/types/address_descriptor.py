@@ -135,12 +135,10 @@ class AddressDescriptor(proto.Message):
             proto.STRING,
             number=4,
         )
-        spatial_relationship: "AddressDescriptor.Landmark.SpatialRelationship" = (
-            proto.Field(
-                proto.ENUM,
-                number=5,
-                enum="AddressDescriptor.Landmark.SpatialRelationship",
-            )
+        spatial_relationship: "AddressDescriptor.Landmark.SpatialRelationship" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="AddressDescriptor.Landmark.SpatialRelationship",
         )
         straight_line_distance_meters: float = proto.Field(
             proto.FLOAT,

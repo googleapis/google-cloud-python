@@ -103,13 +103,8 @@ class TermsOfServiceServiceRestInterceptor:
     """
 
     def pre_accept_terms_of_service(
-        self,
-        request: termsofservice.AcceptTermsOfServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofservice.AcceptTermsOfServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: termsofservice.AcceptTermsOfServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofservice.AcceptTermsOfServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for accept_terms_of_service
 
         Override in a subclass to manipulate the request or metadata
@@ -117,9 +112,7 @@ class TermsOfServiceServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_accept_terms_of_service(
-        self, response: termsofservice.AcceptTermsOfServiceResponse
-    ) -> termsofservice.AcceptTermsOfServiceResponse:
+    def post_accept_terms_of_service(self, response: termsofservice.AcceptTermsOfServiceResponse) -> termsofservice.AcceptTermsOfServiceResponse:
         """Post-rpc interceptor for accept_terms_of_service
 
         DEPRECATED. Please use the `post_accept_terms_of_service_with_metadata`
@@ -133,13 +126,8 @@ class TermsOfServiceServiceRestInterceptor:
         return response
 
     def post_accept_terms_of_service_with_metadata(
-        self,
-        response: termsofservice.AcceptTermsOfServiceResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofservice.AcceptTermsOfServiceResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: termsofservice.AcceptTermsOfServiceResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofservice.AcceptTermsOfServiceResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for accept_terms_of_service
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -155,12 +143,8 @@ class TermsOfServiceServiceRestInterceptor:
         return response, metadata
 
     def pre_get_terms_of_service(
-        self,
-        request: termsofservice.GetTermsOfServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofservice.GetTermsOfServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: termsofservice.GetTermsOfServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofservice.GetTermsOfServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_terms_of_service
 
         Override in a subclass to manipulate the request or metadata
@@ -168,9 +152,7 @@ class TermsOfServiceServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_terms_of_service(
-        self, response: termsofservice.TermsOfService
-    ) -> termsofservice.TermsOfService:
+    def post_get_terms_of_service(self, response: termsofservice.TermsOfService) -> termsofservice.TermsOfService:
         """Post-rpc interceptor for get_terms_of_service
 
         DEPRECATED. Please use the `post_get_terms_of_service_with_metadata`
@@ -184,9 +166,7 @@ class TermsOfServiceServiceRestInterceptor:
         return response
 
     def post_get_terms_of_service_with_metadata(
-        self,
-        response: termsofservice.TermsOfService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: termsofservice.TermsOfService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[termsofservice.TermsOfService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_terms_of_service
 
@@ -203,13 +183,8 @@ class TermsOfServiceServiceRestInterceptor:
         return response, metadata
 
     def pre_retrieve_latest_terms_of_service(
-        self,
-        request: termsofservice.RetrieveLatestTermsOfServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        termsofservice.RetrieveLatestTermsOfServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: termsofservice.RetrieveLatestTermsOfServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[termsofservice.RetrieveLatestTermsOfServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retrieve_latest_terms_of_service
 
         Override in a subclass to manipulate the request or metadata
@@ -217,9 +192,7 @@ class TermsOfServiceServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_retrieve_latest_terms_of_service(
-        self, response: termsofservice.TermsOfService
-    ) -> termsofservice.TermsOfService:
+    def post_retrieve_latest_terms_of_service(self, response: termsofservice.TermsOfService) -> termsofservice.TermsOfService:
         """Post-rpc interceptor for retrieve_latest_terms_of_service
 
         DEPRECATED. Please use the `post_retrieve_latest_terms_of_service_with_metadata`
@@ -233,9 +206,7 @@ class TermsOfServiceServiceRestInterceptor:
         return response
 
     def post_retrieve_latest_terms_of_service_with_metadata(
-        self,
-        response: termsofservice.TermsOfService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: termsofservice.TermsOfService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[termsofservice.TermsOfService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retrieve_latest_terms_of_service
 
@@ -331,31 +302,18 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TermsOfServiceServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AcceptTermsOfService(
-        _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService,
-        TermsOfServiceServiceRestStub,
-    ):
+    class _AcceptTermsOfService(_BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService, TermsOfServiceServiceRestStub):
         def __hash__(self):
             return hash("TermsOfServiceServiceRestTransport.AcceptTermsOfService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -396,28 +354,16 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_http_options()
 
-            request, metadata = self._interceptor.pre_accept_terms_of_service(
-                request, metadata
-            )
-            transcoded_request = _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_accept_terms_of_service(request, metadata)
+            transcoded_request = _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTermsOfServiceServiceRestTransport._BaseAcceptTermsOfService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -440,15 +386,8 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                TermsOfServiceServiceRestTransport._AcceptTermsOfService._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TermsOfServiceServiceRestTransport._AcceptTermsOfService._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -464,16 +403,10 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             resp = self._interceptor.post_accept_terms_of_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_accept_terms_of_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_accept_terms_of_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        termsofservice.AcceptTermsOfServiceResponse.to_json(response)
-                    )
+                    response_payload = termsofservice.AcceptTermsOfServiceResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -492,23 +425,12 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                 )
             return resp
 
-    class _GetTermsOfService(
-        _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService,
-        TermsOfServiceServiceRestStub,
-    ):
+    class _GetTermsOfService(_BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService, TermsOfServiceServiceRestStub):
         def __hash__(self):
             return hash("TermsOfServiceServiceRestTransport.GetTermsOfService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -560,28 +482,16 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_terms_of_service(
-                request, metadata
-            )
-            transcoded_request = _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_terms_of_service(request, metadata)
+            transcoded_request = _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTermsOfServiceServiceRestTransport._BaseGetTermsOfService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -604,15 +514,8 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                TermsOfServiceServiceRestTransport._GetTermsOfService._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TermsOfServiceServiceRestTransport._GetTermsOfService._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -628,12 +531,8 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             resp = self._interceptor.post_get_terms_of_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_terms_of_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_terms_of_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = termsofservice.TermsOfService.to_json(response)
                 except:
@@ -654,25 +553,12 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
                 )
             return resp
 
-    class _RetrieveLatestTermsOfService(
-        _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService,
-        TermsOfServiceServiceRestStub,
-    ):
+    class _RetrieveLatestTermsOfService(_BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService, TermsOfServiceServiceRestStub):
         def __hash__(self):
-            return hash(
-                "TermsOfServiceServiceRestTransport.RetrieveLatestTermsOfService"
-            )
+            return hash("TermsOfServiceServiceRestTransport.RetrieveLatestTermsOfService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -726,28 +612,18 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_http_options()
-            )
+            http_options = _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_http_options()
 
-            request, metadata = self._interceptor.pre_retrieve_latest_terms_of_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_retrieve_latest_terms_of_service(request, metadata)
             transcoded_request = _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTermsOfServiceServiceRestTransport._BaseRetrieveLatestTermsOfService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -771,12 +647,7 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             # Send the request
             response = TermsOfServiceServiceRestTransport._RetrieveLatestTermsOfService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -792,15 +663,8 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
 
             resp = self._interceptor.post_retrieve_latest_terms_of_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_retrieve_latest_terms_of_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retrieve_latest_terms_of_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = termsofservice.TermsOfService.to_json(response)
                 except:
@@ -822,33 +686,19 @@ class TermsOfServiceServiceRestTransport(_BaseTermsOfServiceServiceRestTransport
             return resp
 
     @property
-    def accept_terms_of_service(
-        self,
-    ) -> Callable[
-        [termsofservice.AcceptTermsOfServiceRequest],
-        termsofservice.AcceptTermsOfServiceResponse,
-    ]:
+    def accept_terms_of_service(self) -> Callable[[termsofservice.AcceptTermsOfServiceRequest], termsofservice.AcceptTermsOfServiceResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AcceptTermsOfService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_terms_of_service(
-        self,
-    ) -> Callable[
-        [termsofservice.GetTermsOfServiceRequest], termsofservice.TermsOfService
-    ]:
+    def get_terms_of_service(self) -> Callable[[termsofservice.GetTermsOfServiceRequest], termsofservice.TermsOfService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTermsOfService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retrieve_latest_terms_of_service(
-        self,
-    ) -> Callable[
-        [termsofservice.RetrieveLatestTermsOfServiceRequest],
-        termsofservice.TermsOfService,
-    ]:
+    def retrieve_latest_terms_of_service(self) -> Callable[[termsofservice.RetrieveLatestTermsOfServiceRequest], termsofservice.TermsOfService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetrieveLatestTermsOfService(self._session, self._host, self._interceptor)  # type: ignore

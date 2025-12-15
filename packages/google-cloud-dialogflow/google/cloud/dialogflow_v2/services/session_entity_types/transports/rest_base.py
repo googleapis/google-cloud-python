@@ -23,9 +23,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflow_v2.types import (
-    session_entity_type as gcd_session_entity_type,
-)
+from google.cloud.dialogflow_v2.types import session_entity_type as gcd_session_entity_type
 from google.cloud.dialogflow_v2.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
@@ -77,20 +75,14 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateSessionEntityType:
@@ -101,11 +93,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -135,9 +123,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcd_session_entity_type.CreateSessionEntityTypeRequest.pb(
-                request
-            )
+            pb_request = gcd_session_entity_type.CreateSessionEntityTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -145,9 +131,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -158,11 +142,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSessionEntityTypesRestTransport._BaseCreateSessionEntityType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -175,11 +155,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -217,11 +193,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSessionEntityTypesRestTransport._BaseDeleteSessionEntityType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSessionEntityTypesRestTransport._BaseDeleteSessionEntityType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -234,11 +206,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -276,11 +244,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSessionEntityTypesRestTransport._BaseGetSessionEntityType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSessionEntityTypesRestTransport._BaseGetSessionEntityType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -293,11 +257,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -335,11 +295,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSessionEntityTypesRestTransport._BaseListSessionEntityTypes._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSessionEntityTypesRestTransport._BaseListSessionEntityTypes._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -352,11 +308,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -386,9 +338,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcd_session_entity_type.UpdateSessionEntityTypeRequest.pb(
-                request
-            )
+            pb_request = gcd_session_entity_type.UpdateSessionEntityTypeRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -396,9 +346,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -409,11 +357,7 @@ class _BaseSessionEntityTypesRestTransport(SessionEntityTypesTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseSessionEntityTypesRestTransport._BaseUpdateSessionEntityType._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

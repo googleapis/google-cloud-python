@@ -144,12 +144,8 @@ class TeamServiceRestInterceptor:
     """
 
     def pre_batch_activate_teams(
-        self,
-        request: team_service.BatchActivateTeamsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchActivateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: team_service.BatchActivateTeamsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchActivateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_activate_teams
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +153,7 @@ class TeamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_activate_teams(
-        self, response: team_service.BatchActivateTeamsResponse
-    ) -> team_service.BatchActivateTeamsResponse:
+    def post_batch_activate_teams(self, response: team_service.BatchActivateTeamsResponse) -> team_service.BatchActivateTeamsResponse:
         """Post-rpc interceptor for batch_activate_teams
 
         DEPRECATED. Please use the `post_batch_activate_teams_with_metadata`
@@ -173,12 +167,8 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_batch_activate_teams_with_metadata(
-        self,
-        response: team_service.BatchActivateTeamsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchActivateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: team_service.BatchActivateTeamsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchActivateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_activate_teams
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -194,12 +184,8 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_create_teams(
-        self,
-        request: team_service.BatchCreateTeamsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchCreateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: team_service.BatchCreateTeamsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchCreateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_teams
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +193,7 @@ class TeamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_teams(
-        self, response: team_service.BatchCreateTeamsResponse
-    ) -> team_service.BatchCreateTeamsResponse:
+    def post_batch_create_teams(self, response: team_service.BatchCreateTeamsResponse) -> team_service.BatchCreateTeamsResponse:
         """Post-rpc interceptor for batch_create_teams
 
         DEPRECATED. Please use the `post_batch_create_teams_with_metadata`
@@ -223,12 +207,8 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_batch_create_teams_with_metadata(
-        self,
-        response: team_service.BatchCreateTeamsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchCreateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: team_service.BatchCreateTeamsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchCreateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_teams
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -244,13 +224,8 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_deactivate_teams(
-        self,
-        request: team_service.BatchDeactivateTeamsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchDeactivateTeamsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: team_service.BatchDeactivateTeamsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchDeactivateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_deactivate_teams
 
         Override in a subclass to manipulate the request or metadata
@@ -258,9 +233,7 @@ class TeamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_deactivate_teams(
-        self, response: team_service.BatchDeactivateTeamsResponse
-    ) -> team_service.BatchDeactivateTeamsResponse:
+    def post_batch_deactivate_teams(self, response: team_service.BatchDeactivateTeamsResponse) -> team_service.BatchDeactivateTeamsResponse:
         """Post-rpc interceptor for batch_deactivate_teams
 
         DEPRECATED. Please use the `post_batch_deactivate_teams_with_metadata`
@@ -274,13 +247,8 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_batch_deactivate_teams_with_metadata(
-        self,
-        response: team_service.BatchDeactivateTeamsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchDeactivateTeamsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: team_service.BatchDeactivateTeamsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchDeactivateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_deactivate_teams
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -296,12 +264,8 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_update_teams(
-        self,
-        request: team_service.BatchUpdateTeamsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchUpdateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: team_service.BatchUpdateTeamsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchUpdateTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_teams
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +273,7 @@ class TeamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_teams(
-        self, response: team_service.BatchUpdateTeamsResponse
-    ) -> team_service.BatchUpdateTeamsResponse:
+    def post_batch_update_teams(self, response: team_service.BatchUpdateTeamsResponse) -> team_service.BatchUpdateTeamsResponse:
         """Post-rpc interceptor for batch_update_teams
 
         DEPRECATED. Please use the `post_batch_update_teams_with_metadata`
@@ -325,12 +287,8 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_batch_update_teams_with_metadata(
-        self,
-        response: team_service.BatchUpdateTeamsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        team_service.BatchUpdateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: team_service.BatchUpdateTeamsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[team_service.BatchUpdateTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_teams
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -346,9 +304,7 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_create_team(
-        self,
-        request: team_service.CreateTeamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: team_service.CreateTeamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_service.CreateTeamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_team
 
@@ -371,9 +327,7 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_create_team_with_metadata(
-        self,
-        response: team_messages.Team,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: team_messages.Team, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_messages.Team, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_team
 
@@ -390,9 +344,7 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_team(
-        self,
-        request: team_service.GetTeamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: team_service.GetTeamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_service.GetTeamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_team
 
@@ -415,9 +367,7 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_get_team_with_metadata(
-        self,
-        response: team_messages.Team,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: team_messages.Team, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_messages.Team, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_team
 
@@ -434,9 +384,7 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_teams(
-        self,
-        request: team_service.ListTeamsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: team_service.ListTeamsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_service.ListTeamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_teams
 
@@ -445,9 +393,7 @@ class TeamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_teams(
-        self, response: team_service.ListTeamsResponse
-    ) -> team_service.ListTeamsResponse:
+    def post_list_teams(self, response: team_service.ListTeamsResponse) -> team_service.ListTeamsResponse:
         """Post-rpc interceptor for list_teams
 
         DEPRECATED. Please use the `post_list_teams_with_metadata`
@@ -461,9 +407,7 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_list_teams_with_metadata(
-        self,
-        response: team_service.ListTeamsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: team_service.ListTeamsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_service.ListTeamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_teams
 
@@ -480,9 +424,7 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_update_team(
-        self,
-        request: team_service.UpdateTeamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: team_service.UpdateTeamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_service.UpdateTeamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_team
 
@@ -505,9 +447,7 @@ class TeamServiceRestInterceptor:
         return response
 
     def post_update_team_with_metadata(
-        self,
-        response: team_messages.Team,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: team_messages.Team, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[team_messages.Team, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_team
 
@@ -524,12 +464,8 @@ class TeamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -537,9 +473,7 @@ class TeamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -628,30 +562,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TeamServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchActivateTeams(
-        _BaseTeamServiceRestTransport._BaseBatchActivateTeams, TeamServiceRestStub
-    ):
+    class _BatchActivateTeams(_BaseTeamServiceRestTransport._BaseBatchActivateTeams, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.BatchActivateTeams")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -691,32 +613,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     Response object for ``BatchActivateTeams`` method.
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_activate_teams(
-                request, metadata
-            )
-            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_activate_teams(request, metadata)
+            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_transcoded_request(http_options, request)
 
-            body = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseBatchActivateTeams._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -740,13 +648,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._BatchActivateTeams._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -762,16 +664,10 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_batch_activate_teams(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_activate_teams_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_activate_teams_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = team_service.BatchActivateTeamsResponse.to_json(
-                        response
-                    )
+                    response_payload = team_service.BatchActivateTeamsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -790,22 +686,12 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 )
             return resp
 
-    class _BatchCreateTeams(
-        _BaseTeamServiceRestTransport._BaseBatchCreateTeams, TeamServiceRestStub
-    ):
+    class _BatchCreateTeams(_BaseTeamServiceRestTransport._BaseBatchCreateTeams, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.BatchCreateTeams")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -845,32 +731,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     Response object for ``BatchCreateTeams`` method.
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_teams(
-                request, metadata
-            )
-            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_teams(request, metadata)
+            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_transcoded_request(http_options, request)
 
-            body = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseBatchCreateTeams._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -894,13 +766,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._BatchCreateTeams._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -916,16 +782,10 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_teams(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_teams_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_teams_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = team_service.BatchCreateTeamsResponse.to_json(
-                        response
-                    )
+                    response_payload = team_service.BatchCreateTeamsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -944,22 +804,12 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeactivateTeams(
-        _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams, TeamServiceRestStub
-    ):
+    class _BatchDeactivateTeams(_BaseTeamServiceRestTransport._BaseBatchDeactivateTeams, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.BatchDeactivateTeams")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -999,32 +849,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     Response object for ``BatchDeactivateTeams`` method.
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_deactivate_teams(
-                request, metadata
-            )
-            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_deactivate_teams(request, metadata)
+            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_transcoded_request(http_options, request)
 
-            body = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseBatchDeactivateTeams._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1048,13 +884,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._BatchDeactivateTeams._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1070,16 +900,10 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_batch_deactivate_teams(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_deactivate_teams_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_deactivate_teams_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        team_service.BatchDeactivateTeamsResponse.to_json(response)
-                    )
+                    response_payload = team_service.BatchDeactivateTeamsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1098,22 +922,12 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 )
             return resp
 
-    class _BatchUpdateTeams(
-        _BaseTeamServiceRestTransport._BaseBatchUpdateTeams, TeamServiceRestStub
-    ):
+    class _BatchUpdateTeams(_BaseTeamServiceRestTransport._BaseBatchUpdateTeams, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.BatchUpdateTeams")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1153,32 +967,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                     Response object for ``BatchUpdateTeams`` method.
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_teams(
-                request, metadata
-            )
-            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_teams(request, metadata)
+            transcoded_request = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_transcoded_request(http_options, request)
 
-            body = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseBatchUpdateTeams._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1202,13 +1002,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._BatchUpdateTeams._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1224,16 +1018,10 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_teams(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_teams_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_teams_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = team_service.BatchUpdateTeamsResponse.to_json(
-                        response
-                    )
+                    response_payload = team_service.BatchUpdateTeamsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1252,22 +1040,12 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 )
             return resp
 
-    class _CreateTeam(
-        _BaseTeamServiceRestTransport._BaseCreateTeam, TeamServiceRestStub
-    ):
+    class _CreateTeam(_BaseTeamServiceRestTransport._BaseCreateTeam, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.CreateTeam")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1309,34 +1087,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseCreateTeam._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseCreateTeam._get_http_options()
 
             request, metadata = self._interceptor.pre_create_team(request, metadata)
-            transcoded_request = (
-                _BaseTeamServiceRestTransport._BaseCreateTeam._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTeamServiceRestTransport._BaseCreateTeam._get_transcoded_request(http_options, request)
 
-            body = _BaseTeamServiceRestTransport._BaseCreateTeam._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTeamServiceRestTransport._BaseCreateTeam._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTeamServiceRestTransport._BaseCreateTeam._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseCreateTeam._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1360,13 +1122,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._CreateTeam._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1382,12 +1138,8 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_create_team(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_team_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_team_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = team_messages.Team.to_json(response)
                 except:
@@ -1413,15 +1165,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             return hash("TeamServiceRestTransport.GetTeam")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1462,30 +1206,16 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseGetTeam._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseGetTeam._get_http_options()
 
             request, metadata = self._interceptor.pre_get_team(request, metadata)
-            transcoded_request = (
-                _BaseTeamServiceRestTransport._BaseGetTeam._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTeamServiceRestTransport._BaseGetTeam._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTeamServiceRestTransport._BaseGetTeam._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseGetTeam._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1508,14 +1238,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 )
 
             # Send the request
-            response = TeamServiceRestTransport._GetTeam._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TeamServiceRestTransport._GetTeam._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1530,12 +1253,8 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_get_team(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_team_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_team_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = team_messages.Team.to_json(response)
                 except:
@@ -1561,15 +1280,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             return hash("TeamServiceRestTransport.ListTeams")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1610,30 +1321,16 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseListTeams._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseListTeams._get_http_options()
 
             request, metadata = self._interceptor.pre_list_teams(request, metadata)
-            transcoded_request = (
-                _BaseTeamServiceRestTransport._BaseListTeams._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTeamServiceRestTransport._BaseListTeams._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTeamServiceRestTransport._BaseListTeams._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseListTeams._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1657,12 +1354,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._ListTeams._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1678,12 +1370,8 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_list_teams(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_teams_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_teams_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = team_service.ListTeamsResponse.to_json(response)
                 except:
@@ -1704,22 +1392,12 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 )
             return resp
 
-    class _UpdateTeam(
-        _BaseTeamServiceRestTransport._BaseUpdateTeam, TeamServiceRestStub
-    ):
+    class _UpdateTeam(_BaseTeamServiceRestTransport._BaseUpdateTeam, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.UpdateTeam")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1761,34 +1439,18 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseUpdateTeam._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseUpdateTeam._get_http_options()
 
             request, metadata = self._interceptor.pre_update_team(request, metadata)
-            transcoded_request = (
-                _BaseTeamServiceRestTransport._BaseUpdateTeam._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTeamServiceRestTransport._BaseUpdateTeam._get_transcoded_request(http_options, request)
 
-            body = _BaseTeamServiceRestTransport._BaseUpdateTeam._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTeamServiceRestTransport._BaseUpdateTeam._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTeamServiceRestTransport._BaseUpdateTeam._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseUpdateTeam._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1812,13 +1474,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._UpdateTeam._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1834,12 +1490,8 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             resp = self._interceptor.post_update_team(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_team_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_team_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = team_messages.Team.to_json(response)
                 except:
@@ -1861,51 +1513,31 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             return resp
 
     @property
-    def batch_activate_teams(
-        self,
-    ) -> Callable[
-        [team_service.BatchActivateTeamsRequest],
-        team_service.BatchActivateTeamsResponse,
-    ]:
+    def batch_activate_teams(self) -> Callable[[team_service.BatchActivateTeamsRequest], team_service.BatchActivateTeamsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchActivateTeams(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_create_teams(
-        self,
-    ) -> Callable[
-        [team_service.BatchCreateTeamsRequest], team_service.BatchCreateTeamsResponse
-    ]:
+    def batch_create_teams(self) -> Callable[[team_service.BatchCreateTeamsRequest], team_service.BatchCreateTeamsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateTeams(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_deactivate_teams(
-        self,
-    ) -> Callable[
-        [team_service.BatchDeactivateTeamsRequest],
-        team_service.BatchDeactivateTeamsResponse,
-    ]:
+    def batch_deactivate_teams(self) -> Callable[[team_service.BatchDeactivateTeamsRequest], team_service.BatchDeactivateTeamsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeactivateTeams(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_teams(
-        self,
-    ) -> Callable[
-        [team_service.BatchUpdateTeamsRequest], team_service.BatchUpdateTeamsResponse
-    ]:
+    def batch_update_teams(self) -> Callable[[team_service.BatchUpdateTeamsRequest], team_service.BatchUpdateTeamsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateTeams(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_team(
-        self,
-    ) -> Callable[[team_service.CreateTeamRequest], team_messages.Team]:
+    def create_team(self) -> Callable[[team_service.CreateTeamRequest], team_messages.Team]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTeam(self._session, self._host, self._interceptor)  # type: ignore
@@ -1917,17 +1549,13 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
         return self._GetTeam(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_teams(
-        self,
-    ) -> Callable[[team_service.ListTeamsRequest], team_service.ListTeamsResponse]:
+    def list_teams(self) -> Callable[[team_service.ListTeamsRequest], team_service.ListTeamsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTeams(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_team(
-        self,
-    ) -> Callable[[team_service.UpdateTeamRequest], team_messages.Team]:
+    def update_team(self) -> Callable[[team_service.UpdateTeamRequest], team_messages.Team]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTeam(self._session, self._host, self._interceptor)  # type: ignore
@@ -1936,22 +1564,12 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTeamServiceRestTransport._BaseGetOperation, TeamServiceRestStub
-    ):
+    class _GetOperation(_BaseTeamServiceRestTransport._BaseGetOperation, TeamServiceRestStub):
         def __hash__(self):
             return hash("TeamServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1989,30 +1607,16 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTeamServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTeamServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseTeamServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTeamServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTeamServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTeamServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2036,12 +1640,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
 
             # Send the request
             response = TeamServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2053,9 +1652,7 @@ class TeamServiceRestTransport(_BaseTeamServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .async_document_service_request import (
-    CreateDocumentMetadata,
-    UpdateDocumentMetadata,
-)
+from .async_document_service_request import CreateDocumentMetadata, UpdateDocumentMetadata
 from .common import (
     AccessControlMode,
     DatabaseType,
@@ -75,14 +72,7 @@ from .document_schema_service import (
     ListDocumentSchemasResponse,
     UpdateDocumentSchemaRequest,
 )
-from .document_service import (
-    CreateDocumentResponse,
-    FetchAclResponse,
-    QAResult,
-    SearchDocumentsResponse,
-    SetAclResponse,
-    UpdateDocumentResponse,
-)
+from .document_service import CreateDocumentResponse, FetchAclResponse, QAResult, SearchDocumentsResponse, SetAclResponse, UpdateDocumentResponse
 from .document_service_request import (
     CloudAIDocumentOption,
     CreateDocumentRequest,
@@ -94,19 +84,8 @@ from .document_service_request import (
     SetAclRequest,
     UpdateDocumentRequest,
 )
-from .filters import (
-    CustomWeightsMetadata,
-    DocumentQuery,
-    FileTypeFilter,
-    PropertyFilter,
-    TimeFilter,
-    WeightedSchemaProperty,
-)
-from .histogram import (
-    HistogramQuery,
-    HistogramQueryPropertyNameFilter,
-    HistogramQueryResult,
-)
+from .filters import CustomWeightsMetadata, DocumentQuery, FileTypeFilter, PropertyFilter, TimeFilter, WeightedSchemaProperty
+from .histogram import HistogramQuery, HistogramQueryPropertyNameFilter, HistogramQueryResult
 from .pipeline_service import RunPipelineRequest
 from .pipelines import (
     ExportToCdwPipeline,

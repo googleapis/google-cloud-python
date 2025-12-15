@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -82,30 +71,16 @@ class MapsPlatformDatasetsAsyncClient:
 
     dataset_path = staticmethod(MapsPlatformDatasetsClient.dataset_path)
     parse_dataset_path = staticmethod(MapsPlatformDatasetsClient.parse_dataset_path)
-    common_billing_account_path = staticmethod(
-        MapsPlatformDatasetsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        MapsPlatformDatasetsClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(MapsPlatformDatasetsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(MapsPlatformDatasetsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(MapsPlatformDatasetsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        MapsPlatformDatasetsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        MapsPlatformDatasetsClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        MapsPlatformDatasetsClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(MapsPlatformDatasetsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(MapsPlatformDatasetsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(MapsPlatformDatasetsClient.parse_common_organization_path)
     common_project_path = staticmethod(MapsPlatformDatasetsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        MapsPlatformDatasetsClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(MapsPlatformDatasetsClient.parse_common_project_path)
     common_location_path = staticmethod(MapsPlatformDatasetsClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        MapsPlatformDatasetsClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(MapsPlatformDatasetsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -141,9 +116,7 @@ class MapsPlatformDatasetsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -210,13 +183,7 @@ class MapsPlatformDatasetsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                MapsPlatformDatasetsTransport,
-                Callable[..., MapsPlatformDatasetsTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, MapsPlatformDatasetsTransport, Callable[..., MapsPlatformDatasetsTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -276,20 +243,14 @@ class MapsPlatformDatasetsAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.maps.mapsplatformdatasets_v1.MapsPlatformDatasetsAsyncClient`.",
                 extra={
                     "serviceName": "google.maps.mapsplatformdatasets.v1.MapsPlatformDatasets",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -300,9 +261,7 @@ class MapsPlatformDatasetsAsyncClient:
 
     async def create_dataset(
         self,
-        request: Optional[
-            Union[maps_platform_datasets.CreateDatasetRequest, dict]
-        ] = None,
+        request: Optional[Union[maps_platform_datasets.CreateDatasetRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         dataset: Optional[gmm_dataset.Dataset] = None,
@@ -374,14 +333,9 @@ class MapsPlatformDatasetsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, dataset]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -397,15 +351,11 @@ class MapsPlatformDatasetsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_dataset
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_dataset]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -423,9 +373,7 @@ class MapsPlatformDatasetsAsyncClient:
 
     async def update_dataset_metadata(
         self,
-        request: Optional[
-            Union[maps_platform_datasets.UpdateDatasetMetadataRequest, dict]
-        ] = None,
+        request: Optional[Union[maps_platform_datasets.UpdateDatasetMetadataRequest, dict]] = None,
         *,
         dataset: Optional[gmm_dataset.Dataset] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -497,14 +445,9 @@ class MapsPlatformDatasetsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -520,17 +463,11 @@ class MapsPlatformDatasetsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_dataset_metadata
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_dataset_metadata]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("dataset.name", request.dataset.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset.name", request.dataset.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -619,14 +556,9 @@ class MapsPlatformDatasetsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -640,15 +572,11 @@ class MapsPlatformDatasetsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_dataset
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_dataset]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -666,9 +594,7 @@ class MapsPlatformDatasetsAsyncClient:
 
     async def fetch_dataset_errors(
         self,
-        request: Optional[
-            Union[maps_platform_datasets.FetchDatasetErrorsRequest, dict]
-        ] = None,
+        request: Optional[Union[maps_platform_datasets.FetchDatasetErrorsRequest, dict]] = None,
         *,
         dataset: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -736,14 +662,9 @@ class MapsPlatformDatasetsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -757,15 +678,11 @@ class MapsPlatformDatasetsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_dataset_errors
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_dataset_errors]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -794,9 +711,7 @@ class MapsPlatformDatasetsAsyncClient:
 
     async def list_datasets(
         self,
-        request: Optional[
-            Union[maps_platform_datasets.ListDatasetsRequest, dict]
-        ] = None,
+        request: Optional[Union[maps_platform_datasets.ListDatasetsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -865,14 +780,9 @@ class MapsPlatformDatasetsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -886,15 +796,11 @@ class MapsPlatformDatasetsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_datasets
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_datasets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -923,9 +829,7 @@ class MapsPlatformDatasetsAsyncClient:
 
     async def delete_dataset(
         self,
-        request: Optional[
-            Union[maps_platform_datasets.DeleteDatasetRequest, dict]
-        ] = None,
+        request: Optional[Union[maps_platform_datasets.DeleteDatasetRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -979,14 +883,9 @@ class MapsPlatformDatasetsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1000,15 +899,11 @@ class MapsPlatformDatasetsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_dataset
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_dataset]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1028,9 +923,7 @@ class MapsPlatformDatasetsAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

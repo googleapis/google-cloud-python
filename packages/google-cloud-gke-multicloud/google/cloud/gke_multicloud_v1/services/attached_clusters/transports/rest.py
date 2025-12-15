@@ -152,13 +152,8 @@ class AttachedClustersRestInterceptor:
     """
 
     def pre_create_attached_cluster(
-        self,
-        request: attached_service.CreateAttachedClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.CreateAttachedClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.CreateAttachedClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.CreateAttachedClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -166,9 +161,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_attached_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_attached_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_attached_cluster
 
         DEPRECATED. Please use the `post_create_attached_cluster_with_metadata`
@@ -182,9 +175,7 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_create_attached_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_attached_cluster
 
@@ -201,13 +192,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_delete_attached_cluster(
-        self,
-        request: attached_service.DeleteAttachedClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.DeleteAttachedClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.DeleteAttachedClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.DeleteAttachedClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +201,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_attached_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_attached_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_attached_cluster
 
         DEPRECATED. Please use the `post_delete_attached_cluster_with_metadata`
@@ -231,9 +215,7 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_delete_attached_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_attached_cluster
 
@@ -250,13 +232,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_generate_attached_cluster_agent_token(
-        self,
-        request: attached_service.GenerateAttachedClusterAgentTokenRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.GenerateAttachedClusterAgentTokenRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.GenerateAttachedClusterAgentTokenRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.GenerateAttachedClusterAgentTokenRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_attached_cluster_agent_token
 
         Override in a subclass to manipulate the request or metadata
@@ -280,13 +257,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_generate_attached_cluster_agent_token_with_metadata(
-        self,
-        response: attached_service.GenerateAttachedClusterAgentTokenResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.GenerateAttachedClusterAgentTokenResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: attached_service.GenerateAttachedClusterAgentTokenResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.GenerateAttachedClusterAgentTokenResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_attached_cluster_agent_token
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -302,13 +274,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_generate_attached_cluster_install_manifest(
-        self,
-        request: attached_service.GenerateAttachedClusterInstallManifestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.GenerateAttachedClusterInstallManifestRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.GenerateAttachedClusterInstallManifestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.GenerateAttachedClusterInstallManifestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_attached_cluster_install_manifest
 
         Override in a subclass to manipulate the request or metadata
@@ -332,13 +299,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_generate_attached_cluster_install_manifest_with_metadata(
-        self,
-        response: attached_service.GenerateAttachedClusterInstallManifestResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.GenerateAttachedClusterInstallManifestResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: attached_service.GenerateAttachedClusterInstallManifestResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.GenerateAttachedClusterInstallManifestResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_attached_cluster_install_manifest
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -354,13 +316,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_get_attached_cluster(
-        self,
-        request: attached_service.GetAttachedClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.GetAttachedClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.GetAttachedClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.GetAttachedClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -368,9 +325,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_attached_cluster(
-        self, response: attached_resources.AttachedCluster
-    ) -> attached_resources.AttachedCluster:
+    def post_get_attached_cluster(self, response: attached_resources.AttachedCluster) -> attached_resources.AttachedCluster:
         """Post-rpc interceptor for get_attached_cluster
 
         DEPRECATED. Please use the `post_get_attached_cluster_with_metadata`
@@ -384,12 +339,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_get_attached_cluster_with_metadata(
-        self,
-        response: attached_resources.AttachedCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_resources.AttachedCluster, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: attached_resources.AttachedCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_resources.AttachedCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_attached_cluster
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -405,13 +356,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_get_attached_server_config(
-        self,
-        request: attached_service.GetAttachedServerConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.GetAttachedServerConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.GetAttachedServerConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.GetAttachedServerConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_attached_server_config
 
         Override in a subclass to manipulate the request or metadata
@@ -419,9 +365,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_attached_server_config(
-        self, response: attached_resources.AttachedServerConfig
-    ) -> attached_resources.AttachedServerConfig:
+    def post_get_attached_server_config(self, response: attached_resources.AttachedServerConfig) -> attached_resources.AttachedServerConfig:
         """Post-rpc interceptor for get_attached_server_config
 
         DEPRECATED. Please use the `post_get_attached_server_config_with_metadata`
@@ -435,12 +379,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_get_attached_server_config_with_metadata(
-        self,
-        response: attached_resources.AttachedServerConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_resources.AttachedServerConfig, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: attached_resources.AttachedServerConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_resources.AttachedServerConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_attached_server_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -456,13 +396,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_import_attached_cluster(
-        self,
-        request: attached_service.ImportAttachedClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.ImportAttachedClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.ImportAttachedClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.ImportAttachedClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -470,9 +405,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_import_attached_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_attached_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_attached_cluster
 
         DEPRECATED. Please use the `post_import_attached_cluster_with_metadata`
@@ -486,9 +419,7 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_import_attached_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_attached_cluster
 
@@ -505,13 +436,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_list_attached_clusters(
-        self,
-        request: attached_service.ListAttachedClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.ListAttachedClustersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.ListAttachedClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.ListAttachedClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_attached_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -519,9 +445,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_attached_clusters(
-        self, response: attached_service.ListAttachedClustersResponse
-    ) -> attached_service.ListAttachedClustersResponse:
+    def post_list_attached_clusters(self, response: attached_service.ListAttachedClustersResponse) -> attached_service.ListAttachedClustersResponse:
         """Post-rpc interceptor for list_attached_clusters
 
         DEPRECATED. Please use the `post_list_attached_clusters_with_metadata`
@@ -535,13 +459,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_list_attached_clusters_with_metadata(
-        self,
-        response: attached_service.ListAttachedClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.ListAttachedClustersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: attached_service.ListAttachedClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.ListAttachedClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_attached_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -557,13 +476,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_update_attached_cluster(
-        self,
-        request: attached_service.UpdateAttachedClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        attached_service.UpdateAttachedClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: attached_service.UpdateAttachedClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[attached_service.UpdateAttachedClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_attached_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -571,9 +485,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_attached_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_attached_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_attached_cluster
 
         DEPRECATED. Please use the `post_update_attached_cluster_with_metadata`
@@ -587,9 +499,7 @@ class AttachedClustersRestInterceptor:
         return response
 
     def post_update_attached_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_attached_cluster
 
@@ -606,12 +516,8 @@ class AttachedClustersRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -629,12 +535,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -652,12 +554,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -665,9 +563,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -677,12 +573,8 @@ class AttachedClustersRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -690,9 +582,7 @@ class AttachedClustersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -787,9 +677,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -842,30 +730,17 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAttachedCluster(
-        _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster,
-        AttachedClustersRestStub,
-    ):
+    class _CreateAttachedCluster(_BaseAttachedClustersRestTransport._BaseCreateAttachedCluster, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.CreateAttachedCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -909,32 +784,18 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_attached_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_attached_cluster(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseCreateAttachedCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -957,16 +818,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AttachedClustersRestTransport._CreateAttachedCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AttachedClustersRestTransport._CreateAttachedCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -980,12 +833,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_create_attached_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_attached_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_attached_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1006,23 +855,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _DeleteAttachedCluster(
-        _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster,
-        AttachedClustersRestStub,
-    ):
+    class _DeleteAttachedCluster(_BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.DeleteAttachedCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1065,28 +903,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_attached_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_attached_cluster(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseDeleteAttachedCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1109,15 +935,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AttachedClustersRestTransport._DeleteAttachedCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AttachedClustersRestTransport._DeleteAttachedCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1131,12 +950,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_delete_attached_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_attached_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_attached_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1157,25 +972,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _GenerateAttachedClusterAgentToken(
-        _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken,
-        AttachedClustersRestStub,
-    ):
+    class _GenerateAttachedClusterAgentToken(_BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken, AttachedClustersRestStub):
         def __hash__(self):
-            return hash(
-                "AttachedClustersRestTransport.GenerateAttachedClusterAgentToken"
-            )
+            return hash("AttachedClustersRestTransport.GenerateAttachedClusterAgentToken")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1216,35 +1018,20 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_attached_cluster_agent_token(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_generate_attached_cluster_agent_token(request, metadata)
             transcoded_request = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterAgentToken._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1268,13 +1055,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._GenerateAttachedClusterAgentToken._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1284,27 +1065,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Return the response
             resp = attached_service.GenerateAttachedClusterAgentTokenResponse()
-            pb_resp = attached_service.GenerateAttachedClusterAgentTokenResponse.pb(
-                resp
-            )
+            pb_resp = attached_service.GenerateAttachedClusterAgentTokenResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_attached_cluster_agent_token(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_attached_cluster_agent_token_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_attached_cluster_agent_token_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = attached_service.GenerateAttachedClusterAgentTokenResponse.to_json(
-                        response
-                    )
+                    response_payload = attached_service.GenerateAttachedClusterAgentTokenResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1324,24 +1094,13 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
             return resp
 
     class _GenerateAttachedClusterInstallManifest(
-        _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest,
-        AttachedClustersRestStub,
+        _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest, AttachedClustersRestStub
     ):
         def __hash__(self):
-            return hash(
-                "AttachedClustersRestTransport.GenerateAttachedClusterInstallManifest"
-            )
+            return hash("AttachedClustersRestTransport.GenerateAttachedClusterInstallManifest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1386,31 +1145,18 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_attached_cluster_install_manifest(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_generate_attached_cluster_install_manifest(request, metadata)
             transcoded_request = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseGenerateAttachedClusterInstallManifest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1434,12 +1180,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._GenerateAttachedClusterInstallManifest._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1449,29 +1190,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Return the response
             resp = attached_service.GenerateAttachedClusterInstallManifestResponse()
-            pb_resp = (
-                attached_service.GenerateAttachedClusterInstallManifestResponse.pb(resp)
-            )
+            pb_resp = attached_service.GenerateAttachedClusterInstallManifestResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_generate_attached_cluster_install_manifest(
-                resp
-            )
+            resp = self._interceptor.post_generate_attached_cluster_install_manifest(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_attached_cluster_install_manifest_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_attached_cluster_install_manifest_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = attached_service.GenerateAttachedClusterInstallManifestResponse.to_json(
-                        response
-                    )
+                    response_payload = attached_service.GenerateAttachedClusterInstallManifestResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1490,23 +1218,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _GetAttachedCluster(
-        _BaseAttachedClustersRestTransport._BaseGetAttachedCluster,
-        AttachedClustersRestStub,
-    ):
+    class _GetAttachedCluster(_BaseAttachedClustersRestTransport._BaseGetAttachedCluster, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.GetAttachedCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1548,28 +1265,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_attached_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_attached_cluster(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseGetAttachedCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1593,12 +1298,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._GetAttachedCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1614,16 +1314,10 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_get_attached_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_attached_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_attached_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = attached_resources.AttachedCluster.to_json(
-                        response
-                    )
+                    response_payload = attached_resources.AttachedCluster.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1642,23 +1336,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _GetAttachedServerConfig(
-        _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig,
-        AttachedClustersRestStub,
-    ):
+    class _GetAttachedServerConfig(_BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.GetAttachedServerConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1702,28 +1385,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_attached_server_config(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_attached_server_config(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseGetAttachedServerConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1746,15 +1417,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AttachedClustersRestTransport._GetAttachedServerConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AttachedClustersRestTransport._GetAttachedServerConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1770,16 +1434,10 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_get_attached_server_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_attached_server_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_attached_server_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = attached_resources.AttachedServerConfig.to_json(
-                        response
-                    )
+                    response_payload = attached_resources.AttachedServerConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1798,23 +1456,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _ImportAttachedCluster(
-        _BaseAttachedClustersRestTransport._BaseImportAttachedCluster,
-        AttachedClustersRestStub,
-    ):
+    class _ImportAttachedCluster(_BaseAttachedClustersRestTransport._BaseImportAttachedCluster, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.ImportAttachedCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1858,32 +1505,18 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_attached_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_attached_cluster(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseImportAttachedCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1906,16 +1539,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AttachedClustersRestTransport._ImportAttachedCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AttachedClustersRestTransport._ImportAttachedCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1929,12 +1554,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_import_attached_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_attached_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_attached_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1955,23 +1576,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _ListAttachedClusters(
-        _BaseAttachedClustersRestTransport._BaseListAttachedClusters,
-        AttachedClustersRestStub,
-    ):
+    class _ListAttachedClusters(_BaseAttachedClustersRestTransport._BaseListAttachedClusters, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.ListAttachedClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2013,28 +1623,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_attached_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_attached_clusters(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseListAttachedClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2057,15 +1655,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AttachedClustersRestTransport._ListAttachedClusters._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AttachedClustersRestTransport._ListAttachedClusters._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2081,16 +1672,10 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_list_attached_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_attached_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_attached_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        attached_service.ListAttachedClustersResponse.to_json(response)
-                    )
+                    response_payload = attached_service.ListAttachedClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2109,23 +1694,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
             return resp
 
-    class _UpdateAttachedCluster(
-        _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster,
-        AttachedClustersRestStub,
-    ):
+    class _UpdateAttachedCluster(_BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.UpdateAttachedCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2169,32 +1743,18 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_attached_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_attached_cluster(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseUpdateAttachedCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2217,16 +1777,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 )
 
             # Send the request
-            response = (
-                AttachedClustersRestTransport._UpdateAttachedCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AttachedClustersRestTransport._UpdateAttachedCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2240,12 +1792,8 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             resp = self._interceptor.post_update_attached_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_attached_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_attached_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2267,21 +1815,13 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
             return resp
 
     @property
-    def create_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.CreateAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def create_attached_cluster(self) -> Callable[[attached_service.CreateAttachedClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.DeleteAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_attached_cluster(self) -> Callable[[attached_service.DeleteAttachedClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -2289,10 +1829,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     @property
     def generate_attached_cluster_agent_token(
         self,
-    ) -> Callable[
-        [attached_service.GenerateAttachedClusterAgentTokenRequest],
-        attached_service.GenerateAttachedClusterAgentTokenResponse,
-    ]:
+    ) -> Callable[[attached_service.GenerateAttachedClusterAgentTokenRequest], attached_service.GenerateAttachedClusterAgentTokenResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAttachedClusterAgentToken(self._session, self._host, self._interceptor)  # type: ignore
@@ -2300,62 +1837,37 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     @property
     def generate_attached_cluster_install_manifest(
         self,
-    ) -> Callable[
-        [attached_service.GenerateAttachedClusterInstallManifestRequest],
-        attached_service.GenerateAttachedClusterInstallManifestResponse,
-    ]:
+    ) -> Callable[[attached_service.GenerateAttachedClusterInstallManifestRequest], attached_service.GenerateAttachedClusterInstallManifestResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAttachedClusterInstallManifest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.GetAttachedClusterRequest], attached_resources.AttachedCluster
-    ]:
+    def get_attached_cluster(self) -> Callable[[attached_service.GetAttachedClusterRequest], attached_resources.AttachedCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_attached_server_config(
-        self,
-    ) -> Callable[
-        [attached_service.GetAttachedServerConfigRequest],
-        attached_resources.AttachedServerConfig,
-    ]:
+    def get_attached_server_config(self) -> Callable[[attached_service.GetAttachedServerConfigRequest], attached_resources.AttachedServerConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAttachedServerConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.ImportAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def import_attached_cluster(self) -> Callable[[attached_service.ImportAttachedClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_attached_clusters(
-        self,
-    ) -> Callable[
-        [attached_service.ListAttachedClustersRequest],
-        attached_service.ListAttachedClustersResponse,
-    ]:
+    def list_attached_clusters(self) -> Callable[[attached_service.ListAttachedClustersRequest], attached_service.ListAttachedClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAttachedClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.UpdateAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def update_attached_cluster(self) -> Callable[[attached_service.UpdateAttachedClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAttachedCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -2364,23 +1876,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAttachedClustersRestTransport._BaseCancelOperation,
-        AttachedClustersRestStub,
-    ):
+    class _CancelOperation(_BaseAttachedClustersRestTransport._BaseCancelOperation, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2416,32 +1917,18 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2465,13 +1952,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2485,23 +1966,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseAttachedClustersRestTransport._BaseDeleteOperation,
-        AttachedClustersRestStub,
-    ):
+    class _DeleteOperation(_BaseAttachedClustersRestTransport._BaseDeleteOperation, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2536,28 +2006,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2581,12 +2039,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2600,22 +2053,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAttachedClustersRestTransport._BaseGetOperation, AttachedClustersRestStub
-    ):
+    class _GetOperation(_BaseAttachedClustersRestTransport._BaseGetOperation, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2653,26 +2096,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2696,12 +2129,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2713,9 +2141,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2740,22 +2166,12 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAttachedClustersRestTransport._BaseListOperations, AttachedClustersRestStub
-    ):
+    class _ListOperations(_BaseAttachedClustersRestTransport._BaseListOperations, AttachedClustersRestStub):
         def __hash__(self):
             return hash("AttachedClustersRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2793,26 +2209,16 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAttachedClustersRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAttachedClustersRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAttachedClustersRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAttachedClustersRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAttachedClustersRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAttachedClustersRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2836,12 +2242,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
 
             # Send the request
             response = AttachedClustersRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2853,9 +2254,7 @@ class AttachedClustersRestTransport(_BaseAttachedClustersRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

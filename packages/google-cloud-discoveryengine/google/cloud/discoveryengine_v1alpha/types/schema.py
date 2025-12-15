@@ -479,9 +479,7 @@ class FieldConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    advanced_site_search_data_sources: MutableSequence[
-        AdvancedSiteSearchDataSource
-    ] = proto.RepeatedField(
+    advanced_site_search_data_sources: MutableSequence[AdvancedSiteSearchDataSource] = proto.RepeatedField(
         proto.ENUM,
         number=10,
         enum=AdvancedSiteSearchDataSource,

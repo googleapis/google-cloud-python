@@ -362,12 +362,8 @@ class TelcoAutomationRestInterceptor:
     """
 
     def pre_apply_deployment(
-        self,
-        request: telcoautomation.ApplyDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ApplyDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.ApplyDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ApplyDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for apply_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -375,9 +371,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_apply_deployment(
-        self, response: telcoautomation.Deployment
-    ) -> telcoautomation.Deployment:
+    def post_apply_deployment(self, response: telcoautomation.Deployment) -> telcoautomation.Deployment:
         """Post-rpc interceptor for apply_deployment
 
         DEPRECATED. Please use the `post_apply_deployment_with_metadata`
@@ -391,9 +385,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_apply_deployment_with_metadata(
-        self,
-        response: telcoautomation.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for apply_deployment
 
@@ -410,13 +402,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_apply_hydrated_deployment(
-        self,
-        request: telcoautomation.ApplyHydratedDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ApplyHydratedDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ApplyHydratedDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ApplyHydratedDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for apply_hydrated_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -424,9 +411,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_apply_hydrated_deployment(
-        self, response: telcoautomation.HydratedDeployment
-    ) -> telcoautomation.HydratedDeployment:
+    def post_apply_hydrated_deployment(self, response: telcoautomation.HydratedDeployment) -> telcoautomation.HydratedDeployment:
         """Post-rpc interceptor for apply_hydrated_deployment
 
         DEPRECATED. Please use the `post_apply_hydrated_deployment_with_metadata`
@@ -440,12 +425,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_apply_hydrated_deployment_with_metadata(
-        self,
-        response: telcoautomation.HydratedDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.HydratedDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for apply_hydrated_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -461,12 +442,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_approve_blueprint(
-        self,
-        request: telcoautomation.ApproveBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ApproveBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.ApproveBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ApproveBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -474,9 +451,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_approve_blueprint(
-        self, response: telcoautomation.Blueprint
-    ) -> telcoautomation.Blueprint:
+    def post_approve_blueprint(self, response: telcoautomation.Blueprint) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for approve_blueprint
 
         DEPRECATED. Please use the `post_approve_blueprint_with_metadata`
@@ -490,9 +465,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_approve_blueprint_with_metadata(
-        self,
-        response: telcoautomation.Blueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Blueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for approve_blueprint
 
@@ -509,13 +482,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_compute_deployment_status(
-        self,
-        request: telcoautomation.ComputeDeploymentStatusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ComputeDeploymentStatusRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ComputeDeploymentStatusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ComputeDeploymentStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for compute_deployment_status
 
         Override in a subclass to manipulate the request or metadata
@@ -539,13 +507,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_compute_deployment_status_with_metadata(
-        self,
-        response: telcoautomation.ComputeDeploymentStatusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ComputeDeploymentStatusResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.ComputeDeploymentStatusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ComputeDeploymentStatusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for compute_deployment_status
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -561,12 +524,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_create_blueprint(
-        self,
-        request: telcoautomation.CreateBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.CreateBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.CreateBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.CreateBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -574,9 +533,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_blueprint(
-        self, response: telcoautomation.Blueprint
-    ) -> telcoautomation.Blueprint:
+    def post_create_blueprint(self, response: telcoautomation.Blueprint) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for create_blueprint
 
         DEPRECATED. Please use the `post_create_blueprint_with_metadata`
@@ -590,9 +547,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_create_blueprint_with_metadata(
-        self,
-        response: telcoautomation.Blueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Blueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_blueprint
 
@@ -609,12 +564,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_create_deployment(
-        self,
-        request: telcoautomation.CreateDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.CreateDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -622,9 +573,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_deployment(
-        self, response: telcoautomation.Deployment
-    ) -> telcoautomation.Deployment:
+    def post_create_deployment(self, response: telcoautomation.Deployment) -> telcoautomation.Deployment:
         """Post-rpc interceptor for create_deployment
 
         DEPRECATED. Please use the `post_create_deployment_with_metadata`
@@ -638,9 +587,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_create_deployment_with_metadata(
-        self,
-        response: telcoautomation.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_deployment
 
@@ -657,12 +604,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_create_edge_slm(
-        self,
-        request: telcoautomation.CreateEdgeSlmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.CreateEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.CreateEdgeSlmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.CreateEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_edge_slm
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +613,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_edge_slm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_edge_slm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_edge_slm
 
         DEPRECATED. Please use the `post_create_edge_slm_with_metadata`
@@ -686,9 +627,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_create_edge_slm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_edge_slm
 
@@ -705,13 +644,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_create_orchestration_cluster(
-        self,
-        request: telcoautomation.CreateOrchestrationClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.CreateOrchestrationClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.CreateOrchestrationClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.CreateOrchestrationClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_orchestration_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -719,9 +653,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_orchestration_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_orchestration_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_orchestration_cluster
 
         DEPRECATED. Please use the `post_create_orchestration_cluster_with_metadata`
@@ -735,9 +667,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_create_orchestration_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_orchestration_cluster
 
@@ -754,12 +684,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_delete_blueprint(
-        self,
-        request: telcoautomation.DeleteBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DeleteBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.DeleteBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DeleteBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -768,12 +694,8 @@ class TelcoAutomationRestInterceptor:
         return request, metadata
 
     def pre_delete_edge_slm(
-        self,
-        request: telcoautomation.DeleteEdgeSlmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DeleteEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.DeleteEdgeSlmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DeleteEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_edge_slm
 
         Override in a subclass to manipulate the request or metadata
@@ -781,9 +703,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_edge_slm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_edge_slm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_edge_slm
 
         DEPRECATED. Please use the `post_delete_edge_slm_with_metadata`
@@ -797,9 +717,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_delete_edge_slm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_edge_slm
 
@@ -816,13 +734,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_delete_orchestration_cluster(
-        self,
-        request: telcoautomation.DeleteOrchestrationClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DeleteOrchestrationClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.DeleteOrchestrationClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DeleteOrchestrationClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_orchestration_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -830,9 +743,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_orchestration_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_orchestration_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_orchestration_cluster
 
         DEPRECATED. Please use the `post_delete_orchestration_cluster_with_metadata`
@@ -846,9 +757,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_delete_orchestration_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_orchestration_cluster
 
@@ -865,13 +774,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_discard_blueprint_changes(
-        self,
-        request: telcoautomation.DiscardBlueprintChangesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DiscardBlueprintChangesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.DiscardBlueprintChangesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DiscardBlueprintChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for discard_blueprint_changes
 
         Override in a subclass to manipulate the request or metadata
@@ -895,13 +799,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_discard_blueprint_changes_with_metadata(
-        self,
-        response: telcoautomation.DiscardBlueprintChangesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DiscardBlueprintChangesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.DiscardBlueprintChangesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DiscardBlueprintChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for discard_blueprint_changes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -917,13 +816,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_discard_deployment_changes(
-        self,
-        request: telcoautomation.DiscardDeploymentChangesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DiscardDeploymentChangesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.DiscardDeploymentChangesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DiscardDeploymentChangesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for discard_deployment_changes
 
         Override in a subclass to manipulate the request or metadata
@@ -947,13 +841,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_discard_deployment_changes_with_metadata(
-        self,
-        response: telcoautomation.DiscardDeploymentChangesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.DiscardDeploymentChangesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.DiscardDeploymentChangesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.DiscardDeploymentChangesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for discard_deployment_changes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -969,12 +858,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_blueprint(
-        self,
-        request: telcoautomation.GetBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.GetBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.GetBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.GetBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -982,9 +867,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_blueprint(
-        self, response: telcoautomation.Blueprint
-    ) -> telcoautomation.Blueprint:
+    def post_get_blueprint(self, response: telcoautomation.Blueprint) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for get_blueprint
 
         DEPRECATED. Please use the `post_get_blueprint_with_metadata`
@@ -998,9 +881,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_get_blueprint_with_metadata(
-        self,
-        response: telcoautomation.Blueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Blueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_blueprint
 
@@ -1017,12 +898,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_deployment(
-        self,
-        request: telcoautomation.GetDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.GetDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1030,9 +907,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_deployment(
-        self, response: telcoautomation.Deployment
-    ) -> telcoautomation.Deployment:
+    def post_get_deployment(self, response: telcoautomation.Deployment) -> telcoautomation.Deployment:
         """Post-rpc interceptor for get_deployment
 
         DEPRECATED. Please use the `post_get_deployment_with_metadata`
@@ -1046,9 +921,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_get_deployment_with_metadata(
-        self,
-        response: telcoautomation.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_deployment
 
@@ -1065,12 +938,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_edge_slm(
-        self,
-        request: telcoautomation.GetEdgeSlmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.GetEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.GetEdgeSlmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.GetEdgeSlmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_edge_slm
 
         Override in a subclass to manipulate the request or metadata
@@ -1078,9 +947,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_edge_slm(
-        self, response: telcoautomation.EdgeSlm
-    ) -> telcoautomation.EdgeSlm:
+    def post_get_edge_slm(self, response: telcoautomation.EdgeSlm) -> telcoautomation.EdgeSlm:
         """Post-rpc interceptor for get_edge_slm
 
         DEPRECATED. Please use the `post_get_edge_slm_with_metadata`
@@ -1094,9 +961,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_get_edge_slm_with_metadata(
-        self,
-        response: telcoautomation.EdgeSlm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.EdgeSlm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.EdgeSlm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_edge_slm
 
@@ -1113,13 +978,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_hydrated_deployment(
-        self,
-        request: telcoautomation.GetHydratedDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.GetHydratedDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.GetHydratedDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.GetHydratedDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_hydrated_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1127,9 +987,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_hydrated_deployment(
-        self, response: telcoautomation.HydratedDeployment
-    ) -> telcoautomation.HydratedDeployment:
+    def post_get_hydrated_deployment(self, response: telcoautomation.HydratedDeployment) -> telcoautomation.HydratedDeployment:
         """Post-rpc interceptor for get_hydrated_deployment
 
         DEPRECATED. Please use the `post_get_hydrated_deployment_with_metadata`
@@ -1143,12 +1001,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_get_hydrated_deployment_with_metadata(
-        self,
-        response: telcoautomation.HydratedDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.HydratedDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_hydrated_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1164,13 +1018,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_orchestration_cluster(
-        self,
-        request: telcoautomation.GetOrchestrationClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.GetOrchestrationClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.GetOrchestrationClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.GetOrchestrationClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_orchestration_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1178,9 +1027,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_orchestration_cluster(
-        self, response: telcoautomation.OrchestrationCluster
-    ) -> telcoautomation.OrchestrationCluster:
+    def post_get_orchestration_cluster(self, response: telcoautomation.OrchestrationCluster) -> telcoautomation.OrchestrationCluster:
         """Post-rpc interceptor for get_orchestration_cluster
 
         DEPRECATED. Please use the `post_get_orchestration_cluster_with_metadata`
@@ -1194,12 +1041,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_get_orchestration_cluster_with_metadata(
-        self,
-        response: telcoautomation.OrchestrationCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.OrchestrationCluster, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.OrchestrationCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.OrchestrationCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_orchestration_cluster
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1215,13 +1058,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_public_blueprint(
-        self,
-        request: telcoautomation.GetPublicBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.GetPublicBlueprintRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.GetPublicBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.GetPublicBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_public_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1229,9 +1067,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_public_blueprint(
-        self, response: telcoautomation.PublicBlueprint
-    ) -> telcoautomation.PublicBlueprint:
+    def post_get_public_blueprint(self, response: telcoautomation.PublicBlueprint) -> telcoautomation.PublicBlueprint:
         """Post-rpc interceptor for get_public_blueprint
 
         DEPRECATED. Please use the `post_get_public_blueprint_with_metadata`
@@ -1245,12 +1081,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_get_public_blueprint_with_metadata(
-        self,
-        response: telcoautomation.PublicBlueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.PublicBlueprint, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.PublicBlueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.PublicBlueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_public_blueprint
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1266,13 +1098,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_blueprint_revisions(
-        self,
-        request: telcoautomation.ListBlueprintRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListBlueprintRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ListBlueprintRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListBlueprintRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_blueprint_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -1296,13 +1123,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_blueprint_revisions_with_metadata(
-        self,
-        response: telcoautomation.ListBlueprintRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListBlueprintRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.ListBlueprintRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListBlueprintRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_blueprint_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1318,12 +1140,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_blueprints(
-        self,
-        request: telcoautomation.ListBlueprintsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListBlueprintsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.ListBlueprintsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListBlueprintsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_blueprints
 
         Override in a subclass to manipulate the request or metadata
@@ -1331,9 +1149,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_blueprints(
-        self, response: telcoautomation.ListBlueprintsResponse
-    ) -> telcoautomation.ListBlueprintsResponse:
+    def post_list_blueprints(self, response: telcoautomation.ListBlueprintsResponse) -> telcoautomation.ListBlueprintsResponse:
         """Post-rpc interceptor for list_blueprints
 
         DEPRECATED. Please use the `post_list_blueprints_with_metadata`
@@ -1347,12 +1163,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_blueprints_with_metadata(
-        self,
-        response: telcoautomation.ListBlueprintsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListBlueprintsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.ListBlueprintsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListBlueprintsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_blueprints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1368,13 +1180,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_deployment_revisions(
-        self,
-        request: telcoautomation.ListDeploymentRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListDeploymentRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ListDeploymentRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListDeploymentRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_deployment_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -1398,13 +1205,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_deployment_revisions_with_metadata(
-        self,
-        response: telcoautomation.ListDeploymentRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListDeploymentRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.ListDeploymentRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListDeploymentRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_deployment_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1420,12 +1222,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_deployments(
-        self,
-        request: telcoautomation.ListDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.ListDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -1433,9 +1231,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_deployments(
-        self, response: telcoautomation.ListDeploymentsResponse
-    ) -> telcoautomation.ListDeploymentsResponse:
+    def post_list_deployments(self, response: telcoautomation.ListDeploymentsResponse) -> telcoautomation.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
         DEPRECATED. Please use the `post_list_deployments_with_metadata`
@@ -1449,12 +1245,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_deployments_with_metadata(
-        self,
-        response: telcoautomation.ListDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.ListDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1470,12 +1262,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_edge_slms(
-        self,
-        request: telcoautomation.ListEdgeSlmsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListEdgeSlmsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.ListEdgeSlmsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListEdgeSlmsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_edge_slms
 
         Override in a subclass to manipulate the request or metadata
@@ -1483,9 +1271,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_edge_slms(
-        self, response: telcoautomation.ListEdgeSlmsResponse
-    ) -> telcoautomation.ListEdgeSlmsResponse:
+    def post_list_edge_slms(self, response: telcoautomation.ListEdgeSlmsResponse) -> telcoautomation.ListEdgeSlmsResponse:
         """Post-rpc interceptor for list_edge_slms
 
         DEPRECATED. Please use the `post_list_edge_slms_with_metadata`
@@ -1499,12 +1285,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_edge_slms_with_metadata(
-        self,
-        response: telcoautomation.ListEdgeSlmsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListEdgeSlmsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.ListEdgeSlmsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListEdgeSlmsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_edge_slms
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1520,13 +1302,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_hydrated_deployments(
-        self,
-        request: telcoautomation.ListHydratedDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListHydratedDeploymentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ListHydratedDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListHydratedDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_hydrated_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -1550,13 +1327,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_hydrated_deployments_with_metadata(
-        self,
-        response: telcoautomation.ListHydratedDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListHydratedDeploymentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.ListHydratedDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListHydratedDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_hydrated_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1572,13 +1344,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_orchestration_clusters(
-        self,
-        request: telcoautomation.ListOrchestrationClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListOrchestrationClustersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ListOrchestrationClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListOrchestrationClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_orchestration_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -1602,13 +1369,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_orchestration_clusters_with_metadata(
-        self,
-        response: telcoautomation.ListOrchestrationClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListOrchestrationClustersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.ListOrchestrationClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListOrchestrationClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_orchestration_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1624,13 +1386,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_list_public_blueprints(
-        self,
-        request: telcoautomation.ListPublicBlueprintsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListPublicBlueprintsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.ListPublicBlueprintsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListPublicBlueprintsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_public_blueprints
 
         Override in a subclass to manipulate the request or metadata
@@ -1638,9 +1395,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_public_blueprints(
-        self, response: telcoautomation.ListPublicBlueprintsResponse
-    ) -> telcoautomation.ListPublicBlueprintsResponse:
+    def post_list_public_blueprints(self, response: telcoautomation.ListPublicBlueprintsResponse) -> telcoautomation.ListPublicBlueprintsResponse:
         """Post-rpc interceptor for list_public_blueprints
 
         DEPRECATED. Please use the `post_list_public_blueprints_with_metadata`
@@ -1654,13 +1409,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_list_public_blueprints_with_metadata(
-        self,
-        response: telcoautomation.ListPublicBlueprintsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ListPublicBlueprintsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.ListPublicBlueprintsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ListPublicBlueprintsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_public_blueprints
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1676,12 +1426,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_propose_blueprint(
-        self,
-        request: telcoautomation.ProposeBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.ProposeBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.ProposeBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.ProposeBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for propose_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1689,9 +1435,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_propose_blueprint(
-        self, response: telcoautomation.Blueprint
-    ) -> telcoautomation.Blueprint:
+    def post_propose_blueprint(self, response: telcoautomation.Blueprint) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for propose_blueprint
 
         DEPRECATED. Please use the `post_propose_blueprint_with_metadata`
@@ -1705,9 +1449,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_propose_blueprint_with_metadata(
-        self,
-        response: telcoautomation.Blueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Blueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for propose_blueprint
 
@@ -1724,12 +1466,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_reject_blueprint(
-        self,
-        request: telcoautomation.RejectBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.RejectBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.RejectBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.RejectBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reject_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1737,9 +1475,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_reject_blueprint(
-        self, response: telcoautomation.Blueprint
-    ) -> telcoautomation.Blueprint:
+    def post_reject_blueprint(self, response: telcoautomation.Blueprint) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for reject_blueprint
 
         DEPRECATED. Please use the `post_reject_blueprint_with_metadata`
@@ -1753,9 +1489,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_reject_blueprint_with_metadata(
-        self,
-        response: telcoautomation.Blueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Blueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reject_blueprint
 
@@ -1772,12 +1506,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_remove_deployment(
-        self,
-        request: telcoautomation.RemoveDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.RemoveDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.RemoveDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.RemoveDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1786,13 +1516,8 @@ class TelcoAutomationRestInterceptor:
         return request, metadata
 
     def pre_rollback_deployment(
-        self,
-        request: telcoautomation.RollbackDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.RollbackDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.RollbackDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.RollbackDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rollback_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -1800,9 +1525,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_rollback_deployment(
-        self, response: telcoautomation.Deployment
-    ) -> telcoautomation.Deployment:
+    def post_rollback_deployment(self, response: telcoautomation.Deployment) -> telcoautomation.Deployment:
         """Post-rpc interceptor for rollback_deployment
 
         DEPRECATED. Please use the `post_rollback_deployment_with_metadata`
@@ -1816,9 +1539,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_rollback_deployment_with_metadata(
-        self,
-        response: telcoautomation.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rollback_deployment
 
@@ -1835,13 +1556,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_search_blueprint_revisions(
-        self,
-        request: telcoautomation.SearchBlueprintRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.SearchBlueprintRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.SearchBlueprintRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.SearchBlueprintRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_blueprint_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -1865,13 +1581,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_search_blueprint_revisions_with_metadata(
-        self,
-        response: telcoautomation.SearchBlueprintRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.SearchBlueprintRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.SearchBlueprintRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.SearchBlueprintRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_blueprint_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1887,13 +1598,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_search_deployment_revisions(
-        self,
-        request: telcoautomation.SearchDeploymentRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.SearchDeploymentRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.SearchDeploymentRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.SearchDeploymentRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_deployment_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -1917,13 +1623,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_search_deployment_revisions_with_metadata(
-        self,
-        response: telcoautomation.SearchDeploymentRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.SearchDeploymentRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: telcoautomation.SearchDeploymentRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.SearchDeploymentRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_deployment_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1939,12 +1640,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_update_blueprint(
-        self,
-        request: telcoautomation.UpdateBlueprintRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.UpdateBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.UpdateBlueprintRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.UpdateBlueprintRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_blueprint
 
         Override in a subclass to manipulate the request or metadata
@@ -1952,9 +1649,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_blueprint(
-        self, response: telcoautomation.Blueprint
-    ) -> telcoautomation.Blueprint:
+    def post_update_blueprint(self, response: telcoautomation.Blueprint) -> telcoautomation.Blueprint:
         """Post-rpc interceptor for update_blueprint
 
         DEPRECATED. Please use the `post_update_blueprint_with_metadata`
@@ -1968,9 +1663,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_update_blueprint_with_metadata(
-        self,
-        response: telcoautomation.Blueprint,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Blueprint, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Blueprint, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_blueprint
 
@@ -1987,12 +1680,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_update_deployment(
-        self,
-        request: telcoautomation.UpdateDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.UpdateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: telcoautomation.UpdateDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.UpdateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -2000,9 +1689,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_deployment(
-        self, response: telcoautomation.Deployment
-    ) -> telcoautomation.Deployment:
+    def post_update_deployment(self, response: telcoautomation.Deployment) -> telcoautomation.Deployment:
         """Post-rpc interceptor for update_deployment
 
         DEPRECATED. Please use the `post_update_deployment_with_metadata`
@@ -2016,9 +1703,7 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_update_deployment_with_metadata(
-        self,
-        response: telcoautomation.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: telcoautomation.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[telcoautomation.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_deployment
 
@@ -2035,13 +1720,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_update_hydrated_deployment(
-        self,
-        request: telcoautomation.UpdateHydratedDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.UpdateHydratedDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: telcoautomation.UpdateHydratedDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.UpdateHydratedDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_hydrated_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -2049,9 +1729,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_hydrated_deployment(
-        self, response: telcoautomation.HydratedDeployment
-    ) -> telcoautomation.HydratedDeployment:
+    def post_update_hydrated_deployment(self, response: telcoautomation.HydratedDeployment) -> telcoautomation.HydratedDeployment:
         """Post-rpc interceptor for update_hydrated_deployment
 
         DEPRECATED. Please use the `post_update_hydrated_deployment_with_metadata`
@@ -2065,12 +1743,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def post_update_hydrated_deployment_with_metadata(
-        self,
-        response: telcoautomation.HydratedDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: telcoautomation.HydratedDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[telcoautomation.HydratedDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_hydrated_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2086,12 +1760,8 @@ class TelcoAutomationRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2099,9 +1769,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2111,12 +1779,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2124,9 +1788,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2136,12 +1798,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2159,12 +1817,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2182,12 +1836,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2195,9 +1845,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2207,12 +1855,8 @@ class TelcoAutomationRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2220,9 +1864,7 @@ class TelcoAutomationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2315,9 +1957,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2370,29 +2010,17 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ApplyDeployment(
-        _BaseTelcoAutomationRestTransport._BaseApplyDeployment, TelcoAutomationRestStub
-    ):
+    class _ApplyDeployment(_BaseTelcoAutomationRestTransport._BaseApplyDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ApplyDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2439,32 +2067,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_apply_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_apply_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseApplyDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2488,13 +2102,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ApplyDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2510,12 +2118,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_apply_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_apply_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_apply_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Deployment.to_json(response)
                 except:
@@ -2536,23 +2140,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ApplyHydratedDeployment(
-        _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment,
-        TelcoAutomationRestStub,
-    ):
+    class _ApplyHydratedDeployment(_BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ApplyHydratedDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2597,32 +2190,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_apply_hydrated_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_apply_hydrated_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseApplyHydratedDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2645,16 +2224,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._ApplyHydratedDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TelcoAutomationRestTransport._ApplyHydratedDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2670,16 +2241,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_apply_hydrated_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_apply_hydrated_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_apply_hydrated_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.HydratedDeployment.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.HydratedDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2698,22 +2263,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ApproveBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseApproveBlueprint, TelcoAutomationRestStub
-    ):
+    class _ApproveBlueprint(_BaseTelcoAutomationRestTransport._BaseApproveBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ApproveBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2765,32 +2320,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_approve_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_approve_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseApproveBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2814,13 +2355,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ApproveBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2836,12 +2371,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_approve_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_approve_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_approve_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Blueprint.to_json(response)
                 except:
@@ -2862,23 +2393,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ComputeDeploymentStatus(
-        _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus,
-        TelcoAutomationRestStub,
-    ):
+    class _ComputeDeploymentStatus(_BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ComputeDeploymentStatus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2917,28 +2437,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``ComputeDeploymentStatus``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_http_options()
 
-            request, metadata = self._interceptor.pre_compute_deployment_status(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_compute_deployment_status(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseComputeDeploymentStatus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2961,15 +2469,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._ComputeDeploymentStatus._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._ComputeDeploymentStatus._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2985,18 +2486,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_compute_deployment_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_compute_deployment_status_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_compute_deployment_status_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.ComputeDeploymentStatusResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.ComputeDeploymentStatusResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3015,22 +2508,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _CreateBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseCreateBlueprint, TelcoAutomationRestStub
-    ):
+    class _CreateBlueprint(_BaseTelcoAutomationRestTransport._BaseCreateBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.CreateBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3082,32 +2565,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3131,13 +2600,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._CreateBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3153,12 +2616,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_create_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Blueprint.to_json(response)
                 except:
@@ -3179,22 +2638,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _CreateDeployment(
-        _BaseTelcoAutomationRestTransport._BaseCreateDeployment, TelcoAutomationRestStub
-    ):
+    class _CreateDeployment(_BaseTelcoAutomationRestTransport._BaseCreateDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.CreateDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3239,32 +2688,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3288,13 +2723,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._CreateDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3310,12 +2739,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_create_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Deployment.to_json(response)
                 except:
@@ -3336,22 +2761,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _CreateEdgeSlm(
-        _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm, TelcoAutomationRestStub
-    ):
+    class _CreateEdgeSlm(_BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.CreateEdgeSlm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3394,30 +2809,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_http_options()
 
             request, metadata = self._interceptor.pre_create_edge_slm(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateEdgeSlm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3441,13 +2844,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._CreateEdgeSlm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3461,12 +2858,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_create_edge_slm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_edge_slm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_edge_slm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3487,23 +2880,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _CreateOrchestrationCluster(
-        _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster,
-        TelcoAutomationRestStub,
-    ):
+    class _CreateOrchestrationCluster(_BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.CreateOrchestrationCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3548,32 +2930,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_orchestration_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_orchestration_cluster(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCreateOrchestrationCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3596,16 +2964,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._CreateOrchestrationCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TelcoAutomationRestTransport._CreateOrchestrationCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3619,12 +2979,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_create_orchestration_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_orchestration_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_orchestration_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3645,22 +3001,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _DeleteBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint, TelcoAutomationRestStub
-    ):
+    class _DeleteBlueprint(_BaseTelcoAutomationRestTransport._BaseDeleteBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.DeleteBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3695,28 +3041,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3740,12 +3074,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._DeleteBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3753,22 +3082,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteEdgeSlm(
-        _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm, TelcoAutomationRestStub
-    ):
+    class _DeleteEdgeSlm(_BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.DeleteEdgeSlm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3810,26 +3129,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_edge_slm(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteEdgeSlm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3853,12 +3162,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._DeleteEdgeSlm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3872,12 +3176,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_delete_edge_slm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_edge_slm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_edge_slm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3898,23 +3198,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _DeleteOrchestrationCluster(
-        _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster,
-        TelcoAutomationRestStub,
-    ):
+    class _DeleteOrchestrationCluster(_BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.DeleteOrchestrationCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3958,28 +3247,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_orchestration_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_orchestration_cluster(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOrchestrationCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4002,15 +3279,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._DeleteOrchestrationCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._DeleteOrchestrationCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4024,12 +3294,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_delete_orchestration_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_orchestration_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_orchestration_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4050,23 +3316,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _DiscardBlueprintChanges(
-        _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges,
-        TelcoAutomationRestStub,
-    ):
+    class _DiscardBlueprintChanges(_BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.DiscardBlueprintChanges")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4106,32 +3361,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``DiscardBlueprintChanges``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_http_options()
 
-            request, metadata = self._interceptor.pre_discard_blueprint_changes(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_discard_blueprint_changes(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDiscardBlueprintChanges._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4154,16 +3395,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._DiscardBlueprintChanges._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TelcoAutomationRestTransport._DiscardBlueprintChanges._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4179,18 +3412,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_discard_blueprint_changes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_discard_blueprint_changes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_discard_blueprint_changes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.DiscardBlueprintChangesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.DiscardBlueprintChangesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4209,23 +3434,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _DiscardDeploymentChanges(
-        _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges,
-        TelcoAutomationRestStub,
-    ):
+    class _DiscardDeploymentChanges(_BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.DiscardDeploymentChanges")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4266,32 +3480,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                         Response object for ``DiscardDeploymentChanges``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_http_options()
 
-            request, metadata = self._interceptor.pre_discard_deployment_changes(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_discard_deployment_changes(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDiscardDeploymentChanges._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4314,16 +3514,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._DiscardDeploymentChanges._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TelcoAutomationRestTransport._DiscardDeploymentChanges._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4339,18 +3531,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_discard_deployment_changes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_discard_deployment_changes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_discard_deployment_changes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.DiscardDeploymentChangesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.DiscardDeploymentChangesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4369,22 +3553,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _GetBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseGetBlueprint, TelcoAutomationRestStub
-    ):
+    class _GetBlueprint(_BaseTelcoAutomationRestTransport._BaseGetBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4435,26 +3609,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_http_options()
 
             request, metadata = self._interceptor.pre_get_blueprint(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4478,12 +3642,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._GetBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4499,12 +3658,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_get_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Blueprint.to_json(response)
                 except:
@@ -4525,22 +3680,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _GetDeployment(
-        _BaseTelcoAutomationRestTransport._BaseGetDeployment, TelcoAutomationRestStub
-    ):
+    class _GetDeployment(_BaseTelcoAutomationRestTransport._BaseGetDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4584,26 +3729,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4627,12 +3762,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._GetDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4648,12 +3778,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_get_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Deployment.to_json(response)
                 except:
@@ -4674,22 +3800,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _GetEdgeSlm(
-        _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm, TelcoAutomationRestStub
-    ):
+    class _GetEdgeSlm(_BaseTelcoAutomationRestTransport._BaseGetEdgeSlm, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetEdgeSlm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4733,26 +3849,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_http_options()
 
             request, metadata = self._interceptor.pre_get_edge_slm(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetEdgeSlm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4776,12 +3882,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._GetEdgeSlm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4797,12 +3898,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_get_edge_slm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_edge_slm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_edge_slm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.EdgeSlm.to_json(response)
                 except:
@@ -4823,23 +3920,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _GetHydratedDeployment(
-        _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment,
-        TelcoAutomationRestStub,
-    ):
+    class _GetHydratedDeployment(_BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetHydratedDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4882,28 +3968,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_hydrated_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_hydrated_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetHydratedDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4926,15 +4000,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._GetHydratedDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._GetHydratedDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4950,16 +4017,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_get_hydrated_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_hydrated_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_hydrated_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.HydratedDeployment.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.HydratedDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4978,23 +4039,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _GetOrchestrationCluster(
-        _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster,
-        TelcoAutomationRestStub,
-    ):
+    class _GetOrchestrationCluster(_BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetOrchestrationCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5037,28 +4087,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_orchestration_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_orchestration_cluster(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetOrchestrationCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5081,15 +4119,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._GetOrchestrationCluster._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._GetOrchestrationCluster._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5105,16 +4136,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_get_orchestration_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_orchestration_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_orchestration_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.OrchestrationCluster.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.OrchestrationCluster.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5133,23 +4158,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _GetPublicBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint,
-        TelcoAutomationRestStub,
-    ):
+    class _GetPublicBlueprint(_BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetPublicBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5197,28 +4211,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_public_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_public_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetPublicBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5242,12 +4244,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._GetPublicBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5263,12 +4260,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_get_public_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_public_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_public_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.PublicBlueprint.to_json(response)
                 except:
@@ -5289,23 +4282,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListBlueprintRevisions(
-        _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions,
-        TelcoAutomationRestStub,
-    ):
+    class _ListBlueprintRevisions(_BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListBlueprintRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5344,28 +4326,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``ListBlueprintRevisions``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_blueprint_revisions(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_blueprint_revisions(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprintRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5388,15 +4358,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._ListBlueprintRevisions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._ListBlueprintRevisions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5412,16 +4375,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_blueprint_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_blueprint_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_blueprint_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.ListBlueprintRevisionsResponse.to_json(response)
-                    )
+                    response_payload = telcoautomation.ListBlueprintRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5440,22 +4397,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListBlueprints(
-        _BaseTelcoAutomationRestTransport._BaseListBlueprints, TelcoAutomationRestStub
-    ):
+    class _ListBlueprints(_BaseTelcoAutomationRestTransport._BaseListBlueprints, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListBlueprints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5494,26 +4441,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``ListBlueprints``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_http_options()
 
             request, metadata = self._interceptor.pre_list_blueprints(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListBlueprints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5537,12 +4474,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ListBlueprints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5558,16 +4490,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_blueprints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_blueprints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_blueprints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.ListBlueprintsResponse.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.ListBlueprintsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5586,23 +4512,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListDeploymentRevisions(
-        _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions,
-        TelcoAutomationRestStub,
-    ):
+    class _ListDeploymentRevisions(_BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListDeploymentRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5644,28 +4559,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_deployment_revisions(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_deployment_revisions(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListDeploymentRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5688,15 +4591,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._ListDeploymentRevisions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._ListDeploymentRevisions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5712,18 +4608,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_deployment_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_deployment_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_deployment_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.ListDeploymentRevisionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.ListDeploymentRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5742,22 +4630,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListDeployments(
-        _BaseTelcoAutomationRestTransport._BaseListDeployments, TelcoAutomationRestStub
-    ):
+    class _ListDeployments(_BaseTelcoAutomationRestTransport._BaseListDeployments, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5796,28 +4674,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``ListDeployments``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListDeployments._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_deployments(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5841,12 +4707,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ListDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5862,16 +4723,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.ListDeploymentsResponse.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.ListDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5890,22 +4745,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListEdgeSlms(
-        _BaseTelcoAutomationRestTransport._BaseListEdgeSlms, TelcoAutomationRestStub
-    ):
+    class _ListEdgeSlms(_BaseTelcoAutomationRestTransport._BaseListEdgeSlms, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListEdgeSlms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5947,26 +4792,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_http_options()
 
             request, metadata = self._interceptor.pre_list_edge_slms(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListEdgeSlms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5990,12 +4825,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ListEdgeSlms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6011,16 +4841,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_edge_slms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_edge_slms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_edge_slms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.ListEdgeSlmsResponse.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.ListEdgeSlmsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6039,23 +4863,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListHydratedDeployments(
-        _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments,
-        TelcoAutomationRestStub,
-    ):
+    class _ListHydratedDeployments(_BaseTelcoAutomationRestTransport._BaseListHydratedDeployments, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListHydratedDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6094,28 +4907,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``ListHydratedDeployments``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_hydrated_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_hydrated_deployments(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListHydratedDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6138,15 +4939,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._ListHydratedDeployments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._ListHydratedDeployments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6162,18 +4956,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_hydrated_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_hydrated_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_hydrated_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.ListHydratedDeploymentsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.ListHydratedDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6192,23 +4978,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListOrchestrationClusters(
-        _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters,
-        TelcoAutomationRestStub,
-    ):
+    class _ListOrchestrationClusters(_BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListOrchestrationClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6251,28 +5026,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_orchestration_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_orchestration_clusters(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListOrchestrationClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6295,15 +5058,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._ListOrchestrationClusters._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._ListOrchestrationClusters._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6319,18 +5075,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_orchestration_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_orchestration_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_orchestration_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.ListOrchestrationClustersResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.ListOrchestrationClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6349,23 +5097,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ListPublicBlueprints(
-        _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints,
-        TelcoAutomationRestStub,
-    ):
+    class _ListPublicBlueprints(_BaseTelcoAutomationRestTransport._BaseListPublicBlueprints, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListPublicBlueprints")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6404,28 +5141,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     Response object for ``ListPublicBlueprints``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_public_blueprints(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_public_blueprints(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListPublicBlueprints._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6449,12 +5174,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ListPublicBlueprints._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6470,16 +5190,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_list_public_blueprints(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_public_blueprints_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_public_blueprints_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.ListPublicBlueprintsResponse.to_json(response)
-                    )
+                    response_payload = telcoautomation.ListPublicBlueprintsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6498,22 +5212,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _ProposeBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseProposeBlueprint, TelcoAutomationRestStub
-    ):
+    class _ProposeBlueprint(_BaseTelcoAutomationRestTransport._BaseProposeBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ProposeBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6565,32 +5269,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_propose_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_propose_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseProposeBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6614,13 +5304,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ProposeBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6636,12 +5320,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_propose_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_propose_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_propose_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Blueprint.to_json(response)
                 except:
@@ -6662,22 +5342,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _RejectBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseRejectBlueprint, TelcoAutomationRestStub
-    ):
+    class _RejectBlueprint(_BaseTelcoAutomationRestTransport._BaseRejectBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.RejectBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6729,32 +5399,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_reject_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reject_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseRejectBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6778,13 +5434,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._RejectBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6800,12 +5450,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_reject_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reject_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reject_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Blueprint.to_json(response)
                 except:
@@ -6826,22 +5472,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _RemoveDeployment(
-        _BaseTelcoAutomationRestTransport._BaseRemoveDeployment, TelcoAutomationRestStub
-    ):
+    class _RemoveDeployment(_BaseTelcoAutomationRestTransport._BaseRemoveDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.RemoveDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6877,32 +5513,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseRemoveDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6926,13 +5548,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._RemoveDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6940,23 +5556,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _RollbackDeployment(
-        _BaseTelcoAutomationRestTransport._BaseRollbackDeployment,
-        TelcoAutomationRestStub,
-    ):
+    class _RollbackDeployment(_BaseTelcoAutomationRestTransport._BaseRollbackDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.RollbackDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7001,32 +5606,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_rollback_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_rollback_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseRollbackDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7050,13 +5641,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._RollbackDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7072,12 +5657,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_rollback_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rollback_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rollback_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Deployment.to_json(response)
                 except:
@@ -7098,23 +5679,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _SearchBlueprintRevisions(
-        _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions,
-        TelcoAutomationRestStub,
-    ):
+    class _SearchBlueprintRevisions(_BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.SearchBlueprintRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7154,28 +5724,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                         Response object for ``SearchBlueprintRevisions``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_blueprint_revisions(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_blueprint_revisions(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseSearchBlueprintRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7198,15 +5756,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._SearchBlueprintRevisions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._SearchBlueprintRevisions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7222,18 +5773,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_search_blueprint_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_blueprint_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_blueprint_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.SearchBlueprintRevisionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.SearchBlueprintRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7252,23 +5795,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _SearchDeploymentRevisions(
-        _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions,
-        TelcoAutomationRestStub,
-    ):
+    class _SearchDeploymentRevisions(_BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.SearchDeploymentRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7308,28 +5840,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                         Response object for ``SearchDeploymentRevisions``.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_deployment_revisions(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_deployment_revisions(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseSearchDeploymentRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7352,15 +5872,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._SearchDeploymentRevisions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TelcoAutomationRestTransport._SearchDeploymentRevisions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7376,18 +5889,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_search_deployment_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_deployment_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_deployment_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        telcoautomation.SearchDeploymentRevisionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = telcoautomation.SearchDeploymentRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7406,22 +5911,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _UpdateBlueprint(
-        _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint, TelcoAutomationRestStub
-    ):
+    class _UpdateBlueprint(_BaseTelcoAutomationRestTransport._BaseUpdateBlueprint, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.UpdateBlueprint")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7473,32 +5968,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_blueprint(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_blueprint(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateBlueprint._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7522,13 +6003,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._UpdateBlueprint._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7544,12 +6019,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_update_blueprint(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_blueprint_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_blueprint_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Blueprint.to_json(response)
                 except:
@@ -7570,22 +6041,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _UpdateDeployment(
-        _BaseTelcoAutomationRestTransport._BaseUpdateDeployment, TelcoAutomationRestStub
-    ):
+    class _UpdateDeployment(_BaseTelcoAutomationRestTransport._BaseUpdateDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.UpdateDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7630,32 +6091,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7679,13 +6126,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._UpdateDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7701,12 +6142,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_update_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = telcoautomation.Deployment.to_json(response)
                 except:
@@ -7727,23 +6164,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
             return resp
 
-    class _UpdateHydratedDeployment(
-        _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment,
-        TelcoAutomationRestStub,
-    ):
+    class _UpdateHydratedDeployment(_BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.UpdateHydratedDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7788,32 +6214,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_hydrated_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_hydrated_deployment(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseUpdateHydratedDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7836,16 +6248,8 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 )
 
             # Send the request
-            response = (
-                TelcoAutomationRestTransport._UpdateHydratedDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TelcoAutomationRestTransport._UpdateHydratedDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7861,16 +6265,10 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             resp = self._interceptor.post_update_hydrated_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_hydrated_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_hydrated_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = telcoautomation.HydratedDeployment.to_json(
-                        response
-                    )
+                    response_payload = telcoautomation.HydratedDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7890,28 +6288,19 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             return resp
 
     @property
-    def apply_deployment(
-        self,
-    ) -> Callable[[telcoautomation.ApplyDeploymentRequest], telcoautomation.Deployment]:
+    def apply_deployment(self) -> Callable[[telcoautomation.ApplyDeploymentRequest], telcoautomation.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApplyDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def apply_hydrated_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.ApplyHydratedDeploymentRequest],
-        telcoautomation.HydratedDeployment,
-    ]:
+    def apply_hydrated_deployment(self) -> Callable[[telcoautomation.ApplyHydratedDeploymentRequest], telcoautomation.HydratedDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApplyHydratedDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def approve_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.ApproveBlueprintRequest], telcoautomation.Blueprint]:
+    def approve_blueprint(self) -> Callable[[telcoautomation.ApproveBlueprintRequest], telcoautomation.Blueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveBlueprint(self._session, self._host, self._interceptor)  # type: ignore
@@ -7919,72 +6308,49 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def compute_deployment_status(
         self,
-    ) -> Callable[
-        [telcoautomation.ComputeDeploymentStatusRequest],
-        telcoautomation.ComputeDeploymentStatusResponse,
-    ]:
+    ) -> Callable[[telcoautomation.ComputeDeploymentStatusRequest], telcoautomation.ComputeDeploymentStatusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ComputeDeploymentStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.CreateBlueprintRequest], telcoautomation.Blueprint]:
+    def create_blueprint(self) -> Callable[[telcoautomation.CreateBlueprintRequest], telcoautomation.Blueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.CreateDeploymentRequest], telcoautomation.Deployment
-    ]:
+    def create_deployment(self) -> Callable[[telcoautomation.CreateDeploymentRequest], telcoautomation.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_edge_slm(
-        self,
-    ) -> Callable[[telcoautomation.CreateEdgeSlmRequest], operations_pb2.Operation]:
+    def create_edge_slm(self) -> Callable[[telcoautomation.CreateEdgeSlmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEdgeSlm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_orchestration_cluster(
-        self,
-    ) -> Callable[
-        [telcoautomation.CreateOrchestrationClusterRequest], operations_pb2.Operation
-    ]:
+    def create_orchestration_cluster(self) -> Callable[[telcoautomation.CreateOrchestrationClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOrchestrationCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.DeleteBlueprintRequest], empty_pb2.Empty]:
+    def delete_blueprint(self) -> Callable[[telcoautomation.DeleteBlueprintRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_edge_slm(
-        self,
-    ) -> Callable[[telcoautomation.DeleteEdgeSlmRequest], operations_pb2.Operation]:
+    def delete_edge_slm(self) -> Callable[[telcoautomation.DeleteEdgeSlmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEdgeSlm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_orchestration_cluster(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteOrchestrationClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_orchestration_cluster(self) -> Callable[[telcoautomation.DeleteOrchestrationClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteOrchestrationCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -7992,10 +6358,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def discard_blueprint_changes(
         self,
-    ) -> Callable[
-        [telcoautomation.DiscardBlueprintChangesRequest],
-        telcoautomation.DiscardBlueprintChangesResponse,
-    ]:
+    ) -> Callable[[telcoautomation.DiscardBlueprintChangesRequest], telcoautomation.DiscardBlueprintChangesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiscardBlueprintChanges(self._session, self._host, self._interceptor)  # type: ignore
@@ -8003,87 +6366,55 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def discard_deployment_changes(
         self,
-    ) -> Callable[
-        [telcoautomation.DiscardDeploymentChangesRequest],
-        telcoautomation.DiscardDeploymentChangesResponse,
-    ]:
+    ) -> Callable[[telcoautomation.DiscardDeploymentChangesRequest], telcoautomation.DiscardDeploymentChangesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiscardDeploymentChanges(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.GetBlueprintRequest], telcoautomation.Blueprint]:
+    def get_blueprint(self) -> Callable[[telcoautomation.GetBlueprintRequest], telcoautomation.Blueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[[telcoautomation.GetDeploymentRequest], telcoautomation.Deployment]:
+    def get_deployment(self) -> Callable[[telcoautomation.GetDeploymentRequest], telcoautomation.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_edge_slm(
-        self,
-    ) -> Callable[[telcoautomation.GetEdgeSlmRequest], telcoautomation.EdgeSlm]:
+    def get_edge_slm(self) -> Callable[[telcoautomation.GetEdgeSlmRequest], telcoautomation.EdgeSlm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEdgeSlm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_hydrated_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetHydratedDeploymentRequest],
-        telcoautomation.HydratedDeployment,
-    ]:
+    def get_hydrated_deployment(self) -> Callable[[telcoautomation.GetHydratedDeploymentRequest], telcoautomation.HydratedDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHydratedDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_orchestration_cluster(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetOrchestrationClusterRequest],
-        telcoautomation.OrchestrationCluster,
-    ]:
+    def get_orchestration_cluster(self) -> Callable[[telcoautomation.GetOrchestrationClusterRequest], telcoautomation.OrchestrationCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrchestrationCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_public_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetPublicBlueprintRequest], telcoautomation.PublicBlueprint
-    ]:
+    def get_public_blueprint(self) -> Callable[[telcoautomation.GetPublicBlueprintRequest], telcoautomation.PublicBlueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPublicBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_blueprint_revisions(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListBlueprintRevisionsRequest],
-        telcoautomation.ListBlueprintRevisionsResponse,
-    ]:
+    def list_blueprint_revisions(self) -> Callable[[telcoautomation.ListBlueprintRevisionsRequest], telcoautomation.ListBlueprintRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBlueprintRevisions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_blueprints(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListBlueprintsRequest], telcoautomation.ListBlueprintsResponse
-    ]:
+    def list_blueprints(self) -> Callable[[telcoautomation.ListBlueprintsRequest], telcoautomation.ListBlueprintsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBlueprints(self._session, self._host, self._interceptor)  # type: ignore
@@ -8091,31 +6422,19 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def list_deployment_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.ListDeploymentRevisionsRequest],
-        telcoautomation.ListDeploymentRevisionsResponse,
-    ]:
+    ) -> Callable[[telcoautomation.ListDeploymentRevisionsRequest], telcoautomation.ListDeploymentRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeploymentRevisions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListDeploymentsRequest],
-        telcoautomation.ListDeploymentsResponse,
-    ]:
+    def list_deployments(self) -> Callable[[telcoautomation.ListDeploymentsRequest], telcoautomation.ListDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeployments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_edge_slms(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListEdgeSlmsRequest], telcoautomation.ListEdgeSlmsResponse
-    ]:
+    def list_edge_slms(self) -> Callable[[telcoautomation.ListEdgeSlmsRequest], telcoautomation.ListEdgeSlmsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEdgeSlms(self._session, self._host, self._interceptor)  # type: ignore
@@ -8123,10 +6442,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def list_hydrated_deployments(
         self,
-    ) -> Callable[
-        [telcoautomation.ListHydratedDeploymentsRequest],
-        telcoautomation.ListHydratedDeploymentsResponse,
-    ]:
+    ) -> Callable[[telcoautomation.ListHydratedDeploymentsRequest], telcoautomation.ListHydratedDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListHydratedDeployments(self._session, self._host, self._interceptor)  # type: ignore
@@ -8134,55 +6450,37 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def list_orchestration_clusters(
         self,
-    ) -> Callable[
-        [telcoautomation.ListOrchestrationClustersRequest],
-        telcoautomation.ListOrchestrationClustersResponse,
-    ]:
+    ) -> Callable[[telcoautomation.ListOrchestrationClustersRequest], telcoautomation.ListOrchestrationClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrchestrationClusters(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_public_blueprints(
-        self,
-    ) -> Callable[
-        [telcoautomation.ListPublicBlueprintsRequest],
-        telcoautomation.ListPublicBlueprintsResponse,
-    ]:
+    def list_public_blueprints(self) -> Callable[[telcoautomation.ListPublicBlueprintsRequest], telcoautomation.ListPublicBlueprintsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPublicBlueprints(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def propose_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.ProposeBlueprintRequest], telcoautomation.Blueprint]:
+    def propose_blueprint(self) -> Callable[[telcoautomation.ProposeBlueprintRequest], telcoautomation.Blueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ProposeBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reject_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.RejectBlueprintRequest], telcoautomation.Blueprint]:
+    def reject_blueprint(self) -> Callable[[telcoautomation.RejectBlueprintRequest], telcoautomation.Blueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RejectBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_deployment(
-        self,
-    ) -> Callable[[telcoautomation.RemoveDeploymentRequest], empty_pb2.Empty]:
+    def remove_deployment(self) -> Callable[[telcoautomation.RemoveDeploymentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def rollback_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.RollbackDeploymentRequest], telcoautomation.Deployment
-    ]:
+    def rollback_deployment(self) -> Callable[[telcoautomation.RollbackDeploymentRequest], telcoautomation.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RollbackDeployment(self._session, self._host, self._interceptor)  # type: ignore
@@ -8190,10 +6488,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def search_blueprint_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.SearchBlueprintRevisionsRequest],
-        telcoautomation.SearchBlueprintRevisionsResponse,
-    ]:
+    ) -> Callable[[telcoautomation.SearchBlueprintRevisionsRequest], telcoautomation.SearchBlueprintRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchBlueprintRevisions(self._session, self._host, self._interceptor)  # type: ignore
@@ -8201,39 +6496,25 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     @property
     def search_deployment_revisions(
         self,
-    ) -> Callable[
-        [telcoautomation.SearchDeploymentRevisionsRequest],
-        telcoautomation.SearchDeploymentRevisionsResponse,
-    ]:
+    ) -> Callable[[telcoautomation.SearchDeploymentRevisionsRequest], telcoautomation.SearchDeploymentRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchDeploymentRevisions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_blueprint(
-        self,
-    ) -> Callable[[telcoautomation.UpdateBlueprintRequest], telcoautomation.Blueprint]:
+    def update_blueprint(self) -> Callable[[telcoautomation.UpdateBlueprintRequest], telcoautomation.Blueprint]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBlueprint(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.UpdateDeploymentRequest], telcoautomation.Deployment
-    ]:
+    def update_deployment(self) -> Callable[[telcoautomation.UpdateDeploymentRequest], telcoautomation.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_hydrated_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.UpdateHydratedDeploymentRequest],
-        telcoautomation.HydratedDeployment,
-    ]:
+    def update_hydrated_deployment(self) -> Callable[[telcoautomation.UpdateHydratedDeploymentRequest], telcoautomation.HydratedDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateHydratedDeployment(self._session, self._host, self._interceptor)  # type: ignore
@@ -8242,22 +6523,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseTelcoAutomationRestTransport._BaseGetLocation, TelcoAutomationRestStub
-    ):
+    class _GetLocation(_BaseTelcoAutomationRestTransport._BaseGetLocation, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8295,26 +6566,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8338,12 +6599,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8355,9 +6611,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8382,22 +6636,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseTelcoAutomationRestTransport._BaseListLocations, TelcoAutomationRestStub
-    ):
+    class _ListLocations(_BaseTelcoAutomationRestTransport._BaseListLocations, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8435,26 +6679,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8478,12 +6712,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8495,9 +6724,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8522,22 +6749,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseTelcoAutomationRestTransport._BaseCancelOperation, TelcoAutomationRestStub
-    ):
+    class _CancelOperation(_BaseTelcoAutomationRestTransport._BaseCancelOperation, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8573,32 +6790,18 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8622,13 +6825,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8642,22 +6839,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseTelcoAutomationRestTransport._BaseDeleteOperation, TelcoAutomationRestStub
-    ):
+    class _DeleteOperation(_BaseTelcoAutomationRestTransport._BaseDeleteOperation, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8692,28 +6879,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8737,12 +6912,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8756,22 +6926,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTelcoAutomationRestTransport._BaseGetOperation, TelcoAutomationRestStub
-    ):
+    class _GetOperation(_BaseTelcoAutomationRestTransport._BaseGetOperation, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8809,26 +6969,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8852,12 +7002,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8869,9 +7014,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8896,22 +7039,12 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseTelcoAutomationRestTransport._BaseListOperations, TelcoAutomationRestStub
-    ):
+    class _ListOperations(_BaseTelcoAutomationRestTransport._BaseListOperations, TelcoAutomationRestStub):
         def __hash__(self):
             return hash("TelcoAutomationRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8949,26 +7082,16 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseTelcoAutomationRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseTelcoAutomationRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTelcoAutomationRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTelcoAutomationRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTelcoAutomationRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8992,12 +7115,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
 
             # Send the request
             response = TelcoAutomationRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9009,9 +7127,7 @@ class TelcoAutomationRestTransport(_BaseTelcoAutomationRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

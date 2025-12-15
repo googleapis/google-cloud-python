@@ -477,9 +477,7 @@ class DlpServiceRestInterceptor:
     """
 
     def pre_activate_job_trigger(
-        self,
-        request: dlp.ActivateJobTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ActivateJobTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ActivateJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for activate_job_trigger
 
@@ -519,9 +517,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_dlp_job(
-        self,
-        request: dlp.CancelDlpJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.CancelDlpJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.CancelDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_dlp_job
 
@@ -531,9 +527,7 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_create_connection(
-        self,
-        request: dlp.CreateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.CreateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.CreateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connection
 
@@ -556,9 +550,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_create_connection_with_metadata(
-        self,
-        response: dlp.Connection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.Connection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connection
 
@@ -575,12 +567,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_create_deidentify_template(
-        self,
-        request: dlp.CreateDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.CreateDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.CreateDeidentifyTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.CreateDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -588,9 +576,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_deidentify_template(
-        self, response: dlp.DeidentifyTemplate
-    ) -> dlp.DeidentifyTemplate:
+    def post_create_deidentify_template(self, response: dlp.DeidentifyTemplate) -> dlp.DeidentifyTemplate:
         """Post-rpc interceptor for create_deidentify_template
 
         DEPRECATED. Please use the `post_create_deidentify_template_with_metadata`
@@ -604,9 +590,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_create_deidentify_template_with_metadata(
-        self,
-        response: dlp.DeidentifyTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DeidentifyTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeidentifyTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_deidentify_template
 
@@ -623,12 +607,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_create_discovery_config(
-        self,
-        request: dlp.CreateDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.CreateDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.CreateDiscoveryConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.CreateDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -636,9 +616,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_discovery_config(
-        self, response: dlp.DiscoveryConfig
-    ) -> dlp.DiscoveryConfig:
+    def post_create_discovery_config(self, response: dlp.DiscoveryConfig) -> dlp.DiscoveryConfig:
         """Post-rpc interceptor for create_discovery_config
 
         DEPRECATED. Please use the `post_create_discovery_config_with_metadata`
@@ -652,9 +630,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_create_discovery_config_with_metadata(
-        self,
-        response: dlp.DiscoveryConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DiscoveryConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DiscoveryConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_discovery_config
 
@@ -671,9 +647,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_create_dlp_job(
-        self,
-        request: dlp.CreateDlpJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.CreateDlpJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.CreateDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dlp_job
 
@@ -713,12 +687,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_create_inspect_template(
-        self,
-        request: dlp.CreateInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.CreateInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.CreateInspectTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.CreateInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -726,9 +696,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_inspect_template(
-        self, response: dlp.InspectTemplate
-    ) -> dlp.InspectTemplate:
+    def post_create_inspect_template(self, response: dlp.InspectTemplate) -> dlp.InspectTemplate:
         """Post-rpc interceptor for create_inspect_template
 
         DEPRECATED. Please use the `post_create_inspect_template_with_metadata`
@@ -742,9 +710,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_create_inspect_template_with_metadata(
-        self,
-        response: dlp.InspectTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.InspectTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.InspectTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_inspect_template
 
@@ -761,9 +727,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_create_job_trigger(
-        self,
-        request: dlp.CreateJobTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.CreateJobTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.CreateJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job_trigger
 
@@ -786,9 +750,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_create_job_trigger_with_metadata(
-        self,
-        response: dlp.JobTrigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.JobTrigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.JobTrigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_job_trigger
 
@@ -805,12 +767,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_create_stored_info_type(
-        self,
-        request: dlp.CreateStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.CreateStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.CreateStoredInfoTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.CreateStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -818,9 +776,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_stored_info_type(
-        self, response: dlp.StoredInfoType
-    ) -> dlp.StoredInfoType:
+    def post_create_stored_info_type(self, response: dlp.StoredInfoType) -> dlp.StoredInfoType:
         """Post-rpc interceptor for create_stored_info_type
 
         DEPRECATED. Please use the `post_create_stored_info_type_with_metadata`
@@ -834,9 +790,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_create_stored_info_type_with_metadata(
-        self,
-        response: dlp.StoredInfoType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.StoredInfoType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.StoredInfoType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_stored_info_type
 
@@ -853,9 +807,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_deidentify_content(
-        self,
-        request: dlp.DeidentifyContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.DeidentifyContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeidentifyContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deidentify_content
 
@@ -864,9 +816,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_deidentify_content(
-        self, response: dlp.DeidentifyContentResponse
-    ) -> dlp.DeidentifyContentResponse:
+    def post_deidentify_content(self, response: dlp.DeidentifyContentResponse) -> dlp.DeidentifyContentResponse:
         """Post-rpc interceptor for deidentify_content
 
         DEPRECATED. Please use the `post_deidentify_content_with_metadata`
@@ -880,9 +830,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_deidentify_content_with_metadata(
-        self,
-        response: dlp.DeidentifyContentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DeidentifyContentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeidentifyContentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deidentify_content
 
@@ -899,9 +847,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_connection(
-        self,
-        request: dlp.DeleteConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.DeleteConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeleteConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connection
 
@@ -911,12 +857,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_deidentify_template(
-        self,
-        request: dlp.DeleteDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.DeleteDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.DeleteDeidentifyTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.DeleteDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -925,12 +867,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_discovery_config(
-        self,
-        request: dlp.DeleteDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.DeleteDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.DeleteDiscoveryConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.DeleteDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -939,9 +877,7 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_dlp_job(
-        self,
-        request: dlp.DeleteDlpJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.DeleteDlpJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeleteDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dlp_job
 
@@ -951,12 +887,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_file_store_data_profile(
-        self,
-        request: dlp.DeleteFileStoreDataProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.DeleteFileStoreDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.DeleteFileStoreDataProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.DeleteFileStoreDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_file_store_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -965,12 +897,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_inspect_template(
-        self,
-        request: dlp.DeleteInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.DeleteInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.DeleteInspectTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.DeleteInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -979,9 +907,7 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_job_trigger(
-        self,
-        request: dlp.DeleteJobTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.DeleteJobTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeleteJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job_trigger
 
@@ -991,12 +917,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_stored_info_type(
-        self,
-        request: dlp.DeleteStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.DeleteStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.DeleteStoredInfoTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.DeleteStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1005,12 +927,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_table_data_profile(
-        self,
-        request: dlp.DeleteTableDataProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.DeleteTableDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.DeleteTableDataProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.DeleteTableDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_table_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -1019,9 +937,7 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_finish_dlp_job(
-        self,
-        request: dlp.FinishDlpJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.FinishDlpJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.FinishDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for finish_dlp_job
 
@@ -1031,12 +947,8 @@ class DlpServiceRestInterceptor:
         return request, metadata
 
     def pre_get_column_data_profile(
-        self,
-        request: dlp.GetColumnDataProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.GetColumnDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.GetColumnDataProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.GetColumnDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_column_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -1044,9 +956,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_column_data_profile(
-        self, response: dlp.ColumnDataProfile
-    ) -> dlp.ColumnDataProfile:
+    def post_get_column_data_profile(self, response: dlp.ColumnDataProfile) -> dlp.ColumnDataProfile:
         """Post-rpc interceptor for get_column_data_profile
 
         DEPRECATED. Please use the `post_get_column_data_profile_with_metadata`
@@ -1060,9 +970,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_column_data_profile_with_metadata(
-        self,
-        response: dlp.ColumnDataProfile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ColumnDataProfile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ColumnDataProfile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_column_data_profile
 
@@ -1079,9 +987,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_connection(
-        self,
-        request: dlp.GetConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connection
 
@@ -1104,9 +1010,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_connection_with_metadata(
-        self,
-        response: dlp.Connection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.Connection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connection
 
@@ -1123,12 +1027,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_deidentify_template(
-        self,
-        request: dlp.GetDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.GetDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.GetDeidentifyTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.GetDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -1136,9 +1036,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_deidentify_template(
-        self, response: dlp.DeidentifyTemplate
-    ) -> dlp.DeidentifyTemplate:
+    def post_get_deidentify_template(self, response: dlp.DeidentifyTemplate) -> dlp.DeidentifyTemplate:
         """Post-rpc interceptor for get_deidentify_template
 
         DEPRECATED. Please use the `post_get_deidentify_template_with_metadata`
@@ -1152,9 +1050,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_deidentify_template_with_metadata(
-        self,
-        response: dlp.DeidentifyTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DeidentifyTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeidentifyTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_deidentify_template
 
@@ -1171,9 +1067,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_discovery_config(
-        self,
-        request: dlp.GetDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetDiscoveryConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_discovery_config
 
@@ -1182,9 +1076,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_discovery_config(
-        self, response: dlp.DiscoveryConfig
-    ) -> dlp.DiscoveryConfig:
+    def post_get_discovery_config(self, response: dlp.DiscoveryConfig) -> dlp.DiscoveryConfig:
         """Post-rpc interceptor for get_discovery_config
 
         DEPRECATED. Please use the `post_get_discovery_config_with_metadata`
@@ -1198,9 +1090,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_discovery_config_with_metadata(
-        self,
-        response: dlp.DiscoveryConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DiscoveryConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DiscoveryConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_discovery_config
 
@@ -1217,9 +1107,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_dlp_job(
-        self,
-        request: dlp.GetDlpJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetDlpJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dlp_job
 
@@ -1259,12 +1147,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_file_store_data_profile(
-        self,
-        request: dlp.GetFileStoreDataProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.GetFileStoreDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.GetFileStoreDataProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.GetFileStoreDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_file_store_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -1272,9 +1156,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_file_store_data_profile(
-        self, response: dlp.FileStoreDataProfile
-    ) -> dlp.FileStoreDataProfile:
+    def post_get_file_store_data_profile(self, response: dlp.FileStoreDataProfile) -> dlp.FileStoreDataProfile:
         """Post-rpc interceptor for get_file_store_data_profile
 
         DEPRECATED. Please use the `post_get_file_store_data_profile_with_metadata`
@@ -1288,9 +1170,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_file_store_data_profile_with_metadata(
-        self,
-        response: dlp.FileStoreDataProfile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.FileStoreDataProfile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.FileStoreDataProfile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_file_store_data_profile
 
@@ -1307,9 +1187,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_inspect_template(
-        self,
-        request: dlp.GetInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetInspectTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_inspect_template
 
@@ -1318,9 +1196,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_inspect_template(
-        self, response: dlp.InspectTemplate
-    ) -> dlp.InspectTemplate:
+    def post_get_inspect_template(self, response: dlp.InspectTemplate) -> dlp.InspectTemplate:
         """Post-rpc interceptor for get_inspect_template
 
         DEPRECATED. Please use the `post_get_inspect_template_with_metadata`
@@ -1334,9 +1210,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_inspect_template_with_metadata(
-        self,
-        response: dlp.InspectTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.InspectTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.InspectTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_inspect_template
 
@@ -1353,9 +1227,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_job_trigger(
-        self,
-        request: dlp.GetJobTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetJobTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job_trigger
 
@@ -1378,9 +1250,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_job_trigger_with_metadata(
-        self,
-        response: dlp.JobTrigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.JobTrigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.JobTrigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_job_trigger
 
@@ -1397,12 +1267,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_project_data_profile(
-        self,
-        request: dlp.GetProjectDataProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.GetProjectDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.GetProjectDataProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.GetProjectDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_project_data_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -1410,9 +1276,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_project_data_profile(
-        self, response: dlp.ProjectDataProfile
-    ) -> dlp.ProjectDataProfile:
+    def post_get_project_data_profile(self, response: dlp.ProjectDataProfile) -> dlp.ProjectDataProfile:
         """Post-rpc interceptor for get_project_data_profile
 
         DEPRECATED. Please use the `post_get_project_data_profile_with_metadata`
@@ -1426,9 +1290,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_project_data_profile_with_metadata(
-        self,
-        response: dlp.ProjectDataProfile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ProjectDataProfile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ProjectDataProfile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_project_data_profile
 
@@ -1445,9 +1307,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_stored_info_type(
-        self,
-        request: dlp.GetStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetStoredInfoTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_stored_info_type
 
@@ -1456,9 +1316,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_stored_info_type(
-        self, response: dlp.StoredInfoType
-    ) -> dlp.StoredInfoType:
+    def post_get_stored_info_type(self, response: dlp.StoredInfoType) -> dlp.StoredInfoType:
         """Post-rpc interceptor for get_stored_info_type
 
         DEPRECATED. Please use the `post_get_stored_info_type_with_metadata`
@@ -1472,9 +1330,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_stored_info_type_with_metadata(
-        self,
-        response: dlp.StoredInfoType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.StoredInfoType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.StoredInfoType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_stored_info_type
 
@@ -1491,9 +1347,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_get_table_data_profile(
-        self,
-        request: dlp.GetTableDataProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.GetTableDataProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.GetTableDataProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table_data_profile
 
@@ -1502,9 +1356,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_table_data_profile(
-        self, response: dlp.TableDataProfile
-    ) -> dlp.TableDataProfile:
+    def post_get_table_data_profile(self, response: dlp.TableDataProfile) -> dlp.TableDataProfile:
         """Post-rpc interceptor for get_table_data_profile
 
         DEPRECATED. Please use the `post_get_table_data_profile_with_metadata`
@@ -1518,9 +1370,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_get_table_data_profile_with_metadata(
-        self,
-        response: dlp.TableDataProfile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.TableDataProfile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.TableDataProfile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_table_data_profile
 
@@ -1537,9 +1387,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_hybrid_inspect_dlp_job(
-        self,
-        request: dlp.HybridInspectDlpJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.HybridInspectDlpJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.HybridInspectDlpJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for hybrid_inspect_dlp_job
 
@@ -1548,9 +1396,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_hybrid_inspect_dlp_job(
-        self, response: dlp.HybridInspectResponse
-    ) -> dlp.HybridInspectResponse:
+    def post_hybrid_inspect_dlp_job(self, response: dlp.HybridInspectResponse) -> dlp.HybridInspectResponse:
         """Post-rpc interceptor for hybrid_inspect_dlp_job
 
         DEPRECATED. Please use the `post_hybrid_inspect_dlp_job_with_metadata`
@@ -1564,9 +1410,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_hybrid_inspect_dlp_job_with_metadata(
-        self,
-        response: dlp.HybridInspectResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.HybridInspectResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.HybridInspectResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for hybrid_inspect_dlp_job
 
@@ -1583,12 +1427,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_hybrid_inspect_job_trigger(
-        self,
-        request: dlp.HybridInspectJobTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.HybridInspectJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.HybridInspectJobTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.HybridInspectJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for hybrid_inspect_job_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -1596,9 +1436,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_hybrid_inspect_job_trigger(
-        self, response: dlp.HybridInspectResponse
-    ) -> dlp.HybridInspectResponse:
+    def post_hybrid_inspect_job_trigger(self, response: dlp.HybridInspectResponse) -> dlp.HybridInspectResponse:
         """Post-rpc interceptor for hybrid_inspect_job_trigger
 
         DEPRECATED. Please use the `post_hybrid_inspect_job_trigger_with_metadata`
@@ -1612,9 +1450,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_hybrid_inspect_job_trigger_with_metadata(
-        self,
-        response: dlp.HybridInspectResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.HybridInspectResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.HybridInspectResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for hybrid_inspect_job_trigger
 
@@ -1631,9 +1467,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_inspect_content(
-        self,
-        request: dlp.InspectContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.InspectContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.InspectContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for inspect_content
 
@@ -1642,9 +1476,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_inspect_content(
-        self, response: dlp.InspectContentResponse
-    ) -> dlp.InspectContentResponse:
+    def post_inspect_content(self, response: dlp.InspectContentResponse) -> dlp.InspectContentResponse:
         """Post-rpc interceptor for inspect_content
 
         DEPRECATED. Please use the `post_inspect_content_with_metadata`
@@ -1658,9 +1490,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_inspect_content_with_metadata(
-        self,
-        response: dlp.InspectContentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.InspectContentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.InspectContentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for inspect_content
 
@@ -1677,12 +1507,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_column_data_profiles(
-        self,
-        request: dlp.ListColumnDataProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListColumnDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListColumnDataProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListColumnDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_column_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1690,9 +1516,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_column_data_profiles(
-        self, response: dlp.ListColumnDataProfilesResponse
-    ) -> dlp.ListColumnDataProfilesResponse:
+    def post_list_column_data_profiles(self, response: dlp.ListColumnDataProfilesResponse) -> dlp.ListColumnDataProfilesResponse:
         """Post-rpc interceptor for list_column_data_profiles
 
         DEPRECATED. Please use the `post_list_column_data_profiles_with_metadata`
@@ -1706,12 +1530,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_column_data_profiles_with_metadata(
-        self,
-        response: dlp.ListColumnDataProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListColumnDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListColumnDataProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListColumnDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_column_data_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1727,9 +1547,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_connections(
-        self,
-        request: dlp.ListConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ListConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connections
 
@@ -1738,9 +1556,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_connections(
-        self, response: dlp.ListConnectionsResponse
-    ) -> dlp.ListConnectionsResponse:
+    def post_list_connections(self, response: dlp.ListConnectionsResponse) -> dlp.ListConnectionsResponse:
         """Post-rpc interceptor for list_connections
 
         DEPRECATED. Please use the `post_list_connections_with_metadata`
@@ -1754,9 +1570,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_connections_with_metadata(
-        self,
-        response: dlp.ListConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ListConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connections
 
@@ -1773,12 +1587,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_deidentify_templates(
-        self,
-        request: dlp.ListDeidentifyTemplatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListDeidentifyTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListDeidentifyTemplatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListDeidentifyTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_deidentify_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -1786,9 +1596,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_deidentify_templates(
-        self, response: dlp.ListDeidentifyTemplatesResponse
-    ) -> dlp.ListDeidentifyTemplatesResponse:
+    def post_list_deidentify_templates(self, response: dlp.ListDeidentifyTemplatesResponse) -> dlp.ListDeidentifyTemplatesResponse:
         """Post-rpc interceptor for list_deidentify_templates
 
         DEPRECATED. Please use the `post_list_deidentify_templates_with_metadata`
@@ -1802,12 +1610,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_deidentify_templates_with_metadata(
-        self,
-        response: dlp.ListDeidentifyTemplatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListDeidentifyTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListDeidentifyTemplatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListDeidentifyTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_deidentify_templates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1823,12 +1627,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_discovery_configs(
-        self,
-        request: dlp.ListDiscoveryConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListDiscoveryConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListDiscoveryConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListDiscoveryConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_discovery_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1836,9 +1636,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_discovery_configs(
-        self, response: dlp.ListDiscoveryConfigsResponse
-    ) -> dlp.ListDiscoveryConfigsResponse:
+    def post_list_discovery_configs(self, response: dlp.ListDiscoveryConfigsResponse) -> dlp.ListDiscoveryConfigsResponse:
         """Post-rpc interceptor for list_discovery_configs
 
         DEPRECATED. Please use the `post_list_discovery_configs_with_metadata`
@@ -1852,12 +1650,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_discovery_configs_with_metadata(
-        self,
-        response: dlp.ListDiscoveryConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListDiscoveryConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListDiscoveryConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListDiscoveryConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_discovery_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1873,9 +1667,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_dlp_jobs(
-        self,
-        request: dlp.ListDlpJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ListDlpJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListDlpJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_dlp_jobs
 
@@ -1884,9 +1676,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_dlp_jobs(
-        self, response: dlp.ListDlpJobsResponse
-    ) -> dlp.ListDlpJobsResponse:
+    def post_list_dlp_jobs(self, response: dlp.ListDlpJobsResponse) -> dlp.ListDlpJobsResponse:
         """Post-rpc interceptor for list_dlp_jobs
 
         DEPRECATED. Please use the `post_list_dlp_jobs_with_metadata`
@@ -1900,9 +1690,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_dlp_jobs_with_metadata(
-        self,
-        response: dlp.ListDlpJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ListDlpJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListDlpJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_dlp_jobs
 
@@ -1919,12 +1707,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_file_store_data_profiles(
-        self,
-        request: dlp.ListFileStoreDataProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListFileStoreDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListFileStoreDataProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListFileStoreDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_file_store_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1932,9 +1716,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_file_store_data_profiles(
-        self, response: dlp.ListFileStoreDataProfilesResponse
-    ) -> dlp.ListFileStoreDataProfilesResponse:
+    def post_list_file_store_data_profiles(self, response: dlp.ListFileStoreDataProfilesResponse) -> dlp.ListFileStoreDataProfilesResponse:
         """Post-rpc interceptor for list_file_store_data_profiles
 
         DEPRECATED. Please use the `post_list_file_store_data_profiles_with_metadata`
@@ -1948,12 +1730,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_file_store_data_profiles_with_metadata(
-        self,
-        response: dlp.ListFileStoreDataProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListFileStoreDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListFileStoreDataProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListFileStoreDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_file_store_data_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1969,9 +1747,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_info_types(
-        self,
-        request: dlp.ListInfoTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ListInfoTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListInfoTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_info_types
 
@@ -1980,9 +1756,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_info_types(
-        self, response: dlp.ListInfoTypesResponse
-    ) -> dlp.ListInfoTypesResponse:
+    def post_list_info_types(self, response: dlp.ListInfoTypesResponse) -> dlp.ListInfoTypesResponse:
         """Post-rpc interceptor for list_info_types
 
         DEPRECATED. Please use the `post_list_info_types_with_metadata`
@@ -1996,9 +1770,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_info_types_with_metadata(
-        self,
-        response: dlp.ListInfoTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ListInfoTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListInfoTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_info_types
 
@@ -2015,12 +1787,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_inspect_templates(
-        self,
-        request: dlp.ListInspectTemplatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListInspectTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListInspectTemplatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListInspectTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_inspect_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -2028,9 +1796,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_inspect_templates(
-        self, response: dlp.ListInspectTemplatesResponse
-    ) -> dlp.ListInspectTemplatesResponse:
+    def post_list_inspect_templates(self, response: dlp.ListInspectTemplatesResponse) -> dlp.ListInspectTemplatesResponse:
         """Post-rpc interceptor for list_inspect_templates
 
         DEPRECATED. Please use the `post_list_inspect_templates_with_metadata`
@@ -2044,12 +1810,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_inspect_templates_with_metadata(
-        self,
-        response: dlp.ListInspectTemplatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListInspectTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListInspectTemplatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListInspectTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_inspect_templates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2065,9 +1827,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_job_triggers(
-        self,
-        request: dlp.ListJobTriggersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ListJobTriggersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListJobTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_job_triggers
 
@@ -2076,9 +1836,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_job_triggers(
-        self, response: dlp.ListJobTriggersResponse
-    ) -> dlp.ListJobTriggersResponse:
+    def post_list_job_triggers(self, response: dlp.ListJobTriggersResponse) -> dlp.ListJobTriggersResponse:
         """Post-rpc interceptor for list_job_triggers
 
         DEPRECATED. Please use the `post_list_job_triggers_with_metadata`
@@ -2092,9 +1850,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_job_triggers_with_metadata(
-        self,
-        response: dlp.ListJobTriggersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ListJobTriggersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListJobTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_job_triggers
 
@@ -2111,12 +1867,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_project_data_profiles(
-        self,
-        request: dlp.ListProjectDataProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListProjectDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListProjectDataProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListProjectDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_project_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -2124,9 +1876,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_project_data_profiles(
-        self, response: dlp.ListProjectDataProfilesResponse
-    ) -> dlp.ListProjectDataProfilesResponse:
+    def post_list_project_data_profiles(self, response: dlp.ListProjectDataProfilesResponse) -> dlp.ListProjectDataProfilesResponse:
         """Post-rpc interceptor for list_project_data_profiles
 
         DEPRECATED. Please use the `post_list_project_data_profiles_with_metadata`
@@ -2140,12 +1890,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_project_data_profiles_with_metadata(
-        self,
-        response: dlp.ListProjectDataProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListProjectDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListProjectDataProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListProjectDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_project_data_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2161,9 +1907,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_stored_info_types(
-        self,
-        request: dlp.ListStoredInfoTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ListStoredInfoTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ListStoredInfoTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_stored_info_types
 
@@ -2172,9 +1916,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_stored_info_types(
-        self, response: dlp.ListStoredInfoTypesResponse
-    ) -> dlp.ListStoredInfoTypesResponse:
+    def post_list_stored_info_types(self, response: dlp.ListStoredInfoTypesResponse) -> dlp.ListStoredInfoTypesResponse:
         """Post-rpc interceptor for list_stored_info_types
 
         DEPRECATED. Please use the `post_list_stored_info_types_with_metadata`
@@ -2188,12 +1930,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_stored_info_types_with_metadata(
-        self,
-        response: dlp.ListStoredInfoTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListStoredInfoTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListStoredInfoTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListStoredInfoTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_stored_info_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2209,12 +1947,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_list_table_data_profiles(
-        self,
-        request: dlp.ListTableDataProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListTableDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.ListTableDataProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListTableDataProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_table_data_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -2222,9 +1956,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_table_data_profiles(
-        self, response: dlp.ListTableDataProfilesResponse
-    ) -> dlp.ListTableDataProfilesResponse:
+    def post_list_table_data_profiles(self, response: dlp.ListTableDataProfilesResponse) -> dlp.ListTableDataProfilesResponse:
         """Post-rpc interceptor for list_table_data_profiles
 
         DEPRECATED. Please use the `post_list_table_data_profiles_with_metadata`
@@ -2238,12 +1970,8 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_list_table_data_profiles_with_metadata(
-        self,
-        response: dlp.ListTableDataProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.ListTableDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: dlp.ListTableDataProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.ListTableDataProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_table_data_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2259,9 +1987,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_redact_image(
-        self,
-        request: dlp.RedactImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.RedactImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.RedactImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for redact_image
 
@@ -2270,9 +1996,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_redact_image(
-        self, response: dlp.RedactImageResponse
-    ) -> dlp.RedactImageResponse:
+    def post_redact_image(self, response: dlp.RedactImageResponse) -> dlp.RedactImageResponse:
         """Post-rpc interceptor for redact_image
 
         DEPRECATED. Please use the `post_redact_image_with_metadata`
@@ -2286,9 +2010,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_redact_image_with_metadata(
-        self,
-        response: dlp.RedactImageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.RedactImageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.RedactImageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for redact_image
 
@@ -2305,9 +2027,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_reidentify_content(
-        self,
-        request: dlp.ReidentifyContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.ReidentifyContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ReidentifyContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reidentify_content
 
@@ -2316,9 +2036,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_reidentify_content(
-        self, response: dlp.ReidentifyContentResponse
-    ) -> dlp.ReidentifyContentResponse:
+    def post_reidentify_content(self, response: dlp.ReidentifyContentResponse) -> dlp.ReidentifyContentResponse:
         """Post-rpc interceptor for reidentify_content
 
         DEPRECATED. Please use the `post_reidentify_content_with_metadata`
@@ -2332,9 +2050,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_reidentify_content_with_metadata(
-        self,
-        response: dlp.ReidentifyContentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.ReidentifyContentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.ReidentifyContentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reidentify_content
 
@@ -2351,9 +2067,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_search_connections(
-        self,
-        request: dlp.SearchConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.SearchConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.SearchConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_connections
 
@@ -2362,9 +2076,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_connections(
-        self, response: dlp.SearchConnectionsResponse
-    ) -> dlp.SearchConnectionsResponse:
+    def post_search_connections(self, response: dlp.SearchConnectionsResponse) -> dlp.SearchConnectionsResponse:
         """Post-rpc interceptor for search_connections
 
         DEPRECATED. Please use the `post_search_connections_with_metadata`
@@ -2378,9 +2090,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_search_connections_with_metadata(
-        self,
-        response: dlp.SearchConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.SearchConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.SearchConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_connections
 
@@ -2397,9 +2107,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_update_connection(
-        self,
-        request: dlp.UpdateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.UpdateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.UpdateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connection
 
@@ -2422,9 +2130,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_update_connection_with_metadata(
-        self,
-        response: dlp.Connection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.Connection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.Connection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connection
 
@@ -2441,12 +2147,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_update_deidentify_template(
-        self,
-        request: dlp.UpdateDeidentifyTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.UpdateDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.UpdateDeidentifyTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.UpdateDeidentifyTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_deidentify_template
 
         Override in a subclass to manipulate the request or metadata
@@ -2454,9 +2156,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_deidentify_template(
-        self, response: dlp.DeidentifyTemplate
-    ) -> dlp.DeidentifyTemplate:
+    def post_update_deidentify_template(self, response: dlp.DeidentifyTemplate) -> dlp.DeidentifyTemplate:
         """Post-rpc interceptor for update_deidentify_template
 
         DEPRECATED. Please use the `post_update_deidentify_template_with_metadata`
@@ -2470,9 +2170,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_update_deidentify_template_with_metadata(
-        self,
-        response: dlp.DeidentifyTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DeidentifyTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DeidentifyTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_deidentify_template
 
@@ -2489,12 +2187,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_update_discovery_config(
-        self,
-        request: dlp.UpdateDiscoveryConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.UpdateDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.UpdateDiscoveryConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.UpdateDiscoveryConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_discovery_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2502,9 +2196,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_discovery_config(
-        self, response: dlp.DiscoveryConfig
-    ) -> dlp.DiscoveryConfig:
+    def post_update_discovery_config(self, response: dlp.DiscoveryConfig) -> dlp.DiscoveryConfig:
         """Post-rpc interceptor for update_discovery_config
 
         DEPRECATED. Please use the `post_update_discovery_config_with_metadata`
@@ -2518,9 +2210,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_update_discovery_config_with_metadata(
-        self,
-        response: dlp.DiscoveryConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.DiscoveryConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.DiscoveryConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_discovery_config
 
@@ -2537,12 +2227,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_update_inspect_template(
-        self,
-        request: dlp.UpdateInspectTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.UpdateInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.UpdateInspectTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.UpdateInspectTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_inspect_template
 
         Override in a subclass to manipulate the request or metadata
@@ -2550,9 +2236,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_inspect_template(
-        self, response: dlp.InspectTemplate
-    ) -> dlp.InspectTemplate:
+    def post_update_inspect_template(self, response: dlp.InspectTemplate) -> dlp.InspectTemplate:
         """Post-rpc interceptor for update_inspect_template
 
         DEPRECATED. Please use the `post_update_inspect_template_with_metadata`
@@ -2566,9 +2250,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_update_inspect_template_with_metadata(
-        self,
-        response: dlp.InspectTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.InspectTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.InspectTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_inspect_template
 
@@ -2585,9 +2267,7 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_update_job_trigger(
-        self,
-        request: dlp.UpdateJobTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dlp.UpdateJobTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.UpdateJobTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_job_trigger
 
@@ -2610,9 +2290,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_update_job_trigger_with_metadata(
-        self,
-        response: dlp.JobTrigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.JobTrigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.JobTrigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_job_trigger
 
@@ -2629,12 +2307,8 @@ class DlpServiceRestInterceptor:
         return response, metadata
 
     def pre_update_stored_info_type(
-        self,
-        request: dlp.UpdateStoredInfoTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dlp.UpdateStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dlp.UpdateStoredInfoTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dlp.UpdateStoredInfoTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_stored_info_type
 
         Override in a subclass to manipulate the request or metadata
@@ -2642,9 +2316,7 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_stored_info_type(
-        self, response: dlp.StoredInfoType
-    ) -> dlp.StoredInfoType:
+    def post_update_stored_info_type(self, response: dlp.StoredInfoType) -> dlp.StoredInfoType:
         """Post-rpc interceptor for update_stored_info_type
 
         DEPRECATED. Please use the `post_update_stored_info_type_with_metadata`
@@ -2658,9 +2330,7 @@ class DlpServiceRestInterceptor:
         return response
 
     def post_update_stored_info_type_with_metadata(
-        self,
-        response: dlp.StoredInfoType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dlp.StoredInfoType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dlp.StoredInfoType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_stored_info_type
 
@@ -2761,30 +2431,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DlpServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ActivateJobTrigger(
-        _BaseDlpServiceRestTransport._BaseActivateJobTrigger, DlpServiceRestStub
-    ):
+    class _ActivateJobTrigger(_BaseDlpServiceRestTransport._BaseActivateJobTrigger, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ActivateJobTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2827,32 +2485,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_activate_job_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_activate_job_trigger(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseActivateJobTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2876,13 +2520,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ActivateJobTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2898,12 +2536,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_activate_job_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_activate_job_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_activate_job_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DlpJob.to_json(response)
                 except:
@@ -2924,22 +2558,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CancelDlpJob(
-        _BaseDlpServiceRestTransport._BaseCancelDlpJob, DlpServiceRestStub
-    ):
+    class _CancelDlpJob(_BaseDlpServiceRestTransport._BaseCancelDlpJob, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CancelDlpJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2976,36 +2600,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_dlp_job(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCancelDlpJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3029,13 +2635,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CancelDlpJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3043,22 +2643,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateConnection(
-        _BaseDlpServiceRestTransport._BaseCreateConnection, DlpServiceRestStub
-    ):
+    class _CreateConnection(_BaseDlpServiceRestTransport._BaseCreateConnection, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3101,32 +2691,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateConnection._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connection(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseCreateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseCreateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3150,13 +2726,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3172,12 +2742,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.Connection.to_json(response)
                 except:
@@ -3198,22 +2764,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CreateDeidentifyTemplate(
-        _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate, DlpServiceRestStub
-    ):
+    class _CreateDeidentifyTemplate(_BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateDeidentifyTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3260,32 +2816,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_deidentify_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_deidentify_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateDeidentifyTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3309,13 +2851,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateDeidentifyTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3331,12 +2867,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_deidentify_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_deidentify_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_deidentify_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyTemplate.to_json(response)
                 except:
@@ -3357,22 +2889,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CreateDiscoveryConfig(
-        _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig, DlpServiceRestStub
-    ):
+    class _CreateDiscoveryConfig(_BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateDiscoveryConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3420,32 +2942,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_discovery_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_discovery_config(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateDiscoveryConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3469,13 +2977,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateDiscoveryConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3491,12 +2993,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_discovery_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_discovery_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_discovery_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DiscoveryConfig.to_json(response)
                 except:
@@ -3517,22 +3015,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CreateDlpJob(
-        _BaseDlpServiceRestTransport._BaseCreateDlpJob, DlpServiceRestStub
-    ):
+    class _CreateDlpJob(_BaseDlpServiceRestTransport._BaseCreateDlpJob, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateDlpJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3578,36 +3066,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_http_options()
 
             request, metadata = self._interceptor.pre_create_dlp_job(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateDlpJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3631,13 +3101,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateDlpJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3653,12 +3117,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_dlp_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dlp_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dlp_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DlpJob.to_json(response)
                 except:
@@ -3679,22 +3139,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CreateInspectTemplate(
-        _BaseDlpServiceRestTransport._BaseCreateInspectTemplate, DlpServiceRestStub
-    ):
+    class _CreateInspectTemplate(_BaseDlpServiceRestTransport._BaseCreateInspectTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateInspectTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3742,32 +3192,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_inspect_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_inspect_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateInspectTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3791,13 +3227,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateInspectTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3813,12 +3243,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_inspect_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_inspect_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_inspect_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectTemplate.to_json(response)
                 except:
@@ -3839,22 +3265,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CreateJobTrigger(
-        _BaseDlpServiceRestTransport._BaseCreateJobTrigger, DlpServiceRestStub
-    ):
+    class _CreateJobTrigger(_BaseDlpServiceRestTransport._BaseCreateJobTrigger, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateJobTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3898,32 +3314,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_job_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_job_trigger(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateJobTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3947,13 +3349,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateJobTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3969,12 +3365,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_job_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_job_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_job_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.JobTrigger.to_json(response)
                 except:
@@ -3995,22 +3387,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _CreateStoredInfoType(
-        _BaseDlpServiceRestTransport._BaseCreateStoredInfoType, DlpServiceRestStub
-    ):
+    class _CreateStoredInfoType(_BaseDlpServiceRestTransport._BaseCreateStoredInfoType, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.CreateStoredInfoType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4054,32 +3436,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_stored_info_type(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_stored_info_type(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseCreateStoredInfoType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4103,13 +3471,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._CreateStoredInfoType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4125,12 +3487,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_create_stored_info_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_stored_info_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_stored_info_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.StoredInfoType.to_json(response)
                 except:
@@ -4151,22 +3509,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _DeidentifyContent(
-        _BaseDlpServiceRestTransport._BaseDeidentifyContent, DlpServiceRestStub
-    ):
+    class _DeidentifyContent(_BaseDlpServiceRestTransport._BaseDeidentifyContent, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeidentifyContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4208,32 +3556,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_deidentify_content(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deidentify_content(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeidentifyContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4257,13 +3591,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeidentifyContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4279,12 +3607,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_deidentify_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deidentify_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deidentify_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyContentResponse.to_json(response)
                 except:
@@ -4305,22 +3629,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _DeleteConnection(
-        _BaseDlpServiceRestTransport._BaseDeleteConnection, DlpServiceRestStub
-    ):
+    class _DeleteConnection(_BaseDlpServiceRestTransport._BaseDeleteConnection, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4355,28 +3669,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteConnection._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connection(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4400,12 +3702,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4413,22 +3710,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDeidentifyTemplate(
-        _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate, DlpServiceRestStub
-    ):
+    class _DeleteDeidentifyTemplate(_BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteDeidentifyTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4465,28 +3752,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_deidentify_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_deidentify_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteDeidentifyTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4510,12 +3785,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteDeidentifyTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4523,22 +3793,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDiscoveryConfig(
-        _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig, DlpServiceRestStub
-    ):
+    class _DeleteDiscoveryConfig(_BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteDiscoveryConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4574,28 +3834,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_discovery_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_discovery_config(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteDiscoveryConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4619,12 +3867,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteDiscoveryConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4632,22 +3875,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDlpJob(
-        _BaseDlpServiceRestTransport._BaseDeleteDlpJob, DlpServiceRestStub
-    ):
+    class _DeleteDlpJob(_BaseDlpServiceRestTransport._BaseDeleteDlpJob, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteDlpJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4683,30 +3916,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_dlp_job(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteDlpJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4730,12 +3949,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteDlpJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4743,22 +3957,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteFileStoreDataProfile(
-        _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile, DlpServiceRestStub
-    ):
+    class _DeleteFileStoreDataProfile(_BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteFileStoreDataProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4795,28 +3999,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_file_store_data_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_file_store_data_profile(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteFileStoreDataProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4839,15 +4031,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DlpServiceRestTransport._DeleteFileStoreDataProfile._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DlpServiceRestTransport._DeleteFileStoreDataProfile._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4855,22 +4040,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteInspectTemplate(
-        _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate, DlpServiceRestStub
-    ):
+    class _DeleteInspectTemplate(_BaseDlpServiceRestTransport._BaseDeleteInspectTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteInspectTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4906,28 +4081,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_inspect_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_inspect_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteInspectTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4951,12 +4114,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteInspectTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4964,22 +4122,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteJobTrigger(
-        _BaseDlpServiceRestTransport._BaseDeleteJobTrigger, DlpServiceRestStub
-    ):
+    class _DeleteJobTrigger(_BaseDlpServiceRestTransport._BaseDeleteJobTrigger, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteJobTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5014,28 +4162,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_job_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_job_trigger(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteJobTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5059,12 +4195,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteJobTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5072,22 +4203,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteStoredInfoType(
-        _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType, DlpServiceRestStub
-    ):
+    class _DeleteStoredInfoType(_BaseDlpServiceRestTransport._BaseDeleteStoredInfoType, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteStoredInfoType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5123,28 +4244,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_stored_info_type(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_stored_info_type(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteStoredInfoType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5168,12 +4277,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteStoredInfoType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5181,22 +4285,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteTableDataProfile(
-        _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile, DlpServiceRestStub
-    ):
+    class _DeleteTableDataProfile(_BaseDlpServiceRestTransport._BaseDeleteTableDataProfile, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.DeleteTableDataProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5232,28 +4326,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_table_data_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_table_data_profile(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseDeleteTableDataProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5277,12 +4359,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._DeleteTableDataProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5290,22 +4367,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FinishDlpJob(
-        _BaseDlpServiceRestTransport._BaseFinishDlpJob, DlpServiceRestStub
-    ):
+    class _FinishDlpJob(_BaseDlpServiceRestTransport._BaseFinishDlpJob, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.FinishDlpJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5342,36 +4409,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_http_options()
 
             request, metadata = self._interceptor.pre_finish_dlp_job(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseFinishDlpJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5395,13 +4444,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._FinishDlpJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5409,22 +4452,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetColumnDataProfile(
-        _BaseDlpServiceRestTransport._BaseGetColumnDataProfile, DlpServiceRestStub
-    ):
+    class _GetColumnDataProfile(_BaseDlpServiceRestTransport._BaseGetColumnDataProfile, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetColumnDataProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5465,28 +4498,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_column_data_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_column_data_profile(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetColumnDataProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5510,12 +4531,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetColumnDataProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5531,12 +4547,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_column_data_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_column_data_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_column_data_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ColumnDataProfile.to_json(response)
                 except:
@@ -5557,22 +4569,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetConnection(
-        _BaseDlpServiceRestTransport._BaseGetConnection, DlpServiceRestStub
-    ):
+    class _GetConnection(_BaseDlpServiceRestTransport._BaseGetConnection, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5614,30 +4616,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetConnection._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetConnection._get_http_options()
 
             request, metadata = self._interceptor.pre_get_connection(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseGetConnection._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseGetConnection._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5661,12 +4649,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5682,12 +4665,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.Connection.to_json(response)
                 except:
@@ -5708,22 +4687,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetDeidentifyTemplate(
-        _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate, DlpServiceRestStub
-    ):
+    class _GetDeidentifyTemplate(_BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetDeidentifyTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5768,28 +4737,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_deidentify_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_deidentify_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetDeidentifyTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5813,12 +4770,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetDeidentifyTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5834,12 +4786,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_deidentify_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_deidentify_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_deidentify_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyTemplate.to_json(response)
                 except:
@@ -5860,22 +4808,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetDiscoveryConfig(
-        _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig, DlpServiceRestStub
-    ):
+    class _GetDiscoveryConfig(_BaseDlpServiceRestTransport._BaseGetDiscoveryConfig, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetDiscoveryConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5922,28 +4860,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_discovery_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_discovery_config(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetDiscoveryConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5967,12 +4893,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetDiscoveryConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5988,12 +4909,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_discovery_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_discovery_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_discovery_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DiscoveryConfig.to_json(response)
                 except:
@@ -6019,15 +4936,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             return hash("DlpServiceRestTransport.GetDlpJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6069,30 +4978,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetDlpJob._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetDlpJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dlp_job(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseGetDlpJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetDlpJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseGetDlpJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetDlpJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6116,12 +5011,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetDlpJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6137,12 +5027,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_dlp_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dlp_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dlp_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DlpJob.to_json(response)
                 except:
@@ -6163,22 +5049,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetFileStoreDataProfile(
-        _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile, DlpServiceRestStub
-    ):
+    class _GetFileStoreDataProfile(_BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetFileStoreDataProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6223,28 +5099,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_file_store_data_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_file_store_data_profile(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetFileStoreDataProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6268,12 +5132,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetFileStoreDataProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6289,12 +5148,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_file_store_data_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_file_store_data_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_file_store_data_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.FileStoreDataProfile.to_json(response)
                 except:
@@ -6315,22 +5170,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetInspectTemplate(
-        _BaseDlpServiceRestTransport._BaseGetInspectTemplate, DlpServiceRestStub
-    ):
+    class _GetInspectTemplate(_BaseDlpServiceRestTransport._BaseGetInspectTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetInspectTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6377,28 +5222,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_inspect_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_inspect_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetInspectTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6422,12 +5255,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetInspectTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6443,12 +5271,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_inspect_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_inspect_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_inspect_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectTemplate.to_json(response)
                 except:
@@ -6469,22 +5293,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetJobTrigger(
-        _BaseDlpServiceRestTransport._BaseGetJobTrigger, DlpServiceRestStub
-    ):
+    class _GetJobTrigger(_BaseDlpServiceRestTransport._BaseGetJobTrigger, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetJobTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6527,30 +5341,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job_trigger(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetJobTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6574,12 +5374,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetJobTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6595,12 +5390,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_job_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.JobTrigger.to_json(response)
                 except:
@@ -6621,22 +5412,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetProjectDataProfile(
-        _BaseDlpServiceRestTransport._BaseGetProjectDataProfile, DlpServiceRestStub
-    ):
+    class _GetProjectDataProfile(_BaseDlpServiceRestTransport._BaseGetProjectDataProfile, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetProjectDataProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6679,28 +5460,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_project_data_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_project_data_profile(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetProjectDataProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6724,12 +5493,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetProjectDataProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6745,12 +5509,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_project_data_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_project_data_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_project_data_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ProjectDataProfile.to_json(response)
                 except:
@@ -6771,22 +5531,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetStoredInfoType(
-        _BaseDlpServiceRestTransport._BaseGetStoredInfoType, DlpServiceRestStub
-    ):
+    class _GetStoredInfoType(_BaseDlpServiceRestTransport._BaseGetStoredInfoType, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetStoredInfoType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6829,28 +5579,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_stored_info_type(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_stored_info_type(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetStoredInfoType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6874,12 +5612,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetStoredInfoType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6895,12 +5628,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_stored_info_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_stored_info_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_stored_info_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.StoredInfoType.to_json(response)
                 except:
@@ -6921,22 +5650,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _GetTableDataProfile(
-        _BaseDlpServiceRestTransport._BaseGetTableDataProfile, DlpServiceRestStub
-    ):
+    class _GetTableDataProfile(_BaseDlpServiceRestTransport._BaseGetTableDataProfile, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.GetTableDataProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6975,28 +5694,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     The profile for a scanned table.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_table_data_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_table_data_profile(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseGetTableDataProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7020,12 +5727,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._GetTableDataProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7041,12 +5743,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_get_table_data_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_table_data_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_table_data_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.TableDataProfile.to_json(response)
                 except:
@@ -7067,22 +5765,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _HybridInspectDlpJob(
-        _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob, DlpServiceRestStub
-    ):
+    class _HybridInspectDlpJob(_BaseDlpServiceRestTransport._BaseHybridInspectDlpJob, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.HybridInspectDlpJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7125,32 +5813,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_hybrid_inspect_dlp_job(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_hybrid_inspect_dlp_job(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseHybridInspectDlpJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7174,13 +5848,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._HybridInspectDlpJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7196,12 +5864,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_hybrid_inspect_dlp_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_hybrid_inspect_dlp_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_hybrid_inspect_dlp_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.HybridInspectResponse.to_json(response)
                 except:
@@ -7222,22 +5886,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _HybridInspectJobTrigger(
-        _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger, DlpServiceRestStub
-    ):
+    class _HybridInspectJobTrigger(_BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.HybridInspectJobTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7281,32 +5935,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_hybrid_inspect_job_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_hybrid_inspect_job_trigger(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseHybridInspectJobTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7330,13 +5970,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._HybridInspectJobTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7352,12 +5986,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_hybrid_inspect_job_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_hybrid_inspect_job_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_hybrid_inspect_job_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.HybridInspectResponse.to_json(response)
                 except:
@@ -7378,22 +6008,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _InspectContent(
-        _BaseDlpServiceRestTransport._BaseInspectContent, DlpServiceRestStub
-    ):
+    class _InspectContent(_BaseDlpServiceRestTransport._BaseInspectContent, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.InspectContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7434,34 +6054,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     Results of inspecting an item.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseInspectContent._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseInspectContent._get_http_options()
 
             request, metadata = self._interceptor.pre_inspect_content(request, metadata)
-            transcoded_request = _BaseDlpServiceRestTransport._BaseInspectContent._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseInspectContent._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDlpServiceRestTransport._BaseInspectContent._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDlpServiceRestTransport._BaseInspectContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseInspectContent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseInspectContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7485,13 +6089,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._InspectContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7507,12 +6105,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_inspect_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_inspect_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_inspect_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectContentResponse.to_json(response)
                 except:
@@ -7533,22 +6127,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListColumnDataProfiles(
-        _BaseDlpServiceRestTransport._BaseListColumnDataProfiles, DlpServiceRestStub
-    ):
+    class _ListColumnDataProfiles(_BaseDlpServiceRestTransport._BaseListColumnDataProfiles, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListColumnDataProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7591,28 +6175,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_column_data_profiles(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_column_data_profiles(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListColumnDataProfiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7636,12 +6208,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListColumnDataProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7657,16 +6224,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_column_data_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_column_data_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_column_data_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListColumnDataProfilesResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListColumnDataProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7685,22 +6246,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListConnections(
-        _BaseDlpServiceRestTransport._BaseListConnections, DlpServiceRestStub
-    ):
+    class _ListConnections(_BaseDlpServiceRestTransport._BaseListConnections, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7739,28 +6290,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     Response message for ListConnections.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListConnections._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_connections(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7784,12 +6323,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7805,12 +6339,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListConnectionsResponse.to_json(response)
                 except:
@@ -7831,22 +6361,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListDeidentifyTemplates(
-        _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates, DlpServiceRestStub
-    ):
+    class _ListDeidentifyTemplates(_BaseDlpServiceRestTransport._BaseListDeidentifyTemplates, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListDeidentifyTemplates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7888,28 +6408,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_deidentify_templates(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_deidentify_templates(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListDeidentifyTemplates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7933,12 +6441,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListDeidentifyTemplates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7954,16 +6457,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_deidentify_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_deidentify_templates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_deidentify_templates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListDeidentifyTemplatesResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListDeidentifyTemplatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7982,22 +6479,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListDiscoveryConfigs(
-        _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs, DlpServiceRestStub
-    ):
+    class _ListDiscoveryConfigs(_BaseDlpServiceRestTransport._BaseListDiscoveryConfigs, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListDiscoveryConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8039,28 +6526,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_discovery_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_discovery_configs(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListDiscoveryConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8084,12 +6559,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListDiscoveryConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8105,16 +6575,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_discovery_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_discovery_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_discovery_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListDiscoveryConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListDiscoveryConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8133,22 +6597,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListDlpJobs(
-        _BaseDlpServiceRestTransport._BaseListDlpJobs, DlpServiceRestStub
-    ):
+    class _ListDlpJobs(_BaseDlpServiceRestTransport._BaseListDlpJobs, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListDlpJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8190,30 +6644,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListDlpJobs._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListDlpJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_dlp_jobs(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseListDlpJobs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListDlpJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseListDlpJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListDlpJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8237,12 +6677,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListDlpJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8258,12 +6693,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_dlp_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_dlp_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_dlp_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListDlpJobsResponse.to_json(response)
                 except:
@@ -8284,22 +6715,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListFileStoreDataProfiles(
-        _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles, DlpServiceRestStub
-    ):
+    class _ListFileStoreDataProfiles(_BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListFileStoreDataProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8344,28 +6765,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_file_store_data_profiles(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_file_store_data_profiles(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListFileStoreDataProfiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8389,12 +6798,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListFileStoreDataProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8410,19 +6814,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_file_store_data_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_file_store_data_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_file_store_data_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListFileStoreDataProfilesResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListFileStoreDataProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8441,22 +6836,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListInfoTypes(
-        _BaseDlpServiceRestTransport._BaseListInfoTypes, DlpServiceRestStub
-    ):
+    class _ListInfoTypes(_BaseDlpServiceRestTransport._BaseListInfoTypes, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListInfoTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8497,30 +6882,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListInfoTypes._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListInfoTypes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_info_types(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseListInfoTypes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListInfoTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseListInfoTypes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListInfoTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8544,12 +6915,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListInfoTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8565,12 +6931,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_info_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_info_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_info_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListInfoTypesResponse.to_json(response)
                 except:
@@ -8591,22 +6953,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListInspectTemplates(
-        _BaseDlpServiceRestTransport._BaseListInspectTemplates, DlpServiceRestStub
-    ):
+    class _ListInspectTemplates(_BaseDlpServiceRestTransport._BaseListInspectTemplates, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListInspectTemplates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8648,28 +7000,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_inspect_templates(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_inspect_templates(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListInspectTemplates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8693,12 +7033,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListInspectTemplates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8714,16 +7049,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_inspect_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_inspect_templates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_inspect_templates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListInspectTemplatesResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListInspectTemplatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8742,22 +7071,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListJobTriggers(
-        _BaseDlpServiceRestTransport._BaseListJobTriggers, DlpServiceRestStub
-    ):
+    class _ListJobTriggers(_BaseDlpServiceRestTransport._BaseListJobTriggers, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListJobTriggers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8796,28 +7115,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     Response message for ListJobTriggers.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListJobTriggers._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_job_triggers(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_job_triggers(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListJobTriggers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8841,12 +7148,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListJobTriggers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8862,12 +7164,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_job_triggers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_job_triggers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_job_triggers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListJobTriggersResponse.to_json(response)
                 except:
@@ -8888,22 +7186,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListProjectDataProfiles(
-        _BaseDlpServiceRestTransport._BaseListProjectDataProfiles, DlpServiceRestStub
-    ):
+    class _ListProjectDataProfiles(_BaseDlpServiceRestTransport._BaseListProjectDataProfiles, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListProjectDataProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8947,28 +7235,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_project_data_profiles(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_project_data_profiles(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListProjectDataProfiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8992,12 +7268,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListProjectDataProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9013,16 +7284,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_project_data_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_project_data_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_project_data_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListProjectDataProfilesResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListProjectDataProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9041,22 +7306,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListStoredInfoTypes(
-        _BaseDlpServiceRestTransport._BaseListStoredInfoTypes, DlpServiceRestStub
-    ):
+    class _ListStoredInfoTypes(_BaseDlpServiceRestTransport._BaseListStoredInfoTypes, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListStoredInfoTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9098,28 +7353,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_stored_info_types(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_stored_info_types(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListStoredInfoTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9143,12 +7386,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListStoredInfoTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9164,12 +7402,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_stored_info_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_stored_info_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_stored_info_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ListStoredInfoTypesResponse.to_json(response)
                 except:
@@ -9190,22 +7424,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ListTableDataProfiles(
-        _BaseDlpServiceRestTransport._BaseListTableDataProfiles, DlpServiceRestStub
-    ):
+    class _ListTableDataProfiles(_BaseDlpServiceRestTransport._BaseListTableDataProfiles, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ListTableDataProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9248,28 +7472,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_table_data_profiles(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_table_data_profiles(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseListTableDataProfiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9293,12 +7505,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ListTableDataProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9314,16 +7521,10 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_list_table_data_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_table_data_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_table_data_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = dlp.ListTableDataProfilesResponse.to_json(
-                        response
-                    )
+                    response_payload = dlp.ListTableDataProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9342,22 +7543,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _RedactImage(
-        _BaseDlpServiceRestTransport._BaseRedactImage, DlpServiceRestStub
-    ):
+    class _RedactImage(_BaseDlpServiceRestTransport._BaseRedactImage, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.RedactImage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9399,34 +7590,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     Results of redacting an image.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseRedactImage._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseRedactImage._get_http_options()
 
             request, metadata = self._interceptor.pre_redact_image(request, metadata)
-            transcoded_request = (
-                _BaseDlpServiceRestTransport._BaseRedactImage._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDlpServiceRestTransport._BaseRedactImage._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseRedactImage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseRedactImage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDlpServiceRestTransport._BaseRedactImage._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseRedactImage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9450,13 +7625,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._RedactImage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9472,12 +7641,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_redact_image(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_redact_image_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_redact_image_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.RedactImageResponse.to_json(response)
                 except:
@@ -9498,22 +7663,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _ReidentifyContent(
-        _BaseDlpServiceRestTransport._BaseReidentifyContent, DlpServiceRestStub
-    ):
+    class _ReidentifyContent(_BaseDlpServiceRestTransport._BaseReidentifyContent, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.ReidentifyContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9553,32 +7708,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                     Results of re-identifying an item.
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseReidentifyContent._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_reidentify_content(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reidentify_content(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseReidentifyContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9602,13 +7743,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._ReidentifyContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9624,12 +7759,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_reidentify_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reidentify_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reidentify_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.ReidentifyContentResponse.to_json(response)
                 except:
@@ -9650,22 +7781,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _SearchConnections(
-        _BaseDlpServiceRestTransport._BaseSearchConnections, DlpServiceRestStub
-    ):
+    class _SearchConnections(_BaseDlpServiceRestTransport._BaseSearchConnections, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.SearchConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9707,28 +7828,16 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseSearchConnections._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseSearchConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseSearchConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_connections(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseSearchConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseSearchConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseSearchConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9752,12 +7861,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._SearchConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9773,12 +7877,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_search_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.SearchConnectionsResponse.to_json(response)
                 except:
@@ -9799,22 +7899,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _UpdateConnection(
-        _BaseDlpServiceRestTransport._BaseUpdateConnection, DlpServiceRestStub
-    ):
+    class _UpdateConnection(_BaseDlpServiceRestTransport._BaseUpdateConnection, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.UpdateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9857,32 +7947,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseUpdateConnection._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connection(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9906,13 +7982,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._UpdateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9928,12 +7998,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_update_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.Connection.to_json(response)
                 except:
@@ -9954,22 +8020,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDeidentifyTemplate(
-        _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate, DlpServiceRestStub
-    ):
+    class _UpdateDeidentifyTemplate(_BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.UpdateDeidentifyTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10016,32 +8072,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_deidentify_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_deidentify_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateDeidentifyTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10065,13 +8107,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._UpdateDeidentifyTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10087,12 +8123,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_update_deidentify_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_deidentify_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_deidentify_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DeidentifyTemplate.to_json(response)
                 except:
@@ -10113,22 +8145,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDiscoveryConfig(
-        _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig, DlpServiceRestStub
-    ):
+    class _UpdateDiscoveryConfig(_BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.UpdateDiscoveryConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10176,32 +8198,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_discovery_config(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_discovery_config(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateDiscoveryConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10225,13 +8233,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._UpdateDiscoveryConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10247,12 +8249,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_update_discovery_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_discovery_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_discovery_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.DiscoveryConfig.to_json(response)
                 except:
@@ -10273,22 +8271,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _UpdateInspectTemplate(
-        _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate, DlpServiceRestStub
-    ):
+    class _UpdateInspectTemplate(_BaseDlpServiceRestTransport._BaseUpdateInspectTemplate, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.UpdateInspectTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10336,32 +8324,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_inspect_template(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_inspect_template(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateInspectTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10385,13 +8359,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._UpdateInspectTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10407,12 +8375,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_update_inspect_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_inspect_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_inspect_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.InspectTemplate.to_json(response)
                 except:
@@ -10433,22 +8397,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _UpdateJobTrigger(
-        _BaseDlpServiceRestTransport._BaseUpdateJobTrigger, DlpServiceRestStub
-    ):
+    class _UpdateJobTrigger(_BaseDlpServiceRestTransport._BaseUpdateJobTrigger, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.UpdateJobTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10492,32 +8446,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_job_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_job_trigger(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateJobTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10541,13 +8481,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._UpdateJobTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10563,12 +8497,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_update_job_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_job_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_job_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.JobTrigger.to_json(response)
                 except:
@@ -10589,22 +8519,12 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
                 )
             return resp
 
-    class _UpdateStoredInfoType(
-        _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType, DlpServiceRestStub
-    ):
+    class _UpdateStoredInfoType(_BaseDlpServiceRestTransport._BaseUpdateStoredInfoType, DlpServiceRestStub):
         def __hash__(self):
             return hash("DlpServiceRestTransport.UpdateStoredInfoType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10648,32 +8568,18 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_http_options()
-            )
+            http_options = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_stored_info_type(
-                request, metadata
-            )
-            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_stored_info_type(request, metadata)
+            transcoded_request = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_transcoded_request(http_options, request)
 
-            body = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDlpServiceRestTransport._BaseUpdateStoredInfoType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10697,13 +8603,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             # Send the request
             response = DlpServiceRestTransport._UpdateStoredInfoType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10719,12 +8619,8 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
 
             resp = self._interceptor.post_update_stored_info_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_stored_info_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_stored_info_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dlp.StoredInfoType.to_json(response)
                 except:
@@ -10746,9 +8642,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
             return resp
 
     @property
-    def activate_job_trigger(
-        self,
-    ) -> Callable[[dlp.ActivateJobTriggerRequest], dlp.DlpJob]:
+    def activate_job_trigger(self) -> Callable[[dlp.ActivateJobTriggerRequest], dlp.DlpJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ActivateJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
@@ -10760,25 +8654,19 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._CancelDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[[dlp.CreateConnectionRequest], dlp.Connection]:
+    def create_connection(self) -> Callable[[dlp.CreateConnectionRequest], dlp.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_deidentify_template(
-        self,
-    ) -> Callable[[dlp.CreateDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
+    def create_deidentify_template(self) -> Callable[[dlp.CreateDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_discovery_config(
-        self,
-    ) -> Callable[[dlp.CreateDiscoveryConfigRequest], dlp.DiscoveryConfig]:
+    def create_discovery_config(self) -> Callable[[dlp.CreateDiscoveryConfigRequest], dlp.DiscoveryConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -10790,57 +8678,43 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._CreateDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_inspect_template(
-        self,
-    ) -> Callable[[dlp.CreateInspectTemplateRequest], dlp.InspectTemplate]:
+    def create_inspect_template(self) -> Callable[[dlp.CreateInspectTemplateRequest], dlp.InspectTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInspectTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_job_trigger(
-        self,
-    ) -> Callable[[dlp.CreateJobTriggerRequest], dlp.JobTrigger]:
+    def create_job_trigger(self) -> Callable[[dlp.CreateJobTriggerRequest], dlp.JobTrigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_stored_info_type(
-        self,
-    ) -> Callable[[dlp.CreateStoredInfoTypeRequest], dlp.StoredInfoType]:
+    def create_stored_info_type(self) -> Callable[[dlp.CreateStoredInfoTypeRequest], dlp.StoredInfoType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateStoredInfoType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deidentify_content(
-        self,
-    ) -> Callable[[dlp.DeidentifyContentRequest], dlp.DeidentifyContentResponse]:
+    def deidentify_content(self) -> Callable[[dlp.DeidentifyContentRequest], dlp.DeidentifyContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeidentifyContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[[dlp.DeleteConnectionRequest], empty_pb2.Empty]:
+    def delete_connection(self) -> Callable[[dlp.DeleteConnectionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_deidentify_template(
-        self,
-    ) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], empty_pb2.Empty]:
+    def delete_deidentify_template(self) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_discovery_config(
-        self,
-    ) -> Callable[[dlp.DeleteDiscoveryConfigRequest], empty_pb2.Empty]:
+    def delete_discovery_config(self) -> Callable[[dlp.DeleteDiscoveryConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -10852,41 +8726,31 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._DeleteDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_file_store_data_profile(
-        self,
-    ) -> Callable[[dlp.DeleteFileStoreDataProfileRequest], empty_pb2.Empty]:
+    def delete_file_store_data_profile(self) -> Callable[[dlp.DeleteFileStoreDataProfileRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFileStoreDataProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_inspect_template(
-        self,
-    ) -> Callable[[dlp.DeleteInspectTemplateRequest], empty_pb2.Empty]:
+    def delete_inspect_template(self) -> Callable[[dlp.DeleteInspectTemplateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInspectTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_job_trigger(
-        self,
-    ) -> Callable[[dlp.DeleteJobTriggerRequest], empty_pb2.Empty]:
+    def delete_job_trigger(self) -> Callable[[dlp.DeleteJobTriggerRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_stored_info_type(
-        self,
-    ) -> Callable[[dlp.DeleteStoredInfoTypeRequest], empty_pb2.Empty]:
+    def delete_stored_info_type(self) -> Callable[[dlp.DeleteStoredInfoTypeRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteStoredInfoType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_table_data_profile(
-        self,
-    ) -> Callable[[dlp.DeleteTableDataProfileRequest], empty_pb2.Empty]:
+    def delete_table_data_profile(self) -> Callable[[dlp.DeleteTableDataProfileRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTableDataProfile(self._session, self._host, self._interceptor)  # type: ignore
@@ -10898,9 +8762,7 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._FinishDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_column_data_profile(
-        self,
-    ) -> Callable[[dlp.GetColumnDataProfileRequest], dlp.ColumnDataProfile]:
+    def get_column_data_profile(self) -> Callable[[dlp.GetColumnDataProfileRequest], dlp.ColumnDataProfile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetColumnDataProfile(self._session, self._host, self._interceptor)  # type: ignore
@@ -10912,17 +8774,13 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._GetConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_deidentify_template(
-        self,
-    ) -> Callable[[dlp.GetDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
+    def get_deidentify_template(self) -> Callable[[dlp.GetDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_discovery_config(
-        self,
-    ) -> Callable[[dlp.GetDiscoveryConfigRequest], dlp.DiscoveryConfig]:
+    def get_discovery_config(self) -> Callable[[dlp.GetDiscoveryConfigRequest], dlp.DiscoveryConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -10934,17 +8792,13 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._GetDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_file_store_data_profile(
-        self,
-    ) -> Callable[[dlp.GetFileStoreDataProfileRequest], dlp.FileStoreDataProfile]:
+    def get_file_store_data_profile(self) -> Callable[[dlp.GetFileStoreDataProfileRequest], dlp.FileStoreDataProfile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFileStoreDataProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_inspect_template(
-        self,
-    ) -> Callable[[dlp.GetInspectTemplateRequest], dlp.InspectTemplate]:
+    def get_inspect_template(self) -> Callable[[dlp.GetInspectTemplateRequest], dlp.InspectTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInspectTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -10956,227 +8810,163 @@ class DlpServiceRestTransport(_BaseDlpServiceRestTransport):
         return self._GetJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_project_data_profile(
-        self,
-    ) -> Callable[[dlp.GetProjectDataProfileRequest], dlp.ProjectDataProfile]:
+    def get_project_data_profile(self) -> Callable[[dlp.GetProjectDataProfileRequest], dlp.ProjectDataProfile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProjectDataProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_stored_info_type(
-        self,
-    ) -> Callable[[dlp.GetStoredInfoTypeRequest], dlp.StoredInfoType]:
+    def get_stored_info_type(self) -> Callable[[dlp.GetStoredInfoTypeRequest], dlp.StoredInfoType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStoredInfoType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_table_data_profile(
-        self,
-    ) -> Callable[[dlp.GetTableDataProfileRequest], dlp.TableDataProfile]:
+    def get_table_data_profile(self) -> Callable[[dlp.GetTableDataProfileRequest], dlp.TableDataProfile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTableDataProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def hybrid_inspect_dlp_job(
-        self,
-    ) -> Callable[[dlp.HybridInspectDlpJobRequest], dlp.HybridInspectResponse]:
+    def hybrid_inspect_dlp_job(self) -> Callable[[dlp.HybridInspectDlpJobRequest], dlp.HybridInspectResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._HybridInspectDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def hybrid_inspect_job_trigger(
-        self,
-    ) -> Callable[[dlp.HybridInspectJobTriggerRequest], dlp.HybridInspectResponse]:
+    def hybrid_inspect_job_trigger(self) -> Callable[[dlp.HybridInspectJobTriggerRequest], dlp.HybridInspectResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._HybridInspectJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def inspect_content(
-        self,
-    ) -> Callable[[dlp.InspectContentRequest], dlp.InspectContentResponse]:
+    def inspect_content(self) -> Callable[[dlp.InspectContentRequest], dlp.InspectContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InspectContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_column_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListColumnDataProfilesRequest], dlp.ListColumnDataProfilesResponse
-    ]:
+    def list_column_data_profiles(self) -> Callable[[dlp.ListColumnDataProfilesRequest], dlp.ListColumnDataProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListColumnDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[[dlp.ListConnectionsRequest], dlp.ListConnectionsResponse]:
+    def list_connections(self) -> Callable[[dlp.ListConnectionsRequest], dlp.ListConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_deidentify_templates(
-        self,
-    ) -> Callable[
-        [dlp.ListDeidentifyTemplatesRequest], dlp.ListDeidentifyTemplatesResponse
-    ]:
+    def list_deidentify_templates(self) -> Callable[[dlp.ListDeidentifyTemplatesRequest], dlp.ListDeidentifyTemplatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeidentifyTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_discovery_configs(
-        self,
-    ) -> Callable[[dlp.ListDiscoveryConfigsRequest], dlp.ListDiscoveryConfigsResponse]:
+    def list_discovery_configs(self) -> Callable[[dlp.ListDiscoveryConfigsRequest], dlp.ListDiscoveryConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDiscoveryConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_dlp_jobs(
-        self,
-    ) -> Callable[[dlp.ListDlpJobsRequest], dlp.ListDlpJobsResponse]:
+    def list_dlp_jobs(self) -> Callable[[dlp.ListDlpJobsRequest], dlp.ListDlpJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDlpJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_file_store_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListFileStoreDataProfilesRequest], dlp.ListFileStoreDataProfilesResponse
-    ]:
+    def list_file_store_data_profiles(self) -> Callable[[dlp.ListFileStoreDataProfilesRequest], dlp.ListFileStoreDataProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFileStoreDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_info_types(
-        self,
-    ) -> Callable[[dlp.ListInfoTypesRequest], dlp.ListInfoTypesResponse]:
+    def list_info_types(self) -> Callable[[dlp.ListInfoTypesRequest], dlp.ListInfoTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInfoTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_inspect_templates(
-        self,
-    ) -> Callable[[dlp.ListInspectTemplatesRequest], dlp.ListInspectTemplatesResponse]:
+    def list_inspect_templates(self) -> Callable[[dlp.ListInspectTemplatesRequest], dlp.ListInspectTemplatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInspectTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_job_triggers(
-        self,
-    ) -> Callable[[dlp.ListJobTriggersRequest], dlp.ListJobTriggersResponse]:
+    def list_job_triggers(self) -> Callable[[dlp.ListJobTriggersRequest], dlp.ListJobTriggersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListJobTriggers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_project_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListProjectDataProfilesRequest], dlp.ListProjectDataProfilesResponse
-    ]:
+    def list_project_data_profiles(self) -> Callable[[dlp.ListProjectDataProfilesRequest], dlp.ListProjectDataProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProjectDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_stored_info_types(
-        self,
-    ) -> Callable[[dlp.ListStoredInfoTypesRequest], dlp.ListStoredInfoTypesResponse]:
+    def list_stored_info_types(self) -> Callable[[dlp.ListStoredInfoTypesRequest], dlp.ListStoredInfoTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListStoredInfoTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_table_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListTableDataProfilesRequest], dlp.ListTableDataProfilesResponse
-    ]:
+    def list_table_data_profiles(self) -> Callable[[dlp.ListTableDataProfilesRequest], dlp.ListTableDataProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTableDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def redact_image(
-        self,
-    ) -> Callable[[dlp.RedactImageRequest], dlp.RedactImageResponse]:
+    def redact_image(self) -> Callable[[dlp.RedactImageRequest], dlp.RedactImageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RedactImage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reidentify_content(
-        self,
-    ) -> Callable[[dlp.ReidentifyContentRequest], dlp.ReidentifyContentResponse]:
+    def reidentify_content(self) -> Callable[[dlp.ReidentifyContentRequest], dlp.ReidentifyContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReidentifyContent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_connections(
-        self,
-    ) -> Callable[[dlp.SearchConnectionsRequest], dlp.SearchConnectionsResponse]:
+    def search_connections(self) -> Callable[[dlp.SearchConnectionsRequest], dlp.SearchConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[[dlp.UpdateConnectionRequest], dlp.Connection]:
+    def update_connection(self) -> Callable[[dlp.UpdateConnectionRequest], dlp.Connection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_deidentify_template(
-        self,
-    ) -> Callable[[dlp.UpdateDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
+    def update_deidentify_template(self) -> Callable[[dlp.UpdateDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeidentifyTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_discovery_config(
-        self,
-    ) -> Callable[[dlp.UpdateDiscoveryConfigRequest], dlp.DiscoveryConfig]:
+    def update_discovery_config(self) -> Callable[[dlp.UpdateDiscoveryConfigRequest], dlp.DiscoveryConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDiscoveryConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_inspect_template(
-        self,
-    ) -> Callable[[dlp.UpdateInspectTemplateRequest], dlp.InspectTemplate]:
+    def update_inspect_template(self) -> Callable[[dlp.UpdateInspectTemplateRequest], dlp.InspectTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInspectTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_job_trigger(
-        self,
-    ) -> Callable[[dlp.UpdateJobTriggerRequest], dlp.JobTrigger]:
+    def update_job_trigger(self) -> Callable[[dlp.UpdateJobTriggerRequest], dlp.JobTrigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_stored_info_type(
-        self,
-    ) -> Callable[[dlp.UpdateStoredInfoTypeRequest], dlp.StoredInfoType]:
+    def update_stored_info_type(self) -> Callable[[dlp.UpdateStoredInfoTypeRequest], dlp.StoredInfoType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateStoredInfoType(self._session, self._host, self._interceptor)  # type: ignore

@@ -42,9 +42,7 @@ def sample_create_disk_migration_job():
     disk_migration_job = vmmigration_v1.DiskMigrationJob()
     disk_migration_job.aws_source_disk_details.volume_id = "volume_id_value"
     disk_migration_job.target_details.target_disk.zone = "zone_value"
-    disk_migration_job.target_details.target_disk.disk_type = (
-        "COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED"
-    )
+    disk_migration_job.target_details.target_disk.disk_type = "COMPUTE_ENGINE_DISK_TYPE_HYPERDISK_BALANCED"
     disk_migration_job.target_details.target_project = "target_project_value"
 
     request = vmmigration_v1.CreateDiskMigrationJobRequest(

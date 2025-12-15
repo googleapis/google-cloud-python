@@ -31,12 +31,8 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.securitycenter_v1beta1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1beta1.types import (
-    security_marks as gcs_security_marks,
-)
+from google.cloud.securitycenter_v1beta1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1beta1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1beta1.types import finding
 from google.cloud.securitycenter_v1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1beta1.types import organization_settings
@@ -237,13 +233,8 @@ class SecurityCenterRestInterceptor:
     """
 
     def pre_create_finding(
-        self,
-        request: securitycenter_service.CreateFindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.CreateFindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.CreateFindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.CreateFindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_finding
 
         Override in a subclass to manipulate the request or metadata
@@ -265,9 +256,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_create_finding_with_metadata(
-        self,
-        response: gcs_finding.Finding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_finding.Finding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_finding.Finding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_finding
 
@@ -284,13 +273,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_create_source(
-        self,
-        request: securitycenter_service.CreateSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.CreateSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.CreateSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.CreateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_source
 
         Override in a subclass to manipulate the request or metadata
@@ -312,9 +296,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_create_source_with_metadata(
-        self,
-        response: gcs_source.Source,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_source.Source, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_source.Source, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_source
 
@@ -331,12 +313,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +336,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -377,13 +353,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_get_organization_settings(
-        self,
-        request: securitycenter_service.GetOrganizationSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.GetOrganizationSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.GetOrganizationSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.GetOrganizationSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_organization_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -391,9 +362,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_organization_settings(
-        self, response: organization_settings.OrganizationSettings
-    ) -> organization_settings.OrganizationSettings:
+    def post_get_organization_settings(self, response: organization_settings.OrganizationSettings) -> organization_settings.OrganizationSettings:
         """Post-rpc interceptor for get_organization_settings
 
         DEPRECATED. Please use the `post_get_organization_settings_with_metadata`
@@ -407,13 +376,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_get_organization_settings_with_metadata(
-        self,
-        response: organization_settings.OrganizationSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        organization_settings.OrganizationSettings,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: organization_settings.OrganizationSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[organization_settings.OrganizationSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_organization_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -429,12 +393,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_get_source(
-        self,
-        request: securitycenter_service.GetSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: securitycenter_service.GetSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_source
 
         Override in a subclass to manipulate the request or metadata
@@ -473,13 +433,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_group_assets(
-        self,
-        request: securitycenter_service.GroupAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.GroupAssetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.GroupAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.GroupAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for group_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -487,9 +442,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_group_assets(
-        self, response: securitycenter_service.GroupAssetsResponse
-    ) -> securitycenter_service.GroupAssetsResponse:
+    def post_group_assets(self, response: securitycenter_service.GroupAssetsResponse) -> securitycenter_service.GroupAssetsResponse:
         """Post-rpc interceptor for group_assets
 
         DEPRECATED. Please use the `post_group_assets_with_metadata`
@@ -503,13 +456,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_group_assets_with_metadata(
-        self,
-        response: securitycenter_service.GroupAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.GroupAssetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: securitycenter_service.GroupAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.GroupAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for group_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -525,13 +473,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_group_findings(
-        self,
-        request: securitycenter_service.GroupFindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.GroupFindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.GroupFindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.GroupFindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for group_findings
 
         Override in a subclass to manipulate the request or metadata
@@ -539,9 +482,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_group_findings(
-        self, response: securitycenter_service.GroupFindingsResponse
-    ) -> securitycenter_service.GroupFindingsResponse:
+    def post_group_findings(self, response: securitycenter_service.GroupFindingsResponse) -> securitycenter_service.GroupFindingsResponse:
         """Post-rpc interceptor for group_findings
 
         DEPRECATED. Please use the `post_group_findings_with_metadata`
@@ -555,13 +496,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_group_findings_with_metadata(
-        self,
-        response: securitycenter_service.GroupFindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.GroupFindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: securitycenter_service.GroupFindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.GroupFindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for group_findings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -577,13 +513,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_list_assets(
-        self,
-        request: securitycenter_service.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.ListAssetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -591,9 +522,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assets(
-        self, response: securitycenter_service.ListAssetsResponse
-    ) -> securitycenter_service.ListAssetsResponse:
+    def post_list_assets(self, response: securitycenter_service.ListAssetsResponse) -> securitycenter_service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
         DEPRECATED. Please use the `post_list_assets_with_metadata`
@@ -607,13 +536,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_list_assets_with_metadata(
-        self,
-        response: securitycenter_service.ListAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.ListAssetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: securitycenter_service.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -629,13 +553,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_list_findings(
-        self,
-        request: securitycenter_service.ListFindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.ListFindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.ListFindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.ListFindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_findings
 
         Override in a subclass to manipulate the request or metadata
@@ -643,9 +562,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_findings(
-        self, response: securitycenter_service.ListFindingsResponse
-    ) -> securitycenter_service.ListFindingsResponse:
+    def post_list_findings(self, response: securitycenter_service.ListFindingsResponse) -> securitycenter_service.ListFindingsResponse:
         """Post-rpc interceptor for list_findings
 
         DEPRECATED. Please use the `post_list_findings_with_metadata`
@@ -659,13 +576,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_list_findings_with_metadata(
-        self,
-        response: securitycenter_service.ListFindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.ListFindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: securitycenter_service.ListFindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.ListFindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_findings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -681,13 +593,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_list_sources(
-        self,
-        request: securitycenter_service.ListSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.ListSourcesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.ListSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.ListSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -695,9 +602,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sources(
-        self, response: securitycenter_service.ListSourcesResponse
-    ) -> securitycenter_service.ListSourcesResponse:
+    def post_list_sources(self, response: securitycenter_service.ListSourcesResponse) -> securitycenter_service.ListSourcesResponse:
         """Post-rpc interceptor for list_sources
 
         DEPRECATED. Please use the `post_list_sources_with_metadata`
@@ -711,13 +616,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_list_sources_with_metadata(
-        self,
-        response: securitycenter_service.ListSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.ListSourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: securitycenter_service.ListSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -733,13 +633,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_run_asset_discovery(
-        self,
-        request: securitycenter_service.RunAssetDiscoveryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.RunAssetDiscoveryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.RunAssetDiscoveryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.RunAssetDiscoveryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_asset_discovery
 
         Override in a subclass to manipulate the request or metadata
@@ -747,9 +642,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_run_asset_discovery(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_asset_discovery(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_asset_discovery
 
         DEPRECATED. Please use the `post_run_asset_discovery_with_metadata`
@@ -763,9 +656,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_run_asset_discovery_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_asset_discovery
 
@@ -782,13 +673,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_set_finding_state(
-        self,
-        request: securitycenter_service.SetFindingStateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.SetFindingStateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.SetFindingStateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.SetFindingStateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_finding_state
 
         Override in a subclass to manipulate the request or metadata
@@ -810,9 +696,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_set_finding_state_with_metadata(
-        self,
-        response: finding.Finding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: finding.Finding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[finding.Finding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_finding_state
 
@@ -829,12 +713,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -856,9 +736,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -875,13 +753,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -889,9 +762,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -905,13 +776,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -927,13 +793,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_update_finding(
-        self,
-        request: securitycenter_service.UpdateFindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.UpdateFindingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.UpdateFindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.UpdateFindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_finding
 
         Override in a subclass to manipulate the request or metadata
@@ -955,9 +816,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_update_finding_with_metadata(
-        self,
-        response: gcs_finding.Finding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_finding.Finding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_finding.Finding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_finding
 
@@ -974,13 +833,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_update_organization_settings(
-        self,
-        request: securitycenter_service.UpdateOrganizationSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.UpdateOrganizationSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.UpdateOrganizationSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.UpdateOrganizationSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_organization_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -1004,13 +858,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_update_organization_settings_with_metadata(
-        self,
-        response: gcs_organization_settings.OrganizationSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcs_organization_settings.OrganizationSettings,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gcs_organization_settings.OrganizationSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcs_organization_settings.OrganizationSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_organization_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1026,13 +875,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_update_security_marks(
-        self,
-        request: securitycenter_service.UpdateSecurityMarksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.UpdateSecurityMarksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.UpdateSecurityMarksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.UpdateSecurityMarksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_security_marks
 
         Override in a subclass to manipulate the request or metadata
@@ -1040,9 +884,7 @@ class SecurityCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_security_marks(
-        self, response: gcs_security_marks.SecurityMarks
-    ) -> gcs_security_marks.SecurityMarks:
+    def post_update_security_marks(self, response: gcs_security_marks.SecurityMarks) -> gcs_security_marks.SecurityMarks:
         """Post-rpc interceptor for update_security_marks
 
         DEPRECATED. Please use the `post_update_security_marks_with_metadata`
@@ -1056,12 +898,8 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_update_security_marks_with_metadata(
-        self,
-        response: gcs_security_marks.SecurityMarks,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcs_security_marks.SecurityMarks, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcs_security_marks.SecurityMarks, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcs_security_marks.SecurityMarks, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_security_marks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1077,13 +915,8 @@ class SecurityCenterRestInterceptor:
         return response, metadata
 
     def pre_update_source(
-        self,
-        request: securitycenter_service.UpdateSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        securitycenter_service.UpdateSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: securitycenter_service.UpdateSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[securitycenter_service.UpdateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1105,9 +938,7 @@ class SecurityCenterRestInterceptor:
         return response
 
     def post_update_source_with_metadata(
-        self,
-        response: gcs_source.Source,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcs_source.Source, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcs_source.Source, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_source
 
@@ -1203,9 +1034,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1258,29 +1087,17 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 path_prefix="v1beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateFinding(
-        _BaseSecurityCenterRestTransport._BaseCreateFinding, SecurityCenterRestStub
-    ):
+    class _CreateFinding(_BaseSecurityCenterRestTransport._BaseCreateFinding, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.CreateFinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1331,30 +1148,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseCreateFinding._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_http_options()
 
             request, metadata = self._interceptor.pre_create_finding(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateFinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1378,13 +1183,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._CreateFinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1400,12 +1199,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_create_finding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_finding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_finding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_finding.Finding.to_json(response)
                 except:
@@ -1426,22 +1221,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _CreateSource(
-        _BaseSecurityCenterRestTransport._BaseCreateSource, SecurityCenterRestStub
-    ):
+    class _CreateSource(_BaseSecurityCenterRestTransport._BaseCreateSource, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.CreateSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1488,30 +1273,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseCreateSource._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseCreateSource._get_http_options()
 
             request, metadata = self._interceptor.pre_create_source(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseCreateSource._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseCreateSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseCreateSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseCreateSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseCreateSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1535,13 +1308,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._CreateSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1557,12 +1324,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_create_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_source.Source.to_json(response)
                 except:
@@ -1583,22 +1346,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseSecurityCenterRestTransport._BaseGetIamPolicy, SecurityCenterRestStub
-    ):
+    class _GetIamPolicy(_BaseSecurityCenterRestTransport._BaseGetIamPolicy, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1713,30 +1466,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1760,13 +1501,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1782,12 +1517,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1808,23 +1539,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _GetOrganizationSettings(
-        _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings,
-        SecurityCenterRestStub,
-    ):
+    class _GetOrganizationSettings(_BaseSecurityCenterRestTransport._BaseGetOrganizationSettings, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.GetOrganizationSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1867,28 +1587,16 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_organization_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_organization_settings(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetOrganizationSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1911,15 +1619,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecurityCenterRestTransport._GetOrganizationSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SecurityCenterRestTransport._GetOrganizationSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1935,16 +1636,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_get_organization_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_organization_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_organization_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        organization_settings.OrganizationSettings.to_json(response)
-                    )
+                    response_payload = organization_settings.OrganizationSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1963,22 +1658,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _GetSource(
-        _BaseSecurityCenterRestTransport._BaseGetSource, SecurityCenterRestStub
-    ):
+    class _GetSource(_BaseSecurityCenterRestTransport._BaseGetSource, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.GetSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2023,30 +1708,16 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseGetSource._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseGetSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_source(request, metadata)
-            transcoded_request = (
-                _BaseSecurityCenterRestTransport._BaseGetSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGetSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSecurityCenterRestTransport._BaseGetSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseGetSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2070,12 +1741,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._GetSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2091,12 +1757,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_get_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = source.Source.to_json(response)
                 except:
@@ -2117,22 +1779,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _GroupAssets(
-        _BaseSecurityCenterRestTransport._BaseGroupAssets, SecurityCenterRestStub
-    ):
+    class _GroupAssets(_BaseSecurityCenterRestTransport._BaseGroupAssets, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.GroupAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2175,30 +1827,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseGroupAssets._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_group_assets(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseGroupAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2222,13 +1862,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._GroupAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2244,16 +1878,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_group_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_group_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_group_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        securitycenter_service.GroupAssetsResponse.to_json(response)
-                    )
+                    response_payload = securitycenter_service.GroupAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2272,22 +1900,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _GroupFindings(
-        _BaseSecurityCenterRestTransport._BaseGroupFindings, SecurityCenterRestStub
-    ):
+    class _GroupFindings(_BaseSecurityCenterRestTransport._BaseGroupFindings, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.GroupFindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2330,30 +1948,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseGroupFindings._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_http_options()
 
             request, metadata = self._interceptor.pre_group_findings(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseGroupFindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2377,13 +1983,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._GroupFindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2399,16 +1999,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_group_findings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_group_findings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_group_findings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        securitycenter_service.GroupFindingsResponse.to_json(response)
-                    )
+                    response_payload = securitycenter_service.GroupFindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2427,22 +2021,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _ListAssets(
-        _BaseSecurityCenterRestTransport._BaseListAssets, SecurityCenterRestStub
-    ):
+    class _ListAssets(_BaseSecurityCenterRestTransport._BaseListAssets, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.ListAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2481,28 +2065,16 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     Response message for listing assets.
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseListAssets._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseListAssets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSecurityCenterRestTransport._BaseListAssets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2526,12 +2098,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._ListAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2547,16 +2114,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        securitycenter_service.ListAssetsResponse.to_json(response)
-                    )
+                    response_payload = securitycenter_service.ListAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2575,22 +2136,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _ListFindings(
-        _BaseSecurityCenterRestTransport._BaseListFindings, SecurityCenterRestStub
-    ):
+    class _ListFindings(_BaseSecurityCenterRestTransport._BaseListFindings, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.ListFindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2631,26 +2182,16 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseListFindings._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseListFindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_findings(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseListFindings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListFindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseListFindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseListFindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2674,12 +2215,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._ListFindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2695,16 +2231,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_list_findings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_findings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_findings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        securitycenter_service.ListFindingsResponse.to_json(response)
-                    )
+                    response_payload = securitycenter_service.ListFindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2723,22 +2253,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _ListSources(
-        _BaseSecurityCenterRestTransport._BaseListSources, SecurityCenterRestStub
-    ):
+    class _ListSources(_BaseSecurityCenterRestTransport._BaseListSources, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.ListSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2777,26 +2297,16 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     Response message for listing sources.
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseListSources._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseListSources._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sources(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseListSources._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseListSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseListSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseListSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2820,12 +2330,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._ListSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2841,16 +2346,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_list_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        securitycenter_service.ListSourcesResponse.to_json(response)
-                    )
+                    response_payload = securitycenter_service.ListSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2869,22 +2368,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _RunAssetDiscovery(
-        _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery, SecurityCenterRestStub
-    ):
+    class _RunAssetDiscovery(_BaseSecurityCenterRestTransport._BaseRunAssetDiscovery, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.RunAssetDiscovery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2928,32 +2417,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_asset_discovery(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_asset_discovery(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseRunAssetDiscovery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2977,13 +2452,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._RunAssetDiscovery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2997,12 +2466,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_run_asset_discovery(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_asset_discovery_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_asset_discovery_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3023,22 +2488,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _SetFindingState(
-        _BaseSecurityCenterRestTransport._BaseSetFindingState, SecurityCenterRestStub
-    ):
+    class _SetFindingState(_BaseSecurityCenterRestTransport._BaseSetFindingState, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.SetFindingState")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3089,32 +2544,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseSetFindingState._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_finding_state(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_finding_state(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseSetFindingState._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3138,13 +2579,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._SetFindingState._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3160,12 +2595,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_set_finding_state(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_finding_state_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_finding_state_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = finding.Finding.to_json(response)
                 except:
@@ -3186,22 +2617,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseSecurityCenterRestTransport._BaseSetIamPolicy, SecurityCenterRestStub
-    ):
+    class _SetIamPolicy(_BaseSecurityCenterRestTransport._BaseSetIamPolicy, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3316,30 +2737,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3363,13 +2772,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3385,12 +2788,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3411,22 +2810,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseSecurityCenterRestTransport._BaseTestIamPermissions, SecurityCenterRestStub
-    ):
+    class _TestIamPermissions(_BaseSecurityCenterRestTransport._BaseTestIamPermissions, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3466,32 +2855,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3515,13 +2890,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3537,12 +2906,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3563,22 +2928,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _UpdateFinding(
-        _BaseSecurityCenterRestTransport._BaseUpdateFinding, SecurityCenterRestStub
-    ):
+    class _UpdateFinding(_BaseSecurityCenterRestTransport._BaseUpdateFinding, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.UpdateFinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3629,30 +2984,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_http_options()
 
             request, metadata = self._interceptor.pre_update_finding(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateFinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3676,13 +3019,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._UpdateFinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3698,12 +3035,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_update_finding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_finding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_finding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_finding.Finding.to_json(response)
                 except:
@@ -3724,23 +3057,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _UpdateOrganizationSettings(
-        _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings,
-        SecurityCenterRestStub,
-    ):
+    class _UpdateOrganizationSettings(_BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.UpdateOrganizationSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3785,32 +3107,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_organization_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_organization_settings(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateOrganizationSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3833,16 +3141,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
 
             # Send the request
-            response = (
-                SecurityCenterRestTransport._UpdateOrganizationSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SecurityCenterRestTransport._UpdateOrganizationSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3858,16 +3158,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_update_organization_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_organization_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_organization_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gcs_organization_settings.OrganizationSettings.to_json(response)
-                    )
+                    response_payload = gcs_organization_settings.OrganizationSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3886,23 +3180,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _UpdateSecurityMarks(
-        _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks,
-        SecurityCenterRestStub,
-    ):
+    class _UpdateSecurityMarks(_BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.UpdateSecurityMarks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3951,32 +3234,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_security_marks(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_security_marks(request, metadata)
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSecurityMarks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4000,13 +3269,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._UpdateSecurityMarks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4022,16 +3285,10 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_update_security_marks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_security_marks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_security_marks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcs_security_marks.SecurityMarks.to_json(
-                        response
-                    )
+                    response_payload = gcs_security_marks.SecurityMarks.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4050,22 +3307,12 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
                 )
             return resp
 
-    class _UpdateSource(
-        _BaseSecurityCenterRestTransport._BaseUpdateSource, SecurityCenterRestStub
-    ):
+    class _UpdateSource(_BaseSecurityCenterRestTransport._BaseUpdateSource, SecurityCenterRestStub):
         def __hash__(self):
             return hash("SecurityCenterRestTransport.UpdateSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4112,30 +3359,18 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseSecurityCenterRestTransport._BaseUpdateSource._get_http_options()
-            )
+            http_options = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_http_options()
 
             request, metadata = self._interceptor.pre_update_source(request, metadata)
-            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_transcoded_request(http_options, request)
 
-            body = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterRestTransport._BaseUpdateSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4159,13 +3394,7 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             # Send the request
             response = SecurityCenterRestTransport._UpdateSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4181,12 +3410,8 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
 
             resp = self._interceptor.post_update_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_source.Source.to_json(response)
                 except:
@@ -4208,25 +3433,19 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
             return resp
 
     @property
-    def create_finding(
-        self,
-    ) -> Callable[[securitycenter_service.CreateFindingRequest], gcs_finding.Finding]:
+    def create_finding(self) -> Callable[[securitycenter_service.CreateFindingRequest], gcs_finding.Finding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
+    def create_source(self) -> Callable[[securitycenter_service.CreateSourceRequest], gcs_source.Source]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -4234,118 +3453,73 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
     @property
     def get_organization_settings(
         self,
-    ) -> Callable[
-        [securitycenter_service.GetOrganizationSettingsRequest],
-        organization_settings.OrganizationSettings,
-    ]:
+    ) -> Callable[[securitycenter_service.GetOrganizationSettingsRequest], organization_settings.OrganizationSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganizationSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[securitycenter_service.GetSourceRequest], source.Source]:
+    def get_source(self) -> Callable[[securitycenter_service.GetSourceRequest], source.Source]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def group_assets(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GroupAssetsRequest],
-        securitycenter_service.GroupAssetsResponse,
-    ]:
+    def group_assets(self) -> Callable[[securitycenter_service.GroupAssetsRequest], securitycenter_service.GroupAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GroupAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def group_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.GroupFindingsRequest],
-        securitycenter_service.GroupFindingsResponse,
-    ]:
+    def group_findings(self) -> Callable[[securitycenter_service.GroupFindingsRequest], securitycenter_service.GroupFindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GroupFindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListAssetsRequest],
-        securitycenter_service.ListAssetsResponse,
-    ]:
+    def list_assets(self) -> Callable[[securitycenter_service.ListAssetsRequest], securitycenter_service.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_findings(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListFindingsRequest],
-        securitycenter_service.ListFindingsResponse,
-    ]:
+    def list_findings(self) -> Callable[[securitycenter_service.ListFindingsRequest], securitycenter_service.ListFindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFindings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[
-        [securitycenter_service.ListSourcesRequest],
-        securitycenter_service.ListSourcesResponse,
-    ]:
+    def list_sources(self) -> Callable[[securitycenter_service.ListSourcesRequest], securitycenter_service.ListSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_asset_discovery(
-        self,
-    ) -> Callable[
-        [securitycenter_service.RunAssetDiscoveryRequest], operations_pb2.Operation
-    ]:
+    def run_asset_discovery(self) -> Callable[[securitycenter_service.RunAssetDiscoveryRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunAssetDiscovery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_finding_state(
-        self,
-    ) -> Callable[[securitycenter_service.SetFindingStateRequest], finding.Finding]:
+    def set_finding_state(self) -> Callable[[securitycenter_service.SetFindingStateRequest], finding.Finding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetFindingState(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_finding(
-        self,
-    ) -> Callable[[securitycenter_service.UpdateFindingRequest], gcs_finding.Finding]:
+    def update_finding(self) -> Callable[[securitycenter_service.UpdateFindingRequest], gcs_finding.Finding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFinding(self._session, self._host, self._interceptor)  # type: ignore
@@ -4353,29 +3527,19 @@ class SecurityCenterRestTransport(_BaseSecurityCenterRestTransport):
     @property
     def update_organization_settings(
         self,
-    ) -> Callable[
-        [securitycenter_service.UpdateOrganizationSettingsRequest],
-        gcs_organization_settings.OrganizationSettings,
-    ]:
+    ) -> Callable[[securitycenter_service.UpdateOrganizationSettingsRequest], gcs_organization_settings.OrganizationSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateOrganizationSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_security_marks(
-        self,
-    ) -> Callable[
-        [securitycenter_service.UpdateSecurityMarksRequest],
-        gcs_security_marks.SecurityMarks,
-    ]:
+    def update_security_marks(self) -> Callable[[securitycenter_service.UpdateSecurityMarksRequest], gcs_security_marks.SecurityMarks]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSecurityMarks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[[securitycenter_service.UpdateSourceRequest], gcs_source.Source]:
+    def update_source(self) -> Callable[[securitycenter_service.UpdateSourceRequest], gcs_source.Source]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSource(self._session, self._host, self._interceptor)  # type: ignore

@@ -23,9 +23,7 @@ import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import code_block as gcdc_code_block
 from google.cloud.dialogflowcx_v3beta1.types import fulfillment as gcdc_fulfillment
-from google.cloud.dialogflowcx_v3beta1.types import (
-    import_strategy as gcdc_import_strategy,
-)
+from google.cloud.dialogflowcx_v3beta1.types import import_strategy as gcdc_import_strategy
 from google.cloud.dialogflowcx_v3beta1.types import advanced_settings
 from google.cloud.dialogflowcx_v3beta1.types import example
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
@@ -353,16 +351,12 @@ class Playbook(proto.Message):
         proto.STRING,
         number=3,
     )
-    input_parameter_definitions: MutableSequence[
-        parameter_definition.ParameterDefinition
-    ] = proto.RepeatedField(
+    input_parameter_definitions: MutableSequence[parameter_definition.ParameterDefinition] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=parameter_definition.ParameterDefinition,
     )
-    output_parameter_definitions: MutableSequence[
-        parameter_definition.ParameterDefinition
-    ] = proto.RepeatedField(
+    output_parameter_definitions: MutableSequence[parameter_definition.ParameterDefinition] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=parameter_definition.ParameterDefinition,

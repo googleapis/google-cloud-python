@@ -117,9 +117,7 @@ class FileServiceRestInterceptor:
     """
 
     def pre_create_file(
-        self,
-        request: file_service.CreateFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: file_service.CreateFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[file_service.CreateFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_file
 
@@ -128,9 +126,7 @@ class FileServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_file(
-        self, response: file_service.CreateFileResponse
-    ) -> file_service.CreateFileResponse:
+    def post_create_file(self, response: file_service.CreateFileResponse) -> file_service.CreateFileResponse:
         """Post-rpc interceptor for create_file
 
         DEPRECATED. Please use the `post_create_file_with_metadata`
@@ -144,12 +140,8 @@ class FileServiceRestInterceptor:
         return response
 
     def post_create_file_with_metadata(
-        self,
-        response: file_service.CreateFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        file_service.CreateFileResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: file_service.CreateFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[file_service.CreateFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_file
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -165,9 +157,7 @@ class FileServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_file(
-        self,
-        request: file_service.DeleteFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: file_service.DeleteFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[file_service.DeleteFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_file
 
@@ -177,12 +167,8 @@ class FileServiceRestInterceptor:
         return request, metadata
 
     def pre_download_file(
-        self,
-        request: file_service.DownloadFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        file_service.DownloadFileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: file_service.DownloadFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[file_service.DownloadFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for download_file
 
         Override in a subclass to manipulate the request or metadata
@@ -190,9 +176,7 @@ class FileServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_download_file(
-        self, response: file_service.DownloadFileResponse
-    ) -> file_service.DownloadFileResponse:
+    def post_download_file(self, response: file_service.DownloadFileResponse) -> file_service.DownloadFileResponse:
         """Post-rpc interceptor for download_file
 
         DEPRECATED. Please use the `post_download_file_with_metadata`
@@ -206,12 +190,8 @@ class FileServiceRestInterceptor:
         return response
 
     def post_download_file_with_metadata(
-        self,
-        response: file_service.DownloadFileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        file_service.DownloadFileResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: file_service.DownloadFileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[file_service.DownloadFileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for download_file
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -227,9 +207,7 @@ class FileServiceRestInterceptor:
         return response, metadata
 
     def pre_get_file(
-        self,
-        request: file_service.GetFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: file_service.GetFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[file_service.GetFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_file
 
@@ -269,9 +247,7 @@ class FileServiceRestInterceptor:
         return response, metadata
 
     def pre_list_files(
-        self,
-        request: file_service.ListFilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: file_service.ListFilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[file_service.ListFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_files
 
@@ -280,9 +256,7 @@ class FileServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_files(
-        self, response: file_service.ListFilesResponse
-    ) -> file_service.ListFilesResponse:
+    def post_list_files(self, response: file_service.ListFilesResponse) -> file_service.ListFilesResponse:
         """Post-rpc interceptor for list_files
 
         DEPRECATED. Please use the `post_list_files_with_metadata`
@@ -296,9 +270,7 @@ class FileServiceRestInterceptor:
         return response
 
     def post_list_files_with_metadata(
-        self,
-        response: file_service.ListFilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: file_service.ListFilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[file_service.ListFilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_files
 
@@ -315,12 +287,8 @@ class FileServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -338,12 +306,8 @@ class FileServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -361,12 +325,8 @@ class FileServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -374,9 +334,7 @@ class FileServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -386,12 +344,8 @@ class FileServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +353,7 @@ class FileServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -490,30 +442,18 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or FileServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateFile(
-        _BaseFileServiceRestTransport._BaseCreateFile, FileServiceRestStub
-    ):
+    class _CreateFile(_BaseFileServiceRestTransport._BaseCreateFile, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.CreateFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -553,34 +493,18 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     Response for ``CreateFile``.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseCreateFile._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseCreateFile._get_http_options()
 
             request, metadata = self._interceptor.pre_create_file(request, metadata)
-            transcoded_request = (
-                _BaseFileServiceRestTransport._BaseCreateFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseCreateFile._get_transcoded_request(http_options, request)
 
-            body = _BaseFileServiceRestTransport._BaseCreateFile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFileServiceRestTransport._BaseCreateFile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFileServiceRestTransport._BaseCreateFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFileServiceRestTransport._BaseCreateFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -604,13 +528,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._CreateFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -626,12 +544,8 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             resp = self._interceptor.post_create_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = file_service.CreateFileResponse.to_json(response)
                 except:
@@ -652,22 +566,12 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 )
             return resp
 
-    class _DeleteFile(
-        _BaseFileServiceRestTransport._BaseDeleteFile, FileServiceRestStub
-    ):
+    class _DeleteFile(_BaseFileServiceRestTransport._BaseDeleteFile, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.DeleteFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -702,30 +606,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseDeleteFile._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseDeleteFile._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_file(request, metadata)
-            transcoded_request = (
-                _BaseFileServiceRestTransport._BaseDeleteFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseDeleteFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFileServiceRestTransport._BaseDeleteFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFileServiceRestTransport._BaseDeleteFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -749,12 +639,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._DeleteFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -762,22 +647,12 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DownloadFile(
-        _BaseFileServiceRestTransport._BaseDownloadFile, FileServiceRestStub
-    ):
+    class _DownloadFile(_BaseFileServiceRestTransport._BaseDownloadFile, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.DownloadFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -816,30 +691,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     Response for ``DownloadFile``.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseDownloadFile._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseDownloadFile._get_http_options()
 
             request, metadata = self._interceptor.pre_download_file(request, metadata)
-            transcoded_request = (
-                _BaseFileServiceRestTransport._BaseDownloadFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseDownloadFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFileServiceRestTransport._BaseDownloadFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFileServiceRestTransport._BaseDownloadFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -863,12 +724,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._DownloadFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -884,16 +740,10 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             resp = self._interceptor.post_download_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_download_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_download_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = file_service.DownloadFileResponse.to_json(
-                        response
-                    )
+                    response_payload = file_service.DownloadFileResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -917,15 +767,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             return hash("FileServiceRestTransport.GetFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -966,30 +808,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseGetFile._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseGetFile._get_http_options()
 
             request, metadata = self._interceptor.pre_get_file(request, metadata)
-            transcoded_request = (
-                _BaseFileServiceRestTransport._BaseGetFile._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseGetFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFileServiceRestTransport._BaseGetFile._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFileServiceRestTransport._BaseGetFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1012,14 +840,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 )
 
             # Send the request
-            response = FileServiceRestTransport._GetFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FileServiceRestTransport._GetFile._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1034,12 +855,8 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             resp = self._interceptor.post_get_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = file.File.to_json(response)
                 except:
@@ -1065,15 +882,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             return hash("FileServiceRestTransport.ListFiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1112,30 +921,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     Response for ``ListFiles``.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseListFiles._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseListFiles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_files(request, metadata)
-            transcoded_request = (
-                _BaseFileServiceRestTransport._BaseListFiles._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseListFiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFileServiceRestTransport._BaseListFiles._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFileServiceRestTransport._BaseListFiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1159,12 +954,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._ListFiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1180,12 +970,8 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             resp = self._interceptor.post_list_files(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_files_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_files_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = file_service.ListFilesResponse.to_json(response)
                 except:
@@ -1207,27 +993,19 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             return resp
 
     @property
-    def create_file(
-        self,
-    ) -> Callable[[file_service.CreateFileRequest], file_service.CreateFileResponse]:
+    def create_file(self) -> Callable[[file_service.CreateFileRequest], file_service.CreateFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_file(
-        self,
-    ) -> Callable[[file_service.DeleteFileRequest], empty_pb2.Empty]:
+    def delete_file(self) -> Callable[[file_service.DeleteFileRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def download_file(
-        self,
-    ) -> Callable[
-        [file_service.DownloadFileRequest], file_service.DownloadFileResponse
-    ]:
+    def download_file(self) -> Callable[[file_service.DownloadFileRequest], file_service.DownloadFileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DownloadFile(self._session, self._host, self._interceptor)  # type: ignore
@@ -1239,9 +1017,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
         return self._GetFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_files(
-        self,
-    ) -> Callable[[file_service.ListFilesRequest], file_service.ListFilesResponse]:
+    def list_files(self) -> Callable[[file_service.ListFilesRequest], file_service.ListFilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFiles(self._session, self._host, self._interceptor)  # type: ignore
@@ -1250,22 +1026,12 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseFileServiceRestTransport._BaseCancelOperation, FileServiceRestStub
-    ):
+    class _CancelOperation(_BaseFileServiceRestTransport._BaseCancelOperation, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1300,28 +1066,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseFileServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseFileServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFileServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFileServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1345,12 +1099,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1364,22 +1113,12 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseFileServiceRestTransport._BaseDeleteOperation, FileServiceRestStub
-    ):
+    class _DeleteOperation(_BaseFileServiceRestTransport._BaseDeleteOperation, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1414,28 +1153,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseFileServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseFileServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFileServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFileServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1459,12 +1186,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1478,22 +1200,12 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseFileServiceRestTransport._BaseGetOperation, FileServiceRestStub
-    ):
+    class _GetOperation(_BaseFileServiceRestTransport._BaseGetOperation, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1531,30 +1243,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseFileServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFileServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFileServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1578,12 +1276,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1595,9 +1288,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1622,22 +1313,12 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseFileServiceRestTransport._BaseListOperations, FileServiceRestStub
-    ):
+    class _ListOperations(_BaseFileServiceRestTransport._BaseListOperations, FileServiceRestStub):
         def __hash__(self):
             return hash("FileServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1675,26 +1356,16 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseFileServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseFileServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseFileServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFileServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFileServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFileServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1718,12 +1389,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
 
             # Send the request
             response = FileServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1735,9 +1401,7 @@ class FileServiceRestTransport(_BaseFileServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

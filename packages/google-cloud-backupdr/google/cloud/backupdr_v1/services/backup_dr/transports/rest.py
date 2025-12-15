@@ -32,13 +32,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.backupdr_v1.types import (
-    backupdr,
-    backupplan,
-    backupplanassociation,
-    backupvault,
-    datasourcereference,
-)
+from google.cloud.backupdr_v1.types import backupdr, backupplan, backupplanassociation, backupvault, datasourcereference
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseBackupDRRestTransport
@@ -385,12 +379,8 @@ class BackupDRRestInterceptor:
     """
 
     def pre_create_backup_plan(
-        self,
-        request: backupplan.CreateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.CreateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupplan.CreateBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.CreateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -398,9 +388,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_plan
 
         DEPRECATED. Please use the `post_create_backup_plan_with_metadata`
@@ -414,9 +402,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_create_backup_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_plan
 
@@ -433,13 +419,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_create_backup_plan_association(
-        self,
-        request: backupplanassociation.CreateBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.CreateBackupPlanAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.CreateBackupPlanAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.CreateBackupPlanAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_plan_association
 
         Override in a subclass to manipulate the request or metadata
@@ -447,9 +428,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_plan_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_plan_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_plan_association
 
         DEPRECATED. Please use the `post_create_backup_plan_association_with_metadata`
@@ -463,9 +442,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_create_backup_plan_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_plan_association
 
@@ -482,12 +459,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_create_backup_vault(
-        self,
-        request: backupvault.CreateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.CreateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.CreateBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.CreateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -495,9 +468,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup_vault
 
         DEPRECATED. Please use the `post_create_backup_vault_with_metadata`
@@ -511,9 +482,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_create_backup_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup_vault
 
@@ -530,12 +499,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_create_management_server(
-        self,
-        request: backupdr.CreateManagementServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupdr.CreateManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupdr.CreateManagementServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupdr.CreateManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_management_server
 
         Override in a subclass to manipulate the request or metadata
@@ -543,9 +508,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_create_management_server(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_management_server(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_management_server
 
         DEPRECATED. Please use the `post_create_management_server_with_metadata`
@@ -559,9 +522,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_create_management_server_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_management_server
 
@@ -578,12 +539,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: backupvault.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -591,9 +548,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -607,9 +562,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -626,12 +579,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_delete_backup_plan(
-        self,
-        request: backupplan.DeleteBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.DeleteBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupplan.DeleteBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.DeleteBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -639,9 +588,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_plan
 
         DEPRECATED. Please use the `post_delete_backup_plan_with_metadata`
@@ -655,9 +602,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_delete_backup_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_plan
 
@@ -674,13 +619,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_delete_backup_plan_association(
-        self,
-        request: backupplanassociation.DeleteBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.DeleteBackupPlanAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.DeleteBackupPlanAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.DeleteBackupPlanAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_plan_association
 
         Override in a subclass to manipulate the request or metadata
@@ -688,9 +628,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_plan_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_plan_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_plan_association
 
         DEPRECATED. Please use the `post_delete_backup_plan_association_with_metadata`
@@ -704,9 +642,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_delete_backup_plan_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_plan_association
 
@@ -723,12 +659,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_delete_backup_vault(
-        self,
-        request: backupvault.DeleteBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.DeleteBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.DeleteBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.DeleteBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -736,9 +668,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup_vault
 
         DEPRECATED. Please use the `post_delete_backup_vault_with_metadata`
@@ -752,9 +682,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_delete_backup_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup_vault
 
@@ -771,12 +699,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_delete_management_server(
-        self,
-        request: backupdr.DeleteManagementServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupdr.DeleteManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupdr.DeleteManagementServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupdr.DeleteManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_management_server
 
         Override in a subclass to manipulate the request or metadata
@@ -784,9 +708,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_management_server(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_management_server(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_management_server
 
         DEPRECATED. Please use the `post_delete_management_server_with_metadata`
@@ -800,9 +722,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_delete_management_server_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_management_server
 
@@ -819,13 +739,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_fetch_backup_plan_associations_for_resource_type(
-        self,
-        request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_backup_plan_associations_for_resource_type
 
         Override in a subclass to manipulate the request or metadata
@@ -834,8 +749,7 @@ class BackupDRRestInterceptor:
         return request, metadata
 
     def post_fetch_backup_plan_associations_for_resource_type(
-        self,
-        response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
+        self, response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
     ) -> backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse:
         """Post-rpc interceptor for fetch_backup_plan_associations_for_resource_type
 
@@ -850,13 +764,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_fetch_backup_plan_associations_for_resource_type_with_metadata(
-        self,
-        response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_backup_plan_associations_for_resource_type
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -872,13 +781,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_fetch_backups_for_resource_type(
-        self,
-        request: backupvault.FetchBackupsForResourceTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.FetchBackupsForResourceTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupvault.FetchBackupsForResourceTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.FetchBackupsForResourceTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_backups_for_resource_type
 
         Override in a subclass to manipulate the request or metadata
@@ -902,13 +806,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_fetch_backups_for_resource_type_with_metadata(
-        self,
-        response: backupvault.FetchBackupsForResourceTypeResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.FetchBackupsForResourceTypeResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backupvault.FetchBackupsForResourceTypeResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.FetchBackupsForResourceTypeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_backups_for_resource_type
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -924,13 +823,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_fetch_data_source_references_for_resource_type(
-        self,
-        request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasourcereference.FetchDataSourceReferencesForResourceTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_data_source_references_for_resource_type
 
         Override in a subclass to manipulate the request or metadata
@@ -939,8 +833,7 @@ class BackupDRRestInterceptor:
         return request, metadata
 
     def post_fetch_data_source_references_for_resource_type(
-        self,
-        response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+        self, response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
     ) -> datasourcereference.FetchDataSourceReferencesForResourceTypeResponse:
         """Post-rpc interceptor for fetch_data_source_references_for_resource_type
 
@@ -955,13 +848,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_fetch_data_source_references_for_resource_type_with_metadata(
-        self,
-        response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_data_source_references_for_resource_type
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -977,13 +865,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_fetch_usable_backup_vaults(
-        self,
-        request: backupvault.FetchUsableBackupVaultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.FetchUsableBackupVaultsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupvault.FetchUsableBackupVaultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.FetchUsableBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_usable_backup_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -991,9 +874,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_usable_backup_vaults(
-        self, response: backupvault.FetchUsableBackupVaultsResponse
-    ) -> backupvault.FetchUsableBackupVaultsResponse:
+    def post_fetch_usable_backup_vaults(self, response: backupvault.FetchUsableBackupVaultsResponse) -> backupvault.FetchUsableBackupVaultsResponse:
         """Post-rpc interceptor for fetch_usable_backup_vaults
 
         DEPRECATED. Please use the `post_fetch_usable_backup_vaults_with_metadata`
@@ -1007,13 +888,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_fetch_usable_backup_vaults_with_metadata(
-        self,
-        response: backupvault.FetchUsableBackupVaultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.FetchUsableBackupVaultsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backupvault.FetchUsableBackupVaultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.FetchUsableBackupVaultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_usable_backup_vaults
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1029,9 +905,7 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: backupvault.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: backupvault.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupvault.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
@@ -1054,9 +928,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_backup_with_metadata(
-        self,
-        response: backupvault.Backup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backupvault.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupvault.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup
 
@@ -1073,12 +945,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_backup_plan(
-        self,
-        request: backupplan.GetBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.GetBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupplan.GetBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.GetBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -1086,9 +954,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_plan(
-        self, response: backupplan.BackupPlan
-    ) -> backupplan.BackupPlan:
+    def post_get_backup_plan(self, response: backupplan.BackupPlan) -> backupplan.BackupPlan:
         """Post-rpc interceptor for get_backup_plan
 
         DEPRECATED. Please use the `post_get_backup_plan_with_metadata`
@@ -1102,9 +968,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_backup_plan_with_metadata(
-        self,
-        response: backupplan.BackupPlan,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backupplan.BackupPlan, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupplan.BackupPlan, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_plan
 
@@ -1121,13 +985,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_backup_plan_association(
-        self,
-        request: backupplanassociation.GetBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.GetBackupPlanAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.GetBackupPlanAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.GetBackupPlanAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_plan_association
 
         Override in a subclass to manipulate the request or metadata
@@ -1135,9 +994,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_plan_association(
-        self, response: backupplanassociation.BackupPlanAssociation
-    ) -> backupplanassociation.BackupPlanAssociation:
+    def post_get_backup_plan_association(self, response: backupplanassociation.BackupPlanAssociation) -> backupplanassociation.BackupPlanAssociation:
         """Post-rpc interceptor for get_backup_plan_association
 
         DEPRECATED. Please use the `post_get_backup_plan_association_with_metadata`
@@ -1151,13 +1008,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_backup_plan_association_with_metadata(
-        self,
-        response: backupplanassociation.BackupPlanAssociation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.BackupPlanAssociation,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backupplanassociation.BackupPlanAssociation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.BackupPlanAssociation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_plan_association
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1173,12 +1025,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_backup_plan_revision(
-        self,
-        request: backupplan.GetBackupPlanRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.GetBackupPlanRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupplan.GetBackupPlanRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.GetBackupPlanRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_plan_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -1186,9 +1034,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_plan_revision(
-        self, response: backupplan.BackupPlanRevision
-    ) -> backupplan.BackupPlanRevision:
+    def post_get_backup_plan_revision(self, response: backupplan.BackupPlanRevision) -> backupplan.BackupPlanRevision:
         """Post-rpc interceptor for get_backup_plan_revision
 
         DEPRECATED. Please use the `post_get_backup_plan_revision_with_metadata`
@@ -1202,9 +1048,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_backup_plan_revision_with_metadata(
-        self,
-        response: backupplan.BackupPlanRevision,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backupplan.BackupPlanRevision, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupplan.BackupPlanRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_plan_revision
 
@@ -1221,12 +1065,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_backup_vault(
-        self,
-        request: backupvault.GetBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.GetBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.GetBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.GetBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1234,9 +1074,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup_vault(
-        self, response: backupvault.BackupVault
-    ) -> backupvault.BackupVault:
+    def post_get_backup_vault(self, response: backupvault.BackupVault) -> backupvault.BackupVault:
         """Post-rpc interceptor for get_backup_vault
 
         DEPRECATED. Please use the `post_get_backup_vault_with_metadata`
@@ -1250,9 +1088,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_backup_vault_with_metadata(
-        self,
-        response: backupvault.BackupVault,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backupvault.BackupVault, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupvault.BackupVault, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup_vault
 
@@ -1269,12 +1105,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_data_source(
-        self,
-        request: backupvault.GetDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.GetDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1282,9 +1114,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_source(
-        self, response: backupvault.DataSource
-    ) -> backupvault.DataSource:
+    def post_get_data_source(self, response: backupvault.DataSource) -> backupvault.DataSource:
         """Post-rpc interceptor for get_data_source
 
         DEPRECATED. Please use the `post_get_data_source_with_metadata`
@@ -1298,9 +1128,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_data_source_with_metadata(
-        self,
-        response: backupvault.DataSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backupvault.DataSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupvault.DataSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_source
 
@@ -1317,13 +1145,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_data_source_reference(
-        self,
-        request: datasourcereference.GetDataSourceReferenceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasourcereference.GetDataSourceReferenceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datasourcereference.GetDataSourceReferenceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasourcereference.GetDataSourceReferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_source_reference
 
         Override in a subclass to manipulate the request or metadata
@@ -1331,9 +1154,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_source_reference(
-        self, response: datasourcereference.DataSourceReference
-    ) -> datasourcereference.DataSourceReference:
+    def post_get_data_source_reference(self, response: datasourcereference.DataSourceReference) -> datasourcereference.DataSourceReference:
         """Post-rpc interceptor for get_data_source_reference
 
         DEPRECATED. Please use the `post_get_data_source_reference_with_metadata`
@@ -1347,12 +1168,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_data_source_reference_with_metadata(
-        self,
-        response: datasourcereference.DataSourceReference,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasourcereference.DataSourceReference, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datasourcereference.DataSourceReference, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasourcereference.DataSourceReference, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_source_reference
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1368,12 +1185,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_management_server(
-        self,
-        request: backupdr.GetManagementServerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupdr.GetManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupdr.GetManagementServerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupdr.GetManagementServerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_management_server
 
         Override in a subclass to manipulate the request or metadata
@@ -1381,9 +1194,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_management_server(
-        self, response: backupdr.ManagementServer
-    ) -> backupdr.ManagementServer:
+    def post_get_management_server(self, response: backupdr.ManagementServer) -> backupdr.ManagementServer:
         """Post-rpc interceptor for get_management_server
 
         DEPRECATED. Please use the `post_get_management_server_with_metadata`
@@ -1397,9 +1208,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_get_management_server_with_metadata(
-        self,
-        response: backupdr.ManagementServer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backupdr.ManagementServer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupdr.ManagementServer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_management_server
 
@@ -1416,12 +1225,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_initialize_service(
-        self,
-        request: backupdr.InitializeServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupdr.InitializeServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupdr.InitializeServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupdr.InitializeServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for initialize_service
 
         Override in a subclass to manipulate the request or metadata
@@ -1429,9 +1234,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_initialize_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_initialize_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for initialize_service
 
         DEPRECATED. Please use the `post_initialize_service_with_metadata`
@@ -1445,9 +1248,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_initialize_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for initialize_service
 
@@ -1464,13 +1265,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_backup_plan_associations(
-        self,
-        request: backupplanassociation.ListBackupPlanAssociationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.ListBackupPlanAssociationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.ListBackupPlanAssociationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.ListBackupPlanAssociationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_plan_associations
 
         Override in a subclass to manipulate the request or metadata
@@ -1494,13 +1290,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_backup_plan_associations_with_metadata(
-        self,
-        response: backupplanassociation.ListBackupPlanAssociationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.ListBackupPlanAssociationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backupplanassociation.ListBackupPlanAssociationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.ListBackupPlanAssociationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_plan_associations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1516,13 +1307,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_backup_plan_revisions(
-        self,
-        request: backupplan.ListBackupPlanRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.ListBackupPlanRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplan.ListBackupPlanRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.ListBackupPlanRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_plan_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -1530,9 +1316,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_plan_revisions(
-        self, response: backupplan.ListBackupPlanRevisionsResponse
-    ) -> backupplan.ListBackupPlanRevisionsResponse:
+    def post_list_backup_plan_revisions(self, response: backupplan.ListBackupPlanRevisionsResponse) -> backupplan.ListBackupPlanRevisionsResponse:
         """Post-rpc interceptor for list_backup_plan_revisions
 
         DEPRECATED. Please use the `post_list_backup_plan_revisions_with_metadata`
@@ -1546,13 +1330,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_backup_plan_revisions_with_metadata(
-        self,
-        response: backupplan.ListBackupPlanRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.ListBackupPlanRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backupplan.ListBackupPlanRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.ListBackupPlanRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_plan_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1568,12 +1347,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_backup_plans(
-        self,
-        request: backupplan.ListBackupPlansRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.ListBackupPlansRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupplan.ListBackupPlansRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.ListBackupPlansRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_plans
 
         Override in a subclass to manipulate the request or metadata
@@ -1581,9 +1356,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_plans(
-        self, response: backupplan.ListBackupPlansResponse
-    ) -> backupplan.ListBackupPlansResponse:
+    def post_list_backup_plans(self, response: backupplan.ListBackupPlansResponse) -> backupplan.ListBackupPlansResponse:
         """Post-rpc interceptor for list_backup_plans
 
         DEPRECATED. Please use the `post_list_backup_plans_with_metadata`
@@ -1597,12 +1370,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_backup_plans_with_metadata(
-        self,
-        response: backupplan.ListBackupPlansResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.ListBackupPlansResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backupplan.ListBackupPlansResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.ListBackupPlansResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_plans
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1618,9 +1387,7 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: backupvault.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: backupvault.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backupvault.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
@@ -1629,9 +1396,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: backupvault.ListBackupsResponse
-    ) -> backupvault.ListBackupsResponse:
+    def post_list_backups(self, response: backupvault.ListBackupsResponse) -> backupvault.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -1645,12 +1410,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: backupvault.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backupvault.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1666,12 +1427,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_backup_vaults(
-        self,
-        request: backupvault.ListBackupVaultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.ListBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.ListBackupVaultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.ListBackupVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backup_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -1679,9 +1436,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backup_vaults(
-        self, response: backupvault.ListBackupVaultsResponse
-    ) -> backupvault.ListBackupVaultsResponse:
+    def post_list_backup_vaults(self, response: backupvault.ListBackupVaultsResponse) -> backupvault.ListBackupVaultsResponse:
         """Post-rpc interceptor for list_backup_vaults
 
         DEPRECATED. Please use the `post_list_backup_vaults_with_metadata`
@@ -1695,12 +1450,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_backup_vaults_with_metadata(
-        self,
-        response: backupvault.ListBackupVaultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.ListBackupVaultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backupvault.ListBackupVaultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.ListBackupVaultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backup_vaults
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1716,13 +1467,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_data_source_references(
-        self,
-        request: datasourcereference.ListDataSourceReferencesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasourcereference.ListDataSourceReferencesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datasourcereference.ListDataSourceReferencesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasourcereference.ListDataSourceReferencesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_source_references
 
         Override in a subclass to manipulate the request or metadata
@@ -1746,13 +1492,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_data_source_references_with_metadata(
-        self,
-        response: datasourcereference.ListDataSourceReferencesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasourcereference.ListDataSourceReferencesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datasourcereference.ListDataSourceReferencesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasourcereference.ListDataSourceReferencesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_source_references
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1768,12 +1509,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_data_sources(
-        self,
-        request: backupvault.ListDataSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.ListDataSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -1781,9 +1518,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_sources(
-        self, response: backupvault.ListDataSourcesResponse
-    ) -> backupvault.ListDataSourcesResponse:
+    def post_list_data_sources(self, response: backupvault.ListDataSourcesResponse) -> backupvault.ListDataSourcesResponse:
         """Post-rpc interceptor for list_data_sources
 
         DEPRECATED. Please use the `post_list_data_sources_with_metadata`
@@ -1797,12 +1532,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_data_sources_with_metadata(
-        self,
-        response: backupvault.ListDataSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backupvault.ListDataSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1818,12 +1549,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_list_management_servers(
-        self,
-        request: backupdr.ListManagementServersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupdr.ListManagementServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupdr.ListManagementServersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupdr.ListManagementServersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_management_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -1831,9 +1558,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_management_servers(
-        self, response: backupdr.ListManagementServersResponse
-    ) -> backupdr.ListManagementServersResponse:
+    def post_list_management_servers(self, response: backupdr.ListManagementServersResponse) -> backupdr.ListManagementServersResponse:
         """Post-rpc interceptor for list_management_servers
 
         DEPRECATED. Please use the `post_list_management_servers_with_metadata`
@@ -1847,12 +1572,8 @@ class BackupDRRestInterceptor:
         return response
 
     def post_list_management_servers_with_metadata(
-        self,
-        response: backupdr.ListManagementServersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupdr.ListManagementServersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: backupdr.ListManagementServersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupdr.ListManagementServersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_management_servers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1868,12 +1589,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_restore_backup(
-        self,
-        request: backupvault.RestoreBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.RestoreBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.RestoreBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.RestoreBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -1881,9 +1598,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_backup
 
         DEPRECATED. Please use the `post_restore_backup_with_metadata`
@@ -1897,9 +1612,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_restore_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_backup
 
@@ -1916,13 +1629,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_trigger_backup(
-        self,
-        request: backupplanassociation.TriggerBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.TriggerBackupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.TriggerBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.TriggerBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for trigger_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -1930,9 +1638,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_trigger_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_trigger_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for trigger_backup
 
         DEPRECATED. Please use the `post_trigger_backup_with_metadata`
@@ -1946,9 +1652,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_trigger_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for trigger_backup
 
@@ -1965,12 +1669,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_update_backup(
-        self,
-        request: backupvault.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.UpdateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -1978,9 +1678,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup
 
         DEPRECATED. Please use the `post_update_backup_with_metadata`
@@ -1994,9 +1692,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_update_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup
 
@@ -2013,12 +1709,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_update_backup_plan(
-        self,
-        request: backupplan.UpdateBackupPlanRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplan.UpdateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupplan.UpdateBackupPlanRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplan.UpdateBackupPlanRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_plan
 
         Override in a subclass to manipulate the request or metadata
@@ -2026,9 +1718,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_plan(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_plan(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_plan
 
         DEPRECATED. Please use the `post_update_backup_plan_with_metadata`
@@ -2042,9 +1732,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_update_backup_plan_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_plan
 
@@ -2061,13 +1749,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_update_backup_plan_association(
-        self,
-        request: backupplanassociation.UpdateBackupPlanAssociationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupplanassociation.UpdateBackupPlanAssociationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backupplanassociation.UpdateBackupPlanAssociationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupplanassociation.UpdateBackupPlanAssociationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_plan_association
 
         Override in a subclass to manipulate the request or metadata
@@ -2075,9 +1758,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_plan_association(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_plan_association(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_plan_association
 
         DEPRECATED. Please use the `post_update_backup_plan_association_with_metadata`
@@ -2091,9 +1772,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_update_backup_plan_association_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_plan_association
 
@@ -2110,12 +1789,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_update_backup_vault(
-        self,
-        request: backupvault.UpdateBackupVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.UpdateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.UpdateBackupVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.UpdateBackupVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -2123,9 +1798,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup_vault
 
         DEPRECATED. Please use the `post_update_backup_vault_with_metadata`
@@ -2139,9 +1812,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_update_backup_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup_vault
 
@@ -2158,12 +1829,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_update_data_source(
-        self,
-        request: backupvault.UpdateDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backupvault.UpdateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: backupvault.UpdateDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backupvault.UpdateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -2171,9 +1838,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_data_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_data_source
 
         DEPRECATED. Please use the `post_update_data_source_with_metadata`
@@ -2187,9 +1852,7 @@ class BackupDRRestInterceptor:
         return response
 
     def post_update_data_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_source
 
@@ -2206,12 +1869,8 @@ class BackupDRRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2219,9 +1878,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2231,12 +1888,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2244,9 +1897,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2256,12 +1907,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2279,12 +1926,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2302,13 +1945,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -2316,9 +1954,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -2328,12 +1964,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2351,12 +1983,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2374,12 +2002,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2387,9 +2011,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2399,12 +2021,8 @@ class BackupDRRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2412,9 +2030,7 @@ class BackupDRRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2503,9 +2119,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2558,29 +2172,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateBackupPlan(
-        _BaseBackupDRRestTransport._BaseCreateBackupPlan, BackupDRRestStub
-    ):
+    class _CreateBackupPlan(_BaseBackupDRRestTransport._BaseCreateBackupPlan, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.CreateBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2623,36 +2225,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_backup_plan(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseCreateBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2676,13 +2260,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._CreateBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2696,12 +2274,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_create_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2722,22 +2296,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _CreateBackupPlanAssociation(
-        _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation, BackupDRRestStub
-    ):
+    class _CreateBackupPlanAssociation(_BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.CreateBackupPlanAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2782,32 +2346,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_plan_association(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_backup_plan_association(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseCreateBackupPlanAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2831,13 +2381,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._CreateBackupPlanAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2851,15 +2395,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_create_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_backup_plan_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_plan_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2880,22 +2417,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _CreateBackupVault(
-        _BaseBackupDRRestTransport._BaseCreateBackupVault, BackupDRRestStub
-    ):
+    class _CreateBackupVault(_BaseBackupDRRestTransport._BaseCreateBackupVault, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.CreateBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2938,32 +2465,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCreateBackupVault._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backup_vault(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_backup_vault(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseCreateBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2987,13 +2500,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._CreateBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3007,12 +2514,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_create_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3033,22 +2536,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _CreateManagementServer(
-        _BaseBackupDRRestTransport._BaseCreateManagementServer, BackupDRRestStub
-    ):
+    class _CreateManagementServer(_BaseBackupDRRestTransport._BaseCreateManagementServer, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.CreateManagementServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3092,32 +2585,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCreateManagementServer._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_management_server(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_management_server(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseCreateManagementServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3141,13 +2620,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._CreateManagementServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3161,12 +2634,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_create_management_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_management_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_management_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3192,15 +2661,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3242,30 +2703,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseDeleteBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseDeleteBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3289,12 +2736,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3308,12 +2750,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3334,22 +2772,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _DeleteBackupPlan(
-        _BaseBackupDRRestTransport._BaseDeleteBackupPlan, BackupDRRestStub
-    ):
+    class _DeleteBackupPlan(_BaseBackupDRRestTransport._BaseDeleteBackupPlan, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.DeleteBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3391,30 +2819,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_backup_plan(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3438,12 +2852,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3457,12 +2866,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_delete_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3483,22 +2888,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _DeleteBackupPlanAssociation(
-        _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation, BackupDRRestStub
-    ):
+    class _DeleteBackupPlanAssociation(_BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.DeleteBackupPlanAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3542,28 +2937,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_plan_association(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_backup_plan_association(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupPlanAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3587,12 +2970,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackupPlanAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3606,15 +2984,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_delete_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_backup_plan_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_plan_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3635,22 +3006,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _DeleteBackupVault(
-        _BaseBackupDRRestTransport._BaseDeleteBackupVault, BackupDRRestStub
-    ):
+    class _DeleteBackupVault(_BaseBackupDRRestTransport._BaseDeleteBackupVault, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.DeleteBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3692,28 +3053,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backup_vault(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_backup_vault(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseDeleteBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3737,12 +3086,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._DeleteBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3756,12 +3100,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_delete_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3782,22 +3122,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _DeleteManagementServer(
-        _BaseBackupDRRestTransport._BaseDeleteManagementServer, BackupDRRestStub
-    ):
+    class _DeleteManagementServer(_BaseBackupDRRestTransport._BaseDeleteManagementServer, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.DeleteManagementServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3840,28 +3170,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_management_server(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_management_server(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseDeleteManagementServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3885,12 +3203,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._DeleteManagementServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3904,12 +3217,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_delete_management_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_management_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_management_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3930,25 +3239,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _FetchBackupPlanAssociationsForResourceType(
-        _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType,
-        BackupDRRestStub,
-    ):
+    class _FetchBackupPlanAssociationsForResourceType(_BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType, BackupDRRestStub):
         def __hash__(self):
-            return hash(
-                "BackupDRRestTransport.FetchBackupPlanAssociationsForResourceType"
-            )
+            return hash("BackupDRRestTransport.FetchBackupPlanAssociationsForResourceType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3993,31 +3289,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_fetch_backup_plan_associations_for_resource_type(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_fetch_backup_plan_associations_for_resource_type(request, metadata)
             transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseFetchBackupPlanAssociationsForResourceType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4041,12 +3324,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._FetchBackupPlanAssociationsForResourceType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4055,34 +3333,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse()
-            )
-            pb_resp = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.pb(
-                resp
-            )
+            resp = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse()
+            pb_resp = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = (
-                self._interceptor.post_fetch_backup_plan_associations_for_resource_type(
-                    resp
-                )
-            )
+            resp = self._interceptor.post_fetch_backup_plan_associations_for_resource_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_backup_plan_associations_for_resource_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_backup_plan_associations_for_resource_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.to_json(
-                        response
-                    )
+                    response_payload = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4101,22 +3362,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _FetchBackupsForResourceType(
-        _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType, BackupDRRestStub
-    ):
+    class _FetchBackupsForResourceType(_BaseBackupDRRestTransport._BaseFetchBackupsForResourceType, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.FetchBackupsForResourceType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4159,28 +3410,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_backups_for_resource_type(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_backups_for_resource_type(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseFetchBackupsForResourceType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4204,12 +3443,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._FetchBackupsForResourceType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4225,21 +3459,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_fetch_backups_for_resource_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_backups_for_resource_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_backups_for_resource_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        backupvault.FetchBackupsForResourceTypeResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = backupvault.FetchBackupsForResourceTypeResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4258,25 +3481,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _FetchDataSourceReferencesForResourceType(
-        _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType,
-        BackupDRRestStub,
-    ):
+    class _FetchDataSourceReferencesForResourceType(_BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType, BackupDRRestStub):
         def __hash__(self):
-            return hash(
-                "BackupDRRestTransport.FetchDataSourceReferencesForResourceType"
-            )
+            return hash("BackupDRRestTransport.FetchDataSourceReferencesForResourceType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4321,31 +3531,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_fetch_data_source_references_for_resource_type(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_fetch_data_source_references_for_resource_type(request, metadata)
             transcoded_request = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseFetchDataSourceReferencesForResourceType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4369,12 +3566,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._FetchDataSourceReferencesForResourceType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4383,36 +3575,17 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse()
-            )
-            pb_resp = (
-                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.pb(
-                    resp
-                )
-            )
+            resp = datasourcereference.FetchDataSourceReferencesForResourceTypeResponse()
+            pb_resp = datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = (
-                self._interceptor.post_fetch_data_source_references_for_resource_type(
-                    resp
-                )
-            )
+            resp = self._interceptor.post_fetch_data_source_references_for_resource_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_fetch_data_source_references_for_resource_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_data_source_references_for_resource_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.to_json(
-                        response
-                    )
+                    response_payload = datasourcereference.FetchDataSourceReferencesForResourceTypeResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4431,22 +3604,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _FetchUsableBackupVaults(
-        _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults, BackupDRRestStub
-    ):
+    class _FetchUsableBackupVaults(_BaseBackupDRRestTransport._BaseFetchUsableBackupVaults, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.FetchUsableBackupVaults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4489,28 +3652,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_usable_backup_vaults(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_usable_backup_vaults(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseFetchUsableBackupVaults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4534,12 +3685,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._FetchUsableBackupVaults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4555,16 +3701,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_fetch_usable_backup_vaults(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_usable_backup_vaults_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_usable_backup_vaults_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        backupvault.FetchUsableBackupVaultsResponse.to_json(response)
-                    )
+                    response_payload = backupvault.FetchUsableBackupVaultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4588,15 +3728,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4638,25 +3770,13 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             http_options = _BaseBackupDRRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4679,14 +3799,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
 
             # Send the request
-            response = BackupDRRestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = BackupDRRestTransport._GetBackup._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4701,12 +3814,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.Backup.to_json(response)
                 except:
@@ -4727,22 +3836,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetBackupPlan(
-        _BaseBackupDRRestTransport._BaseGetBackupPlan, BackupDRRestStub
-    ):
+    class _GetBackupPlan(_BaseBackupDRRestTransport._BaseGetBackupPlan, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4786,30 +3885,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetBackupPlan._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup_plan(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlan._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlan._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4833,12 +3918,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4854,12 +3934,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupplan.BackupPlan.to_json(response)
                 except:
@@ -4880,22 +3956,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetBackupPlanAssociation(
-        _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation, BackupDRRestStub
-    ):
+    class _GetBackupPlanAssociation(_BaseBackupDRRestTransport._BaseGetBackupPlanAssociation, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetBackupPlanAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4940,28 +4006,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_plan_association(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_backup_plan_association(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4985,12 +4039,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetBackupPlanAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5006,16 +4055,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_plan_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_plan_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        backupplanassociation.BackupPlanAssociation.to_json(response)
-                    )
+                    response_payload = backupplanassociation.BackupPlanAssociation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5034,22 +4077,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetBackupPlanRevision(
-        _BaseBackupDRRestTransport._BaseGetBackupPlanRevision, BackupDRRestStub
-    ):
+    class _GetBackupPlanRevision(_BaseBackupDRRestTransport._BaseGetBackupPlanRevision, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetBackupPlanRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5091,28 +4124,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_plan_revision(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_backup_plan_revision(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetBackupPlanRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5136,12 +4157,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetBackupPlanRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5157,12 +4173,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_backup_plan_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_plan_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_plan_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupplan.BackupPlanRevision.to_json(response)
                 except:
@@ -5183,22 +4195,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetBackupVault(
-        _BaseBackupDRRestTransport._BaseGetBackupVault, BackupDRRestStub
-    ):
+    class _GetBackupVault(_BaseBackupDRRestTransport._BaseGetBackupVault, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5240,32 +4242,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetBackupVault._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backup_vault(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetBackupVault._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_backup_vault(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetBackupVault._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetBackupVault._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5289,12 +4275,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5310,12 +4291,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.BackupVault.to_json(response)
                 except:
@@ -5336,22 +4313,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetDataSource(
-        _BaseBackupDRRestTransport._BaseGetDataSource, BackupDRRestStub
-    ):
+    class _GetDataSource(_BaseBackupDRRestTransport._BaseGetDataSource, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5395,30 +4362,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetDataSource._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetDataSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetDataSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetDataSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5442,12 +4395,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5463,12 +4411,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_data_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.DataSource.to_json(response)
                 except:
@@ -5489,22 +4433,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetDataSourceReference(
-        _BaseBackupDRRestTransport._BaseGetDataSourceReference, BackupDRRestStub
-    ):
+    class _GetDataSourceReference(_BaseBackupDRRestTransport._BaseGetDataSourceReference, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetDataSourceReference")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5546,28 +4480,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_data_source_reference(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_data_source_reference(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetDataSourceReference._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5591,12 +4513,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetDataSourceReference._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5612,16 +4529,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_data_source_reference(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_source_reference_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_source_reference_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datasourcereference.DataSourceReference.to_json(
-                        response
-                    )
+                    response_payload = datasourcereference.DataSourceReference.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5640,22 +4551,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _GetManagementServer(
-        _BaseBackupDRRestTransport._BaseGetManagementServer, BackupDRRestStub
-    ):
+    class _GetManagementServer(_BaseBackupDRRestTransport._BaseGetManagementServer, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.GetManagementServer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5697,28 +4598,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetManagementServer._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetManagementServer._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_management_server(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseGetManagementServer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_management_server(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetManagementServer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseGetManagementServer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetManagementServer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5742,12 +4631,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetManagementServer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5763,12 +4647,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_get_management_server(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_management_server_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_management_server_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupdr.ManagementServer.to_json(response)
                 except:
@@ -5789,22 +4669,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _InitializeService(
-        _BaseBackupDRRestTransport._BaseInitializeService, BackupDRRestStub
-    ):
+    class _InitializeService(_BaseBackupDRRestTransport._BaseInitializeService, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.InitializeService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5848,32 +4718,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseInitializeService._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseInitializeService._get_http_options()
 
-            request, metadata = self._interceptor.pre_initialize_service(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseInitializeService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_initialize_service(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseInitializeService._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseInitializeService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseInitializeService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseInitializeService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseInitializeService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5897,13 +4753,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._InitializeService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5917,12 +4767,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_initialize_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_initialize_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_initialize_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5943,22 +4789,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListBackupPlanAssociations(
-        _BaseBackupDRRestTransport._BaseListBackupPlanAssociations, BackupDRRestStub
-    ):
+    class _ListBackupPlanAssociations(_BaseBackupDRRestTransport._BaseListBackupPlanAssociations, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListBackupPlanAssociations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6001,28 +4837,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_plan_associations(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_plan_associations(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanAssociations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6046,12 +4870,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListBackupPlanAssociations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6067,19 +4886,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_backup_plan_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_backup_plan_associations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_plan_associations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backupplanassociation.ListBackupPlanAssociationsResponse.to_json(
-                        response
-                    )
+                    response_payload = backupplanassociation.ListBackupPlanAssociationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6098,22 +4908,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListBackupPlanRevisions(
-        _BaseBackupDRRestTransport._BaseListBackupPlanRevisions, BackupDRRestStub
-    ):
+    class _ListBackupPlanRevisions(_BaseBackupDRRestTransport._BaseListBackupPlanRevisions, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListBackupPlanRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6156,28 +4956,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_plan_revisions(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_plan_revisions(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListBackupPlanRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6201,12 +4989,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListBackupPlanRevisions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6222,16 +5005,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_backup_plan_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_plan_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_plan_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        backupplan.ListBackupPlanRevisionsResponse.to_json(response)
-                    )
+                    response_payload = backupplan.ListBackupPlanRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6250,22 +5027,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListBackupPlans(
-        _BaseBackupDRRestTransport._BaseListBackupPlans, BackupDRRestStub
-    ):
+    class _ListBackupPlans(_BaseBackupDRRestTransport._BaseListBackupPlans, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListBackupPlans")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6306,32 +5073,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackupPlans._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackupPlans._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_plans(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListBackupPlans._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_backup_plans(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupPlans._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListBackupPlans._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListBackupPlans._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6355,12 +5106,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListBackupPlans._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6376,16 +5122,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_backup_plans(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_plans_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_plans_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backupplan.ListBackupPlansResponse.to_json(
-                        response
-                    )
+                    response_payload = backupplan.ListBackupPlansResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6409,15 +5149,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6456,30 +5188,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     Response message for listing Backups.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListBackups._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListBackups._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6503,12 +5221,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6524,12 +5237,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backupvault.ListBackupsResponse.to_json(response)
                 except:
@@ -6550,22 +5259,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListBackupVaults(
-        _BaseBackupDRRestTransport._BaseListBackupVaults, BackupDRRestStub
-    ):
+    class _ListBackupVaults(_BaseBackupDRRestTransport._BaseListBackupVaults, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListBackupVaults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6607,30 +5306,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListBackupVaults._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListBackupVaults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backup_vaults(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupVaults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_backup_vaults(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListBackupVaults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListBackupVaults._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListBackupVaults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6654,12 +5339,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListBackupVaults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6675,16 +5355,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_backup_vaults(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backup_vaults_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backup_vaults_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backupvault.ListBackupVaultsResponse.to_json(
-                        response
-                    )
+                    response_payload = backupvault.ListBackupVaultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6703,22 +5377,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListDataSourceReferences(
-        _BaseBackupDRRestTransport._BaseListDataSourceReferences, BackupDRRestStub
-    ):
+    class _ListDataSourceReferences(_BaseBackupDRRestTransport._BaseListDataSourceReferences, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListDataSourceReferences")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6761,28 +5425,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_source_references(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_source_references(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListDataSourceReferences._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6806,12 +5458,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListDataSourceReferences._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6827,18 +5474,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_data_source_references(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_source_references_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_source_references_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datasourcereference.ListDataSourceReferencesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = datasourcereference.ListDataSourceReferencesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6857,22 +5496,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListDataSources(
-        _BaseBackupDRRestTransport._BaseListDataSources, BackupDRRestStub
-    ):
+    class _ListDataSources(_BaseBackupDRRestTransport._BaseListDataSources, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListDataSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6914,32 +5543,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListDataSources._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListDataSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_sources(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListDataSources._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_data_sources(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListDataSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListDataSources._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListDataSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6963,12 +5576,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListDataSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6984,16 +5592,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_data_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backupvault.ListDataSourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = backupvault.ListDataSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7012,22 +5614,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _ListManagementServers(
-        _BaseBackupDRRestTransport._BaseListManagementServers, BackupDRRestStub
-    ):
+    class _ListManagementServers(_BaseBackupDRRestTransport._BaseListManagementServers, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListManagementServers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7069,28 +5661,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListManagementServers._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListManagementServers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_management_servers(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseListManagementServers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_management_servers(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseListManagementServers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseListManagementServers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListManagementServers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7114,12 +5694,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListManagementServers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7135,16 +5710,10 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_list_management_servers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_management_servers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_management_servers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = backupdr.ListManagementServersResponse.to_json(
-                        response
-                    )
+                    response_payload = backupdr.ListManagementServersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7163,22 +5732,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _RestoreBackup(
-        _BaseBackupDRRestTransport._BaseRestoreBackup, BackupDRRestStub
-    ):
+    class _RestoreBackup(_BaseBackupDRRestTransport._BaseRestoreBackup, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.RestoreBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7222,34 +5781,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseRestoreBackup._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseRestoreBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseRestoreBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseRestoreBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseRestoreBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseRestoreBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseRestoreBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseRestoreBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7273,13 +5816,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._RestoreBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7293,12 +5830,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_restore_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7319,22 +5852,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _TriggerBackup(
-        _BaseBackupDRRestTransport._BaseTriggerBackup, BackupDRRestStub
-    ):
+    class _TriggerBackup(_BaseBackupDRRestTransport._BaseTriggerBackup, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.TriggerBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7378,34 +5901,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseTriggerBackup._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseTriggerBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_trigger_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseTriggerBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseTriggerBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseTriggerBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseTriggerBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseTriggerBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseTriggerBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7429,13 +5936,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._TriggerBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7449,12 +5950,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_trigger_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_trigger_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_trigger_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7480,15 +5977,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.UpdateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7532,34 +6021,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseUpdateBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseUpdateBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseUpdateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseUpdateBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseUpdateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7583,13 +6056,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._UpdateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7603,12 +6070,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_update_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7629,22 +6092,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _UpdateBackupPlan(
-        _BaseBackupDRRestTransport._BaseUpdateBackupPlan, BackupDRRestStub
-    ):
+    class _UpdateBackupPlan(_BaseBackupDRRestTransport._BaseUpdateBackupPlan, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.UpdateBackupPlan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7688,36 +6141,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_plan(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_backup_plan(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupPlan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7741,13 +6176,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._UpdateBackupPlan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7761,12 +6190,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_update_backup_plan(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_plan_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_plan_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7787,22 +6212,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _UpdateBackupPlanAssociation(
-        _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation, BackupDRRestStub
-    ):
+    class _UpdateBackupPlanAssociation(_BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.UpdateBackupPlanAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7847,32 +6262,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_plan_association(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_backup_plan_association(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupPlanAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7896,13 +6297,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._UpdateBackupPlanAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7916,15 +6311,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_update_backup_plan_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_backup_plan_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_plan_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7945,22 +6333,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _UpdateBackupVault(
-        _BaseBackupDRRestTransport._BaseUpdateBackupVault, BackupDRRestStub
-    ):
+    class _UpdateBackupVault(_BaseBackupDRRestTransport._BaseUpdateBackupVault, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.UpdateBackupVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8004,32 +6382,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backup_vault(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_backup_vault(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseUpdateBackupVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8053,13 +6417,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._UpdateBackupVault._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8073,12 +6431,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_update_backup_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8099,22 +6453,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 )
             return resp
 
-    class _UpdateDataSource(
-        _BaseBackupDRRestTransport._BaseUpdateDataSource, BackupDRRestStub
-    ):
+    class _UpdateDataSource(_BaseBackupDRRestTransport._BaseUpdateDataSource, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.UpdateDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8158,36 +6502,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseUpdateDataSource._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseUpdateDataSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_source(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateDataSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_source(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseUpdateDataSource._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupDRRestTransport._BaseUpdateDataSource._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupDRRestTransport._BaseUpdateDataSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseUpdateDataSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseUpdateDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8211,13 +6537,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._UpdateDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8231,12 +6551,8 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             resp = self._interceptor.post_update_data_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8258,79 +6574,55 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return resp
 
     @property
-    def create_backup_plan(
-        self,
-    ) -> Callable[[backupplan.CreateBackupPlanRequest], operations_pb2.Operation]:
+    def create_backup_plan(self) -> Callable[[backupplan.CreateBackupPlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup_plan_association(
-        self,
-    ) -> Callable[
-        [backupplanassociation.CreateBackupPlanAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_backup_plan_association(self) -> Callable[[backupplanassociation.CreateBackupPlanAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_backup_vault(
-        self,
-    ) -> Callable[[backupvault.CreateBackupVaultRequest], operations_pb2.Operation]:
+    def create_backup_vault(self) -> Callable[[backupvault.CreateBackupVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_management_server(
-        self,
-    ) -> Callable[[backupdr.CreateManagementServerRequest], operations_pb2.Operation]:
+    def create_management_server(self) -> Callable[[backupdr.CreateManagementServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateManagementServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[backupvault.DeleteBackupRequest], operations_pb2.Operation]:
+    def delete_backup(self) -> Callable[[backupvault.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_plan(
-        self,
-    ) -> Callable[[backupplan.DeleteBackupPlanRequest], operations_pb2.Operation]:
+    def delete_backup_plan(self) -> Callable[[backupplan.DeleteBackupPlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_plan_association(
-        self,
-    ) -> Callable[
-        [backupplanassociation.DeleteBackupPlanAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_backup_plan_association(self) -> Callable[[backupplanassociation.DeleteBackupPlanAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup_vault(
-        self,
-    ) -> Callable[[backupvault.DeleteBackupVaultRequest], operations_pb2.Operation]:
+    def delete_backup_vault(self) -> Callable[[backupvault.DeleteBackupVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_management_server(
-        self,
-    ) -> Callable[[backupdr.DeleteManagementServerRequest], operations_pb2.Operation]:
+    def delete_management_server(self) -> Callable[[backupdr.DeleteManagementServerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteManagementServer(self._session, self._host, self._interceptor)  # type: ignore
@@ -8349,10 +6641,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     @property
     def fetch_backups_for_resource_type(
         self,
-    ) -> Callable[
-        [backupvault.FetchBackupsForResourceTypeRequest],
-        backupvault.FetchBackupsForResourceTypeResponse,
-    ]:
+    ) -> Callable[[backupvault.FetchBackupsForResourceTypeRequest], backupvault.FetchBackupsForResourceTypeResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchBackupsForResourceType(self._session, self._host, self._interceptor)  # type: ignore
@@ -8361,36 +6650,26 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     def fetch_data_source_references_for_resource_type(
         self,
     ) -> Callable[
-        [datasourcereference.FetchDataSourceReferencesForResourceTypeRequest],
-        datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
+        [datasourcereference.FetchDataSourceReferencesForResourceTypeRequest], datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchDataSourceReferencesForResourceType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_usable_backup_vaults(
-        self,
-    ) -> Callable[
-        [backupvault.FetchUsableBackupVaultsRequest],
-        backupvault.FetchUsableBackupVaultsResponse,
-    ]:
+    def fetch_usable_backup_vaults(self) -> Callable[[backupvault.FetchUsableBackupVaultsRequest], backupvault.FetchUsableBackupVaultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchUsableBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[backupvault.GetBackupRequest], backupvault.Backup]:
+    def get_backup(self) -> Callable[[backupvault.GetBackupRequest], backupvault.Backup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_plan(
-        self,
-    ) -> Callable[[backupplan.GetBackupPlanRequest], backupplan.BackupPlan]:
+    def get_backup_plan(self) -> Callable[[backupplan.GetBackupPlanRequest], backupplan.BackupPlan]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
@@ -8398,63 +6677,43 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     @property
     def get_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.GetBackupPlanAssociationRequest],
-        backupplanassociation.BackupPlanAssociation,
-    ]:
+    ) -> Callable[[backupplanassociation.GetBackupPlanAssociationRequest], backupplanassociation.BackupPlanAssociation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_plan_revision(
-        self,
-    ) -> Callable[
-        [backupplan.GetBackupPlanRevisionRequest], backupplan.BackupPlanRevision
-    ]:
+    def get_backup_plan_revision(self) -> Callable[[backupplan.GetBackupPlanRevisionRequest], backupplan.BackupPlanRevision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupPlanRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup_vault(
-        self,
-    ) -> Callable[[backupvault.GetBackupVaultRequest], backupvault.BackupVault]:
+    def get_backup_vault(self) -> Callable[[backupvault.GetBackupVaultRequest], backupvault.BackupVault]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_source(
-        self,
-    ) -> Callable[[backupvault.GetDataSourceRequest], backupvault.DataSource]:
+    def get_data_source(self) -> Callable[[backupvault.GetDataSourceRequest], backupvault.DataSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_source_reference(
-        self,
-    ) -> Callable[
-        [datasourcereference.GetDataSourceReferenceRequest],
-        datasourcereference.DataSourceReference,
-    ]:
+    def get_data_source_reference(self) -> Callable[[datasourcereference.GetDataSourceReferenceRequest], datasourcereference.DataSourceReference]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataSourceReference(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_management_server(
-        self,
-    ) -> Callable[[backupdr.GetManagementServerRequest], backupdr.ManagementServer]:
+    def get_management_server(self) -> Callable[[backupdr.GetManagementServerRequest], backupdr.ManagementServer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetManagementServer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def initialize_service(
-        self,
-    ) -> Callable[[backupdr.InitializeServiceRequest], operations_pb2.Operation]:
+    def initialize_service(self) -> Callable[[backupdr.InitializeServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InitializeService(self._session, self._host, self._interceptor)  # type: ignore
@@ -8462,49 +6721,31 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     @property
     def list_backup_plan_associations(
         self,
-    ) -> Callable[
-        [backupplanassociation.ListBackupPlanAssociationsRequest],
-        backupplanassociation.ListBackupPlanAssociationsResponse,
-    ]:
+    ) -> Callable[[backupplanassociation.ListBackupPlanAssociationsRequest], backupplanassociation.ListBackupPlanAssociationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPlanAssociations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_plan_revisions(
-        self,
-    ) -> Callable[
-        [backupplan.ListBackupPlanRevisionsRequest],
-        backupplan.ListBackupPlanRevisionsResponse,
-    ]:
+    def list_backup_plan_revisions(self) -> Callable[[backupplan.ListBackupPlanRevisionsRequest], backupplan.ListBackupPlanRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPlanRevisions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_plans(
-        self,
-    ) -> Callable[
-        [backupplan.ListBackupPlansRequest], backupplan.ListBackupPlansResponse
-    ]:
+    def list_backup_plans(self) -> Callable[[backupplan.ListBackupPlansRequest], backupplan.ListBackupPlansResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupPlans(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[backupvault.ListBackupsRequest], backupvault.ListBackupsResponse]:
+    def list_backups(self) -> Callable[[backupvault.ListBackupsRequest], backupvault.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backup_vaults(
-        self,
-    ) -> Callable[
-        [backupvault.ListBackupVaultsRequest], backupvault.ListBackupVaultsResponse
-    ]:
+    def list_backup_vaults(self) -> Callable[[backupvault.ListBackupVaultsRequest], backupvault.ListBackupVaultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackupVaults(self._session, self._host, self._interceptor)  # type: ignore
@@ -8512,91 +6753,61 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     @property
     def list_data_source_references(
         self,
-    ) -> Callable[
-        [datasourcereference.ListDataSourceReferencesRequest],
-        datasourcereference.ListDataSourceReferencesResponse,
-    ]:
+    ) -> Callable[[datasourcereference.ListDataSourceReferencesRequest], datasourcereference.ListDataSourceReferencesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataSourceReferences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_sources(
-        self,
-    ) -> Callable[
-        [backupvault.ListDataSourcesRequest], backupvault.ListDataSourcesResponse
-    ]:
+    def list_data_sources(self) -> Callable[[backupvault.ListDataSourcesRequest], backupvault.ListDataSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_management_servers(
-        self,
-    ) -> Callable[
-        [backupdr.ListManagementServersRequest], backupdr.ListManagementServersResponse
-    ]:
+    def list_management_servers(self) -> Callable[[backupdr.ListManagementServersRequest], backupdr.ListManagementServersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListManagementServers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_backup(
-        self,
-    ) -> Callable[[backupvault.RestoreBackupRequest], operations_pb2.Operation]:
+    def restore_backup(self) -> Callable[[backupvault.RestoreBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def trigger_backup(
-        self,
-    ) -> Callable[
-        [backupplanassociation.TriggerBackupRequest], operations_pb2.Operation
-    ]:
+    def trigger_backup(self) -> Callable[[backupplanassociation.TriggerBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TriggerBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[[backupvault.UpdateBackupRequest], operations_pb2.Operation]:
+    def update_backup(self) -> Callable[[backupvault.UpdateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_plan(
-        self,
-    ) -> Callable[[backupplan.UpdateBackupPlanRequest], operations_pb2.Operation]:
+    def update_backup_plan(self) -> Callable[[backupplan.UpdateBackupPlanRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupPlan(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_plan_association(
-        self,
-    ) -> Callable[
-        [backupplanassociation.UpdateBackupPlanAssociationRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_backup_plan_association(self) -> Callable[[backupplanassociation.UpdateBackupPlanAssociationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupPlanAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup_vault(
-        self,
-    ) -> Callable[[backupvault.UpdateBackupVaultRequest], operations_pb2.Operation]:
+    def update_backup_vault(self) -> Callable[[backupvault.UpdateBackupVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackupVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_source(
-        self,
-    ) -> Callable[[backupvault.UpdateDataSourceRequest], operations_pb2.Operation]:
+    def update_data_source(self) -> Callable[[backupvault.UpdateDataSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataSource(self._session, self._host, self._interceptor)  # type: ignore
@@ -8610,15 +6821,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8656,30 +6859,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8703,12 +6892,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8720,9 +6904,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8747,22 +6929,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseBackupDRRestTransport._BaseListLocations, BackupDRRestStub
-    ):
+    class _ListLocations(_BaseBackupDRRestTransport._BaseListLocations, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8800,30 +6972,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8847,12 +7005,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8864,9 +7017,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8896,15 +7047,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8942,30 +7085,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8989,12 +7118,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9006,9 +7130,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9038,15 +7160,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9085,34 +7199,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9136,13 +7234,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9154,9 +7246,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9181,22 +7271,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseBackupDRRestTransport._BaseTestIamPermissions, BackupDRRestStub
-    ):
+    class _TestIamPermissions(_BaseBackupDRRestTransport._BaseTestIamPermissions, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9235,32 +7315,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBackupDRRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9284,13 +7350,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9302,9 +7362,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9329,22 +7387,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseBackupDRRestTransport._BaseCancelOperation, BackupDRRestStub
-    ):
+    class _CancelOperation(_BaseBackupDRRestTransport._BaseCancelOperation, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9380,38 +7428,18 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseBackupDRRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9435,13 +7463,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9455,22 +7477,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseBackupDRRestTransport._BaseDeleteOperation, BackupDRRestStub
-    ):
+    class _DeleteOperation(_BaseBackupDRRestTransport._BaseDeleteOperation, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9505,32 +7517,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseBackupDRRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9554,12 +7550,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9578,15 +7569,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             return hash("BackupDRRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9624,30 +7607,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9671,12 +7640,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9688,9 +7652,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9715,22 +7677,12 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseBackupDRRestTransport._BaseListOperations, BackupDRRestStub
-    ):
+    class _ListOperations(_BaseBackupDRRestTransport._BaseListOperations, BackupDRRestStub):
         def __hash__(self):
             return hash("BackupDRRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9768,30 +7720,16 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseBackupDRRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseBackupDRRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseBackupDRRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBackupDRRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBackupDRRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBackupDRRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9815,12 +7753,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
 
             # Send the request
             response = BackupDRRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9832,9 +7765,7 @@ class BackupDRRestTransport(_BaseBackupDRRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

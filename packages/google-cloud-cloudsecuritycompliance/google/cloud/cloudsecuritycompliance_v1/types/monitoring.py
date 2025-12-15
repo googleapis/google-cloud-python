@@ -174,9 +174,7 @@ class ListFrameworkComplianceSummariesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    framework_compliance_summaries: MutableSequence[
-        "FrameworkComplianceSummary"
-    ] = proto.RepeatedField(
+    framework_compliance_summaries: MutableSequence["FrameworkComplianceSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FrameworkComplianceSummary",
@@ -246,16 +244,12 @@ class FrameworkComplianceReport(proto.Message):
         number=5,
         enum=common.Framework.FrameworkType,
     )
-    supported_cloud_providers: MutableSequence[
-        common.CloudProvider
-    ] = proto.RepeatedField(
+    supported_cloud_providers: MutableSequence[common.CloudProvider] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=common.CloudProvider,
     )
-    framework_categories: MutableSequence[
-        common.FrameworkCategory
-    ] = proto.RepeatedField(
+    framework_categories: MutableSequence[common.FrameworkCategory] = proto.RepeatedField(
         proto.ENUM,
         number=7,
         enum=common.FrameworkCategory,
@@ -276,9 +270,7 @@ class FrameworkComplianceReport(proto.Message):
         proto.INT64,
         number=11,
     )
-    target_resource_details: MutableSequence[
-        "TargetResourceDetails"
-    ] = proto.RepeatedField(
+    target_resource_details: MutableSequence["TargetResourceDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="TargetResourceDetails",
@@ -438,9 +430,7 @@ class ListControlComplianceSummariesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    control_compliance_summaries: MutableSequence[
-        "ControlComplianceSummary"
-    ] = proto.RepeatedField(
+    control_compliance_summaries: MutableSequence["ControlComplianceSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ControlComplianceSummary",
@@ -491,9 +481,7 @@ class AggregateFrameworkComplianceReportResponse(proto.Message):
             The list of aggregated compliance reports.
     """
 
-    aggregated_compliance_reports: MutableSequence[
-        "AggregatedComplianceReport"
-    ] = proto.RepeatedField(
+    aggregated_compliance_reports: MutableSequence["AggregatedComplianceReport"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AggregatedComplianceReport",
@@ -580,16 +568,12 @@ class FrameworkComplianceSummary(proto.Message):
         number=3,
         enum=common.Framework.FrameworkType,
     )
-    supported_cloud_providers: MutableSequence[
-        common.CloudProvider
-    ] = proto.RepeatedField(
+    supported_cloud_providers: MutableSequence[common.CloudProvider] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=common.CloudProvider,
     )
-    framework_categories: MutableSequence[
-        common.FrameworkCategory
-    ] = proto.RepeatedField(
+    framework_categories: MutableSequence[common.FrameworkCategory] = proto.RepeatedField(
         proto.ENUM,
         number=5,
         enum=common.FrameworkCategory,
@@ -610,9 +594,7 @@ class FrameworkComplianceSummary(proto.Message):
         proto.INT64,
         number=9,
     )
-    target_resource_details: MutableSequence[
-        "TargetResourceDetails"
-    ] = proto.RepeatedField(
+    target_resource_details: MutableSequence["TargetResourceDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="TargetResourceDetails",
@@ -742,12 +724,10 @@ class ControlComplianceSummary(proto.Message):
         number=8,
         message="CloudControlReport",
     )
-    control_responsibility_type: common.RegulatoryControlResponsibilityType = (
-        proto.Field(
-            proto.ENUM,
-            number=9,
-            enum=common.RegulatoryControlResponsibilityType,
-        )
+    control_responsibility_type: common.RegulatoryControlResponsibilityType = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=common.RegulatoryControlResponsibilityType,
     )
     is_fake_control: bool = proto.Field(
         proto.BOOL,
@@ -811,13 +791,11 @@ class CloudControlReport(proto.Message):
             the cloud control belongs to.
     """
 
-    manual_cloud_control_assessment_details: "ManualCloudControlAssessmentDetails" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=13,
-            oneof="assessment_details",
-            message="ManualCloudControlAssessmentDetails",
-        )
+    manual_cloud_control_assessment_details: "ManualCloudControlAssessmentDetails" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="assessment_details",
+        message="ManualCloudControlAssessmentDetails",
     )
     cloud_control_assessment_details: "CloudControlAssessmentDetails" = proto.Field(
         proto.MESSAGE,

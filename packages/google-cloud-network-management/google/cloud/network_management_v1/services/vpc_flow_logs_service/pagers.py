@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class ListVpcFlowLogsConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[vpc_flow_logs_config.VpcFlowLogsConfig]:
@@ -173,18 +156,11 @@ class ListVpcFlowLogsConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[vpc_flow_logs.ListVpcFlowLogsConfigsResponse]:
+    async def pages(self) -> AsyncIterator[vpc_flow_logs.ListVpcFlowLogsConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[vpc_flow_logs_config.VpcFlowLogsConfig]:
@@ -259,12 +235,7 @@ class QueryOrgVpcFlowLogsConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[vpc_flow_logs_config.VpcFlowLogsConfig]:
@@ -295,9 +266,7 @@ class QueryOrgVpcFlowLogsConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse]],
         request: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsRequest,
         response: vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse,
         *,
@@ -333,18 +302,11 @@ class QueryOrgVpcFlowLogsConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse]:
+    async def pages(self) -> AsyncIterator[vpc_flow_logs.QueryOrgVpcFlowLogsConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[vpc_flow_logs_config.VpcFlowLogsConfig]:
@@ -419,12 +381,7 @@ class ShowEffectiveFlowLogsConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[vpc_flow_logs_config.EffectiveVpcFlowLogsConfig]:
@@ -455,9 +412,7 @@ class ShowEffectiveFlowLogsConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse]],
         request: vpc_flow_logs.ShowEffectiveFlowLogsConfigsRequest,
         response: vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse,
         *,
@@ -493,23 +448,14 @@ class ShowEffectiveFlowLogsConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse]:
+    async def pages(self) -> AsyncIterator[vpc_flow_logs.ShowEffectiveFlowLogsConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[vpc_flow_logs_config.EffectiveVpcFlowLogsConfig]:
+    def __aiter__(self) -> AsyncIterator[vpc_flow_logs_config.EffectiveVpcFlowLogsConfig]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.effective_flow_logs_configs:

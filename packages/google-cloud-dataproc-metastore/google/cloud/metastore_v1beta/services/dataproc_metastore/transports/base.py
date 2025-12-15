@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.metastore_v1beta import gapic_version as package_version
 from google.cloud.metastore_v1beta.types import metastore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class DataprocMetastoreTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -296,180 +286,97 @@ class DataprocMetastoreTransport(abc.ABC):
     @property
     def list_services(
         self,
-    ) -> Callable[
-        [metastore.ListServicesRequest],
-        Union[
-            metastore.ListServicesResponse, Awaitable[metastore.ListServicesResponse]
-        ],
-    ]:
+    ) -> Callable[[metastore.ListServicesRequest], Union[metastore.ListServicesResponse, Awaitable[metastore.ListServicesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[
-        [metastore.GetServiceRequest],
-        Union[metastore.Service, Awaitable[metastore.Service]],
-    ]:
+    def get_service(self) -> Callable[[metastore.GetServiceRequest], Union[metastore.Service, Awaitable[metastore.Service]]]:
         raise NotImplementedError()
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[
-        [metastore.CreateServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_service(self) -> Callable[[metastore.CreateServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[
-        [metastore.UpdateServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_service(self) -> Callable[[metastore.UpdateServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[
-        [metastore.DeleteServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_service(self) -> Callable[[metastore.DeleteServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_metadata_imports(
         self,
     ) -> Callable[
-        [metastore.ListMetadataImportsRequest],
-        Union[
-            metastore.ListMetadataImportsResponse,
-            Awaitable[metastore.ListMetadataImportsResponse],
-        ],
+        [metastore.ListMetadataImportsRequest], Union[metastore.ListMetadataImportsResponse, Awaitable[metastore.ListMetadataImportsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_metadata_import(
         self,
-    ) -> Callable[
-        [metastore.GetMetadataImportRequest],
-        Union[metastore.MetadataImport, Awaitable[metastore.MetadataImport]],
-    ]:
+    ) -> Callable[[metastore.GetMetadataImportRequest], Union[metastore.MetadataImport, Awaitable[metastore.MetadataImport]]]:
         raise NotImplementedError()
 
     @property
     def create_metadata_import(
         self,
-    ) -> Callable[
-        [metastore.CreateMetadataImportRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[metastore.CreateMetadataImportRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_metadata_import(
         self,
-    ) -> Callable[
-        [metastore.UpdateMetadataImportRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[metastore.UpdateMetadataImportRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_metadata(
-        self,
-    ) -> Callable[
-        [metastore.ExportMetadataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_metadata(self) -> Callable[[metastore.ExportMetadataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def restore_service(
-        self,
-    ) -> Callable[
-        [metastore.RestoreServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def restore_service(self) -> Callable[[metastore.RestoreServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_backups(
         self,
-    ) -> Callable[
-        [metastore.ListBackupsRequest],
-        Union[metastore.ListBackupsResponse, Awaitable[metastore.ListBackupsResponse]],
-    ]:
+    ) -> Callable[[metastore.ListBackupsRequest], Union[metastore.ListBackupsResponse, Awaitable[metastore.ListBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [metastore.GetBackupRequest],
-        Union[metastore.Backup, Awaitable[metastore.Backup]],
-    ]:
+    def get_backup(self) -> Callable[[metastore.GetBackupRequest], Union[metastore.Backup, Awaitable[metastore.Backup]]]:
         raise NotImplementedError()
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [metastore.CreateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_backup(self) -> Callable[[metastore.CreateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [metastore.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_backup(self) -> Callable[[metastore.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_iam_policy(
         self,
-    ) -> Callable[
-        [metastore.RemoveIamPolicyRequest],
-        Union[
-            metastore.RemoveIamPolicyResponse,
-            Awaitable[metastore.RemoveIamPolicyResponse],
-        ],
-    ]:
+    ) -> Callable[[metastore.RemoveIamPolicyRequest], Union[metastore.RemoveIamPolicyResponse, Awaitable[metastore.RemoveIamPolicyResponse]]]:
         raise NotImplementedError()
 
     @property
-    def query_metadata(
-        self,
-    ) -> Callable[
-        [metastore.QueryMetadataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def query_metadata(self) -> Callable[[metastore.QueryMetadataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def move_table_to_database(
         self,
-    ) -> Callable[
-        [metastore.MoveTableToDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[metastore.MoveTableToDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def alter_metadata_resource_location(
         self,
-    ) -> Callable[
-        [metastore.AlterMetadataResourceLocationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[metastore.AlterMetadataResourceLocationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -477,20 +384,14 @@ class DataprocMetastoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -508,19 +409,13 @@ class DataprocMetastoreTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -538,22 +433,13 @@ class DataprocMetastoreTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

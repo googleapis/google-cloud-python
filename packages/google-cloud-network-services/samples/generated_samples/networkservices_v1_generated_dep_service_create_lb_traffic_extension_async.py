@@ -42,9 +42,7 @@ async def sample_create_lb_traffic_extension():
     lb_traffic_extension = network_services_v1.LbTrafficExtension()
     lb_traffic_extension.name = "name_value"
     lb_traffic_extension.extension_chains.name = "name_value"
-    lb_traffic_extension.extension_chains.match_condition.cel_expression = (
-        "cel_expression_value"
-    )
+    lb_traffic_extension.extension_chains.match_condition.cel_expression = "cel_expression_value"
     lb_traffic_extension.extension_chains.extensions.name = "name_value"
     lb_traffic_extension.extension_chains.extensions.service = "service_value"
     lb_traffic_extension.load_balancing_scheme = "EXTERNAL_MANAGED"

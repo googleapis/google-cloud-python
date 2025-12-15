@@ -23,9 +23,7 @@ from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.analytics.admin_v1alpha.types import channel_group as gaa_channel_group
-from google.analytics.admin_v1alpha.types import (
-    expanded_data_set as gaa_expanded_data_set,
-)
+from google.analytics.admin_v1alpha.types import expanded_data_set as gaa_expanded_data_set
 from google.analytics.admin_v1alpha.types import audience as gaa_audience
 from google.analytics.admin_v1alpha.types import event_create_and_edit
 
@@ -1685,13 +1683,11 @@ class ChangeHistoryChange(proto.Message):
             oneof="resource",
             message="GoogleSignalsSettings",
         )
-        display_video_360_advertiser_link: "DisplayVideo360AdvertiserLink" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=9,
-                oneof="resource",
-                message="DisplayVideo360AdvertiserLink",
-            )
+        display_video_360_advertiser_link: "DisplayVideo360AdvertiserLink" = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            oneof="resource",
+            message="DisplayVideo360AdvertiserLink",
         )
         display_video_360_advertiser_link_proposal: "DisplayVideo360AdvertiserLinkProposal" = proto.Field(
             proto.MESSAGE,
@@ -1777,13 +1773,11 @@ class ChangeHistoryChange(proto.Message):
             oneof="resource",
             message="DataRedactionSettings",
         )
-        skadnetwork_conversion_value_schema: "SKAdNetworkConversionValueSchema" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=26,
-                oneof="resource",
-                message="SKAdNetworkConversionValueSchema",
-            )
+        skadnetwork_conversion_value_schema: "SKAdNetworkConversionValueSchema" = proto.Field(
+            proto.MESSAGE,
+            number=26,
+            oneof="resource",
+            message="SKAdNetworkConversionValueSchema",
         )
         adsense_link: "AdSenseLink" = proto.Field(
             proto.MESSAGE,
@@ -2969,12 +2963,10 @@ class AttributionSettings(proto.Message):
         number=2,
         enum=AcquisitionConversionEventLookbackWindow,
     )
-    other_conversion_event_lookback_window: OtherConversionEventLookbackWindow = (
-        proto.Field(
-            proto.ENUM,
-            number=3,
-            enum=OtherConversionEventLookbackWindow,
-        )
+    other_conversion_event_lookback_window: OtherConversionEventLookbackWindow = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=OtherConversionEventLookbackWindow,
     )
     reporting_attribution_model: ReportingAttributionModel = proto.Field(
         proto.ENUM,

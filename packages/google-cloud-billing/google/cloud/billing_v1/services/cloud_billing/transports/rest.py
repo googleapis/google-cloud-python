@@ -169,13 +169,8 @@ class CloudBillingRestInterceptor:
     """
 
     def pre_create_billing_account(
-        self,
-        request: cloud_billing.CreateBillingAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.CreateBillingAccountRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_billing.CreateBillingAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.CreateBillingAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -183,9 +178,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_create_billing_account(
-        self, response: cloud_billing.BillingAccount
-    ) -> cloud_billing.BillingAccount:
+    def post_create_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for create_billing_account
 
         DEPRECATED. Please use the `post_create_billing_account_with_metadata`
@@ -199,9 +192,7 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_create_billing_account_with_metadata(
-        self,
-        response: cloud_billing.BillingAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_billing.BillingAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_billing.BillingAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_billing_account
 
@@ -218,12 +209,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_get_billing_account(
-        self,
-        request: cloud_billing.GetBillingAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.GetBillingAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_billing.GetBillingAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.GetBillingAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -231,9 +218,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_get_billing_account(
-        self, response: cloud_billing.BillingAccount
-    ) -> cloud_billing.BillingAccount:
+    def post_get_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for get_billing_account
 
         DEPRECATED. Please use the `post_get_billing_account_with_metadata`
@@ -247,9 +232,7 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_get_billing_account_with_metadata(
-        self,
-        response: cloud_billing.BillingAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_billing.BillingAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_billing.BillingAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_billing_account
 
@@ -266,12 +249,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -293,9 +272,7 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -312,13 +289,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_get_project_billing_info(
-        self,
-        request: cloud_billing.GetProjectBillingInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.GetProjectBillingInfoRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_billing.GetProjectBillingInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.GetProjectBillingInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_project_billing_info
 
         Override in a subclass to manipulate the request or metadata
@@ -326,9 +298,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_get_project_billing_info(
-        self, response: cloud_billing.ProjectBillingInfo
-    ) -> cloud_billing.ProjectBillingInfo:
+    def post_get_project_billing_info(self, response: cloud_billing.ProjectBillingInfo) -> cloud_billing.ProjectBillingInfo:
         """Post-rpc interceptor for get_project_billing_info
 
         DEPRECATED. Please use the `post_get_project_billing_info_with_metadata`
@@ -342,12 +312,8 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_get_project_billing_info_with_metadata(
-        self,
-        response: cloud_billing.ProjectBillingInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.ProjectBillingInfo, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_billing.ProjectBillingInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.ProjectBillingInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_project_billing_info
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -363,13 +329,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_list_billing_accounts(
-        self,
-        request: cloud_billing.ListBillingAccountsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.ListBillingAccountsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_billing.ListBillingAccountsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.ListBillingAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_billing_accounts
 
         Override in a subclass to manipulate the request or metadata
@@ -377,9 +338,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_list_billing_accounts(
-        self, response: cloud_billing.ListBillingAccountsResponse
-    ) -> cloud_billing.ListBillingAccountsResponse:
+    def post_list_billing_accounts(self, response: cloud_billing.ListBillingAccountsResponse) -> cloud_billing.ListBillingAccountsResponse:
         """Post-rpc interceptor for list_billing_accounts
 
         DEPRECATED. Please use the `post_list_billing_accounts_with_metadata`
@@ -393,13 +352,8 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_list_billing_accounts_with_metadata(
-        self,
-        response: cloud_billing.ListBillingAccountsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.ListBillingAccountsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_billing.ListBillingAccountsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.ListBillingAccountsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_billing_accounts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -415,13 +369,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_list_project_billing_info(
-        self,
-        request: cloud_billing.ListProjectBillingInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.ListProjectBillingInfoRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_billing.ListProjectBillingInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.ListProjectBillingInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_project_billing_info
 
         Override in a subclass to manipulate the request or metadata
@@ -429,9 +378,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_list_project_billing_info(
-        self, response: cloud_billing.ListProjectBillingInfoResponse
-    ) -> cloud_billing.ListProjectBillingInfoResponse:
+    def post_list_project_billing_info(self, response: cloud_billing.ListProjectBillingInfoResponse) -> cloud_billing.ListProjectBillingInfoResponse:
         """Post-rpc interceptor for list_project_billing_info
 
         DEPRECATED. Please use the `post_list_project_billing_info_with_metadata`
@@ -445,13 +392,8 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_list_project_billing_info_with_metadata(
-        self,
-        response: cloud_billing.ListProjectBillingInfoResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.ListProjectBillingInfoResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_billing.ListProjectBillingInfoResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.ListProjectBillingInfoResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_project_billing_info
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -467,12 +409,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_move_billing_account(
-        self,
-        request: cloud_billing.MoveBillingAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.MoveBillingAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_billing.MoveBillingAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.MoveBillingAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -480,9 +418,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_move_billing_account(
-        self, response: cloud_billing.BillingAccount
-    ) -> cloud_billing.BillingAccount:
+    def post_move_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for move_billing_account
 
         DEPRECATED. Please use the `post_move_billing_account_with_metadata`
@@ -496,9 +432,7 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_move_billing_account_with_metadata(
-        self,
-        response: cloud_billing.BillingAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_billing.BillingAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_billing.BillingAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_billing_account
 
@@ -515,12 +449,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -542,9 +472,7 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -561,13 +489,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -575,9 +498,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -591,13 +512,8 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -613,13 +529,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_update_billing_account(
-        self,
-        request: cloud_billing.UpdateBillingAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.UpdateBillingAccountRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_billing.UpdateBillingAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.UpdateBillingAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_billing_account
 
         Override in a subclass to manipulate the request or metadata
@@ -627,9 +538,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_update_billing_account(
-        self, response: cloud_billing.BillingAccount
-    ) -> cloud_billing.BillingAccount:
+    def post_update_billing_account(self, response: cloud_billing.BillingAccount) -> cloud_billing.BillingAccount:
         """Post-rpc interceptor for update_billing_account
 
         DEPRECATED. Please use the `post_update_billing_account_with_metadata`
@@ -643,9 +552,7 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_update_billing_account_with_metadata(
-        self,
-        response: cloud_billing.BillingAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_billing.BillingAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_billing.BillingAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_billing_account
 
@@ -662,13 +569,8 @@ class CloudBillingRestInterceptor:
         return response, metadata
 
     def pre_update_project_billing_info(
-        self,
-        request: cloud_billing.UpdateProjectBillingInfoRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.UpdateProjectBillingInfoRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_billing.UpdateProjectBillingInfoRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.UpdateProjectBillingInfoRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_project_billing_info
 
         Override in a subclass to manipulate the request or metadata
@@ -676,9 +578,7 @@ class CloudBillingRestInterceptor:
         """
         return request, metadata
 
-    def post_update_project_billing_info(
-        self, response: cloud_billing.ProjectBillingInfo
-    ) -> cloud_billing.ProjectBillingInfo:
+    def post_update_project_billing_info(self, response: cloud_billing.ProjectBillingInfo) -> cloud_billing.ProjectBillingInfo:
         """Post-rpc interceptor for update_project_billing_info
 
         DEPRECATED. Please use the `post_update_project_billing_info_with_metadata`
@@ -692,12 +592,8 @@ class CloudBillingRestInterceptor:
         return response
 
     def post_update_project_billing_info_with_metadata(
-        self,
-        response: cloud_billing.ProjectBillingInfo,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_billing.ProjectBillingInfo, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_billing.ProjectBillingInfo, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_billing.ProjectBillingInfo, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_project_billing_info
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -793,30 +689,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CloudBillingRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateBillingAccount(
-        _BaseCloudBillingRestTransport._BaseCreateBillingAccount, CloudBillingRestStub
-    ):
+    class _CreateBillingAccount(_BaseCloudBillingRestTransport._BaseCreateBillingAccount, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.CreateBillingAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -859,32 +743,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_billing_account(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_billing_account(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseCreateBillingAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -908,13 +778,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._CreateBillingAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -930,12 +794,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_create_billing_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_billing_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_billing_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_billing.BillingAccount.to_json(response)
                 except:
@@ -956,22 +816,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _GetBillingAccount(
-        _BaseCloudBillingRestTransport._BaseGetBillingAccount, CloudBillingRestStub
-    ):
+    class _GetBillingAccount(_BaseCloudBillingRestTransport._BaseGetBillingAccount, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.GetBillingAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1013,28 +863,16 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseGetBillingAccount._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseGetBillingAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_billing_account(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseGetBillingAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_billing_account(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseGetBillingAccount._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseGetBillingAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseGetBillingAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1058,12 +896,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._GetBillingAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1079,12 +912,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_get_billing_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_billing_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_billing_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_billing.BillingAccount.to_json(response)
                 except:
@@ -1105,22 +934,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseCloudBillingRestTransport._BaseGetIamPolicy, CloudBillingRestStub
-    ):
+    class _GetIamPolicy(_BaseCloudBillingRestTransport._BaseGetIamPolicy, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1234,28 +1053,16 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseCloudBillingRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudBillingRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBillingRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1279,12 +1086,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1300,12 +1102,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1326,22 +1124,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _GetProjectBillingInfo(
-        _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo, CloudBillingRestStub
-    ):
+    class _GetProjectBillingInfo(_BaseCloudBillingRestTransport._BaseGetProjectBillingInfo, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.GetProjectBillingInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1386,28 +1174,16 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_project_billing_info(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_project_billing_info(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseGetProjectBillingInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1431,12 +1207,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._GetProjectBillingInfo._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1452,16 +1223,10 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_get_project_billing_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_project_billing_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_project_billing_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_billing.ProjectBillingInfo.to_json(
-                        response
-                    )
+                    response_payload = cloud_billing.ProjectBillingInfo.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1480,22 +1245,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _ListBillingAccounts(
-        _BaseCloudBillingRestTransport._BaseListBillingAccounts, CloudBillingRestStub
-    ):
+    class _ListBillingAccounts(_BaseCloudBillingRestTransport._BaseListBillingAccounts, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.ListBillingAccounts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1534,28 +1289,16 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                     Response message for ``ListBillingAccounts``.
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseListBillingAccounts._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseListBillingAccounts._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_billing_accounts(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseListBillingAccounts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_billing_accounts(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseListBillingAccounts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseListBillingAccounts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseListBillingAccounts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1579,12 +1322,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._ListBillingAccounts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1600,16 +1338,10 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_list_billing_accounts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_billing_accounts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_billing_accounts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_billing.ListBillingAccountsResponse.to_json(response)
-                    )
+                    response_payload = cloud_billing.ListBillingAccountsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1628,22 +1360,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _ListProjectBillingInfo(
-        _BaseCloudBillingRestTransport._BaseListProjectBillingInfo, CloudBillingRestStub
-    ):
+    class _ListProjectBillingInfo(_BaseCloudBillingRestTransport._BaseListProjectBillingInfo, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.ListProjectBillingInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1682,28 +1404,16 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                     Request message for ``ListProjectBillingInfoResponse``.
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseListProjectBillingInfo._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseListProjectBillingInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_project_billing_info(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseListProjectBillingInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_project_billing_info(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseListProjectBillingInfo._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseListProjectBillingInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseListProjectBillingInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1727,12 +1437,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._ListProjectBillingInfo._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1748,16 +1453,10 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_list_project_billing_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_project_billing_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_project_billing_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_billing.ListProjectBillingInfoResponse.to_json(response)
-                    )
+                    response_payload = cloud_billing.ListProjectBillingInfoResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1776,22 +1475,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _MoveBillingAccount(
-        _BaseCloudBillingRestTransport._BaseMoveBillingAccount, CloudBillingRestStub
-    ):
+    class _MoveBillingAccount(_BaseCloudBillingRestTransport._BaseMoveBillingAccount, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.MoveBillingAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1834,32 +1523,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_move_billing_account(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_move_billing_account(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseMoveBillingAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1883,13 +1558,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._MoveBillingAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1905,12 +1574,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_move_billing_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_billing_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_billing_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_billing.BillingAccount.to_json(response)
                 except:
@@ -1931,22 +1596,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseCloudBillingRestTransport._BaseSetIamPolicy, CloudBillingRestStub
-    ):
+    class _SetIamPolicy(_BaseCloudBillingRestTransport._BaseSetIamPolicy, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2061,34 +1716,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2112,13 +1751,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2134,12 +1767,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2160,22 +1789,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseCloudBillingRestTransport._BaseTestIamPermissions, CloudBillingRestStub
-    ):
+    class _TestIamPermissions(_BaseCloudBillingRestTransport._BaseTestIamPermissions, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2215,32 +1834,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2264,13 +1869,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2286,12 +1885,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2312,22 +1907,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _UpdateBillingAccount(
-        _BaseCloudBillingRestTransport._BaseUpdateBillingAccount, CloudBillingRestStub
-    ):
+    class _UpdateBillingAccount(_BaseCloudBillingRestTransport._BaseUpdateBillingAccount, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.UpdateBillingAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2370,32 +1955,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_billing_account(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_billing_account(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseUpdateBillingAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2419,13 +1990,7 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             # Send the request
             response = CloudBillingRestTransport._UpdateBillingAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2441,12 +2006,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_update_billing_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_billing_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_billing_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_billing.BillingAccount.to_json(response)
                 except:
@@ -2467,23 +2028,12 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
             return resp
 
-    class _UpdateProjectBillingInfo(
-        _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo,
-        CloudBillingRestStub,
-    ):
+    class _UpdateProjectBillingInfo(_BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo, CloudBillingRestStub):
         def __hash__(self):
             return hash("CloudBillingRestTransport.UpdateProjectBillingInfo")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2530,32 +2080,18 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_http_options()
-            )
+            http_options = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_project_billing_info(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_project_billing_info(request, metadata)
+            transcoded_request = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBillingRestTransport._BaseUpdateProjectBillingInfo._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2578,16 +2114,8 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
                 )
 
             # Send the request
-            response = (
-                CloudBillingRestTransport._UpdateProjectBillingInfo._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CloudBillingRestTransport._UpdateProjectBillingInfo._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2603,16 +2131,10 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
 
             resp = self._interceptor.post_update_project_billing_info(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_project_billing_info_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_project_billing_info_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_billing.ProjectBillingInfo.to_json(
-                        response
-                    )
+                    response_payload = cloud_billing.ProjectBillingInfo.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2632,111 +2154,67 @@ class CloudBillingRestTransport(_BaseCloudBillingRestTransport):
             return resp
 
     @property
-    def create_billing_account(
-        self,
-    ) -> Callable[
-        [cloud_billing.CreateBillingAccountRequest], cloud_billing.BillingAccount
-    ]:
+    def create_billing_account(self) -> Callable[[cloud_billing.CreateBillingAccountRequest], cloud_billing.BillingAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_billing_account(
-        self,
-    ) -> Callable[
-        [cloud_billing.GetBillingAccountRequest], cloud_billing.BillingAccount
-    ]:
+    def get_billing_account(self) -> Callable[[cloud_billing.GetBillingAccountRequest], cloud_billing.BillingAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_project_billing_info(
-        self,
-    ) -> Callable[
-        [cloud_billing.GetProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo
-    ]:
+    def get_project_billing_info(self) -> Callable[[cloud_billing.GetProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProjectBillingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_billing_accounts(
-        self,
-    ) -> Callable[
-        [cloud_billing.ListBillingAccountsRequest],
-        cloud_billing.ListBillingAccountsResponse,
-    ]:
+    def list_billing_accounts(self) -> Callable[[cloud_billing.ListBillingAccountsRequest], cloud_billing.ListBillingAccountsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBillingAccounts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_project_billing_info(
-        self,
-    ) -> Callable[
-        [cloud_billing.ListProjectBillingInfoRequest],
-        cloud_billing.ListProjectBillingInfoResponse,
-    ]:
+    def list_project_billing_info(self) -> Callable[[cloud_billing.ListProjectBillingInfoRequest], cloud_billing.ListProjectBillingInfoResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProjectBillingInfo(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_billing_account(
-        self,
-    ) -> Callable[
-        [cloud_billing.MoveBillingAccountRequest], cloud_billing.BillingAccount
-    ]:
+    def move_billing_account(self) -> Callable[[cloud_billing.MoveBillingAccountRequest], cloud_billing.BillingAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_billing_account(
-        self,
-    ) -> Callable[
-        [cloud_billing.UpdateBillingAccountRequest], cloud_billing.BillingAccount
-    ]:
+    def update_billing_account(self) -> Callable[[cloud_billing.UpdateBillingAccountRequest], cloud_billing.BillingAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBillingAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_project_billing_info(
-        self,
-    ) -> Callable[
-        [cloud_billing.UpdateProjectBillingInfoRequest],
-        cloud_billing.ProjectBillingInfo,
-    ]:
+    def update_project_billing_info(self) -> Callable[[cloud_billing.UpdateProjectBillingInfoRequest], cloud_billing.ProjectBillingInfo]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProjectBillingInfo(self._session, self._host, self._interceptor)  # type: ignore

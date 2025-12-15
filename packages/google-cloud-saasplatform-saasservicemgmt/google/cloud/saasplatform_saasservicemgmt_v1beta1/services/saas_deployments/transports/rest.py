@@ -31,10 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import (
-    deployments_resources,
-    deployments_service,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.types import deployments_resources, deployments_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseSaasDeploymentsRestTransport
@@ -301,13 +298,8 @@ class SaasDeploymentsRestInterceptor:
     """
 
     def pre_create_release(
-        self,
-        request: deployments_service.CreateReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.CreateReleaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.CreateReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.CreateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_release
 
         Override in a subclass to manipulate the request or metadata
@@ -315,9 +307,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_release(
-        self, response: deployments_resources.Release
-    ) -> deployments_resources.Release:
+    def post_create_release(self, response: deployments_resources.Release) -> deployments_resources.Release:
         """Post-rpc interceptor for create_release
 
         DEPRECATED. Please use the `post_create_release_with_metadata`
@@ -331,9 +321,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_create_release_with_metadata(
-        self,
-        response: deployments_resources.Release,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Release, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Release, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_release
 
@@ -350,12 +338,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_create_saas(
-        self,
-        request: deployments_service.CreateSaasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.CreateSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.CreateSaasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.CreateSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_saas
 
         Override in a subclass to manipulate the request or metadata
@@ -363,9 +347,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_saas(
-        self, response: deployments_resources.Saas
-    ) -> deployments_resources.Saas:
+    def post_create_saas(self, response: deployments_resources.Saas) -> deployments_resources.Saas:
         """Post-rpc interceptor for create_saas
 
         DEPRECATED. Please use the `post_create_saas_with_metadata`
@@ -379,9 +361,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_create_saas_with_metadata(
-        self,
-        response: deployments_resources.Saas,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Saas, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Saas, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_saas
 
@@ -398,12 +378,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_create_tenant(
-        self,
-        request: deployments_service.CreateTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.CreateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.CreateTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.CreateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -411,9 +387,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_tenant(
-        self, response: deployments_resources.Tenant
-    ) -> deployments_resources.Tenant:
+    def post_create_tenant(self, response: deployments_resources.Tenant) -> deployments_resources.Tenant:
         """Post-rpc interceptor for create_tenant
 
         DEPRECATED. Please use the `post_create_tenant_with_metadata`
@@ -427,9 +401,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_create_tenant_with_metadata(
-        self,
-        response: deployments_resources.Tenant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Tenant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Tenant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tenant
 
@@ -446,12 +418,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_create_unit(
-        self,
-        request: deployments_service.CreateUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.CreateUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.CreateUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.CreateUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -459,9 +427,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_unit(
-        self, response: deployments_resources.Unit
-    ) -> deployments_resources.Unit:
+    def post_create_unit(self, response: deployments_resources.Unit) -> deployments_resources.Unit:
         """Post-rpc interceptor for create_unit
 
         DEPRECATED. Please use the `post_create_unit_with_metadata`
@@ -475,9 +441,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_create_unit_with_metadata(
-        self,
-        response: deployments_resources.Unit,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Unit, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Unit, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_unit
 
@@ -494,13 +458,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_create_unit_kind(
-        self,
-        request: deployments_service.CreateUnitKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.CreateUnitKindRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.CreateUnitKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.CreateUnitKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_unit_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -508,9 +467,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_unit_kind(
-        self, response: deployments_resources.UnitKind
-    ) -> deployments_resources.UnitKind:
+    def post_create_unit_kind(self, response: deployments_resources.UnitKind) -> deployments_resources.UnitKind:
         """Post-rpc interceptor for create_unit_kind
 
         DEPRECATED. Please use the `post_create_unit_kind_with_metadata`
@@ -524,9 +481,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_create_unit_kind_with_metadata(
-        self,
-        response: deployments_resources.UnitKind,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.UnitKind, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.UnitKind, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_unit_kind
 
@@ -543,13 +498,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_create_unit_operation(
-        self,
-        request: deployments_service.CreateUnitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.CreateUnitOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.CreateUnitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.CreateUnitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_unit_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -557,9 +507,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_unit_operation(
-        self, response: deployments_resources.UnitOperation
-    ) -> deployments_resources.UnitOperation:
+    def post_create_unit_operation(self, response: deployments_resources.UnitOperation) -> deployments_resources.UnitOperation:
         """Post-rpc interceptor for create_unit_operation
 
         DEPRECATED. Please use the `post_create_unit_operation_with_metadata`
@@ -573,12 +521,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_create_unit_operation_with_metadata(
-        self,
-        response: deployments_resources.UnitOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_resources.UnitOperation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployments_resources.UnitOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_resources.UnitOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_unit_operation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -594,13 +538,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_delete_release(
-        self,
-        request: deployments_service.DeleteReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.DeleteReleaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.DeleteReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.DeleteReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_release
 
         Override in a subclass to manipulate the request or metadata
@@ -609,12 +548,8 @@ class SaasDeploymentsRestInterceptor:
         return request, metadata
 
     def pre_delete_saas(
-        self,
-        request: deployments_service.DeleteSaasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.DeleteSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.DeleteSaasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.DeleteSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_saas
 
         Override in a subclass to manipulate the request or metadata
@@ -623,12 +558,8 @@ class SaasDeploymentsRestInterceptor:
         return request, metadata
 
     def pre_delete_tenant(
-        self,
-        request: deployments_service.DeleteTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.DeleteTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.DeleteTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.DeleteTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -637,12 +568,8 @@ class SaasDeploymentsRestInterceptor:
         return request, metadata
 
     def pre_delete_unit(
-        self,
-        request: deployments_service.DeleteUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.DeleteUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.DeleteUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.DeleteUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -651,13 +578,8 @@ class SaasDeploymentsRestInterceptor:
         return request, metadata
 
     def pre_delete_unit_kind(
-        self,
-        request: deployments_service.DeleteUnitKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.DeleteUnitKindRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.DeleteUnitKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.DeleteUnitKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_unit_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -666,13 +588,8 @@ class SaasDeploymentsRestInterceptor:
         return request, metadata
 
     def pre_delete_unit_operation(
-        self,
-        request: deployments_service.DeleteUnitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.DeleteUnitOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.DeleteUnitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.DeleteUnitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_unit_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -681,12 +598,8 @@ class SaasDeploymentsRestInterceptor:
         return request, metadata
 
     def pre_get_release(
-        self,
-        request: deployments_service.GetReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.GetReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.GetReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.GetReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_release
 
         Override in a subclass to manipulate the request or metadata
@@ -694,9 +607,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_release(
-        self, response: deployments_resources.Release
-    ) -> deployments_resources.Release:
+    def post_get_release(self, response: deployments_resources.Release) -> deployments_resources.Release:
         """Post-rpc interceptor for get_release
 
         DEPRECATED. Please use the `post_get_release_with_metadata`
@@ -710,9 +621,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_get_release_with_metadata(
-        self,
-        response: deployments_resources.Release,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Release, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Release, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_release
 
@@ -729,12 +638,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_get_saas(
-        self,
-        request: deployments_service.GetSaasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.GetSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.GetSaasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.GetSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_saas
 
         Override in a subclass to manipulate the request or metadata
@@ -742,9 +647,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_saas(
-        self, response: deployments_resources.Saas
-    ) -> deployments_resources.Saas:
+    def post_get_saas(self, response: deployments_resources.Saas) -> deployments_resources.Saas:
         """Post-rpc interceptor for get_saas
 
         DEPRECATED. Please use the `post_get_saas_with_metadata`
@@ -758,9 +661,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_get_saas_with_metadata(
-        self,
-        response: deployments_resources.Saas,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Saas, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Saas, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_saas
 
@@ -777,12 +678,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_get_tenant(
-        self,
-        request: deployments_service.GetTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.GetTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.GetTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.GetTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -790,9 +687,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_tenant(
-        self, response: deployments_resources.Tenant
-    ) -> deployments_resources.Tenant:
+    def post_get_tenant(self, response: deployments_resources.Tenant) -> deployments_resources.Tenant:
         """Post-rpc interceptor for get_tenant
 
         DEPRECATED. Please use the `post_get_tenant_with_metadata`
@@ -806,9 +701,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_get_tenant_with_metadata(
-        self,
-        response: deployments_resources.Tenant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Tenant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Tenant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_tenant
 
@@ -825,12 +718,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_get_unit(
-        self,
-        request: deployments_service.GetUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.GetUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.GetUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.GetUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -838,9 +727,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_unit(
-        self, response: deployments_resources.Unit
-    ) -> deployments_resources.Unit:
+    def post_get_unit(self, response: deployments_resources.Unit) -> deployments_resources.Unit:
         """Post-rpc interceptor for get_unit
 
         DEPRECATED. Please use the `post_get_unit_with_metadata`
@@ -854,9 +741,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_get_unit_with_metadata(
-        self,
-        response: deployments_resources.Unit,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Unit, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Unit, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_unit
 
@@ -873,12 +758,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_get_unit_kind(
-        self,
-        request: deployments_service.GetUnitKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.GetUnitKindRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.GetUnitKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.GetUnitKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_unit_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -886,9 +767,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_unit_kind(
-        self, response: deployments_resources.UnitKind
-    ) -> deployments_resources.UnitKind:
+    def post_get_unit_kind(self, response: deployments_resources.UnitKind) -> deployments_resources.UnitKind:
         """Post-rpc interceptor for get_unit_kind
 
         DEPRECATED. Please use the `post_get_unit_kind_with_metadata`
@@ -902,9 +781,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_get_unit_kind_with_metadata(
-        self,
-        response: deployments_resources.UnitKind,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.UnitKind, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.UnitKind, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_unit_kind
 
@@ -921,13 +798,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_get_unit_operation(
-        self,
-        request: deployments_service.GetUnitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.GetUnitOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.GetUnitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.GetUnitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_unit_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -935,9 +807,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_unit_operation(
-        self, response: deployments_resources.UnitOperation
-    ) -> deployments_resources.UnitOperation:
+    def post_get_unit_operation(self, response: deployments_resources.UnitOperation) -> deployments_resources.UnitOperation:
         """Post-rpc interceptor for get_unit_operation
 
         DEPRECATED. Please use the `post_get_unit_operation_with_metadata`
@@ -951,12 +821,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_get_unit_operation_with_metadata(
-        self,
-        response: deployments_resources.UnitOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_resources.UnitOperation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployments_resources.UnitOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_resources.UnitOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_unit_operation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -972,12 +838,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_list_releases(
-        self,
-        request: deployments_service.ListReleasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.ListReleasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_releases
 
         Override in a subclass to manipulate the request or metadata
@@ -985,9 +847,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_releases(
-        self, response: deployments_service.ListReleasesResponse
-    ) -> deployments_service.ListReleasesResponse:
+    def post_list_releases(self, response: deployments_service.ListReleasesResponse) -> deployments_service.ListReleasesResponse:
         """Post-rpc interceptor for list_releases
 
         DEPRECATED. Please use the `post_list_releases_with_metadata`
@@ -1001,13 +861,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_list_releases_with_metadata(
-        self,
-        response: deployments_service.ListReleasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListReleasesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: deployments_service.ListReleasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListReleasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_releases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1023,12 +878,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_list_saas(
-        self,
-        request: deployments_service.ListSaasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.ListSaasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_saas
 
         Override in a subclass to manipulate the request or metadata
@@ -1036,9 +887,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_saas(
-        self, response: deployments_service.ListSaasResponse
-    ) -> deployments_service.ListSaasResponse:
+    def post_list_saas(self, response: deployments_service.ListSaasResponse) -> deployments_service.ListSaasResponse:
         """Post-rpc interceptor for list_saas
 
         DEPRECATED. Please use the `post_list_saas_with_metadata`
@@ -1052,12 +901,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_list_saas_with_metadata(
-        self,
-        response: deployments_service.ListSaasResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListSaasResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployments_service.ListSaasResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListSaasResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_saas
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1073,12 +918,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_list_tenants(
-        self,
-        request: deployments_service.ListTenantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListTenantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.ListTenantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListTenantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tenants
 
         Override in a subclass to manipulate the request or metadata
@@ -1086,9 +927,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tenants(
-        self, response: deployments_service.ListTenantsResponse
-    ) -> deployments_service.ListTenantsResponse:
+    def post_list_tenants(self, response: deployments_service.ListTenantsResponse) -> deployments_service.ListTenantsResponse:
         """Post-rpc interceptor for list_tenants
 
         DEPRECATED. Please use the `post_list_tenants_with_metadata`
@@ -1102,12 +941,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_list_tenants_with_metadata(
-        self,
-        response: deployments_service.ListTenantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListTenantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployments_service.ListTenantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListTenantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tenants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1123,13 +958,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_list_unit_kinds(
-        self,
-        request: deployments_service.ListUnitKindsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListUnitKindsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.ListUnitKindsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListUnitKindsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_unit_kinds
 
         Override in a subclass to manipulate the request or metadata
@@ -1137,9 +967,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_unit_kinds(
-        self, response: deployments_service.ListUnitKindsResponse
-    ) -> deployments_service.ListUnitKindsResponse:
+    def post_list_unit_kinds(self, response: deployments_service.ListUnitKindsResponse) -> deployments_service.ListUnitKindsResponse:
         """Post-rpc interceptor for list_unit_kinds
 
         DEPRECATED. Please use the `post_list_unit_kinds_with_metadata`
@@ -1153,13 +981,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_list_unit_kinds_with_metadata(
-        self,
-        response: deployments_service.ListUnitKindsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListUnitKindsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: deployments_service.ListUnitKindsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListUnitKindsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_unit_kinds
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1175,13 +998,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_list_unit_operations(
-        self,
-        request: deployments_service.ListUnitOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListUnitOperationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.ListUnitOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListUnitOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_unit_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1189,9 +1007,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_unit_operations(
-        self, response: deployments_service.ListUnitOperationsResponse
-    ) -> deployments_service.ListUnitOperationsResponse:
+    def post_list_unit_operations(self, response: deployments_service.ListUnitOperationsResponse) -> deployments_service.ListUnitOperationsResponse:
         """Post-rpc interceptor for list_unit_operations
 
         DEPRECATED. Please use the `post_list_unit_operations_with_metadata`
@@ -1205,13 +1021,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_list_unit_operations_with_metadata(
-        self,
-        response: deployments_service.ListUnitOperationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListUnitOperationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: deployments_service.ListUnitOperationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListUnitOperationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_unit_operations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1227,12 +1038,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_list_units(
-        self,
-        request: deployments_service.ListUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.ListUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_units
 
         Override in a subclass to manipulate the request or metadata
@@ -1240,9 +1047,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_units(
-        self, response: deployments_service.ListUnitsResponse
-    ) -> deployments_service.ListUnitsResponse:
+    def post_list_units(self, response: deployments_service.ListUnitsResponse) -> deployments_service.ListUnitsResponse:
         """Post-rpc interceptor for list_units
 
         DEPRECATED. Please use the `post_list_units_with_metadata`
@@ -1256,12 +1061,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_list_units_with_metadata(
-        self,
-        response: deployments_service.ListUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.ListUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployments_service.ListUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.ListUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1277,13 +1078,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_update_release(
-        self,
-        request: deployments_service.UpdateReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.UpdateReleaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.UpdateReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.UpdateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_release
 
         Override in a subclass to manipulate the request or metadata
@@ -1291,9 +1087,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_release(
-        self, response: deployments_resources.Release
-    ) -> deployments_resources.Release:
+    def post_update_release(self, response: deployments_resources.Release) -> deployments_resources.Release:
         """Post-rpc interceptor for update_release
 
         DEPRECATED. Please use the `post_update_release_with_metadata`
@@ -1307,9 +1101,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_update_release_with_metadata(
-        self,
-        response: deployments_resources.Release,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Release, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Release, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_release
 
@@ -1326,12 +1118,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_update_saas(
-        self,
-        request: deployments_service.UpdateSaasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.UpdateSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.UpdateSaasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.UpdateSaasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_saas
 
         Override in a subclass to manipulate the request or metadata
@@ -1339,9 +1127,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_saas(
-        self, response: deployments_resources.Saas
-    ) -> deployments_resources.Saas:
+    def post_update_saas(self, response: deployments_resources.Saas) -> deployments_resources.Saas:
         """Post-rpc interceptor for update_saas
 
         DEPRECATED. Please use the `post_update_saas_with_metadata`
@@ -1355,9 +1141,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_update_saas_with_metadata(
-        self,
-        response: deployments_resources.Saas,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Saas, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Saas, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_saas
 
@@ -1374,12 +1158,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_update_tenant(
-        self,
-        request: deployments_service.UpdateTenantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.UpdateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.UpdateTenantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.UpdateTenantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_tenant
 
         Override in a subclass to manipulate the request or metadata
@@ -1387,9 +1167,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_tenant(
-        self, response: deployments_resources.Tenant
-    ) -> deployments_resources.Tenant:
+    def post_update_tenant(self, response: deployments_resources.Tenant) -> deployments_resources.Tenant:
         """Post-rpc interceptor for update_tenant
 
         DEPRECATED. Please use the `post_update_tenant_with_metadata`
@@ -1403,9 +1181,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_update_tenant_with_metadata(
-        self,
-        response: deployments_resources.Tenant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Tenant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Tenant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_tenant
 
@@ -1422,12 +1198,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_update_unit(
-        self,
-        request: deployments_service.UpdateUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.UpdateUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: deployments_service.UpdateUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.UpdateUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -1435,9 +1207,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_unit(
-        self, response: deployments_resources.Unit
-    ) -> deployments_resources.Unit:
+    def post_update_unit(self, response: deployments_resources.Unit) -> deployments_resources.Unit:
         """Post-rpc interceptor for update_unit
 
         DEPRECATED. Please use the `post_update_unit_with_metadata`
@@ -1451,9 +1221,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_update_unit_with_metadata(
-        self,
-        response: deployments_resources.Unit,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.Unit, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.Unit, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_unit
 
@@ -1470,13 +1238,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_update_unit_kind(
-        self,
-        request: deployments_service.UpdateUnitKindRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.UpdateUnitKindRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.UpdateUnitKindRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.UpdateUnitKindRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_unit_kind
 
         Override in a subclass to manipulate the request or metadata
@@ -1484,9 +1247,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_unit_kind(
-        self, response: deployments_resources.UnitKind
-    ) -> deployments_resources.UnitKind:
+    def post_update_unit_kind(self, response: deployments_resources.UnitKind) -> deployments_resources.UnitKind:
         """Post-rpc interceptor for update_unit_kind
 
         DEPRECATED. Please use the `post_update_unit_kind_with_metadata`
@@ -1500,9 +1261,7 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_update_unit_kind_with_metadata(
-        self,
-        response: deployments_resources.UnitKind,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployments_resources.UnitKind, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployments_resources.UnitKind, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_unit_kind
 
@@ -1519,13 +1278,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_update_unit_operation(
-        self,
-        request: deployments_service.UpdateUnitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_service.UpdateUnitOperationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployments_service.UpdateUnitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_service.UpdateUnitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_unit_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1533,9 +1287,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_unit_operation(
-        self, response: deployments_resources.UnitOperation
-    ) -> deployments_resources.UnitOperation:
+    def post_update_unit_operation(self, response: deployments_resources.UnitOperation) -> deployments_resources.UnitOperation:
         """Post-rpc interceptor for update_unit_operation
 
         DEPRECATED. Please use the `post_update_unit_operation_with_metadata`
@@ -1549,12 +1301,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def post_update_unit_operation_with_metadata(
-        self,
-        response: deployments_resources.UnitOperation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployments_resources.UnitOperation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployments_resources.UnitOperation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployments_resources.UnitOperation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_unit_operation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1570,12 +1318,8 @@ class SaasDeploymentsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1583,9 +1327,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1595,12 +1337,8 @@ class SaasDeploymentsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1608,9 +1346,7 @@ class SaasDeploymentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1699,30 +1435,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SaasDeploymentsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateRelease(
-        _BaseSaasDeploymentsRestTransport._BaseCreateRelease, SaasDeploymentsRestStub
-    ):
+    class _CreateRelease(_BaseSaasDeploymentsRestTransport._BaseCreateRelease, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.CreateRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1769,30 +1493,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_create_release(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1816,13 +1528,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._CreateRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1838,12 +1544,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_create_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Release.to_json(response)
                 except:
@@ -1864,22 +1566,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _CreateSaas(
-        _BaseSaasDeploymentsRestTransport._BaseCreateSaas, SaasDeploymentsRestStub
-    ):
+    class _CreateSaas(_BaseSaasDeploymentsRestTransport._BaseCreateSaas, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.CreateSaas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1922,30 +1614,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_http_options()
 
             request, metadata = self._interceptor.pre_create_saas(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateSaas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1969,13 +1649,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._CreateSaas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1991,12 +1665,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_create_saas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_saas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_saas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Saas.to_json(response)
                 except:
@@ -2017,22 +1687,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _CreateTenant(
-        _BaseSaasDeploymentsRestTransport._BaseCreateTenant, SaasDeploymentsRestStub
-    ):
+    class _CreateTenant(_BaseSaasDeploymentsRestTransport._BaseCreateTenant, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.CreateTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2086,30 +1746,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tenant(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2133,13 +1781,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._CreateTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2155,12 +1797,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_create_tenant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tenant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tenant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Tenant.to_json(response)
                 except:
@@ -2181,22 +1819,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _CreateUnit(
-        _BaseSaasDeploymentsRestTransport._BaseCreateUnit, SaasDeploymentsRestStub
-    ):
+    class _CreateUnit(_BaseSaasDeploymentsRestTransport._BaseCreateUnit, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.CreateUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2244,30 +1872,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_create_unit(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2291,13 +1907,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._CreateUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2313,12 +1923,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_create_unit(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_unit_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_unit_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Unit.to_json(response)
                 except:
@@ -2339,22 +1945,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _CreateUnitKind(
-        _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind, SaasDeploymentsRestStub
-    ):
+    class _CreateUnitKind(_BaseSaasDeploymentsRestTransport._BaseCreateUnitKind, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.CreateUnitKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2401,32 +1997,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_unit_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_unit_kind(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateUnitKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2450,13 +2032,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._CreateUnitKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2472,12 +2048,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_create_unit_kind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_unit_kind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_unit_kind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.UnitKind.to_json(response)
                 except:
@@ -2498,23 +2070,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _CreateUnitOperation(
-        _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation,
-        SaasDeploymentsRestStub,
-    ):
+    class _CreateUnitOperation(_BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.CreateUnitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2571,32 +2132,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_unit_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_unit_operation(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseCreateUnitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2620,13 +2167,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._CreateUnitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2642,16 +2183,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_create_unit_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_unit_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_unit_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_resources.UnitOperation.to_json(
-                        response
-                    )
+                    response_payload = deployments_resources.UnitOperation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2670,22 +2205,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _DeleteRelease(
-        _BaseSaasDeploymentsRestTransport._BaseDeleteRelease, SaasDeploymentsRestStub
-    ):
+    class _DeleteRelease(_BaseSaasDeploymentsRestTransport._BaseDeleteRelease, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.DeleteRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2721,26 +2246,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseDeleteRelease._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseDeleteRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_release(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteRelease._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2764,12 +2279,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._DeleteRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2777,22 +2287,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteSaas(
-        _BaseSaasDeploymentsRestTransport._BaseDeleteSaas, SaasDeploymentsRestStub
-    ):
+    class _DeleteSaas(_BaseSaasDeploymentsRestTransport._BaseDeleteSaas, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.DeleteSaas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2828,26 +2328,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseDeleteSaas._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseDeleteSaas._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_saas(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteSaas._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteSaas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteSaas._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteSaas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2871,12 +2361,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._DeleteSaas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2884,22 +2369,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteTenant(
-        _BaseSaasDeploymentsRestTransport._BaseDeleteTenant, SaasDeploymentsRestStub
-    ):
+    class _DeleteTenant(_BaseSaasDeploymentsRestTransport._BaseDeleteTenant, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.DeleteTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2935,26 +2410,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseDeleteTenant._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseDeleteTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tenant(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteTenant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteTenant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2978,12 +2443,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._DeleteTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2991,22 +2451,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteUnit(
-        _BaseSaasDeploymentsRestTransport._BaseDeleteUnit, SaasDeploymentsRestStub
-    ):
+    class _DeleteUnit(_BaseSaasDeploymentsRestTransport._BaseDeleteUnit, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.DeleteUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3042,26 +2492,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseDeleteUnit._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseDeleteUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_unit(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteUnit._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteUnit._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteUnit._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3085,12 +2525,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._DeleteUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3098,22 +2533,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteUnitKind(
-        _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind, SaasDeploymentsRestStub
-    ):
+    class _DeleteUnitKind(_BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.DeleteUnitKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3149,28 +2574,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_unit_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_unit_kind(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3194,12 +2607,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._DeleteUnitKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3207,23 +2615,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteUnitOperation(
-        _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation,
-        SaasDeploymentsRestStub,
-    ):
+    class _DeleteUnitOperation(_BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.DeleteUnitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3259,28 +2656,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_unit_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_unit_operation(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseDeleteUnitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3304,12 +2689,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._DeleteUnitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3317,22 +2697,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetRelease(
-        _BaseSaasDeploymentsRestTransport._BaseGetRelease, SaasDeploymentsRestStub
-    ):
+    class _GetRelease(_BaseSaasDeploymentsRestTransport._BaseGetRelease, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3378,26 +2748,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetRelease._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_get_release(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetRelease._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseGetRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3421,12 +2781,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3442,12 +2797,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_get_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Release.to_json(response)
                 except:
@@ -3468,22 +2819,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _GetSaas(
-        _BaseSaasDeploymentsRestTransport._BaseGetSaas, SaasDeploymentsRestStub
-    ):
+    class _GetSaas(_BaseSaasDeploymentsRestTransport._BaseGetSaas, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetSaas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3525,30 +2866,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetSaas._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetSaas._get_http_options()
 
             request, metadata = self._interceptor.pre_get_saas(request, metadata)
-            transcoded_request = (
-                _BaseSaasDeploymentsRestTransport._BaseGetSaas._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetSaas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasDeploymentsRestTransport._BaseGetSaas._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetSaas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3572,12 +2899,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetSaas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3593,12 +2915,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_get_saas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_saas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_saas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Saas.to_json(response)
                 except:
@@ -3619,22 +2937,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _GetTenant(
-        _BaseSaasDeploymentsRestTransport._BaseGetTenant, SaasDeploymentsRestStub
-    ):
+    class _GetTenant(_BaseSaasDeploymentsRestTransport._BaseGetTenant, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3687,28 +2995,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetTenant._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tenant(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetTenant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasDeploymentsRestTransport._BaseGetTenant._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3732,12 +3028,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3753,12 +3044,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_get_tenant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_tenant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_tenant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Tenant.to_json(response)
                 except:
@@ -3779,22 +3066,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _GetUnit(
-        _BaseSaasDeploymentsRestTransport._BaseGetUnit, SaasDeploymentsRestStub
-    ):
+    class _GetUnit(_BaseSaasDeploymentsRestTransport._BaseGetUnit, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3841,30 +3118,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetUnit._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_get_unit(request, metadata)
-            transcoded_request = (
-                _BaseSaasDeploymentsRestTransport._BaseGetUnit._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetUnit._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasDeploymentsRestTransport._BaseGetUnit._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3888,12 +3151,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3909,12 +3167,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_get_unit(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_unit_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_unit_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Unit.to_json(response)
                 except:
@@ -3935,22 +3189,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _GetUnitKind(
-        _BaseSaasDeploymentsRestTransport._BaseGetUnitKind, SaasDeploymentsRestStub
-    ):
+    class _GetUnitKind(_BaseSaasDeploymentsRestTransport._BaseGetUnitKind, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetUnitKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3996,26 +3240,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetUnitKind._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetUnitKind._get_http_options()
 
             request, metadata = self._interceptor.pre_get_unit_kind(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetUnitKind._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetUnitKind._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseGetUnitKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetUnitKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4039,12 +3273,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetUnitKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4060,12 +3289,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_get_unit_kind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_unit_kind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_unit_kind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.UnitKind.to_json(response)
                 except:
@@ -4086,22 +3311,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _GetUnitOperation(
-        _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation, SaasDeploymentsRestStub
-    ):
+    class _GetUnitOperation(_BaseSaasDeploymentsRestTransport._BaseGetUnitOperation, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetUnitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4157,28 +3372,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_unit_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_unit_operation(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetUnitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4202,12 +3405,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetUnitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4223,16 +3421,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_get_unit_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_unit_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_unit_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_resources.UnitOperation.to_json(
-                        response
-                    )
+                    response_payload = deployments_resources.UnitOperation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4251,22 +3443,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _ListReleases(
-        _BaseSaasDeploymentsRestTransport._BaseListReleases, SaasDeploymentsRestStub
-    ):
+    class _ListReleases(_BaseSaasDeploymentsRestTransport._BaseListReleases, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListReleases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4308,26 +3490,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListReleases._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListReleases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_releases(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListReleases._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListReleases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseListReleases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListReleases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4351,12 +3523,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListReleases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4372,16 +3539,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_list_releases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_releases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_releases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_service.ListReleasesResponse.to_json(
-                        response
-                    )
+                    response_payload = deployments_service.ListReleasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4400,22 +3561,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _ListSaas(
-        _BaseSaasDeploymentsRestTransport._BaseListSaas, SaasDeploymentsRestStub
-    ):
+    class _ListSaas(_BaseSaasDeploymentsRestTransport._BaseListSaas, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListSaas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4457,30 +3608,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListSaas._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListSaas._get_http_options()
 
             request, metadata = self._interceptor.pre_list_saas(request, metadata)
-            transcoded_request = (
-                _BaseSaasDeploymentsRestTransport._BaseListSaas._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListSaas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasDeploymentsRestTransport._BaseListSaas._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListSaas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4504,12 +3641,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListSaas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4525,16 +3657,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_list_saas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_saas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_saas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_service.ListSaasResponse.to_json(
-                        response
-                    )
+                    response_payload = deployments_service.ListSaasResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4553,22 +3679,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _ListTenants(
-        _BaseSaasDeploymentsRestTransport._BaseListTenants, SaasDeploymentsRestStub
-    ):
+    class _ListTenants(_BaseSaasDeploymentsRestTransport._BaseListTenants, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListTenants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4610,26 +3726,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListTenants._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListTenants._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tenants(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListTenants._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListTenants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseListTenants._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListTenants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4653,12 +3759,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListTenants._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4674,16 +3775,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_list_tenants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tenants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tenants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_service.ListTenantsResponse.to_json(
-                        response
-                    )
+                    response_payload = deployments_service.ListTenantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4702,22 +3797,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _ListUnitKinds(
-        _BaseSaasDeploymentsRestTransport._BaseListUnitKinds, SaasDeploymentsRestStub
-    ):
+    class _ListUnitKinds(_BaseSaasDeploymentsRestTransport._BaseListUnitKinds, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListUnitKinds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4759,26 +3844,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListUnitKinds._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListUnitKinds._get_http_options()
 
             request, metadata = self._interceptor.pre_list_unit_kinds(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListUnitKinds._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListUnitKinds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseListUnitKinds._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListUnitKinds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4802,12 +3877,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListUnitKinds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4823,16 +3893,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_list_unit_kinds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_unit_kinds_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_unit_kinds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        deployments_service.ListUnitKindsResponse.to_json(response)
-                    )
+                    response_payload = deployments_service.ListUnitKindsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4851,23 +3915,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _ListUnitOperations(
-        _BaseSaasDeploymentsRestTransport._BaseListUnitOperations,
-        SaasDeploymentsRestStub,
-    ):
+    class _ListUnitOperations(_BaseSaasDeploymentsRestTransport._BaseListUnitOperations, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListUnitOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4909,28 +3962,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListUnitOperations._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListUnitOperations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_unit_operations(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListUnitOperations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_unit_operations(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListUnitOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseListUnitOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListUnitOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4954,12 +3995,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListUnitOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4975,16 +4011,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_list_unit_operations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_unit_operations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_unit_operations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        deployments_service.ListUnitOperationsResponse.to_json(response)
-                    )
+                    response_payload = deployments_service.ListUnitOperationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5003,22 +4033,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _ListUnits(
-        _BaseSaasDeploymentsRestTransport._BaseListUnits, SaasDeploymentsRestStub
-    ):
+    class _ListUnits(_BaseSaasDeploymentsRestTransport._BaseListUnits, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5060,28 +4080,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListUnits._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListUnits._get_http_options()
 
             request, metadata = self._interceptor.pre_list_units(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListUnits._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListUnits._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSaasDeploymentsRestTransport._BaseListUnits._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5105,12 +4113,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5126,16 +4129,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_list_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_service.ListUnitsResponse.to_json(
-                        response
-                    )
+                    response_payload = deployments_service.ListUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5154,22 +4151,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _UpdateRelease(
-        _BaseSaasDeploymentsRestTransport._BaseUpdateRelease, SaasDeploymentsRestStub
-    ):
+    class _UpdateRelease(_BaseSaasDeploymentsRestTransport._BaseUpdateRelease, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.UpdateRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5216,30 +4203,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_update_release(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5263,13 +4238,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._UpdateRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5285,12 +4254,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_update_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Release.to_json(response)
                 except:
@@ -5311,22 +4276,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _UpdateSaas(
-        _BaseSaasDeploymentsRestTransport._BaseUpdateSaas, SaasDeploymentsRestStub
-    ):
+    class _UpdateSaas(_BaseSaasDeploymentsRestTransport._BaseUpdateSaas, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.UpdateSaas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5369,30 +4324,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_http_options()
 
             request, metadata = self._interceptor.pre_update_saas(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateSaas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5416,13 +4359,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._UpdateSaas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5438,12 +4375,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_update_saas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_saas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_saas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Saas.to_json(response)
                 except:
@@ -5464,22 +4397,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _UpdateTenant(
-        _BaseSaasDeploymentsRestTransport._BaseUpdateTenant, SaasDeploymentsRestStub
-    ):
+    class _UpdateTenant(_BaseSaasDeploymentsRestTransport._BaseUpdateTenant, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.UpdateTenant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5533,30 +4456,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tenant(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateTenant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5580,13 +4491,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._UpdateTenant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5602,12 +4507,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_update_tenant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_tenant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_tenant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Tenant.to_json(response)
                 except:
@@ -5628,22 +4529,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _UpdateUnit(
-        _BaseSaasDeploymentsRestTransport._BaseUpdateUnit, SaasDeploymentsRestStub
-    ):
+    class _UpdateUnit(_BaseSaasDeploymentsRestTransport._BaseUpdateUnit, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.UpdateUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5691,30 +4582,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_update_unit(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5738,13 +4617,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._UpdateUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5760,12 +4633,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_update_unit(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_unit_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_unit_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.Unit.to_json(response)
                 except:
@@ -5786,22 +4655,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _UpdateUnitKind(
-        _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind, SaasDeploymentsRestStub
-    ):
+    class _UpdateUnitKind(_BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.UpdateUnitKind")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5848,32 +4707,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_unit_kind(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_unit_kind(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitKind._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5897,13 +4742,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._UpdateUnitKind._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5919,12 +4758,8 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_update_unit_kind(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_unit_kind_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_unit_kind_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployments_resources.UnitKind.to_json(response)
                 except:
@@ -5945,23 +4780,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 )
             return resp
 
-    class _UpdateUnitOperation(
-        _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation,
-        SaasDeploymentsRestStub,
-    ):
+    class _UpdateUnitOperation(_BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.UpdateUnitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6018,32 +4842,18 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_unit_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_unit_operation(request, metadata)
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseUpdateUnitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6067,13 +4877,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._UpdateUnitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6089,16 +4893,10 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             resp = self._interceptor.post_update_unit_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_unit_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_unit_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployments_resources.UnitOperation.to_json(
-                        response
-                    )
+                    response_payload = deployments_resources.UnitOperation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6118,282 +4916,181 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             return resp
 
     @property
-    def create_release(
-        self,
-    ) -> Callable[
-        [deployments_service.CreateReleaseRequest], deployments_resources.Release
-    ]:
+    def create_release(self) -> Callable[[deployments_service.CreateReleaseRequest], deployments_resources.Release]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_saas(
-        self,
-    ) -> Callable[[deployments_service.CreateSaasRequest], deployments_resources.Saas]:
+    def create_saas(self) -> Callable[[deployments_service.CreateSaasRequest], deployments_resources.Saas]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSaas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_tenant(
-        self,
-    ) -> Callable[
-        [deployments_service.CreateTenantRequest], deployments_resources.Tenant
-    ]:
+    def create_tenant(self) -> Callable[[deployments_service.CreateTenantRequest], deployments_resources.Tenant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTenant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_unit(
-        self,
-    ) -> Callable[[deployments_service.CreateUnitRequest], deployments_resources.Unit]:
+    def create_unit(self) -> Callable[[deployments_service.CreateUnitRequest], deployments_resources.Unit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_unit_kind(
-        self,
-    ) -> Callable[
-        [deployments_service.CreateUnitKindRequest], deployments_resources.UnitKind
-    ]:
+    def create_unit_kind(self) -> Callable[[deployments_service.CreateUnitKindRequest], deployments_resources.UnitKind]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateUnitKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_unit_operation(
-        self,
-    ) -> Callable[
-        [deployments_service.CreateUnitOperationRequest],
-        deployments_resources.UnitOperation,
-    ]:
+    def create_unit_operation(self) -> Callable[[deployments_service.CreateUnitOperationRequest], deployments_resources.UnitOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateUnitOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_release(
-        self,
-    ) -> Callable[[deployments_service.DeleteReleaseRequest], empty_pb2.Empty]:
+    def delete_release(self) -> Callable[[deployments_service.DeleteReleaseRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_saas(
-        self,
-    ) -> Callable[[deployments_service.DeleteSaasRequest], empty_pb2.Empty]:
+    def delete_saas(self) -> Callable[[deployments_service.DeleteSaasRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSaas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_tenant(
-        self,
-    ) -> Callable[[deployments_service.DeleteTenantRequest], empty_pb2.Empty]:
+    def delete_tenant(self) -> Callable[[deployments_service.DeleteTenantRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTenant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_unit(
-        self,
-    ) -> Callable[[deployments_service.DeleteUnitRequest], empty_pb2.Empty]:
+    def delete_unit(self) -> Callable[[deployments_service.DeleteUnitRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_unit_kind(
-        self,
-    ) -> Callable[[deployments_service.DeleteUnitKindRequest], empty_pb2.Empty]:
+    def delete_unit_kind(self) -> Callable[[deployments_service.DeleteUnitKindRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUnitKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_unit_operation(
-        self,
-    ) -> Callable[[deployments_service.DeleteUnitOperationRequest], empty_pb2.Empty]:
+    def delete_unit_operation(self) -> Callable[[deployments_service.DeleteUnitOperationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUnitOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[
-        [deployments_service.GetReleaseRequest], deployments_resources.Release
-    ]:
+    def get_release(self) -> Callable[[deployments_service.GetReleaseRequest], deployments_resources.Release]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_saas(
-        self,
-    ) -> Callable[[deployments_service.GetSaasRequest], deployments_resources.Saas]:
+    def get_saas(self) -> Callable[[deployments_service.GetSaasRequest], deployments_resources.Saas]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSaas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_tenant(
-        self,
-    ) -> Callable[[deployments_service.GetTenantRequest], deployments_resources.Tenant]:
+    def get_tenant(self) -> Callable[[deployments_service.GetTenantRequest], deployments_resources.Tenant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTenant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_unit(
-        self,
-    ) -> Callable[[deployments_service.GetUnitRequest], deployments_resources.Unit]:
+    def get_unit(self) -> Callable[[deployments_service.GetUnitRequest], deployments_resources.Unit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_unit_kind(
-        self,
-    ) -> Callable[
-        [deployments_service.GetUnitKindRequest], deployments_resources.UnitKind
-    ]:
+    def get_unit_kind(self) -> Callable[[deployments_service.GetUnitKindRequest], deployments_resources.UnitKind]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUnitKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_unit_operation(
-        self,
-    ) -> Callable[
-        [deployments_service.GetUnitOperationRequest],
-        deployments_resources.UnitOperation,
-    ]:
+    def get_unit_operation(self) -> Callable[[deployments_service.GetUnitOperationRequest], deployments_resources.UnitOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUnitOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_releases(
-        self,
-    ) -> Callable[
-        [deployments_service.ListReleasesRequest],
-        deployments_service.ListReleasesResponse,
-    ]:
+    def list_releases(self) -> Callable[[deployments_service.ListReleasesRequest], deployments_service.ListReleasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReleases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_saas(
-        self,
-    ) -> Callable[
-        [deployments_service.ListSaasRequest], deployments_service.ListSaasResponse
-    ]:
+    def list_saas(self) -> Callable[[deployments_service.ListSaasRequest], deployments_service.ListSaasResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSaas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tenants(
-        self,
-    ) -> Callable[
-        [deployments_service.ListTenantsRequest],
-        deployments_service.ListTenantsResponse,
-    ]:
+    def list_tenants(self) -> Callable[[deployments_service.ListTenantsRequest], deployments_service.ListTenantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTenants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_unit_kinds(
-        self,
-    ) -> Callable[
-        [deployments_service.ListUnitKindsRequest],
-        deployments_service.ListUnitKindsResponse,
-    ]:
+    def list_unit_kinds(self) -> Callable[[deployments_service.ListUnitKindsRequest], deployments_service.ListUnitKindsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUnitKinds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_unit_operations(
-        self,
-    ) -> Callable[
-        [deployments_service.ListUnitOperationsRequest],
-        deployments_service.ListUnitOperationsResponse,
-    ]:
+    def list_unit_operations(self) -> Callable[[deployments_service.ListUnitOperationsRequest], deployments_service.ListUnitOperationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUnitOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_units(
-        self,
-    ) -> Callable[
-        [deployments_service.ListUnitsRequest], deployments_service.ListUnitsResponse
-    ]:
+    def list_units(self) -> Callable[[deployments_service.ListUnitsRequest], deployments_service.ListUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_release(
-        self,
-    ) -> Callable[
-        [deployments_service.UpdateReleaseRequest], deployments_resources.Release
-    ]:
+    def update_release(self) -> Callable[[deployments_service.UpdateReleaseRequest], deployments_resources.Release]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_saas(
-        self,
-    ) -> Callable[[deployments_service.UpdateSaasRequest], deployments_resources.Saas]:
+    def update_saas(self) -> Callable[[deployments_service.UpdateSaasRequest], deployments_resources.Saas]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSaas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_tenant(
-        self,
-    ) -> Callable[
-        [deployments_service.UpdateTenantRequest], deployments_resources.Tenant
-    ]:
+    def update_tenant(self) -> Callable[[deployments_service.UpdateTenantRequest], deployments_resources.Tenant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTenant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_unit(
-        self,
-    ) -> Callable[[deployments_service.UpdateUnitRequest], deployments_resources.Unit]:
+    def update_unit(self) -> Callable[[deployments_service.UpdateUnitRequest], deployments_resources.Unit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_unit_kind(
-        self,
-    ) -> Callable[
-        [deployments_service.UpdateUnitKindRequest], deployments_resources.UnitKind
-    ]:
+    def update_unit_kind(self) -> Callable[[deployments_service.UpdateUnitKindRequest], deployments_resources.UnitKind]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateUnitKind(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_unit_operation(
-        self,
-    ) -> Callable[
-        [deployments_service.UpdateUnitOperationRequest],
-        deployments_resources.UnitOperation,
-    ]:
+    def update_unit_operation(self) -> Callable[[deployments_service.UpdateUnitOperationRequest], deployments_resources.UnitOperation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateUnitOperation(self._session, self._host, self._interceptor)  # type: ignore
@@ -6402,22 +5099,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseSaasDeploymentsRestTransport._BaseGetLocation, SaasDeploymentsRestStub
-    ):
+    class _GetLocation(_BaseSaasDeploymentsRestTransport._BaseGetLocation, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6455,26 +5142,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6498,12 +5175,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6515,9 +5187,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6542,22 +5212,12 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSaasDeploymentsRestTransport._BaseListLocations, SaasDeploymentsRestStub
-    ):
+    class _ListLocations(_BaseSaasDeploymentsRestTransport._BaseListLocations, SaasDeploymentsRestStub):
         def __hash__(self):
             return hash("SaasDeploymentsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6595,26 +5255,16 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSaasDeploymentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSaasDeploymentsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSaasDeploymentsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSaasDeploymentsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSaasDeploymentsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6638,12 +5288,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
 
             # Send the request
             response = SaasDeploymentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6655,9 +5300,7 @@ class SaasDeploymentsRestTransport(_BaseSaasDeploymentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

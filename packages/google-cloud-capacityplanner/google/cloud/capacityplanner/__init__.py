@@ -18,20 +18,11 @@ from google.cloud.capacityplanner import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.capacityplanner_v1beta.services.usage_service.async_client import (
-    UsageServiceAsyncClient,
-)
-from google.cloud.capacityplanner_v1beta.services.usage_service.client import (
-    UsageServiceClient,
-)
+from google.cloud.capacityplanner_v1beta.services.usage_service.async_client import UsageServiceAsyncClient
+from google.cloud.capacityplanner_v1beta.services.usage_service.client import UsageServiceClient
 from google.cloud.capacityplanner_v1beta.types.allocation import Allocation
-from google.cloud.capacityplanner_v1beta.types.future_reservation import (
-    FutureReservation,
-)
-from google.cloud.capacityplanner_v1beta.types.location import (
-    LocationIdentifier,
-    LocationLevel,
-)
+from google.cloud.capacityplanner_v1beta.types.future_reservation import FutureReservation
+from google.cloud.capacityplanner_v1beta.types.location import LocationIdentifier, LocationLevel
 from google.cloud.capacityplanner_v1beta.types.resource import (
     ResourceAttribute,
     ResourceContainer,

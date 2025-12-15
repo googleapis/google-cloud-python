@@ -69,10 +69,7 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
-from .conversational_search_service import (
-    ConversationalSearchRequest,
-    ConversationalSearchResponse,
-)
+from .conversational_search_service import ConversationalSearchRequest, ConversationalSearchResponse
 from .export_config import (
     BigQueryOutputResult,
     ExportAnalyticsMetricsRequest,
@@ -87,10 +84,7 @@ from .export_config import (
     OutputConfig,
     OutputResult,
 )
-from .generative_question import (
-    GenerativeQuestionConfig,
-    GenerativeQuestionsFeatureConfig,
-)
+from .generative_question import GenerativeQuestionConfig, GenerativeQuestionsFeatureConfig
 from .generative_question_service import (
     BatchUpdateGenerativeQuestionConfigsRequest,
     BatchUpdateGenerativeQuestionConfigsResponse,
@@ -170,14 +164,7 @@ from .purge_config import (
     PurgeUserEventsResponse,
 )
 from .safety import HarmCategory, SafetySetting
-from .search_service import (
-    ExperimentInfo,
-    ProductAttributeInterval,
-    ProductAttributeValue,
-    SearchRequest,
-    SearchResponse,
-    Tile,
-)
+from .search_service import ExperimentInfo, ProductAttributeInterval, ProductAttributeValue, SearchRequest, SearchResponse, Tile
 from .serving_config import ServingConfig
 from .serving_config_service import (
     AddControlRequest,

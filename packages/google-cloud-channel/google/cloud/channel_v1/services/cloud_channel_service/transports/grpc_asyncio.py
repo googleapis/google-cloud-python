@@ -33,14 +33,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.channel_v1.types import (
-    channel_partner_links,
-    customers,
-    entitlements,
-    offers,
-    repricing,
-    service,
-)
+from google.cloud.channel_v1.types import channel_partner_links, customers, entitlements, offers, repricing, service
 
 from .base import DEFAULT_CLIENT_INFO, CloudChannelServiceTransport
 from .grpc import CloudChannelServiceGrpcTransport
@@ -55,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -71,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -93,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -298,18 +280,14 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -345,9 +323,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -370,19 +346,13 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_customers(
-        self,
-    ) -> Callable[
-        [service.ListCustomersRequest], Awaitable[service.ListCustomersResponse]
-    ]:
+    def list_customers(self) -> Callable[[service.ListCustomersRequest], Awaitable[service.ListCustomersResponse]]:
         r"""Return a callable for the list customers method over gRPC.
 
         List [Customer][google.cloud.channel.v1.Customer]s.
@@ -417,9 +387,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_customers"]
 
     @property
-    def get_customer(
-        self,
-    ) -> Callable[[service.GetCustomerRequest], Awaitable[customers.Customer]]:
+    def get_customer(self) -> Callable[[service.GetCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the get customer method over gRPC.
 
         Returns the requested
@@ -458,10 +426,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def check_cloud_identity_accounts_exist(
         self,
-    ) -> Callable[
-        [service.CheckCloudIdentityAccountsExistRequest],
-        Awaitable[service.CheckCloudIdentityAccountsExistResponse],
-    ]:
+    ) -> Callable[[service.CheckCloudIdentityAccountsExistRequest], Awaitable[service.CheckCloudIdentityAccountsExistResponse]]:
         r"""Return a callable for the check cloud identity accounts
         exist method over gRPC.
 
@@ -497,9 +462,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "check_cloud_identity_accounts_exist" not in self._stubs:
-            self._stubs[
-                "check_cloud_identity_accounts_exist"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["check_cloud_identity_accounts_exist"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/CheckCloudIdentityAccountsExist",
                 request_serializer=service.CheckCloudIdentityAccountsExistRequest.serialize,
                 response_deserializer=service.CheckCloudIdentityAccountsExistResponse.deserialize,
@@ -507,9 +470,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["check_cloud_identity_accounts_exist"]
 
     @property
-    def create_customer(
-        self,
-    ) -> Callable[[service.CreateCustomerRequest], Awaitable[customers.Customer]]:
+    def create_customer(self) -> Callable[[service.CreateCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the create customer method over gRPC.
 
         Creates a new [Customer][google.cloud.channel.v1.Customer]
@@ -551,9 +512,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["create_customer"]
 
     @property
-    def update_customer(
-        self,
-    ) -> Callable[[service.UpdateCustomerRequest], Awaitable[customers.Customer]]:
+    def update_customer(self) -> Callable[[service.UpdateCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the update customer method over gRPC.
 
         Updates an existing [Customer][google.cloud.channel.v1.Customer]
@@ -590,9 +549,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["update_customer"]
 
     @property
-    def delete_customer(
-        self,
-    ) -> Callable[[service.DeleteCustomerRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_customer(self) -> Callable[[service.DeleteCustomerRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete customer method over gRPC.
 
         Deletes the given [Customer][google.cloud.channel.v1.Customer]
@@ -627,9 +584,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["delete_customer"]
 
     @property
-    def import_customer(
-        self,
-    ) -> Callable[[service.ImportCustomerRequest], Awaitable[customers.Customer]]:
+    def import_customer(self) -> Callable[[service.ImportCustomerRequest], Awaitable[customers.Customer]]:
         r"""Return a callable for the import customer method over gRPC.
 
         Imports a [Customer][google.cloud.channel.v1.Customer] from the
@@ -674,11 +629,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["import_customer"]
 
     @property
-    def provision_cloud_identity(
-        self,
-    ) -> Callable[
-        [service.ProvisionCloudIdentityRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def provision_cloud_identity(self) -> Callable[[service.ProvisionCloudIdentityRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the provision cloud identity method over gRPC.
 
         Creates a Cloud Identity for the given customer using the
@@ -728,11 +679,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["provision_cloud_identity"]
 
     @property
-    def list_entitlements(
-        self,
-    ) -> Callable[
-        [service.ListEntitlementsRequest], Awaitable[service.ListEntitlementsResponse]
-    ]:
+    def list_entitlements(self) -> Callable[[service.ListEntitlementsRequest], Awaitable[service.ListEntitlementsResponse]]:
         r"""Return a callable for the list entitlements method over gRPC.
 
         Lists [Entitlement][google.cloud.channel.v1.Entitlement]s
@@ -767,12 +714,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_entitlements"]
 
     @property
-    def list_transferable_skus(
-        self,
-    ) -> Callable[
-        [service.ListTransferableSkusRequest],
-        Awaitable[service.ListTransferableSkusResponse],
-    ]:
+    def list_transferable_skus(self) -> Callable[[service.ListTransferableSkusRequest], Awaitable[service.ListTransferableSkusResponse]]:
         r"""Return a callable for the list transferable skus method over gRPC.
 
         List [TransferableSku][google.cloud.channel.v1.TransferableSku]s
@@ -818,12 +760,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_transferable_skus"]
 
     @property
-    def list_transferable_offers(
-        self,
-    ) -> Callable[
-        [service.ListTransferableOffersRequest],
-        Awaitable[service.ListTransferableOffersResponse],
-    ]:
+    def list_transferable_offers(self) -> Callable[[service.ListTransferableOffersRequest], Awaitable[service.ListTransferableOffersResponse]]:
         r"""Return a callable for the list transferable offers method over gRPC.
 
         List
@@ -875,9 +812,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_transferable_offers"]
 
     @property
-    def get_entitlement(
-        self,
-    ) -> Callable[[service.GetEntitlementRequest], Awaitable[entitlements.Entitlement]]:
+    def get_entitlement(self) -> Callable[[service.GetEntitlementRequest], Awaitable[entitlements.Entitlement]]:
         r"""Return a callable for the get entitlement method over gRPC.
 
         Returns the requested
@@ -913,11 +848,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["get_entitlement"]
 
     @property
-    def create_entitlement(
-        self,
-    ) -> Callable[
-        [service.CreateEntitlementRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_entitlement(self) -> Callable[[service.CreateEntitlementRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create entitlement method over gRPC.
 
         Creates an entitlement for a customer.
@@ -990,11 +921,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["create_entitlement"]
 
     @property
-    def change_parameters(
-        self,
-    ) -> Callable[
-        [service.ChangeParametersRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def change_parameters(self) -> Callable[[service.ChangeParametersRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the change parameters method over gRPC.
 
         Change parameters of the entitlement.
@@ -1042,11 +969,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["change_parameters"]
 
     @property
-    def change_renewal_settings(
-        self,
-    ) -> Callable[
-        [service.ChangeRenewalSettingsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def change_renewal_settings(self) -> Callable[[service.ChangeRenewalSettingsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the change renewal settings method over gRPC.
 
         Updates the renewal settings for an existing customer
@@ -1096,9 +1019,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["change_renewal_settings"]
 
     @property
-    def change_offer(
-        self,
-    ) -> Callable[[service.ChangeOfferRequest], Awaitable[operations_pb2.Operation]]:
+    def change_offer(self) -> Callable[[service.ChangeOfferRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the change offer method over gRPC.
 
         Updates the Offer for an existing customer entitlement.
@@ -1144,11 +1065,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["change_offer"]
 
     @property
-    def start_paid_service(
-        self,
-    ) -> Callable[
-        [service.StartPaidServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def start_paid_service(self) -> Callable[[service.StartPaidServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start paid service method over gRPC.
 
         Starts paid service for a trial entitlement.
@@ -1197,11 +1114,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["start_paid_service"]
 
     @property
-    def suspend_entitlement(
-        self,
-    ) -> Callable[
-        [service.SuspendEntitlementRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def suspend_entitlement(self) -> Callable[[service.SuspendEntitlementRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the suspend entitlement method over gRPC.
 
         Suspends a previously fulfilled entitlement.
@@ -1247,11 +1160,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["suspend_entitlement"]
 
     @property
-    def cancel_entitlement(
-        self,
-    ) -> Callable[
-        [service.CancelEntitlementRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def cancel_entitlement(self) -> Callable[[service.CancelEntitlementRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the cancel entitlement method over gRPC.
 
         Cancels a previously fulfilled entitlement.
@@ -1302,11 +1211,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["cancel_entitlement"]
 
     @property
-    def activate_entitlement(
-        self,
-    ) -> Callable[
-        [service.ActivateEntitlementRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def activate_entitlement(self) -> Callable[[service.ActivateEntitlementRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the activate entitlement method over gRPC.
 
         Activates a previously suspended entitlement. Entitlements
@@ -1359,11 +1264,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["activate_entitlement"]
 
     @property
-    def transfer_entitlements(
-        self,
-    ) -> Callable[
-        [service.TransferEntitlementsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def transfer_entitlements(self) -> Callable[[service.TransferEntitlementsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the transfer entitlements method over gRPC.
 
         Transfers customer entitlements to new reseller.
@@ -1427,12 +1328,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["transfer_entitlements"]
 
     @property
-    def transfer_entitlements_to_google(
-        self,
-    ) -> Callable[
-        [service.TransferEntitlementsToGoogleRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def transfer_entitlements_to_google(self) -> Callable[[service.TransferEntitlementsToGoogleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the transfer entitlements to
         google method over gRPC.
 
@@ -1484,9 +1380,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "transfer_entitlements_to_google" not in self._stubs:
-            self._stubs[
-                "transfer_entitlements_to_google"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["transfer_entitlements_to_google"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/TransferEntitlementsToGoogle",
                 request_serializer=service.TransferEntitlementsToGoogleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1494,12 +1388,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["transfer_entitlements_to_google"]
 
     @property
-    def list_channel_partner_links(
-        self,
-    ) -> Callable[
-        [service.ListChannelPartnerLinksRequest],
-        Awaitable[service.ListChannelPartnerLinksResponse],
-    ]:
+    def list_channel_partner_links(self) -> Callable[[service.ListChannelPartnerLinksRequest], Awaitable[service.ListChannelPartnerLinksResponse]]:
         r"""Return a callable for the list channel partner links method over gRPC.
 
         List
@@ -1529,9 +1418,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_channel_partner_links" not in self._stubs:
-            self._stubs[
-                "list_channel_partner_links"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_channel_partner_links"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerLinks",
                 request_serializer=service.ListChannelPartnerLinksRequest.serialize,
                 response_deserializer=service.ListChannelPartnerLinksResponse.deserialize,
@@ -1539,12 +1426,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_channel_partner_links"]
 
     @property
-    def get_channel_partner_link(
-        self,
-    ) -> Callable[
-        [service.GetChannelPartnerLinkRequest],
-        Awaitable[channel_partner_links.ChannelPartnerLink],
-    ]:
+    def get_channel_partner_link(self) -> Callable[[service.GetChannelPartnerLinkRequest], Awaitable[channel_partner_links.ChannelPartnerLink]]:
         r"""Return a callable for the get channel partner link method over gRPC.
 
         Returns the requested
@@ -1583,12 +1465,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["get_channel_partner_link"]
 
     @property
-    def create_channel_partner_link(
-        self,
-    ) -> Callable[
-        [service.CreateChannelPartnerLinkRequest],
-        Awaitable[channel_partner_links.ChannelPartnerLink],
-    ]:
+    def create_channel_partner_link(self) -> Callable[[service.CreateChannelPartnerLinkRequest], Awaitable[channel_partner_links.ChannelPartnerLink]]:
         r"""Return a callable for the create channel partner link method over gRPC.
 
         Initiates a channel partner link between a distributor and a
@@ -1628,9 +1505,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_channel_partner_link" not in self._stubs:
-            self._stubs[
-                "create_channel_partner_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_channel_partner_link"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerLink",
                 request_serializer=service.CreateChannelPartnerLinkRequest.serialize,
                 response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
@@ -1638,12 +1513,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["create_channel_partner_link"]
 
     @property
-    def update_channel_partner_link(
-        self,
-    ) -> Callable[
-        [service.UpdateChannelPartnerLinkRequest],
-        Awaitable[channel_partner_links.ChannelPartnerLink],
-    ]:
+    def update_channel_partner_link(self) -> Callable[[service.UpdateChannelPartnerLinkRequest], Awaitable[channel_partner_links.ChannelPartnerLink]]:
         r"""Return a callable for the update channel partner link method over gRPC.
 
         Updates a channel partner link. Distributors call this method to
@@ -1683,9 +1553,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_channel_partner_link" not in self._stubs:
-            self._stubs[
-                "update_channel_partner_link"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_channel_partner_link"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerLink",
                 request_serializer=service.UpdateChannelPartnerLinkRequest.serialize,
                 response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
@@ -1693,12 +1561,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["update_channel_partner_link"]
 
     @property
-    def get_customer_repricing_config(
-        self,
-    ) -> Callable[
-        [service.GetCustomerRepricingConfigRequest],
-        Awaitable[repricing.CustomerRepricingConfig],
-    ]:
+    def get_customer_repricing_config(self) -> Callable[[service.GetCustomerRepricingConfigRequest], Awaitable[repricing.CustomerRepricingConfig]]:
         r"""Return a callable for the get customer repricing config method over gRPC.
 
         Gets information about how a Reseller modifies their bill before
@@ -1729,9 +1592,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "get_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_customer_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/GetCustomerRepricingConfig",
                 request_serializer=service.GetCustomerRepricingConfigRequest.serialize,
                 response_deserializer=repricing.CustomerRepricingConfig.deserialize,
@@ -1741,10 +1602,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def list_customer_repricing_configs(
         self,
-    ) -> Callable[
-        [service.ListCustomerRepricingConfigsRequest],
-        Awaitable[service.ListCustomerRepricingConfigsResponse],
-    ]:
+    ) -> Callable[[service.ListCustomerRepricingConfigsRequest], Awaitable[service.ListCustomerRepricingConfigsResponse]]:
         r"""Return a callable for the list customer repricing
         configs method over gRPC.
 
@@ -1785,9 +1643,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_customer_repricing_configs" not in self._stubs:
-            self._stubs[
-                "list_customer_repricing_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_customer_repricing_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/ListCustomerRepricingConfigs",
                 request_serializer=service.ListCustomerRepricingConfigsRequest.serialize,
                 response_deserializer=service.ListCustomerRepricingConfigsResponse.deserialize,
@@ -1797,10 +1653,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def create_customer_repricing_config(
         self,
-    ) -> Callable[
-        [service.CreateCustomerRepricingConfigRequest],
-        Awaitable[repricing.CustomerRepricingConfig],
-    ]:
+    ) -> Callable[[service.CreateCustomerRepricingConfigRequest], Awaitable[repricing.CustomerRepricingConfig]]:
         r"""Return a callable for the create customer repricing
         config method over gRPC.
 
@@ -1863,9 +1716,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "create_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_customer_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/CreateCustomerRepricingConfig",
                 request_serializer=service.CreateCustomerRepricingConfigRequest.serialize,
                 response_deserializer=repricing.CustomerRepricingConfig.deserialize,
@@ -1875,10 +1726,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def update_customer_repricing_config(
         self,
-    ) -> Callable[
-        [service.UpdateCustomerRepricingConfigRequest],
-        Awaitable[repricing.CustomerRepricingConfig],
-    ]:
+    ) -> Callable[[service.UpdateCustomerRepricingConfigRequest], Awaitable[repricing.CustomerRepricingConfig]]:
         r"""Return a callable for the update customer repricing
         config method over gRPC.
 
@@ -1927,9 +1775,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "update_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_customer_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/UpdateCustomerRepricingConfig",
                 request_serializer=service.UpdateCustomerRepricingConfigRequest.serialize,
                 response_deserializer=repricing.CustomerRepricingConfig.deserialize,
@@ -1937,11 +1783,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["update_customer_repricing_config"]
 
     @property
-    def delete_customer_repricing_config(
-        self,
-    ) -> Callable[
-        [service.DeleteCustomerRepricingConfigRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_customer_repricing_config(self) -> Callable[[service.DeleteCustomerRepricingConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete customer repricing
         config method over gRPC.
 
@@ -1975,9 +1817,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_customer_repricing_config" not in self._stubs:
-            self._stubs[
-                "delete_customer_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_customer_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/DeleteCustomerRepricingConfig",
                 request_serializer=service.DeleteCustomerRepricingConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1987,10 +1827,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def get_channel_partner_repricing_config(
         self,
-    ) -> Callable[
-        [service.GetChannelPartnerRepricingConfigRequest],
-        Awaitable[repricing.ChannelPartnerRepricingConfig],
-    ]:
+    ) -> Callable[[service.GetChannelPartnerRepricingConfigRequest], Awaitable[repricing.ChannelPartnerRepricingConfig]]:
         r"""Return a callable for the get channel partner repricing
         config method over gRPC.
 
@@ -2022,9 +1859,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "get_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_channel_partner_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/GetChannelPartnerRepricingConfig",
                 request_serializer=service.GetChannelPartnerRepricingConfigRequest.serialize,
                 response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
@@ -2034,10 +1869,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def list_channel_partner_repricing_configs(
         self,
-    ) -> Callable[
-        [service.ListChannelPartnerRepricingConfigsRequest],
-        Awaitable[service.ListChannelPartnerRepricingConfigsResponse],
-    ]:
+    ) -> Callable[[service.ListChannelPartnerRepricingConfigsRequest], Awaitable[service.ListChannelPartnerRepricingConfigsResponse]]:
         r"""Return a callable for the list channel partner repricing
         configs method over gRPC.
 
@@ -2077,9 +1909,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_channel_partner_repricing_configs" not in self._stubs:
-            self._stubs[
-                "list_channel_partner_repricing_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_channel_partner_repricing_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerRepricingConfigs",
                 request_serializer=service.ListChannelPartnerRepricingConfigsRequest.serialize,
                 response_deserializer=service.ListChannelPartnerRepricingConfigsResponse.deserialize,
@@ -2089,10 +1919,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def create_channel_partner_repricing_config(
         self,
-    ) -> Callable[
-        [service.CreateChannelPartnerRepricingConfigRequest],
-        Awaitable[repricing.ChannelPartnerRepricingConfig],
-    ]:
+    ) -> Callable[[service.CreateChannelPartnerRepricingConfigRequest], Awaitable[repricing.ChannelPartnerRepricingConfig]]:
         r"""Return a callable for the create channel partner
         repricing config method over gRPC.
 
@@ -2154,9 +1981,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "create_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_channel_partner_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerRepricingConfig",
                 request_serializer=service.CreateChannelPartnerRepricingConfigRequest.serialize,
                 response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
@@ -2166,10 +1991,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def update_channel_partner_repricing_config(
         self,
-    ) -> Callable[
-        [service.UpdateChannelPartnerRepricingConfigRequest],
-        Awaitable[repricing.ChannelPartnerRepricingConfig],
-    ]:
+    ) -> Callable[[service.UpdateChannelPartnerRepricingConfigRequest], Awaitable[repricing.ChannelPartnerRepricingConfig]]:
         r"""Return a callable for the update channel partner
         repricing config method over gRPC.
 
@@ -2218,9 +2040,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "update_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_channel_partner_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerRepricingConfig",
                 request_serializer=service.UpdateChannelPartnerRepricingConfigRequest.serialize,
                 response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
@@ -2228,11 +2048,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["update_channel_partner_repricing_config"]
 
     @property
-    def delete_channel_partner_repricing_config(
-        self,
-    ) -> Callable[
-        [service.DeleteChannelPartnerRepricingConfigRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_channel_partner_repricing_config(self) -> Callable[[service.DeleteChannelPartnerRepricingConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete channel partner
         repricing config method over gRPC.
 
@@ -2266,9 +2082,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_channel_partner_repricing_config" not in self._stubs:
-            self._stubs[
-                "delete_channel_partner_repricing_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_channel_partner_repricing_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/DeleteChannelPartnerRepricingConfig",
                 request_serializer=service.DeleteChannelPartnerRepricingConfigRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -2276,11 +2090,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["delete_channel_partner_repricing_config"]
 
     @property
-    def list_sku_groups(
-        self,
-    ) -> Callable[
-        [service.ListSkuGroupsRequest], Awaitable[service.ListSkuGroupsResponse]
-    ]:
+    def list_sku_groups(self) -> Callable[[service.ListSkuGroupsRequest], Awaitable[service.ListSkuGroupsResponse]]:
         r"""Return a callable for the list sku groups method over gRPC.
 
         Lists the Rebilling supported SKU groups the account is
@@ -2325,10 +2135,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def list_sku_group_billable_skus(
         self,
-    ) -> Callable[
-        [service.ListSkuGroupBillableSkusRequest],
-        Awaitable[service.ListSkuGroupBillableSkusResponse],
-    ]:
+    ) -> Callable[[service.ListSkuGroupBillableSkusRequest], Awaitable[service.ListSkuGroupBillableSkusResponse]]:
         r"""Return a callable for the list sku group billable skus method over gRPC.
 
         Lists the Billable SKUs in a given SKU group.
@@ -2361,9 +2168,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_sku_group_billable_skus" not in self._stubs:
-            self._stubs[
-                "list_sku_group_billable_skus"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_sku_group_billable_skus"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/ListSkuGroupBillableSkus",
                 request_serializer=service.ListSkuGroupBillableSkusRequest.serialize,
                 response_deserializer=service.ListSkuGroupBillableSkusResponse.deserialize,
@@ -2371,9 +2176,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_sku_group_billable_skus"]
 
     @property
-    def lookup_offer(
-        self,
-    ) -> Callable[[service.LookupOfferRequest], Awaitable[offers.Offer]]:
+    def lookup_offer(self) -> Callable[[service.LookupOfferRequest], Awaitable[offers.Offer]]:
         r"""Return a callable for the lookup offer method over gRPC.
 
         Returns the requested [Offer][google.cloud.channel.v1.Offer]
@@ -2409,11 +2212,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["lookup_offer"]
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [service.ListProductsRequest], Awaitable[service.ListProductsResponse]
-    ]:
+    def list_products(self) -> Callable[[service.ListProductsRequest], Awaitable[service.ListProductsResponse]]:
         r"""Return a callable for the list products method over gRPC.
 
         Lists the Products the reseller is authorized to sell.
@@ -2442,9 +2241,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_products"]
 
     @property
-    def list_skus(
-        self,
-    ) -> Callable[[service.ListSkusRequest], Awaitable[service.ListSkusResponse]]:
+    def list_skus(self) -> Callable[[service.ListSkusRequest], Awaitable[service.ListSkusResponse]]:
         r"""Return a callable for the list skus method over gRPC.
 
         Lists the SKUs for a product the reseller is authorized to sell.
@@ -2473,9 +2270,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_skus"]
 
     @property
-    def list_offers(
-        self,
-    ) -> Callable[[service.ListOffersRequest], Awaitable[service.ListOffersResponse]]:
+    def list_offers(self) -> Callable[[service.ListOffersRequest], Awaitable[service.ListOffersResponse]]:
         r"""Return a callable for the list offers method over gRPC.
 
         Lists the Offers the reseller can sell.
@@ -2504,12 +2299,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_offers"]
 
     @property
-    def list_purchasable_skus(
-        self,
-    ) -> Callable[
-        [service.ListPurchasableSkusRequest],
-        Awaitable[service.ListPurchasableSkusResponse],
-    ]:
+    def list_purchasable_skus(self) -> Callable[[service.ListPurchasableSkusRequest], Awaitable[service.ListPurchasableSkusResponse]]:
         r"""Return a callable for the list purchasable skus method over gRPC.
 
         Lists the following:
@@ -2543,12 +2333,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_purchasable_skus"]
 
     @property
-    def list_purchasable_offers(
-        self,
-    ) -> Callable[
-        [service.ListPurchasableOffersRequest],
-        Awaitable[service.ListPurchasableOffersResponse],
-    ]:
+    def list_purchasable_offers(self) -> Callable[[service.ListPurchasableOffersRequest], Awaitable[service.ListPurchasableOffersResponse]]:
         r"""Return a callable for the list purchasable offers method over gRPC.
 
         Lists the following:
@@ -2589,10 +2374,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def query_eligible_billing_accounts(
         self,
-    ) -> Callable[
-        [service.QueryEligibleBillingAccountsRequest],
-        Awaitable[service.QueryEligibleBillingAccountsResponse],
-    ]:
+    ) -> Callable[[service.QueryEligibleBillingAccountsRequest], Awaitable[service.QueryEligibleBillingAccountsResponse]]:
         r"""Return a callable for the query eligible billing
         accounts method over gRPC.
 
@@ -2622,9 +2404,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_eligible_billing_accounts" not in self._stubs:
-            self._stubs[
-                "query_eligible_billing_accounts"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["query_eligible_billing_accounts"] = self._logged_channel.unary_unary(
                 "/google.cloud.channel.v1.CloudChannelService/QueryEligibleBillingAccounts",
                 request_serializer=service.QueryEligibleBillingAccountsRequest.serialize,
                 response_deserializer=service.QueryEligibleBillingAccountsResponse.deserialize,
@@ -2632,12 +2412,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["query_eligible_billing_accounts"]
 
     @property
-    def register_subscriber(
-        self,
-    ) -> Callable[
-        [service.RegisterSubscriberRequest],
-        Awaitable[service.RegisterSubscriberResponse],
-    ]:
+    def register_subscriber(self) -> Callable[[service.RegisterSubscriberRequest], Awaitable[service.RegisterSubscriberResponse]]:
         r"""Return a callable for the register subscriber method over gRPC.
 
         Registers a service account with subscriber privileges on the
@@ -2679,12 +2454,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["register_subscriber"]
 
     @property
-    def unregister_subscriber(
-        self,
-    ) -> Callable[
-        [service.UnregisterSubscriberRequest],
-        Awaitable[service.UnregisterSubscriberResponse],
-    ]:
+    def unregister_subscriber(self) -> Callable[[service.UnregisterSubscriberRequest], Awaitable[service.UnregisterSubscriberResponse]]:
         r"""Return a callable for the unregister subscriber method over gRPC.
 
         Unregisters a service account with subscriber privileges on the
@@ -2729,11 +2499,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["unregister_subscriber"]
 
     @property
-    def list_subscribers(
-        self,
-    ) -> Callable[
-        [service.ListSubscribersRequest], Awaitable[service.ListSubscribersResponse]
-    ]:
+    def list_subscribers(self) -> Callable[[service.ListSubscribersRequest], Awaitable[service.ListSubscribersResponse]]:
         r"""Return a callable for the list subscribers method over gRPC.
 
         Lists service accounts with subscriber privileges on the Pub/Sub
@@ -2773,12 +2539,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
         return self._stubs["list_subscribers"]
 
     @property
-    def list_entitlement_changes(
-        self,
-    ) -> Callable[
-        [service.ListEntitlementChangesRequest],
-        Awaitable[service.ListEntitlementChangesResponse],
-    ]:
+    def list_entitlement_changes(self) -> Callable[[service.ListEntitlementChangesRequest], Awaitable[service.ListEntitlementChangesResponse]]:
         r"""Return a callable for the list entitlement changes method over gRPC.
 
         List entitlement history.
@@ -3153,9 +2914,7 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

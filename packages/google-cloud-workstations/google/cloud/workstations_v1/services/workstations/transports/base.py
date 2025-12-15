@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.workstations_v1 import gapic_version as package_version
 from google.cloud.workstations_v1.types import workstations
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class WorkstationsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -372,12 +362,7 @@ class WorkstationsTransport(abc.ABC):
     @property
     def get_workstation_cluster(
         self,
-    ) -> Callable[
-        [workstations.GetWorkstationClusterRequest],
-        Union[
-            workstations.WorkstationCluster, Awaitable[workstations.WorkstationCluster]
-        ],
-    ]:
+    ) -> Callable[[workstations.GetWorkstationClusterRequest], Union[workstations.WorkstationCluster, Awaitable[workstations.WorkstationCluster]]]:
         raise NotImplementedError()
 
     @property
@@ -385,49 +370,32 @@ class WorkstationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [workstations.ListWorkstationClustersRequest],
-        Union[
-            workstations.ListWorkstationClustersResponse,
-            Awaitable[workstations.ListWorkstationClustersResponse],
-        ],
+        Union[workstations.ListWorkstationClustersResponse, Awaitable[workstations.ListWorkstationClustersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_workstation_cluster(
         self,
-    ) -> Callable[
-        [workstations.CreateWorkstationClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.CreateWorkstationClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_workstation_cluster(
         self,
-    ) -> Callable[
-        [workstations.UpdateWorkstationClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.UpdateWorkstationClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_workstation_cluster(
         self,
-    ) -> Callable[
-        [workstations.DeleteWorkstationClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.DeleteWorkstationClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_workstation_config(
         self,
-    ) -> Callable[
-        [workstations.GetWorkstationConfigRequest],
-        Union[
-            workstations.WorkstationConfig, Awaitable[workstations.WorkstationConfig]
-        ],
-    ]:
+    ) -> Callable[[workstations.GetWorkstationConfigRequest], Union[workstations.WorkstationConfig, Awaitable[workstations.WorkstationConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -435,10 +403,7 @@ class WorkstationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [workstations.ListWorkstationConfigsRequest],
-        Union[
-            workstations.ListWorkstationConfigsResponse,
-            Awaitable[workstations.ListWorkstationConfigsResponse],
-        ],
+        Union[workstations.ListWorkstationConfigsResponse, Awaitable[workstations.ListWorkstationConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -447,58 +412,37 @@ class WorkstationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [workstations.ListUsableWorkstationConfigsRequest],
-        Union[
-            workstations.ListUsableWorkstationConfigsResponse,
-            Awaitable[workstations.ListUsableWorkstationConfigsResponse],
-        ],
+        Union[workstations.ListUsableWorkstationConfigsResponse, Awaitable[workstations.ListUsableWorkstationConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_workstation_config(
         self,
-    ) -> Callable[
-        [workstations.CreateWorkstationConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.CreateWorkstationConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_workstation_config(
         self,
-    ) -> Callable[
-        [workstations.UpdateWorkstationConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.UpdateWorkstationConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_workstation_config(
         self,
-    ) -> Callable[
-        [workstations.DeleteWorkstationConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.DeleteWorkstationConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_workstation(
-        self,
-    ) -> Callable[
-        [workstations.GetWorkstationRequest],
-        Union[workstations.Workstation, Awaitable[workstations.Workstation]],
-    ]:
+    def get_workstation(self) -> Callable[[workstations.GetWorkstationRequest], Union[workstations.Workstation, Awaitable[workstations.Workstation]]]:
         raise NotImplementedError()
 
     @property
     def list_workstations(
         self,
     ) -> Callable[
-        [workstations.ListWorkstationsRequest],
-        Union[
-            workstations.ListWorkstationsResponse,
-            Awaitable[workstations.ListWorkstationsResponse],
-        ],
+        [workstations.ListWorkstationsRequest], Union[workstations.ListWorkstationsResponse, Awaitable[workstations.ListWorkstationsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -507,56 +451,38 @@ class WorkstationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [workstations.ListUsableWorkstationsRequest],
-        Union[
-            workstations.ListUsableWorkstationsResponse,
-            Awaitable[workstations.ListUsableWorkstationsResponse],
-        ],
+        Union[workstations.ListUsableWorkstationsResponse, Awaitable[workstations.ListUsableWorkstationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_workstation(
         self,
-    ) -> Callable[
-        [workstations.CreateWorkstationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.CreateWorkstationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_workstation(
         self,
-    ) -> Callable[
-        [workstations.UpdateWorkstationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.UpdateWorkstationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_workstation(
         self,
-    ) -> Callable[
-        [workstations.DeleteWorkstationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.DeleteWorkstationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_workstation(
         self,
-    ) -> Callable[
-        [workstations.StartWorkstationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.StartWorkstationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def stop_workstation(
         self,
-    ) -> Callable[
-        [workstations.StopWorkstationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[workstations.StopWorkstationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -564,10 +490,7 @@ class WorkstationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [workstations.GenerateAccessTokenRequest],
-        Union[
-            workstations.GenerateAccessTokenResponse,
-            Awaitable[workstations.GenerateAccessTokenResponse],
-        ],
+        Union[workstations.GenerateAccessTokenResponse, Awaitable[workstations.GenerateAccessTokenResponse]],
     ]:
         raise NotImplementedError()
 
@@ -576,20 +499,14 @@ class WorkstationsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -607,19 +524,13 @@ class WorkstationsTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property

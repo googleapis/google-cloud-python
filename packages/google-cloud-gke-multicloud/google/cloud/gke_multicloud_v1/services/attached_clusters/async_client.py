@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,11 +41,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.gke_multicloud_v1.services.attached_clusters import pagers
-from google.cloud.gke_multicloud_v1.types import (
-    attached_resources,
-    attached_service,
-    common_resources,
-)
+from google.cloud.gke_multicloud_v1.types import attached_resources, attached_service, common_resources
 
 from .client import AttachedClustersClient
 from .transports.base import DEFAULT_CLIENT_INFO, AttachedClustersTransport
@@ -88,39 +73,19 @@ class AttachedClustersAsyncClient:
     _DEFAULT_UNIVERSE = AttachedClustersClient._DEFAULT_UNIVERSE
 
     attached_cluster_path = staticmethod(AttachedClustersClient.attached_cluster_path)
-    parse_attached_cluster_path = staticmethod(
-        AttachedClustersClient.parse_attached_cluster_path
-    )
-    attached_server_config_path = staticmethod(
-        AttachedClustersClient.attached_server_config_path
-    )
-    parse_attached_server_config_path = staticmethod(
-        AttachedClustersClient.parse_attached_server_config_path
-    )
-    common_billing_account_path = staticmethod(
-        AttachedClustersClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AttachedClustersClient.parse_common_billing_account_path
-    )
+    parse_attached_cluster_path = staticmethod(AttachedClustersClient.parse_attached_cluster_path)
+    attached_server_config_path = staticmethod(AttachedClustersClient.attached_server_config_path)
+    parse_attached_server_config_path = staticmethod(AttachedClustersClient.parse_attached_server_config_path)
+    common_billing_account_path = staticmethod(AttachedClustersClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AttachedClustersClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AttachedClustersClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AttachedClustersClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AttachedClustersClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AttachedClustersClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(AttachedClustersClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AttachedClustersClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AttachedClustersClient.parse_common_organization_path)
     common_project_path = staticmethod(AttachedClustersClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        AttachedClustersClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(AttachedClustersClient.parse_common_project_path)
     common_location_path = staticmethod(AttachedClustersClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        AttachedClustersClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(AttachedClustersClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -156,9 +121,7 @@ class AttachedClustersAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -225,11 +188,7 @@ class AttachedClustersAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, AttachedClustersTransport, Callable[..., AttachedClustersTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AttachedClustersTransport, Callable[..., AttachedClustersTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -292,20 +251,14 @@ class AttachedClustersAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.gkemulticloud_v1.AttachedClustersAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.gkemulticloud.v1.AttachedClusters",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -316,9 +269,7 @@ class AttachedClustersAsyncClient:
 
     async def create_attached_cluster(
         self,
-        request: Optional[
-            Union[attached_service.CreateAttachedClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.CreateAttachedClusterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         attached_cluster: Optional[attached_resources.AttachedCluster] = None,
@@ -436,14 +387,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, attached_cluster, attached_cluster_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -461,15 +407,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_attached_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -495,9 +437,7 @@ class AttachedClustersAsyncClient:
 
     async def update_attached_cluster(
         self,
-        request: Optional[
-            Union[attached_service.UpdateAttachedClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.UpdateAttachedClusterRequest, dict]] = None,
         *,
         attached_cluster: Optional[attached_resources.AttachedCluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -599,14 +539,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [attached_cluster, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -622,17 +557,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_attached_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attached_cluster.name", request.attached_cluster.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attached_cluster.name", request.attached_cluster.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -658,9 +587,7 @@ class AttachedClustersAsyncClient:
 
     async def import_attached_cluster(
         self,
-        request: Optional[
-            Union[attached_service.ImportAttachedClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.ImportAttachedClusterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         fleet_membership: Optional[str] = None,
@@ -760,14 +687,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, fleet_membership]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -783,15 +705,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_attached_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -817,9 +735,7 @@ class AttachedClustersAsyncClient:
 
     async def get_attached_cluster(
         self,
-        request: Optional[
-            Union[attached_service.GetAttachedClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.GetAttachedClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -894,14 +810,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -915,15 +826,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_attached_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -941,9 +848,7 @@ class AttachedClustersAsyncClient:
 
     async def list_attached_clusters(
         self,
-        request: Optional[
-            Union[attached_service.ListAttachedClustersRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.ListAttachedClustersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1023,14 +928,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1044,15 +944,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_attached_clusters
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_attached_clusters]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1081,9 +977,7 @@ class AttachedClustersAsyncClient:
 
     async def delete_attached_cluster(
         self,
-        request: Optional[
-            Union[attached_service.DeleteAttachedClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.DeleteAttachedClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1176,14 +1070,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1197,15 +1086,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_attached_cluster
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_attached_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1231,9 +1116,7 @@ class AttachedClustersAsyncClient:
 
     async def get_attached_server_config(
         self,
-        request: Optional[
-            Union[attached_service.GetAttachedServerConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.GetAttachedServerConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1307,14 +1190,9 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1328,15 +1206,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_attached_server_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_attached_server_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1354,9 +1228,7 @@ class AttachedClustersAsyncClient:
 
     async def generate_attached_cluster_install_manifest(
         self,
-        request: Optional[
-            Union[attached_service.GenerateAttachedClusterInstallManifestRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.GenerateAttachedClusterInstallManifestRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         attached_cluster_id: Optional[str] = None,
@@ -1456,23 +1328,14 @@ class AttachedClustersAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, attached_cluster_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, attached_service.GenerateAttachedClusterInstallManifestRequest
-        ):
-            request = attached_service.GenerateAttachedClusterInstallManifestRequest(
-                request
-            )
+        if not isinstance(request, attached_service.GenerateAttachedClusterInstallManifestRequest):
+            request = attached_service.GenerateAttachedClusterInstallManifestRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1483,15 +1346,11 @@ class AttachedClustersAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_attached_cluster_install_manifest
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_attached_cluster_install_manifest]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1509,9 +1368,7 @@ class AttachedClustersAsyncClient:
 
     async def generate_attached_cluster_agent_token(
         self,
-        request: Optional[
-            Union[attached_service.GenerateAttachedClusterAgentTokenRequest, dict]
-        ] = None,
+        request: Optional[Union[attached_service.GenerateAttachedClusterAgentTokenRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1566,24 +1423,16 @@ class AttachedClustersAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, attached_service.GenerateAttachedClusterAgentTokenRequest
-        ):
+        if not isinstance(request, attached_service.GenerateAttachedClusterAgentTokenRequest):
             request = attached_service.GenerateAttachedClusterAgentTokenRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.generate_attached_cluster_agent_token
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.generate_attached_cluster_agent_token]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attached_cluster", request.attached_cluster),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attached_cluster", request.attached_cluster),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1636,9 +1485,7 @@ class AttachedClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1691,9 +1538,7 @@ class AttachedClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1750,9 +1595,7 @@ class AttachedClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1805,9 +1648,7 @@ class AttachedClustersAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1827,9 +1668,7 @@ class AttachedClustersAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

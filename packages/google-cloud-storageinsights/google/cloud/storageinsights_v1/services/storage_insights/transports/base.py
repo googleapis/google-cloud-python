@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.storageinsights_v1 import gapic_version as package_version
 from google.cloud.storageinsights_v1.types import storageinsights
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class StorageInsightsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -347,47 +337,30 @@ class StorageInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [storageinsights.ListReportConfigsRequest],
-        Union[
-            storageinsights.ListReportConfigsResponse,
-            Awaitable[storageinsights.ListReportConfigsResponse],
-        ],
+        Union[storageinsights.ListReportConfigsResponse, Awaitable[storageinsights.ListReportConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_report_config(
         self,
-    ) -> Callable[
-        [storageinsights.GetReportConfigRequest],
-        Union[storageinsights.ReportConfig, Awaitable[storageinsights.ReportConfig]],
-    ]:
+    ) -> Callable[[storageinsights.GetReportConfigRequest], Union[storageinsights.ReportConfig, Awaitable[storageinsights.ReportConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_report_config(
         self,
-    ) -> Callable[
-        [storageinsights.CreateReportConfigRequest],
-        Union[storageinsights.ReportConfig, Awaitable[storageinsights.ReportConfig]],
-    ]:
+    ) -> Callable[[storageinsights.CreateReportConfigRequest], Union[storageinsights.ReportConfig, Awaitable[storageinsights.ReportConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_report_config(
         self,
-    ) -> Callable[
-        [storageinsights.UpdateReportConfigRequest],
-        Union[storageinsights.ReportConfig, Awaitable[storageinsights.ReportConfig]],
-    ]:
+    ) -> Callable[[storageinsights.UpdateReportConfigRequest], Union[storageinsights.ReportConfig, Awaitable[storageinsights.ReportConfig]]]:
         raise NotImplementedError()
 
     @property
-    def delete_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.DeleteReportConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_report_config(self) -> Callable[[storageinsights.DeleteReportConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -395,20 +368,14 @@ class StorageInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [storageinsights.ListReportDetailsRequest],
-        Union[
-            storageinsights.ListReportDetailsResponse,
-            Awaitable[storageinsights.ListReportDetailsResponse],
-        ],
+        Union[storageinsights.ListReportDetailsResponse, Awaitable[storageinsights.ListReportDetailsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_report_detail(
         self,
-    ) -> Callable[
-        [storageinsights.GetReportDetailRequest],
-        Union[storageinsights.ReportDetail, Awaitable[storageinsights.ReportDetail]],
-    ]:
+    ) -> Callable[[storageinsights.GetReportDetailRequest], Union[storageinsights.ReportDetail, Awaitable[storageinsights.ReportDetail]]]:
         raise NotImplementedError()
 
     @property
@@ -416,65 +383,42 @@ class StorageInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [storageinsights.ListDatasetConfigsRequest],
-        Union[
-            storageinsights.ListDatasetConfigsResponse,
-            Awaitable[storageinsights.ListDatasetConfigsResponse],
-        ],
+        Union[storageinsights.ListDatasetConfigsResponse, Awaitable[storageinsights.ListDatasetConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_dataset_config(
         self,
-    ) -> Callable[
-        [storageinsights.GetDatasetConfigRequest],
-        Union[storageinsights.DatasetConfig, Awaitable[storageinsights.DatasetConfig]],
-    ]:
+    ) -> Callable[[storageinsights.GetDatasetConfigRequest], Union[storageinsights.DatasetConfig, Awaitable[storageinsights.DatasetConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_dataset_config(
         self,
-    ) -> Callable[
-        [storageinsights.CreateDatasetConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storageinsights.CreateDatasetConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_dataset_config(
         self,
-    ) -> Callable[
-        [storageinsights.UpdateDatasetConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storageinsights.UpdateDatasetConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_dataset_config(
         self,
-    ) -> Callable[
-        [storageinsights.DeleteDatasetConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storageinsights.DeleteDatasetConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def link_dataset(
-        self,
-    ) -> Callable[
-        [storageinsights.LinkDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def link_dataset(self) -> Callable[[storageinsights.LinkDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def unlink_dataset(
         self,
-    ) -> Callable[
-        [storageinsights.UnlinkDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storageinsights.UnlinkDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -482,20 +426,14 @@ class StorageInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -513,22 +451,13 @@ class StorageInsightsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

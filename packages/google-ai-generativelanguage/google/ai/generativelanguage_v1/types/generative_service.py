@@ -449,12 +449,10 @@ class GenerateContentResponse(proto.Message):
             PROHIBITED_CONTENT = 4
             IMAGE_SAFETY = 5
 
-        block_reason: "GenerateContentResponse.PromptFeedback.BlockReason" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="GenerateContentResponse.PromptFeedback.BlockReason",
-            )
+        block_reason: "GenerateContentResponse.PromptFeedback.BlockReason" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="GenerateContentResponse.PromptFeedback.BlockReason",
         )
         safety_ratings: MutableSequence[safety.SafetyRating] = proto.RepeatedField(
             proto.MESSAGE,
@@ -516,30 +514,22 @@ class GenerateContentResponse(proto.Message):
             proto.INT32,
             number=3,
         )
-        prompt_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
+        prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=gag_content.ModalityTokenCount,
         )
-        cache_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
+        cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message=gag_content.ModalityTokenCount,
         )
-        candidates_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
+        candidates_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = proto.RepeatedField(
             proto.MESSAGE,
             number=7,
             message=gag_content.ModalityTokenCount,
         )
-        tool_use_prompt_tokens_details: MutableSequence[
-            gag_content.ModalityTokenCount
-        ] = proto.RepeatedField(
+        tool_use_prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message=gag_content.ModalityTokenCount,
@@ -1329,16 +1319,12 @@ class CountTokensResponse(proto.Message):
         proto.INT32,
         number=1,
     )
-    prompt_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
+    prompt_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=gag_content.ModalityTokenCount,
     )
-    cache_tokens_details: MutableSequence[
-        gag_content.ModalityTokenCount
-    ] = proto.RepeatedField(
+    cache_tokens_details: MutableSequence[gag_content.ModalityTokenCount] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=gag_content.ModalityTokenCount,

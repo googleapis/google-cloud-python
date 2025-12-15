@@ -18,24 +18,13 @@ from google.cloud.alloydb import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.alloydb_v1.services.alloy_db_admin.async_client import (
-    AlloyDBAdminAsyncClient,
-)
+from google.cloud.alloydb_v1.services.alloy_db_admin.async_client import AlloyDBAdminAsyncClient
 from google.cloud.alloydb_v1.services.alloy_db_admin.client import AlloyDBAdminClient
-from google.cloud.alloydb_v1.services.alloy_dbcsql_admin.async_client import (
-    AlloyDBCSQLAdminAsyncClient,
-)
-from google.cloud.alloydb_v1.services.alloy_dbcsql_admin.client import (
-    AlloyDBCSQLAdminClient,
-)
+from google.cloud.alloydb_v1.services.alloy_dbcsql_admin.async_client import AlloyDBCSQLAdminAsyncClient
+from google.cloud.alloydb_v1.services.alloy_dbcsql_admin.client import AlloyDBCSQLAdminClient
 from google.cloud.alloydb_v1.types.csql_resources import CloudSQLBackupRunSource
 from google.cloud.alloydb_v1.types.csql_service import RestoreFromCloudSQLRequest
-from google.cloud.alloydb_v1.types.data_model import (
-    SqlResult,
-    SqlResultColumn,
-    SqlResultRow,
-    SqlResultValue,
-)
+from google.cloud.alloydb_v1.types.data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
 from google.cloud.alloydb_v1.types.resources import (
     AutomatedBackupPolicy,
     Backup,

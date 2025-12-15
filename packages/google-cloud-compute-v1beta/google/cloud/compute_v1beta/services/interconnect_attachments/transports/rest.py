@@ -143,13 +143,8 @@ class InterconnectAttachmentsRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListInterconnectAttachmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListInterconnectAttachmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListInterconnectAttachmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListInterconnectAttachmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +152,7 @@ class InterconnectAttachmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.InterconnectAttachmentAggregatedList
-    ) -> compute.InterconnectAttachmentAggregatedList:
+    def post_aggregated_list(self, response: compute.InterconnectAttachmentAggregatedList) -> compute.InterconnectAttachmentAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -173,13 +166,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.InterconnectAttachmentAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InterconnectAttachmentAggregatedList,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.InterconnectAttachmentAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InterconnectAttachmentAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -195,13 +183,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -223,9 +206,7 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -242,13 +223,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +232,7 @@ class InterconnectAttachmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.InterconnectAttachment
-    ) -> compute.InterconnectAttachment:
+    def post_get(self, response: compute.InterconnectAttachment) -> compute.InterconnectAttachment:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -272,9 +246,7 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.InterconnectAttachment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.InterconnectAttachment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.InterconnectAttachment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -291,13 +263,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -319,9 +286,7 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -338,13 +303,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListInterconnectAttachmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListInterconnectAttachmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListInterconnectAttachmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListInterconnectAttachmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -352,9 +312,7 @@ class InterconnectAttachmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.InterconnectAttachmentList
-    ) -> compute.InterconnectAttachmentList:
+    def post_list(self, response: compute.InterconnectAttachmentList) -> compute.InterconnectAttachmentList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -368,12 +326,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.InterconnectAttachmentList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InterconnectAttachmentList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.InterconnectAttachmentList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InterconnectAttachmentList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -389,13 +343,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -417,9 +366,7 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -436,13 +383,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetLabelsInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetLabelsInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetLabelsInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -464,9 +406,7 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -483,13 +423,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsInterconnectAttachmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsInterconnectAttachmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsInterconnectAttachmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsInterconnectAttachmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -497,9 +432,7 @@ class InterconnectAttachmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -513,12 +446,8 @@ class InterconnectAttachmentsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -617,31 +546,18 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or InterconnectAttachmentsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _AggregatedList(_BaseInterconnectAttachmentsRestTransport._BaseAggregatedList, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -682,26 +598,16 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -724,15 +630,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
 
             # Send the request
-            response = (
-                InterconnectAttachmentsRestTransport._AggregatedList._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InterconnectAttachmentsRestTransport._AggregatedList._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -748,16 +647,10 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.InterconnectAttachmentAggregatedList.to_json(response)
-                    )
+                    response_payload = compute.InterconnectAttachmentAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -776,23 +669,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _Delete(
-        _BaseInterconnectAttachmentsRestTransport._BaseDelete,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _Delete(_BaseInterconnectAttachmentsRestTransport._BaseDelete, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -850,26 +732,16 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -893,12 +765,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             # Send the request
             response = InterconnectAttachmentsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -914,12 +781,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -940,23 +803,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _Get(
-        _BaseInterconnectAttachmentsRestTransport._BaseGet,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _Get(_BaseInterconnectAttachmentsRestTransport._BaseGet, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1005,26 +857,16 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1048,12 +890,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             # Send the request
             response = InterconnectAttachmentsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1070,9 +907,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.InterconnectAttachment.to_json(response)
                 except:
@@ -1093,23 +928,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _Insert(
-        _BaseInterconnectAttachmentsRestTransport._BaseInsert,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _Insert(_BaseInterconnectAttachmentsRestTransport._BaseInsert, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1168,30 +992,18 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1215,13 +1027,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             # Send the request
             response = InterconnectAttachmentsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1237,12 +1043,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1263,23 +1065,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _List(
-        _BaseInterconnectAttachmentsRestTransport._BaseList,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _List(_BaseInterconnectAttachmentsRestTransport._BaseList, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1323,26 +1114,16 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1366,12 +1147,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             # Send the request
             response = InterconnectAttachmentsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1388,13 +1164,9 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.InterconnectAttachmentList.to_json(
-                        response
-                    )
+                    response_payload = compute.InterconnectAttachmentList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1413,23 +1185,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _Patch(
-        _BaseInterconnectAttachmentsRestTransport._BasePatch,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _Patch(_BaseInterconnectAttachmentsRestTransport._BasePatch, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1488,30 +1249,18 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1535,13 +1284,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             # Send the request
             response = InterconnectAttachmentsRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1557,12 +1300,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1583,23 +1322,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _SetLabels(
-        _BaseInterconnectAttachmentsRestTransport._BaseSetLabels,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _SetLabels(_BaseInterconnectAttachmentsRestTransport._BaseSetLabels, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1658,30 +1386,18 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1705,13 +1421,7 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             # Send the request
             response = InterconnectAttachmentsRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1727,12 +1437,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1753,23 +1459,12 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions,
-        InterconnectAttachmentsRestStub,
-    ):
+    class _TestIamPermissions(_BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions, InterconnectAttachmentsRestStub):
         def __hash__(self):
             return hash("InterconnectAttachmentsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1811,32 +1506,18 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             """
 
-            http_options = (
-                _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectAttachmentsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1859,16 +1540,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
                 )
 
             # Send the request
-            response = (
-                InterconnectAttachmentsRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InterconnectAttachmentsRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1884,12 +1557,8 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -1911,75 +1580,49 @@ class InterconnectAttachmentsRestTransport(_BaseInterconnectAttachmentsRestTrans
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListInterconnectAttachmentsRequest],
-        compute.InterconnectAttachmentAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListInterconnectAttachmentsRequest], compute.InterconnectAttachmentAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteInterconnectAttachmentRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteInterconnectAttachmentRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetInterconnectAttachmentRequest], compute.InterconnectAttachment
-    ]:
+    def get(self) -> Callable[[compute.GetInterconnectAttachmentRequest], compute.InterconnectAttachment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertInterconnectAttachmentRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertInterconnectAttachmentRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListInterconnectAttachmentsRequest], compute.InterconnectAttachmentList
-    ]:
+    def list(self) -> Callable[[compute.ListInterconnectAttachmentsRequest], compute.InterconnectAttachmentList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchInterconnectAttachmentRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchInterconnectAttachmentRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsInterconnectAttachmentRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsInterconnectAttachmentRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsInterconnectAttachmentRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsInterconnectAttachmentRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

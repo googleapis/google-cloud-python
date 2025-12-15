@@ -32,9 +32,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.apps.chat_v1.types import (
-    space_notification_setting as gc_space_notification_setting,
-)
+from google.apps.chat_v1.types import space_notification_setting as gc_space_notification_setting
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
 from google.apps.chat_v1.types import membership as gc_membership
@@ -63,13 +61,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -79,10 +73,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -101,11 +92,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -284,18 +271,14 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -331,9 +314,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -348,9 +329,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_message(
-        self,
-    ) -> Callable[[gc_message.CreateMessageRequest], Awaitable[gc_message.Message]]:
+    def create_message(self) -> Callable[[gc_message.CreateMessageRequest], Awaitable[gc_message.Message]]:
         r"""Return a callable for the create message method over gRPC.
 
         Creates a message in a Google Chat space. For an example, see
@@ -425,11 +404,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["create_message"]
 
     @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [message.ListMessagesRequest], Awaitable[message.ListMessagesResponse]
-    ]:
+    def list_messages(self) -> Callable[[message.ListMessagesRequest], Awaitable[message.ListMessagesResponse]]:
         r"""Return a callable for the list messages method over gRPC.
 
         Lists messages in a space that the caller is a member of,
@@ -468,12 +443,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["list_messages"]
 
     @property
-    def list_memberships(
-        self,
-    ) -> Callable[
-        [membership.ListMembershipsRequest],
-        Awaitable[membership.ListMembershipsResponse],
-    ]:
+    def list_memberships(self) -> Callable[[membership.ListMembershipsRequest], Awaitable[membership.ListMembershipsResponse]]:
         r"""Return a callable for the list memberships method over gRPC.
 
         Lists memberships in a space. For an example, see `List users
@@ -535,9 +505,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["list_memberships"]
 
     @property
-    def get_membership(
-        self,
-    ) -> Callable[[membership.GetMembershipRequest], Awaitable[membership.Membership]]:
+    def get_membership(self) -> Callable[[membership.GetMembershipRequest], Awaitable[membership.Membership]]:
         r"""Return a callable for the get membership method over gRPC.
 
         Returns details about a membership. For an example, see `Get
@@ -589,9 +557,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_membership"]
 
     @property
-    def get_message(
-        self,
-    ) -> Callable[[message.GetMessageRequest], Awaitable[message.Message]]:
+    def get_message(self) -> Callable[[message.GetMessageRequest], Awaitable[message.Message]]:
         r"""Return a callable for the get message method over gRPC.
 
         Returns details about a message. For an example, see `Get
@@ -635,9 +601,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_message"]
 
     @property
-    def update_message(
-        self,
-    ) -> Callable[[gc_message.UpdateMessageRequest], Awaitable[gc_message.Message]]:
+    def update_message(self) -> Callable[[gc_message.UpdateMessageRequest], Awaitable[gc_message.Message]]:
         r"""Return a callable for the update message method over gRPC.
 
         Updates a message. There's a difference between the ``patch``
@@ -686,9 +650,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["update_message"]
 
     @property
-    def delete_message(
-        self,
-    ) -> Callable[[message.DeleteMessageRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_message(self) -> Callable[[message.DeleteMessageRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete message method over gRPC.
 
         Deletes a message. For an example, see `Delete a
@@ -733,9 +695,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_message"]
 
     @property
-    def get_attachment(
-        self,
-    ) -> Callable[[attachment.GetAttachmentRequest], Awaitable[attachment.Attachment]]:
+    def get_attachment(self) -> Callable[[attachment.GetAttachmentRequest], Awaitable[attachment.Attachment]]:
         r"""Return a callable for the get attachment method over gRPC.
 
         Gets the metadata of a message attachment. The attachment data
@@ -770,12 +730,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_attachment"]
 
     @property
-    def upload_attachment(
-        self,
-    ) -> Callable[
-        [attachment.UploadAttachmentRequest],
-        Awaitable[attachment.UploadAttachmentResponse],
-    ]:
+    def upload_attachment(self) -> Callable[[attachment.UploadAttachmentRequest], Awaitable[attachment.UploadAttachmentResponse]]:
         r"""Return a callable for the upload attachment method over gRPC.
 
         Uploads an attachment. For an example, see `Upload media as a
@@ -815,9 +770,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["upload_attachment"]
 
     @property
-    def list_spaces(
-        self,
-    ) -> Callable[[space.ListSpacesRequest], Awaitable[space.ListSpacesResponse]]:
+    def list_spaces(self) -> Callable[[space.ListSpacesRequest], Awaitable[space.ListSpacesResponse]]:
         r"""Return a callable for the list spaces method over gRPC.
 
         Lists spaces the caller is a member of. Group chats and DMs
@@ -865,9 +818,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["list_spaces"]
 
     @property
-    def search_spaces(
-        self,
-    ) -> Callable[[space.SearchSpacesRequest], Awaitable[space.SearchSpacesResponse]]:
+    def search_spaces(self) -> Callable[[space.SearchSpacesRequest], Awaitable[space.SearchSpacesResponse]]:
         r"""Return a callable for the search spaces method over gRPC.
 
         Returns a list of spaces in a Google Workspace organization
@@ -963,9 +914,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_space"]
 
     @property
-    def create_space(
-        self,
-    ) -> Callable[[gc_space.CreateSpaceRequest], Awaitable[gc_space.Space]]:
+    def create_space(self) -> Callable[[gc_space.CreateSpaceRequest], Awaitable[gc_space.Space]]:
         r"""Return a callable for the create space method over gRPC.
 
         Creates a space. Can be used to create a named space, or a group
@@ -1038,9 +987,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["create_space"]
 
     @property
-    def set_up_space(
-        self,
-    ) -> Callable[[space_setup.SetUpSpaceRequest], Awaitable[space.Space]]:
+    def set_up_space(self) -> Callable[[space_setup.SetUpSpaceRequest], Awaitable[space.Space]]:
         r"""Return a callable for the set up space method over gRPC.
 
         Creates a space and adds specified users to it. The calling user
@@ -1126,9 +1073,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["set_up_space"]
 
     @property
-    def update_space(
-        self,
-    ) -> Callable[[gc_space.UpdateSpaceRequest], Awaitable[gc_space.Space]]:
+    def update_space(self) -> Callable[[gc_space.UpdateSpaceRequest], Awaitable[gc_space.Space]]:
         r"""Return a callable for the update space method over gRPC.
 
         Updates a space. For an example, see `Update a
@@ -1190,9 +1135,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["update_space"]
 
     @property
-    def delete_space(
-        self,
-    ) -> Callable[[space.DeleteSpaceRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_space(self) -> Callable[[space.DeleteSpaceRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete space method over gRPC.
 
         Deletes a named space. Always performs a cascading delete, which
@@ -1245,11 +1188,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_space"]
 
     @property
-    def complete_import_space(
-        self,
-    ) -> Callable[
-        [space.CompleteImportSpaceRequest], Awaitable[space.CompleteImportSpaceResponse]
-    ]:
+    def complete_import_space(self) -> Callable[[space.CompleteImportSpaceRequest], Awaitable[space.CompleteImportSpaceResponse]]:
         r"""Return a callable for the complete import space method over gRPC.
 
         Completes the `import
@@ -1285,9 +1224,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["complete_import_space"]
 
     @property
-    def find_direct_message(
-        self,
-    ) -> Callable[[space.FindDirectMessageRequest], Awaitable[space.Space]]:
+    def find_direct_message(self) -> Callable[[space.FindDirectMessageRequest], Awaitable[space.Space]]:
         r"""Return a callable for the find direct message method over gRPC.
 
         Returns the existing direct message with the specified user. If
@@ -1340,11 +1277,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["find_direct_message"]
 
     @property
-    def create_membership(
-        self,
-    ) -> Callable[
-        [gc_membership.CreateMembershipRequest], Awaitable[gc_membership.Membership]
-    ]:
+    def create_membership(self) -> Callable[[gc_membership.CreateMembershipRequest], Awaitable[gc_membership.Membership]]:
         r"""Return a callable for the create membership method over gRPC.
 
         Creates a membership for the calling Chat app, a user, or a
@@ -1416,11 +1349,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["create_membership"]
 
     @property
-    def update_membership(
-        self,
-    ) -> Callable[
-        [gc_membership.UpdateMembershipRequest], Awaitable[gc_membership.Membership]
-    ]:
+    def update_membership(self) -> Callable[[gc_membership.UpdateMembershipRequest], Awaitable[gc_membership.Membership]]:
         r"""Return a callable for the update membership method over gRPC.
 
         Updates a membership. For an example, see `Update a user's
@@ -1471,11 +1400,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["update_membership"]
 
     @property
-    def delete_membership(
-        self,
-    ) -> Callable[
-        [membership.DeleteMembershipRequest], Awaitable[membership.Membership]
-    ]:
+    def delete_membership(self) -> Callable[[membership.DeleteMembershipRequest], Awaitable[membership.Membership]]:
         r"""Return a callable for the delete membership method over gRPC.
 
         Deletes a membership. For an example, see `Remove a user or a
@@ -1537,9 +1462,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_membership"]
 
     @property
-    def create_reaction(
-        self,
-    ) -> Callable[[gc_reaction.CreateReactionRequest], Awaitable[gc_reaction.Reaction]]:
+    def create_reaction(self) -> Callable[[gc_reaction.CreateReactionRequest], Awaitable[gc_reaction.Reaction]]:
         r"""Return a callable for the create reaction method over gRPC.
 
         Creates a reaction and adds it to a message. For an example, see
@@ -1576,11 +1499,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["create_reaction"]
 
     @property
-    def list_reactions(
-        self,
-    ) -> Callable[
-        [reaction.ListReactionsRequest], Awaitable[reaction.ListReactionsResponse]
-    ]:
+    def list_reactions(self) -> Callable[[reaction.ListReactionsRequest], Awaitable[reaction.ListReactionsResponse]]:
         r"""Return a callable for the list reactions method over gRPC.
 
         Lists reactions to a message. For an example, see `List
@@ -1616,9 +1535,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["list_reactions"]
 
     @property
-    def delete_reaction(
-        self,
-    ) -> Callable[[reaction.DeleteReactionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_reaction(self) -> Callable[[reaction.DeleteReactionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete reaction method over gRPC.
 
         Deletes a reaction to a message. For an example, see `Delete a
@@ -1653,9 +1570,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_reaction"]
 
     @property
-    def create_custom_emoji(
-        self,
-    ) -> Callable[[reaction.CreateCustomEmojiRequest], Awaitable[reaction.CustomEmoji]]:
+    def create_custom_emoji(self) -> Callable[[reaction.CreateCustomEmojiRequest], Awaitable[reaction.CustomEmoji]]:
         r"""Return a callable for the create custom emoji method over gRPC.
 
         Creates a custom emoji.
@@ -1694,9 +1609,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["create_custom_emoji"]
 
     @property
-    def get_custom_emoji(
-        self,
-    ) -> Callable[[reaction.GetCustomEmojiRequest], Awaitable[reaction.CustomEmoji]]:
+    def get_custom_emoji(self) -> Callable[[reaction.GetCustomEmojiRequest], Awaitable[reaction.CustomEmoji]]:
         r"""Return a callable for the get custom emoji method over gRPC.
 
         Returns details about a custom emoji.
@@ -1736,11 +1649,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_custom_emoji"]
 
     @property
-    def list_custom_emojis(
-        self,
-    ) -> Callable[
-        [reaction.ListCustomEmojisRequest], Awaitable[reaction.ListCustomEmojisResponse]
-    ]:
+    def list_custom_emojis(self) -> Callable[[reaction.ListCustomEmojisRequest], Awaitable[reaction.ListCustomEmojisResponse]]:
         r"""Return a callable for the list custom emojis method over gRPC.
 
         Lists custom emojis visible to the authenticated user.
@@ -1780,9 +1689,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["list_custom_emojis"]
 
     @property
-    def delete_custom_emoji(
-        self,
-    ) -> Callable[[reaction.DeleteCustomEmojiRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_custom_emoji(self) -> Callable[[reaction.DeleteCustomEmojiRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete custom emoji method over gRPC.
 
         Deletes a custom emoji. By default, users can only delete custom
@@ -1826,12 +1733,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["delete_custom_emoji"]
 
     @property
-    def get_space_read_state(
-        self,
-    ) -> Callable[
-        [space_read_state.GetSpaceReadStateRequest],
-        Awaitable[space_read_state.SpaceReadState],
-    ]:
+    def get_space_read_state(self) -> Callable[[space_read_state.GetSpaceReadStateRequest], Awaitable[space_read_state.SpaceReadState]]:
         r"""Return a callable for the get space read state method over gRPC.
 
         Returns details about a user's read state within a space, used
@@ -1866,12 +1768,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_space_read_state"]
 
     @property
-    def update_space_read_state(
-        self,
-    ) -> Callable[
-        [gc_space_read_state.UpdateSpaceReadStateRequest],
-        Awaitable[gc_space_read_state.SpaceReadState],
-    ]:
+    def update_space_read_state(self) -> Callable[[gc_space_read_state.UpdateSpaceReadStateRequest], Awaitable[gc_space_read_state.SpaceReadState]]:
         r"""Return a callable for the update space read state method over gRPC.
 
         Updates a user's read state within a space, used to identify
@@ -1905,12 +1802,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["update_space_read_state"]
 
     @property
-    def get_thread_read_state(
-        self,
-    ) -> Callable[
-        [thread_read_state.GetThreadReadStateRequest],
-        Awaitable[thread_read_state.ThreadReadState],
-    ]:
+    def get_thread_read_state(self) -> Callable[[thread_read_state.GetThreadReadStateRequest], Awaitable[thread_read_state.ThreadReadState]]:
         r"""Return a callable for the get thread read state method over gRPC.
 
         Returns details about a user's read state within a thread, used
@@ -1945,11 +1837,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_thread_read_state"]
 
     @property
-    def get_space_event(
-        self,
-    ) -> Callable[
-        [space_event.GetSpaceEventRequest], Awaitable[space_event.SpaceEvent]
-    ]:
+    def get_space_event(self) -> Callable[[space_event.GetSpaceEventRequest], Awaitable[space_event.SpaceEvent]]:
         r"""Return a callable for the get space event method over gRPC.
 
         Returns an event from a Google Chat space. The `event
@@ -2003,12 +1891,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         return self._stubs["get_space_event"]
 
     @property
-    def list_space_events(
-        self,
-    ) -> Callable[
-        [space_event.ListSpaceEventsRequest],
-        Awaitable[space_event.ListSpaceEventsResponse],
-    ]:
+    def list_space_events(self) -> Callable[[space_event.ListSpaceEventsRequest], Awaitable[space_event.ListSpaceEventsResponse]]:
         r"""Return a callable for the list space events method over gRPC.
 
         Lists events from a Google Chat space. For each event, the
@@ -2062,10 +1945,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
     @property
     def get_space_notification_setting(
         self,
-    ) -> Callable[
-        [space_notification_setting.GetSpaceNotificationSettingRequest],
-        Awaitable[space_notification_setting.SpaceNotificationSetting],
-    ]:
+    ) -> Callable[[space_notification_setting.GetSpaceNotificationSettingRequest], Awaitable[space_notification_setting.SpaceNotificationSetting]]:
         r"""Return a callable for the get space notification setting method over gRPC.
 
         Gets the space notification setting. For an example, see `Get
@@ -2090,9 +1970,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_space_notification_setting" not in self._stubs:
-            self._stubs[
-                "get_space_notification_setting"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_space_notification_setting"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetSpaceNotificationSetting",
                 request_serializer=space_notification_setting.GetSpaceNotificationSettingRequest.serialize,
                 response_deserializer=space_notification_setting.SpaceNotificationSetting.deserialize,
@@ -2103,8 +1981,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
     def update_space_notification_setting(
         self,
     ) -> Callable[
-        [gc_space_notification_setting.UpdateSpaceNotificationSettingRequest],
-        Awaitable[gc_space_notification_setting.SpaceNotificationSetting],
+        [gc_space_notification_setting.UpdateSpaceNotificationSettingRequest], Awaitable[gc_space_notification_setting.SpaceNotificationSetting]
     ]:
         r"""Return a callable for the update space notification
         setting method over gRPC.
@@ -2131,9 +2008,7 @@ class ChatServiceGrpcAsyncIOTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_space_notification_setting" not in self._stubs:
-            self._stubs[
-                "update_space_notification_setting"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_space_notification_setting"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
                 request_serializer=gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.serialize,
                 response_deserializer=gc_space_notification_setting.SpaceNotificationSetting.deserialize,

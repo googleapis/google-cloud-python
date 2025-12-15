@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -281,18 +270,14 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -328,9 +313,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -345,11 +328,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_key_rings(
-        self,
-    ) -> Callable[
-        [service.ListKeyRingsRequest], Awaitable[service.ListKeyRingsResponse]
-    ]:
+    def list_key_rings(self) -> Callable[[service.ListKeyRingsRequest], Awaitable[service.ListKeyRingsResponse]]:
         r"""Return a callable for the list key rings method over gRPC.
 
         Lists [KeyRings][google.cloud.kms.v1.KeyRing].
@@ -373,11 +352,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["list_key_rings"]
 
     @property
-    def list_crypto_keys(
-        self,
-    ) -> Callable[
-        [service.ListCryptoKeysRequest], Awaitable[service.ListCryptoKeysResponse]
-    ]:
+    def list_crypto_keys(self) -> Callable[[service.ListCryptoKeysRequest], Awaitable[service.ListCryptoKeysResponse]]:
         r"""Return a callable for the list crypto keys method over gRPC.
 
         Lists [CryptoKeys][google.cloud.kms.v1.CryptoKey].
@@ -401,12 +376,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["list_crypto_keys"]
 
     @property
-    def list_crypto_key_versions(
-        self,
-    ) -> Callable[
-        [service.ListCryptoKeyVersionsRequest],
-        Awaitable[service.ListCryptoKeyVersionsResponse],
-    ]:
+    def list_crypto_key_versions(self) -> Callable[[service.ListCryptoKeyVersionsRequest], Awaitable[service.ListCryptoKeyVersionsResponse]]:
         r"""Return a callable for the list crypto key versions method over gRPC.
 
         Lists [CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion].
@@ -430,11 +400,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["list_crypto_key_versions"]
 
     @property
-    def list_import_jobs(
-        self,
-    ) -> Callable[
-        [service.ListImportJobsRequest], Awaitable[service.ListImportJobsResponse]
-    ]:
+    def list_import_jobs(self) -> Callable[[service.ListImportJobsRequest], Awaitable[service.ListImportJobsResponse]]:
         r"""Return a callable for the list import jobs method over gRPC.
 
         Lists [ImportJobs][google.cloud.kms.v1.ImportJob].
@@ -458,9 +424,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["list_import_jobs"]
 
     @property
-    def get_key_ring(
-        self,
-    ) -> Callable[[service.GetKeyRingRequest], Awaitable[resources.KeyRing]]:
+    def get_key_ring(self) -> Callable[[service.GetKeyRingRequest], Awaitable[resources.KeyRing]]:
         r"""Return a callable for the get key ring method over gRPC.
 
         Returns metadata for a given
@@ -485,9 +449,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["get_key_ring"]
 
     @property
-    def get_crypto_key(
-        self,
-    ) -> Callable[[service.GetCryptoKeyRequest], Awaitable[resources.CryptoKey]]:
+    def get_crypto_key(self) -> Callable[[service.GetCryptoKeyRequest], Awaitable[resources.CryptoKey]]:
         r"""Return a callable for the get crypto key method over gRPC.
 
         Returns metadata for a given
@@ -514,11 +476,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["get_crypto_key"]
 
     @property
-    def get_crypto_key_version(
-        self,
-    ) -> Callable[
-        [service.GetCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
+    def get_crypto_key_version(self) -> Callable[[service.GetCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]]:
         r"""Return a callable for the get crypto key version method over gRPC.
 
         Returns metadata for a given
@@ -543,9 +501,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["get_crypto_key_version"]
 
     @property
-    def get_public_key(
-        self,
-    ) -> Callable[[service.GetPublicKeyRequest], Awaitable[resources.PublicKey]]:
+    def get_public_key(self) -> Callable[[service.GetPublicKeyRequest], Awaitable[resources.PublicKey]]:
         r"""Return a callable for the get public key method over gRPC.
 
         Returns the public key for the given
@@ -575,9 +531,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["get_public_key"]
 
     @property
-    def get_import_job(
-        self,
-    ) -> Callable[[service.GetImportJobRequest], Awaitable[resources.ImportJob]]:
+    def get_import_job(self) -> Callable[[service.GetImportJobRequest], Awaitable[resources.ImportJob]]:
         r"""Return a callable for the get import job method over gRPC.
 
         Returns metadata for a given
@@ -602,9 +556,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["get_import_job"]
 
     @property
-    def create_key_ring(
-        self,
-    ) -> Callable[[service.CreateKeyRingRequest], Awaitable[resources.KeyRing]]:
+    def create_key_ring(self) -> Callable[[service.CreateKeyRingRequest], Awaitable[resources.KeyRing]]:
         r"""Return a callable for the create key ring method over gRPC.
 
         Create a new [KeyRing][google.cloud.kms.v1.KeyRing] in a given
@@ -629,9 +581,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["create_key_ring"]
 
     @property
-    def create_crypto_key(
-        self,
-    ) -> Callable[[service.CreateCryptoKeyRequest], Awaitable[resources.CryptoKey]]:
+    def create_crypto_key(self) -> Callable[[service.CreateCryptoKeyRequest], Awaitable[resources.CryptoKey]]:
         r"""Return a callable for the create crypto key method over gRPC.
 
         Create a new [CryptoKey][google.cloud.kms.v1.CryptoKey] within a
@@ -660,11 +610,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["create_crypto_key"]
 
     @property
-    def create_crypto_key_version(
-        self,
-    ) -> Callable[
-        [service.CreateCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
+    def create_crypto_key_version(self) -> Callable[[service.CreateCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]]:
         r"""Return a callable for the create crypto key version method over gRPC.
 
         Create a new
@@ -695,11 +641,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["create_crypto_key_version"]
 
     @property
-    def import_crypto_key_version(
-        self,
-    ) -> Callable[
-        [service.ImportCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
+    def import_crypto_key_version(self) -> Callable[[service.ImportCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]]:
         r"""Return a callable for the import crypto key version method over gRPC.
 
         Import wrapped key material into a
@@ -732,9 +674,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["import_crypto_key_version"]
 
     @property
-    def create_import_job(
-        self,
-    ) -> Callable[[service.CreateImportJobRequest], Awaitable[resources.ImportJob]]:
+    def create_import_job(self) -> Callable[[service.CreateImportJobRequest], Awaitable[resources.ImportJob]]:
         r"""Return a callable for the create import job method over gRPC.
 
         Create a new [ImportJob][google.cloud.kms.v1.ImportJob] within a
@@ -762,9 +702,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["create_import_job"]
 
     @property
-    def update_crypto_key(
-        self,
-    ) -> Callable[[service.UpdateCryptoKeyRequest], Awaitable[resources.CryptoKey]]:
+    def update_crypto_key(self) -> Callable[[service.UpdateCryptoKeyRequest], Awaitable[resources.CryptoKey]]:
         r"""Return a callable for the update crypto key method over gRPC.
 
         Update a [CryptoKey][google.cloud.kms.v1.CryptoKey].
@@ -788,11 +726,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["update_crypto_key"]
 
     @property
-    def update_crypto_key_version(
-        self,
-    ) -> Callable[
-        [service.UpdateCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
+    def update_crypto_key_version(self) -> Callable[[service.UpdateCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]]:
         r"""Return a callable for the update crypto key version method over gRPC.
 
         Update a
@@ -829,11 +763,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["update_crypto_key_version"]
 
     @property
-    def update_crypto_key_primary_version(
-        self,
-    ) -> Callable[
-        [service.UpdateCryptoKeyPrimaryVersionRequest], Awaitable[resources.CryptoKey]
-    ]:
+    def update_crypto_key_primary_version(self) -> Callable[[service.UpdateCryptoKeyPrimaryVersionRequest], Awaitable[resources.CryptoKey]]:
         r"""Return a callable for the update crypto key primary
         version method over gRPC.
 
@@ -855,9 +785,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_crypto_key_primary_version" not in self._stubs:
-            self._stubs[
-                "update_crypto_key_primary_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_crypto_key_primary_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.kms.v1.KeyManagementService/UpdateCryptoKeyPrimaryVersion",
                 request_serializer=service.UpdateCryptoKeyPrimaryVersionRequest.serialize,
                 response_deserializer=resources.CryptoKey.deserialize,
@@ -865,11 +793,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["update_crypto_key_primary_version"]
 
     @property
-    def destroy_crypto_key_version(
-        self,
-    ) -> Callable[
-        [service.DestroyCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
+    def destroy_crypto_key_version(self) -> Callable[[service.DestroyCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]]:
         r"""Return a callable for the destroy crypto key version method over gRPC.
 
         Schedule a
@@ -907,9 +831,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "destroy_crypto_key_version" not in self._stubs:
-            self._stubs[
-                "destroy_crypto_key_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["destroy_crypto_key_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.kms.v1.KeyManagementService/DestroyCryptoKeyVersion",
                 request_serializer=service.DestroyCryptoKeyVersionRequest.serialize,
                 response_deserializer=resources.CryptoKeyVersion.deserialize,
@@ -917,11 +839,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["destroy_crypto_key_version"]
 
     @property
-    def restore_crypto_key_version(
-        self,
-    ) -> Callable[
-        [service.RestoreCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]
-    ]:
+    def restore_crypto_key_version(self) -> Callable[[service.RestoreCryptoKeyVersionRequest], Awaitable[resources.CryptoKeyVersion]]:
         r"""Return a callable for the restore crypto key version method over gRPC.
 
         Restore a
@@ -948,9 +866,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "restore_crypto_key_version" not in self._stubs:
-            self._stubs[
-                "restore_crypto_key_version"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["restore_crypto_key_version"] = self._logged_channel.unary_unary(
                 "/google.cloud.kms.v1.KeyManagementService/RestoreCryptoKeyVersion",
                 request_serializer=service.RestoreCryptoKeyVersionRequest.serialize,
                 response_deserializer=resources.CryptoKeyVersion.deserialize,
@@ -958,9 +874,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["restore_crypto_key_version"]
 
     @property
-    def encrypt(
-        self,
-    ) -> Callable[[service.EncryptRequest], Awaitable[service.EncryptResponse]]:
+    def encrypt(self) -> Callable[[service.EncryptRequest], Awaitable[service.EncryptResponse]]:
         r"""Return a callable for the encrypt method over gRPC.
 
         Encrypts data, so that it can only be recovered by a call to
@@ -988,9 +902,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["encrypt"]
 
     @property
-    def decrypt(
-        self,
-    ) -> Callable[[service.DecryptRequest], Awaitable[service.DecryptResponse]]:
+    def decrypt(self) -> Callable[[service.DecryptRequest], Awaitable[service.DecryptResponse]]:
         r"""Return a callable for the decrypt method over gRPC.
 
         Decrypts data that was protected by
@@ -1018,9 +930,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["decrypt"]
 
     @property
-    def raw_encrypt(
-        self,
-    ) -> Callable[[service.RawEncryptRequest], Awaitable[service.RawEncryptResponse]]:
+    def raw_encrypt(self) -> Callable[[service.RawEncryptRequest], Awaitable[service.RawEncryptResponse]]:
         r"""Return a callable for the raw encrypt method over gRPC.
 
         Encrypts data using portable cryptographic primitives. Most
@@ -1051,9 +961,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["raw_encrypt"]
 
     @property
-    def raw_decrypt(
-        self,
-    ) -> Callable[[service.RawDecryptRequest], Awaitable[service.RawDecryptResponse]]:
+    def raw_decrypt(self) -> Callable[[service.RawDecryptRequest], Awaitable[service.RawDecryptResponse]]:
         r"""Return a callable for the raw decrypt method over gRPC.
 
         Decrypts data that was originally encrypted using a raw
@@ -1081,11 +989,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["raw_decrypt"]
 
     @property
-    def asymmetric_sign(
-        self,
-    ) -> Callable[
-        [service.AsymmetricSignRequest], Awaitable[service.AsymmetricSignResponse]
-    ]:
+    def asymmetric_sign(self) -> Callable[[service.AsymmetricSignRequest], Awaitable[service.AsymmetricSignResponse]]:
         r"""Return a callable for the asymmetric sign method over gRPC.
 
         Signs data using a
@@ -1114,11 +1018,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["asymmetric_sign"]
 
     @property
-    def asymmetric_decrypt(
-        self,
-    ) -> Callable[
-        [service.AsymmetricDecryptRequest], Awaitable[service.AsymmetricDecryptResponse]
-    ]:
+    def asymmetric_decrypt(self) -> Callable[[service.AsymmetricDecryptRequest], Awaitable[service.AsymmetricDecryptResponse]]:
         r"""Return a callable for the asymmetric decrypt method over gRPC.
 
         Decrypts data that was encrypted with a public key retrieved
@@ -1148,9 +1048,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["asymmetric_decrypt"]
 
     @property
-    def mac_sign(
-        self,
-    ) -> Callable[[service.MacSignRequest], Awaitable[service.MacSignResponse]]:
+    def mac_sign(self) -> Callable[[service.MacSignRequest], Awaitable[service.MacSignResponse]]:
         r"""Return a callable for the mac sign method over gRPC.
 
         Signs data using a
@@ -1178,9 +1076,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["mac_sign"]
 
     @property
-    def mac_verify(
-        self,
-    ) -> Callable[[service.MacVerifyRequest], Awaitable[service.MacVerifyResponse]]:
+    def mac_verify(self) -> Callable[[service.MacVerifyRequest], Awaitable[service.MacVerifyResponse]]:
         r"""Return a callable for the mac verify method over gRPC.
 
         Verifies MAC tag using a
@@ -1208,9 +1104,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["mac_verify"]
 
     @property
-    def decapsulate(
-        self,
-    ) -> Callable[[service.DecapsulateRequest], Awaitable[service.DecapsulateResponse]]:
+    def decapsulate(self) -> Callable[[service.DecapsulateRequest], Awaitable[service.DecapsulateResponse]]:
         r"""Return a callable for the decapsulate method over gRPC.
 
         Decapsulates data that was encapsulated with a public key
@@ -1240,12 +1134,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
         return self._stubs["decapsulate"]
 
     @property
-    def generate_random_bytes(
-        self,
-    ) -> Callable[
-        [service.GenerateRandomBytesRequest],
-        Awaitable[service.GenerateRandomBytesResponse],
-    ]:
+    def generate_random_bytes(self) -> Callable[[service.GenerateRandomBytesRequest], Awaitable[service.GenerateRandomBytesResponse]]:
         r"""Return a callable for the generate random bytes method over gRPC.
 
         Generate random bytes using the Cloud KMS randomness
@@ -1721,9 +1610,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1808,10 +1695,7 @@ class KeyManagementServiceGrpcAsyncIOTransport(KeyManagementServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

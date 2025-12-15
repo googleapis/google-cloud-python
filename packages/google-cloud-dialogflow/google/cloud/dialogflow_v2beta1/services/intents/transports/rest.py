@@ -135,12 +135,8 @@ class IntentsRestInterceptor:
     """
 
     def pre_batch_delete_intents(
-        self,
-        request: intent.BatchDeleteIntentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intent.BatchDeleteIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: intent.BatchDeleteIntentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intent.BatchDeleteIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_intents
 
         Override in a subclass to manipulate the request or metadata
@@ -148,9 +144,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_delete_intents(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_delete_intents(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_delete_intents
 
         DEPRECATED. Please use the `post_batch_delete_intents_with_metadata`
@@ -164,9 +158,7 @@ class IntentsRestInterceptor:
         return response
 
     def post_batch_delete_intents_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_delete_intents
 
@@ -183,12 +175,8 @@ class IntentsRestInterceptor:
         return response, metadata
 
     def pre_batch_update_intents(
-        self,
-        request: intent.BatchUpdateIntentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        intent.BatchUpdateIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: intent.BatchUpdateIntentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[intent.BatchUpdateIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_intents
 
         Override in a subclass to manipulate the request or metadata
@@ -196,9 +184,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_intents(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_update_intents(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_update_intents
 
         DEPRECATED. Please use the `post_batch_update_intents_with_metadata`
@@ -212,9 +198,7 @@ class IntentsRestInterceptor:
         return response
 
     def post_batch_update_intents_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_intents
 
@@ -231,9 +215,7 @@ class IntentsRestInterceptor:
         return response, metadata
 
     def pre_create_intent(
-        self,
-        request: gcd_intent.CreateIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcd_intent.CreateIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_intent.CreateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_intent
 
@@ -256,9 +238,7 @@ class IntentsRestInterceptor:
         return response
 
     def post_create_intent_with_metadata(
-        self,
-        response: gcd_intent.Intent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_intent.Intent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_intent
 
@@ -275,9 +255,7 @@ class IntentsRestInterceptor:
         return response, metadata
 
     def pre_delete_intent(
-        self,
-        request: intent.DeleteIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: intent.DeleteIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[intent.DeleteIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_intent
 
@@ -287,9 +265,7 @@ class IntentsRestInterceptor:
         return request, metadata
 
     def pre_get_intent(
-        self,
-        request: intent.GetIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: intent.GetIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[intent.GetIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_intent
 
@@ -329,9 +305,7 @@ class IntentsRestInterceptor:
         return response, metadata
 
     def pre_list_intents(
-        self,
-        request: intent.ListIntentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: intent.ListIntentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[intent.ListIntentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_intents
 
@@ -340,9 +314,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_intents(
-        self, response: intent.ListIntentsResponse
-    ) -> intent.ListIntentsResponse:
+    def post_list_intents(self, response: intent.ListIntentsResponse) -> intent.ListIntentsResponse:
         """Post-rpc interceptor for list_intents
 
         DEPRECATED. Please use the `post_list_intents_with_metadata`
@@ -356,9 +328,7 @@ class IntentsRestInterceptor:
         return response
 
     def post_list_intents_with_metadata(
-        self,
-        response: intent.ListIntentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: intent.ListIntentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[intent.ListIntentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_intents
 
@@ -375,9 +345,7 @@ class IntentsRestInterceptor:
         return response, metadata
 
     def pre_update_intent(
-        self,
-        request: gcd_intent.UpdateIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcd_intent.UpdateIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_intent.UpdateIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_intent
 
@@ -400,9 +368,7 @@ class IntentsRestInterceptor:
         return response
 
     def post_update_intent_with_metadata(
-        self,
-        response: gcd_intent.Intent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_intent.Intent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_intent.Intent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_intent
 
@@ -419,12 +385,8 @@ class IntentsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -432,9 +394,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -444,12 +404,8 @@ class IntentsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -457,9 +413,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -469,12 +423,8 @@ class IntentsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -492,12 +442,8 @@ class IntentsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -505,9 +451,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -517,12 +461,8 @@ class IntentsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -530,9 +470,7 @@ class IntentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -622,9 +560,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -682,29 +618,17 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 path_prefix="v2beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchDeleteIntents(
-        _BaseIntentsRestTransport._BaseBatchDeleteIntents, IntentsRestStub
-    ):
+    class _BatchDeleteIntents(_BaseIntentsRestTransport._BaseBatchDeleteIntents, IntentsRestStub):
         def __hash__(self):
             return hash("IntentsRestTransport.BatchDeleteIntents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -748,32 +672,18 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_intents(
-                request, metadata
-            )
-            transcoded_request = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_intents(request, metadata)
+            transcoded_request = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_transcoded_request(http_options, request)
 
-            body = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIntentsRestTransport._BaseBatchDeleteIntents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -797,13 +707,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._BatchDeleteIntents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -817,12 +721,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             resp = self._interceptor.post_batch_delete_intents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_delete_intents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_delete_intents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -843,22 +743,12 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 )
             return resp
 
-    class _BatchUpdateIntents(
-        _BaseIntentsRestTransport._BaseBatchUpdateIntents, IntentsRestStub
-    ):
+    class _BatchUpdateIntents(_BaseIntentsRestTransport._BaseBatchUpdateIntents, IntentsRestStub):
         def __hash__(self):
             return hash("IntentsRestTransport.BatchUpdateIntents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -902,32 +792,18 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_intents(
-                request, metadata
-            )
-            transcoded_request = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_intents(request, metadata)
+            transcoded_request = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_transcoded_request(http_options, request)
 
-            body = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIntentsRestTransport._BaseBatchUpdateIntents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -951,13 +827,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._BatchUpdateIntents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -971,12 +841,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             resp = self._interceptor.post_batch_update_intents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_intents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_intents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1002,15 +868,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.CreateIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1062,34 +920,18 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseCreateIntent._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseCreateIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_create_intent(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseCreateIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseCreateIntent._get_transcoded_request(http_options, request)
 
-            body = _BaseIntentsRestTransport._BaseCreateIntent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIntentsRestTransport._BaseCreateIntent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseCreateIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseCreateIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1113,13 +955,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._CreateIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1135,12 +971,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             resp = self._interceptor.post_create_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_intent.Intent.to_json(response)
                 except:
@@ -1166,15 +998,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.DeleteIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1210,30 +1034,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseDeleteIntent._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseDeleteIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_intent(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseDeleteIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseDeleteIntent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseDeleteIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseDeleteIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1257,12 +1067,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._DeleteIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1275,15 +1080,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.GetIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1337,25 +1134,13 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             http_options = _BaseIntentsRestTransport._BaseGetIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_get_intent(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseGetIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseGetIntent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseGetIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseGetIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1378,14 +1163,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 )
 
             # Send the request
-            response = IntentsRestTransport._GetIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IntentsRestTransport._GetIntent._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1400,12 +1178,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             resp = self._interceptor.post_get_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = intent.Intent.to_json(response)
                 except:
@@ -1431,15 +1205,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.ListIntents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1481,30 +1247,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseListIntents._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseListIntents._get_http_options()
 
             request, metadata = self._interceptor.pre_list_intents(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseListIntents._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseListIntents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseListIntents._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseListIntents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1527,14 +1279,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 )
 
             # Send the request
-            response = IntentsRestTransport._ListIntents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IntentsRestTransport._ListIntents._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1549,12 +1294,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             resp = self._interceptor.post_list_intents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_intents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_intents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = intent.ListIntentsResponse.to_json(response)
                 except:
@@ -1580,15 +1321,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.UpdateIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1640,34 +1373,18 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseUpdateIntent._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseUpdateIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_update_intent(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseUpdateIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseUpdateIntent._get_transcoded_request(http_options, request)
 
-            body = _BaseIntentsRestTransport._BaseUpdateIntent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIntentsRestTransport._BaseUpdateIntent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseUpdateIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseUpdateIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1691,13 +1408,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._UpdateIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1713,12 +1424,8 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             resp = self._interceptor.post_update_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_intent.Intent.to_json(response)
                 except:
@@ -1740,25 +1447,19 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return resp
 
     @property
-    def batch_delete_intents(
-        self,
-    ) -> Callable[[intent.BatchDeleteIntentsRequest], operations_pb2.Operation]:
+    def batch_delete_intents(self) -> Callable[[intent.BatchDeleteIntentsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteIntents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_intents(
-        self,
-    ) -> Callable[[intent.BatchUpdateIntentsRequest], operations_pb2.Operation]:
+    def batch_update_intents(self) -> Callable[[intent.BatchUpdateIntentsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateIntents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_intent(
-        self,
-    ) -> Callable[[gcd_intent.CreateIntentRequest], gcd_intent.Intent]:
+    def create_intent(self) -> Callable[[gcd_intent.CreateIntentRequest], gcd_intent.Intent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIntent(self._session, self._host, self._interceptor)  # type: ignore
@@ -1776,17 +1477,13 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
         return self._GetIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_intents(
-        self,
-    ) -> Callable[[intent.ListIntentsRequest], intent.ListIntentsResponse]:
+    def list_intents(self) -> Callable[[intent.ListIntentsRequest], intent.ListIntentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIntents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_intent(
-        self,
-    ) -> Callable[[gcd_intent.UpdateIntentRequest], gcd_intent.Intent]:
+    def update_intent(self) -> Callable[[gcd_intent.UpdateIntentRequest], gcd_intent.Intent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIntent(self._session, self._host, self._interceptor)  # type: ignore
@@ -1800,15 +1497,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1846,30 +1535,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1892,14 +1567,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 )
 
             # Send the request
-            response = IntentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = IntentsRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1910,9 +1578,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1942,15 +1608,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1988,30 +1646,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2035,12 +1679,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2052,9 +1691,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2079,22 +1716,12 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseIntentsRestTransport._BaseCancelOperation, IntentsRestStub
-    ):
+    class _CancelOperation(_BaseIntentsRestTransport._BaseCancelOperation, IntentsRestStub):
         def __hash__(self):
             return hash("IntentsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2129,32 +1756,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseIntentsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2178,12 +1789,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2202,15 +1808,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             return hash("IntentsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2248,30 +1846,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2295,12 +1879,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2312,9 +1891,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2339,22 +1916,12 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseIntentsRestTransport._BaseListOperations, IntentsRestStub
-    ):
+    class _ListOperations(_BaseIntentsRestTransport._BaseListOperations, IntentsRestStub):
         def __hash__(self):
             return hash("IntentsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2392,30 +1959,16 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseIntentsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseIntentsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseIntentsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseIntentsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseIntentsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseIntentsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2439,12 +1992,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
 
             # Send the request
             response = IntentsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2456,9 +2004,7 @@ class IntentsRestTransport(_BaseIntentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

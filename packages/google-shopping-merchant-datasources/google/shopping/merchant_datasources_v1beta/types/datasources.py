@@ -20,10 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_datasources_v1beta.types import (
-    datasourcetypes,
-    fileinputs,
-)
+from google.shopping.merchant_datasources_v1beta.types import datasourcetypes, fileinputs
 
 __protobuf__ = proto.module(
     package="google.shopping.merchant.datasources.v1beta",
@@ -154,13 +151,11 @@ class DataSource(proto.Message):
         oneof="Type",
         message=datasourcetypes.PrimaryProductDataSource,
     )
-    supplemental_product_data_source: datasourcetypes.SupplementalProductDataSource = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="Type",
-            message=datasourcetypes.SupplementalProductDataSource,
-        )
+    supplemental_product_data_source: datasourcetypes.SupplementalProductDataSource = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="Type",
+        message=datasourcetypes.SupplementalProductDataSource,
     )
     local_inventory_data_source: datasourcetypes.LocalInventoryDataSource = proto.Field(
         proto.MESSAGE,
@@ -168,13 +163,11 @@ class DataSource(proto.Message):
         oneof="Type",
         message=datasourcetypes.LocalInventoryDataSource,
     )
-    regional_inventory_data_source: datasourcetypes.RegionalInventoryDataSource = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="Type",
-            message=datasourcetypes.RegionalInventoryDataSource,
-        )
+    regional_inventory_data_source: datasourcetypes.RegionalInventoryDataSource = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="Type",
+        message=datasourcetypes.RegionalInventoryDataSource,
     )
     promotion_data_source: datasourcetypes.PromotionDataSource = proto.Field(
         proto.MESSAGE,

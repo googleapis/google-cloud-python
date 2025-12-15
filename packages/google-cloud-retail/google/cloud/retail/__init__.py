@@ -18,75 +18,31 @@ from google.cloud.retail import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.retail_v2.services.analytics_service.async_client import (
-    AnalyticsServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.analytics_service.client import (
-    AnalyticsServiceClient,
-)
-from google.cloud.retail_v2.services.catalog_service.async_client import (
-    CatalogServiceAsyncClient,
-)
+from google.cloud.retail_v2.services.analytics_service.async_client import AnalyticsServiceAsyncClient
+from google.cloud.retail_v2.services.analytics_service.client import AnalyticsServiceClient
+from google.cloud.retail_v2.services.catalog_service.async_client import CatalogServiceAsyncClient
 from google.cloud.retail_v2.services.catalog_service.client import CatalogServiceClient
-from google.cloud.retail_v2.services.completion_service.async_client import (
-    CompletionServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.completion_service.client import (
-    CompletionServiceClient,
-)
-from google.cloud.retail_v2.services.control_service.async_client import (
-    ControlServiceAsyncClient,
-)
+from google.cloud.retail_v2.services.completion_service.async_client import CompletionServiceAsyncClient
+from google.cloud.retail_v2.services.completion_service.client import CompletionServiceClient
+from google.cloud.retail_v2.services.control_service.async_client import ControlServiceAsyncClient
 from google.cloud.retail_v2.services.control_service.client import ControlServiceClient
-from google.cloud.retail_v2.services.conversational_search_service.async_client import (
-    ConversationalSearchServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.conversational_search_service.client import (
-    ConversationalSearchServiceClient,
-)
-from google.cloud.retail_v2.services.generative_question_service.async_client import (
-    GenerativeQuestionServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.generative_question_service.client import (
-    GenerativeQuestionServiceClient,
-)
-from google.cloud.retail_v2.services.model_service.async_client import (
-    ModelServiceAsyncClient,
-)
+from google.cloud.retail_v2.services.conversational_search_service.async_client import ConversationalSearchServiceAsyncClient
+from google.cloud.retail_v2.services.conversational_search_service.client import ConversationalSearchServiceClient
+from google.cloud.retail_v2.services.generative_question_service.async_client import GenerativeQuestionServiceAsyncClient
+from google.cloud.retail_v2.services.generative_question_service.client import GenerativeQuestionServiceClient
+from google.cloud.retail_v2.services.model_service.async_client import ModelServiceAsyncClient
 from google.cloud.retail_v2.services.model_service.client import ModelServiceClient
-from google.cloud.retail_v2.services.prediction_service.async_client import (
-    PredictionServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.prediction_service.client import (
-    PredictionServiceClient,
-)
-from google.cloud.retail_v2.services.product_service.async_client import (
-    ProductServiceAsyncClient,
-)
+from google.cloud.retail_v2.services.prediction_service.async_client import PredictionServiceAsyncClient
+from google.cloud.retail_v2.services.prediction_service.client import PredictionServiceClient
+from google.cloud.retail_v2.services.product_service.async_client import ProductServiceAsyncClient
 from google.cloud.retail_v2.services.product_service.client import ProductServiceClient
-from google.cloud.retail_v2.services.search_service.async_client import (
-    SearchServiceAsyncClient,
-)
+from google.cloud.retail_v2.services.search_service.async_client import SearchServiceAsyncClient
 from google.cloud.retail_v2.services.search_service.client import SearchServiceClient
-from google.cloud.retail_v2.services.serving_config_service.async_client import (
-    ServingConfigServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.serving_config_service.client import (
-    ServingConfigServiceClient,
-)
-from google.cloud.retail_v2.services.user_event_service.async_client import (
-    UserEventServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.user_event_service.client import (
-    UserEventServiceClient,
-)
-from google.cloud.retail_v2.types.catalog import (
-    AttributesConfig,
-    Catalog,
-    CatalogAttribute,
-    CompletionConfig,
-    ProductLevelConfig,
-)
+from google.cloud.retail_v2.services.serving_config_service.async_client import ServingConfigServiceAsyncClient
+from google.cloud.retail_v2.services.serving_config_service.client import ServingConfigServiceClient
+from google.cloud.retail_v2.services.user_event_service.async_client import UserEventServiceAsyncClient
+from google.cloud.retail_v2.services.user_event_service.client import UserEventServiceClient
+from google.cloud.retail_v2.types.catalog import AttributesConfig, Catalog, CatalogAttribute, CompletionConfig, ProductLevelConfig
 from google.cloud.retail_v2.types.catalog_service import (
     AddCatalogAttributeRequest,
     GetAttributesConfigRequest,
@@ -123,10 +79,7 @@ from google.cloud.retail_v2.types.common import (
     StringList,
     UserInfo,
 )
-from google.cloud.retail_v2.types.completion_service import (
-    CompleteQueryRequest,
-    CompleteQueryResponse,
-)
+from google.cloud.retail_v2.types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from google.cloud.retail_v2.types.control import Control
 from google.cloud.retail_v2.types.control_service import (
     CreateControlRequest,
@@ -136,10 +89,7 @@ from google.cloud.retail_v2.types.control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
-from google.cloud.retail_v2.types.conversational_search_service import (
-    ConversationalSearchRequest,
-    ConversationalSearchResponse,
-)
+from google.cloud.retail_v2.types.conversational_search_service import ConversationalSearchRequest, ConversationalSearchResponse
 from google.cloud.retail_v2.types.export_config import (
     BigQueryOutputResult,
     ExportAnalyticsMetricsRequest,
@@ -150,10 +100,7 @@ from google.cloud.retail_v2.types.export_config import (
     OutputConfig,
     OutputResult,
 )
-from google.cloud.retail_v2.types.generative_question import (
-    GenerativeQuestionConfig,
-    GenerativeQuestionsFeatureConfig,
-)
+from google.cloud.retail_v2.types.generative_question import GenerativeQuestionConfig, GenerativeQuestionsFeatureConfig
 from google.cloud.retail_v2.types.generative_question_service import (
     BatchUpdateGenerativeQuestionConfigsRequest,
     BatchUpdateGenerativeQuestionConfigsResponse,
@@ -196,10 +143,7 @@ from google.cloud.retail_v2.types.model_service import (
     TuneModelResponse,
     UpdateModelRequest,
 )
-from google.cloud.retail_v2.types.prediction_service import (
-    PredictRequest,
-    PredictResponse,
-)
+from google.cloud.retail_v2.types.prediction_service import PredictRequest, PredictResponse
 from google.cloud.retail_v2.types.product import Product
 from google.cloud.retail_v2.types.product_service import (
     AddFulfillmentPlacesMetadata,
@@ -253,12 +197,7 @@ from google.cloud.retail_v2.types.serving_config_service import (
     RemoveControlRequest,
     UpdateServingConfigRequest,
 )
-from google.cloud.retail_v2.types.user_event import (
-    CompletionDetail,
-    ProductDetail,
-    PurchaseTransaction,
-    UserEvent,
-)
+from google.cloud.retail_v2.types.user_event import CompletionDetail, ProductDetail, PurchaseTransaction, UserEvent
 from google.cloud.retail_v2.types.user_event_service import (
     CollectUserEventRequest,
     RejoinUserEventsMetadata,

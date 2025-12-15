@@ -151,13 +151,8 @@ class ResourcePoliciesRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListResourcePoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListResourcePoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListResourcePoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListResourcePoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -165,9 +160,7 @@ class ResourcePoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.ResourcePolicyAggregatedList
-    ) -> compute.ResourcePolicyAggregatedList:
+    def post_aggregated_list(self, response: compute.ResourcePolicyAggregatedList) -> compute.ResourcePolicyAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -181,12 +174,8 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.ResourcePolicyAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ResourcePolicyAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.ResourcePolicyAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ResourcePolicyAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -202,12 +191,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -229,9 +214,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -248,12 +231,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -275,9 +254,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.ResourcePolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.ResourcePolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ResourcePolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -294,13 +271,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyResourcePolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetIamPolicyResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -322,9 +294,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -341,12 +311,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -368,9 +334,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -387,12 +351,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListResourcePoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListResourcePoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListResourcePoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListResourcePoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -400,9 +360,7 @@ class ResourcePoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.ResourcePolicyList
-    ) -> compute.ResourcePolicyList:
+    def post_list(self, response: compute.ResourcePolicyList) -> compute.ResourcePolicyList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -416,9 +374,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.ResourcePolicyList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.ResourcePolicyList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ResourcePolicyList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -435,12 +391,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -462,9 +414,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -481,13 +431,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyResourcePolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetIamPolicyResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -509,9 +454,7 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -528,13 +471,8 @@ class ResourcePoliciesRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsResourcePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsResourcePolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsResourcePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsResourcePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -542,9 +480,7 @@ class ResourcePoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -558,12 +494,8 @@ class ResourcePoliciesRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -662,30 +594,18 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ResourcePoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseResourcePoliciesRestTransport._BaseAggregatedList, ResourcePoliciesRestStub
-    ):
+    class _AggregatedList(_BaseResourcePoliciesRestTransport._BaseAggregatedList, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -726,26 +646,16 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                     Contains a list of resourcePolicies.
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseResourcePoliciesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseResourcePoliciesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -769,12 +679,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -790,16 +695,10 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.ResourcePolicyAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.ResourcePolicyAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -818,22 +717,12 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                 )
             return resp
 
-    class _Delete(
-        _BaseResourcePoliciesRestTransport._BaseDelete, ResourcePoliciesRestStub
-    ):
+    class _Delete(_BaseResourcePoliciesRestTransport._BaseDelete, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -891,30 +780,16 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseResourcePoliciesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseResourcePoliciesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -938,12 +813,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -959,12 +829,8 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -990,15 +856,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
             return hash("ResourcePoliciesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1045,30 +903,16 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseResourcePoliciesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseResourcePoliciesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1092,12 +936,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1114,9 +953,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.ResourcePolicy.to_json(response)
                 except:
@@ -1137,22 +974,12 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseResourcePoliciesRestTransport._BaseGetIamPolicy, ResourcePoliciesRestStub
-    ):
+    class _GetIamPolicy(_BaseResourcePoliciesRestTransport._BaseGetIamPolicy, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1216,26 +1043,16 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseResourcePoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseResourcePoliciesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1259,12 +1076,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1280,12 +1092,8 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1306,22 +1114,12 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseResourcePoliciesRestTransport._BaseInsert, ResourcePoliciesRestStub
-    ):
+    class _Insert(_BaseResourcePoliciesRestTransport._BaseInsert, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1380,36 +1178,18 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseResourcePoliciesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseResourcePoliciesRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseResourcePoliciesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseResourcePoliciesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1433,13 +1213,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1455,12 +1229,8 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1486,15 +1256,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
             return hash("ResourcePoliciesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1535,30 +1297,16 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseResourcePoliciesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseResourcePoliciesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1582,12 +1330,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1604,9 +1347,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.ResourcePolicyList.to_json(response)
                 except:
@@ -1627,22 +1368,12 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                 )
             return resp
 
-    class _Patch(
-        _BaseResourcePoliciesRestTransport._BasePatch, ResourcePoliciesRestStub
-    ):
+    class _Patch(_BaseResourcePoliciesRestTransport._BasePatch, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1701,34 +1432,18 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseResourcePoliciesRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseResourcePoliciesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseResourcePoliciesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseResourcePoliciesRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1752,13 +1467,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1774,12 +1483,8 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1800,22 +1505,12 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseResourcePoliciesRestTransport._BaseSetIamPolicy, ResourcePoliciesRestStub
-    ):
+    class _SetIamPolicy(_BaseResourcePoliciesRestTransport._BaseSetIamPolicy, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1880,30 +1575,18 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1927,13 +1610,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1949,12 +1626,8 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1975,23 +1648,12 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseResourcePoliciesRestTransport._BaseTestIamPermissions,
-        ResourcePoliciesRestStub,
-    ):
+    class _TestIamPermissions(_BaseResourcePoliciesRestTransport._BaseTestIamPermissions, ResourcePoliciesRestStub):
         def __hash__(self):
             return hash("ResourcePoliciesRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2033,32 +1695,18 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseResourcePoliciesRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2082,13 +1730,7 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             # Send the request
             response = ResourcePoliciesRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2104,12 +1746,8 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -2131,79 +1769,55 @@ class ResourcePoliciesRestTransport(_BaseResourcePoliciesRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListResourcePoliciesRequest],
-        compute.ResourcePolicyAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListResourcePoliciesRequest], compute.ResourcePolicyAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteResourcePolicyRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteResourcePolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetResourcePolicyRequest], compute.ResourcePolicy]:
+    def get(self) -> Callable[[compute.GetResourcePolicyRequest], compute.ResourcePolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyResourcePolicyRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyResourcePolicyRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertResourcePolicyRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertResourcePolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListResourcePoliciesRequest], compute.ResourcePolicyList]:
+    def list(self) -> Callable[[compute.ListResourcePoliciesRequest], compute.ResourcePolicyList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchResourcePolicyRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchResourcePolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyResourcePolicyRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyResourcePolicyRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsResourcePolicyRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsResourcePolicyRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

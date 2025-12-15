@@ -18,12 +18,8 @@ from google.cloud.edgecontainer import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.edgecontainer_v1.services.edge_container.async_client import (
-    EdgeContainerAsyncClient,
-)
-from google.cloud.edgecontainer_v1.services.edge_container.client import (
-    EdgeContainerClient,
-)
+from google.cloud.edgecontainer_v1.services.edge_container.async_client import EdgeContainerAsyncClient
+from google.cloud.edgecontainer_v1.services.edge_container.client import EdgeContainerClient
 from google.cloud.edgecontainer_v1.types.resources import (
     Authorization,
     ChannelConfig,

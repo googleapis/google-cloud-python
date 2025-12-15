@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,17 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store,
-    identity_mapping_store_service,
-)
+from google.cloud.discoveryengine_v1.types import identity_mapping_store, identity_mapping_store_service
 
 
 class ListIdentityMappingsPager:
@@ -64,9 +49,7 @@ class ListIdentityMappingsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., identity_mapping_store_service.ListIdentityMappingsResponse
-        ],
+        method: Callable[..., identity_mapping_store_service.ListIdentityMappingsResponse],
         request: identity_mapping_store_service.ListIdentityMappingsRequest,
         response: identity_mapping_store_service.ListIdentityMappingsResponse,
         *,
@@ -92,9 +75,7 @@ class ListIdentityMappingsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -104,18 +85,11 @@ class ListIdentityMappingsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
+    def pages(self) -> Iterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[identity_mapping_store.IdentityMappingEntry]:
@@ -146,9 +120,7 @@ class ListIdentityMappingsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[identity_mapping_store_service.ListIdentityMappingsResponse]
-        ],
+        method: Callable[..., Awaitable[identity_mapping_store_service.ListIdentityMappingsResponse]],
         request: identity_mapping_store_service.ListIdentityMappingsRequest,
         response: identity_mapping_store_service.ListIdentityMappingsResponse,
         *,
@@ -174,9 +146,7 @@ class ListIdentityMappingsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -186,18 +156,11 @@ class ListIdentityMappingsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
+    async def pages(self) -> AsyncIterator[identity_mapping_store_service.ListIdentityMappingsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[identity_mapping_store.IdentityMappingEntry]:
@@ -232,9 +195,7 @@ class ListIdentityMappingStoresPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., identity_mapping_store_service.ListIdentityMappingStoresResponse
-        ],
+        method: Callable[..., identity_mapping_store_service.ListIdentityMappingStoresResponse],
         request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
         response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
         *,
@@ -260,9 +221,7 @@ class ListIdentityMappingStoresPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -272,18 +231,11 @@ class ListIdentityMappingStoresPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[identity_mapping_store_service.ListIdentityMappingStoresResponse]:
+    def pages(self) -> Iterator[identity_mapping_store_service.ListIdentityMappingStoresResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[identity_mapping_store.IdentityMappingStore]:
@@ -314,10 +266,7 @@ class ListIdentityMappingStoresAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[identity_mapping_store_service.ListIdentityMappingStoresResponse],
-        ],
+        method: Callable[..., Awaitable[identity_mapping_store_service.ListIdentityMappingStoresResponse]],
         request: identity_mapping_store_service.ListIdentityMappingStoresRequest,
         response: identity_mapping_store_service.ListIdentityMappingStoresResponse,
         *,
@@ -343,9 +292,7 @@ class ListIdentityMappingStoresAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(
-            request
-        )
+        self._request = identity_mapping_store_service.ListIdentityMappingStoresRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -355,20 +302,11 @@ class ListIdentityMappingStoresAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        identity_mapping_store_service.ListIdentityMappingStoresResponse
-    ]:
+    async def pages(self) -> AsyncIterator[identity_mapping_store_service.ListIdentityMappingStoresResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[identity_mapping_store.IdentityMappingStore]:

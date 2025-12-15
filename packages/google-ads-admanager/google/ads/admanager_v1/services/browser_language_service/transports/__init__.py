@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import BrowserLanguageServiceTransport
-from .rest import (
-    BrowserLanguageServiceRestInterceptor,
-    BrowserLanguageServiceRestTransport,
-)
+from .rest import BrowserLanguageServiceRestInterceptor, BrowserLanguageServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[BrowserLanguageServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[BrowserLanguageServiceTransport]]
 _transport_registry["rest"] = BrowserLanguageServiceRestTransport
 
 __all__ = (

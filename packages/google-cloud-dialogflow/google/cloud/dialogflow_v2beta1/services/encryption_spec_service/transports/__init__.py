@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import EncryptionSpecServiceTransport
 from .grpc import EncryptionSpecServiceGrpcTransport
 from .grpc_asyncio import EncryptionSpecServiceGrpcAsyncIOTransport
-from .rest import (
-    EncryptionSpecServiceRestInterceptor,
-    EncryptionSpecServiceRestTransport,
-)
+from .rest import EncryptionSpecServiceRestInterceptor, EncryptionSpecServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[EncryptionSpecServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[EncryptionSpecServiceTransport]]
 _transport_registry["grpc"] = EncryptionSpecServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = EncryptionSpecServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = EncryptionSpecServiceRestTransport

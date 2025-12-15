@@ -18,12 +18,8 @@ from google.cloud.bigquery_migration import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_migration_v2.services.migration_service.async_client import (
-    MigrationServiceAsyncClient,
-)
-from google.cloud.bigquery_migration_v2.services.migration_service.client import (
-    MigrationServiceClient,
-)
+from google.cloud.bigquery_migration_v2.services.migration_service.async_client import MigrationServiceAsyncClient
+from google.cloud.bigquery_migration_v2.services.migration_service.client import MigrationServiceClient
 from google.cloud.bigquery_migration_v2.types.migration_entities import (
     MigrationSubtask,
     MigrationTask,
@@ -31,17 +27,8 @@ from google.cloud.bigquery_migration_v2.types.migration_entities import (
     MigrationWorkflow,
     TranslationTaskResult,
 )
-from google.cloud.bigquery_migration_v2.types.migration_error_details import (
-    ErrorDetail,
-    ErrorLocation,
-    ResourceErrorDetail,
-)
-from google.cloud.bigquery_migration_v2.types.migration_metrics import (
-    Point,
-    TimeInterval,
-    TimeSeries,
-    TypedValue,
-)
+from google.cloud.bigquery_migration_v2.types.migration_error_details import ErrorDetail, ErrorLocation, ResourceErrorDetail
+from google.cloud.bigquery_migration_v2.types.migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
 from google.cloud.bigquery_migration_v2.types.migration_service import (
     CreateMigrationWorkflowRequest,
     DeleteMigrationWorkflowRequest,
@@ -87,12 +74,8 @@ from google.cloud.bigquery_migration_v2.types.translation_details import (
     TargetSpec,
     TranslationDetails,
 )
-from google.cloud.bigquery_migration_v2.types.translation_suggestion import (
-    TranslationReportRecord,
-)
-from google.cloud.bigquery_migration_v2.types.translation_usability import (
-    GcsReportLogMessage,
-)
+from google.cloud.bigquery_migration_v2.types.translation_suggestion import TranslationReportRecord
+from google.cloud.bigquery_migration_v2.types.translation_usability import GcsReportLogMessage
 
 __all__ = (
     "MigrationServiceClient",

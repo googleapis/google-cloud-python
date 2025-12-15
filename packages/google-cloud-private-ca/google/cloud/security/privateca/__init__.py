@@ -18,12 +18,8 @@ from google.cloud.security.privateca import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.security.privateca_v1.services.certificate_authority_service.async_client import (
-    CertificateAuthorityServiceAsyncClient,
-)
-from google.cloud.security.privateca_v1.services.certificate_authority_service.client import (
-    CertificateAuthorityServiceClient,
-)
+from google.cloud.security.privateca_v1.services.certificate_authority_service.async_client import CertificateAuthorityServiceAsyncClient
+from google.cloud.security.privateca_v1.services.certificate_authority_service.client import CertificateAuthorityServiceClient
 from google.cloud.security.privateca_v1.types.resources import (
     AttributeType,
     AttributeTypeAndValue,

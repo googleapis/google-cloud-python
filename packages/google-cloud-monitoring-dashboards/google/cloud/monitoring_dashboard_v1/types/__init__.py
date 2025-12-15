@@ -30,13 +30,7 @@ from .error_reporting_panel import ErrorReportingPanel
 from .incident_list import IncidentList
 from .layouts import ColumnLayout, GridLayout, MosaicLayout, RowLayout
 from .logs_panel import LogsPanel
-from .metrics import (
-    SparkChartType,
-    Threshold,
-    TimeSeriesFilter,
-    TimeSeriesFilterRatio,
-    TimeSeriesQuery,
-)
+from .metrics import SparkChartType, Threshold, TimeSeriesFilter, TimeSeriesFilterRatio, TimeSeriesQuery
 from .piechart import PieChart
 from .scorecard import Scorecard
 from .section_header import SectionHeader

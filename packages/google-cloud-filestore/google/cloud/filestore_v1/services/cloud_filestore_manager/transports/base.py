@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.filestore_v1 import gapic_version as package_version
 from google.cloud.filestore_v1.types import cloud_filestore_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class CloudFilestoreManagerTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -312,68 +302,44 @@ class CloudFilestoreManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_filestore_service.ListInstancesRequest],
-        Union[
-            cloud_filestore_service.ListInstancesResponse,
-            Awaitable[cloud_filestore_service.ListInstancesResponse],
-        ],
+        Union[cloud_filestore_service.ListInstancesResponse, Awaitable[cloud_filestore_service.ListInstancesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_instance(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.GetInstanceRequest],
-        Union[
-            cloud_filestore_service.Instance,
-            Awaitable[cloud_filestore_service.Instance],
-        ],
-    ]:
+    ) -> Callable[[cloud_filestore_service.GetInstanceRequest], Union[cloud_filestore_service.Instance, Awaitable[cloud_filestore_service.Instance]]]:
         raise NotImplementedError()
 
     @property
     def create_instance(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.CreateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_instance(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.UpdateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def restore_instance(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.RestoreInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.RestoreInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def revert_instance(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.RevertInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.RevertInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_instance(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.DeleteInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -381,50 +347,32 @@ class CloudFilestoreManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_filestore_service.ListSnapshotsRequest],
-        Union[
-            cloud_filestore_service.ListSnapshotsResponse,
-            Awaitable[cloud_filestore_service.ListSnapshotsResponse],
-        ],
+        Union[cloud_filestore_service.ListSnapshotsResponse, Awaitable[cloud_filestore_service.ListSnapshotsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_snapshot(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.GetSnapshotRequest],
-        Union[
-            cloud_filestore_service.Snapshot,
-            Awaitable[cloud_filestore_service.Snapshot],
-        ],
-    ]:
+    ) -> Callable[[cloud_filestore_service.GetSnapshotRequest], Union[cloud_filestore_service.Snapshot, Awaitable[cloud_filestore_service.Snapshot]]]:
         raise NotImplementedError()
 
     @property
     def create_snapshot(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.CreateSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_snapshot(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.DeleteSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_snapshot(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.UpdateSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -432,58 +380,38 @@ class CloudFilestoreManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_filestore_service.ListBackupsRequest],
-        Union[
-            cloud_filestore_service.ListBackupsResponse,
-            Awaitable[cloud_filestore_service.ListBackupsResponse],
-        ],
+        Union[cloud_filestore_service.ListBackupsResponse, Awaitable[cloud_filestore_service.ListBackupsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_backup(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.GetBackupRequest],
-        Union[
-            cloud_filestore_service.Backup, Awaitable[cloud_filestore_service.Backup]
-        ],
-    ]:
+    ) -> Callable[[cloud_filestore_service.GetBackupRequest], Union[cloud_filestore_service.Backup, Awaitable[cloud_filestore_service.Backup]]]:
         raise NotImplementedError()
 
     @property
     def create_backup(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.CreateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_backup(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.UpdateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def promote_replica(
         self,
-    ) -> Callable[
-        [cloud_filestore_service.PromoteReplicaRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_filestore_service.PromoteReplicaRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -491,20 +419,14 @@ class CloudFilestoreManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -522,22 +444,13 @@ class CloudFilestoreManagerTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -97,18 +85,11 @@ class ListMulticloudDataTransferConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[data_transfer.ListMulticloudDataTransferConfigsResponse]:
+    def pages(self) -> Iterator[data_transfer.ListMulticloudDataTransferConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[data_transfer.MulticloudDataTransferConfig]:
@@ -139,9 +120,7 @@ class ListMulticloudDataTransferConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[data_transfer.ListMulticloudDataTransferConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[data_transfer.ListMulticloudDataTransferConfigsResponse]],
         request: data_transfer.ListMulticloudDataTransferConfigsRequest,
         response: data_transfer.ListMulticloudDataTransferConfigsResponse,
         *,
@@ -177,18 +156,11 @@ class ListMulticloudDataTransferConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[data_transfer.ListMulticloudDataTransferConfigsResponse]:
+    async def pages(self) -> AsyncIterator[data_transfer.ListMulticloudDataTransferConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[data_transfer.MulticloudDataTransferConfig]:
@@ -263,12 +235,7 @@ class ListDestinationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[data_transfer.Destination]:
@@ -339,12 +306,7 @@ class ListDestinationsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[data_transfer.Destination]:
@@ -379,9 +341,7 @@ class ListMulticloudDataTransferSupportedServicesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., data_transfer.ListMulticloudDataTransferSupportedServicesResponse
-        ],
+        method: Callable[..., data_transfer.ListMulticloudDataTransferSupportedServicesResponse],
         request: data_transfer.ListMulticloudDataTransferSupportedServicesRequest,
         response: data_transfer.ListMulticloudDataTransferSupportedServicesResponse,
         *,
@@ -407,9 +367,7 @@ class ListMulticloudDataTransferSupportedServicesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            data_transfer.ListMulticloudDataTransferSupportedServicesRequest(request)
-        )
+        self._request = data_transfer.ListMulticloudDataTransferSupportedServicesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -419,23 +377,14 @@ class ListMulticloudDataTransferSupportedServicesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[data_transfer.ListMulticloudDataTransferSupportedServicesResponse]:
+    def pages(self) -> Iterator[data_transfer.ListMulticloudDataTransferSupportedServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[data_transfer.MulticloudDataTransferSupportedService]:
+    def __iter__(self) -> Iterator[data_transfer.MulticloudDataTransferSupportedService]:
         for page in self.pages:
             yield from page.multicloud_data_transfer_supported_services
 
@@ -463,12 +412,7 @@ class ListMulticloudDataTransferSupportedServicesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                data_transfer.ListMulticloudDataTransferSupportedServicesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[data_transfer.ListMulticloudDataTransferSupportedServicesResponse]],
         request: data_transfer.ListMulticloudDataTransferSupportedServicesRequest,
         response: data_transfer.ListMulticloudDataTransferSupportedServicesResponse,
         *,
@@ -494,9 +438,7 @@ class ListMulticloudDataTransferSupportedServicesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            data_transfer.ListMulticloudDataTransferSupportedServicesRequest(request)
-        )
+        self._request = data_transfer.ListMulticloudDataTransferSupportedServicesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -506,25 +448,14 @@ class ListMulticloudDataTransferSupportedServicesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        data_transfer.ListMulticloudDataTransferSupportedServicesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[data_transfer.ListMulticloudDataTransferSupportedServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[data_transfer.MulticloudDataTransferSupportedService]:
+    def __aiter__(self) -> AsyncIterator[data_transfer.MulticloudDataTransferSupportedService]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.multicloud_data_transfer_supported_services:

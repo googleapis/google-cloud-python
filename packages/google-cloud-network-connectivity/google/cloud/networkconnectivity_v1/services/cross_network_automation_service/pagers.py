@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -61,9 +49,7 @@ class ListServiceConnectionMapsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., cross_network_automation.ListServiceConnectionMapsResponse
-        ],
+        method: Callable[..., cross_network_automation.ListServiceConnectionMapsResponse],
         request: cross_network_automation.ListServiceConnectionMapsRequest,
         response: cross_network_automation.ListServiceConnectionMapsResponse,
         *,
@@ -89,9 +75,7 @@ class ListServiceConnectionMapsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = cross_network_automation.ListServiceConnectionMapsRequest(
-            request
-        )
+        self._request = cross_network_automation.ListServiceConnectionMapsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -101,18 +85,11 @@ class ListServiceConnectionMapsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[cross_network_automation.ListServiceConnectionMapsResponse]:
+    def pages(self) -> Iterator[cross_network_automation.ListServiceConnectionMapsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[cross_network_automation.ServiceConnectionMap]:
@@ -143,9 +120,7 @@ class ListServiceConnectionMapsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[cross_network_automation.ListServiceConnectionMapsResponse]
-        ],
+        method: Callable[..., Awaitable[cross_network_automation.ListServiceConnectionMapsResponse]],
         request: cross_network_automation.ListServiceConnectionMapsRequest,
         response: cross_network_automation.ListServiceConnectionMapsResponse,
         *,
@@ -171,9 +146,7 @@ class ListServiceConnectionMapsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = cross_network_automation.ListServiceConnectionMapsRequest(
-            request
-        )
+        self._request = cross_network_automation.ListServiceConnectionMapsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -183,18 +156,11 @@ class ListServiceConnectionMapsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[cross_network_automation.ListServiceConnectionMapsResponse]:
+    async def pages(self) -> AsyncIterator[cross_network_automation.ListServiceConnectionMapsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[cross_network_automation.ServiceConnectionMap]:
@@ -229,9 +195,7 @@ class ListServiceConnectionPoliciesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., cross_network_automation.ListServiceConnectionPoliciesResponse
-        ],
+        method: Callable[..., cross_network_automation.ListServiceConnectionPoliciesResponse],
         request: cross_network_automation.ListServiceConnectionPoliciesRequest,
         response: cross_network_automation.ListServiceConnectionPoliciesResponse,
         *,
@@ -257,9 +221,7 @@ class ListServiceConnectionPoliciesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = cross_network_automation.ListServiceConnectionPoliciesRequest(
-            request
-        )
+        self._request = cross_network_automation.ListServiceConnectionPoliciesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -269,18 +231,11 @@ class ListServiceConnectionPoliciesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[cross_network_automation.ListServiceConnectionPoliciesResponse]:
+    def pages(self) -> Iterator[cross_network_automation.ListServiceConnectionPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[cross_network_automation.ServiceConnectionPolicy]:
@@ -311,10 +266,7 @@ class ListServiceConnectionPoliciesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[cross_network_automation.ListServiceConnectionPoliciesResponse],
-        ],
+        method: Callable[..., Awaitable[cross_network_automation.ListServiceConnectionPoliciesResponse]],
         request: cross_network_automation.ListServiceConnectionPoliciesRequest,
         response: cross_network_automation.ListServiceConnectionPoliciesResponse,
         *,
@@ -340,9 +292,7 @@ class ListServiceConnectionPoliciesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = cross_network_automation.ListServiceConnectionPoliciesRequest(
-            request
-        )
+        self._request = cross_network_automation.ListServiceConnectionPoliciesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -352,23 +302,14 @@ class ListServiceConnectionPoliciesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[cross_network_automation.ListServiceConnectionPoliciesResponse]:
+    async def pages(self) -> AsyncIterator[cross_network_automation.ListServiceConnectionPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[cross_network_automation.ServiceConnectionPolicy]:
+    def __aiter__(self) -> AsyncIterator[cross_network_automation.ServiceConnectionPolicy]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.service_connection_policies:
@@ -440,12 +381,7 @@ class ListServiceClassesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[cross_network_automation.ServiceClass]:
@@ -476,9 +412,7 @@ class ListServiceClassesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[cross_network_automation.ListServiceClassesResponse]
-        ],
+        method: Callable[..., Awaitable[cross_network_automation.ListServiceClassesResponse]],
         request: cross_network_automation.ListServiceClassesRequest,
         response: cross_network_automation.ListServiceClassesResponse,
         *,
@@ -514,18 +448,11 @@ class ListServiceClassesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[cross_network_automation.ListServiceClassesResponse]:
+    async def pages(self) -> AsyncIterator[cross_network_automation.ListServiceClassesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[cross_network_automation.ServiceClass]:
@@ -560,9 +487,7 @@ class ListServiceConnectionTokensPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., cross_network_automation.ListServiceConnectionTokensResponse
-        ],
+        method: Callable[..., cross_network_automation.ListServiceConnectionTokensResponse],
         request: cross_network_automation.ListServiceConnectionTokensRequest,
         response: cross_network_automation.ListServiceConnectionTokensResponse,
         *,
@@ -588,9 +513,7 @@ class ListServiceConnectionTokensPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = cross_network_automation.ListServiceConnectionTokensRequest(
-            request
-        )
+        self._request = cross_network_automation.ListServiceConnectionTokensRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -600,18 +523,11 @@ class ListServiceConnectionTokensPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[cross_network_automation.ListServiceConnectionTokensResponse]:
+    def pages(self) -> Iterator[cross_network_automation.ListServiceConnectionTokensResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[cross_network_automation.ServiceConnectionToken]:
@@ -642,9 +558,7 @@ class ListServiceConnectionTokensAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[cross_network_automation.ListServiceConnectionTokensResponse]
-        ],
+        method: Callable[..., Awaitable[cross_network_automation.ListServiceConnectionTokensResponse]],
         request: cross_network_automation.ListServiceConnectionTokensRequest,
         response: cross_network_automation.ListServiceConnectionTokensResponse,
         *,
@@ -670,9 +584,7 @@ class ListServiceConnectionTokensAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = cross_network_automation.ListServiceConnectionTokensRequest(
-            request
-        )
+        self._request = cross_network_automation.ListServiceConnectionTokensRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -682,23 +594,14 @@ class ListServiceConnectionTokensAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[cross_network_automation.ListServiceConnectionTokensResponse]:
+    async def pages(self) -> AsyncIterator[cross_network_automation.ListServiceConnectionTokensResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[cross_network_automation.ServiceConnectionToken]:
+    def __aiter__(self) -> AsyncIterator[cross_network_automation.ServiceConnectionToken]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.service_connection_tokens:

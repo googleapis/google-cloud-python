@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    creative_template_messages,
-    creative_template_service,
-)
+from google.ads.admanager_v1.types import creative_template_messages, creative_template_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseCreativeTemplateServiceRestTransport
@@ -99,13 +96,8 @@ class CreativeTemplateServiceRestInterceptor:
     """
 
     def pre_get_creative_template(
-        self,
-        request: creative_template_service.GetCreativeTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        creative_template_service.GetCreativeTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: creative_template_service.GetCreativeTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[creative_template_service.GetCreativeTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_creative_template
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class CreativeTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_creative_template(
-        self, response: creative_template_messages.CreativeTemplate
-    ) -> creative_template_messages.CreativeTemplate:
+    def post_get_creative_template(self, response: creative_template_messages.CreativeTemplate) -> creative_template_messages.CreativeTemplate:
         """Post-rpc interceptor for get_creative_template
 
         DEPRECATED. Please use the `post_get_creative_template_with_metadata`
@@ -129,13 +119,8 @@ class CreativeTemplateServiceRestInterceptor:
         return response
 
     def post_get_creative_template_with_metadata(
-        self,
-        response: creative_template_messages.CreativeTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        creative_template_messages.CreativeTemplate,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: creative_template_messages.CreativeTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[creative_template_messages.CreativeTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_creative_template
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +136,8 @@ class CreativeTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_list_creative_templates(
-        self,
-        request: creative_template_service.ListCreativeTemplatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        creative_template_service.ListCreativeTemplatesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: creative_template_service.ListCreativeTemplatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[creative_template_service.ListCreativeTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_creative_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +161,8 @@ class CreativeTemplateServiceRestInterceptor:
         return response
 
     def post_list_creative_templates_with_metadata(
-        self,
-        response: creative_template_service.ListCreativeTemplatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        creative_template_service.ListCreativeTemplatesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: creative_template_service.ListCreativeTemplatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[creative_template_service.ListCreativeTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_creative_templates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +178,8 @@ class CreativeTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +187,7 @@ class CreativeTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -307,31 +276,18 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CreativeTemplateServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetCreativeTemplate(
-        _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate,
-        CreativeTemplateServiceRestStub,
-    ):
+    class _GetCreativeTemplate(_BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate, CreativeTemplateServiceRestStub):
         def __hash__(self):
             return hash("CreativeTemplateServiceRestTransport.GetCreativeTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -372,28 +328,16 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate._get_http_options()
-            )
+            http_options = _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_creative_template(
-                request, metadata
-            )
-            transcoded_request = _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_creative_template(request, metadata)
+            transcoded_request = _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCreativeTemplateServiceRestTransport._BaseGetCreativeTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -416,15 +360,8 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                CreativeTemplateServiceRestTransport._GetCreativeTemplate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CreativeTemplateServiceRestTransport._GetCreativeTemplate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -440,16 +377,10 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
 
             resp = self._interceptor.post_get_creative_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_creative_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_creative_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        creative_template_messages.CreativeTemplate.to_json(response)
-                    )
+                    response_payload = creative_template_messages.CreativeTemplate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -468,23 +399,12 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
                 )
             return resp
 
-    class _ListCreativeTemplates(
-        _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates,
-        CreativeTemplateServiceRestStub,
-    ):
+    class _ListCreativeTemplates(_BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates, CreativeTemplateServiceRestStub):
         def __hash__(self):
             return hash("CreativeTemplateServiceRestTransport.ListCreativeTemplates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -525,28 +445,16 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates._get_http_options()
-            )
+            http_options = _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_creative_templates(
-                request, metadata
-            )
-            transcoded_request = _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_creative_templates(request, metadata)
+            transcoded_request = _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCreativeTemplateServiceRestTransport._BaseListCreativeTemplates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -570,12 +478,7 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
 
             # Send the request
             response = CreativeTemplateServiceRestTransport._ListCreativeTemplates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -591,18 +494,10 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
 
             resp = self._interceptor.post_list_creative_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_creative_templates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_creative_templates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        creative_template_service.ListCreativeTemplatesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = creative_template_service.ListCreativeTemplatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -622,12 +517,7 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
             return resp
 
     @property
-    def get_creative_template(
-        self,
-    ) -> Callable[
-        [creative_template_service.GetCreativeTemplateRequest],
-        creative_template_messages.CreativeTemplate,
-    ]:
+    def get_creative_template(self) -> Callable[[creative_template_service.GetCreativeTemplateRequest], creative_template_messages.CreativeTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCreativeTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -635,10 +525,7 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
     @property
     def list_creative_templates(
         self,
-    ) -> Callable[
-        [creative_template_service.ListCreativeTemplatesRequest],
-        creative_template_service.ListCreativeTemplatesResponse,
-    ]:
+    ) -> Callable[[creative_template_service.ListCreativeTemplatesRequest], creative_template_service.ListCreativeTemplatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCreativeTemplates(self._session, self._host, self._interceptor)  # type: ignore
@@ -647,23 +534,12 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCreativeTemplateServiceRestTransport._BaseGetOperation,
-        CreativeTemplateServiceRestStub,
-    ):
+    class _GetOperation(_BaseCreativeTemplateServiceRestTransport._BaseGetOperation, CreativeTemplateServiceRestStub):
         def __hash__(self):
             return hash("CreativeTemplateServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -701,26 +577,16 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCreativeTemplateServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCreativeTemplateServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCreativeTemplateServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCreativeTemplateServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCreativeTemplateServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCreativeTemplateServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -744,12 +610,7 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
 
             # Send the request
             response = CreativeTemplateServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -761,9 +622,7 @@ class CreativeTemplateServiceRestTransport(_BaseCreativeTemplateServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

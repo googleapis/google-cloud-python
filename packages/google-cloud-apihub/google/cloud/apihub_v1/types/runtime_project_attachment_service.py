@@ -176,9 +176,7 @@ class ListRuntimeProjectAttachmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    runtime_project_attachments: MutableSequence[
-        "RuntimeProjectAttachment"
-    ] = proto.RepeatedField(
+    runtime_project_attachments: MutableSequence["RuntimeProjectAttachment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="RuntimeProjectAttachment",

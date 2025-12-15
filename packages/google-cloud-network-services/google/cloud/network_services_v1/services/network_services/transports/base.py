@@ -30,15 +30,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.network_services_v1 import gapic_version as package_version
-from google.cloud.network_services_v1.types import (
-    endpoint_policy as gcn_endpoint_policy,
-)
-from google.cloud.network_services_v1.types import (
-    service_binding as gcn_service_binding,
-)
-from google.cloud.network_services_v1.types import (
-    service_lb_policy as gcn_service_lb_policy,
-)
+from google.cloud.network_services_v1.types import endpoint_policy as gcn_endpoint_policy
+from google.cloud.network_services_v1.types import service_binding as gcn_service_binding
+from google.cloud.network_services_v1.types import service_lb_policy as gcn_service_lb_policy
 from google.cloud.network_services_v1.types import endpoint_policy
 from google.cloud.network_services_v1.types import extensibility
 from google.cloud.network_services_v1.types import gateway
@@ -57,9 +51,7 @@ from google.cloud.network_services_v1.types import tcp_route as gcn_tcp_route
 from google.cloud.network_services_v1.types import tls_route
 from google.cloud.network_services_v1.types import tls_route as gcn_tls_route
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -121,23 +113,15 @@ class NetworkServicesTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -518,49 +502,32 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [endpoint_policy.ListEndpointPoliciesRequest],
-        Union[
-            endpoint_policy.ListEndpointPoliciesResponse,
-            Awaitable[endpoint_policy.ListEndpointPoliciesResponse],
-        ],
+        Union[endpoint_policy.ListEndpointPoliciesResponse, Awaitable[endpoint_policy.ListEndpointPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_endpoint_policy(
         self,
-    ) -> Callable[
-        [endpoint_policy.GetEndpointPolicyRequest],
-        Union[
-            endpoint_policy.EndpointPolicy, Awaitable[endpoint_policy.EndpointPolicy]
-        ],
-    ]:
+    ) -> Callable[[endpoint_policy.GetEndpointPolicyRequest], Union[endpoint_policy.EndpointPolicy, Awaitable[endpoint_policy.EndpointPolicy]]]:
         raise NotImplementedError()
 
     @property
     def create_endpoint_policy(
         self,
-    ) -> Callable[
-        [gcn_endpoint_policy.CreateEndpointPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_endpoint_policy.CreateEndpointPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_endpoint_policy(
         self,
-    ) -> Callable[
-        [gcn_endpoint_policy.UpdateEndpointPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_endpoint_policy.UpdateEndpointPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_endpoint_policy(
         self,
-    ) -> Callable[
-        [endpoint_policy.DeleteEndpointPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[endpoint_policy.DeleteEndpointPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -568,322 +535,184 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [extensibility.ListWasmPluginVersionsRequest],
-        Union[
-            extensibility.ListWasmPluginVersionsResponse,
-            Awaitable[extensibility.ListWasmPluginVersionsResponse],
-        ],
+        Union[extensibility.ListWasmPluginVersionsResponse, Awaitable[extensibility.ListWasmPluginVersionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_wasm_plugin_version(
         self,
-    ) -> Callable[
-        [extensibility.GetWasmPluginVersionRequest],
-        Union[
-            extensibility.WasmPluginVersion, Awaitable[extensibility.WasmPluginVersion]
-        ],
-    ]:
+    ) -> Callable[[extensibility.GetWasmPluginVersionRequest], Union[extensibility.WasmPluginVersion, Awaitable[extensibility.WasmPluginVersion]]]:
         raise NotImplementedError()
 
     @property
     def create_wasm_plugin_version(
         self,
-    ) -> Callable[
-        [extensibility.CreateWasmPluginVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[extensibility.CreateWasmPluginVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_wasm_plugin_version(
         self,
-    ) -> Callable[
-        [extensibility.DeleteWasmPluginVersionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[extensibility.DeleteWasmPluginVersionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_wasm_plugins(
         self,
     ) -> Callable[
-        [extensibility.ListWasmPluginsRequest],
-        Union[
-            extensibility.ListWasmPluginsResponse,
-            Awaitable[extensibility.ListWasmPluginsResponse],
-        ],
+        [extensibility.ListWasmPluginsRequest], Union[extensibility.ListWasmPluginsResponse, Awaitable[extensibility.ListWasmPluginsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_wasm_plugin(
-        self,
-    ) -> Callable[
-        [extensibility.GetWasmPluginRequest],
-        Union[extensibility.WasmPlugin, Awaitable[extensibility.WasmPlugin]],
-    ]:
+    def get_wasm_plugin(self) -> Callable[[extensibility.GetWasmPluginRequest], Union[extensibility.WasmPlugin, Awaitable[extensibility.WasmPlugin]]]:
         raise NotImplementedError()
 
     @property
     def create_wasm_plugin(
         self,
-    ) -> Callable[
-        [extensibility.CreateWasmPluginRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[extensibility.CreateWasmPluginRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_wasm_plugin(
         self,
-    ) -> Callable[
-        [extensibility.UpdateWasmPluginRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[extensibility.UpdateWasmPluginRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_wasm_plugin(
         self,
-    ) -> Callable[
-        [extensibility.DeleteWasmPluginRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[extensibility.DeleteWasmPluginRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_gateways(
-        self,
-    ) -> Callable[
-        [gateway.ListGatewaysRequest],
-        Union[gateway.ListGatewaysResponse, Awaitable[gateway.ListGatewaysResponse]],
-    ]:
+    def list_gateways(self) -> Callable[[gateway.ListGatewaysRequest], Union[gateway.ListGatewaysResponse, Awaitable[gateway.ListGatewaysResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_gateway(
-        self,
-    ) -> Callable[
-        [gateway.GetGatewayRequest], Union[gateway.Gateway, Awaitable[gateway.Gateway]]
-    ]:
+    def get_gateway(self) -> Callable[[gateway.GetGatewayRequest], Union[gateway.Gateway, Awaitable[gateway.Gateway]]]:
         raise NotImplementedError()
 
     @property
-    def create_gateway(
-        self,
-    ) -> Callable[
-        [gcn_gateway.CreateGatewayRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_gateway(self) -> Callable[[gcn_gateway.CreateGatewayRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_gateway(
-        self,
-    ) -> Callable[
-        [gcn_gateway.UpdateGatewayRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_gateway(self) -> Callable[[gcn_gateway.UpdateGatewayRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_gateway(
-        self,
-    ) -> Callable[
-        [gateway.DeleteGatewayRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_gateway(self) -> Callable[[gateway.DeleteGatewayRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_grpc_routes(
         self,
-    ) -> Callable[
-        [grpc_route.ListGrpcRoutesRequest],
-        Union[
-            grpc_route.ListGrpcRoutesResponse,
-            Awaitable[grpc_route.ListGrpcRoutesResponse],
-        ],
-    ]:
+    ) -> Callable[[grpc_route.ListGrpcRoutesRequest], Union[grpc_route.ListGrpcRoutesResponse, Awaitable[grpc_route.ListGrpcRoutesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_grpc_route(
-        self,
-    ) -> Callable[
-        [grpc_route.GetGrpcRouteRequest],
-        Union[grpc_route.GrpcRoute, Awaitable[grpc_route.GrpcRoute]],
-    ]:
+    def get_grpc_route(self) -> Callable[[grpc_route.GetGrpcRouteRequest], Union[grpc_route.GrpcRoute, Awaitable[grpc_route.GrpcRoute]]]:
         raise NotImplementedError()
 
     @property
     def create_grpc_route(
         self,
-    ) -> Callable[
-        [gcn_grpc_route.CreateGrpcRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_grpc_route.CreateGrpcRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_grpc_route(
         self,
-    ) -> Callable[
-        [gcn_grpc_route.UpdateGrpcRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_grpc_route.UpdateGrpcRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_grpc_route(
         self,
-    ) -> Callable[
-        [grpc_route.DeleteGrpcRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[grpc_route.DeleteGrpcRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_http_routes(
         self,
-    ) -> Callable[
-        [http_route.ListHttpRoutesRequest],
-        Union[
-            http_route.ListHttpRoutesResponse,
-            Awaitable[http_route.ListHttpRoutesResponse],
-        ],
-    ]:
+    ) -> Callable[[http_route.ListHttpRoutesRequest], Union[http_route.ListHttpRoutesResponse, Awaitable[http_route.ListHttpRoutesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_http_route(
-        self,
-    ) -> Callable[
-        [http_route.GetHttpRouteRequest],
-        Union[http_route.HttpRoute, Awaitable[http_route.HttpRoute]],
-    ]:
+    def get_http_route(self) -> Callable[[http_route.GetHttpRouteRequest], Union[http_route.HttpRoute, Awaitable[http_route.HttpRoute]]]:
         raise NotImplementedError()
 
     @property
     def create_http_route(
         self,
-    ) -> Callable[
-        [gcn_http_route.CreateHttpRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_http_route.CreateHttpRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_http_route(
         self,
-    ) -> Callable[
-        [gcn_http_route.UpdateHttpRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_http_route.UpdateHttpRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_http_route(
         self,
-    ) -> Callable[
-        [http_route.DeleteHttpRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[http_route.DeleteHttpRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_tcp_routes(
         self,
-    ) -> Callable[
-        [tcp_route.ListTcpRoutesRequest],
-        Union[
-            tcp_route.ListTcpRoutesResponse, Awaitable[tcp_route.ListTcpRoutesResponse]
-        ],
-    ]:
+    ) -> Callable[[tcp_route.ListTcpRoutesRequest], Union[tcp_route.ListTcpRoutesResponse, Awaitable[tcp_route.ListTcpRoutesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_tcp_route(
-        self,
-    ) -> Callable[
-        [tcp_route.GetTcpRouteRequest],
-        Union[tcp_route.TcpRoute, Awaitable[tcp_route.TcpRoute]],
-    ]:
+    def get_tcp_route(self) -> Callable[[tcp_route.GetTcpRouteRequest], Union[tcp_route.TcpRoute, Awaitable[tcp_route.TcpRoute]]]:
         raise NotImplementedError()
 
     @property
     def create_tcp_route(
         self,
-    ) -> Callable[
-        [gcn_tcp_route.CreateTcpRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_tcp_route.CreateTcpRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_tcp_route(
         self,
-    ) -> Callable[
-        [gcn_tcp_route.UpdateTcpRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_tcp_route.UpdateTcpRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tcp_route(
-        self,
-    ) -> Callable[
-        [tcp_route.DeleteTcpRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_tcp_route(self) -> Callable[[tcp_route.DeleteTcpRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_tls_routes(
         self,
-    ) -> Callable[
-        [tls_route.ListTlsRoutesRequest],
-        Union[
-            tls_route.ListTlsRoutesResponse, Awaitable[tls_route.ListTlsRoutesResponse]
-        ],
-    ]:
+    ) -> Callable[[tls_route.ListTlsRoutesRequest], Union[tls_route.ListTlsRoutesResponse, Awaitable[tls_route.ListTlsRoutesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_tls_route(
-        self,
-    ) -> Callable[
-        [tls_route.GetTlsRouteRequest],
-        Union[tls_route.TlsRoute, Awaitable[tls_route.TlsRoute]],
-    ]:
+    def get_tls_route(self) -> Callable[[tls_route.GetTlsRouteRequest], Union[tls_route.TlsRoute, Awaitable[tls_route.TlsRoute]]]:
         raise NotImplementedError()
 
     @property
     def create_tls_route(
         self,
-    ) -> Callable[
-        [gcn_tls_route.CreateTlsRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_tls_route.CreateTlsRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_tls_route(
         self,
-    ) -> Callable[
-        [gcn_tls_route.UpdateTlsRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_tls_route.UpdateTlsRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tls_route(
-        self,
-    ) -> Callable[
-        [tls_route.DeleteTlsRouteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_tls_route(self) -> Callable[[tls_route.DeleteTlsRouteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -891,91 +720,52 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [service_binding.ListServiceBindingsRequest],
-        Union[
-            service_binding.ListServiceBindingsResponse,
-            Awaitable[service_binding.ListServiceBindingsResponse],
-        ],
+        Union[service_binding.ListServiceBindingsResponse, Awaitable[service_binding.ListServiceBindingsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_service_binding(
         self,
-    ) -> Callable[
-        [service_binding.GetServiceBindingRequest],
-        Union[
-            service_binding.ServiceBinding, Awaitable[service_binding.ServiceBinding]
-        ],
-    ]:
+    ) -> Callable[[service_binding.GetServiceBindingRequest], Union[service_binding.ServiceBinding, Awaitable[service_binding.ServiceBinding]]]:
         raise NotImplementedError()
 
     @property
     def create_service_binding(
         self,
-    ) -> Callable[
-        [gcn_service_binding.CreateServiceBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_service_binding.CreateServiceBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_service_binding(
         self,
-    ) -> Callable[
-        [gcn_service_binding.UpdateServiceBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_service_binding.UpdateServiceBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_service_binding(
         self,
-    ) -> Callable[
-        [service_binding.DeleteServiceBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service_binding.DeleteServiceBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_meshes(
-        self,
-    ) -> Callable[
-        [mesh.ListMeshesRequest],
-        Union[mesh.ListMeshesResponse, Awaitable[mesh.ListMeshesResponse]],
-    ]:
+    def list_meshes(self) -> Callable[[mesh.ListMeshesRequest], Union[mesh.ListMeshesResponse, Awaitable[mesh.ListMeshesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_mesh(
-        self,
-    ) -> Callable[[mesh.GetMeshRequest], Union[mesh.Mesh, Awaitable[mesh.Mesh]]]:
+    def get_mesh(self) -> Callable[[mesh.GetMeshRequest], Union[mesh.Mesh, Awaitable[mesh.Mesh]]]:
         raise NotImplementedError()
 
     @property
-    def create_mesh(
-        self,
-    ) -> Callable[
-        [gcn_mesh.CreateMeshRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_mesh(self) -> Callable[[gcn_mesh.CreateMeshRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_mesh(
-        self,
-    ) -> Callable[
-        [gcn_mesh.UpdateMeshRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_mesh(self) -> Callable[[gcn_mesh.UpdateMeshRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_mesh(
-        self,
-    ) -> Callable[
-        [mesh.DeleteMeshRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_mesh(self) -> Callable[[mesh.DeleteMeshRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -983,10 +773,7 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [service_lb_policy.ListServiceLbPoliciesRequest],
-        Union[
-            service_lb_policy.ListServiceLbPoliciesResponse,
-            Awaitable[service_lb_policy.ListServiceLbPoliciesResponse],
-        ],
+        Union[service_lb_policy.ListServiceLbPoliciesResponse, Awaitable[service_lb_policy.ListServiceLbPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -994,57 +781,38 @@ class NetworkServicesTransport(abc.ABC):
     def get_service_lb_policy(
         self,
     ) -> Callable[
-        [service_lb_policy.GetServiceLbPolicyRequest],
-        Union[
-            service_lb_policy.ServiceLbPolicy,
-            Awaitable[service_lb_policy.ServiceLbPolicy],
-        ],
+        [service_lb_policy.GetServiceLbPolicyRequest], Union[service_lb_policy.ServiceLbPolicy, Awaitable[service_lb_policy.ServiceLbPolicy]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_service_lb_policy(
         self,
-    ) -> Callable[
-        [gcn_service_lb_policy.CreateServiceLbPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_service_lb_policy.CreateServiceLbPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_service_lb_policy(
         self,
-    ) -> Callable[
-        [gcn_service_lb_policy.UpdateServiceLbPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_service_lb_policy.UpdateServiceLbPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_service_lb_policy(
         self,
-    ) -> Callable[
-        [service_lb_policy.DeleteServiceLbPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service_lb_policy.DeleteServiceLbPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_gateway_route_view(
         self,
-    ) -> Callable[
-        [route_view.GetGatewayRouteViewRequest],
-        Union[route_view.GatewayRouteView, Awaitable[route_view.GatewayRouteView]],
-    ]:
+    ) -> Callable[[route_view.GetGatewayRouteViewRequest], Union[route_view.GatewayRouteView, Awaitable[route_view.GatewayRouteView]]]:
         raise NotImplementedError()
 
     @property
     def get_mesh_route_view(
         self,
-    ) -> Callable[
-        [route_view.GetMeshRouteViewRequest],
-        Union[route_view.MeshRouteView, Awaitable[route_view.MeshRouteView]],
-    ]:
+    ) -> Callable[[route_view.GetMeshRouteViewRequest], Union[route_view.MeshRouteView, Awaitable[route_view.MeshRouteView]]]:
         raise NotImplementedError()
 
     @property
@@ -1052,10 +820,7 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [route_view.ListGatewayRouteViewsRequest],
-        Union[
-            route_view.ListGatewayRouteViewsResponse,
-            Awaitable[route_view.ListGatewayRouteViewsResponse],
-        ],
+        Union[route_view.ListGatewayRouteViewsResponse, Awaitable[route_view.ListGatewayRouteViewsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1063,11 +828,7 @@ class NetworkServicesTransport(abc.ABC):
     def list_mesh_route_views(
         self,
     ) -> Callable[
-        [route_view.ListMeshRouteViewsRequest],
-        Union[
-            route_view.ListMeshRouteViewsResponse,
-            Awaitable[route_view.ListMeshRouteViewsResponse],
-        ],
+        [route_view.ListMeshRouteViewsRequest], Union[route_view.ListMeshRouteViewsResponse, Awaitable[route_view.ListMeshRouteViewsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -1076,20 +837,14 @@ class NetworkServicesTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1107,19 +862,13 @@ class NetworkServicesTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1137,22 +886,13 @@ class NetworkServicesTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

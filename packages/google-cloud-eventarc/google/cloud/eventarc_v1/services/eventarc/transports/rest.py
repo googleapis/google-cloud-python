@@ -32,17 +32,8 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.eventarc_v1.types import (
-    channel,
-    channel_connection,
-    discovery,
-    enrollment,
-    eventarc,
-    google_api_source,
-)
-from google.cloud.eventarc_v1.types import (
-    google_channel_config as gce_google_channel_config,
-)
+from google.cloud.eventarc_v1.types import channel, channel_connection, discovery, enrollment, eventarc, google_api_source
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
@@ -407,9 +398,7 @@ class EventarcRestInterceptor:
     """
 
     def pre_create_channel(
-        self,
-        request: eventarc.CreateChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.CreateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.CreateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel
 
@@ -418,9 +407,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel
 
         DEPRECATED. Please use the `post_create_channel_with_metadata`
@@ -434,9 +421,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel
 
@@ -453,12 +438,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_create_channel_connection(
-        self,
-        request: eventarc.CreateChannelConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.CreateChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.CreateChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -466,9 +447,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_channel_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel_connection
 
         DEPRECATED. Please use the `post_create_channel_connection_with_metadata`
@@ -482,9 +461,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_channel_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel_connection
 
@@ -501,12 +478,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_create_enrollment(
-        self,
-        request: eventarc.CreateEnrollmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.CreateEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.CreateEnrollmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.CreateEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_enrollment
 
         Override in a subclass to manipulate the request or metadata
@@ -514,9 +487,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_enrollment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_enrollment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_enrollment
 
         DEPRECATED. Please use the `post_create_enrollment_with_metadata`
@@ -530,9 +501,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_enrollment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_enrollment
 
@@ -549,12 +518,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_create_google_api_source(
-        self,
-        request: eventarc.CreateGoogleApiSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.CreateGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.CreateGoogleApiSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.CreateGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_google_api_source
 
         Override in a subclass to manipulate the request or metadata
@@ -562,9 +527,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_google_api_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_google_api_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_google_api_source
 
         DEPRECATED. Please use the `post_create_google_api_source_with_metadata`
@@ -578,9 +541,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_google_api_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_google_api_source
 
@@ -597,12 +558,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_create_message_bus(
-        self,
-        request: eventarc.CreateMessageBusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.CreateMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.CreateMessageBusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.CreateMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_message_bus
 
         Override in a subclass to manipulate the request or metadata
@@ -610,9 +567,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_message_bus(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_message_bus(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_message_bus
 
         DEPRECATED. Please use the `post_create_message_bus_with_metadata`
@@ -626,9 +581,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_message_bus_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_message_bus
 
@@ -645,9 +598,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_create_pipeline(
-        self,
-        request: eventarc.CreatePipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.CreatePipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.CreatePipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_pipeline
 
@@ -656,9 +607,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_pipeline(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_pipeline(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_pipeline
 
         DEPRECATED. Please use the `post_create_pipeline_with_metadata`
@@ -672,9 +621,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_pipeline_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_pipeline
 
@@ -691,9 +638,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_create_trigger(
-        self,
-        request: eventarc.CreateTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.CreateTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.CreateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_trigger
 
@@ -702,9 +647,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_create_trigger(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_trigger
 
         DEPRECATED. Please use the `post_create_trigger_with_metadata`
@@ -718,9 +661,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_create_trigger_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_trigger
 
@@ -737,9 +678,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_channel(
-        self,
-        request: eventarc.DeleteChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.DeleteChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.DeleteChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel
 
@@ -748,9 +687,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel
 
         DEPRECATED. Please use the `post_delete_channel_with_metadata`
@@ -764,9 +701,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel
 
@@ -783,12 +718,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_channel_connection(
-        self,
-        request: eventarc.DeleteChannelConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.DeleteChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.DeleteChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -796,9 +727,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_channel_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_channel_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel_connection
 
         DEPRECATED. Please use the `post_delete_channel_connection_with_metadata`
@@ -812,9 +741,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_channel_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel_connection
 
@@ -831,12 +758,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_enrollment(
-        self,
-        request: eventarc.DeleteEnrollmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.DeleteEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.DeleteEnrollmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.DeleteEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_enrollment
 
         Override in a subclass to manipulate the request or metadata
@@ -844,9 +767,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_enrollment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_enrollment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_enrollment
 
         DEPRECATED. Please use the `post_delete_enrollment_with_metadata`
@@ -860,9 +781,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_enrollment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_enrollment
 
@@ -879,12 +798,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_google_api_source(
-        self,
-        request: eventarc.DeleteGoogleApiSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.DeleteGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.DeleteGoogleApiSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.DeleteGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_google_api_source
 
         Override in a subclass to manipulate the request or metadata
@@ -892,9 +807,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_google_api_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_google_api_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_google_api_source
 
         DEPRECATED. Please use the `post_delete_google_api_source_with_metadata`
@@ -908,9 +821,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_google_api_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_google_api_source
 
@@ -927,12 +838,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_message_bus(
-        self,
-        request: eventarc.DeleteMessageBusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.DeleteMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.DeleteMessageBusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.DeleteMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_message_bus
 
         Override in a subclass to manipulate the request or metadata
@@ -940,9 +847,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_message_bus(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_message_bus(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_message_bus
 
         DEPRECATED. Please use the `post_delete_message_bus_with_metadata`
@@ -956,9 +861,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_message_bus_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_message_bus
 
@@ -975,9 +878,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_pipeline(
-        self,
-        request: eventarc.DeletePipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.DeletePipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.DeletePipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_pipeline
 
@@ -986,9 +887,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_pipeline(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_pipeline(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_pipeline
 
         DEPRECATED. Please use the `post_delete_pipeline_with_metadata`
@@ -1002,9 +901,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_pipeline_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_pipeline
 
@@ -1021,9 +918,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_delete_trigger(
-        self,
-        request: eventarc.DeleteTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.DeleteTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.DeleteTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_trigger
 
@@ -1032,9 +927,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_trigger(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_trigger
 
         DEPRECATED. Please use the `post_delete_trigger_with_metadata`
@@ -1048,9 +941,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_delete_trigger_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_trigger
 
@@ -1067,9 +958,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_channel(
-        self,
-        request: eventarc.GetChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.GetChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.GetChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel
 
@@ -1092,9 +981,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_channel_with_metadata(
-        self,
-        response: channel.Channel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: channel.Channel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[channel.Channel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel
 
@@ -1111,12 +998,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_channel_connection(
-        self,
-        request: eventarc.GetChannelConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.GetChannelConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.GetChannelConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -1124,9 +1007,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_channel_connection(
-        self, response: channel_connection.ChannelConnection
-    ) -> channel_connection.ChannelConnection:
+    def post_get_channel_connection(self, response: channel_connection.ChannelConnection) -> channel_connection.ChannelConnection:
         """Post-rpc interceptor for get_channel_connection
 
         DEPRECATED. Please use the `post_get_channel_connection_with_metadata`
@@ -1140,12 +1021,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_channel_connection_with_metadata(
-        self,
-        response: channel_connection.ChannelConnection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        channel_connection.ChannelConnection, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: channel_connection.ChannelConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[channel_connection.ChannelConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel_connection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1161,9 +1038,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_enrollment(
-        self,
-        request: eventarc.GetEnrollmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.GetEnrollmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.GetEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_enrollment
 
@@ -1172,9 +1047,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_enrollment(
-        self, response: enrollment.Enrollment
-    ) -> enrollment.Enrollment:
+    def post_get_enrollment(self, response: enrollment.Enrollment) -> enrollment.Enrollment:
         """Post-rpc interceptor for get_enrollment
 
         DEPRECATED. Please use the `post_get_enrollment_with_metadata`
@@ -1188,9 +1061,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_enrollment_with_metadata(
-        self,
-        response: enrollment.Enrollment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: enrollment.Enrollment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[enrollment.Enrollment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_enrollment
 
@@ -1207,12 +1078,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_google_api_source(
-        self,
-        request: eventarc.GetGoogleApiSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.GetGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.GetGoogleApiSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.GetGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_google_api_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1220,9 +1087,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_google_api_source(
-        self, response: google_api_source.GoogleApiSource
-    ) -> google_api_source.GoogleApiSource:
+    def post_get_google_api_source(self, response: google_api_source.GoogleApiSource) -> google_api_source.GoogleApiSource:
         """Post-rpc interceptor for get_google_api_source
 
         DEPRECATED. Please use the `post_get_google_api_source_with_metadata`
@@ -1236,12 +1101,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_google_api_source_with_metadata(
-        self,
-        response: google_api_source.GoogleApiSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        google_api_source.GoogleApiSource, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: google_api_source.GoogleApiSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[google_api_source.GoogleApiSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_google_api_source
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1257,12 +1118,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_google_channel_config(
-        self,
-        request: eventarc.GetGoogleChannelConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.GetGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.GetGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_google_channel_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1270,9 +1127,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_google_channel_config(
-        self, response: google_channel_config.GoogleChannelConfig
-    ) -> google_channel_config.GoogleChannelConfig:
+    def post_get_google_channel_config(self, response: google_channel_config.GoogleChannelConfig) -> google_channel_config.GoogleChannelConfig:
         """Post-rpc interceptor for get_google_channel_config
 
         DEPRECATED. Please use the `post_get_google_channel_config_with_metadata`
@@ -1286,13 +1141,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_google_channel_config_with_metadata(
-        self,
-        response: google_channel_config.GoogleChannelConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        google_channel_config.GoogleChannelConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: google_channel_config.GoogleChannelConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_google_channel_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1308,9 +1158,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_message_bus(
-        self,
-        request: eventarc.GetMessageBusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.GetMessageBusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.GetMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_message_bus
 
@@ -1319,9 +1167,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_message_bus(
-        self, response: message_bus.MessageBus
-    ) -> message_bus.MessageBus:
+    def post_get_message_bus(self, response: message_bus.MessageBus) -> message_bus.MessageBus:
         """Post-rpc interceptor for get_message_bus
 
         DEPRECATED. Please use the `post_get_message_bus_with_metadata`
@@ -1335,9 +1181,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_message_bus_with_metadata(
-        self,
-        response: message_bus.MessageBus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: message_bus.MessageBus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[message_bus.MessageBus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_message_bus
 
@@ -1354,9 +1198,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_pipeline(
-        self,
-        request: eventarc.GetPipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.GetPipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.GetPipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_pipeline
 
@@ -1379,9 +1221,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_pipeline_with_metadata(
-        self,
-        response: pipeline.Pipeline,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: pipeline.Pipeline, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[pipeline.Pipeline, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_pipeline
 
@@ -1398,9 +1238,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_provider(
-        self,
-        request: eventarc.GetProviderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.GetProviderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.GetProviderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_provider
 
@@ -1423,9 +1261,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_provider_with_metadata(
-        self,
-        response: discovery.Provider,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: discovery.Provider, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[discovery.Provider, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_provider
 
@@ -1442,9 +1278,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_trigger(
-        self,
-        request: eventarc.GetTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.GetTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.GetTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_trigger
 
@@ -1467,9 +1301,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_get_trigger_with_metadata(
-        self,
-        response: trigger.Trigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: trigger.Trigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[trigger.Trigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_trigger
 
@@ -1486,12 +1318,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_channel_connections(
-        self,
-        request: eventarc.ListChannelConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.ListChannelConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListChannelConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channel_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -1499,9 +1327,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_channel_connections(
-        self, response: eventarc.ListChannelConnectionsResponse
-    ) -> eventarc.ListChannelConnectionsResponse:
+    def post_list_channel_connections(self, response: eventarc.ListChannelConnectionsResponse) -> eventarc.ListChannelConnectionsResponse:
         """Post-rpc interceptor for list_channel_connections
 
         DEPRECATED. Please use the `post_list_channel_connections_with_metadata`
@@ -1515,12 +1341,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_channel_connections_with_metadata(
-        self,
-        response: eventarc.ListChannelConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListChannelConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: eventarc.ListChannelConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListChannelConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channel_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1536,9 +1358,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_channels(
-        self,
-        request: eventarc.ListChannelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.ListChannelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channels
 
@@ -1547,9 +1367,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_channels(
-        self, response: eventarc.ListChannelsResponse
-    ) -> eventarc.ListChannelsResponse:
+    def post_list_channels(self, response: eventarc.ListChannelsResponse) -> eventarc.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
 
         DEPRECATED. Please use the `post_list_channels_with_metadata`
@@ -1563,9 +1381,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_channels_with_metadata(
-        self,
-        response: eventarc.ListChannelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: eventarc.ListChannelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channels
 
@@ -1582,12 +1398,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_enrollments(
-        self,
-        request: eventarc.ListEnrollmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListEnrollmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.ListEnrollmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListEnrollmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_enrollments
 
         Override in a subclass to manipulate the request or metadata
@@ -1595,9 +1407,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_enrollments(
-        self, response: eventarc.ListEnrollmentsResponse
-    ) -> eventarc.ListEnrollmentsResponse:
+    def post_list_enrollments(self, response: eventarc.ListEnrollmentsResponse) -> eventarc.ListEnrollmentsResponse:
         """Post-rpc interceptor for list_enrollments
 
         DEPRECATED. Please use the `post_list_enrollments_with_metadata`
@@ -1611,12 +1421,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_enrollments_with_metadata(
-        self,
-        response: eventarc.ListEnrollmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListEnrollmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: eventarc.ListEnrollmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListEnrollmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_enrollments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1632,12 +1438,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_google_api_sources(
-        self,
-        request: eventarc.ListGoogleApiSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListGoogleApiSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.ListGoogleApiSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListGoogleApiSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_google_api_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -1645,9 +1447,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_google_api_sources(
-        self, response: eventarc.ListGoogleApiSourcesResponse
-    ) -> eventarc.ListGoogleApiSourcesResponse:
+    def post_list_google_api_sources(self, response: eventarc.ListGoogleApiSourcesResponse) -> eventarc.ListGoogleApiSourcesResponse:
         """Post-rpc interceptor for list_google_api_sources
 
         DEPRECATED. Please use the `post_list_google_api_sources_with_metadata`
@@ -1661,12 +1461,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_google_api_sources_with_metadata(
-        self,
-        response: eventarc.ListGoogleApiSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListGoogleApiSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: eventarc.ListGoogleApiSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListGoogleApiSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_google_api_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1682,13 +1478,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_message_bus_enrollments(
-        self,
-        request: eventarc.ListMessageBusEnrollmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListMessageBusEnrollmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: eventarc.ListMessageBusEnrollmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListMessageBusEnrollmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_message_bus_enrollments
 
         Override in a subclass to manipulate the request or metadata
@@ -1696,9 +1487,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_message_bus_enrollments(
-        self, response: eventarc.ListMessageBusEnrollmentsResponse
-    ) -> eventarc.ListMessageBusEnrollmentsResponse:
+    def post_list_message_bus_enrollments(self, response: eventarc.ListMessageBusEnrollmentsResponse) -> eventarc.ListMessageBusEnrollmentsResponse:
         """Post-rpc interceptor for list_message_bus_enrollments
 
         DEPRECATED. Please use the `post_list_message_bus_enrollments_with_metadata`
@@ -1712,13 +1501,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_message_bus_enrollments_with_metadata(
-        self,
-        response: eventarc.ListMessageBusEnrollmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListMessageBusEnrollmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: eventarc.ListMessageBusEnrollmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListMessageBusEnrollmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_message_bus_enrollments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1734,12 +1518,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_message_buses(
-        self,
-        request: eventarc.ListMessageBusesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListMessageBusesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.ListMessageBusesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListMessageBusesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_message_buses
 
         Override in a subclass to manipulate the request or metadata
@@ -1747,9 +1527,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_message_buses(
-        self, response: eventarc.ListMessageBusesResponse
-    ) -> eventarc.ListMessageBusesResponse:
+    def post_list_message_buses(self, response: eventarc.ListMessageBusesResponse) -> eventarc.ListMessageBusesResponse:
         """Post-rpc interceptor for list_message_buses
 
         DEPRECATED. Please use the `post_list_message_buses_with_metadata`
@@ -1763,12 +1541,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_message_buses_with_metadata(
-        self,
-        response: eventarc.ListMessageBusesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.ListMessageBusesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: eventarc.ListMessageBusesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.ListMessageBusesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_message_buses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1784,9 +1558,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_pipelines(
-        self,
-        request: eventarc.ListPipelinesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.ListPipelinesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListPipelinesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_pipelines
 
@@ -1795,9 +1567,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_pipelines(
-        self, response: eventarc.ListPipelinesResponse
-    ) -> eventarc.ListPipelinesResponse:
+    def post_list_pipelines(self, response: eventarc.ListPipelinesResponse) -> eventarc.ListPipelinesResponse:
         """Post-rpc interceptor for list_pipelines
 
         DEPRECATED. Please use the `post_list_pipelines_with_metadata`
@@ -1811,9 +1581,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_pipelines_with_metadata(
-        self,
-        response: eventarc.ListPipelinesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: eventarc.ListPipelinesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListPipelinesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_pipelines
 
@@ -1830,9 +1598,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_providers(
-        self,
-        request: eventarc.ListProvidersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.ListProvidersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListProvidersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_providers
 
@@ -1841,9 +1607,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_providers(
-        self, response: eventarc.ListProvidersResponse
-    ) -> eventarc.ListProvidersResponse:
+    def post_list_providers(self, response: eventarc.ListProvidersResponse) -> eventarc.ListProvidersResponse:
         """Post-rpc interceptor for list_providers
 
         DEPRECATED. Please use the `post_list_providers_with_metadata`
@@ -1857,9 +1621,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_providers_with_metadata(
-        self,
-        response: eventarc.ListProvidersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: eventarc.ListProvidersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListProvidersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_providers
 
@@ -1876,9 +1638,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_list_triggers(
-        self,
-        request: eventarc.ListTriggersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.ListTriggersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_triggers
 
@@ -1887,9 +1647,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_triggers(
-        self, response: eventarc.ListTriggersResponse
-    ) -> eventarc.ListTriggersResponse:
+    def post_list_triggers(self, response: eventarc.ListTriggersResponse) -> eventarc.ListTriggersResponse:
         """Post-rpc interceptor for list_triggers
 
         DEPRECATED. Please use the `post_list_triggers_with_metadata`
@@ -1903,9 +1661,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_list_triggers_with_metadata(
-        self,
-        response: eventarc.ListTriggersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: eventarc.ListTriggersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.ListTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_triggers
 
@@ -1922,9 +1678,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_channel(
-        self,
-        request: eventarc.UpdateChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.UpdateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.UpdateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_channel
 
@@ -1933,9 +1687,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_channel
 
         DEPRECATED. Please use the `post_update_channel_with_metadata`
@@ -1949,9 +1701,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_channel
 
@@ -1968,12 +1718,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_enrollment(
-        self,
-        request: eventarc.UpdateEnrollmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.UpdateEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.UpdateEnrollmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.UpdateEnrollmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_enrollment
 
         Override in a subclass to manipulate the request or metadata
@@ -1981,9 +1727,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_enrollment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_enrollment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_enrollment
 
         DEPRECATED. Please use the `post_update_enrollment_with_metadata`
@@ -1997,9 +1741,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_enrollment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_enrollment
 
@@ -2016,12 +1758,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_google_api_source(
-        self,
-        request: eventarc.UpdateGoogleApiSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.UpdateGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.UpdateGoogleApiSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.UpdateGoogleApiSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_google_api_source
 
         Override in a subclass to manipulate the request or metadata
@@ -2029,9 +1767,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_google_api_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_google_api_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_google_api_source
 
         DEPRECATED. Please use the `post_update_google_api_source_with_metadata`
@@ -2045,9 +1781,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_google_api_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_google_api_source
 
@@ -2064,13 +1798,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_google_channel_config(
-        self,
-        request: eventarc.UpdateGoogleChannelConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.UpdateGoogleChannelConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: eventarc.UpdateGoogleChannelConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.UpdateGoogleChannelConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_google_channel_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2094,13 +1823,8 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_google_channel_config_with_metadata(
-        self,
-        response: gce_google_channel_config.GoogleChannelConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gce_google_channel_config.GoogleChannelConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gce_google_channel_config.GoogleChannelConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gce_google_channel_config.GoogleChannelConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_google_channel_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2116,12 +1840,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_message_bus(
-        self,
-        request: eventarc.UpdateMessageBusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        eventarc.UpdateMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: eventarc.UpdateMessageBusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[eventarc.UpdateMessageBusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_message_bus
 
         Override in a subclass to manipulate the request or metadata
@@ -2129,9 +1849,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_message_bus(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_message_bus(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_message_bus
 
         DEPRECATED. Please use the `post_update_message_bus_with_metadata`
@@ -2145,9 +1863,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_message_bus_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_message_bus
 
@@ -2164,9 +1880,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_pipeline(
-        self,
-        request: eventarc.UpdatePipelineRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.UpdatePipelineRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.UpdatePipelineRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_pipeline
 
@@ -2175,9 +1889,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_pipeline(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_pipeline(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_pipeline
 
         DEPRECATED. Please use the `post_update_pipeline_with_metadata`
@@ -2191,9 +1903,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_pipeline_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_pipeline
 
@@ -2210,9 +1920,7 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_update_trigger(
-        self,
-        request: eventarc.UpdateTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: eventarc.UpdateTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[eventarc.UpdateTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_trigger
 
@@ -2221,9 +1929,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_update_trigger(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_trigger
 
         DEPRECATED. Please use the `post_update_trigger_with_metadata`
@@ -2237,9 +1943,7 @@ class EventarcRestInterceptor:
         return response
 
     def post_update_trigger_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_trigger
 
@@ -2256,12 +1960,8 @@ class EventarcRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2269,9 +1969,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2281,12 +1979,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2294,9 +1988,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2306,12 +1998,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2329,12 +2017,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -2352,13 +2036,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -2366,9 +2045,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -2378,12 +2055,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2401,12 +2074,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2424,12 +2093,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2437,9 +2102,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2449,12 +2112,8 @@ class EventarcRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2462,9 +2121,7 @@ class EventarcRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2555,9 +2212,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2610,29 +2265,17 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateChannel(
-        _BaseEventarcRestTransport._BaseCreateChannel, EventarcRestStub
-    ):
+    class _CreateChannel(_BaseEventarcRestTransport._BaseCreateChannel, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreateChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2676,34 +2319,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateChannel._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseCreateChannel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseCreateChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseCreateChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseCreateChannel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreateChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2727,13 +2354,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreateChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2747,12 +2368,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2773,22 +2390,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _CreateChannelConnection(
-        _BaseEventarcRestTransport._BaseCreateChannelConnection, EventarcRestStub
-    ):
+    class _CreateChannelConnection(_BaseEventarcRestTransport._BaseCreateChannelConnection, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreateChannelConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2832,32 +2439,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_channel_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_channel_connection(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreateChannelConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2881,13 +2474,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreateChannelConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2901,12 +2488,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_channel_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_channel_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2927,22 +2510,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _CreateEnrollment(
-        _BaseEventarcRestTransport._BaseCreateEnrollment, EventarcRestStub
-    ):
+    class _CreateEnrollment(_BaseEventarcRestTransport._BaseCreateEnrollment, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreateEnrollment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2986,36 +2559,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateEnrollment._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateEnrollment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_enrollment(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateEnrollment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_enrollment(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateEnrollment._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseCreateEnrollment._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseCreateEnrollment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseCreateEnrollment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreateEnrollment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3039,13 +2594,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreateEnrollment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3059,12 +2608,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_enrollment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_enrollment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3085,22 +2630,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _CreateGoogleApiSource(
-        _BaseEventarcRestTransport._BaseCreateGoogleApiSource, EventarcRestStub
-    ):
+    class _CreateGoogleApiSource(_BaseEventarcRestTransport._BaseCreateGoogleApiSource, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreateGoogleApiSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3144,32 +2679,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_google_api_source(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_google_api_source(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3193,13 +2714,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreateGoogleApiSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3213,12 +2728,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_google_api_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_google_api_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_google_api_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3239,22 +2750,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _CreateMessageBus(
-        _BaseEventarcRestTransport._BaseCreateMessageBus, EventarcRestStub
-    ):
+    class _CreateMessageBus(_BaseEventarcRestTransport._BaseCreateMessageBus, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreateMessageBus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3298,36 +2799,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateMessageBus._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateMessageBus._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_message_bus(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseCreateMessageBus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_message_bus(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateMessageBus._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseCreateMessageBus._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseCreateMessageBus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseCreateMessageBus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreateMessageBus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3351,13 +2834,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreateMessageBus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3371,12 +2848,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_message_bus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_message_bus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_message_bus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3397,22 +2870,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _CreatePipeline(
-        _BaseEventarcRestTransport._BaseCreatePipeline, EventarcRestStub
-    ):
+    class _CreatePipeline(_BaseEventarcRestTransport._BaseCreatePipeline, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreatePipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3456,36 +2919,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreatePipeline._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreatePipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_create_pipeline(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseCreatePipeline._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseCreatePipeline._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseCreatePipeline._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseCreatePipeline._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseCreatePipeline._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreatePipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3509,13 +2954,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreatePipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3529,12 +2968,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3555,22 +2990,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _CreateTrigger(
-        _BaseEventarcRestTransport._BaseCreateTrigger, EventarcRestStub
-    ):
+    class _CreateTrigger(_BaseEventarcRestTransport._BaseCreateTrigger, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CreateTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3614,34 +3039,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCreateTrigger._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCreateTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_create_trigger(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseCreateTrigger._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseCreateTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseCreateTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseCreateTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseCreateTrigger._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseCreateTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3665,13 +3074,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CreateTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3685,12 +3088,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_create_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3711,22 +3110,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeleteChannel(
-        _BaseEventarcRestTransport._BaseDeleteChannel, EventarcRestStub
-    ):
+    class _DeleteChannel(_BaseEventarcRestTransport._BaseDeleteChannel, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3769,30 +3158,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteChannel._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseDeleteChannel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseDeleteChannel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3816,12 +3191,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3835,12 +3205,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3861,22 +3227,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeleteChannelConnection(
-        _BaseEventarcRestTransport._BaseDeleteChannelConnection, EventarcRestStub
-    ):
+    class _DeleteChannelConnection(_BaseEventarcRestTransport._BaseDeleteChannelConnection, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteChannelConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3919,28 +3275,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_channel_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_channel_connection(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3964,12 +3308,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteChannelConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3983,12 +3322,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_channel_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_channel_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4009,22 +3344,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeleteEnrollment(
-        _BaseEventarcRestTransport._BaseDeleteEnrollment, EventarcRestStub
-    ):
+    class _DeleteEnrollment(_BaseEventarcRestTransport._BaseDeleteEnrollment, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteEnrollment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4067,30 +3392,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteEnrollment._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_enrollment(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_enrollment(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseDeleteEnrollment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteEnrollment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4114,12 +3425,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteEnrollment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4133,12 +3439,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_enrollment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_enrollment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4159,22 +3461,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeleteGoogleApiSource(
-        _BaseEventarcRestTransport._BaseDeleteGoogleApiSource, EventarcRestStub
-    ):
+    class _DeleteGoogleApiSource(_BaseEventarcRestTransport._BaseDeleteGoogleApiSource, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteGoogleApiSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4217,28 +3509,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_google_api_source(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_google_api_source(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4262,12 +3542,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteGoogleApiSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4281,12 +3556,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_google_api_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_google_api_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_google_api_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4307,22 +3578,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeleteMessageBus(
-        _BaseEventarcRestTransport._BaseDeleteMessageBus, EventarcRestStub
-    ):
+    class _DeleteMessageBus(_BaseEventarcRestTransport._BaseDeleteMessageBus, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteMessageBus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4365,30 +3626,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteMessageBus._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_message_bus(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_message_bus(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseDeleteMessageBus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteMessageBus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4412,12 +3659,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteMessageBus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4431,12 +3673,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_message_bus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_message_bus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_message_bus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4457,22 +3695,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeletePipeline(
-        _BaseEventarcRestTransport._BaseDeletePipeline, EventarcRestStub
-    ):
+    class _DeletePipeline(_BaseEventarcRestTransport._BaseDeletePipeline, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeletePipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4515,30 +3743,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeletePipeline._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeletePipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_pipeline(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseDeletePipeline._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseDeletePipeline._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseDeletePipeline._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeletePipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4562,12 +3776,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeletePipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4581,12 +3790,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4607,22 +3812,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _DeleteTrigger(
-        _BaseEventarcRestTransport._BaseDeleteTrigger, EventarcRestStub
-    ):
+    class _DeleteTrigger(_BaseEventarcRestTransport._BaseDeleteTrigger, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4665,30 +3860,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteTrigger._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_trigger(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseDeleteTrigger._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseDeleteTrigger._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4712,12 +3893,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4731,12 +3907,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_delete_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4762,15 +3934,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4818,30 +3982,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetChannel._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetChannel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetChannel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4864,14 +4014,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = EventarcRestTransport._GetChannel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4886,12 +4029,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = channel.Channel.to_json(response)
                 except:
@@ -4912,22 +4051,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _GetChannelConnection(
-        _BaseEventarcRestTransport._BaseGetChannelConnection, EventarcRestStub
-    ):
+    class _GetChannelConnection(_BaseEventarcRestTransport._BaseGetChannelConnection, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetChannelConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4974,28 +4103,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetChannelConnection._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetChannelConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_channel_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseGetChannelConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_channel_connection(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseGetChannelConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetChannelConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetChannelConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5019,12 +4136,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetChannelConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5040,16 +4152,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_channel_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_channel_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_channel_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = channel_connection.ChannelConnection.to_json(
-                        response
-                    )
+                    response_payload = channel_connection.ChannelConnection.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5068,22 +4174,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _GetEnrollment(
-        _BaseEventarcRestTransport._BaseGetEnrollment, EventarcRestStub
-    ):
+    class _GetEnrollment(_BaseEventarcRestTransport._BaseGetEnrollment, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetEnrollment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5129,30 +4225,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetEnrollment._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetEnrollment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_enrollment(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetEnrollment._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetEnrollment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetEnrollment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetEnrollment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5176,12 +4258,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetEnrollment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5197,12 +4274,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_enrollment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_enrollment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = enrollment.Enrollment.to_json(response)
                 except:
@@ -5223,22 +4296,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _GetGoogleApiSource(
-        _BaseEventarcRestTransport._BaseGetGoogleApiSource, EventarcRestStub
-    ):
+    class _GetGoogleApiSource(_BaseEventarcRestTransport._BaseGetGoogleApiSource, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetGoogleApiSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5281,28 +4344,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_google_api_source(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_google_api_source(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5326,12 +4377,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetGoogleApiSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5347,16 +4393,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_google_api_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_google_api_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_google_api_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = google_api_source.GoogleApiSource.to_json(
-                        response
-                    )
+                    response_payload = google_api_source.GoogleApiSource.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5375,22 +4415,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _GetGoogleChannelConfig(
-        _BaseEventarcRestTransport._BaseGetGoogleChannelConfig, EventarcRestStub
-    ):
+    class _GetGoogleChannelConfig(_BaseEventarcRestTransport._BaseGetGoogleChannelConfig, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetGoogleChannelConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5438,28 +4468,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_google_channel_config(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_google_channel_config(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5483,12 +4501,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetGoogleChannelConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5504,16 +4517,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_google_channel_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_google_channel_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_google_channel_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        google_channel_config.GoogleChannelConfig.to_json(response)
-                    )
+                    response_payload = google_channel_config.GoogleChannelConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5532,22 +4539,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _GetMessageBus(
-        _BaseEventarcRestTransport._BaseGetMessageBus, EventarcRestStub
-    ):
+    class _GetMessageBus(_BaseEventarcRestTransport._BaseGetMessageBus, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.GetMessageBus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5595,30 +4592,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetMessageBus._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetMessageBus._get_http_options()
 
             request, metadata = self._interceptor.pre_get_message_bus(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetMessageBus._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetMessageBus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetMessageBus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetMessageBus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5642,12 +4625,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetMessageBus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5663,12 +4641,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_message_bus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_message_bus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_message_bus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = message_bus.MessageBus.to_json(response)
                 except:
@@ -5694,15 +4668,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetPipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5744,30 +4710,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetPipeline._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetPipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_get_pipeline(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetPipeline._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetPipeline._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetPipeline._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetPipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5791,12 +4743,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetPipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5812,12 +4759,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = pipeline.Pipeline.to_json(response)
                 except:
@@ -5843,15 +4786,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetProvider")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5893,30 +4828,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetProvider._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetProvider._get_http_options()
 
             request, metadata = self._interceptor.pre_get_provider(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetProvider._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetProvider._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetProvider._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetProvider._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5940,12 +4861,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetProvider._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5961,12 +4877,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_provider(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_provider_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_provider_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = discovery.Provider.to_json(response)
                 except:
@@ -5992,15 +4904,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6042,30 +4946,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetTrigger._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_get_trigger(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetTrigger._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetTrigger._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6088,14 +4978,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
 
             # Send the request
-            response = EventarcRestTransport._GetTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = EventarcRestTransport._GetTrigger._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -6110,12 +4993,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_get_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = trigger.Trigger.to_json(response)
                 except:
@@ -6136,22 +5015,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListChannelConnections(
-        _BaseEventarcRestTransport._BaseListChannelConnections, EventarcRestStub
-    ):
+    class _ListChannelConnections(_BaseEventarcRestTransport._BaseListChannelConnections, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListChannelConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6193,28 +5062,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListChannelConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_channel_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseListChannelConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_channel_connections(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseListChannelConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListChannelConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseListChannelConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6238,12 +5095,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListChannelConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6259,16 +5111,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_channel_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_channel_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_channel_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListChannelConnectionsResponse.to_json(
-                        response
-                    )
+                    response_payload = eventarc.ListChannelConnectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6292,15 +5138,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.ListChannels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6340,30 +5178,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     The response message for the ``ListChannels`` method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListChannels._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListChannels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListChannels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListChannels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListChannels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListChannels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6387,12 +5211,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListChannels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6408,12 +5227,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_channels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_channels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_channels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListChannelsResponse.to_json(response)
                 except:
@@ -6434,22 +5249,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListEnrollments(
-        _BaseEventarcRestTransport._BaseListEnrollments, EventarcRestStub
-    ):
+    class _ListEnrollments(_BaseEventarcRestTransport._BaseListEnrollments, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListEnrollments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6489,32 +5294,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     The response message for the ``ListEnrollments`` method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListEnrollments._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListEnrollments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_enrollments(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListEnrollments._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_enrollments(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseListEnrollments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListEnrollments._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListEnrollments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6538,12 +5327,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListEnrollments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6559,16 +5343,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_enrollments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_enrollments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_enrollments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListEnrollmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = eventarc.ListEnrollmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6587,22 +5365,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListGoogleApiSources(
-        _BaseEventarcRestTransport._BaseListGoogleApiSources, EventarcRestStub
-    ):
+    class _ListGoogleApiSources(_BaseEventarcRestTransport._BaseListGoogleApiSources, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListGoogleApiSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6644,28 +5412,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListGoogleApiSources._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_google_api_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_google_api_sources(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseListGoogleApiSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6689,12 +5445,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListGoogleApiSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6710,16 +5461,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_google_api_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_google_api_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_google_api_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListGoogleApiSourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = eventarc.ListGoogleApiSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6738,22 +5483,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListMessageBusEnrollments(
-        _BaseEventarcRestTransport._BaseListMessageBusEnrollments, EventarcRestStub
-    ):
+    class _ListMessageBusEnrollments(_BaseEventarcRestTransport._BaseListMessageBusEnrollments, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListMessageBusEnrollments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6796,28 +5531,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_message_bus_enrollments(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_message_bus_enrollments(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6841,12 +5564,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListMessageBusEnrollments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6862,16 +5580,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_message_bus_enrollments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_message_bus_enrollments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_message_bus_enrollments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        eventarc.ListMessageBusEnrollmentsResponse.to_json(response)
-                    )
+                    response_payload = eventarc.ListMessageBusEnrollmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6890,22 +5602,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListMessageBuses(
-        _BaseEventarcRestTransport._BaseListMessageBuses, EventarcRestStub
-    ):
+    class _ListMessageBuses(_BaseEventarcRestTransport._BaseListMessageBuses, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListMessageBuses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6947,30 +5649,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListMessageBuses._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListMessageBuses._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_message_buses(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBuses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_message_buses(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseListMessageBuses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListMessageBuses._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListMessageBuses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6994,12 +5682,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListMessageBuses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7015,16 +5698,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_message_buses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_message_buses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_message_buses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = eventarc.ListMessageBusesResponse.to_json(
-                        response
-                    )
+                    response_payload = eventarc.ListMessageBusesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7043,22 +5720,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListPipelines(
-        _BaseEventarcRestTransport._BaseListPipelines, EventarcRestStub
-    ):
+    class _ListPipelines(_BaseEventarcRestTransport._BaseListPipelines, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListPipelines")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7100,30 +5767,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListPipelines._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListPipelines._get_http_options()
 
             request, metadata = self._interceptor.pre_list_pipelines(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListPipelines._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListPipelines._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListPipelines._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListPipelines._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7147,12 +5800,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListPipelines._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7168,12 +5816,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_pipelines(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_pipelines_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_pipelines_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListPipelinesResponse.to_json(response)
                 except:
@@ -7194,22 +5838,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _ListProviders(
-        _BaseEventarcRestTransport._BaseListProviders, EventarcRestStub
-    ):
+    class _ListProviders(_BaseEventarcRestTransport._BaseListProviders, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListProviders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7249,30 +5883,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     The response message for the ``ListProviders`` method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListProviders._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListProviders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_providers(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListProviders._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListProviders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListProviders._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListProviders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7296,12 +5916,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListProviders._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7317,12 +5932,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_providers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_providers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_providers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListProvidersResponse.to_json(response)
                 except:
@@ -7348,15 +5959,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.ListTriggers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7396,30 +5999,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     The response message for the ``ListTriggers`` method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListTriggers._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListTriggers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_triggers(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListTriggers._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListTriggers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListTriggers._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListTriggers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7443,12 +6032,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListTriggers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7464,12 +6048,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_list_triggers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_triggers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_triggers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = eventarc.ListTriggersResponse.to_json(response)
                 except:
@@ -7490,22 +6070,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdateChannel(
-        _BaseEventarcRestTransport._BaseUpdateChannel, EventarcRestStub
-    ):
+    class _UpdateChannel(_BaseEventarcRestTransport._BaseUpdateChannel, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7549,34 +6119,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateChannel._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseUpdateChannel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseUpdateChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseUpdateChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseUpdateChannel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdateChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7600,13 +6154,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdateChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7620,12 +6168,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7646,22 +6190,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdateEnrollment(
-        _BaseEventarcRestTransport._BaseUpdateEnrollment, EventarcRestStub
-    ):
+    class _UpdateEnrollment(_BaseEventarcRestTransport._BaseUpdateEnrollment, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateEnrollment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7705,36 +6239,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_enrollment(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_enrollment(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdateEnrollment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7758,13 +6274,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdateEnrollment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7778,12 +6288,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_enrollment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_enrollment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_enrollment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7804,22 +6310,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdateGoogleApiSource(
-        _BaseEventarcRestTransport._BaseUpdateGoogleApiSource, EventarcRestStub
-    ):
+    class _UpdateGoogleApiSource(_BaseEventarcRestTransport._BaseUpdateGoogleApiSource, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateGoogleApiSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7863,32 +6359,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_google_api_source(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_google_api_source(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7912,13 +6394,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdateGoogleApiSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7932,12 +6408,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_google_api_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_google_api_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_google_api_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7958,22 +6430,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdateGoogleChannelConfig(
-        _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig, EventarcRestStub
-    ):
+    class _UpdateGoogleChannelConfig(_BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateGoogleChannelConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8023,32 +6485,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_google_channel_config(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_google_channel_config(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8072,13 +6520,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdateGoogleChannelConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8094,16 +6536,10 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_google_channel_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_google_channel_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_google_channel_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gce_google_channel_config.GoogleChannelConfig.to_json(response)
-                    )
+                    response_payload = gce_google_channel_config.GoogleChannelConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8122,22 +6558,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdateMessageBus(
-        _BaseEventarcRestTransport._BaseUpdateMessageBus, EventarcRestStub
-    ):
+    class _UpdateMessageBus(_BaseEventarcRestTransport._BaseUpdateMessageBus, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateMessageBus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8181,36 +6607,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_message_bus(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_message_bus(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdateMessageBus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8234,13 +6642,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdateMessageBus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8254,12 +6656,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_message_bus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_message_bus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_message_bus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8280,22 +6678,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdatePipeline(
-        _BaseEventarcRestTransport._BaseUpdatePipeline, EventarcRestStub
-    ):
+    class _UpdatePipeline(_BaseEventarcRestTransport._BaseUpdatePipeline, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdatePipeline")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8339,36 +6727,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdatePipeline._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdatePipeline._get_http_options()
 
             request, metadata = self._interceptor.pre_update_pipeline(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseUpdatePipeline._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdatePipeline._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseUpdatePipeline._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseUpdatePipeline._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseUpdatePipeline._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdatePipeline._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8392,13 +6762,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdatePipeline._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8412,12 +6776,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_pipeline(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_pipeline_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_pipeline_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8438,22 +6798,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 )
             return resp
 
-    class _UpdateTrigger(
-        _BaseEventarcRestTransport._BaseUpdateTrigger, EventarcRestStub
-    ):
+    class _UpdateTrigger(_BaseEventarcRestTransport._BaseUpdateTrigger, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.UpdateTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8497,34 +6847,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseUpdateTrigger._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseUpdateTrigger._get_http_options()
 
             request, metadata = self._interceptor.pre_update_trigger(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseUpdateTrigger._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseUpdateTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseUpdateTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseUpdateTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseUpdateTrigger._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseUpdateTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8548,13 +6882,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._UpdateTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8568,12 +6896,8 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             resp = self._interceptor.post_update_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8595,113 +6919,85 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return resp
 
     @property
-    def create_channel_(
-        self,
-    ) -> Callable[[eventarc.CreateChannelRequest], operations_pb2.Operation]:
+    def create_channel_(self) -> Callable[[eventarc.CreateChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_channel_connection(
-        self,
-    ) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
+    def create_channel_connection(self) -> Callable[[eventarc.CreateChannelConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_enrollment(
-        self,
-    ) -> Callable[[eventarc.CreateEnrollmentRequest], operations_pb2.Operation]:
+    def create_enrollment(self) -> Callable[[eventarc.CreateEnrollmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEnrollment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_google_api_source(
-        self,
-    ) -> Callable[[eventarc.CreateGoogleApiSourceRequest], operations_pb2.Operation]:
+    def create_google_api_source(self) -> Callable[[eventarc.CreateGoogleApiSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_message_bus(
-        self,
-    ) -> Callable[[eventarc.CreateMessageBusRequest], operations_pb2.Operation]:
+    def create_message_bus(self) -> Callable[[eventarc.CreateMessageBusRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMessageBus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_pipeline(
-        self,
-    ) -> Callable[[eventarc.CreatePipelineRequest], operations_pb2.Operation]:
+    def create_pipeline(self) -> Callable[[eventarc.CreatePipelineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_trigger(
-        self,
-    ) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
+    def create_trigger(self) -> Callable[[eventarc.CreateTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_channel(
-        self,
-    ) -> Callable[[eventarc.DeleteChannelRequest], operations_pb2.Operation]:
+    def delete_channel(self) -> Callable[[eventarc.DeleteChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_channel_connection(
-        self,
-    ) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
+    def delete_channel_connection(self) -> Callable[[eventarc.DeleteChannelConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_enrollment(
-        self,
-    ) -> Callable[[eventarc.DeleteEnrollmentRequest], operations_pb2.Operation]:
+    def delete_enrollment(self) -> Callable[[eventarc.DeleteEnrollmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEnrollment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_google_api_source(
-        self,
-    ) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], operations_pb2.Operation]:
+    def delete_google_api_source(self) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_message_bus(
-        self,
-    ) -> Callable[[eventarc.DeleteMessageBusRequest], operations_pb2.Operation]:
+    def delete_message_bus(self) -> Callable[[eventarc.DeleteMessageBusRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMessageBus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_pipeline(
-        self,
-    ) -> Callable[[eventarc.DeletePipelineRequest], operations_pb2.Operation]:
+    def delete_pipeline(self) -> Callable[[eventarc.DeletePipelineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_trigger(
-        self,
-    ) -> Callable[[eventarc.DeleteTriggerRequest], operations_pb2.Operation]:
+    def delete_trigger(self) -> Callable[[eventarc.DeleteTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTrigger(self._session, self._host, self._interceptor)  # type: ignore
@@ -8713,64 +7009,43 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_channel_connection(
-        self,
-    ) -> Callable[
-        [eventarc.GetChannelConnectionRequest], channel_connection.ChannelConnection
-    ]:
+    def get_channel_connection(self) -> Callable[[eventarc.GetChannelConnectionRequest], channel_connection.ChannelConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetChannelConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_enrollment(
-        self,
-    ) -> Callable[[eventarc.GetEnrollmentRequest], enrollment.Enrollment]:
+    def get_enrollment(self) -> Callable[[eventarc.GetEnrollmentRequest], enrollment.Enrollment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEnrollment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_google_api_source(
-        self,
-    ) -> Callable[
-        [eventarc.GetGoogleApiSourceRequest], google_api_source.GoogleApiSource
-    ]:
+    def get_google_api_source(self) -> Callable[[eventarc.GetGoogleApiSourceRequest], google_api_source.GoogleApiSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_google_channel_config(
-        self,
-    ) -> Callable[
-        [eventarc.GetGoogleChannelConfigRequest],
-        google_channel_config.GoogleChannelConfig,
-    ]:
+    def get_google_channel_config(self) -> Callable[[eventarc.GetGoogleChannelConfigRequest], google_channel_config.GoogleChannelConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_message_bus(
-        self,
-    ) -> Callable[[eventarc.GetMessageBusRequest], message_bus.MessageBus]:
+    def get_message_bus(self) -> Callable[[eventarc.GetMessageBusRequest], message_bus.MessageBus]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMessageBus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_pipeline(
-        self,
-    ) -> Callable[[eventarc.GetPipelineRequest], pipeline.Pipeline]:
+    def get_pipeline(self) -> Callable[[eventarc.GetPipelineRequest], pipeline.Pipeline]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_provider(
-        self,
-    ) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
+    def get_provider(self) -> Callable[[eventarc.GetProviderRequest], discovery.Provider]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProvider(self._session, self._host, self._interceptor)  # type: ignore
@@ -8782,142 +7057,97 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
         return self._GetTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_channel_connections(
-        self,
-    ) -> Callable[
-        [eventarc.ListChannelConnectionsRequest],
-        eventarc.ListChannelConnectionsResponse,
-    ]:
+    def list_channel_connections(self) -> Callable[[eventarc.ListChannelConnectionsRequest], eventarc.ListChannelConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChannelConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_channels(
-        self,
-    ) -> Callable[[eventarc.ListChannelsRequest], eventarc.ListChannelsResponse]:
+    def list_channels(self) -> Callable[[eventarc.ListChannelsRequest], eventarc.ListChannelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChannels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_enrollments(
-        self,
-    ) -> Callable[[eventarc.ListEnrollmentsRequest], eventarc.ListEnrollmentsResponse]:
+    def list_enrollments(self) -> Callable[[eventarc.ListEnrollmentsRequest], eventarc.ListEnrollmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEnrollments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_google_api_sources(
-        self,
-    ) -> Callable[
-        [eventarc.ListGoogleApiSourcesRequest], eventarc.ListGoogleApiSourcesResponse
-    ]:
+    def list_google_api_sources(self) -> Callable[[eventarc.ListGoogleApiSourcesRequest], eventarc.ListGoogleApiSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGoogleApiSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_message_bus_enrollments(
-        self,
-    ) -> Callable[
-        [eventarc.ListMessageBusEnrollmentsRequest],
-        eventarc.ListMessageBusEnrollmentsResponse,
-    ]:
+    def list_message_bus_enrollments(self) -> Callable[[eventarc.ListMessageBusEnrollmentsRequest], eventarc.ListMessageBusEnrollmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMessageBusEnrollments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_message_buses(
-        self,
-    ) -> Callable[
-        [eventarc.ListMessageBusesRequest], eventarc.ListMessageBusesResponse
-    ]:
+    def list_message_buses(self) -> Callable[[eventarc.ListMessageBusesRequest], eventarc.ListMessageBusesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMessageBuses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_pipelines(
-        self,
-    ) -> Callable[[eventarc.ListPipelinesRequest], eventarc.ListPipelinesResponse]:
+    def list_pipelines(self) -> Callable[[eventarc.ListPipelinesRequest], eventarc.ListPipelinesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPipelines(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_providers(
-        self,
-    ) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
+    def list_providers(self) -> Callable[[eventarc.ListProvidersRequest], eventarc.ListProvidersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProviders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_triggers(
-        self,
-    ) -> Callable[[eventarc.ListTriggersRequest], eventarc.ListTriggersResponse]:
+    def list_triggers(self) -> Callable[[eventarc.ListTriggersRequest], eventarc.ListTriggersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTriggers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_channel(
-        self,
-    ) -> Callable[[eventarc.UpdateChannelRequest], operations_pb2.Operation]:
+    def update_channel(self) -> Callable[[eventarc.UpdateChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_enrollment(
-        self,
-    ) -> Callable[[eventarc.UpdateEnrollmentRequest], operations_pb2.Operation]:
+    def update_enrollment(self) -> Callable[[eventarc.UpdateEnrollmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEnrollment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_google_api_source(
-        self,
-    ) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], operations_pb2.Operation]:
+    def update_google_api_source(self) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGoogleApiSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_google_channel_config(
-        self,
-    ) -> Callable[
-        [eventarc.UpdateGoogleChannelConfigRequest],
-        gce_google_channel_config.GoogleChannelConfig,
-    ]:
+    def update_google_channel_config(self) -> Callable[[eventarc.UpdateGoogleChannelConfigRequest], gce_google_channel_config.GoogleChannelConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGoogleChannelConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_message_bus(
-        self,
-    ) -> Callable[[eventarc.UpdateMessageBusRequest], operations_pb2.Operation]:
+    def update_message_bus(self) -> Callable[[eventarc.UpdateMessageBusRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMessageBus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_pipeline(
-        self,
-    ) -> Callable[[eventarc.UpdatePipelineRequest], operations_pb2.Operation]:
+    def update_pipeline(self) -> Callable[[eventarc.UpdatePipelineRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePipeline(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_trigger(
-        self,
-    ) -> Callable[[eventarc.UpdateTriggerRequest], operations_pb2.Operation]:
+    def update_trigger(self) -> Callable[[eventarc.UpdateTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTrigger(self._session, self._host, self._interceptor)  # type: ignore
@@ -8931,15 +7161,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8977,30 +7199,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9024,12 +7232,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9041,9 +7244,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9068,22 +7269,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseEventarcRestTransport._BaseListLocations, EventarcRestStub
-    ):
+    class _ListLocations(_BaseEventarcRestTransport._BaseListLocations, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9121,30 +7312,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9168,12 +7345,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9185,9 +7357,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9217,15 +7387,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9263,30 +7425,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9310,12 +7458,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9327,9 +7470,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9359,15 +7500,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9406,34 +7539,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9457,13 +7574,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9475,9 +7586,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9502,22 +7611,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseEventarcRestTransport._BaseTestIamPermissions, EventarcRestStub
-    ):
+    class _TestIamPermissions(_BaseEventarcRestTransport._BaseTestIamPermissions, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9556,32 +7655,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseEventarcRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseEventarcRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEventarcRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEventarcRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEventarcRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9605,13 +7690,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9623,9 +7702,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9650,22 +7727,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEventarcRestTransport._BaseCancelOperation, EventarcRestStub
-    ):
+    class _CancelOperation(_BaseEventarcRestTransport._BaseCancelOperation, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9701,38 +7768,18 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEventarcRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEventarcRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9756,13 +7803,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9776,22 +7817,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseEventarcRestTransport._BaseDeleteOperation, EventarcRestStub
-    ):
+    class _DeleteOperation(_BaseEventarcRestTransport._BaseDeleteOperation, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9826,32 +7857,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseEventarcRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9875,12 +7890,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9899,15 +7909,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             return hash("EventarcRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9945,30 +7947,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9992,12 +7980,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10009,9 +7992,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10036,22 +8017,12 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEventarcRestTransport._BaseListOperations, EventarcRestStub
-    ):
+    class _ListOperations(_BaseEventarcRestTransport._BaseListOperations, EventarcRestStub):
         def __hash__(self):
             return hash("EventarcRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10089,30 +8060,16 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEventarcRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEventarcRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseEventarcRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEventarcRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEventarcRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEventarcRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10136,12 +8093,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
 
             # Send the request
             response = EventarcRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10153,9 +8105,7 @@ class EventarcRestTransport(_BaseEventarcRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,22 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.video.stitcher_v1.types import (
-    ad_tag_details,
-    cdn_keys,
-    live_configs,
-    slates,
-    stitch_details,
-    video_stitcher_service,
-    vod_configs,
-)
+from google.cloud.video.stitcher_v1.types import ad_tag_details, cdn_keys, live_configs, slates, stitch_details, video_stitcher_service, vod_configs
 
 
 class ListCdnKeysPager:
@@ -109,12 +89,7 @@ class ListCdnKeysPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[cdn_keys.CdnKey]:
@@ -185,12 +160,7 @@ class ListCdnKeysAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[cdn_keys.CdnKey]:
@@ -265,12 +235,7 @@ class ListVodStitchDetailsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[stitch_details.VodStitchDetail]:
@@ -301,9 +266,7 @@ class ListVodStitchDetailsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[video_stitcher_service.ListVodStitchDetailsResponse]
-        ],
+        method: Callable[..., Awaitable[video_stitcher_service.ListVodStitchDetailsResponse]],
         request: video_stitcher_service.ListVodStitchDetailsRequest,
         response: video_stitcher_service.ListVodStitchDetailsResponse,
         *,
@@ -339,18 +302,11 @@ class ListVodStitchDetailsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[video_stitcher_service.ListVodStitchDetailsResponse]:
+    async def pages(self) -> AsyncIterator[video_stitcher_service.ListVodStitchDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[stitch_details.VodStitchDetail]:
@@ -425,12 +381,7 @@ class ListVodAdTagDetailsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[ad_tag_details.VodAdTagDetail]:
@@ -461,9 +412,7 @@ class ListVodAdTagDetailsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[video_stitcher_service.ListVodAdTagDetailsResponse]
-        ],
+        method: Callable[..., Awaitable[video_stitcher_service.ListVodAdTagDetailsResponse]],
         request: video_stitcher_service.ListVodAdTagDetailsRequest,
         response: video_stitcher_service.ListVodAdTagDetailsResponse,
         *,
@@ -499,18 +448,11 @@ class ListVodAdTagDetailsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[video_stitcher_service.ListVodAdTagDetailsResponse]:
+    async def pages(self) -> AsyncIterator[video_stitcher_service.ListVodAdTagDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[ad_tag_details.VodAdTagDetail]:
@@ -585,12 +527,7 @@ class ListLiveAdTagDetailsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[ad_tag_details.LiveAdTagDetail]:
@@ -621,9 +558,7 @@ class ListLiveAdTagDetailsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[video_stitcher_service.ListLiveAdTagDetailsResponse]
-        ],
+        method: Callable[..., Awaitable[video_stitcher_service.ListLiveAdTagDetailsResponse]],
         request: video_stitcher_service.ListLiveAdTagDetailsRequest,
         response: video_stitcher_service.ListLiveAdTagDetailsResponse,
         *,
@@ -659,18 +594,11 @@ class ListLiveAdTagDetailsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[video_stitcher_service.ListLiveAdTagDetailsResponse]:
+    async def pages(self) -> AsyncIterator[video_stitcher_service.ListLiveAdTagDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[ad_tag_details.LiveAdTagDetail]:
@@ -745,12 +673,7 @@ class ListSlatesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[slates.Slate]:
@@ -821,12 +744,7 @@ class ListSlatesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[slates.Slate]:
@@ -901,12 +819,7 @@ class ListLiveConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[live_configs.LiveConfig]:
@@ -937,9 +850,7 @@ class ListLiveConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[video_stitcher_service.ListLiveConfigsResponse]
-        ],
+        method: Callable[..., Awaitable[video_stitcher_service.ListLiveConfigsResponse]],
         request: video_stitcher_service.ListLiveConfigsRequest,
         response: video_stitcher_service.ListLiveConfigsResponse,
         *,
@@ -975,18 +886,11 @@ class ListLiveConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[video_stitcher_service.ListLiveConfigsResponse]:
+    async def pages(self) -> AsyncIterator[video_stitcher_service.ListLiveConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[live_configs.LiveConfig]:
@@ -1061,12 +965,7 @@ class ListVodConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[vod_configs.VodConfig]:
@@ -1133,18 +1032,11 @@ class ListVodConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[video_stitcher_service.ListVodConfigsResponse]:
+    async def pages(self) -> AsyncIterator[video_stitcher_service.ListVodConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[vod_configs.VodConfig]:

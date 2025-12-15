@@ -41,9 +41,7 @@ async def sample_create_evaluation():
     # Initialize request argument(s)
     evaluation = discoveryengine_v1alpha.Evaluation()
     evaluation.evaluation_spec.search_request.serving_config = "serving_config_value"
-    evaluation.evaluation_spec.query_set_spec.sample_query_set = (
-        "sample_query_set_value"
-    )
+    evaluation.evaluation_spec.query_set_spec.sample_query_set = "sample_query_set_value"
 
     request = discoveryengine_v1alpha.CreateEvaluationRequest(
         parent="parent_value",

@@ -195,12 +195,10 @@ class ProductReview(proto.Message):
         proto.STRING,
         number=2,
     )
-    product_review_attributes: productreviews_common.ProductReviewAttributes = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=productreviews_common.ProductReviewAttributes,
-        )
+    product_review_attributes: productreviews_common.ProductReviewAttributes = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=productreviews_common.ProductReviewAttributes,
     )
     custom_attributes: MutableSequence[types.CustomAttribute] = proto.RepeatedField(
         proto.MESSAGE,

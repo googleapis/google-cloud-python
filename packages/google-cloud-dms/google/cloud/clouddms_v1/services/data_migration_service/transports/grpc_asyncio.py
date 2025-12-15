@@ -36,11 +36,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.clouddms_v1.types import (
-    clouddms,
-    clouddms_resources,
-    conversionworkspace_resources,
-)
+from google.cloud.clouddms_v1.types import clouddms, clouddms_resources, conversionworkspace_resources
 
 from .base import DEFAULT_CLIENT_INFO, DataMigrationServiceTransport
 from .grpc import DataMigrationServiceGrpcTransport
@@ -55,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -71,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -93,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -276,18 +261,14 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -323,9 +304,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -348,20 +327,13 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_migration_jobs(
-        self,
-    ) -> Callable[
-        [clouddms.ListMigrationJobsRequest],
-        Awaitable[clouddms.ListMigrationJobsResponse],
-    ]:
+    def list_migration_jobs(self) -> Callable[[clouddms.ListMigrationJobsRequest], Awaitable[clouddms.ListMigrationJobsResponse]]:
         r"""Return a callable for the list migration jobs method over gRPC.
 
         Lists migration jobs in a given project and location.
@@ -385,11 +357,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["list_migration_jobs"]
 
     @property
-    def get_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.GetMigrationJobRequest], Awaitable[clouddms_resources.MigrationJob]
-    ]:
+    def get_migration_job(self) -> Callable[[clouddms.GetMigrationJobRequest], Awaitable[clouddms_resources.MigrationJob]]:
         r"""Return a callable for the get migration job method over gRPC.
 
         Gets details of a single migration job.
@@ -413,11 +381,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["get_migration_job"]
 
     @property
-    def create_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.CreateMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_migration_job(self) -> Callable[[clouddms.CreateMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create migration job method over gRPC.
 
         Creates a new migration job in a given project and
@@ -442,11 +406,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["create_migration_job"]
 
     @property
-    def update_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.UpdateMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_migration_job(self) -> Callable[[clouddms.UpdateMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update migration job method over gRPC.
 
         Updates the parameters of a single migration job.
@@ -470,11 +430,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["update_migration_job"]
 
     @property
-    def delete_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.DeleteMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_migration_job(self) -> Callable[[clouddms.DeleteMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete migration job method over gRPC.
 
         Deletes a single migration job.
@@ -498,11 +454,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["delete_migration_job"]
 
     @property
-    def start_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.StartMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def start_migration_job(self) -> Callable[[clouddms.StartMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start migration job method over gRPC.
 
         Start an already created migration job.
@@ -526,11 +478,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["start_migration_job"]
 
     @property
-    def stop_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.StopMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def stop_migration_job(self) -> Callable[[clouddms.StopMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the stop migration job method over gRPC.
 
         Stops a running migration job.
@@ -554,11 +502,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["stop_migration_job"]
 
     @property
-    def resume_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.ResumeMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def resume_migration_job(self) -> Callable[[clouddms.ResumeMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the resume migration job method over gRPC.
 
         Resume a migration job that is currently stopped and
@@ -583,11 +527,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["resume_migration_job"]
 
     @property
-    def promote_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.PromoteMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def promote_migration_job(self) -> Callable[[clouddms.PromoteMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the promote migration job method over gRPC.
 
         Promote a migration job, stopping replication to the
@@ -613,11 +553,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["promote_migration_job"]
 
     @property
-    def verify_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.VerifyMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def verify_migration_job(self) -> Callable[[clouddms.VerifyMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the verify migration job method over gRPC.
 
         Verify a migration job, making sure the destination
@@ -643,11 +579,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["verify_migration_job"]
 
     @property
-    def restart_migration_job(
-        self,
-    ) -> Callable[
-        [clouddms.RestartMigrationJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def restart_migration_job(self) -> Callable[[clouddms.RestartMigrationJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the restart migration job method over gRPC.
 
         Restart a stopped or failed migration job, resetting
@@ -673,9 +605,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["restart_migration_job"]
 
     @property
-    def generate_ssh_script(
-        self,
-    ) -> Callable[[clouddms.GenerateSshScriptRequest], Awaitable[clouddms.SshScript]]:
+    def generate_ssh_script(self) -> Callable[[clouddms.GenerateSshScriptRequest], Awaitable[clouddms.SshScript]]:
         r"""Return a callable for the generate ssh script method over gRPC.
 
         Generate a SSH configuration script to configure the
@@ -700,11 +630,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["generate_ssh_script"]
 
     @property
-    def generate_tcp_proxy_script(
-        self,
-    ) -> Callable[
-        [clouddms.GenerateTcpProxyScriptRequest], Awaitable[clouddms.TcpProxyScript]
-    ]:
+    def generate_tcp_proxy_script(self) -> Callable[[clouddms.GenerateTcpProxyScriptRequest], Awaitable[clouddms.TcpProxyScript]]:
         r"""Return a callable for the generate tcp proxy script method over gRPC.
 
         Generate a TCP Proxy configuration script to
@@ -729,12 +655,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["generate_tcp_proxy_script"]
 
     @property
-    def list_connection_profiles(
-        self,
-    ) -> Callable[
-        [clouddms.ListConnectionProfilesRequest],
-        Awaitable[clouddms.ListConnectionProfilesResponse],
-    ]:
+    def list_connection_profiles(self) -> Callable[[clouddms.ListConnectionProfilesRequest], Awaitable[clouddms.ListConnectionProfilesResponse]]:
         r"""Return a callable for the list connection profiles method over gRPC.
 
         Retrieves a list of all connection profiles in a
@@ -759,12 +680,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["list_connection_profiles"]
 
     @property
-    def get_connection_profile(
-        self,
-    ) -> Callable[
-        [clouddms.GetConnectionProfileRequest],
-        Awaitable[clouddms_resources.ConnectionProfile],
-    ]:
+    def get_connection_profile(self) -> Callable[[clouddms.GetConnectionProfileRequest], Awaitable[clouddms_resources.ConnectionProfile]]:
         r"""Return a callable for the get connection profile method over gRPC.
 
         Gets details of a single connection profile.
@@ -788,11 +704,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["get_connection_profile"]
 
     @property
-    def create_connection_profile(
-        self,
-    ) -> Callable[
-        [clouddms.CreateConnectionProfileRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_connection_profile(self) -> Callable[[clouddms.CreateConnectionProfileRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create connection profile method over gRPC.
 
         Creates a new connection profile in a given project
@@ -817,11 +729,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["create_connection_profile"]
 
     @property
-    def update_connection_profile(
-        self,
-    ) -> Callable[
-        [clouddms.UpdateConnectionProfileRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_connection_profile(self) -> Callable[[clouddms.UpdateConnectionProfileRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update connection profile method over gRPC.
 
         Update the configuration of a single connection
@@ -846,11 +754,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["update_connection_profile"]
 
     @property
-    def delete_connection_profile(
-        self,
-    ) -> Callable[
-        [clouddms.DeleteConnectionProfileRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_connection_profile(self) -> Callable[[clouddms.DeleteConnectionProfileRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete connection profile method over gRPC.
 
         Deletes a single Database Migration Service
@@ -877,11 +781,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["delete_connection_profile"]
 
     @property
-    def create_private_connection(
-        self,
-    ) -> Callable[
-        [clouddms.CreatePrivateConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_private_connection(self) -> Callable[[clouddms.CreatePrivateConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create private connection method over gRPC.
 
         Creates a new private connection in a given project
@@ -906,12 +806,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["create_private_connection"]
 
     @property
-    def get_private_connection(
-        self,
-    ) -> Callable[
-        [clouddms.GetPrivateConnectionRequest],
-        Awaitable[clouddms_resources.PrivateConnection],
-    ]:
+    def get_private_connection(self) -> Callable[[clouddms.GetPrivateConnectionRequest], Awaitable[clouddms_resources.PrivateConnection]]:
         r"""Return a callable for the get private connection method over gRPC.
 
         Gets details of a single private connection.
@@ -935,12 +830,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["get_private_connection"]
 
     @property
-    def list_private_connections(
-        self,
-    ) -> Callable[
-        [clouddms.ListPrivateConnectionsRequest],
-        Awaitable[clouddms.ListPrivateConnectionsResponse],
-    ]:
+    def list_private_connections(self) -> Callable[[clouddms.ListPrivateConnectionsRequest], Awaitable[clouddms.ListPrivateConnectionsResponse]]:
         r"""Return a callable for the list private connections method over gRPC.
 
         Retrieves a list of private connections in a given
@@ -965,11 +855,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["list_private_connections"]
 
     @property
-    def delete_private_connection(
-        self,
-    ) -> Callable[
-        [clouddms.DeletePrivateConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_private_connection(self) -> Callable[[clouddms.DeletePrivateConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete private connection method over gRPC.
 
         Deletes a single Database Migration Service private
@@ -996,10 +882,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def get_conversion_workspace(
         self,
-    ) -> Callable[
-        [clouddms.GetConversionWorkspaceRequest],
-        Awaitable[conversionworkspace_resources.ConversionWorkspace],
-    ]:
+    ) -> Callable[[clouddms.GetConversionWorkspaceRequest], Awaitable[conversionworkspace_resources.ConversionWorkspace]]:
         r"""Return a callable for the get conversion workspace method over gRPC.
 
         Gets details of a single conversion workspace.
@@ -1025,10 +908,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def list_conversion_workspaces(
         self,
-    ) -> Callable[
-        [clouddms.ListConversionWorkspacesRequest],
-        Awaitable[clouddms.ListConversionWorkspacesResponse],
-    ]:
+    ) -> Callable[[clouddms.ListConversionWorkspacesRequest], Awaitable[clouddms.ListConversionWorkspacesResponse]]:
         r"""Return a callable for the list conversion workspaces method over gRPC.
 
         Lists conversion workspaces in a given project and
@@ -1045,9 +925,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_conversion_workspaces" not in self._stubs:
-            self._stubs[
-                "list_conversion_workspaces"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_conversion_workspaces"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ListConversionWorkspaces",
                 request_serializer=clouddms.ListConversionWorkspacesRequest.serialize,
                 response_deserializer=clouddms.ListConversionWorkspacesResponse.deserialize,
@@ -1055,11 +933,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["list_conversion_workspaces"]
 
     @property
-    def create_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.CreateConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_conversion_workspace(self) -> Callable[[clouddms.CreateConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create conversion workspace method over gRPC.
 
         Creates a new conversion workspace in a given project
@@ -1076,9 +950,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "create_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CreateConversionWorkspace",
                 request_serializer=clouddms.CreateConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1086,11 +958,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["create_conversion_workspace"]
 
     @property
-    def update_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.UpdateConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_conversion_workspace(self) -> Callable[[clouddms.UpdateConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update conversion workspace method over gRPC.
 
         Updates the parameters of a single conversion
@@ -1107,9 +975,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "update_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/UpdateConversionWorkspace",
                 request_serializer=clouddms.UpdateConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1117,11 +983,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["update_conversion_workspace"]
 
     @property
-    def delete_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.DeleteConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_conversion_workspace(self) -> Callable[[clouddms.DeleteConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete conversion workspace method over gRPC.
 
         Deletes a single conversion workspace.
@@ -1137,9 +999,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "delete_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DeleteConversionWorkspace",
                 request_serializer=clouddms.DeleteConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1147,12 +1007,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["delete_conversion_workspace"]
 
     @property
-    def create_mapping_rule(
-        self,
-    ) -> Callable[
-        [clouddms.CreateMappingRuleRequest],
-        Awaitable[conversionworkspace_resources.MappingRule],
-    ]:
+    def create_mapping_rule(self) -> Callable[[clouddms.CreateMappingRuleRequest], Awaitable[conversionworkspace_resources.MappingRule]]:
         r"""Return a callable for the create mapping rule method over gRPC.
 
         Creates a new mapping rule for a given conversion
@@ -1177,9 +1032,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["create_mapping_rule"]
 
     @property
-    def delete_mapping_rule(
-        self,
-    ) -> Callable[[clouddms.DeleteMappingRuleRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_mapping_rule(self) -> Callable[[clouddms.DeleteMappingRuleRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete mapping rule method over gRPC.
 
         Deletes a single mapping rule.
@@ -1203,11 +1056,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["delete_mapping_rule"]
 
     @property
-    def list_mapping_rules(
-        self,
-    ) -> Callable[
-        [clouddms.ListMappingRulesRequest], Awaitable[clouddms.ListMappingRulesResponse]
-    ]:
+    def list_mapping_rules(self) -> Callable[[clouddms.ListMappingRulesRequest], Awaitable[clouddms.ListMappingRulesResponse]]:
         r"""Return a callable for the list mapping rules method over gRPC.
 
         Lists the mapping rules for a specific conversion
@@ -1232,12 +1081,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["list_mapping_rules"]
 
     @property
-    def get_mapping_rule(
-        self,
-    ) -> Callable[
-        [clouddms.GetMappingRuleRequest],
-        Awaitable[conversionworkspace_resources.MappingRule],
-    ]:
+    def get_mapping_rule(self) -> Callable[[clouddms.GetMappingRuleRequest], Awaitable[conversionworkspace_resources.MappingRule]]:
         r"""Return a callable for the get mapping rule method over gRPC.
 
         Gets the details of a mapping rule.
@@ -1261,11 +1105,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["get_mapping_rule"]
 
     @property
-    def seed_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.SeedConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def seed_conversion_workspace(self) -> Callable[[clouddms.SeedConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the seed conversion workspace method over gRPC.
 
         Imports a snapshot of the source database into the
@@ -1290,11 +1130,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["seed_conversion_workspace"]
 
     @property
-    def import_mapping_rules(
-        self,
-    ) -> Callable[
-        [clouddms.ImportMappingRulesRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_mapping_rules(self) -> Callable[[clouddms.ImportMappingRulesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import mapping rules method over gRPC.
 
         Imports the mapping rules for a given conversion
@@ -1320,12 +1156,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["import_mapping_rules"]
 
     @property
-    def convert_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.ConvertConversionWorkspaceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def convert_conversion_workspace(self) -> Callable[[clouddms.ConvertConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the convert conversion workspace method over gRPC.
 
         Creates a draft tree schema for the destination
@@ -1342,9 +1173,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "convert_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "convert_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["convert_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ConvertConversionWorkspace",
                 request_serializer=clouddms.ConvertConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1352,11 +1181,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["convert_conversion_workspace"]
 
     @property
-    def commit_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.CommitConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def commit_conversion_workspace(self) -> Callable[[clouddms.CommitConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the commit conversion workspace method over gRPC.
 
         Marks all the data in the conversion workspace as
@@ -1373,9 +1198,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "commit_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "commit_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["commit_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/CommitConversionWorkspace",
                 request_serializer=clouddms.CommitConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1383,12 +1206,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["commit_conversion_workspace"]
 
     @property
-    def rollback_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.RollbackConversionWorkspaceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def rollback_conversion_workspace(self) -> Callable[[clouddms.RollbackConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the rollback conversion workspace method over gRPC.
 
         Rolls back a conversion workspace to the last
@@ -1405,9 +1223,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rollback_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "rollback_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["rollback_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/RollbackConversionWorkspace",
                 request_serializer=clouddms.RollbackConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1415,11 +1231,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["rollback_conversion_workspace"]
 
     @property
-    def apply_conversion_workspace(
-        self,
-    ) -> Callable[
-        [clouddms.ApplyConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def apply_conversion_workspace(self) -> Callable[[clouddms.ApplyConversionWorkspaceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the apply conversion workspace method over gRPC.
 
         Applies draft tree onto a specific destination
@@ -1436,9 +1248,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "apply_conversion_workspace" not in self._stubs:
-            self._stubs[
-                "apply_conversion_workspace"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["apply_conversion_workspace"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/ApplyConversionWorkspace",
                 request_serializer=clouddms.ApplyConversionWorkspaceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1448,10 +1258,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def describe_database_entities(
         self,
-    ) -> Callable[
-        [clouddms.DescribeDatabaseEntitiesRequest],
-        Awaitable[clouddms.DescribeDatabaseEntitiesResponse],
-    ]:
+    ) -> Callable[[clouddms.DescribeDatabaseEntitiesRequest], Awaitable[clouddms.DescribeDatabaseEntitiesResponse]]:
         r"""Return a callable for the describe database entities method over gRPC.
 
         Describes the database entities tree for a specific
@@ -1473,9 +1280,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "describe_database_entities" not in self._stubs:
-            self._stubs[
-                "describe_database_entities"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["describe_database_entities"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DescribeDatabaseEntities",
                 request_serializer=clouddms.DescribeDatabaseEntitiesRequest.serialize,
                 response_deserializer=clouddms.DescribeDatabaseEntitiesResponse.deserialize,
@@ -1483,12 +1288,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["describe_database_entities"]
 
     @property
-    def search_background_jobs(
-        self,
-    ) -> Callable[
-        [clouddms.SearchBackgroundJobsRequest],
-        Awaitable[clouddms.SearchBackgroundJobsResponse],
-    ]:
+    def search_background_jobs(self) -> Callable[[clouddms.SearchBackgroundJobsRequest], Awaitable[clouddms.SearchBackgroundJobsResponse]]:
         r"""Return a callable for the search background jobs method over gRPC.
 
         Searches/lists the background jobs for a specific
@@ -1520,10 +1320,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def describe_conversion_workspace_revisions(
         self,
-    ) -> Callable[
-        [clouddms.DescribeConversionWorkspaceRevisionsRequest],
-        Awaitable[clouddms.DescribeConversionWorkspaceRevisionsResponse],
-    ]:
+    ) -> Callable[[clouddms.DescribeConversionWorkspaceRevisionsRequest], Awaitable[clouddms.DescribeConversionWorkspaceRevisionsResponse]]:
         r"""Return a callable for the describe conversion workspace
         revisions method over gRPC.
 
@@ -1541,9 +1338,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "describe_conversion_workspace_revisions" not in self._stubs:
-            self._stubs[
-                "describe_conversion_workspace_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["describe_conversion_workspace_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.clouddms.v1.DataMigrationService/DescribeConversionWorkspaceRevisions",
                 request_serializer=clouddms.DescribeConversionWorkspaceRevisionsRequest.serialize,
                 response_deserializer=clouddms.DescribeConversionWorkspaceRevisionsResponse.deserialize,
@@ -1551,11 +1346,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
         return self._stubs["describe_conversion_workspace_revisions"]
 
     @property
-    def fetch_static_ips(
-        self,
-    ) -> Callable[
-        [clouddms.FetchStaticIpsRequest], Awaitable[clouddms.FetchStaticIpsResponse]
-    ]:
+    def fetch_static_ips(self) -> Callable[[clouddms.FetchStaticIpsRequest], Awaitable[clouddms.FetchStaticIpsResponse]]:
         r"""Return a callable for the fetch static ips method over gRPC.
 
         Fetches a set of static IP addresses that need to be
@@ -1901,9 +1692,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1920,9 +1709,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2007,10 +1794,7 @@ class DataMigrationServiceGrpcAsyncIOTransport(DataMigrationServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

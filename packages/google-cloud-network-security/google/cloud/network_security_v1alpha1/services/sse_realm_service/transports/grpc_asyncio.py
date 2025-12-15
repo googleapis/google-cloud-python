@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,19 +326,13 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_sac_realms(
-        self,
-    ) -> Callable[
-        [sse_realm.ListSACRealmsRequest], Awaitable[sse_realm.ListSACRealmsResponse]
-    ]:
+    def list_sac_realms(self) -> Callable[[sse_realm.ListSACRealmsRequest], Awaitable[sse_realm.ListSACRealmsResponse]]:
         r"""Return a callable for the list sac realms method over gRPC.
 
         Lists SACRealms in a given project.
@@ -379,9 +356,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["list_sac_realms"]
 
     @property
-    def get_sac_realm(
-        self,
-    ) -> Callable[[sse_realm.GetSACRealmRequest], Awaitable[sse_realm.SACRealm]]:
+    def get_sac_realm(self) -> Callable[[sse_realm.GetSACRealmRequest], Awaitable[sse_realm.SACRealm]]:
         r"""Return a callable for the get sac realm method over gRPC.
 
         Returns the specified realm.
@@ -405,11 +380,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["get_sac_realm"]
 
     @property
-    def create_sac_realm(
-        self,
-    ) -> Callable[
-        [sse_realm.CreateSACRealmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_sac_realm(self) -> Callable[[sse_realm.CreateSACRealmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create sac realm method over gRPC.
 
         Creates a new SACRealm in a given project.
@@ -433,11 +404,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["create_sac_realm"]
 
     @property
-    def delete_sac_realm(
-        self,
-    ) -> Callable[
-        [sse_realm.DeleteSACRealmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_sac_realm(self) -> Callable[[sse_realm.DeleteSACRealmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete sac realm method over gRPC.
 
         Deletes the specified realm.
@@ -461,12 +428,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["delete_sac_realm"]
 
     @property
-    def list_sac_attachments(
-        self,
-    ) -> Callable[
-        [sse_realm.ListSACAttachmentsRequest],
-        Awaitable[sse_realm.ListSACAttachmentsResponse],
-    ]:
+    def list_sac_attachments(self) -> Callable[[sse_realm.ListSACAttachmentsRequest], Awaitable[sse_realm.ListSACAttachmentsResponse]]:
         r"""Return a callable for the list sac attachments method over gRPC.
 
         Lists SACAttachments in a given project and location.
@@ -490,11 +452,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["list_sac_attachments"]
 
     @property
-    def get_sac_attachment(
-        self,
-    ) -> Callable[
-        [sse_realm.GetSACAttachmentRequest], Awaitable[sse_realm.SACAttachment]
-    ]:
+    def get_sac_attachment(self) -> Callable[[sse_realm.GetSACAttachmentRequest], Awaitable[sse_realm.SACAttachment]]:
         r"""Return a callable for the get sac attachment method over gRPC.
 
         Returns the specified attachment.
@@ -518,11 +476,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["get_sac_attachment"]
 
     @property
-    def create_sac_attachment(
-        self,
-    ) -> Callable[
-        [sse_realm.CreateSACAttachmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_sac_attachment(self) -> Callable[[sse_realm.CreateSACAttachmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create sac attachment method over gRPC.
 
         Creates a new SACAttachment in a given project and
@@ -547,11 +501,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["create_sac_attachment"]
 
     @property
-    def delete_sac_attachment(
-        self,
-    ) -> Callable[
-        [sse_realm.DeleteSACAttachmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_sac_attachment(self) -> Callable[[sse_realm.DeleteSACAttachmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete sac attachment method over gRPC.
 
         Deletes the specified attachment.
@@ -575,12 +525,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["delete_sac_attachment"]
 
     @property
-    def list_partner_sse_realms(
-        self,
-    ) -> Callable[
-        [sse_realm.ListPartnerSSERealmsRequest],
-        Awaitable[sse_realm.ListPartnerSSERealmsResponse],
-    ]:
+    def list_partner_sse_realms(self) -> Callable[[sse_realm.ListPartnerSSERealmsRequest], Awaitable[sse_realm.ListPartnerSSERealmsResponse]]:
         r"""Return a callable for the list partner sse realms method over gRPC.
 
         Lists PartnerSSERealms in a given project and
@@ -605,11 +550,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["list_partner_sse_realms"]
 
     @property
-    def get_partner_sse_realm(
-        self,
-    ) -> Callable[
-        [sse_realm.GetPartnerSSERealmRequest], Awaitable[sse_realm.PartnerSSERealm]
-    ]:
+    def get_partner_sse_realm(self) -> Callable[[sse_realm.GetPartnerSSERealmRequest], Awaitable[sse_realm.PartnerSSERealm]]:
         r"""Return a callable for the get partner sse realm method over gRPC.
 
         Gets details of a single PartnerSSERealm.
@@ -633,11 +574,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["get_partner_sse_realm"]
 
     @property
-    def create_partner_sse_realm(
-        self,
-    ) -> Callable[
-        [sse_realm.CreatePartnerSSERealmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_partner_sse_realm(self) -> Callable[[sse_realm.CreatePartnerSSERealmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create partner sse realm method over gRPC.
 
         Creates a new PartnerSSERealm in a given project and
@@ -662,11 +599,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
         return self._stubs["create_partner_sse_realm"]
 
     @property
-    def delete_partner_sse_realm(
-        self,
-    ) -> Callable[
-        [sse_realm.DeletePartnerSSERealmRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_partner_sse_realm(self) -> Callable[[sse_realm.DeletePartnerSSERealmRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete partner sse realm method over gRPC.
 
         Deletes a single PartnerSSERealm.
@@ -865,9 +798,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -884,9 +815,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -971,10 +900,7 @@ class SSERealmServiceGrpcAsyncIOTransport(SSERealmServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

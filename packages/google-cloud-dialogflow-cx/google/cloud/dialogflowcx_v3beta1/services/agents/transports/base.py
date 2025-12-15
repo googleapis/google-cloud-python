@@ -29,16 +29,12 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
-from google.cloud.dialogflowcx_v3beta1.types import (
-    generative_settings as gcdc_generative_settings,
-)
+from google.cloud.dialogflowcx_v3beta1.types import generative_settings as gcdc_generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -103,23 +99,15 @@ class AgentsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -250,91 +238,48 @@ class AgentsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_agents(
-        self,
-    ) -> Callable[
-        [agent.ListAgentsRequest],
-        Union[agent.ListAgentsResponse, Awaitable[agent.ListAgentsResponse]],
-    ]:
+    def list_agents(self) -> Callable[[agent.ListAgentsRequest], Union[agent.ListAgentsResponse, Awaitable[agent.ListAgentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_agent(
-        self,
-    ) -> Callable[[agent.GetAgentRequest], Union[agent.Agent, Awaitable[agent.Agent]]]:
+    def get_agent(self) -> Callable[[agent.GetAgentRequest], Union[agent.Agent, Awaitable[agent.Agent]]]:
         raise NotImplementedError()
 
     @property
-    def create_agent(
-        self,
-    ) -> Callable[
-        [gcdc_agent.CreateAgentRequest],
-        Union[gcdc_agent.Agent, Awaitable[gcdc_agent.Agent]],
-    ]:
+    def create_agent(self) -> Callable[[gcdc_agent.CreateAgentRequest], Union[gcdc_agent.Agent, Awaitable[gcdc_agent.Agent]]]:
         raise NotImplementedError()
 
     @property
-    def update_agent(
-        self,
-    ) -> Callable[
-        [gcdc_agent.UpdateAgentRequest],
-        Union[gcdc_agent.Agent, Awaitable[gcdc_agent.Agent]],
-    ]:
+    def update_agent(self) -> Callable[[gcdc_agent.UpdateAgentRequest], Union[gcdc_agent.Agent, Awaitable[gcdc_agent.Agent]]]:
         raise NotImplementedError()
 
     @property
-    def delete_agent(
-        self,
-    ) -> Callable[
-        [agent.DeleteAgentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_agent(self) -> Callable[[agent.DeleteAgentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def export_agent(
-        self,
-    ) -> Callable[
-        [agent.ExportAgentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_agent(self) -> Callable[[agent.ExportAgentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def restore_agent(
-        self,
-    ) -> Callable[
-        [agent.RestoreAgentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def restore_agent(self) -> Callable[[agent.RestoreAgentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def validate_agent(
-        self,
-    ) -> Callable[
-        [agent.ValidateAgentRequest],
-        Union[agent.AgentValidationResult, Awaitable[agent.AgentValidationResult]],
-    ]:
+    def validate_agent(self) -> Callable[[agent.ValidateAgentRequest], Union[agent.AgentValidationResult, Awaitable[agent.AgentValidationResult]]]:
         raise NotImplementedError()
 
     @property
     def get_agent_validation_result(
         self,
-    ) -> Callable[
-        [agent.GetAgentValidationResultRequest],
-        Union[agent.AgentValidationResult, Awaitable[agent.AgentValidationResult]],
-    ]:
+    ) -> Callable[[agent.GetAgentValidationResultRequest], Union[agent.AgentValidationResult, Awaitable[agent.AgentValidationResult]]]:
         raise NotImplementedError()
 
     @property
     def get_generative_settings(
         self,
     ) -> Callable[
-        [agent.GetGenerativeSettingsRequest],
-        Union[
-            generative_settings.GenerativeSettings,
-            Awaitable[generative_settings.GenerativeSettings],
-        ],
+        [agent.GetGenerativeSettingsRequest], Union[generative_settings.GenerativeSettings, Awaitable[generative_settings.GenerativeSettings]]
     ]:
         raise NotImplementedError()
 
@@ -343,10 +288,7 @@ class AgentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [agent.UpdateGenerativeSettingsRequest],
-        Union[
-            gcdc_generative_settings.GenerativeSettings,
-            Awaitable[gcdc_generative_settings.GenerativeSettings],
-        ],
+        Union[gcdc_generative_settings.GenerativeSettings, Awaitable[gcdc_generative_settings.GenerativeSettings]],
     ]:
         raise NotImplementedError()
 
@@ -355,20 +297,14 @@ class AgentsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -380,22 +316,13 @@ class AgentsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

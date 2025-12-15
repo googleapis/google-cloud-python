@@ -439,9 +439,7 @@ class SolarPotential(proto.Message):
         number=13,
         message="SizeAndSunshineStats",
     )
-    roof_segment_stats: MutableSequence[
-        "RoofSegmentSizeAndSunshineStats"
-    ] = proto.RepeatedField(
+    roof_segment_stats: MutableSequence["RoofSegmentSizeAndSunshineStats"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="RoofSegmentSizeAndSunshineStats",

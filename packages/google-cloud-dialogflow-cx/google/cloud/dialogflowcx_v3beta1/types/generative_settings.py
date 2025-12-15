@@ -94,9 +94,7 @@ class GenerativeSettings(proto.Message):
             proto.STRING,
             number=3,
         )
-        prompt_templates: MutableSequence[
-            "GenerativeSettings.FallbackSettings.PromptTemplate"
-        ] = proto.RepeatedField(
+        prompt_templates: MutableSequence["GenerativeSettings.FallbackSettings.PromptTemplate"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="GenerativeSettings.FallbackSettings.PromptTemplate",
@@ -283,13 +281,11 @@ class LlmModelSettings(proto.Message):
             optional=True,
             enum="LlmModelSettings.Parameters.InputTokenLimit",
         )
-        output_token_limit: "LlmModelSettings.Parameters.OutputTokenLimit" = (
-            proto.Field(
-                proto.ENUM,
-                number=3,
-                optional=True,
-                enum="LlmModelSettings.Parameters.OutputTokenLimit",
-            )
+        output_token_limit: "LlmModelSettings.Parameters.OutputTokenLimit" = proto.Field(
+            proto.ENUM,
+            number=3,
+            optional=True,
+            enum="LlmModelSettings.Parameters.OutputTokenLimit",
         )
 
     model: str = proto.Field(

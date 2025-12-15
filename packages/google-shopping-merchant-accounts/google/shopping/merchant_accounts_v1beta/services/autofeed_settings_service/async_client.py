@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -74,45 +63,21 @@ class AutofeedSettingsServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = AutofeedSettingsServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = AutofeedSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = AutofeedSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = AutofeedSettingsServiceClient._DEFAULT_UNIVERSE
 
-    autofeed_settings_path = staticmethod(
-        AutofeedSettingsServiceClient.autofeed_settings_path
-    )
-    parse_autofeed_settings_path = staticmethod(
-        AutofeedSettingsServiceClient.parse_autofeed_settings_path
-    )
-    common_billing_account_path = staticmethod(
-        AutofeedSettingsServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        AutofeedSettingsServiceClient.parse_common_billing_account_path
-    )
+    autofeed_settings_path = staticmethod(AutofeedSettingsServiceClient.autofeed_settings_path)
+    parse_autofeed_settings_path = staticmethod(AutofeedSettingsServiceClient.parse_autofeed_settings_path)
+    common_billing_account_path = staticmethod(AutofeedSettingsServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(AutofeedSettingsServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(AutofeedSettingsServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        AutofeedSettingsServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        AutofeedSettingsServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        AutofeedSettingsServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        AutofeedSettingsServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        AutofeedSettingsServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        AutofeedSettingsServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        AutofeedSettingsServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(AutofeedSettingsServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(AutofeedSettingsServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(AutofeedSettingsServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(AutofeedSettingsServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(AutofeedSettingsServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(AutofeedSettingsServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(AutofeedSettingsServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -148,9 +113,7 @@ class AutofeedSettingsServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -217,13 +180,7 @@ class AutofeedSettingsServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                AutofeedSettingsServiceTransport,
-                Callable[..., AutofeedSettingsServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, AutofeedSettingsServiceTransport, Callable[..., AutofeedSettingsServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -283,20 +240,14 @@ class AutofeedSettingsServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.shopping.merchant.accounts_v1beta.AutofeedSettingsServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.shopping.merchant.accounts.v1beta.AutofeedSettingsService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -307,9 +258,7 @@ class AutofeedSettingsServiceAsyncClient:
 
     async def get_autofeed_settings(
         self,
-        request: Optional[
-            Union[autofeedsettings.GetAutofeedSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[autofeedsettings.GetAutofeedSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -373,14 +322,9 @@ class AutofeedSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -394,15 +338,11 @@ class AutofeedSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_autofeed_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_autofeed_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -420,9 +360,7 @@ class AutofeedSettingsServiceAsyncClient:
 
     async def update_autofeed_settings(
         self,
-        request: Optional[
-            Union[autofeedsettings.UpdateAutofeedSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[autofeedsettings.UpdateAutofeedSettingsRequest, dict]] = None,
         *,
         autofeed_settings: Optional[autofeedsettings.AutofeedSettings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -498,14 +436,9 @@ class AutofeedSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [autofeed_settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -521,17 +454,11 @@ class AutofeedSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_autofeed_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_autofeed_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("autofeed_settings.name", request.autofeed_settings.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("autofeed_settings.name", request.autofeed_settings.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -554,9 +481,7 @@ class AutofeedSettingsServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

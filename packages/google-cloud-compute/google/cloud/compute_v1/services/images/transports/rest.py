@@ -167,9 +167,7 @@ class ImagesRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.DeleteImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DeleteImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
@@ -192,9 +190,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -211,9 +207,7 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_deprecate(
-        self,
-        request: compute.DeprecateImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.DeprecateImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DeprecateImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deprecate
 
@@ -236,9 +230,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_deprecate_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deprecate
 
@@ -255,9 +247,7 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -297,12 +287,8 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_get_from_family(
-        self,
-        request: compute.GetFromFamilyImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetFromFamilyImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetFromFamilyImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetFromFamilyImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_from_family
 
         Override in a subclass to manipulate the request or metadata
@@ -341,12 +327,8 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetIamPolicyImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -368,9 +350,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -387,9 +367,7 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.InsertImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.InsertImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
@@ -412,9 +390,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -431,9 +407,7 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListImagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListImagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListImagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -456,9 +430,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.ImageList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.ImageList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ImageList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -475,9 +447,7 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.PatchImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PatchImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
@@ -500,9 +470,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -519,12 +487,8 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetIamPolicyImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -546,9 +510,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -565,9 +527,7 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.SetLabelsImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SetLabelsImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
@@ -590,9 +550,7 @@ class ImagesRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -609,12 +567,8 @@ class ImagesRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.TestIamPermissionsImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -622,9 +576,7 @@ class ImagesRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -638,12 +590,8 @@ class ImagesRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -742,9 +690,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ImagesRestInterceptor()
@@ -755,15 +701,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -823,23 +761,13 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImagesRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImagesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -862,14 +790,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
 
             # Send the request
-            response = ImagesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ImagesRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -884,12 +805,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -915,15 +832,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.Deprecate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -985,29 +894,15 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BaseDeprecate._get_http_options()
 
             request, metadata = self._interceptor.pre_deprecate(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseDeprecate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseDeprecate._get_transcoded_request(http_options, request)
 
-            body = _BaseImagesRestTransport._BaseDeprecate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImagesRestTransport._BaseDeprecate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseImagesRestTransport._BaseDeprecate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseImagesRestTransport._BaseDeprecate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1031,13 +926,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             # Send the request
             response = ImagesRestTransport._Deprecate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1053,12 +942,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_deprecate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deprecate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deprecate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1084,15 +969,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1139,23 +1016,13 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImagesRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImagesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1178,14 +1045,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
 
             # Send the request
-            response = ImagesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ImagesRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1201,9 +1061,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Image.to_json(response)
                 except:
@@ -1229,15 +1087,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.GetFromFamily")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1282,30 +1132,16 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseImagesRestTransport._BaseGetFromFamily._get_http_options()
-            )
+            http_options = _BaseImagesRestTransport._BaseGetFromFamily._get_http_options()
 
             request, metadata = self._interceptor.pre_get_from_family(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseGetFromFamily._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseGetFromFamily._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseImagesRestTransport._BaseGetFromFamily._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseImagesRestTransport._BaseGetFromFamily._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1329,12 +1165,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             # Send the request
             response = ImagesRestTransport._GetFromFamily._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1350,12 +1181,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_get_from_family(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_from_family_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_from_family_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Image.to_json(response)
                 except:
@@ -1381,15 +1208,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1453,30 +1272,16 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseImagesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseImagesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseImagesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseImagesRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1499,14 +1304,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
 
             # Send the request
-            response = ImagesRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ImagesRestTransport._GetIamPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1521,12 +1319,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1552,15 +1346,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1621,27 +1407,15 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseImagesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImagesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseImagesRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImagesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1664,15 +1438,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
 
             # Send the request
-            response = ImagesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = ImagesRestTransport._Insert._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1687,12 +1453,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1718,15 +1480,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1769,23 +1523,13 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseImagesRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImagesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1808,14 +1552,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
 
             # Send the request
-            response = ImagesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ImagesRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1831,9 +1568,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.ImageList.to_json(response)
                 except:
@@ -1859,15 +1594,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1928,27 +1655,15 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseImagesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImagesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseImagesRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseImagesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1971,15 +1686,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
 
             # Send the request
-            response = ImagesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = ImagesRestTransport._Patch._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1994,12 +1701,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2025,15 +1728,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2098,34 +1793,18 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseImagesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseImagesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseImagesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImagesRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseImagesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseImagesRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2149,13 +1828,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             # Send the request
             response = ImagesRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2171,12 +1844,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2202,15 +1871,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             return hash("ImagesRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2272,29 +1933,15 @@ class ImagesRestTransport(_BaseImagesRestTransport):
             http_options = _BaseImagesRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = (
-                _BaseImagesRestTransport._BaseSetLabels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseImagesRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseImagesRestTransport._BaseSetLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseImagesRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseImagesRestTransport._BaseSetLabels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseImagesRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2318,13 +1965,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             # Send the request
             response = ImagesRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2340,12 +1981,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2366,22 +2003,12 @@ class ImagesRestTransport(_BaseImagesRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseImagesRestTransport._BaseTestIamPermissions, ImagesRestStub
-    ):
+    class _TestIamPermissions(_BaseImagesRestTransport._BaseTestIamPermissions, ImagesRestStub):
         def __hash__(self):
             return hash("ImagesRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2423,36 +2050,18 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseImagesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseImagesRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseImagesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseImagesRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseImagesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseImagesRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseImagesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseImagesRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2476,13 +2085,7 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             # Send the request
             response = ImagesRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2498,12 +2101,8 @@ class ImagesRestTransport(_BaseImagesRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -2543,17 +2142,13 @@ class ImagesRestTransport(_BaseImagesRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_from_family(
-        self,
-    ) -> Callable[[compute.GetFromFamilyImageRequest], compute.Image]:
+    def get_from_family(self) -> Callable[[compute.GetFromFamilyImageRequest], compute.Image]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFromFamily(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyImageRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyImageRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -2577,27 +2172,19 @@ class ImagesRestTransport(_BaseImagesRestTransport):
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyImageRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyImageRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsImageRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsImageRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsImageRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsImageRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

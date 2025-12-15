@@ -108,9 +108,7 @@ class DeveloperRegistrationServiceRestInterceptor:
     """
 
     def pre_get_account_for_gcp_registration(
-        self,
-        request: empty_pb2.Empty,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: empty_pb2.Empty, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[empty_pb2.Empty, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account_for_gcp_registration
 
@@ -135,13 +133,8 @@ class DeveloperRegistrationServiceRestInterceptor:
         return response
 
     def post_get_account_for_gcp_registration_with_metadata(
-        self,
-        response: developerregistration.GetAccountForGcpRegistrationResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developerregistration.GetAccountForGcpRegistrationResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developerregistration.GetAccountForGcpRegistrationResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developerregistration.GetAccountForGcpRegistrationResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_account_for_gcp_registration
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -157,13 +150,8 @@ class DeveloperRegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_developer_registration(
-        self,
-        request: developerregistration.GetDeveloperRegistrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developerregistration.GetDeveloperRegistrationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developerregistration.GetDeveloperRegistrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developerregistration.GetDeveloperRegistrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_developer_registration
 
         Override in a subclass to manipulate the request or metadata
@@ -171,9 +159,7 @@ class DeveloperRegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_developer_registration(
-        self, response: developerregistration.DeveloperRegistration
-    ) -> developerregistration.DeveloperRegistration:
+    def post_get_developer_registration(self, response: developerregistration.DeveloperRegistration) -> developerregistration.DeveloperRegistration:
         """Post-rpc interceptor for get_developer_registration
 
         DEPRECATED. Please use the `post_get_developer_registration_with_metadata`
@@ -187,13 +173,8 @@ class DeveloperRegistrationServiceRestInterceptor:
         return response
 
     def post_get_developer_registration_with_metadata(
-        self,
-        response: developerregistration.DeveloperRegistration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developerregistration.DeveloperRegistration,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developerregistration.DeveloperRegistration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developerregistration.DeveloperRegistration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_developer_registration
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -209,13 +190,8 @@ class DeveloperRegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_register_gcp(
-        self,
-        request: developerregistration.RegisterGcpRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developerregistration.RegisterGcpRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developerregistration.RegisterGcpRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developerregistration.RegisterGcpRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for register_gcp
 
         Override in a subclass to manipulate the request or metadata
@@ -223,9 +199,7 @@ class DeveloperRegistrationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_register_gcp(
-        self, response: developerregistration.DeveloperRegistration
-    ) -> developerregistration.DeveloperRegistration:
+    def post_register_gcp(self, response: developerregistration.DeveloperRegistration) -> developerregistration.DeveloperRegistration:
         """Post-rpc interceptor for register_gcp
 
         DEPRECATED. Please use the `post_register_gcp_with_metadata`
@@ -239,13 +213,8 @@ class DeveloperRegistrationServiceRestInterceptor:
         return response
 
     def post_register_gcp_with_metadata(
-        self,
-        response: developerregistration.DeveloperRegistration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developerregistration.DeveloperRegistration,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: developerregistration.DeveloperRegistration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developerregistration.DeveloperRegistration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for register_gcp
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -261,13 +230,8 @@ class DeveloperRegistrationServiceRestInterceptor:
         return response, metadata
 
     def pre_unregister_gcp(
-        self,
-        request: developerregistration.UnregisterGcpRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        developerregistration.UnregisterGcpRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: developerregistration.UnregisterGcpRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[developerregistration.UnregisterGcpRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for unregister_gcp
 
         Override in a subclass to manipulate the request or metadata
@@ -283,9 +247,7 @@ class DeveloperRegistrationServiceRestStub:
     _interceptor: DeveloperRegistrationServiceRestInterceptor
 
 
-class DeveloperRegistrationServiceRestTransport(
-    _BaseDeveloperRegistrationServiceRestTransport
-):
+class DeveloperRegistrationServiceRestTransport(_BaseDeveloperRegistrationServiceRestTransport):
     """REST backend synchronous transport for DeveloperRegistrationService.
 
     Service to access Developer Registration.
@@ -357,33 +319,20 @@ class DeveloperRegistrationServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DeveloperRegistrationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _GetAccountForGcpRegistration(
-        _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration,
-        DeveloperRegistrationServiceRestStub,
+        _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration, DeveloperRegistrationServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "DeveloperRegistrationServiceRestTransport.GetAccountForGcpRegistration"
-            )
+            return hash("DeveloperRegistrationServiceRestTransport.GetAccountForGcpRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -434,28 +383,18 @@ class DeveloperRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_account_for_gcp_registration(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_account_for_gcp_registration(request, metadata)
             transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseGetAccountForGcpRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -479,12 +418,7 @@ class DeveloperRegistrationServiceRestTransport(
 
             # Send the request
             response = DeveloperRegistrationServiceRestTransport._GetAccountForGcpRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -494,27 +428,16 @@ class DeveloperRegistrationServiceRestTransport(
 
             # Return the response
             resp = developerregistration.GetAccountForGcpRegistrationResponse()
-            pb_resp = developerregistration.GetAccountForGcpRegistrationResponse.pb(
-                resp
-            )
+            pb_resp = developerregistration.GetAccountForGcpRegistrationResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_account_for_gcp_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_account_for_gcp_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_account_for_gcp_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = developerregistration.GetAccountForGcpRegistrationResponse.to_json(
-                        response
-                    )
+                    response_payload = developerregistration.GetAccountForGcpRegistrationResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -534,24 +457,13 @@ class DeveloperRegistrationServiceRestTransport(
             return resp
 
     class _GetDeveloperRegistration(
-        _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration,
-        DeveloperRegistrationServiceRestStub,
+        _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration, DeveloperRegistrationServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "DeveloperRegistrationServiceRestTransport.GetDeveloperRegistration"
-            )
+            return hash("DeveloperRegistrationServiceRestTransport.GetDeveloperRegistration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -594,28 +506,18 @@ class DeveloperRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_developer_registration(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_developer_registration(request, metadata)
             transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseGetDeveloperRegistration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -639,12 +541,7 @@ class DeveloperRegistrationServiceRestTransport(
 
             # Send the request
             response = DeveloperRegistrationServiceRestTransport._GetDeveloperRegistration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -660,16 +557,10 @@ class DeveloperRegistrationServiceRestTransport(
 
             resp = self._interceptor.post_get_developer_registration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_developer_registration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_developer_registration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developerregistration.DeveloperRegistration.to_json(response)
-                    )
+                    response_payload = developerregistration.DeveloperRegistration.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -688,23 +579,12 @@ class DeveloperRegistrationServiceRestTransport(
                 )
             return resp
 
-    class _RegisterGcp(
-        _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp,
-        DeveloperRegistrationServiceRestStub,
-    ):
+    class _RegisterGcp(_BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp, DeveloperRegistrationServiceRestStub):
         def __hash__(self):
             return hash("DeveloperRegistrationServiceRestTransport.RegisterGcp")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -747,30 +627,18 @@ class DeveloperRegistrationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_http_options()
 
             request, metadata = self._interceptor.pre_register_gcp(request, metadata)
-            transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseRegisterGcp._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -793,16 +661,8 @@ class DeveloperRegistrationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                DeveloperRegistrationServiceRestTransport._RegisterGcp._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeveloperRegistrationServiceRestTransport._RegisterGcp._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -818,16 +678,10 @@ class DeveloperRegistrationServiceRestTransport(
 
             resp = self._interceptor.post_register_gcp(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_register_gcp_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_register_gcp_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        developerregistration.DeveloperRegistration.to_json(response)
-                    )
+                    response_payload = developerregistration.DeveloperRegistration.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -846,23 +700,12 @@ class DeveloperRegistrationServiceRestTransport(
                 )
             return resp
 
-    class _UnregisterGcp(
-        _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp,
-        DeveloperRegistrationServiceRestStub,
-    ):
+    class _UnregisterGcp(_BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp, DeveloperRegistrationServiceRestStub):
         def __hash__(self):
             return hash("DeveloperRegistrationServiceRestTransport.UnregisterGcp")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -899,30 +742,18 @@ class DeveloperRegistrationServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_http_options()
-            )
+            http_options = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_http_options()
 
             request, metadata = self._interceptor.pre_unregister_gcp(request, metadata)
-            transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_transcoded_request(http_options, request)
 
-            body = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeveloperRegistrationServiceRestTransport._BaseUnregisterGcp._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -945,16 +776,8 @@ class DeveloperRegistrationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                DeveloperRegistrationServiceRestTransport._UnregisterGcp._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DeveloperRegistrationServiceRestTransport._UnregisterGcp._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -963,11 +786,7 @@ class DeveloperRegistrationServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
     @property
-    def get_account_for_gcp_registration(
-        self,
-    ) -> Callable[
-        [empty_pb2.Empty], developerregistration.GetAccountForGcpRegistrationResponse
-    ]:
+    def get_account_for_gcp_registration(self) -> Callable[[empty_pb2.Empty], developerregistration.GetAccountForGcpRegistrationResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccountForGcpRegistration(self._session, self._host, self._interceptor)  # type: ignore
@@ -975,29 +794,19 @@ class DeveloperRegistrationServiceRestTransport(
     @property
     def get_developer_registration(
         self,
-    ) -> Callable[
-        [developerregistration.GetDeveloperRegistrationRequest],
-        developerregistration.DeveloperRegistration,
-    ]:
+    ) -> Callable[[developerregistration.GetDeveloperRegistrationRequest], developerregistration.DeveloperRegistration]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeveloperRegistration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def register_gcp(
-        self,
-    ) -> Callable[
-        [developerregistration.RegisterGcpRequest],
-        developerregistration.DeveloperRegistration,
-    ]:
+    def register_gcp(self) -> Callable[[developerregistration.RegisterGcpRequest], developerregistration.DeveloperRegistration]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RegisterGcp(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def unregister_gcp(
-        self,
-    ) -> Callable[[developerregistration.UnregisterGcpRequest], empty_pb2.Empty]:
+    def unregister_gcp(self) -> Callable[[developerregistration.UnregisterGcpRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UnregisterGcp(self._session, self._host, self._interceptor)  # type: ignore

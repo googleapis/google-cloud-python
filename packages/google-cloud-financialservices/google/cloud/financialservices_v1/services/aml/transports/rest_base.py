@@ -22,13 +22,9 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.financialservices_v1.types import (
-    backtest_result as gcf_backtest_result,
-)
+from google.cloud.financialservices_v1.types import backtest_result as gcf_backtest_result
 from google.cloud.financialservices_v1.types import engine_config as gcf_engine_config
-from google.cloud.financialservices_v1.types import (
-    prediction_result as gcf_prediction_result,
-)
+from google.cloud.financialservices_v1.types import prediction_result as gcf_prediction_result
 from google.cloud.financialservices_v1.types import backtest_result
 from google.cloud.financialservices_v1.types import dataset
 from google.cloud.financialservices_v1.types import dataset as gcf_dataset
@@ -89,20 +85,14 @@ class _BaseAMLRestTransport(AMLTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateBacktestResult:
@@ -115,11 +105,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -142,9 +128,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -155,11 +139,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseCreateBacktestResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -174,11 +154,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -201,9 +177,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -214,11 +188,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseCreateDataset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseCreateDataset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -233,11 +203,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -260,9 +226,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -273,11 +237,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseCreateEngineConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseCreateEngineConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -292,11 +252,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -319,9 +275,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -332,11 +286,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseCreateInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseCreateInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -351,11 +301,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -378,9 +324,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -391,11 +335,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseCreateModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseCreateModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -410,11 +350,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -437,9 +373,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -450,11 +384,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseCreatePredictionResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseCreatePredictionResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -467,11 +397,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -497,11 +423,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseDeleteBacktestResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseDeleteBacktestResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -514,11 +436,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -544,11 +462,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseDeleteDataset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseDeleteDataset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -561,11 +475,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -591,11 +501,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseDeleteEngineConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseDeleteEngineConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -608,11 +514,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -638,11 +540,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseDeleteInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseDeleteInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -655,11 +553,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -685,11 +579,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseDeleteModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseDeleteModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -702,11 +592,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -732,11 +618,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseDeletePredictionResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseDeletePredictionResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -749,11 +631,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -768,9 +646,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcf_backtest_result.ExportBacktestResultMetadataRequest.pb(
-                request
-            )
+            pb_request = gcf_backtest_result.ExportBacktestResultMetadataRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -778,9 +654,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -791,11 +665,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -808,11 +678,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -835,9 +701,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -848,11 +712,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -865,11 +725,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -892,9 +748,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -905,11 +759,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseExportModelMetadata._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -922,11 +772,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -941,9 +787,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcf_prediction_result.ExportPredictionResultMetadataRequest.pb(
-                request
-            )
+            pb_request = gcf_prediction_result.ExportPredictionResultMetadataRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -951,9 +795,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -964,11 +806,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -981,11 +819,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1008,9 +842,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1021,11 +853,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseExportRegisteredParties._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseExportRegisteredParties._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1038,11 +866,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1068,11 +892,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetBacktestResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetBacktestResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1085,11 +905,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1115,11 +931,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetDataset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetDataset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1132,11 +944,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1162,11 +970,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetEngineConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetEngineConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1179,11 +983,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1209,11 +1009,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetEngineVersion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetEngineVersion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1226,11 +1022,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1256,11 +1048,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1273,11 +1061,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1303,11 +1087,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1320,11 +1100,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1350,11 +1126,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseGetPredictionResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseGetPredictionResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1367,11 +1139,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1394,9 +1162,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1407,11 +1173,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseImportRegisteredParties._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseImportRegisteredParties._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1424,11 +1186,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1454,11 +1212,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListBacktestResults._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListBacktestResults._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1471,11 +1225,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1501,11 +1251,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListDatasets._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListDatasets._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1518,11 +1264,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1548,11 +1290,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListEngineConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListEngineConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1565,11 +1303,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1595,11 +1329,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListEngineVersions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListEngineVersions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1612,11 +1342,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1642,11 +1368,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListInstances._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListInstances._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1659,11 +1381,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1689,11 +1407,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListModels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListModels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1706,11 +1420,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1736,11 +1446,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseListPredictionResults._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseListPredictionResults._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1753,11 +1459,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1780,9 +1482,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1793,11 +1493,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseUpdateBacktestResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1810,11 +1506,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1837,9 +1529,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1850,11 +1540,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseUpdateDataset._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseUpdateDataset._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1867,11 +1553,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1894,9 +1576,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1907,11 +1587,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseUpdateEngineConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseUpdateEngineConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1924,11 +1600,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1951,9 +1623,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1964,11 +1634,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseUpdateInstance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseUpdateInstance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1981,11 +1647,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2008,9 +1670,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2021,11 +1681,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseUpdateModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseUpdateModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2038,11 +1694,7 @@ class _BaseAMLRestTransport(AMLTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2065,9 +1717,7 @@ class _BaseAMLRestTransport(AMLTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2078,11 +1728,7 @@ class _BaseAMLRestTransport(AMLTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseAMLRestTransport._BaseUpdatePredictionResult._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseAMLRestTransport._BaseUpdatePredictionResult._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

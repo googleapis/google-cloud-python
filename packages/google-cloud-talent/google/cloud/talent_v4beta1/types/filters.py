@@ -477,9 +477,7 @@ class CompensationFilter(proto.Message):
         number=1,
         enum=FilterType,
     )
-    units: MutableSequence[
-        common.CompensationInfo.CompensationUnit
-    ] = proto.RepeatedField(
+    units: MutableSequence[common.CompensationInfo.CompensationUnit] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=common.CompensationInfo.CompensationUnit,

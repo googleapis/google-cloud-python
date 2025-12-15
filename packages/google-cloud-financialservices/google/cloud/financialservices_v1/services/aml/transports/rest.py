@@ -30,13 +30,9 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.financialservices_v1.types import (
-    backtest_result as gcf_backtest_result,
-)
+from google.cloud.financialservices_v1.types import backtest_result as gcf_backtest_result
 from google.cloud.financialservices_v1.types import engine_config as gcf_engine_config
-from google.cloud.financialservices_v1.types import (
-    prediction_result as gcf_prediction_result,
-)
+from google.cloud.financialservices_v1.types import prediction_result as gcf_prediction_result
 from google.cloud.financialservices_v1.types import backtest_result
 from google.cloud.financialservices_v1.types import dataset
 from google.cloud.financialservices_v1.types import dataset as gcf_dataset
@@ -401,13 +397,8 @@ class AMLRestInterceptor:
     """
 
     def pre_create_backtest_result(
-        self,
-        request: gcf_backtest_result.CreateBacktestResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_backtest_result.CreateBacktestResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_backtest_result.CreateBacktestResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_backtest_result.CreateBacktestResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backtest_result
 
         Override in a subclass to manipulate the request or metadata
@@ -415,9 +406,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backtest_result(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backtest_result(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backtest_result
 
         DEPRECATED. Please use the `post_create_backtest_result_with_metadata`
@@ -431,9 +420,7 @@ class AMLRestInterceptor:
         return response
 
     def post_create_backtest_result_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backtest_result
 
@@ -450,12 +437,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_create_dataset(
-        self,
-        request: gcf_dataset.CreateDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_dataset.CreateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcf_dataset.CreateDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_dataset.CreateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -463,9 +446,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_create_dataset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_dataset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_dataset
 
         DEPRECATED. Please use the `post_create_dataset_with_metadata`
@@ -479,9 +460,7 @@ class AMLRestInterceptor:
         return response
 
     def post_create_dataset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_dataset
 
@@ -498,13 +477,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_create_engine_config(
-        self,
-        request: gcf_engine_config.CreateEngineConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_engine_config.CreateEngineConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_engine_config.CreateEngineConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_engine_config.CreateEngineConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_engine_config
 
         Override in a subclass to manipulate the request or metadata
@@ -512,9 +486,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_create_engine_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_engine_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_engine_config
 
         DEPRECATED. Please use the `post_create_engine_config_with_metadata`
@@ -528,9 +500,7 @@ class AMLRestInterceptor:
         return response
 
     def post_create_engine_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_engine_config
 
@@ -547,12 +517,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_create_instance(
-        self,
-        request: gcf_instance.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_instance.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcf_instance.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_instance.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -560,9 +526,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -576,9 +540,7 @@ class AMLRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -595,9 +557,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_create_model(
-        self,
-        request: gcf_model.CreateModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcf_model.CreateModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcf_model.CreateModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_model
 
@@ -606,9 +566,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_create_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_model
 
         DEPRECATED. Please use the `post_create_model_with_metadata`
@@ -622,9 +580,7 @@ class AMLRestInterceptor:
         return response
 
     def post_create_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_model
 
@@ -641,13 +597,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_create_prediction_result(
-        self,
-        request: gcf_prediction_result.CreatePredictionResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_prediction_result.CreatePredictionResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_prediction_result.CreatePredictionResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_prediction_result.CreatePredictionResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_prediction_result
 
         Override in a subclass to manipulate the request or metadata
@@ -655,9 +606,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_create_prediction_result(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_prediction_result(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_prediction_result
 
         DEPRECATED. Please use the `post_create_prediction_result_with_metadata`
@@ -671,9 +620,7 @@ class AMLRestInterceptor:
         return response
 
     def post_create_prediction_result_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_prediction_result
 
@@ -690,13 +637,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_delete_backtest_result(
-        self,
-        request: backtest_result.DeleteBacktestResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backtest_result.DeleteBacktestResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backtest_result.DeleteBacktestResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backtest_result.DeleteBacktestResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backtest_result
 
         Override in a subclass to manipulate the request or metadata
@@ -704,9 +646,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backtest_result(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backtest_result(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backtest_result
 
         DEPRECATED. Please use the `post_delete_backtest_result_with_metadata`
@@ -720,9 +660,7 @@ class AMLRestInterceptor:
         return response
 
     def post_delete_backtest_result_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backtest_result
 
@@ -739,9 +677,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_delete_dataset(
-        self,
-        request: dataset.DeleteDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataset.DeleteDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataset.DeleteDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dataset
 
@@ -750,9 +686,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_dataset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_dataset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_dataset
 
         DEPRECATED. Please use the `post_delete_dataset_with_metadata`
@@ -766,9 +700,7 @@ class AMLRestInterceptor:
         return response
 
     def post_delete_dataset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_dataset
 
@@ -785,12 +717,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_delete_engine_config(
-        self,
-        request: engine_config.DeleteEngineConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_config.DeleteEngineConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_config.DeleteEngineConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_config.DeleteEngineConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_engine_config
 
         Override in a subclass to manipulate the request or metadata
@@ -798,9 +726,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_engine_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_engine_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_engine_config
 
         DEPRECATED. Please use the `post_delete_engine_config_with_metadata`
@@ -814,9 +740,7 @@ class AMLRestInterceptor:
         return response
 
     def post_delete_engine_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_engine_config
 
@@ -833,9 +757,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: instance.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
@@ -844,9 +766,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -860,9 +780,7 @@ class AMLRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -879,9 +797,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_delete_model(
-        self,
-        request: model.DeleteModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: model.DeleteModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[model.DeleteModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_model
 
@@ -890,9 +806,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_model
 
         DEPRECATED. Please use the `post_delete_model_with_metadata`
@@ -906,9 +820,7 @@ class AMLRestInterceptor:
         return response
 
     def post_delete_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_model
 
@@ -925,13 +837,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_delete_prediction_result(
-        self,
-        request: prediction_result.DeletePredictionResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_result.DeletePredictionResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_result.DeletePredictionResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_result.DeletePredictionResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_prediction_result
 
         Override in a subclass to manipulate the request or metadata
@@ -939,9 +846,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_prediction_result(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_prediction_result(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_prediction_result
 
         DEPRECATED. Please use the `post_delete_prediction_result_with_metadata`
@@ -955,9 +860,7 @@ class AMLRestInterceptor:
         return response
 
     def post_delete_prediction_result_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_prediction_result
 
@@ -974,13 +877,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_export_backtest_result_metadata(
-        self,
-        request: gcf_backtest_result.ExportBacktestResultMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_backtest_result.ExportBacktestResultMetadataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_backtest_result.ExportBacktestResultMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_backtest_result.ExportBacktestResultMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_backtest_result_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -988,9 +886,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_export_backtest_result_metadata(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_backtest_result_metadata(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_backtest_result_metadata
 
         DEPRECATED. Please use the `post_export_backtest_result_metadata_with_metadata`
@@ -1004,9 +900,7 @@ class AMLRestInterceptor:
         return response
 
     def post_export_backtest_result_metadata_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_backtest_result_metadata
 
@@ -1023,13 +917,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_export_engine_config_metadata(
-        self,
-        request: gcf_engine_config.ExportEngineConfigMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_engine_config.ExportEngineConfigMetadataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_engine_config.ExportEngineConfigMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_engine_config.ExportEngineConfigMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_engine_config_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -1037,9 +926,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_export_engine_config_metadata(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_engine_config_metadata(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_engine_config_metadata
 
         DEPRECATED. Please use the `post_export_engine_config_metadata_with_metadata`
@@ -1053,9 +940,7 @@ class AMLRestInterceptor:
         return response
 
     def post_export_engine_config_metadata_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_engine_config_metadata
 
@@ -1072,12 +957,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_export_model_metadata(
-        self,
-        request: gcf_model.ExportModelMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_model.ExportModelMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcf_model.ExportModelMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_model.ExportModelMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_model_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -1085,9 +966,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_export_model_metadata(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_model_metadata(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_model_metadata
 
         DEPRECATED. Please use the `post_export_model_metadata_with_metadata`
@@ -1101,9 +980,7 @@ class AMLRestInterceptor:
         return response
 
     def post_export_model_metadata_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_model_metadata
 
@@ -1120,13 +997,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_export_prediction_result_metadata(
-        self,
-        request: gcf_prediction_result.ExportPredictionResultMetadataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_prediction_result.ExportPredictionResultMetadataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_prediction_result.ExportPredictionResultMetadataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_prediction_result.ExportPredictionResultMetadataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_prediction_result_metadata
 
         Override in a subclass to manipulate the request or metadata
@@ -1134,9 +1006,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_export_prediction_result_metadata(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_prediction_result_metadata(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_prediction_result_metadata
 
         DEPRECATED. Please use the `post_export_prediction_result_metadata_with_metadata`
@@ -1150,9 +1020,7 @@ class AMLRestInterceptor:
         return response
 
     def post_export_prediction_result_metadata_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_prediction_result_metadata
 
@@ -1169,12 +1037,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_export_registered_parties(
-        self,
-        request: instance.ExportRegisteredPartiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        instance.ExportRegisteredPartiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: instance.ExportRegisteredPartiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[instance.ExportRegisteredPartiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_registered_parties
 
         Override in a subclass to manipulate the request or metadata
@@ -1182,9 +1046,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_export_registered_parties(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_registered_parties(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_registered_parties
 
         DEPRECATED. Please use the `post_export_registered_parties_with_metadata`
@@ -1198,9 +1060,7 @@ class AMLRestInterceptor:
         return response
 
     def post_export_registered_parties_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_registered_parties
 
@@ -1217,13 +1077,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_backtest_result(
-        self,
-        request: backtest_result.GetBacktestResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backtest_result.GetBacktestResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backtest_result.GetBacktestResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backtest_result.GetBacktestResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backtest_result
 
         Override in a subclass to manipulate the request or metadata
@@ -1231,9 +1086,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backtest_result(
-        self, response: backtest_result.BacktestResult
-    ) -> backtest_result.BacktestResult:
+    def post_get_backtest_result(self, response: backtest_result.BacktestResult) -> backtest_result.BacktestResult:
         """Post-rpc interceptor for get_backtest_result
 
         DEPRECATED. Please use the `post_get_backtest_result_with_metadata`
@@ -1247,9 +1100,7 @@ class AMLRestInterceptor:
         return response
 
     def post_get_backtest_result_with_metadata(
-        self,
-        response: backtest_result.BacktestResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: backtest_result.BacktestResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[backtest_result.BacktestResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backtest_result
 
@@ -1266,9 +1117,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_dataset(
-        self,
-        request: dataset.GetDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataset.GetDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataset.GetDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dataset
 
@@ -1291,9 +1140,7 @@ class AMLRestInterceptor:
         return response
 
     def post_get_dataset_with_metadata(
-        self,
-        response: dataset.Dataset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataset.Dataset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataset.Dataset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dataset
 
@@ -1310,12 +1157,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_engine_config(
-        self,
-        request: engine_config.GetEngineConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_config.GetEngineConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_config.GetEngineConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_config.GetEngineConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_engine_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1323,9 +1166,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_get_engine_config(
-        self, response: engine_config.EngineConfig
-    ) -> engine_config.EngineConfig:
+    def post_get_engine_config(self, response: engine_config.EngineConfig) -> engine_config.EngineConfig:
         """Post-rpc interceptor for get_engine_config
 
         DEPRECATED. Please use the `post_get_engine_config_with_metadata`
@@ -1339,9 +1180,7 @@ class AMLRestInterceptor:
         return response
 
     def post_get_engine_config_with_metadata(
-        self,
-        response: engine_config.EngineConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: engine_config.EngineConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[engine_config.EngineConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_engine_config
 
@@ -1358,12 +1197,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_engine_version(
-        self,
-        request: engine_version.GetEngineVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_version.GetEngineVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_version.GetEngineVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_version.GetEngineVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_engine_version
 
         Override in a subclass to manipulate the request or metadata
@@ -1371,9 +1206,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_get_engine_version(
-        self, response: engine_version.EngineVersion
-    ) -> engine_version.EngineVersion:
+    def post_get_engine_version(self, response: engine_version.EngineVersion) -> engine_version.EngineVersion:
         """Post-rpc interceptor for get_engine_version
 
         DEPRECATED. Please use the `post_get_engine_version_with_metadata`
@@ -1387,9 +1220,7 @@ class AMLRestInterceptor:
         return response
 
     def post_get_engine_version_with_metadata(
-        self,
-        response: engine_version.EngineVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: engine_version.EngineVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[engine_version.EngineVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_engine_version
 
@@ -1406,9 +1237,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: instance.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -1431,9 +1260,7 @@ class AMLRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: instance.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: instance.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -1450,9 +1277,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_model(
-        self,
-        request: model.GetModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: model.GetModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[model.GetModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_model
 
@@ -1492,13 +1317,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_prediction_result(
-        self,
-        request: prediction_result.GetPredictionResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_result.GetPredictionResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_result.GetPredictionResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_result.GetPredictionResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_prediction_result
 
         Override in a subclass to manipulate the request or metadata
@@ -1506,9 +1326,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_get_prediction_result(
-        self, response: prediction_result.PredictionResult
-    ) -> prediction_result.PredictionResult:
+    def post_get_prediction_result(self, response: prediction_result.PredictionResult) -> prediction_result.PredictionResult:
         """Post-rpc interceptor for get_prediction_result
 
         DEPRECATED. Please use the `post_get_prediction_result_with_metadata`
@@ -1522,12 +1340,8 @@ class AMLRestInterceptor:
         return response
 
     def post_get_prediction_result_with_metadata(
-        self,
-        response: prediction_result.PredictionResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_result.PredictionResult, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: prediction_result.PredictionResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_result.PredictionResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_prediction_result
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1543,12 +1357,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_import_registered_parties(
-        self,
-        request: instance.ImportRegisteredPartiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        instance.ImportRegisteredPartiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: instance.ImportRegisteredPartiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[instance.ImportRegisteredPartiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_registered_parties
 
         Override in a subclass to manipulate the request or metadata
@@ -1556,9 +1366,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_import_registered_parties(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_registered_parties(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_registered_parties
 
         DEPRECATED. Please use the `post_import_registered_parties_with_metadata`
@@ -1572,9 +1380,7 @@ class AMLRestInterceptor:
         return response
 
     def post_import_registered_parties_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_registered_parties
 
@@ -1591,13 +1397,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_backtest_results(
-        self,
-        request: backtest_result.ListBacktestResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backtest_result.ListBacktestResultsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: backtest_result.ListBacktestResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backtest_result.ListBacktestResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backtest_results
 
         Override in a subclass to manipulate the request or metadata
@@ -1605,9 +1406,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backtest_results(
-        self, response: backtest_result.ListBacktestResultsResponse
-    ) -> backtest_result.ListBacktestResultsResponse:
+    def post_list_backtest_results(self, response: backtest_result.ListBacktestResultsResponse) -> backtest_result.ListBacktestResultsResponse:
         """Post-rpc interceptor for list_backtest_results
 
         DEPRECATED. Please use the `post_list_backtest_results_with_metadata`
@@ -1621,13 +1420,8 @@ class AMLRestInterceptor:
         return response
 
     def post_list_backtest_results_with_metadata(
-        self,
-        response: backtest_result.ListBacktestResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        backtest_result.ListBacktestResultsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: backtest_result.ListBacktestResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[backtest_result.ListBacktestResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backtest_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1643,9 +1437,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_datasets(
-        self,
-        request: dataset.ListDatasetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: dataset.ListDatasetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataset.ListDatasetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_datasets
 
@@ -1654,9 +1446,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_datasets(
-        self, response: dataset.ListDatasetsResponse
-    ) -> dataset.ListDatasetsResponse:
+    def post_list_datasets(self, response: dataset.ListDatasetsResponse) -> dataset.ListDatasetsResponse:
         """Post-rpc interceptor for list_datasets
 
         DEPRECATED. Please use the `post_list_datasets_with_metadata`
@@ -1670,9 +1460,7 @@ class AMLRestInterceptor:
         return response
 
     def post_list_datasets_with_metadata(
-        self,
-        response: dataset.ListDatasetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dataset.ListDatasetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dataset.ListDatasetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_datasets
 
@@ -1689,12 +1477,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_engine_configs(
-        self,
-        request: engine_config.ListEngineConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_config.ListEngineConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: engine_config.ListEngineConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_config.ListEngineConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_engine_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -1702,9 +1486,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_engine_configs(
-        self, response: engine_config.ListEngineConfigsResponse
-    ) -> engine_config.ListEngineConfigsResponse:
+    def post_list_engine_configs(self, response: engine_config.ListEngineConfigsResponse) -> engine_config.ListEngineConfigsResponse:
         """Post-rpc interceptor for list_engine_configs
 
         DEPRECATED. Please use the `post_list_engine_configs_with_metadata`
@@ -1718,12 +1500,8 @@ class AMLRestInterceptor:
         return response
 
     def post_list_engine_configs_with_metadata(
-        self,
-        response: engine_config.ListEngineConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_config.ListEngineConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: engine_config.ListEngineConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_config.ListEngineConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_engine_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1739,13 +1517,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_engine_versions(
-        self,
-        request: engine_version.ListEngineVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_version.ListEngineVersionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: engine_version.ListEngineVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_version.ListEngineVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_engine_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -1753,9 +1526,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_engine_versions(
-        self, response: engine_version.ListEngineVersionsResponse
-    ) -> engine_version.ListEngineVersionsResponse:
+    def post_list_engine_versions(self, response: engine_version.ListEngineVersionsResponse) -> engine_version.ListEngineVersionsResponse:
         """Post-rpc interceptor for list_engine_versions
 
         DEPRECATED. Please use the `post_list_engine_versions_with_metadata`
@@ -1769,13 +1540,8 @@ class AMLRestInterceptor:
         return response
 
     def post_list_engine_versions_with_metadata(
-        self,
-        response: engine_version.ListEngineVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        engine_version.ListEngineVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: engine_version.ListEngineVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[engine_version.ListEngineVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_engine_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1791,9 +1557,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: instance.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: instance.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
@@ -1802,9 +1566,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: instance.ListInstancesResponse
-    ) -> instance.ListInstancesResponse:
+    def post_list_instances(self, response: instance.ListInstancesResponse) -> instance.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -1818,9 +1580,7 @@ class AMLRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: instance.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: instance.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[instance.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
@@ -1837,9 +1597,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_models(
-        self,
-        request: model.ListModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: model.ListModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[model.ListModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_models
 
@@ -1848,9 +1606,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_models(
-        self, response: model.ListModelsResponse
-    ) -> model.ListModelsResponse:
+    def post_list_models(self, response: model.ListModelsResponse) -> model.ListModelsResponse:
         """Post-rpc interceptor for list_models
 
         DEPRECATED. Please use the `post_list_models_with_metadata`
@@ -1864,9 +1620,7 @@ class AMLRestInterceptor:
         return response
 
     def post_list_models_with_metadata(
-        self,
-        response: model.ListModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: model.ListModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[model.ListModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_models
 
@@ -1883,13 +1637,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_list_prediction_results(
-        self,
-        request: prediction_result.ListPredictionResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_result.ListPredictionResultsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_result.ListPredictionResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_result.ListPredictionResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_prediction_results
 
         Override in a subclass to manipulate the request or metadata
@@ -1913,13 +1662,8 @@ class AMLRestInterceptor:
         return response
 
     def post_list_prediction_results_with_metadata(
-        self,
-        response: prediction_result.ListPredictionResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_result.ListPredictionResultsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: prediction_result.ListPredictionResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_result.ListPredictionResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_prediction_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1935,13 +1679,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_update_backtest_result(
-        self,
-        request: gcf_backtest_result.UpdateBacktestResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_backtest_result.UpdateBacktestResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_backtest_result.UpdateBacktestResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_backtest_result.UpdateBacktestResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backtest_result
 
         Override in a subclass to manipulate the request or metadata
@@ -1949,9 +1688,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backtest_result(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backtest_result(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backtest_result
 
         DEPRECATED. Please use the `post_update_backtest_result_with_metadata`
@@ -1965,9 +1702,7 @@ class AMLRestInterceptor:
         return response
 
     def post_update_backtest_result_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backtest_result
 
@@ -1984,12 +1719,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_update_dataset(
-        self,
-        request: gcf_dataset.UpdateDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_dataset.UpdateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcf_dataset.UpdateDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_dataset.UpdateDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -1997,9 +1728,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dataset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_dataset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_dataset
 
         DEPRECATED. Please use the `post_update_dataset_with_metadata`
@@ -2013,9 +1742,7 @@ class AMLRestInterceptor:
         return response
 
     def post_update_dataset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dataset
 
@@ -2032,13 +1759,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_update_engine_config(
-        self,
-        request: gcf_engine_config.UpdateEngineConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_engine_config.UpdateEngineConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_engine_config.UpdateEngineConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_engine_config.UpdateEngineConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_engine_config
 
         Override in a subclass to manipulate the request or metadata
@@ -2046,9 +1768,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_update_engine_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_engine_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_engine_config
 
         DEPRECATED. Please use the `post_update_engine_config_with_metadata`
@@ -2062,9 +1782,7 @@ class AMLRestInterceptor:
         return response
 
     def post_update_engine_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_engine_config
 
@@ -2081,12 +1799,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: gcf_instance.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_instance.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcf_instance.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_instance.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -2094,9 +1808,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -2110,9 +1822,7 @@ class AMLRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -2129,9 +1839,7 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_update_model(
-        self,
-        request: gcf_model.UpdateModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcf_model.UpdateModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcf_model.UpdateModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_model
 
@@ -2140,9 +1848,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_update_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_model
 
         DEPRECATED. Please use the `post_update_model_with_metadata`
@@ -2156,9 +1862,7 @@ class AMLRestInterceptor:
         return response
 
     def post_update_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_model
 
@@ -2175,13 +1879,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_update_prediction_result(
-        self,
-        request: gcf_prediction_result.UpdatePredictionResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcf_prediction_result.UpdatePredictionResultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcf_prediction_result.UpdatePredictionResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcf_prediction_result.UpdatePredictionResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_prediction_result
 
         Override in a subclass to manipulate the request or metadata
@@ -2189,9 +1888,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_update_prediction_result(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_prediction_result(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_prediction_result
 
         DEPRECATED. Please use the `post_update_prediction_result_with_metadata`
@@ -2205,9 +1902,7 @@ class AMLRestInterceptor:
         return response
 
     def post_update_prediction_result_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_prediction_result
 
@@ -2224,12 +1919,8 @@ class AMLRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2237,9 +1928,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2249,12 +1938,8 @@ class AMLRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2262,9 +1947,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2274,12 +1957,8 @@ class AMLRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2297,12 +1976,8 @@ class AMLRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2320,12 +1995,8 @@ class AMLRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2333,9 +2004,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2345,12 +2014,8 @@ class AMLRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2358,9 +2023,7 @@ class AMLRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2450,9 +2113,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2505,29 +2166,17 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateBacktestResult(
-        _BaseAMLRestTransport._BaseCreateBacktestResult, AMLRestStub
-    ):
+    class _CreateBacktestResult(_BaseAMLRestTransport._BaseCreateBacktestResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.CreateBacktestResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2571,38 +2220,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseCreateBacktestResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_backtest_result(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_backtest_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseCreateBacktestResult._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAMLRestTransport._BaseCreateBacktestResult._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseCreateBacktestResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2626,13 +2255,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CreateBacktestResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2646,12 +2269,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_create_backtest_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backtest_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backtest_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2677,15 +2296,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.CreateDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2732,29 +2343,15 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseCreateDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseCreateDataset._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseCreateDataset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseCreateDataset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateDataset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseCreateDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2778,13 +2375,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CreateDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2798,12 +2389,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_create_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2824,22 +2411,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _CreateEngineConfig(
-        _BaseAMLRestTransport._BaseCreateEngineConfig, AMLRestStub
-    ):
+    class _CreateEngineConfig(_BaseAMLRestTransport._BaseCreateEngineConfig, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.CreateEngineConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2883,36 +2460,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseCreateEngineConfig._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseCreateEngineConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_engine_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_engine_config(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseCreateEngineConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseCreateEngineConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseCreateEngineConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseCreateEngineConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2936,13 +2495,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CreateEngineConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2956,12 +2509,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_create_engine_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_engine_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_engine_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2987,15 +2536,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3042,29 +2583,15 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3088,13 +2615,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3108,12 +2629,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3139,15 +2656,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.CreateModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3194,29 +2703,15 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseCreateModel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCreateModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseCreateModel._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseCreateModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseCreateModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCreateModel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseCreateModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3240,13 +2735,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CreateModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3260,12 +2749,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_create_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3286,22 +2771,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _CreatePredictionResult(
-        _BaseAMLRestTransport._BaseCreatePredictionResult, AMLRestStub
-    ):
+    class _CreatePredictionResult(_BaseAMLRestTransport._BaseCreatePredictionResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.CreatePredictionResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3345,32 +2820,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseCreatePredictionResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseCreatePredictionResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_prediction_result(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseCreatePredictionResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_prediction_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseCreatePredictionResult._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseCreatePredictionResult._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseCreatePredictionResult._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseCreatePredictionResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseCreatePredictionResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3394,13 +2855,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CreatePredictionResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3414,12 +2869,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_create_prediction_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_prediction_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_prediction_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3440,22 +2891,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _DeleteBacktestResult(
-        _BaseAMLRestTransport._BaseDeleteBacktestResult, AMLRestStub
-    ):
+    class _DeleteBacktestResult(_BaseAMLRestTransport._BaseDeleteBacktestResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.DeleteBacktestResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3498,32 +2939,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseDeleteBacktestResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseDeleteBacktestResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_backtest_result(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_backtest_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseDeleteBacktestResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseDeleteBacktestResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3547,12 +2972,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._DeleteBacktestResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3566,12 +2986,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_delete_backtest_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backtest_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backtest_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3597,15 +3013,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.DeleteDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3650,25 +3058,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseDeleteDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseDeleteDataset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteDataset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseDeleteDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3691,14 +3087,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._DeleteDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._DeleteDataset._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3711,12 +3100,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_delete_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3737,22 +3122,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _DeleteEngineConfig(
-        _BaseAMLRestTransport._BaseDeleteEngineConfig, AMLRestStub
-    ):
+    class _DeleteEngineConfig(_BaseAMLRestTransport._BaseDeleteEngineConfig, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.DeleteEngineConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3794,32 +3169,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseDeleteEngineConfig._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseDeleteEngineConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_engine_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_engine_config(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseDeleteEngineConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseDeleteEngineConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3843,12 +3202,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._DeleteEngineConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3862,12 +3216,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_delete_engine_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_engine_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_engine_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3893,15 +3243,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3946,25 +3288,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3987,14 +3317,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._DeleteInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4007,12 +3330,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4038,15 +3357,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.DeleteModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4091,25 +3402,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseDeleteModel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseDeleteModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteModel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseDeleteModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4132,14 +3431,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._DeleteModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._DeleteModel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4152,12 +3444,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_delete_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4178,22 +3466,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _DeletePredictionResult(
-        _BaseAMLRestTransport._BaseDeletePredictionResult, AMLRestStub
-    ):
+    class _DeletePredictionResult(_BaseAMLRestTransport._BaseDeletePredictionResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.DeletePredictionResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4236,28 +3514,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseDeletePredictionResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseDeletePredictionResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_prediction_result(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseDeletePredictionResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_prediction_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseDeletePredictionResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseDeletePredictionResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseDeletePredictionResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4281,12 +3547,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._DeletePredictionResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4300,12 +3561,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_delete_prediction_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_prediction_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_prediction_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4326,22 +3583,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ExportBacktestResultMetadata(
-        _BaseAMLRestTransport._BaseExportBacktestResultMetadata, AMLRestStub
-    ):
+    class _ExportBacktestResultMetadata(_BaseAMLRestTransport._BaseExportBacktestResultMetadata, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ExportBacktestResultMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4386,32 +3633,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_backtest_result_metadata(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_backtest_result_metadata(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseExportBacktestResultMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4435,13 +3668,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ExportBacktestResultMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4455,15 +3682,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_export_backtest_result_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_export_backtest_result_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_backtest_result_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4484,22 +3704,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ExportEngineConfigMetadata(
-        _BaseAMLRestTransport._BaseExportEngineConfigMetadata, AMLRestStub
-    ):
+    class _ExportEngineConfigMetadata(_BaseAMLRestTransport._BaseExportEngineConfigMetadata, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ExportEngineConfigMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4544,32 +3754,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_engine_config_metadata(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_engine_config_metadata(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseExportEngineConfigMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4593,13 +3789,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ExportEngineConfigMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4613,15 +3803,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_export_engine_config_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_export_engine_config_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_engine_config_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4642,22 +3825,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ExportModelMetadata(
-        _BaseAMLRestTransport._BaseExportModelMetadata, AMLRestStub
-    ):
+    class _ExportModelMetadata(_BaseAMLRestTransport._BaseExportModelMetadata, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ExportModelMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4700,38 +3873,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseExportModelMetadata._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_model_metadata(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_export_model_metadata(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseExportModelMetadata._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAMLRestTransport._BaseExportModelMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseExportModelMetadata._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseExportModelMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4755,13 +3908,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ExportModelMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4775,12 +3922,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_export_model_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_model_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_model_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4801,22 +3944,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ExportPredictionResultMetadata(
-        _BaseAMLRestTransport._BaseExportPredictionResultMetadata, AMLRestStub
-    ):
+    class _ExportPredictionResultMetadata(_BaseAMLRestTransport._BaseExportPredictionResultMetadata, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ExportPredictionResultMetadata")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4861,32 +3994,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_prediction_result_metadata(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_prediction_result_metadata(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseExportPredictionResultMetadata._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4910,13 +4029,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ExportPredictionResultMetadata._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4930,15 +4043,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_export_prediction_result_metadata(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_export_prediction_result_metadata_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_prediction_result_metadata_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4959,22 +4065,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ExportRegisteredParties(
-        _BaseAMLRestTransport._BaseExportRegisteredParties, AMLRestStub
-    ):
+    class _ExportRegisteredParties(_BaseAMLRestTransport._BaseExportRegisteredParties, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ExportRegisteredParties")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5018,32 +4114,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseExportRegisteredParties._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseExportRegisteredParties._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_registered_parties(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseExportRegisteredParties._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_registered_parties(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseExportRegisteredParties._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseExportRegisteredParties._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseExportRegisteredParties._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseExportRegisteredParties._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseExportRegisteredParties._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5067,13 +4149,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ExportRegisteredParties._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5087,12 +4163,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_export_registered_parties(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_registered_parties_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_registered_parties_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5118,15 +4190,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetBacktestResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5168,32 +4232,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseGetBacktestResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseGetBacktestResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_backtest_result(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_backtest_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseGetBacktestResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetBacktestResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5217,12 +4265,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._GetBacktestResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5238,12 +4281,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_backtest_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backtest_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backtest_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = backtest_result.BacktestResult.to_json(response)
                 except:
@@ -5269,15 +4308,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5322,23 +4353,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseGetDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseGetDataset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseGetDataset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseGetDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5361,14 +4382,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._GetDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._GetDataset._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5383,12 +4397,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataset.Dataset.to_json(response)
                 except:
@@ -5414,15 +4424,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetEngineConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5464,32 +4466,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseGetEngineConfig._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseGetEngineConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_engine_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_engine_config(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseGetEngineConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetEngineConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5512,14 +4498,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._GetEngineConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._GetEngineConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5534,12 +4513,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_engine_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_engine_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_engine_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = engine_config.EngineConfig.to_json(response)
                 except:
@@ -5565,15 +4540,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetEngineVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5616,32 +4583,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseGetEngineVersion._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseGetEngineVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_engine_version(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetEngineVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_engine_version(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseGetEngineVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetEngineVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetEngineVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5665,12 +4616,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._GetEngineVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5686,12 +4632,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_engine_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_engine_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_engine_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = engine_version.EngineVersion.to_json(response)
                 except:
@@ -5717,15 +4659,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5776,25 +4710,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5817,14 +4739,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._GetInstance._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5839,12 +4754,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = instance.Instance.to_json(response)
                 except:
@@ -5870,15 +4781,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5921,23 +4824,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseGetModel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseGetModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseGetModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseGetModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5960,14 +4853,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._GetModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._GetModel._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5982,12 +4868,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = model.Model.to_json(response)
                 except:
@@ -6008,22 +4890,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _GetPredictionResult(
-        _BaseAMLRestTransport._BaseGetPredictionResult, AMLRestStub
-    ):
+    class _GetPredictionResult(_BaseAMLRestTransport._BaseGetPredictionResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.GetPredictionResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6065,32 +4937,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseGetPredictionResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseGetPredictionResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_prediction_result(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetPredictionResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_prediction_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseGetPredictionResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetPredictionResult._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetPredictionResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6114,12 +4970,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._GetPredictionResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6135,16 +4986,10 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_get_prediction_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_prediction_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_prediction_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = prediction_result.PredictionResult.to_json(
-                        response
-                    )
+                    response_payload = prediction_result.PredictionResult.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6163,22 +5008,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ImportRegisteredParties(
-        _BaseAMLRestTransport._BaseImportRegisteredParties, AMLRestStub
-    ):
+    class _ImportRegisteredParties(_BaseAMLRestTransport._BaseImportRegisteredParties, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ImportRegisteredParties")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6223,32 +5058,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseImportRegisteredParties._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseImportRegisteredParties._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_registered_parties(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseImportRegisteredParties._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_registered_parties(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseImportRegisteredParties._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseImportRegisteredParties._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseImportRegisteredParties._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseImportRegisteredParties._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseImportRegisteredParties._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6272,13 +5093,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ImportRegisteredParties._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6292,12 +5107,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_import_registered_parties(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_registered_parties_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_registered_parties_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6318,22 +5129,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ListBacktestResults(
-        _BaseAMLRestTransport._BaseListBacktestResults, AMLRestStub
-    ):
+    class _ListBacktestResults(_BaseAMLRestTransport._BaseListBacktestResults, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ListBacktestResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6376,32 +5177,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseListBacktestResults._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseListBacktestResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_backtest_results(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListBacktestResults._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_backtest_results(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseListBacktestResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListBacktestResults._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListBacktestResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6425,12 +5210,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ListBacktestResults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6446,16 +5226,10 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_backtest_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backtest_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backtest_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        backtest_result.ListBacktestResultsResponse.to_json(response)
-                    )
+                    response_payload = backtest_result.ListBacktestResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6479,15 +5253,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.ListDatasets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6533,25 +5299,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseListDatasets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_datasets(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListDatasets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseListDatasets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListDatasets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListDatasets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6574,14 +5328,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._ListDatasets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._ListDatasets._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -6596,12 +5343,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_datasets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_datasets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_datasets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dataset.ListDatasetsResponse.to_json(response)
                 except:
@@ -6627,15 +5370,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.ListEngineConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6678,32 +5413,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseListEngineConfigs._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseListEngineConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_engine_configs(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListEngineConfigs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_engine_configs(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseListEngineConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListEngineConfigs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListEngineConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6727,12 +5446,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ListEngineConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6748,16 +5462,10 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_engine_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_engine_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_engine_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = engine_config.ListEngineConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = engine_config.ListEngineConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6776,22 +5484,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ListEngineVersions(
-        _BaseAMLRestTransport._BaseListEngineVersions, AMLRestStub
-    ):
+    class _ListEngineVersions(_BaseAMLRestTransport._BaseListEngineVersions, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ListEngineVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6834,32 +5532,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseListEngineVersions._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseListEngineVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_engine_versions(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListEngineVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_engine_versions(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseListEngineVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListEngineVersions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListEngineVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6883,12 +5565,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ListEngineVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6904,16 +5581,10 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_engine_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_engine_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_engine_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        engine_version.ListEngineVersionsResponse.to_json(response)
-                    )
+                    response_payload = engine_version.ListEngineVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6937,15 +5608,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6991,25 +5654,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListInstances._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7032,14 +5683,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._ListInstances._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7054,12 +5698,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = instance.ListInstancesResponse.to_json(response)
                 except:
@@ -7085,15 +5725,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.ListModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7139,23 +5771,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseListModels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_models(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListModels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseListModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseListModels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseListModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7178,14 +5800,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._ListModels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._ListModels._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -7200,12 +5815,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = model.ListModelsResponse.to_json(response)
                 except:
@@ -7226,22 +5837,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _ListPredictionResults(
-        _BaseAMLRestTransport._BaseListPredictionResults, AMLRestStub
-    ):
+    class _ListPredictionResults(_BaseAMLRestTransport._BaseListPredictionResults, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.ListPredictionResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7284,30 +5885,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseListPredictionResults._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseListPredictionResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_prediction_results(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseListPredictionResults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_prediction_results(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseListPredictionResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListPredictionResults._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListPredictionResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7331,12 +5918,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._ListPredictionResults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7352,18 +5934,10 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_list_prediction_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_prediction_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_prediction_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        prediction_result.ListPredictionResultsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = prediction_result.ListPredictionResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7382,22 +5956,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _UpdateBacktestResult(
-        _BaseAMLRestTransport._BaseUpdateBacktestResult, AMLRestStub
-    ):
+    class _UpdateBacktestResult(_BaseAMLRestTransport._BaseUpdateBacktestResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.UpdateBacktestResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7440,38 +6004,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseUpdateBacktestResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_backtest_result(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_backtest_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseUpdateBacktestResult._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseAMLRestTransport._BaseUpdateBacktestResult._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateBacktestResult._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseUpdateBacktestResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7495,13 +6039,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._UpdateBacktestResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7515,12 +6053,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_update_backtest_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backtest_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backtest_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7546,15 +6080,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.UpdateDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7600,29 +6126,15 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseUpdateDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_update_dataset(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateDataset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseUpdateDataset._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseUpdateDataset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseUpdateDataset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateDataset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseUpdateDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7646,13 +6158,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._UpdateDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7666,12 +6172,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_update_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7692,22 +6194,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _UpdateEngineConfig(
-        _BaseAMLRestTransport._BaseUpdateEngineConfig, AMLRestStub
-    ):
+    class _UpdateEngineConfig(_BaseAMLRestTransport._BaseUpdateEngineConfig, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.UpdateEngineConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7750,36 +6242,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseUpdateEngineConfig._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseUpdateEngineConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_engine_config(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateEngineConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_engine_config(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseUpdateEngineConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseUpdateEngineConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseUpdateEngineConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateEngineConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseUpdateEngineConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7803,13 +6277,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._UpdateEngineConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7823,12 +6291,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_update_engine_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_engine_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_engine_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7854,15 +6318,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7908,29 +6364,15 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7954,13 +6396,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7974,12 +6410,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8005,15 +6437,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.UpdateModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8059,29 +6483,15 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseUpdateModel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_model(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseUpdateModel._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseUpdateModel._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseUpdateModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseUpdateModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseUpdateModel._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseUpdateModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8105,13 +6515,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._UpdateModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8125,12 +6529,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_update_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8151,22 +6551,12 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
             return resp
 
-    class _UpdatePredictionResult(
-        _BaseAMLRestTransport._BaseUpdatePredictionResult, AMLRestStub
-    ):
+    class _UpdatePredictionResult(_BaseAMLRestTransport._BaseUpdatePredictionResult, AMLRestStub):
         def __hash__(self):
             return hash("AMLRestTransport.UpdatePredictionResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8210,32 +6600,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseUpdatePredictionResult._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_prediction_result(
-                request, metadata
-            )
-            transcoded_request = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_prediction_result(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAMLRestTransport._BaseUpdatePredictionResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8259,13 +6635,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._UpdatePredictionResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8279,12 +6649,8 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             resp = self._interceptor.post_update_prediction_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_prediction_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_prediction_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8306,165 +6672,109 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return resp
 
     @property
-    def create_backtest_result(
-        self,
-    ) -> Callable[
-        [gcf_backtest_result.CreateBacktestResultRequest], operations_pb2.Operation
-    ]:
+    def create_backtest_result(self) -> Callable[[gcf_backtest_result.CreateBacktestResultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBacktestResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[[gcf_dataset.CreateDatasetRequest], operations_pb2.Operation]:
+    def create_dataset(self) -> Callable[[gcf_dataset.CreateDatasetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_engine_config(
-        self,
-    ) -> Callable[
-        [gcf_engine_config.CreateEngineConfigRequest], operations_pb2.Operation
-    ]:
+    def create_engine_config(self) -> Callable[[gcf_engine_config.CreateEngineConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEngineConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[gcf_instance.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[gcf_instance.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_model(
-        self,
-    ) -> Callable[[gcf_model.CreateModelRequest], operations_pb2.Operation]:
+    def create_model(self) -> Callable[[gcf_model.CreateModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_prediction_result(
-        self,
-    ) -> Callable[
-        [gcf_prediction_result.CreatePredictionResultRequest], operations_pb2.Operation
-    ]:
+    def create_prediction_result(self) -> Callable[[gcf_prediction_result.CreatePredictionResultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePredictionResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backtest_result(
-        self,
-    ) -> Callable[
-        [backtest_result.DeleteBacktestResultRequest], operations_pb2.Operation
-    ]:
+    def delete_backtest_result(self) -> Callable[[backtest_result.DeleteBacktestResultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBacktestResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[[dataset.DeleteDatasetRequest], operations_pb2.Operation]:
+    def delete_dataset(self) -> Callable[[dataset.DeleteDatasetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_engine_config(
-        self,
-    ) -> Callable[[engine_config.DeleteEngineConfigRequest], operations_pb2.Operation]:
+    def delete_engine_config(self) -> Callable[[engine_config.DeleteEngineConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEngineConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[instance.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[instance.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_model(
-        self,
-    ) -> Callable[[model.DeleteModelRequest], operations_pb2.Operation]:
+    def delete_model(self) -> Callable[[model.DeleteModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_prediction_result(
-        self,
-    ) -> Callable[
-        [prediction_result.DeletePredictionResultRequest], operations_pb2.Operation
-    ]:
+    def delete_prediction_result(self) -> Callable[[prediction_result.DeletePredictionResultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePredictionResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_backtest_result_metadata(
-        self,
-    ) -> Callable[
-        [gcf_backtest_result.ExportBacktestResultMetadataRequest],
-        operations_pb2.Operation,
-    ]:
+    def export_backtest_result_metadata(self) -> Callable[[gcf_backtest_result.ExportBacktestResultMetadataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportBacktestResultMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_engine_config_metadata(
-        self,
-    ) -> Callable[
-        [gcf_engine_config.ExportEngineConfigMetadataRequest], operations_pb2.Operation
-    ]:
+    def export_engine_config_metadata(self) -> Callable[[gcf_engine_config.ExportEngineConfigMetadataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportEngineConfigMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_model_metadata(
-        self,
-    ) -> Callable[[gcf_model.ExportModelMetadataRequest], operations_pb2.Operation]:
+    def export_model_metadata(self) -> Callable[[gcf_model.ExportModelMetadataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportModelMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_prediction_result_metadata(
-        self,
-    ) -> Callable[
-        [gcf_prediction_result.ExportPredictionResultMetadataRequest],
-        operations_pb2.Operation,
-    ]:
+    def export_prediction_result_metadata(self) -> Callable[[gcf_prediction_result.ExportPredictionResultMetadataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportPredictionResultMetadata(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_registered_parties(
-        self,
-    ) -> Callable[[instance.ExportRegisteredPartiesRequest], operations_pb2.Operation]:
+    def export_registered_parties(self) -> Callable[[instance.ExportRegisteredPartiesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportRegisteredParties(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backtest_result(
-        self,
-    ) -> Callable[
-        [backtest_result.GetBacktestResultRequest], backtest_result.BacktestResult
-    ]:
+    def get_backtest_result(self) -> Callable[[backtest_result.GetBacktestResultRequest], backtest_result.BacktestResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBacktestResult(self._session, self._host, self._interceptor)  # type: ignore
@@ -8476,27 +6786,19 @@ class AMLRestTransport(_BaseAMLRestTransport):
         return self._GetDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_engine_config(
-        self,
-    ) -> Callable[[engine_config.GetEngineConfigRequest], engine_config.EngineConfig]:
+    def get_engine_config(self) -> Callable[[engine_config.GetEngineConfigRequest], engine_config.EngineConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEngineConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_engine_version(
-        self,
-    ) -> Callable[
-        [engine_version.GetEngineVersionRequest], engine_version.EngineVersion
-    ]:
+    def get_engine_version(self) -> Callable[[engine_version.GetEngineVersionRequest], engine_version.EngineVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEngineVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
+    def get_instance(self) -> Callable[[instance.GetInstanceRequest], instance.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
@@ -8508,142 +6810,91 @@ class AMLRestTransport(_BaseAMLRestTransport):
         return self._GetModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_prediction_result(
-        self,
-    ) -> Callable[
-        [prediction_result.GetPredictionResultRequest],
-        prediction_result.PredictionResult,
-    ]:
+    def get_prediction_result(self) -> Callable[[prediction_result.GetPredictionResultRequest], prediction_result.PredictionResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPredictionResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_registered_parties(
-        self,
-    ) -> Callable[[instance.ImportRegisteredPartiesRequest], operations_pb2.Operation]:
+    def import_registered_parties(self) -> Callable[[instance.ImportRegisteredPartiesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportRegisteredParties(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backtest_results(
-        self,
-    ) -> Callable[
-        [backtest_result.ListBacktestResultsRequest],
-        backtest_result.ListBacktestResultsResponse,
-    ]:
+    def list_backtest_results(self) -> Callable[[backtest_result.ListBacktestResultsRequest], backtest_result.ListBacktestResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBacktestResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_datasets(
-        self,
-    ) -> Callable[[dataset.ListDatasetsRequest], dataset.ListDatasetsResponse]:
+    def list_datasets(self) -> Callable[[dataset.ListDatasetsRequest], dataset.ListDatasetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatasets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_engine_configs(
-        self,
-    ) -> Callable[
-        [engine_config.ListEngineConfigsRequest],
-        engine_config.ListEngineConfigsResponse,
-    ]:
+    def list_engine_configs(self) -> Callable[[engine_config.ListEngineConfigsRequest], engine_config.ListEngineConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEngineConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_engine_versions(
-        self,
-    ) -> Callable[
-        [engine_version.ListEngineVersionsRequest],
-        engine_version.ListEngineVersionsResponse,
-    ]:
+    def list_engine_versions(self) -> Callable[[engine_version.ListEngineVersionsRequest], engine_version.ListEngineVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEngineVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[instance.ListInstancesRequest], instance.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_models(
-        self,
-    ) -> Callable[[model.ListModelsRequest], model.ListModelsResponse]:
+    def list_models(self) -> Callable[[model.ListModelsRequest], model.ListModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_prediction_results(
-        self,
-    ) -> Callable[
-        [prediction_result.ListPredictionResultsRequest],
-        prediction_result.ListPredictionResultsResponse,
-    ]:
+    def list_prediction_results(self) -> Callable[[prediction_result.ListPredictionResultsRequest], prediction_result.ListPredictionResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPredictionResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backtest_result(
-        self,
-    ) -> Callable[
-        [gcf_backtest_result.UpdateBacktestResultRequest], operations_pb2.Operation
-    ]:
+    def update_backtest_result(self) -> Callable[[gcf_backtest_result.UpdateBacktestResultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBacktestResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_dataset(
-        self,
-    ) -> Callable[[gcf_dataset.UpdateDatasetRequest], operations_pb2.Operation]:
+    def update_dataset(self) -> Callable[[gcf_dataset.UpdateDatasetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_engine_config(
-        self,
-    ) -> Callable[
-        [gcf_engine_config.UpdateEngineConfigRequest], operations_pb2.Operation
-    ]:
+    def update_engine_config(self) -> Callable[[gcf_engine_config.UpdateEngineConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEngineConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[gcf_instance.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[gcf_instance.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_model(
-        self,
-    ) -> Callable[[gcf_model.UpdateModelRequest], operations_pb2.Operation]:
+    def update_model(self) -> Callable[[gcf_model.UpdateModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_prediction_result(
-        self,
-    ) -> Callable[
-        [gcf_prediction_result.UpdatePredictionResultRequest], operations_pb2.Operation
-    ]:
+    def update_prediction_result(self) -> Callable[[gcf_prediction_result.UpdatePredictionResultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePredictionResult(self._session, self._host, self._interceptor)  # type: ignore
@@ -8657,15 +6908,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8706,25 +6949,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8747,14 +6978,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8765,9 +6989,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8797,15 +7019,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8846,25 +7060,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8887,14 +7089,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -8905,9 +7100,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8937,15 +7130,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8981,36 +7166,18 @@ class AMLRestTransport(_BaseAMLRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseAMLRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAMLRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9034,13 +7201,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
 
             # Send the request
             response = AMLRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9059,15 +7220,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9102,32 +7255,16 @@ class AMLRestTransport(_BaseAMLRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAMLRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAMLRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAMLRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9150,14 +7287,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -9175,15 +7305,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9224,25 +7346,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9265,14 +7375,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -9283,9 +7386,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9315,15 +7416,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             return hash("AMLRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9364,25 +7457,13 @@ class AMLRestTransport(_BaseAMLRestTransport):
             http_options = _BaseAMLRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseAMLRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAMLRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAMLRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAMLRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9405,14 +7486,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
                 )
 
             # Send the request
-            response = AMLRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AMLRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -9423,9 +7497,7 @@ class AMLRestTransport(_BaseAMLRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

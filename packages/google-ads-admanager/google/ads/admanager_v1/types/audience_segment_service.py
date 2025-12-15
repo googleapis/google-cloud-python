@@ -136,9 +136,7 @@ class ListAudienceSegmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    audience_segments: MutableSequence[
-        audience_segment_messages.AudienceSegment
-    ] = proto.RepeatedField(
+    audience_segments: MutableSequence[audience_segment_messages.AudienceSegment] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=audience_segment_messages.AudienceSegment,

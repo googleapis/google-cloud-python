@@ -18,42 +18,18 @@ from google.cloud.dataflow import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.dataflow_v1beta3.services.flex_templates_service.async_client import (
-    FlexTemplatesServiceAsyncClient,
-)
-from google.cloud.dataflow_v1beta3.services.flex_templates_service.client import (
-    FlexTemplatesServiceClient,
-)
-from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3.async_client import (
-    JobsV1Beta3AsyncClient,
-)
-from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3.client import (
-    JobsV1Beta3Client,
-)
-from google.cloud.dataflow_v1beta3.services.messages_v1_beta3.async_client import (
-    MessagesV1Beta3AsyncClient,
-)
-from google.cloud.dataflow_v1beta3.services.messages_v1_beta3.client import (
-    MessagesV1Beta3Client,
-)
-from google.cloud.dataflow_v1beta3.services.metrics_v1_beta3.async_client import (
-    MetricsV1Beta3AsyncClient,
-)
-from google.cloud.dataflow_v1beta3.services.metrics_v1_beta3.client import (
-    MetricsV1Beta3Client,
-)
-from google.cloud.dataflow_v1beta3.services.snapshots_v1_beta3.async_client import (
-    SnapshotsV1Beta3AsyncClient,
-)
-from google.cloud.dataflow_v1beta3.services.snapshots_v1_beta3.client import (
-    SnapshotsV1Beta3Client,
-)
-from google.cloud.dataflow_v1beta3.services.templates_service.async_client import (
-    TemplatesServiceAsyncClient,
-)
-from google.cloud.dataflow_v1beta3.services.templates_service.client import (
-    TemplatesServiceClient,
-)
+from google.cloud.dataflow_v1beta3.services.flex_templates_service.async_client import FlexTemplatesServiceAsyncClient
+from google.cloud.dataflow_v1beta3.services.flex_templates_service.client import FlexTemplatesServiceClient
+from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3.async_client import JobsV1Beta3AsyncClient
+from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3.client import JobsV1Beta3Client
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3.async_client import MessagesV1Beta3AsyncClient
+from google.cloud.dataflow_v1beta3.services.messages_v1_beta3.client import MessagesV1Beta3Client
+from google.cloud.dataflow_v1beta3.services.metrics_v1_beta3.async_client import MetricsV1Beta3AsyncClient
+from google.cloud.dataflow_v1beta3.services.metrics_v1_beta3.client import MetricsV1Beta3Client
+from google.cloud.dataflow_v1beta3.services.snapshots_v1_beta3.async_client import SnapshotsV1Beta3AsyncClient
+from google.cloud.dataflow_v1beta3.services.snapshots_v1_beta3.client import SnapshotsV1Beta3Client
+from google.cloud.dataflow_v1beta3.services.templates_service.async_client import TemplatesServiceAsyncClient
+from google.cloud.dataflow_v1beta3.services.templates_service.client import TemplatesServiceClient
 from google.cloud.dataflow_v1beta3.types.environment import (
     AutoscalingAlgorithm,
     AutoscalingSettings,

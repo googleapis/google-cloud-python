@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.modelarmor_v1beta import gapic_version as package_version
 from google.cloud.modelarmor_v1beta.types import service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class ModelArmorTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -249,109 +239,57 @@ class ModelArmorTransport(abc.ABC):
     @property
     def list_templates(
         self,
-    ) -> Callable[
-        [service.ListTemplatesRequest],
-        Union[service.ListTemplatesResponse, Awaitable[service.ListTemplatesResponse]],
-    ]:
+    ) -> Callable[[service.ListTemplatesRequest], Union[service.ListTemplatesResponse, Awaitable[service.ListTemplatesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_template(
-        self,
-    ) -> Callable[
-        [service.GetTemplateRequest],
-        Union[service.Template, Awaitable[service.Template]],
-    ]:
+    def get_template(self) -> Callable[[service.GetTemplateRequest], Union[service.Template, Awaitable[service.Template]]]:
         raise NotImplementedError()
 
     @property
-    def create_template(
-        self,
-    ) -> Callable[
-        [service.CreateTemplateRequest],
-        Union[service.Template, Awaitable[service.Template]],
-    ]:
+    def create_template(self) -> Callable[[service.CreateTemplateRequest], Union[service.Template, Awaitable[service.Template]]]:
         raise NotImplementedError()
 
     @property
-    def update_template(
-        self,
-    ) -> Callable[
-        [service.UpdateTemplateRequest],
-        Union[service.Template, Awaitable[service.Template]],
-    ]:
+    def update_template(self) -> Callable[[service.UpdateTemplateRequest], Union[service.Template, Awaitable[service.Template]]]:
         raise NotImplementedError()
 
     @property
-    def delete_template(
-        self,
-    ) -> Callable[
-        [service.DeleteTemplateRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_template(self) -> Callable[[service.DeleteTemplateRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_floor_setting(
-        self,
-    ) -> Callable[
-        [service.GetFloorSettingRequest],
-        Union[service.FloorSetting, Awaitable[service.FloorSetting]],
-    ]:
+    def get_floor_setting(self) -> Callable[[service.GetFloorSettingRequest], Union[service.FloorSetting, Awaitable[service.FloorSetting]]]:
         raise NotImplementedError()
 
     @property
-    def update_floor_setting(
-        self,
-    ) -> Callable[
-        [service.UpdateFloorSettingRequest],
-        Union[service.FloorSetting, Awaitable[service.FloorSetting]],
-    ]:
+    def update_floor_setting(self) -> Callable[[service.UpdateFloorSettingRequest], Union[service.FloorSetting, Awaitable[service.FloorSetting]]]:
         raise NotImplementedError()
 
     @property
     def sanitize_user_prompt(
         self,
-    ) -> Callable[
-        [service.SanitizeUserPromptRequest],
-        Union[
-            service.SanitizeUserPromptResponse,
-            Awaitable[service.SanitizeUserPromptResponse],
-        ],
-    ]:
+    ) -> Callable[[service.SanitizeUserPromptRequest], Union[service.SanitizeUserPromptResponse, Awaitable[service.SanitizeUserPromptResponse]]]:
         raise NotImplementedError()
 
     @property
     def sanitize_model_response(
         self,
     ) -> Callable[
-        [service.SanitizeModelResponseRequest],
-        Union[
-            service.SanitizeModelResponseResponse,
-            Awaitable[service.SanitizeModelResponseResponse],
-        ],
+        [service.SanitizeModelResponseRequest], Union[service.SanitizeModelResponseResponse, Awaitable[service.SanitizeModelResponseResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

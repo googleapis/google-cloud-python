@@ -20,9 +20,7 @@ from .base import RegionHealthChecksTransport
 from .rest import RegionHealthChecksRestInterceptor, RegionHealthChecksRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[RegionHealthChecksTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[RegionHealthChecksTransport]]
 _transport_registry["rest"] = RegionHealthChecksRestTransport
 
 __all__ = (

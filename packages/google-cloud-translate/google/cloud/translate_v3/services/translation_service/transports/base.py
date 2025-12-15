@@ -31,16 +31,9 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.translate_v3 import gapic_version as package_version
-from google.cloud.translate_v3.types import (
-    adaptive_mt,
-    automl_translation,
-    common,
-    translation_service,
-)
+from google.cloud.translate_v3.types import adaptive_mt, automl_translation, common, translation_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -105,23 +98,15 @@ class TranslationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -432,10 +417,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.TranslateTextRequest],
-        Union[
-            translation_service.TranslateTextResponse,
-            Awaitable[translation_service.TranslateTextResponse],
-        ],
+        Union[translation_service.TranslateTextResponse, Awaitable[translation_service.TranslateTextResponse]],
     ]:
         raise NotImplementedError()
 
@@ -444,10 +426,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.RomanizeTextRequest],
-        Union[
-            translation_service.RomanizeTextResponse,
-            Awaitable[translation_service.RomanizeTextResponse],
-        ],
+        Union[translation_service.RomanizeTextResponse, Awaitable[translation_service.RomanizeTextResponse]],
     ]:
         raise NotImplementedError()
 
@@ -456,10 +435,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.DetectLanguageRequest],
-        Union[
-            translation_service.DetectLanguageResponse,
-            Awaitable[translation_service.DetectLanguageResponse],
-        ],
+        Union[translation_service.DetectLanguageResponse, Awaitable[translation_service.DetectLanguageResponse]],
     ]:
         raise NotImplementedError()
 
@@ -468,10 +444,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.GetSupportedLanguagesRequest],
-        Union[
-            translation_service.SupportedLanguages,
-            Awaitable[translation_service.SupportedLanguages],
-        ],
+        Union[translation_service.SupportedLanguages, Awaitable[translation_service.SupportedLanguages]],
     ]:
         raise NotImplementedError()
 
@@ -480,47 +453,32 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.TranslateDocumentRequest],
-        Union[
-            translation_service.TranslateDocumentResponse,
-            Awaitable[translation_service.TranslateDocumentResponse],
-        ],
+        Union[translation_service.TranslateDocumentResponse, Awaitable[translation_service.TranslateDocumentResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def batch_translate_text(
         self,
-    ) -> Callable[
-        [translation_service.BatchTranslateTextRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.BatchTranslateTextRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_translate_document(
         self,
-    ) -> Callable[
-        [translation_service.BatchTranslateDocumentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.BatchTranslateDocumentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_glossary(
         self,
-    ) -> Callable[
-        [translation_service.CreateGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.CreateGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_glossary(
         self,
-    ) -> Callable[
-        [translation_service.UpdateGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.UpdateGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -528,38 +486,26 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.ListGlossariesRequest],
-        Union[
-            translation_service.ListGlossariesResponse,
-            Awaitable[translation_service.ListGlossariesResponse],
-        ],
+        Union[translation_service.ListGlossariesResponse, Awaitable[translation_service.ListGlossariesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_glossary(
         self,
-    ) -> Callable[
-        [translation_service.GetGlossaryRequest],
-        Union[translation_service.Glossary, Awaitable[translation_service.Glossary]],
-    ]:
+    ) -> Callable[[translation_service.GetGlossaryRequest], Union[translation_service.Glossary, Awaitable[translation_service.Glossary]]]:
         raise NotImplementedError()
 
     @property
     def delete_glossary(
         self,
-    ) -> Callable[
-        [translation_service.DeleteGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.DeleteGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_glossary_entry(
         self,
-    ) -> Callable[
-        [translation_service.GetGlossaryEntryRequest],
-        Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]],
-    ]:
+    ) -> Callable[[translation_service.GetGlossaryEntryRequest], Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]]]:
         raise NotImplementedError()
 
     @property
@@ -567,104 +513,68 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.ListGlossaryEntriesRequest],
-        Union[
-            translation_service.ListGlossaryEntriesResponse,
-            Awaitable[translation_service.ListGlossaryEntriesResponse],
-        ],
+        Union[translation_service.ListGlossaryEntriesResponse, Awaitable[translation_service.ListGlossaryEntriesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_glossary_entry(
         self,
-    ) -> Callable[
-        [translation_service.CreateGlossaryEntryRequest],
-        Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]],
-    ]:
+    ) -> Callable[[translation_service.CreateGlossaryEntryRequest], Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]]]:
         raise NotImplementedError()
 
     @property
     def update_glossary_entry(
         self,
-    ) -> Callable[
-        [translation_service.UpdateGlossaryEntryRequest],
-        Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]],
-    ]:
+    ) -> Callable[[translation_service.UpdateGlossaryEntryRequest], Union[common.GlossaryEntry, Awaitable[common.GlossaryEntry]]]:
         raise NotImplementedError()
 
     @property
-    def delete_glossary_entry(
-        self,
-    ) -> Callable[
-        [translation_service.DeleteGlossaryEntryRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_glossary_entry(self) -> Callable[[translation_service.DeleteGlossaryEntryRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_dataset(
         self,
-    ) -> Callable[
-        [automl_translation.CreateDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[automl_translation.CreateDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_dataset(
         self,
-    ) -> Callable[
-        [automl_translation.GetDatasetRequest],
-        Union[automl_translation.Dataset, Awaitable[automl_translation.Dataset]],
-    ]:
+    ) -> Callable[[automl_translation.GetDatasetRequest], Union[automl_translation.Dataset, Awaitable[automl_translation.Dataset]]]:
         raise NotImplementedError()
 
     @property
     def list_datasets(
         self,
     ) -> Callable[
-        [automl_translation.ListDatasetsRequest],
-        Union[
-            automl_translation.ListDatasetsResponse,
-            Awaitable[automl_translation.ListDatasetsResponse],
-        ],
+        [automl_translation.ListDatasetsRequest], Union[automl_translation.ListDatasetsResponse, Awaitable[automl_translation.ListDatasetsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_dataset(
         self,
-    ) -> Callable[
-        [automl_translation.DeleteDatasetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[automl_translation.DeleteDatasetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_adaptive_mt_dataset(
         self,
-    ) -> Callable[
-        [adaptive_mt.CreateAdaptiveMtDatasetRequest],
-        Union[adaptive_mt.AdaptiveMtDataset, Awaitable[adaptive_mt.AdaptiveMtDataset]],
-    ]:
+    ) -> Callable[[adaptive_mt.CreateAdaptiveMtDatasetRequest], Union[adaptive_mt.AdaptiveMtDataset, Awaitable[adaptive_mt.AdaptiveMtDataset]]]:
         raise NotImplementedError()
 
     @property
     def delete_adaptive_mt_dataset(
         self,
-    ) -> Callable[
-        [adaptive_mt.DeleteAdaptiveMtDatasetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[adaptive_mt.DeleteAdaptiveMtDatasetRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_adaptive_mt_dataset(
         self,
-    ) -> Callable[
-        [adaptive_mt.GetAdaptiveMtDatasetRequest],
-        Union[adaptive_mt.AdaptiveMtDataset, Awaitable[adaptive_mt.AdaptiveMtDataset]],
-    ]:
+    ) -> Callable[[adaptive_mt.GetAdaptiveMtDatasetRequest], Union[adaptive_mt.AdaptiveMtDataset, Awaitable[adaptive_mt.AdaptiveMtDataset]]]:
         raise NotImplementedError()
 
     @property
@@ -672,10 +582,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [adaptive_mt.ListAdaptiveMtDatasetsRequest],
-        Union[
-            adaptive_mt.ListAdaptiveMtDatasetsResponse,
-            Awaitable[adaptive_mt.ListAdaptiveMtDatasetsResponse],
-        ],
+        Union[adaptive_mt.ListAdaptiveMtDatasetsResponse, Awaitable[adaptive_mt.ListAdaptiveMtDatasetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -683,30 +590,18 @@ class TranslationServiceTransport(abc.ABC):
     def adaptive_mt_translate(
         self,
     ) -> Callable[
-        [adaptive_mt.AdaptiveMtTranslateRequest],
-        Union[
-            adaptive_mt.AdaptiveMtTranslateResponse,
-            Awaitable[adaptive_mt.AdaptiveMtTranslateResponse],
-        ],
+        [adaptive_mt.AdaptiveMtTranslateRequest], Union[adaptive_mt.AdaptiveMtTranslateResponse, Awaitable[adaptive_mt.AdaptiveMtTranslateResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_adaptive_mt_file(
         self,
-    ) -> Callable[
-        [adaptive_mt.GetAdaptiveMtFileRequest],
-        Union[adaptive_mt.AdaptiveMtFile, Awaitable[adaptive_mt.AdaptiveMtFile]],
-    ]:
+    ) -> Callable[[adaptive_mt.GetAdaptiveMtFileRequest], Union[adaptive_mt.AdaptiveMtFile, Awaitable[adaptive_mt.AdaptiveMtFile]]]:
         raise NotImplementedError()
 
     @property
-    def delete_adaptive_mt_file(
-        self,
-    ) -> Callable[
-        [adaptive_mt.DeleteAdaptiveMtFileRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_adaptive_mt_file(self) -> Callable[[adaptive_mt.DeleteAdaptiveMtFileRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -714,10 +609,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [adaptive_mt.ImportAdaptiveMtFileRequest],
-        Union[
-            adaptive_mt.ImportAdaptiveMtFileResponse,
-            Awaitable[adaptive_mt.ImportAdaptiveMtFileResponse],
-        ],
+        Union[adaptive_mt.ImportAdaptiveMtFileResponse, Awaitable[adaptive_mt.ImportAdaptiveMtFileResponse]],
     ]:
         raise NotImplementedError()
 
@@ -725,11 +617,7 @@ class TranslationServiceTransport(abc.ABC):
     def list_adaptive_mt_files(
         self,
     ) -> Callable[
-        [adaptive_mt.ListAdaptiveMtFilesRequest],
-        Union[
-            adaptive_mt.ListAdaptiveMtFilesResponse,
-            Awaitable[adaptive_mt.ListAdaptiveMtFilesResponse],
-        ],
+        [adaptive_mt.ListAdaptiveMtFilesRequest], Union[adaptive_mt.ListAdaptiveMtFilesResponse, Awaitable[adaptive_mt.ListAdaptiveMtFilesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -738,80 +626,44 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [adaptive_mt.ListAdaptiveMtSentencesRequest],
-        Union[
-            adaptive_mt.ListAdaptiveMtSentencesResponse,
-            Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse],
-        ],
+        Union[adaptive_mt.ListAdaptiveMtSentencesResponse, Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def import_data(
-        self,
-    ) -> Callable[
-        [automl_translation.ImportDataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def import_data(self) -> Callable[[automl_translation.ImportDataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_data(
-        self,
-    ) -> Callable[
-        [automl_translation.ExportDataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_data(self) -> Callable[[automl_translation.ExportDataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_examples(
         self,
     ) -> Callable[
-        [automl_translation.ListExamplesRequest],
-        Union[
-            automl_translation.ListExamplesResponse,
-            Awaitable[automl_translation.ListExamplesResponse],
-        ],
+        [automl_translation.ListExamplesRequest], Union[automl_translation.ListExamplesResponse, Awaitable[automl_translation.ListExamplesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_model(
-        self,
-    ) -> Callable[
-        [automl_translation.CreateModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_model(self) -> Callable[[automl_translation.CreateModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_models(
         self,
     ) -> Callable[
-        [automl_translation.ListModelsRequest],
-        Union[
-            automl_translation.ListModelsResponse,
-            Awaitable[automl_translation.ListModelsResponse],
-        ],
+        [automl_translation.ListModelsRequest], Union[automl_translation.ListModelsResponse, Awaitable[automl_translation.ListModelsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_model(
-        self,
-    ) -> Callable[
-        [automl_translation.GetModelRequest],
-        Union[automl_translation.Model, Awaitable[automl_translation.Model]],
-    ]:
+    def get_model(self) -> Callable[[automl_translation.GetModelRequest], Union[automl_translation.Model, Awaitable[automl_translation.Model]]]:
         raise NotImplementedError()
 
     @property
-    def delete_model(
-        self,
-    ) -> Callable[
-        [automl_translation.DeleteModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_model(self) -> Callable[[automl_translation.DeleteModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -819,20 +671,14 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -850,31 +696,19 @@ class TranslationServiceTransport(abc.ABC):
     @property
     def wait_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.WaitOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.WaitOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

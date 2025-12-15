@@ -487,9 +487,7 @@ class Inventory(proto.Message):
             proto.STRING,
             number=2,
         )
-        categories: MutableSequence[
-            "Inventory.WindowsUpdatePackage.WindowsUpdateCategory"
-        ] = proto.RepeatedField(
+        categories: MutableSequence["Inventory.WindowsUpdatePackage.WindowsUpdateCategory"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="Inventory.WindowsUpdatePackage.WindowsUpdateCategory",

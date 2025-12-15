@@ -143,12 +143,8 @@ class MachineImagesRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -170,9 +166,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -189,9 +183,7 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -214,9 +206,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.MachineImage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.MachineImage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.MachineImage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -233,12 +223,8 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetIamPolicyMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -260,9 +246,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -279,12 +263,8 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +286,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -325,12 +303,8 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListMachineImagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListMachineImagesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListMachineImagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListMachineImagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -352,9 +326,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.MachineImageList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.MachineImageList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.MachineImageList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -371,12 +343,8 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetIamPolicyMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -398,9 +366,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -417,12 +383,8 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetLabelsMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetLabelsMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetLabelsMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -444,9 +406,7 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -463,13 +423,8 @@ class MachineImagesRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsMachineImageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsMachineImageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsMachineImageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsMachineImageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -477,9 +432,7 @@ class MachineImagesRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -493,12 +446,8 @@ class MachineImagesRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -597,9 +546,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MachineImagesRestInterceptor()
@@ -610,15 +557,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             return hash("MachineImagesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -676,30 +615,16 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseMachineImagesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseMachineImagesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseMachineImagesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMachineImagesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -723,12 +648,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             # Send the request
             response = MachineImagesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -744,12 +664,8 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -775,15 +691,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             return hash("MachineImagesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -835,25 +743,13 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             http_options = _BaseMachineImagesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseMachineImagesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMachineImagesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -876,14 +772,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
                 )
 
             # Send the request
-            response = MachineImagesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = MachineImagesRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -899,9 +788,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.MachineImage.to_json(response)
                 except:
@@ -922,22 +809,12 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseMachineImagesRestTransport._BaseGetIamPolicy, MachineImagesRestStub
-    ):
+    class _GetIamPolicy(_BaseMachineImagesRestTransport._BaseGetIamPolicy, MachineImagesRestStub):
         def __hash__(self):
             return hash("MachineImagesRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1001,26 +878,16 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseMachineImagesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseMachineImagesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseMachineImagesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMachineImagesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1044,12 +911,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             # Send the request
             response = MachineImagesRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1065,12 +927,8 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1096,15 +954,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             return hash("MachineImagesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1163,34 +1013,18 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseMachineImagesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseMachineImagesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseMachineImagesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseMachineImagesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMachineImagesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMachineImagesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1214,13 +1048,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             # Send the request
             response = MachineImagesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1236,12 +1064,8 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1267,15 +1091,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             return hash("MachineImagesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1319,25 +1135,13 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             http_options = _BaseMachineImagesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseMachineImagesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMachineImagesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1360,14 +1164,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
                 )
 
             # Send the request
-            response = MachineImagesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = MachineImagesRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1383,9 +1180,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.MachineImageList.to_json(response)
                 except:
@@ -1406,22 +1201,12 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseMachineImagesRestTransport._BaseSetIamPolicy, MachineImagesRestStub
-    ):
+    class _SetIamPolicy(_BaseMachineImagesRestTransport._BaseSetIamPolicy, MachineImagesRestStub):
         def __hash__(self):
             return hash("MachineImagesRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1486,30 +1271,18 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1533,13 +1306,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             # Send the request
             response = MachineImagesRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1555,12 +1322,8 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1581,22 +1344,12 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
                 )
             return resp
 
-    class _SetLabels(
-        _BaseMachineImagesRestTransport._BaseSetLabels, MachineImagesRestStub
-    ):
+    class _SetLabels(_BaseMachineImagesRestTransport._BaseSetLabels, MachineImagesRestStub):
         def __hash__(self):
             return hash("MachineImagesRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1655,36 +1408,18 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseMachineImagesRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseMachineImagesRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = (
-                _BaseMachineImagesRestTransport._BaseSetLabels._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMachineImagesRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseMachineImagesRestTransport._BaseSetLabels._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseMachineImagesRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMachineImagesRestTransport._BaseSetLabels._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1708,13 +1443,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             # Send the request
             response = MachineImagesRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1730,12 +1459,8 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1756,22 +1481,12 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseMachineImagesRestTransport._BaseTestIamPermissions, MachineImagesRestStub
-    ):
+    class _TestIamPermissions(_BaseMachineImagesRestTransport._BaseTestIamPermissions, MachineImagesRestStub):
         def __hash__(self):
             return hash("MachineImagesRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1813,32 +1528,18 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             """
 
-            http_options = (
-                _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMachineImagesRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1862,13 +1563,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             # Send the request
             response = MachineImagesRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1884,12 +1579,8 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -1911,9 +1602,7 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteMachineImageRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteMachineImageRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
@@ -1925,51 +1614,37 @@ class MachineImagesRestTransport(_BaseMachineImagesRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyMachineImageRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyMachineImageRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertMachineImageRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertMachineImageRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListMachineImagesRequest], compute.MachineImageList]:
+    def list(self) -> Callable[[compute.ListMachineImagesRequest], compute.MachineImageList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyMachineImageRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyMachineImageRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsMachineImageRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsMachineImageRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsMachineImageRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsMachineImageRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

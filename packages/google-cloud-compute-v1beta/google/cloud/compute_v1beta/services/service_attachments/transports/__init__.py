@@ -20,9 +20,7 @@ from .base import ServiceAttachmentsTransport
 from .rest import ServiceAttachmentsRestInterceptor, ServiceAttachmentsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ServiceAttachmentsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ServiceAttachmentsTransport]]
 _transport_registry["rest"] = ServiceAttachmentsRestTransport
 
 __all__ = (

@@ -48,9 +48,7 @@ async def sample_simulate_security_health_analytics_custom_module():
     )
 
     # Make the request
-    response = await client.simulate_security_health_analytics_custom_module(
-        request=request
-    )
+    response = await client.simulate_security_health_analytics_custom_module(request=request)
 
     # Handle the response
     print(response)

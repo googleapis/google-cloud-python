@@ -257,9 +257,7 @@ class CompleteQueryResponse(proto.Message):
             number=2,
             message=common.CustomAttribute,
         )
-        facets: MutableSequence[
-            search_service.SearchResponse.Facet
-        ] = proto.RepeatedField(
+        facets: MutableSequence[search_service.SearchResponse.Facet] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message=search_service.SearchResponse.Facet,

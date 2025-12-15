@@ -151,13 +151,8 @@ class EnvironmentsRestInterceptor:
     """
 
     def pre_create_environment(
-        self,
-        request: gcdc_environment.CreateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_environment.CreateEnvironmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcdc_environment.CreateEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_environment.CreateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -165,9 +160,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
 
         DEPRECATED. Please use the `post_create_environment_with_metadata`
@@ -181,9 +174,7 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_create_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_environment
 
@@ -200,12 +191,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_delete_environment(
-        self,
-        request: environment.DeleteEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: environment.DeleteEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.DeleteEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -214,9 +201,7 @@ class EnvironmentsRestInterceptor:
         return request, metadata
 
     def pre_deploy_flow(
-        self,
-        request: environment.DeployFlowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: environment.DeployFlowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[environment.DeployFlowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_flow
 
@@ -225,9 +210,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_flow(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deploy_flow(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_flow
 
         DEPRECATED. Please use the `post_deploy_flow_with_metadata`
@@ -241,9 +224,7 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_deploy_flow_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_flow
 
@@ -260,12 +241,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_get_environment(
-        self,
-        request: environment.GetEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: environment.GetEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.GetEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -273,9 +250,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_environment(
-        self, response: environment.Environment
-    ) -> environment.Environment:
+    def post_get_environment(self, response: environment.Environment) -> environment.Environment:
         """Post-rpc interceptor for get_environment
 
         DEPRECATED. Please use the `post_get_environment_with_metadata`
@@ -289,9 +264,7 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_get_environment_with_metadata(
-        self,
-        response: environment.Environment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: environment.Environment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[environment.Environment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_environment
 
@@ -308,13 +281,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_list_continuous_test_results(
-        self,
-        request: environment.ListContinuousTestResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.ListContinuousTestResultsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: environment.ListContinuousTestResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.ListContinuousTestResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_continuous_test_results
 
         Override in a subclass to manipulate the request or metadata
@@ -338,13 +306,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_list_continuous_test_results_with_metadata(
-        self,
-        response: environment.ListContinuousTestResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.ListContinuousTestResultsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: environment.ListContinuousTestResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.ListContinuousTestResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_continuous_test_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -360,12 +323,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_list_environments(
-        self,
-        request: environment.ListEnvironmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: environment.ListEnvironmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.ListEnvironmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_environments
 
         Override in a subclass to manipulate the request or metadata
@@ -373,9 +332,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_environments(
-        self, response: environment.ListEnvironmentsResponse
-    ) -> environment.ListEnvironmentsResponse:
+    def post_list_environments(self, response: environment.ListEnvironmentsResponse) -> environment.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
 
         DEPRECATED. Please use the `post_list_environments_with_metadata`
@@ -389,12 +346,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_list_environments_with_metadata(
-        self,
-        response: environment.ListEnvironmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: environment.ListEnvironmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.ListEnvironmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_environments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -410,13 +363,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_lookup_environment_history(
-        self,
-        request: environment.LookupEnvironmentHistoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.LookupEnvironmentHistoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: environment.LookupEnvironmentHistoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.LookupEnvironmentHistoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_environment_history
 
         Override in a subclass to manipulate the request or metadata
@@ -424,9 +372,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_lookup_environment_history(
-        self, response: environment.LookupEnvironmentHistoryResponse
-    ) -> environment.LookupEnvironmentHistoryResponse:
+    def post_lookup_environment_history(self, response: environment.LookupEnvironmentHistoryResponse) -> environment.LookupEnvironmentHistoryResponse:
         """Post-rpc interceptor for lookup_environment_history
 
         DEPRECATED. Please use the `post_lookup_environment_history_with_metadata`
@@ -440,13 +386,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_lookup_environment_history_with_metadata(
-        self,
-        response: environment.LookupEnvironmentHistoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.LookupEnvironmentHistoryResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: environment.LookupEnvironmentHistoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.LookupEnvironmentHistoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for lookup_environment_history
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -462,12 +403,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_run_continuous_test(
-        self,
-        request: environment.RunContinuousTestRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        environment.RunContinuousTestRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: environment.RunContinuousTestRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[environment.RunContinuousTestRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_continuous_test
 
         Override in a subclass to manipulate the request or metadata
@@ -475,9 +412,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_run_continuous_test(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_continuous_test(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_continuous_test
 
         DEPRECATED. Please use the `post_run_continuous_test_with_metadata`
@@ -491,9 +426,7 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_run_continuous_test_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_continuous_test
 
@@ -510,13 +443,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_update_environment(
-        self,
-        request: gcdc_environment.UpdateEnvironmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_environment.UpdateEnvironmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcdc_environment.UpdateEnvironmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_environment.UpdateEnvironmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_environment
 
         Override in a subclass to manipulate the request or metadata
@@ -524,9 +452,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_environment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_environment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_environment
 
         DEPRECATED. Please use the `post_update_environment_with_metadata`
@@ -540,9 +466,7 @@ class EnvironmentsRestInterceptor:
         return response
 
     def post_update_environment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_environment
 
@@ -559,12 +483,8 @@ class EnvironmentsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -572,9 +492,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -584,12 +502,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -597,9 +511,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -609,12 +521,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -632,12 +540,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -645,9 +549,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -657,12 +559,8 @@ class EnvironmentsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +568,7 @@ class EnvironmentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -762,9 +658,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -822,29 +716,17 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateEnvironment(
-        _BaseEnvironmentsRestTransport._BaseCreateEnvironment, EnvironmentsRestStub
-    ):
+    class _CreateEnvironment(_BaseEnvironmentsRestTransport._BaseCreateEnvironment, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.CreateEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -888,32 +770,18 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_environment(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseCreateEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -937,13 +805,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._CreateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -957,12 +819,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_create_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -983,22 +841,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _DeleteEnvironment(
-        _BaseEnvironmentsRestTransport._BaseDeleteEnvironment, EnvironmentsRestStub
-    ):
+    class _DeleteEnvironment(_BaseEnvironmentsRestTransport._BaseDeleteEnvironment, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.DeleteEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1034,28 +882,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_environment(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseDeleteEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1079,12 +915,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._DeleteEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1092,22 +923,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeployFlow(
-        _BaseEnvironmentsRestTransport._BaseDeployFlow, EnvironmentsRestStub
-    ):
+    class _DeployFlow(_BaseEnvironmentsRestTransport._BaseDeployFlow, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.DeployFlow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1151,36 +972,18 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseDeployFlow._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseDeployFlow._get_http_options()
 
             request, metadata = self._interceptor.pre_deploy_flow(request, metadata)
-            transcoded_request = (
-                _BaseEnvironmentsRestTransport._BaseDeployFlow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseDeployFlow._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseEnvironmentsRestTransport._BaseDeployFlow._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseEnvironmentsRestTransport._BaseDeployFlow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEnvironmentsRestTransport._BaseDeployFlow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseDeployFlow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1204,13 +1007,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._DeployFlow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1224,12 +1021,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_deploy_flow(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_flow_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_flow_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1250,22 +1043,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _GetEnvironment(
-        _BaseEnvironmentsRestTransport._BaseGetEnvironment, EnvironmentsRestStub
-    ):
+    class _GetEnvironment(_BaseEnvironmentsRestTransport._BaseGetEnvironment, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.GetEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1320,26 +1103,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_environment(request, metadata)
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseGetEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1363,12 +1136,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._GetEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1384,12 +1152,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_get_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = environment.Environment.to_json(response)
                 except:
@@ -1410,23 +1174,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _ListContinuousTestResults(
-        _BaseEnvironmentsRestTransport._BaseListContinuousTestResults,
-        EnvironmentsRestStub,
-    ):
+    class _ListContinuousTestResults(_BaseEnvironmentsRestTransport._BaseListContinuousTestResults, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.ListContinuousTestResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1469,28 +1222,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseListContinuousTestResults._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseListContinuousTestResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_continuous_test_results(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseListContinuousTestResults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_continuous_test_results(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseListContinuousTestResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseListContinuousTestResults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseListContinuousTestResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1513,15 +1254,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
 
             # Send the request
-            response = (
-                EnvironmentsRestTransport._ListContinuousTestResults._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EnvironmentsRestTransport._ListContinuousTestResults._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1537,16 +1271,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_list_continuous_test_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_continuous_test_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_continuous_test_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        environment.ListContinuousTestResultsResponse.to_json(response)
-                    )
+                    response_payload = environment.ListContinuousTestResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1565,22 +1293,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _ListEnvironments(
-        _BaseEnvironmentsRestTransport._BaseListEnvironments, EnvironmentsRestStub
-    ):
+    class _ListEnvironments(_BaseEnvironmentsRestTransport._BaseListEnvironments, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.ListEnvironments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1622,28 +1340,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseListEnvironments._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseListEnvironments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_environments(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseListEnvironments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_environments(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseListEnvironments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseListEnvironments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseListEnvironments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1667,12 +1373,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._ListEnvironments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1688,16 +1389,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_list_environments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_environments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_environments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = environment.ListEnvironmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = environment.ListEnvironmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1716,23 +1411,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _LookupEnvironmentHistory(
-        _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory,
-        EnvironmentsRestStub,
-    ):
+    class _LookupEnvironmentHistory(_BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.LookupEnvironmentHistory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1775,28 +1459,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory._get_http_options()
 
-            request, metadata = self._interceptor.pre_lookup_environment_history(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_lookup_environment_history(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseLookupEnvironmentHistory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1819,15 +1491,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
 
             # Send the request
-            response = (
-                EnvironmentsRestTransport._LookupEnvironmentHistory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EnvironmentsRestTransport._LookupEnvironmentHistory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1843,16 +1508,10 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_lookup_environment_history(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_environment_history_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_environment_history_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        environment.LookupEnvironmentHistoryResponse.to_json(response)
-                    )
+                    response_payload = environment.LookupEnvironmentHistoryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1871,22 +1530,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _RunContinuousTest(
-        _BaseEnvironmentsRestTransport._BaseRunContinuousTest, EnvironmentsRestStub
-    ):
+    class _RunContinuousTest(_BaseEnvironmentsRestTransport._BaseRunContinuousTest, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.RunContinuousTest")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1930,32 +1579,18 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_continuous_test(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_continuous_test(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_transcoded_request(http_options, request)
 
-            body = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseRunContinuousTest._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1979,13 +1614,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._RunContinuousTest._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1999,12 +1628,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_run_continuous_test(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_continuous_test_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_continuous_test_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2025,22 +1650,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 )
             return resp
 
-    class _UpdateEnvironment(
-        _BaseEnvironmentsRestTransport._BaseUpdateEnvironment, EnvironmentsRestStub
-    ):
+    class _UpdateEnvironment(_BaseEnvironmentsRestTransport._BaseUpdateEnvironment, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.UpdateEnvironment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2084,32 +1699,18 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_environment(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_environment(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_transcoded_request(http_options, request)
 
-            body = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseUpdateEnvironment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2133,13 +1734,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._UpdateEnvironment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2153,12 +1748,8 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             resp = self._interceptor.post_update_environment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_environment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_environment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2180,85 +1771,55 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             return resp
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[
-        [gcdc_environment.CreateEnvironmentRequest], operations_pb2.Operation
-    ]:
+    def create_environment(self) -> Callable[[gcdc_environment.CreateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[[environment.DeleteEnvironmentRequest], empty_pb2.Empty]:
+    def delete_environment(self) -> Callable[[environment.DeleteEnvironmentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_flow(
-        self,
-    ) -> Callable[[environment.DeployFlowRequest], operations_pb2.Operation]:
+    def deploy_flow(self) -> Callable[[environment.DeployFlowRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployFlow(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[[environment.GetEnvironmentRequest], environment.Environment]:
+    def get_environment(self) -> Callable[[environment.GetEnvironmentRequest], environment.Environment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_continuous_test_results(
-        self,
-    ) -> Callable[
-        [environment.ListContinuousTestResultsRequest],
-        environment.ListContinuousTestResultsResponse,
-    ]:
+    def list_continuous_test_results(self) -> Callable[[environment.ListContinuousTestResultsRequest], environment.ListContinuousTestResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListContinuousTestResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[
-        [environment.ListEnvironmentsRequest], environment.ListEnvironmentsResponse
-    ]:
+    def list_environments(self) -> Callable[[environment.ListEnvironmentsRequest], environment.ListEnvironmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEnvironments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def lookup_environment_history(
-        self,
-    ) -> Callable[
-        [environment.LookupEnvironmentHistoryRequest],
-        environment.LookupEnvironmentHistoryResponse,
-    ]:
+    def lookup_environment_history(self) -> Callable[[environment.LookupEnvironmentHistoryRequest], environment.LookupEnvironmentHistoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupEnvironmentHistory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_continuous_test(
-        self,
-    ) -> Callable[[environment.RunContinuousTestRequest], operations_pb2.Operation]:
+    def run_continuous_test(self) -> Callable[[environment.RunContinuousTestRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunContinuousTest(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_environment(
-        self,
-    ) -> Callable[
-        [gcdc_environment.UpdateEnvironmentRequest], operations_pb2.Operation
-    ]:
+    def update_environment(self) -> Callable[[gcdc_environment.UpdateEnvironmentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
@@ -2267,22 +1828,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseEnvironmentsRestTransport._BaseGetLocation, EnvironmentsRestStub
-    ):
+    class _GetLocation(_BaseEnvironmentsRestTransport._BaseGetLocation, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2320,30 +1871,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseEnvironmentsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEnvironmentsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2367,12 +1904,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2384,9 +1916,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2411,22 +1941,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseEnvironmentsRestTransport._BaseListLocations, EnvironmentsRestStub
-    ):
+    class _ListLocations(_BaseEnvironmentsRestTransport._BaseListLocations, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2464,26 +1984,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2507,12 +2017,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2524,9 +2029,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2551,22 +2054,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseEnvironmentsRestTransport._BaseCancelOperation, EnvironmentsRestStub
-    ):
+    class _CancelOperation(_BaseEnvironmentsRestTransport._BaseCancelOperation, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2601,28 +2094,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2646,12 +2127,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2665,22 +2141,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseEnvironmentsRestTransport._BaseGetOperation, EnvironmentsRestStub
-    ):
+    class _GetOperation(_BaseEnvironmentsRestTransport._BaseGetOperation, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2718,28 +2184,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseEnvironmentsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2763,12 +2217,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2780,9 +2229,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2807,22 +2254,12 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseEnvironmentsRestTransport._BaseListOperations, EnvironmentsRestStub
-    ):
+    class _ListOperations(_BaseEnvironmentsRestTransport._BaseListOperations, EnvironmentsRestStub):
         def __hash__(self):
             return hash("EnvironmentsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2860,26 +2297,16 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseEnvironmentsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseEnvironmentsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseEnvironmentsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEnvironmentsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnvironmentsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnvironmentsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2903,12 +2330,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
 
             # Send the request
             response = EnvironmentsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2920,9 +2342,7 @@ class EnvironmentsRestTransport(_BaseEnvironmentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -96,9 +96,7 @@ class RoleServiceRestInterceptor:
     """
 
     def pre_get_role(
-        self,
-        request: role_service.GetRoleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: role_service.GetRoleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[role_service.GetRoleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_role
 
@@ -121,9 +119,7 @@ class RoleServiceRestInterceptor:
         return response
 
     def post_get_role_with_metadata(
-        self,
-        response: role_messages.Role,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: role_messages.Role, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[role_messages.Role, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_role
 
@@ -140,9 +136,7 @@ class RoleServiceRestInterceptor:
         return response, metadata
 
     def pre_list_roles(
-        self,
-        request: role_service.ListRolesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: role_service.ListRolesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[role_service.ListRolesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_roles
 
@@ -151,9 +145,7 @@ class RoleServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_roles(
-        self, response: role_service.ListRolesResponse
-    ) -> role_service.ListRolesResponse:
+    def post_list_roles(self, response: role_service.ListRolesResponse) -> role_service.ListRolesResponse:
         """Post-rpc interceptor for list_roles
 
         DEPRECATED. Please use the `post_list_roles_with_metadata`
@@ -167,9 +159,7 @@ class RoleServiceRestInterceptor:
         return response
 
     def post_list_roles_with_metadata(
-        self,
-        response: role_service.ListRolesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: role_service.ListRolesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[role_service.ListRolesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_roles
 
@@ -186,12 +176,8 @@ class RoleServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -199,9 +185,7 @@ class RoleServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -290,9 +274,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RoleServiceRestInterceptor()
@@ -303,15 +285,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             return hash("RoleServiceRestTransport.GetRole")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -350,30 +324,16 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                     The ``Role`` resource.
             """
 
-            http_options = (
-                _BaseRoleServiceRestTransport._BaseGetRole._get_http_options()
-            )
+            http_options = _BaseRoleServiceRestTransport._BaseGetRole._get_http_options()
 
             request, metadata = self._interceptor.pre_get_role(request, metadata)
-            transcoded_request = (
-                _BaseRoleServiceRestTransport._BaseGetRole._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRoleServiceRestTransport._BaseGetRole._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRoleServiceRestTransport._BaseGetRole._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRoleServiceRestTransport._BaseGetRole._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -396,14 +356,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                 )
 
             # Send the request
-            response = RoleServiceRestTransport._GetRole._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = RoleServiceRestTransport._GetRole._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -418,12 +371,8 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
 
             resp = self._interceptor.post_get_role(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_role_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_role_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = role_messages.Role.to_json(response)
                 except:
@@ -449,15 +398,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             return hash("RoleServiceRestTransport.ListRoles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -498,30 +439,16 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRoleServiceRestTransport._BaseListRoles._get_http_options()
-            )
+            http_options = _BaseRoleServiceRestTransport._BaseListRoles._get_http_options()
 
             request, metadata = self._interceptor.pre_list_roles(request, metadata)
-            transcoded_request = (
-                _BaseRoleServiceRestTransport._BaseListRoles._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRoleServiceRestTransport._BaseListRoles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRoleServiceRestTransport._BaseListRoles._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRoleServiceRestTransport._BaseListRoles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -545,12 +472,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
 
             # Send the request
             response = RoleServiceRestTransport._ListRoles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -566,12 +488,8 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
 
             resp = self._interceptor.post_list_roles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_roles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_roles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = role_service.ListRolesResponse.to_json(response)
                 except:
@@ -599,9 +517,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
         return self._GetRole(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_roles(
-        self,
-    ) -> Callable[[role_service.ListRolesRequest], role_service.ListRolesResponse]:
+    def list_roles(self) -> Callable[[role_service.ListRolesRequest], role_service.ListRolesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRoles(self._session, self._host, self._interceptor)  # type: ignore
@@ -610,22 +526,12 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseRoleServiceRestTransport._BaseGetOperation, RoleServiceRestStub
-    ):
+    class _GetOperation(_BaseRoleServiceRestTransport._BaseGetOperation, RoleServiceRestStub):
         def __hash__(self):
             return hash("RoleServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -663,30 +569,16 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRoleServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRoleServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseRoleServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRoleServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRoleServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRoleServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -710,12 +602,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
 
             # Send the request
             response = RoleServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -727,9 +614,7 @@ class RoleServiceRestTransport(_BaseRoleServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

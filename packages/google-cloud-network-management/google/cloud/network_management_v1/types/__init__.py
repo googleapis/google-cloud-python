@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .connectivity_test import (
-    ConnectivityTest,
-    Endpoint,
-    LatencyDistribution,
-    LatencyPercentile,
-    ProbingDetails,
-    ReachabilityDetails,
-)
+from .connectivity_test import ConnectivityTest, Endpoint, LatencyDistribution, LatencyPercentile, ProbingDetails, ReachabilityDetails
 from .reachability import (
     CreateConnectivityTestRequest,
     DeleteConnectivityTestRequest,

@@ -138,9 +138,7 @@ class ListOperatingSystemVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    operating_system_versions: MutableSequence[
-        operating_system_version_messages.OperatingSystemVersion
-    ] = proto.RepeatedField(
+    operating_system_versions: MutableSequence[operating_system_version_messages.OperatingSystemVersion] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=operating_system_version_messages.OperatingSystemVersion,

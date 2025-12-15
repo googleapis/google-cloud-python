@@ -340,12 +340,10 @@ class Engine(proto.Message):
             number=3,
             message="Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig",
         )
-        training_state: "Engine.MediaRecommendationEngineConfig.TrainingState" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="Engine.MediaRecommendationEngineConfig.TrainingState",
-            )
+        training_state: "Engine.MediaRecommendationEngineConfig.TrainingState" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="Engine.MediaRecommendationEngineConfig.TrainingState",
         )
         engine_features_config: "Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig" = proto.Field(
             proto.MESSAGE,
@@ -452,12 +450,10 @@ class Engine(proto.Message):
                 number=4,
             )
 
-        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Engine.ChatEngineConfig.AgentCreationConfig",
-            )
+        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Engine.ChatEngineConfig.AgentCreationConfig",
         )
         dialogflow_agent_to_link: str = proto.Field(
             proto.STRING,

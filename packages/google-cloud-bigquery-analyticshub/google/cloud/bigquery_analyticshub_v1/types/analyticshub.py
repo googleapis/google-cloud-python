@@ -1128,29 +1128,23 @@ class Listing(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            replica_state: "Listing.BigQueryDatasetSource.Replica.ReplicaState" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=2,
-                    enum="Listing.BigQueryDatasetSource.Replica.ReplicaState",
-                )
+            replica_state: "Listing.BigQueryDatasetSource.Replica.ReplicaState" = proto.Field(
+                proto.ENUM,
+                number=2,
+                enum="Listing.BigQueryDatasetSource.Replica.ReplicaState",
             )
-            primary_state: "Listing.BigQueryDatasetSource.Replica.PrimaryState" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=3,
-                    optional=True,
-                    enum="Listing.BigQueryDatasetSource.Replica.PrimaryState",
-                )
+            primary_state: "Listing.BigQueryDatasetSource.Replica.PrimaryState" = proto.Field(
+                proto.ENUM,
+                number=3,
+                optional=True,
+                enum="Listing.BigQueryDatasetSource.Replica.PrimaryState",
             )
 
         dataset: str = proto.Field(
             proto.STRING,
             number=1,
         )
-        selected_resources: MutableSequence[
-            "Listing.BigQueryDatasetSource.SelectedResource"
-        ] = proto.RepeatedField(
+        selected_resources: MutableSequence["Listing.BigQueryDatasetSource.SelectedResource"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Listing.BigQueryDatasetSource.SelectedResource",
@@ -1164,9 +1158,7 @@ class Listing(proto.Message):
             proto.STRING,
             number=5,
         )
-        effective_replicas: MutableSequence[
-            "Listing.BigQueryDatasetSource.Replica"
-        ] = proto.RepeatedField(
+        effective_replicas: MutableSequence["Listing.BigQueryDatasetSource.Replica"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="Listing.BigQueryDatasetSource.Replica",
@@ -1291,13 +1283,11 @@ class Listing(proto.Message):
                 enum="Listing.CommercialInfo.GoogleCloudMarketplaceInfo.CommercialState",
             )
 
-        cloud_marketplace: "Listing.CommercialInfo.GoogleCloudMarketplaceInfo" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                optional=True,
-                message="Listing.CommercialInfo.GoogleCloudMarketplaceInfo",
-            )
+        cloud_marketplace: "Listing.CommercialInfo.GoogleCloudMarketplaceInfo" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            optional=True,
+            message="Listing.CommercialInfo.GoogleCloudMarketplaceInfo",
         )
 
     bigquery_dataset: BigQueryDatasetSource = proto.Field(
@@ -1428,9 +1418,7 @@ class StoredProcedureConfig(proto.Message):
         proto.BOOL,
         number=1,
     )
-    allowed_stored_procedure_types: MutableSequence[
-        StoredProcedureType
-    ] = proto.RepeatedField(
+    allowed_stored_procedure_types: MutableSequence[StoredProcedureType] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=StoredProcedureType,
@@ -1599,12 +1587,10 @@ class Subscription(proto.Message):
                 number=1,
             )
 
-        cloud_marketplace: "Subscription.CommercialInfo.GoogleCloudMarketplaceInfo" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Subscription.CommercialInfo.GoogleCloudMarketplaceInfo",
-            )
+        cloud_marketplace: "Subscription.CommercialInfo.GoogleCloudMarketplaceInfo" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Subscription.CommercialInfo.GoogleCloudMarketplaceInfo",
         )
 
     listing: str = proto.Field(
@@ -2323,9 +2309,7 @@ class ListSharedResourceSubscriptionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    shared_resource_subscriptions: MutableSequence[
-        "Subscription"
-    ] = proto.RepeatedField(
+    shared_resource_subscriptions: MutableSequence["Subscription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Subscription",

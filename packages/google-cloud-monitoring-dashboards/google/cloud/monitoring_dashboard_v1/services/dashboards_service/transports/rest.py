@@ -118,13 +118,8 @@ class DashboardsServiceRestInterceptor:
     """
 
     def pre_create_dashboard(
-        self,
-        request: dashboards_service.CreateDashboardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dashboards_service.CreateDashboardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dashboards_service.CreateDashboardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dashboards_service.CreateDashboardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +127,7 @@ class DashboardsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_dashboard(
-        self, response: gmd_dashboard.Dashboard
-    ) -> gmd_dashboard.Dashboard:
+    def post_create_dashboard(self, response: gmd_dashboard.Dashboard) -> gmd_dashboard.Dashboard:
         """Post-rpc interceptor for create_dashboard
 
         DEPRECATED. Please use the `post_create_dashboard_with_metadata`
@@ -148,9 +141,7 @@ class DashboardsServiceRestInterceptor:
         return response
 
     def post_create_dashboard_with_metadata(
-        self,
-        response: gmd_dashboard.Dashboard,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gmd_dashboard.Dashboard, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gmd_dashboard.Dashboard, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_dashboard
 
@@ -167,13 +158,8 @@ class DashboardsServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_dashboard(
-        self,
-        request: dashboards_service.DeleteDashboardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dashboards_service.DeleteDashboardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dashboards_service.DeleteDashboardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dashboards_service.DeleteDashboardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -182,12 +168,8 @@ class DashboardsServiceRestInterceptor:
         return request, metadata
 
     def pre_get_dashboard(
-        self,
-        request: dashboards_service.GetDashboardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dashboards_service.GetDashboardRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: dashboards_service.GetDashboardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dashboards_service.GetDashboardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +191,7 @@ class DashboardsServiceRestInterceptor:
         return response
 
     def post_get_dashboard_with_metadata(
-        self,
-        response: dashboard.Dashboard,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dashboard.Dashboard, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dashboard.Dashboard, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dashboard
 
@@ -228,13 +208,8 @@ class DashboardsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_dashboards(
-        self,
-        request: dashboards_service.ListDashboardsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dashboards_service.ListDashboardsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dashboards_service.ListDashboardsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dashboards_service.ListDashboardsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_dashboards
 
         Override in a subclass to manipulate the request or metadata
@@ -242,9 +217,7 @@ class DashboardsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_dashboards(
-        self, response: dashboards_service.ListDashboardsResponse
-    ) -> dashboards_service.ListDashboardsResponse:
+    def post_list_dashboards(self, response: dashboards_service.ListDashboardsResponse) -> dashboards_service.ListDashboardsResponse:
         """Post-rpc interceptor for list_dashboards
 
         DEPRECATED. Please use the `post_list_dashboards_with_metadata`
@@ -258,13 +231,8 @@ class DashboardsServiceRestInterceptor:
         return response
 
     def post_list_dashboards_with_metadata(
-        self,
-        response: dashboards_service.ListDashboardsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dashboards_service.ListDashboardsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: dashboards_service.ListDashboardsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dashboards_service.ListDashboardsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_dashboards
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -280,13 +248,8 @@ class DashboardsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_dashboard(
-        self,
-        request: dashboards_service.UpdateDashboardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        dashboards_service.UpdateDashboardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: dashboards_service.UpdateDashboardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[dashboards_service.UpdateDashboardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dashboard
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +257,7 @@ class DashboardsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dashboard(
-        self, response: dashboard.Dashboard
-    ) -> dashboard.Dashboard:
+    def post_update_dashboard(self, response: dashboard.Dashboard) -> dashboard.Dashboard:
         """Post-rpc interceptor for update_dashboard
 
         DEPRECATED. Please use the `post_update_dashboard_with_metadata`
@@ -310,9 +271,7 @@ class DashboardsServiceRestInterceptor:
         return response
 
     def post_update_dashboard_with_metadata(
-        self,
-        response: dashboard.Dashboard,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: dashboard.Dashboard, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[dashboard.Dashboard, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dashboard
 
@@ -409,31 +368,18 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DashboardsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDashboard(
-        _BaseDashboardsServiceRestTransport._BaseCreateDashboard,
-        DashboardsServiceRestStub,
-    ):
+    class _CreateDashboard(_BaseDashboardsServiceRestTransport._BaseCreateDashboard, DashboardsServiceRestStub):
         def __hash__(self):
             return hash("DashboardsServiceRestTransport.CreateDashboard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -477,32 +423,18 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_dashboard(
-                request, metadata
-            )
-            transcoded_request = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_dashboard(request, metadata)
+            transcoded_request = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_transcoded_request(http_options, request)
 
-            body = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDashboardsServiceRestTransport._BaseCreateDashboard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -526,13 +458,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             # Send the request
             response = DashboardsServiceRestTransport._CreateDashboard._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -548,12 +474,8 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             resp = self._interceptor.post_create_dashboard(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dashboard_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dashboard_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gmd_dashboard.Dashboard.to_json(response)
                 except:
@@ -574,23 +496,12 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDashboard(
-        _BaseDashboardsServiceRestTransport._BaseDeleteDashboard,
-        DashboardsServiceRestStub,
-    ):
+    class _DeleteDashboard(_BaseDashboardsServiceRestTransport._BaseDeleteDashboard, DashboardsServiceRestStub):
         def __hash__(self):
             return hash("DashboardsServiceRestTransport.DeleteDashboard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -625,28 +536,16 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_dashboard(
-                request, metadata
-            )
-            transcoded_request = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_dashboard(request, metadata)
+            transcoded_request = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDashboardsServiceRestTransport._BaseDeleteDashboard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -670,12 +569,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             # Send the request
             response = DashboardsServiceRestTransport._DeleteDashboard._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -683,22 +577,12 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDashboard(
-        _BaseDashboardsServiceRestTransport._BaseGetDashboard, DashboardsServiceRestStub
-    ):
+    class _GetDashboard(_BaseDashboardsServiceRestTransport._BaseGetDashboard, DashboardsServiceRestStub):
         def __hash__(self):
             return hash("DashboardsServiceRestTransport.GetDashboard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -741,26 +625,16 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dashboard(request, metadata)
-            transcoded_request = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDashboardsServiceRestTransport._BaseGetDashboard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -784,12 +658,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             # Send the request
             response = DashboardsServiceRestTransport._GetDashboard._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -805,12 +674,8 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             resp = self._interceptor.post_get_dashboard(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dashboard_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dashboard_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dashboard.Dashboard.to_json(response)
                 except:
@@ -831,23 +696,12 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 )
             return resp
 
-    class _ListDashboards(
-        _BaseDashboardsServiceRestTransport._BaseListDashboards,
-        DashboardsServiceRestStub,
-    ):
+    class _ListDashboards(_BaseDashboardsServiceRestTransport._BaseListDashboards, DashboardsServiceRestStub):
         def __hash__(self):
             return hash("DashboardsServiceRestTransport.ListDashboards")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -886,26 +740,16 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                     The ``ListDashboards`` request.
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseListDashboards._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_http_options()
 
             request, metadata = self._interceptor.pre_list_dashboards(request, metadata)
-            transcoded_request = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDashboardsServiceRestTransport._BaseListDashboards._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -929,12 +773,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             # Send the request
             response = DashboardsServiceRestTransport._ListDashboards._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -950,16 +789,10 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             resp = self._interceptor.post_list_dashboards(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_dashboards_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_dashboards_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        dashboards_service.ListDashboardsResponse.to_json(response)
-                    )
+                    response_payload = dashboards_service.ListDashboardsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -978,23 +811,12 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDashboard(
-        _BaseDashboardsServiceRestTransport._BaseUpdateDashboard,
-        DashboardsServiceRestStub,
-    ):
+    class _UpdateDashboard(_BaseDashboardsServiceRestTransport._BaseUpdateDashboard, DashboardsServiceRestStub):
         def __hash__(self):
             return hash("DashboardsServiceRestTransport.UpdateDashboard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1038,32 +860,18 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_http_options()
-            )
+            http_options = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_dashboard(
-                request, metadata
-            )
-            transcoded_request = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_dashboard(request, metadata)
+            transcoded_request = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_transcoded_request(http_options, request)
 
-            body = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDashboardsServiceRestTransport._BaseUpdateDashboard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1087,13 +895,7 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             # Send the request
             response = DashboardsServiceRestTransport._UpdateDashboard._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1109,12 +911,8 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
 
             resp = self._interceptor.post_update_dashboard(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dashboard_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dashboard_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = dashboard.Dashboard.to_json(response)
                 except:
@@ -1136,44 +934,31 @@ class DashboardsServiceRestTransport(_BaseDashboardsServiceRestTransport):
             return resp
 
     @property
-    def create_dashboard(
-        self,
-    ) -> Callable[[dashboards_service.CreateDashboardRequest], gmd_dashboard.Dashboard]:
+    def create_dashboard(self) -> Callable[[dashboards_service.CreateDashboardRequest], gmd_dashboard.Dashboard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDashboard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_dashboard(
-        self,
-    ) -> Callable[[dashboards_service.DeleteDashboardRequest], empty_pb2.Empty]:
+    def delete_dashboard(self) -> Callable[[dashboards_service.DeleteDashboardRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDashboard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dashboard(
-        self,
-    ) -> Callable[[dashboards_service.GetDashboardRequest], dashboard.Dashboard]:
+    def get_dashboard(self) -> Callable[[dashboards_service.GetDashboardRequest], dashboard.Dashboard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDashboard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_dashboards(
-        self,
-    ) -> Callable[
-        [dashboards_service.ListDashboardsRequest],
-        dashboards_service.ListDashboardsResponse,
-    ]:
+    def list_dashboards(self) -> Callable[[dashboards_service.ListDashboardsRequest], dashboards_service.ListDashboardsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDashboards(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_dashboard(
-        self,
-    ) -> Callable[[dashboards_service.UpdateDashboardRequest], dashboard.Dashboard]:
+    def update_dashboard(self) -> Callable[[dashboards_service.UpdateDashboardRequest], dashboard.Dashboard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDashboard(self._session, self._host, self._interceptor)  # type: ignore

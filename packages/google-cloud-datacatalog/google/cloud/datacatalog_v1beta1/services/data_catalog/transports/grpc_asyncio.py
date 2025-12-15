@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -273,18 +262,14 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +305,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -337,11 +320,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._grpc_channel
 
     @property
-    def search_catalog(
-        self,
-    ) -> Callable[
-        [datacatalog.SearchCatalogRequest], Awaitable[datacatalog.SearchCatalogResponse]
-    ]:
+    def search_catalog(self) -> Callable[[datacatalog.SearchCatalogRequest], Awaitable[datacatalog.SearchCatalogResponse]]:
         r"""Return a callable for the search catalog method over gRPC.
 
         Searches Data Catalog for multiple resources like entries, tags
@@ -381,11 +360,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["search_catalog"]
 
     @property
-    def create_entry_group(
-        self,
-    ) -> Callable[
-        [datacatalog.CreateEntryGroupRequest], Awaitable[datacatalog.EntryGroup]
-    ]:
+    def create_entry_group(self) -> Callable[[datacatalog.CreateEntryGroupRequest], Awaitable[datacatalog.EntryGroup]]:
         r"""Return a callable for the create entry group method over gRPC.
 
         A maximum of 10,000 entry groups may be created per organization
@@ -416,11 +391,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["create_entry_group"]
 
     @property
-    def update_entry_group(
-        self,
-    ) -> Callable[
-        [datacatalog.UpdateEntryGroupRequest], Awaitable[datacatalog.EntryGroup]
-    ]:
+    def update_entry_group(self) -> Callable[[datacatalog.UpdateEntryGroupRequest], Awaitable[datacatalog.EntryGroup]]:
         r"""Return a callable for the update entry group method over gRPC.
 
         Updates an EntryGroup. The user should enable the Data Catalog
@@ -448,11 +419,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["update_entry_group"]
 
     @property
-    def get_entry_group(
-        self,
-    ) -> Callable[
-        [datacatalog.GetEntryGroupRequest], Awaitable[datacatalog.EntryGroup]
-    ]:
+    def get_entry_group(self) -> Callable[[datacatalog.GetEntryGroupRequest], Awaitable[datacatalog.EntryGroup]]:
         r"""Return a callable for the get entry group method over gRPC.
 
         Gets an EntryGroup.
@@ -476,9 +443,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["get_entry_group"]
 
     @property
-    def delete_entry_group(
-        self,
-    ) -> Callable[[datacatalog.DeleteEntryGroupRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_entry_group(self) -> Callable[[datacatalog.DeleteEntryGroupRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete entry group method over gRPC.
 
         Deletes an EntryGroup. Only entry groups that do not contain
@@ -507,12 +472,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["delete_entry_group"]
 
     @property
-    def list_entry_groups(
-        self,
-    ) -> Callable[
-        [datacatalog.ListEntryGroupsRequest],
-        Awaitable[datacatalog.ListEntryGroupsResponse],
-    ]:
+    def list_entry_groups(self) -> Callable[[datacatalog.ListEntryGroupsRequest], Awaitable[datacatalog.ListEntryGroupsResponse]]:
         r"""Return a callable for the list entry groups method over gRPC.
 
         Lists entry groups.
@@ -536,9 +496,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["list_entry_groups"]
 
     @property
-    def create_entry(
-        self,
-    ) -> Callable[[datacatalog.CreateEntryRequest], Awaitable[datacatalog.Entry]]:
+    def create_entry(self) -> Callable[[datacatalog.CreateEntryRequest], Awaitable[datacatalog.Entry]]:
         r"""Return a callable for the create entry method over gRPC.
 
         Creates an entry. Only entries of 'FILESET' type or
@@ -571,9 +529,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["create_entry"]
 
     @property
-    def update_entry(
-        self,
-    ) -> Callable[[datacatalog.UpdateEntryRequest], Awaitable[datacatalog.Entry]]:
+    def update_entry(self) -> Callable[[datacatalog.UpdateEntryRequest], Awaitable[datacatalog.Entry]]:
         r"""Return a callable for the update entry method over gRPC.
 
         Updates an existing entry. Users should enable the Data Catalog
@@ -601,9 +557,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["update_entry"]
 
     @property
-    def delete_entry(
-        self,
-    ) -> Callable[[datacatalog.DeleteEntryRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_entry(self) -> Callable[[datacatalog.DeleteEntryRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete entry method over gRPC.
 
         Deletes an existing entry. Only entries created through
@@ -633,9 +587,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["delete_entry"]
 
     @property
-    def get_entry(
-        self,
-    ) -> Callable[[datacatalog.GetEntryRequest], Awaitable[datacatalog.Entry]]:
+    def get_entry(self) -> Callable[[datacatalog.GetEntryRequest], Awaitable[datacatalog.Entry]]:
         r"""Return a callable for the get entry method over gRPC.
 
         Gets an entry.
@@ -659,9 +611,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["get_entry"]
 
     @property
-    def lookup_entry(
-        self,
-    ) -> Callable[[datacatalog.LookupEntryRequest], Awaitable[datacatalog.Entry]]:
+    def lookup_entry(self) -> Callable[[datacatalog.LookupEntryRequest], Awaitable[datacatalog.Entry]]:
         r"""Return a callable for the lookup entry method over gRPC.
 
         Get an entry by target resource name. This method
@@ -688,11 +638,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["lookup_entry"]
 
     @property
-    def list_entries(
-        self,
-    ) -> Callable[
-        [datacatalog.ListEntriesRequest], Awaitable[datacatalog.ListEntriesResponse]
-    ]:
+    def list_entries(self) -> Callable[[datacatalog.ListEntriesRequest], Awaitable[datacatalog.ListEntriesResponse]]:
         r"""Return a callable for the list entries method over gRPC.
 
         Lists entries.
@@ -716,9 +662,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["list_entries"]
 
     @property
-    def create_tag_template(
-        self,
-    ) -> Callable[[datacatalog.CreateTagTemplateRequest], Awaitable[tags.TagTemplate]]:
+    def create_tag_template(self) -> Callable[[datacatalog.CreateTagTemplateRequest], Awaitable[tags.TagTemplate]]:
         r"""Return a callable for the create tag template method over gRPC.
 
         Creates a tag template. The user should enable the Data Catalog
@@ -746,9 +690,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["create_tag_template"]
 
     @property
-    def get_tag_template(
-        self,
-    ) -> Callable[[datacatalog.GetTagTemplateRequest], Awaitable[tags.TagTemplate]]:
+    def get_tag_template(self) -> Callable[[datacatalog.GetTagTemplateRequest], Awaitable[tags.TagTemplate]]:
         r"""Return a callable for the get tag template method over gRPC.
 
         Gets a tag template.
@@ -772,9 +714,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["get_tag_template"]
 
     @property
-    def update_tag_template(
-        self,
-    ) -> Callable[[datacatalog.UpdateTagTemplateRequest], Awaitable[tags.TagTemplate]]:
+    def update_tag_template(self) -> Callable[[datacatalog.UpdateTagTemplateRequest], Awaitable[tags.TagTemplate]]:
         r"""Return a callable for the update tag template method over gRPC.
 
         Updates a tag template. This method cannot be used to update the
@@ -806,9 +746,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["update_tag_template"]
 
     @property
-    def delete_tag_template(
-        self,
-    ) -> Callable[[datacatalog.DeleteTagTemplateRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_tag_template(self) -> Callable[[datacatalog.DeleteTagTemplateRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete tag template method over gRPC.
 
         Deletes a tag template and all tags using the template. Users
@@ -836,11 +774,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["delete_tag_template"]
 
     @property
-    def create_tag_template_field(
-        self,
-    ) -> Callable[
-        [datacatalog.CreateTagTemplateFieldRequest], Awaitable[tags.TagTemplateField]
-    ]:
+    def create_tag_template_field(self) -> Callable[[datacatalog.CreateTagTemplateFieldRequest], Awaitable[tags.TagTemplateField]]:
         r"""Return a callable for the create tag template field method over gRPC.
 
         Creates a field in a tag template. The user should enable the
@@ -868,11 +802,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["create_tag_template_field"]
 
     @property
-    def update_tag_template_field(
-        self,
-    ) -> Callable[
-        [datacatalog.UpdateTagTemplateFieldRequest], Awaitable[tags.TagTemplateField]
-    ]:
+    def update_tag_template_field(self) -> Callable[[datacatalog.UpdateTagTemplateFieldRequest], Awaitable[tags.TagTemplateField]]:
         r"""Return a callable for the update tag template field method over gRPC.
 
         Updates a field in a tag template. This method cannot be used to
@@ -901,11 +831,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["update_tag_template_field"]
 
     @property
-    def rename_tag_template_field(
-        self,
-    ) -> Callable[
-        [datacatalog.RenameTagTemplateFieldRequest], Awaitable[tags.TagTemplateField]
-    ]:
+    def rename_tag_template_field(self) -> Callable[[datacatalog.RenameTagTemplateFieldRequest], Awaitable[tags.TagTemplateField]]:
         r"""Return a callable for the rename tag template field method over gRPC.
 
         Renames a field in a tag template. The user should enable the
@@ -935,10 +861,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
     @property
     def rename_tag_template_field_enum_value(
         self,
-    ) -> Callable[
-        [datacatalog.RenameTagTemplateFieldEnumValueRequest],
-        Awaitable[tags.TagTemplateField],
-    ]:
+    ) -> Callable[[datacatalog.RenameTagTemplateFieldEnumValueRequest], Awaitable[tags.TagTemplateField]]:
         r"""Return a callable for the rename tag template field enum
         value method over gRPC.
 
@@ -958,9 +881,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "rename_tag_template_field_enum_value" not in self._stubs:
-            self._stubs[
-                "rename_tag_template_field_enum_value"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["rename_tag_template_field_enum_value"] = self._logged_channel.unary_unary(
                 "/google.cloud.datacatalog.v1beta1.DataCatalog/RenameTagTemplateFieldEnumValue",
                 request_serializer=datacatalog.RenameTagTemplateFieldEnumValueRequest.serialize,
                 response_deserializer=tags.TagTemplateField.deserialize,
@@ -968,11 +889,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["rename_tag_template_field_enum_value"]
 
     @property
-    def delete_tag_template_field(
-        self,
-    ) -> Callable[
-        [datacatalog.DeleteTagTemplateFieldRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_tag_template_field(self) -> Callable[[datacatalog.DeleteTagTemplateFieldRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete tag template field method over gRPC.
 
         Deletes a field in a tag template and all uses of that field.
@@ -1001,9 +918,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["delete_tag_template_field"]
 
     @property
-    def create_tag(
-        self,
-    ) -> Callable[[datacatalog.CreateTagRequest], Awaitable[tags.Tag]]:
+    def create_tag(self) -> Callable[[datacatalog.CreateTagRequest], Awaitable[tags.Tag]]:
         r"""Return a callable for the create tag method over gRPC.
 
         Creates a tag on an
@@ -1033,9 +948,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["create_tag"]
 
     @property
-    def update_tag(
-        self,
-    ) -> Callable[[datacatalog.UpdateTagRequest], Awaitable[tags.Tag]]:
+    def update_tag(self) -> Callable[[datacatalog.UpdateTagRequest], Awaitable[tags.Tag]]:
         r"""Return a callable for the update tag method over gRPC.
 
         Updates an existing tag.
@@ -1059,9 +972,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["update_tag"]
 
     @property
-    def delete_tag(
-        self,
-    ) -> Callable[[datacatalog.DeleteTagRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_tag(self) -> Callable[[datacatalog.DeleteTagRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete tag method over gRPC.
 
         Deletes a tag.
@@ -1085,11 +996,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["delete_tag"]
 
     @property
-    def list_tags(
-        self,
-    ) -> Callable[
-        [datacatalog.ListTagsRequest], Awaitable[datacatalog.ListTagsResponse]
-    ]:
+    def list_tags(self) -> Callable[[datacatalog.ListTagsRequest], Awaitable[datacatalog.ListTagsResponse]]:
         r"""Return a callable for the list tags method over gRPC.
 
         Lists tags assigned to an
@@ -1116,9 +1023,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["list_tags"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy for a resource. Replaces any
@@ -1158,9 +1063,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a resource. A ``NOT_FOUND``
@@ -1204,12 +1107,7 @@ class DataCatalogGrpcAsyncIOTransport(DataCatalogTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns the caller's permissions on a resource. If the resource

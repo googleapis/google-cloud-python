@@ -447,9 +447,7 @@ class Processor(proto.Message):
         proto.STRING,
         number=9,
     )
-    processor_version_aliases: MutableSequence[
-        "ProcessorVersionAlias"
-    ] = proto.RepeatedField(
+    processor_version_aliases: MutableSequence["ProcessorVersionAlias"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="ProcessorVersionAlias",

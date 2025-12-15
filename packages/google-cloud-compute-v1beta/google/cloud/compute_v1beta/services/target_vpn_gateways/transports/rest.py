@@ -135,13 +135,8 @@ class TargetVpnGatewaysRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListTargetVpnGatewaysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListTargetVpnGatewaysRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListTargetVpnGatewaysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListTargetVpnGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +144,7 @@ class TargetVpnGatewaysRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.TargetVpnGatewayAggregatedList
-    ) -> compute.TargetVpnGatewayAggregatedList:
+    def post_aggregated_list(self, response: compute.TargetVpnGatewayAggregatedList) -> compute.TargetVpnGatewayAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -165,12 +158,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.TargetVpnGatewayAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TargetVpnGatewayAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TargetVpnGatewayAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TargetVpnGatewayAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -186,12 +175,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteTargetVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteTargetVpnGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -213,9 +198,7 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -232,12 +215,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetTargetVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetTargetVpnGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -259,9 +238,7 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.TargetVpnGateway,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.TargetVpnGateway, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.TargetVpnGateway, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -278,12 +255,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertTargetVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertTargetVpnGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -305,9 +278,7 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -324,12 +295,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListTargetVpnGatewaysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListTargetVpnGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListTargetVpnGatewaysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListTargetVpnGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +304,7 @@ class TargetVpnGatewaysRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.TargetVpnGatewayList
-    ) -> compute.TargetVpnGatewayList:
+    def post_list(self, response: compute.TargetVpnGatewayList) -> compute.TargetVpnGatewayList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -353,9 +318,7 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.TargetVpnGatewayList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.TargetVpnGatewayList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.TargetVpnGatewayList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -372,13 +335,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response, metadata
 
     def pre_set_labels(
-        self,
-        request: compute.SetLabelsTargetVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetLabelsTargetVpnGatewayRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetLabelsTargetVpnGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetLabelsTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -400,9 +358,7 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_set_labels_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_labels
 
@@ -419,13 +375,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsTargetVpnGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsTargetVpnGatewayRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsTargetVpnGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsTargetVpnGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -433,9 +384,7 @@ class TargetVpnGatewaysRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -449,12 +398,8 @@ class TargetVpnGatewaysRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -553,31 +498,18 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TargetVpnGatewaysRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList,
-        TargetVpnGatewaysRestStub,
-    ):
+    class _AggregatedList(_BaseTargetVpnGatewaysRestTransport._BaseAggregatedList, TargetVpnGatewaysRestStub):
         def __hash__(self):
             return hash("TargetVpnGatewaysRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -618,26 +550,16 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -661,12 +583,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -682,16 +599,10 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.TargetVpnGatewayAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.TargetVpnGatewayAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -710,22 +621,12 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
                 )
             return resp
 
-    class _Delete(
-        _BaseTargetVpnGatewaysRestTransport._BaseDelete, TargetVpnGatewaysRestStub
-    ):
+    class _Delete(_BaseTargetVpnGatewaysRestTransport._BaseDelete, TargetVpnGatewaysRestStub):
         def __hash__(self):
             return hash("TargetVpnGatewaysRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -783,30 +684,16 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseTargetVpnGatewaysRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetVpnGatewaysRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -830,12 +717,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -851,12 +733,8 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -882,15 +760,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
             return hash("TargetVpnGatewaysRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -936,30 +806,16 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseTargetVpnGatewaysRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetVpnGatewaysRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -983,12 +839,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1005,9 +856,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TargetVpnGateway.to_json(response)
                 except:
@@ -1028,22 +877,12 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseTargetVpnGatewaysRestTransport._BaseInsert, TargetVpnGatewaysRestStub
-    ):
+    class _Insert(_BaseTargetVpnGatewaysRestTransport._BaseInsert, TargetVpnGatewaysRestStub):
         def __hash__(self):
             return hash("TargetVpnGatewaysRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1102,36 +941,18 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1155,13 +976,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1177,12 +992,8 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1203,22 +1014,12 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
                 )
             return resp
 
-    class _List(
-        _BaseTargetVpnGatewaysRestTransport._BaseList, TargetVpnGatewaysRestStub
-    ):
+    class _List(_BaseTargetVpnGatewaysRestTransport._BaseList, TargetVpnGatewaysRestStub):
         def __hash__(self):
             return hash("TargetVpnGatewaysRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1261,30 +1062,16 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseTargetVpnGatewaysRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetVpnGatewaysRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1308,12 +1095,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1330,9 +1112,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TargetVpnGatewayList.to_json(response)
                 except:
@@ -1353,22 +1133,12 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
                 )
             return resp
 
-    class _SetLabels(
-        _BaseTargetVpnGatewaysRestTransport._BaseSetLabels, TargetVpnGatewaysRestStub
-    ):
+    class _SetLabels(_BaseTargetVpnGatewaysRestTransport._BaseSetLabels, TargetVpnGatewaysRestStub):
         def __hash__(self):
             return hash("TargetVpnGatewaysRestTransport.SetLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1427,30 +1197,18 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_set_labels(request, metadata)
-            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseSetLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1474,13 +1232,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._SetLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1496,12 +1248,8 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             resp = self._interceptor.post_set_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1522,23 +1270,12 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions,
-        TargetVpnGatewaysRestStub,
-    ):
+    class _TestIamPermissions(_BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions, TargetVpnGatewaysRestStub):
         def __hash__(self):
             return hash("TargetVpnGatewaysRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1580,32 +1317,18 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetVpnGatewaysRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1629,13 +1352,7 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             # Send the request
             response = TargetVpnGatewaysRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1651,12 +1368,8 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -1678,63 +1391,43 @@ class TargetVpnGatewaysRestTransport(_BaseTargetVpnGatewaysRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListTargetVpnGatewaysRequest],
-        compute.TargetVpnGatewayAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListTargetVpnGatewaysRequest], compute.TargetVpnGatewayAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteTargetVpnGatewayRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteTargetVpnGatewayRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetTargetVpnGatewayRequest], compute.TargetVpnGateway]:
+    def get(self) -> Callable[[compute.GetTargetVpnGatewayRequest], compute.TargetVpnGateway]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertTargetVpnGatewayRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertTargetVpnGatewayRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListTargetVpnGatewaysRequest], compute.TargetVpnGatewayList]:
+    def list(self) -> Callable[[compute.ListTargetVpnGatewaysRequest], compute.TargetVpnGatewayList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[[compute.SetLabelsTargetVpnGatewayRequest], compute.Operation]:
+    def set_labels(self) -> Callable[[compute.SetLabelsTargetVpnGatewayRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsTargetVpnGatewayRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsTargetVpnGatewayRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

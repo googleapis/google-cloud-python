@@ -18,12 +18,8 @@ from google.ads.marketingplatform_admin import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.ads.marketingplatform_admin_v1alpha.services.marketingplatform_admin_service.async_client import (
-    MarketingplatformAdminServiceAsyncClient,
-)
-from google.ads.marketingplatform_admin_v1alpha.services.marketingplatform_admin_service.client import (
-    MarketingplatformAdminServiceClient,
-)
+from google.ads.marketingplatform_admin_v1alpha.services.marketingplatform_admin_service.async_client import MarketingplatformAdminServiceAsyncClient
+from google.ads.marketingplatform_admin_v1alpha.services.marketingplatform_admin_service.client import MarketingplatformAdminServiceClient
 from google.ads.marketingplatform_admin_v1alpha.types.marketingplatform_admin import (
     CreateAnalyticsAccountLinkRequest,
     DeleteAnalyticsAccountLinkRequest,

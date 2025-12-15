@@ -305,9 +305,7 @@ class QueryParameters(proto.Message):
         proto.BOOL,
         number=4,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=session_entity_type.SessionEntityType,
@@ -561,9 +559,7 @@ class QueryResult(proto.Message):
         proto.STRING,
         number=6,
     )
-    fulfillment_messages: MutableSequence[
-        gcd_intent.Intent.Message
-    ] = proto.RepeatedField(
+    fulfillment_messages: MutableSequence[gcd_intent.Intent.Message] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=gcd_intent.Intent.Message,
@@ -681,12 +677,10 @@ class KnowledgeAnswers(proto.Message):
             proto.STRING,
             number=3,
         )
-        match_confidence_level: "KnowledgeAnswers.Answer.MatchConfidenceLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="KnowledgeAnswers.Answer.MatchConfidenceLevel",
-            )
+        match_confidence_level: "KnowledgeAnswers.Answer.MatchConfidenceLevel" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="KnowledgeAnswers.Answer.MatchConfidenceLevel",
         )
         match_confidence: float = proto.Field(
             proto.FLOAT,
@@ -932,16 +926,12 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
-    speech_partial_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    speech_partial_results_end_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    speech_final_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    speech_final_results_end_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -962,16 +952,12 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=11,
     )
-    dtmf_partial_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    dtmf_partial_results_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=duration_pb2.Duration,
     )
-    dtmf_final_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    dtmf_final_results_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=duration_pb2.Duration,
@@ -1258,9 +1244,7 @@ class StreamingRecognitionResult(proto.Message):
         proto.FLOAT,
         number=6,
     )
-    speech_word_info: MutableSequence[
-        gcd_audio_config.SpeechWordInfo
-    ] = proto.RepeatedField(
+    speech_word_info: MutableSequence[gcd_audio_config.SpeechWordInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=gcd_audio_config.SpeechWordInfo,

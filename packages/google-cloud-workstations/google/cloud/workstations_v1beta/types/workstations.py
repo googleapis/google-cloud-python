@@ -637,9 +637,7 @@ class WorkstationConfig(proto.Message):
                 proto.INT32,
                 number=9,
             )
-            accelerators: MutableSequence[
-                "WorkstationConfig.Host.GceInstance.Accelerator"
-            ] = proto.RepeatedField(
+            accelerators: MutableSequence["WorkstationConfig.Host.GceInstance.Accelerator"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=11,
                 message="WorkstationConfig.Host.GceInstance.Accelerator",

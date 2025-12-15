@@ -91,22 +91,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -117,234 +109,194 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert AccountRelationshipsServiceClient._get_default_mtls_endpoint(None) is None
-    assert (
-        AccountRelationshipsServiceClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_default_mtls_endpoint(
-            sandbox_mtls_endpoint
-        )
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert AccountRelationshipsServiceClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert AccountRelationshipsServiceClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert AccountRelationshipsServiceClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert AccountRelationshipsServiceClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert AccountRelationshipsServiceClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert AccountRelationshipsServiceClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert AccountRelationshipsServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert AccountRelationshipsServiceClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert AccountRelationshipsServiceClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert AccountRelationshipsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert AccountRelationshipsServiceClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            AccountRelationshipsServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                AccountRelationshipsServiceClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert AccountRelationshipsServiceClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert AccountRelationshipsServiceClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert AccountRelationshipsServiceClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert AccountRelationshipsServiceClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert AccountRelationshipsServiceClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert AccountRelationshipsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert AccountRelationshipsServiceClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             AccountRelationshipsServiceClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert AccountRelationshipsServiceClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert AccountRelationshipsServiceClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                AccountRelationshipsServiceClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert AccountRelationshipsServiceClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert (
-        AccountRelationshipsServiceClient._get_client_cert_source(None, False) is None
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
-        is None
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_client_cert_source(
-            mock_provided_cert_source, True
-        )
-        == mock_provided_cert_source
-    )
+    assert AccountRelationshipsServiceClient._get_client_cert_source(None, False) is None
+    assert AccountRelationshipsServiceClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert AccountRelationshipsServiceClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                AccountRelationshipsServiceClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                AccountRelationshipsServiceClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert AccountRelationshipsServiceClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert AccountRelationshipsServiceClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
 @mock.patch.object(
-    AccountRelationshipsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceClient),
+    AccountRelationshipsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceClient)
 )
 @mock.patch.object(
-    AccountRelationshipsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient),
+    AccountRelationshipsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient)
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = AccountRelationshipsServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = (
-        AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=default_universe
-        )
-    )
+    default_endpoint = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert AccountRelationshipsServiceClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
+        AccountRelationshipsServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
+        == AccountRelationshipsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert AccountRelationshipsServiceClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
     assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        AccountRelationshipsServiceClient._get_api_endpoint(None, None, default_universe, "always")
         == AccountRelationshipsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
+        AccountRelationshipsServiceClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == AccountRelationshipsServiceClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == AccountRelationshipsServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
+    assert AccountRelationshipsServiceClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert AccountRelationshipsServiceClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        AccountRelationshipsServiceClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        AccountRelationshipsServiceClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        AccountRelationshipsServiceClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_universe_domain(
-            None, universe_domain_env
-        )
-        == universe_domain_env
-    )
-    assert (
-        AccountRelationshipsServiceClient._get_universe_domain(None, None)
-        == AccountRelationshipsServiceClient._DEFAULT_UNIVERSE
-    )
+    assert AccountRelationshipsServiceClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert AccountRelationshipsServiceClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert AccountRelationshipsServiceClient._get_universe_domain(None, None) == AccountRelationshipsServiceClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         AccountRelationshipsServiceClient._get_universe_domain("", None)
@@ -402,13 +354,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (AccountRelationshipsServiceClient, "rest"),
     ],
 )
-def test_account_relationships_service_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_account_relationships_service_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -416,9 +364,7 @@ def test_account_relationships_service_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "merchantapi.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://merchantapi.googleapis.com"
+            "merchantapi.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://merchantapi.googleapis.com"
         )
 
 
@@ -430,19 +376,13 @@ def test_account_relationships_service_client_from_service_account_info(
         (transports.AccountRelationshipsServiceRestTransport, "rest"),
     ],
 )
-def test_account_relationships_service_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_account_relationships_service_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -456,30 +396,20 @@ def test_account_relationships_service_client_service_account_always_use_jwt(
         (AccountRelationshipsServiceClient, "rest"),
     ],
 )
-def test_account_relationships_service_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_account_relationships_service_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "merchantapi.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://merchantapi.googleapis.com"
+            "merchantapi.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://merchantapi.googleapis.com"
         )
 
 
@@ -498,48 +428,26 @@ def test_account_relationships_service_client_get_transport_class():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceRestTransport,
-            "rest",
-        ),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport, "grpc"),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    AccountRelationshipsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceClient),
+    AccountRelationshipsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceClient)
 )
 @mock.patch.object(
-    AccountRelationshipsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient),
+    AccountRelationshipsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient)
 )
-def test_account_relationships_service_client_client_options(
-    client_class, transport_class, transport_name
-):
+def test_account_relationships_service_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(
-        AccountRelationshipsServiceClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(AccountRelationshipsServiceClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(
-        AccountRelationshipsServiceClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(AccountRelationshipsServiceClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -569,9 +477,7 @@ def test_account_relationships_service_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -603,21 +509,7 @@ def test_account_relationships_service_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -627,9 +519,7 @@ def test_account_relationships_service_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -638,18 +528,14 @@ def test_account_relationships_service_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -662,78 +548,36 @@ def test_account_relationships_service_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceRestTransport,
-            "rest",
-            "false",
-        ),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport, "grpc", "true"),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport, "grpc_asyncio", "true"),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport, "grpc", "false"),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport, "grpc_asyncio", "false"),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceRestTransport, "rest", "true"),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
-    AccountRelationshipsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceClient),
+    AccountRelationshipsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceClient)
 )
 @mock.patch.object(
-    AccountRelationshipsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient),
+    AccountRelationshipsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient)
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_account_relationships_service_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_account_relationships_service_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -752,22 +596,12 @@ def test_account_relationships_service_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -788,22 +622,15 @@ def test_account_relationships_service_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -813,34 +640,17 @@ def test_account_relationships_service_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize(
-    "client_class",
-    [AccountRelationshipsServiceClient, AccountRelationshipsServiceAsyncClient],
-)
-@mock.patch.object(
-    AccountRelationshipsServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AccountRelationshipsServiceClient),
-)
-@mock.patch.object(
-    AccountRelationshipsServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(AccountRelationshipsServiceAsyncClient),
-)
-def test_account_relationships_service_client_get_mtls_endpoint_and_cert_source(
-    client_class,
-):
+@pytest.mark.parametrize("client_class", [AccountRelationshipsServiceClient, AccountRelationshipsServiceAsyncClient])
+@mock.patch.object(AccountRelationshipsServiceClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AccountRelationshipsServiceClient))
+@mock.patch.object(AccountRelationshipsServiceAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AccountRelationshipsServiceAsyncClient))
+def test_account_relationships_service_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -848,14 +658,106 @@ def test_account_relationships_service_client_get_mtls_endpoint_and_cert_source(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -871,28 +773,16 @@ def test_account_relationships_service_client_get_mtls_endpoint_and_cert_source(
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -902,65 +792,30 @@ def test_account_relationships_service_client_get_mtls_endpoint_and_cert_source(
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
-@pytest.mark.parametrize(
-    "client_class",
-    [AccountRelationshipsServiceClient, AccountRelationshipsServiceAsyncClient],
+@pytest.mark.parametrize("client_class", [AccountRelationshipsServiceClient, AccountRelationshipsServiceAsyncClient])
+@mock.patch.object(
+    AccountRelationshipsServiceClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceClient)
 )
 @mock.patch.object(
-    AccountRelationshipsServiceClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceClient),
-)
-@mock.patch.object(
-    AccountRelationshipsServiceAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient),
+    AccountRelationshipsServiceAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(AccountRelationshipsServiceAsyncClient)
 )
 def test_account_relationships_service_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = AccountRelationshipsServiceClient._DEFAULT_UNIVERSE
-    default_endpoint = (
-        AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=default_universe
-        )
-    )
+    default_endpoint = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = AccountRelationshipsServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -983,19 +838,11 @@ def test_account_relationships_service_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -1003,35 +850,19 @@ def test_account_relationships_service_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-            "grpc",
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceRestTransport,
-            "rest",
-        ),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport, "grpc"),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport, "grpc_asyncio"),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceRestTransport, "rest"),
     ],
 )
-def test_account_relationships_service_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_account_relationships_service_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -1042,9 +873,7 @@ def test_account_relationships_service_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1057,29 +886,12 @@ def test_account_relationships_service_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceRestTransport,
-            "rest",
-            None,
-        ),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport, "grpc", grpc_helpers),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceRestTransport, "rest", None),
     ],
 )
-def test_account_relationships_service_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_account_relationships_service_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1089,9 +901,7 @@ def test_account_relationships_service_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1106,9 +916,7 @@ def test_account_relationships_service_client_client_options_from_dict():
         "google.shopping.merchant_accounts_v1.services.account_relationships_service.transports.AccountRelationshipsServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = AccountRelationshipsServiceClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = AccountRelationshipsServiceClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1125,23 +933,11 @@ def test_account_relationships_service_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport, "grpc", grpc_helpers),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_account_relationships_service_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_account_relationships_service_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1151,9 +947,7 @@ def test_account_relationships_service_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1163,13 +957,9 @@ def test_account_relationships_service_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1209,9 +999,7 @@ def test_get_account_relationship(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.AccountRelationship(
             name="name_value",
@@ -1251,12 +1039,8 @@ def test_get_account_relationship_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_account_relationship(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1279,19 +1063,12 @@ def test_get_account_relationship_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_account_relationship
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_account_relationship in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_account_relationship
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_account_relationship] = mock_rpc
         request = {}
         client.get_account_relationship(request)
 
@@ -1306,9 +1083,7 @@ def test_get_account_relationship_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_account_relationship_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_account_relationship_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1322,17 +1097,12 @@ async def test_get_account_relationship_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_account_relationship
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_account_relationship in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_account_relationship
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_account_relationship] = mock_rpc
 
         request = {}
         await client.get_account_relationship(request)
@@ -1348,10 +1118,7 @@ async def test_get_account_relationship_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_account_relationship_async(
-    transport: str = "grpc_asyncio",
-    request_type=accountrelationships.GetAccountRelationshipRequest,
-):
+async def test_get_account_relationship_async(transport: str = "grpc_asyncio", request_type=accountrelationships.GetAccountRelationshipRequest):
     client = AccountRelationshipsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1362,9 +1129,7 @@ async def test_get_account_relationship_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             accountrelationships.AccountRelationship(
@@ -1407,9 +1172,7 @@ def test_get_account_relationship_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         call.return_value = accountrelationships.AccountRelationship()
         client.get_account_relationship(request)
 
@@ -1439,12 +1202,8 @@ async def test_get_account_relationship_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            accountrelationships.AccountRelationship()
-        )
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(accountrelationships.AccountRelationship())
         await client.get_account_relationship(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1466,9 +1225,7 @@ def test_get_account_relationship_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.AccountRelationship()
         # Call the method with a truthy value for each flattened field,
@@ -1507,15 +1264,11 @@ async def test_get_account_relationship_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.AccountRelationship()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            accountrelationships.AccountRelationship()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(accountrelationships.AccountRelationship())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_account_relationship(
@@ -1564,9 +1317,7 @@ def test_update_account_relationship(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.AccountRelationship(
             name="name_value",
@@ -1604,12 +1355,8 @@ def test_update_account_relationship_non_empty_request_with_auto_populated_field
     request = accountrelationships.UpdateAccountRelationshipRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_account_relationship(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1630,19 +1377,12 @@ def test_update_account_relationship_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_account_relationship
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_account_relationship in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_account_relationship
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_account_relationship] = mock_rpc
         request = {}
         client.update_account_relationship(request)
 
@@ -1657,9 +1397,7 @@ def test_update_account_relationship_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_account_relationship_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_account_relationship_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1673,17 +1411,12 @@ async def test_update_account_relationship_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_account_relationship
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_account_relationship in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_account_relationship
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_account_relationship] = mock_rpc
 
         request = {}
         await client.update_account_relationship(request)
@@ -1699,10 +1432,7 @@ async def test_update_account_relationship_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_account_relationship_async(
-    transport: str = "grpc_asyncio",
-    request_type=accountrelationships.UpdateAccountRelationshipRequest,
-):
+async def test_update_account_relationship_async(transport: str = "grpc_asyncio", request_type=accountrelationships.UpdateAccountRelationshipRequest):
     client = AccountRelationshipsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1713,9 +1443,7 @@ async def test_update_account_relationship_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             accountrelationships.AccountRelationship(
@@ -1758,9 +1486,7 @@ def test_update_account_relationship_field_headers():
     request.account_relationship.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         call.return_value = accountrelationships.AccountRelationship()
         client.update_account_relationship(request)
 
@@ -1790,12 +1516,8 @@ async def test_update_account_relationship_field_headers_async():
     request.account_relationship.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            accountrelationships.AccountRelationship()
-        )
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(accountrelationships.AccountRelationship())
         await client.update_account_relationship(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1817,17 +1539,13 @@ def test_update_account_relationship_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.AccountRelationship()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_account_relationship(
-            account_relationship=accountrelationships.AccountRelationship(
-                name="name_value"
-            ),
+            account_relationship=accountrelationships.AccountRelationship(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1853,9 +1571,7 @@ def test_update_account_relationship_flattened_error():
     with pytest.raises(ValueError):
         client.update_account_relationship(
             accountrelationships.UpdateAccountRelationshipRequest(),
-            account_relationship=accountrelationships.AccountRelationship(
-                name="name_value"
-            ),
+            account_relationship=accountrelationships.AccountRelationship(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1867,21 +1583,15 @@ async def test_update_account_relationship_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.AccountRelationship()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            accountrelationships.AccountRelationship()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(accountrelationships.AccountRelationship())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_account_relationship(
-            account_relationship=accountrelationships.AccountRelationship(
-                name="name_value"
-            ),
+            account_relationship=accountrelationships.AccountRelationship(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1908,9 +1618,7 @@ async def test_update_account_relationship_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_account_relationship(
             accountrelationships.UpdateAccountRelationshipRequest(),
-            account_relationship=accountrelationships.AccountRelationship(
-                name="name_value"
-            ),
+            account_relationship=accountrelationships.AccountRelationship(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -1933,9 +1641,7 @@ def test_list_account_relationships(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.ListAccountRelationshipsResponse(
             next_page_token="next_page_token_value",
@@ -1970,12 +1676,8 @@ def test_list_account_relationships_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_account_relationships(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1999,19 +1701,12 @@ def test_list_account_relationships_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_account_relationships
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_account_relationships in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_account_relationships
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_account_relationships] = mock_rpc
         request = {}
         client.list_account_relationships(request)
 
@@ -2026,9 +1721,7 @@ def test_list_account_relationships_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_account_relationships_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_account_relationships_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2042,17 +1735,12 @@ async def test_list_account_relationships_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_account_relationships
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_account_relationships in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_account_relationships
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_account_relationships] = mock_rpc
 
         request = {}
         await client.list_account_relationships(request)
@@ -2068,10 +1756,7 @@ async def test_list_account_relationships_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_account_relationships_async(
-    transport: str = "grpc_asyncio",
-    request_type=accountrelationships.ListAccountRelationshipsRequest,
-):
+async def test_list_account_relationships_async(transport: str = "grpc_asyncio", request_type=accountrelationships.ListAccountRelationshipsRequest):
     client = AccountRelationshipsServiceAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2082,9 +1767,7 @@ async def test_list_account_relationships_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             accountrelationships.ListAccountRelationshipsResponse(
@@ -2121,9 +1804,7 @@ def test_list_account_relationships_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         call.return_value = accountrelationships.ListAccountRelationshipsResponse()
         client.list_account_relationships(request)
 
@@ -2153,12 +1834,8 @@ async def test_list_account_relationships_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            accountrelationships.ListAccountRelationshipsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(accountrelationships.ListAccountRelationshipsResponse())
         await client.list_account_relationships(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2180,9 +1857,7 @@ def test_list_account_relationships_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.ListAccountRelationshipsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -2221,15 +1896,11 @@ async def test_list_account_relationships_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = accountrelationships.ListAccountRelationshipsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            accountrelationships.ListAccountRelationshipsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(accountrelationships.ListAccountRelationshipsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_account_relationships(
@@ -2267,9 +1938,7 @@ def test_list_account_relationships_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             accountrelationships.ListAccountRelationshipsResponse(
@@ -2302,12 +1971,8 @@ def test_list_account_relationships_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_account_relationships(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_account_relationships(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -2315,9 +1980,7 @@ def test_list_account_relationships_pager(transport_name: str = "grpc"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, accountrelationships.AccountRelationship) for i in results
-        )
+        assert all(isinstance(i, accountrelationships.AccountRelationship) for i in results)
 
 
 def test_list_account_relationships_pages(transport_name: str = "grpc"):
@@ -2327,9 +1990,7 @@ def test_list_account_relationships_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             accountrelationships.ListAccountRelationshipsResponse(
@@ -2370,11 +2031,7 @@ async def test_list_account_relationships_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             accountrelationships.ListAccountRelationshipsResponse(
@@ -2412,9 +2069,7 @@ async def test_list_account_relationships_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(
-            isinstance(i, accountrelationships.AccountRelationship) for i in responses
-        )
+        assert all(isinstance(i, accountrelationships.AccountRelationship) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -2424,11 +2079,7 @@ async def test_list_account_relationships_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             accountrelationships.ListAccountRelationshipsResponse(
@@ -2460,9 +2111,7 @@ async def test_list_account_relationships_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_account_relationships(request={})
-        ).pages:
+        async for page_ in (await client.list_account_relationships(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2482,19 +2131,12 @@ def test_get_account_relationship_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_account_relationship
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_account_relationship in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_account_relationship
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_account_relationship] = mock_rpc
 
         request = {}
         client.get_account_relationship(request)
@@ -2509,33 +2151,29 @@ def test_get_account_relationship_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_account_relationship_rest_required_fields(
-    request_type=accountrelationships.GetAccountRelationshipRequest,
-):
+def test_get_account_relationship_rest_required_fields(request_type=accountrelationships.GetAccountRelationshipRequest):
     transport_class = transports.AccountRelationshipsServiceRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_account_relationship._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_account_relationship._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_account_relationship._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_account_relationship._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2585,9 +2223,7 @@ def test_get_account_relationship_rest_required_fields(
 
 
 def test_get_account_relationship_rest_unset_required_fields():
-    transport = transports.AccountRelationshipsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AccountRelationshipsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_account_relationship._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -2629,10 +2265,7 @@ def test_get_account_relationship_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/accounts/v1/{name=accounts/*/relationships/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/accounts/v1/{name=accounts/*/relationships/*}" % client.transport._host, args[1])
 
 
 def test_get_account_relationship_rest_flattened_error(transport: str = "rest"):
@@ -2664,19 +2297,12 @@ def test_update_account_relationship_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_account_relationship
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_account_relationship in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_account_relationship
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_account_relationship] = mock_rpc
 
         request = {}
         client.update_account_relationship(request)
@@ -2691,30 +2317,26 @@ def test_update_account_relationship_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_account_relationship_rest_required_fields(
-    request_type=accountrelationships.UpdateAccountRelationshipRequest,
-):
+def test_update_account_relationship_rest_required_fields(request_type=accountrelationships.UpdateAccountRelationshipRequest):
     transport_class = transports.AccountRelationshipsServiceRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_account_relationship._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_account_relationship._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_account_relationship._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_account_relationship._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
     jsonified_request.update(unset_fields)
@@ -2765,9 +2387,7 @@ def test_update_account_relationship_rest_required_fields(
 
 
 def test_update_account_relationship_rest_unset_required_fields():
-    transport = transports.AccountRelationshipsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AccountRelationshipsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_account_relationship._get_unset_required_fields({})
     assert set(unset_fields) == (set(("updateMask",)) & set(("accountRelationship",)))
@@ -2785,15 +2405,11 @@ def test_update_account_relationship_rest_flattened():
         return_value = accountrelationships.AccountRelationship()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "account_relationship": {"name": "accounts/sample1/relationships/sample2"}
-        }
+        sample_request = {"account_relationship": {"name": "accounts/sample1/relationships/sample2"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            account_relationship=accountrelationships.AccountRelationship(
-                name="name_value"
-            ),
+            account_relationship=accountrelationships.AccountRelationship(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -2814,11 +2430,7 @@ def test_update_account_relationship_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/accounts/v1/{account_relationship.name=accounts/*/relationships/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/accounts/v1/{account_relationship.name=accounts/*/relationships/*}" % client.transport._host, args[1])
 
 
 def test_update_account_relationship_rest_flattened_error(transport: str = "rest"):
@@ -2832,9 +2444,7 @@ def test_update_account_relationship_rest_flattened_error(transport: str = "rest
     with pytest.raises(ValueError):
         client.update_account_relationship(
             accountrelationships.UpdateAccountRelationshipRequest(),
-            account_relationship=accountrelationships.AccountRelationship(
-                name="name_value"
-            ),
+            account_relationship=accountrelationships.AccountRelationship(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2853,19 +2463,12 @@ def test_list_account_relationships_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_account_relationships
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_account_relationships in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_account_relationships
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_account_relationships] = mock_rpc
 
         request = {}
         client.list_account_relationships(request)
@@ -2880,33 +2483,29 @@ def test_list_account_relationships_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_account_relationships_rest_required_fields(
-    request_type=accountrelationships.ListAccountRelationshipsRequest,
-):
+def test_list_account_relationships_rest_required_fields(request_type=accountrelationships.ListAccountRelationshipsRequest):
     transport_class = transports.AccountRelationshipsServiceRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_account_relationships._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_account_relationships._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_account_relationships._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_account_relationships._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2948,9 +2547,7 @@ def test_list_account_relationships_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = accountrelationships.ListAccountRelationshipsResponse.pb(
-                return_value
-            )
+            return_value = accountrelationships.ListAccountRelationshipsResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -2965,9 +2562,7 @@ def test_list_account_relationships_rest_required_fields(
 
 
 def test_list_account_relationships_rest_unset_required_fields():
-    transport = transports.AccountRelationshipsServiceRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.AccountRelationshipsServiceRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_account_relationships._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3005,9 +2600,7 @@ def test_list_account_relationships_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = accountrelationships.ListAccountRelationshipsResponse.pb(
-            return_value
-        )
+        return_value = accountrelationships.ListAccountRelationshipsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3019,10 +2612,7 @@ def test_list_account_relationships_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/accounts/v1/{parent=accounts/*}/relationships" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/accounts/v1/{parent=accounts/*}/relationships" % client.transport._host, args[1])
 
 
 def test_list_account_relationships_rest_flattened_error(transport: str = "rest"):
@@ -3081,10 +2671,7 @@ def test_list_account_relationships_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            accountrelationships.ListAccountRelationshipsResponse.to_json(x)
-            for x in response
-        )
+        response = tuple(accountrelationships.ListAccountRelationshipsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -3097,9 +2684,7 @@ def test_list_account_relationships_rest_pager(transport: str = "rest"):
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(i, accountrelationships.AccountRelationship) for i in results
-        )
+        assert all(isinstance(i, accountrelationships.AccountRelationship) for i in results)
 
         pages = list(client.list_account_relationships(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -3143,9 +2728,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AccountRelationshipsServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = AccountRelationshipsServiceClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.AccountRelationshipsServiceGrpcTransport(
@@ -3199,16 +2782,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = AccountRelationshipsServiceClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = AccountRelationshipsServiceClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -3221,9 +2800,7 @@ def test_get_account_relationship_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         call.return_value = accountrelationships.AccountRelationship()
         client.get_account_relationship(request=None)
 
@@ -3244,9 +2821,7 @@ def test_update_account_relationship_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         call.return_value = accountrelationships.AccountRelationship()
         client.update_account_relationship(request=None)
 
@@ -3267,9 +2842,7 @@ def test_list_account_relationships_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         call.return_value = accountrelationships.ListAccountRelationshipsResponse()
         client.list_account_relationships(request=None)
 
@@ -3282,16 +2855,12 @@ def test_list_account_relationships_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = AccountRelationshipsServiceAsyncClient.get_transport_class(
-        "grpc_asyncio"
-    )(credentials=async_anonymous_credentials())
+    transport = AccountRelationshipsServiceAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = AccountRelationshipsServiceAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = AccountRelationshipsServiceAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -3305,9 +2874,7 @@ async def test_get_account_relationship_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             accountrelationships.AccountRelationship(
@@ -3337,9 +2904,7 @@ async def test_update_account_relationship_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             accountrelationships.AccountRelationship(
@@ -3369,9 +2934,7 @@ async def test_list_account_relationships_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             accountrelationships.ListAccountRelationshipsResponse(
@@ -3389,26 +2952,18 @@ async def test_list_account_relationships_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = AccountRelationshipsServiceClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = AccountRelationshipsServiceClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
-def test_get_account_relationship_rest_bad_request(
-    request_type=accountrelationships.GetAccountRelationshipRequest,
-):
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_account_relationship_rest_bad_request(request_type=accountrelationships.GetAccountRelationshipRequest):
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "accounts/sample1/relationships/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -3428,9 +2983,7 @@ def test_get_account_relationship_rest_bad_request(
     ],
 )
 def test_get_account_relationship_rest_call_success(request_type):
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "accounts/sample1/relationships/sample2"}
@@ -3470,32 +3023,23 @@ def test_get_account_relationship_rest_call_success(request_type):
 def test_get_account_relationship_rest_interceptors(null_interceptor):
     transport = transports.AccountRelationshipsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AccountRelationshipsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AccountRelationshipsServiceRestInterceptor(),
     )
     client = AccountRelationshipsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "post_get_account_relationship",
+        transports.AccountRelationshipsServiceRestInterceptor, "post_get_account_relationship"
     ) as post, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "post_get_account_relationship_with_metadata",
+        transports.AccountRelationshipsServiceRestInterceptor, "post_get_account_relationship_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "pre_get_account_relationship",
+        transports.AccountRelationshipsServiceRestInterceptor, "pre_get_account_relationship"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = accountrelationships.GetAccountRelationshipRequest.pb(
-            accountrelationships.GetAccountRelationshipRequest()
-        )
+        pb_message = accountrelationships.GetAccountRelationshipRequest.pb(accountrelationships.GetAccountRelationshipRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -3506,9 +3050,7 @@ def test_get_account_relationship_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = accountrelationships.AccountRelationship.to_json(
-            accountrelationships.AccountRelationship()
-        )
+        return_value = accountrelationships.AccountRelationship.to_json(accountrelationships.AccountRelationship())
         req.return_value.content = return_value
 
         request = accountrelationships.GetAccountRelationshipRequest()
@@ -3518,10 +3060,7 @@ def test_get_account_relationship_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = accountrelationships.AccountRelationship()
-        post_with_metadata.return_value = (
-            accountrelationships.AccountRelationship(),
-            metadata,
-        )
+        post_with_metadata.return_value = accountrelationships.AccountRelationship(), metadata
 
         client.get_account_relationship(
             request,
@@ -3536,22 +3075,14 @@ def test_get_account_relationship_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_account_relationship_rest_bad_request(
-    request_type=accountrelationships.UpdateAccountRelationshipRequest,
-):
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_account_relationship_rest_bad_request(request_type=accountrelationships.UpdateAccountRelationshipRequest):
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "account_relationship": {"name": "accounts/sample1/relationships/sample2"}
-    }
+    request_init = {"account_relationship": {"name": "accounts/sample1/relationships/sample2"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -3571,14 +3102,10 @@ def test_update_account_relationship_rest_bad_request(
     ],
 )
 def test_update_account_relationship_rest_call_success(request_type):
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "account_relationship": {"name": "accounts/sample1/relationships/sample2"}
-    }
+    request_init = {"account_relationship": {"name": "accounts/sample1/relationships/sample2"}}
     request_init["account_relationship"] = {
         "name": "accounts/sample1/relationships/sample2",
         "provider": "provider_value",
@@ -3590,9 +3117,7 @@ def test_update_account_relationship_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = accountrelationships.UpdateAccountRelationshipRequest.meta.fields[
-        "account_relationship"
-    ]
+    test_field = accountrelationships.UpdateAccountRelationshipRequest.meta.fields["account_relationship"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -3611,18 +3136,14 @@ def test_update_account_relationship_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "account_relationship"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["account_relationship"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -3636,13 +3157,7 @@ def test_update_account_relationship_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -3692,32 +3207,23 @@ def test_update_account_relationship_rest_call_success(request_type):
 def test_update_account_relationship_rest_interceptors(null_interceptor):
     transport = transports.AccountRelationshipsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AccountRelationshipsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AccountRelationshipsServiceRestInterceptor(),
     )
     client = AccountRelationshipsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "post_update_account_relationship",
+        transports.AccountRelationshipsServiceRestInterceptor, "post_update_account_relationship"
     ) as post, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "post_update_account_relationship_with_metadata",
+        transports.AccountRelationshipsServiceRestInterceptor, "post_update_account_relationship_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "pre_update_account_relationship",
+        transports.AccountRelationshipsServiceRestInterceptor, "pre_update_account_relationship"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = accountrelationships.UpdateAccountRelationshipRequest.pb(
-            accountrelationships.UpdateAccountRelationshipRequest()
-        )
+        pb_message = accountrelationships.UpdateAccountRelationshipRequest.pb(accountrelationships.UpdateAccountRelationshipRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -3728,9 +3234,7 @@ def test_update_account_relationship_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = accountrelationships.AccountRelationship.to_json(
-            accountrelationships.AccountRelationship()
-        )
+        return_value = accountrelationships.AccountRelationship.to_json(accountrelationships.AccountRelationship())
         req.return_value.content = return_value
 
         request = accountrelationships.UpdateAccountRelationshipRequest()
@@ -3740,10 +3244,7 @@ def test_update_account_relationship_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = accountrelationships.AccountRelationship()
-        post_with_metadata.return_value = (
-            accountrelationships.AccountRelationship(),
-            metadata,
-        )
+        post_with_metadata.return_value = accountrelationships.AccountRelationship(), metadata
 
         client.update_account_relationship(
             request,
@@ -3758,20 +3259,14 @@ def test_update_account_relationship_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_account_relationships_rest_bad_request(
-    request_type=accountrelationships.ListAccountRelationshipsRequest,
-):
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_account_relationships_rest_bad_request(request_type=accountrelationships.ListAccountRelationshipsRequest):
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "accounts/sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -3791,9 +3286,7 @@ def test_list_account_relationships_rest_bad_request(
     ],
 )
 def test_list_account_relationships_rest_call_success(request_type):
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "accounts/sample1"}
@@ -3811,9 +3304,7 @@ def test_list_account_relationships_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = accountrelationships.ListAccountRelationshipsResponse.pb(
-            return_value
-        )
+        return_value = accountrelationships.ListAccountRelationshipsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3829,32 +3320,23 @@ def test_list_account_relationships_rest_call_success(request_type):
 def test_list_account_relationships_rest_interceptors(null_interceptor):
     transport = transports.AccountRelationshipsServiceRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.AccountRelationshipsServiceRestInterceptor(),
+        interceptor=None if null_interceptor else transports.AccountRelationshipsServiceRestInterceptor(),
     )
     client = AccountRelationshipsServiceClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "post_list_account_relationships",
+        transports.AccountRelationshipsServiceRestInterceptor, "post_list_account_relationships"
     ) as post, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "post_list_account_relationships_with_metadata",
+        transports.AccountRelationshipsServiceRestInterceptor, "post_list_account_relationships_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.AccountRelationshipsServiceRestInterceptor,
-        "pre_list_account_relationships",
+        transports.AccountRelationshipsServiceRestInterceptor, "pre_list_account_relationships"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = accountrelationships.ListAccountRelationshipsRequest.pb(
-            accountrelationships.ListAccountRelationshipsRequest()
-        )
+        pb_message = accountrelationships.ListAccountRelationshipsRequest.pb(accountrelationships.ListAccountRelationshipsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -3865,9 +3347,7 @@ def test_list_account_relationships_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = accountrelationships.ListAccountRelationshipsResponse.to_json(
-            accountrelationships.ListAccountRelationshipsResponse()
-        )
+        return_value = accountrelationships.ListAccountRelationshipsResponse.to_json(accountrelationships.ListAccountRelationshipsResponse())
         req.return_value.content = return_value
 
         request = accountrelationships.ListAccountRelationshipsRequest()
@@ -3877,10 +3357,7 @@ def test_list_account_relationships_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = accountrelationships.ListAccountRelationshipsResponse()
-        post_with_metadata.return_value = (
-            accountrelationships.ListAccountRelationshipsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = accountrelationships.ListAccountRelationshipsResponse(), metadata
 
         client.list_account_relationships(
             request,
@@ -3896,9 +3373,7 @@ def test_list_account_relationships_rest_interceptors(null_interceptor):
 
 
 def test_initialize_client_w_rest():
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -3911,9 +3386,7 @@ def test_get_account_relationship_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_account_relationship), "__call__") as call:
         client.get_account_relationship(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3933,9 +3406,7 @@ def test_update_account_relationship_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_account_relationship), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_account_relationship), "__call__") as call:
         client.update_account_relationship(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3955,9 +3426,7 @@ def test_list_account_relationships_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_account_relationships), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_account_relationships), "__call__") as call:
         client.list_account_relationships(request=None)
 
         # Establish that the underlying stub method was called.
@@ -3983,8 +3452,7 @@ def test_account_relationships_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.AccountRelationshipsServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
+            credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json"
         )
 
 
@@ -4023,9 +3491,7 @@ def test_account_relationships_service_base_transport():
 
 def test_account_relationships_service_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.shopping.merchant_accounts_v1.services.account_relationships_service.transports.AccountRelationshipsServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -4100,9 +3566,7 @@ def test_account_relationships_service_transport_auth_gdch_credentials(transport
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -4112,20 +3576,13 @@ def test_account_relationships_service_transport_auth_gdch_credentials(transport
     "transport_class,grpc_helpers",
     [
         (transports.AccountRelationshipsServiceGrpcTransport, grpc_helpers),
-        (
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-            grpc_helpers_async,
-        ),
+        (transports.AccountRelationshipsServiceGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_account_relationships_service_transport_create_channel(
-    transport_class, grpc_helpers
-):
+def test_account_relationships_service_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -4149,25 +3606,15 @@ def test_account_relationships_service_transport_create_channel(
 
 
 @pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.AccountRelationshipsServiceGrpcTransport,
-        transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-    ],
+    "transport_class", [transports.AccountRelationshipsServiceGrpcTransport, transports.AccountRelationshipsServiceGrpcAsyncIOTransport]
 )
-def test_account_relationships_service_grpc_transport_client_cert_source_for_mtls(
-    transport_class,
-):
+def test_account_relationships_service_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -4185,24 +3632,15 @@ def test_account_relationships_service_grpc_transport_client_cert_source_for_mtl
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_account_relationships_service_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.AccountRelationshipsServiceRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.AccountRelationshipsServiceRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -4217,15 +3655,11 @@ def test_account_relationships_service_http_transport_client_cert_source_for_mtl
 def test_account_relationships_service_host_no_port(transport_name):
     client = AccountRelationshipsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="merchantapi.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="merchantapi.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "merchantapi.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://merchantapi.googleapis.com"
+        "merchantapi.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://merchantapi.googleapis.com"
     )
 
 
@@ -4240,15 +3674,11 @@ def test_account_relationships_service_host_no_port(transport_name):
 def test_account_relationships_service_host_with_port(transport_name):
     client = AccountRelationshipsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="merchantapi.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="merchantapi.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "merchantapi.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://merchantapi.googleapis.com:8000"
+        "merchantapi.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://merchantapi.googleapis.com:8000"
     )
 
 
@@ -4258,9 +3688,7 @@ def test_account_relationships_service_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_account_relationships_service_client_transport_session_collision(
-    transport_name,
-):
+def test_account_relationships_service_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
     client1 = AccountRelationshipsServiceClient(
@@ -4310,22 +3738,13 @@ def test_account_relationships_service_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
+@pytest.mark.filterwarnings("ignore::FutureWarning")
 @pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.AccountRelationshipsServiceGrpcTransport,
-        transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-    ],
+    "transport_class", [transports.AccountRelationshipsServiceGrpcTransport, transports.AccountRelationshipsServiceGrpcAsyncIOTransport]
 )
-def test_account_relationships_service_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+def test_account_relationships_service_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -4343,9 +3762,7 @@ def test_account_relationships_service_transport_channel_mtls_with_client_cert_s
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -4365,11 +3782,7 @@ def test_account_relationships_service_transport_channel_mtls_with_client_cert_s
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.AccountRelationshipsServiceGrpcTransport,
-        transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-    ],
+    "transport_class", [transports.AccountRelationshipsServiceGrpcTransport, transports.AccountRelationshipsServiceGrpcAsyncIOTransport]
 )
 def test_account_relationships_service_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
@@ -4378,9 +3791,7 @@ def test_account_relationships_service_transport_channel_mtls_with_adc(transport
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -4435,9 +3846,7 @@ def test_account_relationship_path():
         account=account,
         relationship=relationship,
     )
-    actual = AccountRelationshipsServiceClient.account_relationship_path(
-        account, relationship
-    )
+    actual = AccountRelationshipsServiceClient.account_relationship_path(account, relationship)
     assert expected == actual
 
 
@@ -4458,9 +3867,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = AccountRelationshipsServiceClient.common_billing_account_path(
-        billing_account
-    )
+    actual = AccountRelationshipsServiceClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -4561,18 +3968,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.AccountRelationshipsServiceTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.AccountRelationshipsServiceTransport, "_prep_wrapped_messages") as prep:
         client = AccountRelationshipsServiceClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.AccountRelationshipsServiceTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.AccountRelationshipsServiceTransport, "_prep_wrapped_messages") as prep:
         transport_class = AccountRelationshipsServiceClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -4582,12 +3985,8 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_grpc():
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -4595,24 +3994,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = AccountRelationshipsServiceAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = AccountRelationshipsServiceAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = AccountRelationshipsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -4624,9 +4015,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = AccountRelationshipsServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = AccountRelationshipsServiceClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -4638,20 +4027,12 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (
-            AccountRelationshipsServiceClient,
-            transports.AccountRelationshipsServiceGrpcTransport,
-        ),
-        (
-            AccountRelationshipsServiceAsyncClient,
-            transports.AccountRelationshipsServiceGrpcAsyncIOTransport,
-        ),
+        (AccountRelationshipsServiceClient, transports.AccountRelationshipsServiceGrpcTransport),
+        (AccountRelationshipsServiceAsyncClient, transports.AccountRelationshipsServiceGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -4662,9 +4043,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

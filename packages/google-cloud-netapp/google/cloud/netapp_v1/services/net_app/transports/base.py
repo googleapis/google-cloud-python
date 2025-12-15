@@ -48,9 +48,7 @@ from google.cloud.netapp_v1.types import storage_pool as gcn_storage_pool
 from google.cloud.netapp_v1.types import volume
 from google.cloud.netapp_v1.types import volume as gcn_volume
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -112,23 +110,15 @@ class NetAppTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -665,166 +655,90 @@ class NetAppTransport(abc.ABC):
     def list_storage_pools(
         self,
     ) -> Callable[
-        [storage_pool.ListStoragePoolsRequest],
-        Union[
-            storage_pool.ListStoragePoolsResponse,
-            Awaitable[storage_pool.ListStoragePoolsResponse],
-        ],
+        [storage_pool.ListStoragePoolsRequest], Union[storage_pool.ListStoragePoolsResponse, Awaitable[storage_pool.ListStoragePoolsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_storage_pool(
         self,
-    ) -> Callable[
-        [gcn_storage_pool.CreateStoragePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_storage_pool.CreateStoragePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_storage_pool(
         self,
-    ) -> Callable[
-        [storage_pool.GetStoragePoolRequest],
-        Union[storage_pool.StoragePool, Awaitable[storage_pool.StoragePool]],
-    ]:
+    ) -> Callable[[storage_pool.GetStoragePoolRequest], Union[storage_pool.StoragePool, Awaitable[storage_pool.StoragePool]]]:
         raise NotImplementedError()
 
     @property
     def update_storage_pool(
         self,
-    ) -> Callable[
-        [gcn_storage_pool.UpdateStoragePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_storage_pool.UpdateStoragePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_storage_pool(
         self,
-    ) -> Callable[
-        [storage_pool.DeleteStoragePoolRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storage_pool.DeleteStoragePoolRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def validate_directory_service(
         self,
-    ) -> Callable[
-        [storage_pool.ValidateDirectoryServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storage_pool.ValidateDirectoryServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def switch_active_replica_zone(
         self,
-    ) -> Callable[
-        [storage_pool.SwitchActiveReplicaZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[storage_pool.SwitchActiveReplicaZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_volumes(
-        self,
-    ) -> Callable[
-        [volume.ListVolumesRequest],
-        Union[volume.ListVolumesResponse, Awaitable[volume.ListVolumesResponse]],
-    ]:
+    def list_volumes(self) -> Callable[[volume.ListVolumesRequest], Union[volume.ListVolumesResponse, Awaitable[volume.ListVolumesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_volume(
-        self,
-    ) -> Callable[
-        [volume.GetVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]
-    ]:
+    def get_volume(self) -> Callable[[volume.GetVolumeRequest], Union[volume.Volume, Awaitable[volume.Volume]]]:
         raise NotImplementedError()
 
     @property
-    def create_volume(
-        self,
-    ) -> Callable[
-        [gcn_volume.CreateVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_volume(self) -> Callable[[gcn_volume.CreateVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_volume(
-        self,
-    ) -> Callable[
-        [gcn_volume.UpdateVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_volume(self) -> Callable[[gcn_volume.UpdateVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_volume(
-        self,
-    ) -> Callable[
-        [volume.DeleteVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_volume(self) -> Callable[[volume.DeleteVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def revert_volume(
-        self,
-    ) -> Callable[
-        [volume.RevertVolumeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def revert_volume(self) -> Callable[[volume.RevertVolumeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_snapshots(
         self,
-    ) -> Callable[
-        [snapshot.ListSnapshotsRequest],
-        Union[
-            snapshot.ListSnapshotsResponse, Awaitable[snapshot.ListSnapshotsResponse]
-        ],
-    ]:
+    ) -> Callable[[snapshot.ListSnapshotsRequest], Union[snapshot.ListSnapshotsResponse, Awaitable[snapshot.ListSnapshotsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_snapshot(
-        self,
-    ) -> Callable[
-        [snapshot.GetSnapshotRequest],
-        Union[snapshot.Snapshot, Awaitable[snapshot.Snapshot]],
-    ]:
+    def get_snapshot(self) -> Callable[[snapshot.GetSnapshotRequest], Union[snapshot.Snapshot, Awaitable[snapshot.Snapshot]]]:
         raise NotImplementedError()
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[
-        [gcn_snapshot.CreateSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_snapshot(self) -> Callable[[gcn_snapshot.CreateSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_snapshot(
-        self,
-    ) -> Callable[
-        [snapshot.DeleteSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_snapshot(self) -> Callable[[snapshot.DeleteSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_snapshot(
-        self,
-    ) -> Callable[
-        [gcn_snapshot.UpdateSnapshotRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_snapshot(self) -> Callable[[gcn_snapshot.UpdateSnapshotRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -832,315 +746,184 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [active_directory.ListActiveDirectoriesRequest],
-        Union[
-            active_directory.ListActiveDirectoriesResponse,
-            Awaitable[active_directory.ListActiveDirectoriesResponse],
-        ],
+        Union[active_directory.ListActiveDirectoriesResponse, Awaitable[active_directory.ListActiveDirectoriesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_active_directory(
         self,
-    ) -> Callable[
-        [active_directory.GetActiveDirectoryRequest],
-        Union[
-            active_directory.ActiveDirectory,
-            Awaitable[active_directory.ActiveDirectory],
-        ],
-    ]:
+    ) -> Callable[[active_directory.GetActiveDirectoryRequest], Union[active_directory.ActiveDirectory, Awaitable[active_directory.ActiveDirectory]]]:
         raise NotImplementedError()
 
     @property
     def create_active_directory(
         self,
-    ) -> Callable[
-        [gcn_active_directory.CreateActiveDirectoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_active_directory.CreateActiveDirectoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_active_directory(
         self,
-    ) -> Callable[
-        [gcn_active_directory.UpdateActiveDirectoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_active_directory.UpdateActiveDirectoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_active_directory(
         self,
-    ) -> Callable[
-        [active_directory.DeleteActiveDirectoryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[active_directory.DeleteActiveDirectoryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_kms_configs(
-        self,
-    ) -> Callable[
-        [kms.ListKmsConfigsRequest],
-        Union[kms.ListKmsConfigsResponse, Awaitable[kms.ListKmsConfigsResponse]],
-    ]:
+    def list_kms_configs(self) -> Callable[[kms.ListKmsConfigsRequest], Union[kms.ListKmsConfigsResponse, Awaitable[kms.ListKmsConfigsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_kms_config(
-        self,
-    ) -> Callable[
-        [kms.CreateKmsConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_kms_config(self) -> Callable[[kms.CreateKmsConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_kms_config(
-        self,
-    ) -> Callable[
-        [kms.GetKmsConfigRequest], Union[kms.KmsConfig, Awaitable[kms.KmsConfig]]
-    ]:
+    def get_kms_config(self) -> Callable[[kms.GetKmsConfigRequest], Union[kms.KmsConfig, Awaitable[kms.KmsConfig]]]:
         raise NotImplementedError()
 
     @property
-    def update_kms_config(
-        self,
-    ) -> Callable[
-        [kms.UpdateKmsConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_kms_config(self) -> Callable[[kms.UpdateKmsConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def encrypt_volumes(
-        self,
-    ) -> Callable[
-        [kms.EncryptVolumesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def encrypt_volumes(self) -> Callable[[kms.EncryptVolumesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def verify_kms_config(
-        self,
-    ) -> Callable[
-        [kms.VerifyKmsConfigRequest],
-        Union[kms.VerifyKmsConfigResponse, Awaitable[kms.VerifyKmsConfigResponse]],
-    ]:
+    def verify_kms_config(self) -> Callable[[kms.VerifyKmsConfigRequest], Union[kms.VerifyKmsConfigResponse, Awaitable[kms.VerifyKmsConfigResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_kms_config(
-        self,
-    ) -> Callable[
-        [kms.DeleteKmsConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_kms_config(self) -> Callable[[kms.DeleteKmsConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_replications(
         self,
     ) -> Callable[
-        [replication.ListReplicationsRequest],
-        Union[
-            replication.ListReplicationsResponse,
-            Awaitable[replication.ListReplicationsResponse],
-        ],
+        [replication.ListReplicationsRequest], Union[replication.ListReplicationsResponse, Awaitable[replication.ListReplicationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_replication(
-        self,
-    ) -> Callable[
-        [replication.GetReplicationRequest],
-        Union[replication.Replication, Awaitable[replication.Replication]],
-    ]:
+    def get_replication(self) -> Callable[[replication.GetReplicationRequest], Union[replication.Replication, Awaitable[replication.Replication]]]:
         raise NotImplementedError()
 
     @property
     def create_replication(
         self,
-    ) -> Callable[
-        [gcn_replication.CreateReplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_replication.CreateReplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_replication(
         self,
-    ) -> Callable[
-        [replication.DeleteReplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[replication.DeleteReplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_replication(
         self,
-    ) -> Callable[
-        [gcn_replication.UpdateReplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_replication.UpdateReplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def stop_replication(
         self,
-    ) -> Callable[
-        [replication.StopReplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[replication.StopReplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def resume_replication(
         self,
-    ) -> Callable[
-        [replication.ResumeReplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[replication.ResumeReplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def reverse_replication_direction(
         self,
-    ) -> Callable[
-        [replication.ReverseReplicationDirectionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[replication.ReverseReplicationDirectionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def establish_peering(
         self,
-    ) -> Callable[
-        [replication.EstablishPeeringRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[replication.EstablishPeeringRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def sync_replication(
         self,
-    ) -> Callable[
-        [replication.SyncReplicationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[replication.SyncReplicationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_backup_vault(
         self,
-    ) -> Callable[
-        [gcn_backup_vault.CreateBackupVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_backup_vault.CreateBackupVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_backup_vault(
         self,
-    ) -> Callable[
-        [backup_vault.GetBackupVaultRequest],
-        Union[backup_vault.BackupVault, Awaitable[backup_vault.BackupVault]],
-    ]:
+    ) -> Callable[[backup_vault.GetBackupVaultRequest], Union[backup_vault.BackupVault, Awaitable[backup_vault.BackupVault]]]:
         raise NotImplementedError()
 
     @property
     def list_backup_vaults(
         self,
     ) -> Callable[
-        [backup_vault.ListBackupVaultsRequest],
-        Union[
-            backup_vault.ListBackupVaultsResponse,
-            Awaitable[backup_vault.ListBackupVaultsResponse],
-        ],
+        [backup_vault.ListBackupVaultsRequest], Union[backup_vault.ListBackupVaultsResponse, Awaitable[backup_vault.ListBackupVaultsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_backup_vault(
         self,
-    ) -> Callable[
-        [gcn_backup_vault.UpdateBackupVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_backup_vault.UpdateBackupVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup_vault(
         self,
-    ) -> Callable[
-        [backup_vault.DeleteBackupVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backup_vault.DeleteBackupVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [gcn_backup.CreateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_backup(self) -> Callable[[gcn_backup.CreateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [backup.GetBackupRequest], Union[backup.Backup, Awaitable[backup.Backup]]
-    ]:
+    def get_backup(self) -> Callable[[backup.GetBackupRequest], Union[backup.Backup, Awaitable[backup.Backup]]]:
         raise NotImplementedError()
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [backup.ListBackupsRequest],
-        Union[backup.ListBackupsResponse, Awaitable[backup.ListBackupsResponse]],
-    ]:
+    def list_backups(self) -> Callable[[backup.ListBackupsRequest], Union[backup.ListBackupsResponse, Awaitable[backup.ListBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [backup.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_backup(self) -> Callable[[backup.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [gcn_backup.UpdateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_backup(self) -> Callable[[gcn_backup.UpdateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_backup_policy(
         self,
-    ) -> Callable[
-        [gcn_backup_policy.CreateBackupPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_backup_policy.CreateBackupPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_backup_policy(
         self,
-    ) -> Callable[
-        [backup_policy.GetBackupPolicyRequest],
-        Union[backup_policy.BackupPolicy, Awaitable[backup_policy.BackupPolicy]],
-    ]:
+    ) -> Callable[[backup_policy.GetBackupPolicyRequest], Union[backup_policy.BackupPolicy, Awaitable[backup_policy.BackupPolicy]]]:
         raise NotImplementedError()
 
     @property
@@ -1148,77 +931,48 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [backup_policy.ListBackupPoliciesRequest],
-        Union[
-            backup_policy.ListBackupPoliciesResponse,
-            Awaitable[backup_policy.ListBackupPoliciesResponse],
-        ],
+        Union[backup_policy.ListBackupPoliciesResponse, Awaitable[backup_policy.ListBackupPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_backup_policy(
         self,
-    ) -> Callable[
-        [gcn_backup_policy.UpdateBackupPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_backup_policy.UpdateBackupPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup_policy(
         self,
-    ) -> Callable[
-        [backup_policy.DeleteBackupPolicyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backup_policy.DeleteBackupPolicyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_quota_rules(
         self,
-    ) -> Callable[
-        [quota_rule.ListQuotaRulesRequest],
-        Union[
-            quota_rule.ListQuotaRulesResponse,
-            Awaitable[quota_rule.ListQuotaRulesResponse],
-        ],
-    ]:
+    ) -> Callable[[quota_rule.ListQuotaRulesRequest], Union[quota_rule.ListQuotaRulesResponse, Awaitable[quota_rule.ListQuotaRulesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_quota_rule(
-        self,
-    ) -> Callable[
-        [quota_rule.GetQuotaRuleRequest],
-        Union[quota_rule.QuotaRule, Awaitable[quota_rule.QuotaRule]],
-    ]:
+    def get_quota_rule(self) -> Callable[[quota_rule.GetQuotaRuleRequest], Union[quota_rule.QuotaRule, Awaitable[quota_rule.QuotaRule]]]:
         raise NotImplementedError()
 
     @property
     def create_quota_rule(
         self,
-    ) -> Callable[
-        [gcn_quota_rule.CreateQuotaRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_quota_rule.CreateQuotaRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_quota_rule(
         self,
-    ) -> Callable[
-        [gcn_quota_rule.UpdateQuotaRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcn_quota_rule.UpdateQuotaRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_quota_rule(
         self,
-    ) -> Callable[
-        [quota_rule.DeleteQuotaRuleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[quota_rule.DeleteQuotaRuleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1226,20 +980,14 @@ class NetAppTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1257,22 +1005,13 @@ class NetAppTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

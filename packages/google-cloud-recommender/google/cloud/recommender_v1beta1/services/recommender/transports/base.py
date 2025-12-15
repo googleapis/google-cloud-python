@@ -26,21 +26,15 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.recommender_v1beta1 import gapic_version as package_version
-from google.cloud.recommender_v1beta1.types import (
-    insight_type_config as gcr_insight_type_config,
-)
-from google.cloud.recommender_v1beta1.types import (
-    recommender_config as gcr_recommender_config,
-)
+from google.cloud.recommender_v1beta1.types import insight_type_config as gcr_insight_type_config
+from google.cloud.recommender_v1beta1.types import recommender_config as gcr_recommender_config
 from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import insight_type_config
 from google.cloud.recommender_v1beta1.types import recommendation
 from google.cloud.recommender_v1beta1.types import recommender_config
 from google.cloud.recommender_v1beta1.types import recommender_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -102,23 +96,15 @@ class RecommenderTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -269,29 +255,16 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.ListInsightsRequest],
-        Union[
-            recommender_service.ListInsightsResponse,
-            Awaitable[recommender_service.ListInsightsResponse],
-        ],
+        Union[recommender_service.ListInsightsResponse, Awaitable[recommender_service.ListInsightsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_insight(
-        self,
-    ) -> Callable[
-        [recommender_service.GetInsightRequest],
-        Union[insight.Insight, Awaitable[insight.Insight]],
-    ]:
+    def get_insight(self) -> Callable[[recommender_service.GetInsightRequest], Union[insight.Insight, Awaitable[insight.Insight]]]:
         raise NotImplementedError()
 
     @property
-    def mark_insight_accepted(
-        self,
-    ) -> Callable[
-        [recommender_service.MarkInsightAcceptedRequest],
-        Union[insight.Insight, Awaitable[insight.Insight]],
-    ]:
+    def mark_insight_accepted(self) -> Callable[[recommender_service.MarkInsightAcceptedRequest], Union[insight.Insight, Awaitable[insight.Insight]]]:
         raise NotImplementedError()
 
     @property
@@ -299,28 +272,21 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.ListRecommendationsRequest],
-        Union[
-            recommender_service.ListRecommendationsResponse,
-            Awaitable[recommender_service.ListRecommendationsResponse],
-        ],
+        Union[recommender_service.ListRecommendationsResponse, Awaitable[recommender_service.ListRecommendationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_recommendation(
         self,
-    ) -> Callable[
-        [recommender_service.GetRecommendationRequest],
-        Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
-    ]:
+    ) -> Callable[[recommender_service.GetRecommendationRequest], Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]]]:
         raise NotImplementedError()
 
     @property
     def mark_recommendation_claimed(
         self,
     ) -> Callable[
-        [recommender_service.MarkRecommendationClaimedRequest],
-        Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
+        [recommender_service.MarkRecommendationClaimedRequest], Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]]
     ]:
         raise NotImplementedError()
 
@@ -328,8 +294,7 @@ class RecommenderTransport(abc.ABC):
     def mark_recommendation_succeeded(
         self,
     ) -> Callable[
-        [recommender_service.MarkRecommendationSucceededRequest],
-        Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
+        [recommender_service.MarkRecommendationSucceededRequest], Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]]
     ]:
         raise NotImplementedError()
 
@@ -337,8 +302,7 @@ class RecommenderTransport(abc.ABC):
     def mark_recommendation_failed(
         self,
     ) -> Callable[
-        [recommender_service.MarkRecommendationFailedRequest],
-        Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]],
+        [recommender_service.MarkRecommendationFailedRequest], Union[recommendation.Recommendation, Awaitable[recommendation.Recommendation]]
     ]:
         raise NotImplementedError()
 
@@ -347,10 +311,7 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.GetRecommenderConfigRequest],
-        Union[
-            recommender_config.RecommenderConfig,
-            Awaitable[recommender_config.RecommenderConfig],
-        ],
+        Union[recommender_config.RecommenderConfig, Awaitable[recommender_config.RecommenderConfig]],
     ]:
         raise NotImplementedError()
 
@@ -359,10 +320,7 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.UpdateRecommenderConfigRequest],
-        Union[
-            gcr_recommender_config.RecommenderConfig,
-            Awaitable[gcr_recommender_config.RecommenderConfig],
-        ],
+        Union[gcr_recommender_config.RecommenderConfig, Awaitable[gcr_recommender_config.RecommenderConfig]],
     ]:
         raise NotImplementedError()
 
@@ -371,10 +329,7 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.GetInsightTypeConfigRequest],
-        Union[
-            insight_type_config.InsightTypeConfig,
-            Awaitable[insight_type_config.InsightTypeConfig],
-        ],
+        Union[insight_type_config.InsightTypeConfig, Awaitable[insight_type_config.InsightTypeConfig]],
     ]:
         raise NotImplementedError()
 
@@ -383,10 +338,7 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.UpdateInsightTypeConfigRequest],
-        Union[
-            gcr_insight_type_config.InsightTypeConfig,
-            Awaitable[gcr_insight_type_config.InsightTypeConfig],
-        ],
+        Union[gcr_insight_type_config.InsightTypeConfig, Awaitable[gcr_insight_type_config.InsightTypeConfig]],
     ]:
         raise NotImplementedError()
 
@@ -395,10 +347,7 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.ListRecommendersRequest],
-        Union[
-            recommender_service.ListRecommendersResponse,
-            Awaitable[recommender_service.ListRecommendersResponse],
-        ],
+        Union[recommender_service.ListRecommendersResponse, Awaitable[recommender_service.ListRecommendersResponse]],
     ]:
         raise NotImplementedError()
 
@@ -407,10 +356,7 @@ class RecommenderTransport(abc.ABC):
         self,
     ) -> Callable[
         [recommender_service.ListInsightTypesRequest],
-        Union[
-            recommender_service.ListInsightTypesResponse,
-            Awaitable[recommender_service.ListInsightTypesResponse],
-        ],
+        Union[recommender_service.ListInsightTypesResponse, Awaitable[recommender_service.ListInsightTypesResponse]],
     ]:
         raise NotImplementedError()
 

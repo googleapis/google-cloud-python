@@ -22,9 +22,7 @@ from .grpc_asyncio import CmEnrollmentServiceGrpcAsyncIOTransport
 from .rest import CmEnrollmentServiceRestInterceptor, CmEnrollmentServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CmEnrollmentServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CmEnrollmentServiceTransport]]
 _transport_registry["grpc"] = CmEnrollmentServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CmEnrollmentServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = CmEnrollmentServiceRestTransport

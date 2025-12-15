@@ -135,9 +135,7 @@ class JobControllerRestInterceptor:
     """
 
     def pre_cancel_job(
-        self,
-        request: jobs.CancelJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.CancelJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.CancelJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_job
 
@@ -177,9 +175,7 @@ class JobControllerRestInterceptor:
         return response, metadata
 
     def pre_delete_job(
-        self,
-        request: jobs.DeleteJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.DeleteJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.DeleteJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_job
 
@@ -189,9 +185,7 @@ class JobControllerRestInterceptor:
         return request, metadata
 
     def pre_get_job(
-        self,
-        request: jobs.GetJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.GetJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.GetJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_job
 
@@ -231,9 +225,7 @@ class JobControllerRestInterceptor:
         return response, metadata
 
     def pre_list_jobs(
-        self,
-        request: jobs.ListJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.ListJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.ListJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_jobs
 
@@ -256,9 +248,7 @@ class JobControllerRestInterceptor:
         return response
 
     def post_list_jobs_with_metadata(
-        self,
-        response: jobs.ListJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: jobs.ListJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.ListJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_jobs
 
@@ -275,9 +265,7 @@ class JobControllerRestInterceptor:
         return response, metadata
 
     def pre_submit_job(
-        self,
-        request: jobs.SubmitJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.SubmitJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.SubmitJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_job
 
@@ -317,9 +305,7 @@ class JobControllerRestInterceptor:
         return response, metadata
 
     def pre_submit_job_as_operation(
-        self,
-        request: jobs.SubmitJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.SubmitJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.SubmitJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_job_as_operation
 
@@ -328,9 +314,7 @@ class JobControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_submit_job_as_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_submit_job_as_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for submit_job_as_operation
 
         DEPRECATED. Please use the `post_submit_job_as_operation_with_metadata`
@@ -344,9 +328,7 @@ class JobControllerRestInterceptor:
         return response
 
     def post_submit_job_as_operation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for submit_job_as_operation
 
@@ -363,9 +345,7 @@ class JobControllerRestInterceptor:
         return response, metadata
 
     def pre_update_job(
-        self,
-        request: jobs.UpdateJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: jobs.UpdateJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[jobs.UpdateJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_job
 
@@ -405,12 +385,8 @@ class JobControllerRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -428,12 +404,8 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -451,13 +423,8 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -465,9 +432,7 @@ class JobControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -477,12 +442,8 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -500,12 +461,8 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -523,12 +480,8 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -536,9 +489,7 @@ class JobControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -548,12 +499,8 @@ class JobControllerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -561,9 +508,7 @@ class JobControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -652,9 +597,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -722,29 +665,17 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CancelJob(
-        _BaseJobControllerRestTransport._BaseCancelJob, JobControllerRestStub
-    ):
+    class _CancelJob(_BaseJobControllerRestTransport._BaseCancelJob, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.CancelJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -784,36 +715,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     A Dataproc job resource.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseCancelJob._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseCancelJob._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_job(request, metadata)
-            transcoded_request = (
-                _BaseJobControllerRestTransport._BaseCancelJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseCancelJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseJobControllerRestTransport._BaseCancelJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseJobControllerRestTransport._BaseCancelJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobControllerRestTransport._BaseCancelJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobControllerRestTransport._BaseCancelJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -837,13 +750,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._CancelJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -859,12 +766,8 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             resp = self._interceptor.post_cancel_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = jobs.Job.to_json(response)
                 except:
@@ -885,22 +788,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 )
             return resp
 
-    class _DeleteJob(
-        _BaseJobControllerRestTransport._BaseDeleteJob, JobControllerRestStub
-    ):
+    class _DeleteJob(_BaseJobControllerRestTransport._BaseDeleteJob, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.DeleteJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -935,30 +828,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseDeleteJob._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseDeleteJob._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_job(request, metadata)
-            transcoded_request = (
-                _BaseJobControllerRestTransport._BaseDeleteJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseDeleteJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobControllerRestTransport._BaseDeleteJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobControllerRestTransport._BaseDeleteJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -982,12 +861,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._DeleteJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1000,15 +874,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             return hash("JobControllerRestTransport.GetJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1048,30 +914,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     A Dataproc job resource.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseGetJob._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseGetJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_job(request, metadata)
-            transcoded_request = (
-                _BaseJobControllerRestTransport._BaseGetJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseGetJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobControllerRestTransport._BaseGetJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobControllerRestTransport._BaseGetJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1095,12 +947,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._GetJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1116,12 +963,8 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             resp = self._interceptor.post_get_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = jobs.Job.to_json(response)
                 except:
@@ -1142,22 +985,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 )
             return resp
 
-    class _ListJobs(
-        _BaseJobControllerRestTransport._BaseListJobs, JobControllerRestStub
-    ):
+    class _ListJobs(_BaseJobControllerRestTransport._BaseListJobs, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.ListJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1196,30 +1029,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     A list of jobs in a project.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseListJobs._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseListJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_jobs(request, metadata)
-            transcoded_request = (
-                _BaseJobControllerRestTransport._BaseListJobs._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseListJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobControllerRestTransport._BaseListJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobControllerRestTransport._BaseListJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1243,12 +1062,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._ListJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1264,12 +1078,8 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             resp = self._interceptor.post_list_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = jobs.ListJobsResponse.to_json(response)
                 except:
@@ -1290,22 +1100,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 )
             return resp
 
-    class _SubmitJob(
-        _BaseJobControllerRestTransport._BaseSubmitJob, JobControllerRestStub
-    ):
+    class _SubmitJob(_BaseJobControllerRestTransport._BaseSubmitJob, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.SubmitJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1345,36 +1145,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     A Dataproc job resource.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseSubmitJob._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseSubmitJob._get_http_options()
 
             request, metadata = self._interceptor.pre_submit_job(request, metadata)
-            transcoded_request = (
-                _BaseJobControllerRestTransport._BaseSubmitJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseSubmitJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseJobControllerRestTransport._BaseSubmitJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseJobControllerRestTransport._BaseSubmitJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobControllerRestTransport._BaseSubmitJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobControllerRestTransport._BaseSubmitJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1398,13 +1180,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._SubmitJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1420,12 +1196,8 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             resp = self._interceptor.post_submit_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_submit_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_submit_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = jobs.Job.to_json(response)
                 except:
@@ -1446,22 +1218,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 )
             return resp
 
-    class _SubmitJobAsOperation(
-        _BaseJobControllerRestTransport._BaseSubmitJobAsOperation, JobControllerRestStub
-    ):
+    class _SubmitJobAsOperation(_BaseJobControllerRestTransport._BaseSubmitJobAsOperation, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.SubmitJobAsOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1504,32 +1266,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_submit_job_as_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_submit_job_as_operation(request, metadata)
+            transcoded_request = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseSubmitJobAsOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1553,13 +1301,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._SubmitJobAsOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1573,12 +1315,8 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             resp = self._interceptor.post_submit_job_as_operation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_submit_job_as_operation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_submit_job_as_operation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1599,22 +1337,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 )
             return resp
 
-    class _UpdateJob(
-        _BaseJobControllerRestTransport._BaseUpdateJob, JobControllerRestStub
-    ):
+    class _UpdateJob(_BaseJobControllerRestTransport._BaseUpdateJob, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.UpdateJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1654,36 +1382,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     A Dataproc job resource.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseUpdateJob._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseUpdateJob._get_http_options()
 
             request, metadata = self._interceptor.pre_update_job(request, metadata)
-            transcoded_request = (
-                _BaseJobControllerRestTransport._BaseUpdateJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseUpdateJob._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseJobControllerRestTransport._BaseUpdateJob._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseJobControllerRestTransport._BaseUpdateJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseJobControllerRestTransport._BaseUpdateJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseJobControllerRestTransport._BaseUpdateJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1707,13 +1417,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._UpdateJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1729,12 +1433,8 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             resp = self._interceptor.post_update_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = jobs.Job.to_json(response)
                 except:
@@ -1786,9 +1486,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
         return self._SubmitJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def submit_job_as_operation(
-        self,
-    ) -> Callable[[jobs.SubmitJobRequest], operations_pb2.Operation]:
+    def submit_job_as_operation(self) -> Callable[[jobs.SubmitJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SubmitJobAsOperation(self._session, self._host, self._interceptor)  # type: ignore
@@ -1803,22 +1501,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseJobControllerRestTransport._BaseGetIamPolicy, JobControllerRestStub
-    ):
+    class _GetIamPolicy(_BaseJobControllerRestTransport._BaseGetIamPolicy, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1857,30 +1545,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1904,13 +1580,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1922,9 +1592,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1949,22 +1617,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseJobControllerRestTransport._BaseSetIamPolicy, JobControllerRestStub
-    ):
+    class _SetIamPolicy(_BaseJobControllerRestTransport._BaseSetIamPolicy, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2003,30 +1661,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2050,13 +1696,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2068,9 +1708,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2095,22 +1733,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseJobControllerRestTransport._BaseTestIamPermissions, JobControllerRestStub
-    ):
+    class _TestIamPermissions(_BaseJobControllerRestTransport._BaseTestIamPermissions, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2149,32 +1777,18 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2198,13 +1812,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2216,9 +1824,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2243,22 +1849,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseJobControllerRestTransport._BaseCancelOperation, JobControllerRestStub
-    ):
+    class _CancelOperation(_BaseJobControllerRestTransport._BaseCancelOperation, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2293,28 +1889,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseJobControllerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseJobControllerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2338,12 +1922,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2357,22 +1936,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseJobControllerRestTransport._BaseDeleteOperation, JobControllerRestStub
-    ):
+    class _DeleteOperation(_BaseJobControllerRestTransport._BaseDeleteOperation, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2407,28 +1976,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseJobControllerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseJobControllerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2452,12 +2009,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2471,22 +2023,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseJobControllerRestTransport._BaseGetOperation, JobControllerRestStub
-    ):
+    class _GetOperation(_BaseJobControllerRestTransport._BaseGetOperation, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2524,26 +2066,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseJobControllerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2567,12 +2099,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2584,9 +2111,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2611,22 +2136,12 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseJobControllerRestTransport._BaseListOperations, JobControllerRestStub
-    ):
+    class _ListOperations(_BaseJobControllerRestTransport._BaseListOperations, JobControllerRestStub):
         def __hash__(self):
             return hash("JobControllerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2664,26 +2179,16 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseJobControllerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseJobControllerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseJobControllerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseJobControllerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseJobControllerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseJobControllerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2707,12 +2212,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
 
             # Send the request
             response = JobControllerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2724,9 +2224,7 @@ class JobControllerRestTransport(_BaseJobControllerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

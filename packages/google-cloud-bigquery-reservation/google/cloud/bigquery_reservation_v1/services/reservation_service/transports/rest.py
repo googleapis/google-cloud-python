@@ -299,12 +299,8 @@ class ReservationServiceRestInterceptor:
     """
 
     def pre_create_assignment(
-        self,
-        request: reservation.CreateAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.CreateAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.CreateAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.CreateAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -312,9 +308,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_assignment(
-        self, response: reservation.Assignment
-    ) -> reservation.Assignment:
+    def post_create_assignment(self, response: reservation.Assignment) -> reservation.Assignment:
         """Post-rpc interceptor for create_assignment
 
         DEPRECATED. Please use the `post_create_assignment_with_metadata`
@@ -328,9 +322,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_create_assignment_with_metadata(
-        self,
-        response: reservation.Assignment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.Assignment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.Assignment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_assignment
 
@@ -347,13 +339,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_create_capacity_commitment(
-        self,
-        request: reservation.CreateCapacityCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.CreateCapacityCommitmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.CreateCapacityCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.CreateCapacityCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_capacity_commitment
 
         Override in a subclass to manipulate the request or metadata
@@ -361,9 +348,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_capacity_commitment(
-        self, response: reservation.CapacityCommitment
-    ) -> reservation.CapacityCommitment:
+    def post_create_capacity_commitment(self, response: reservation.CapacityCommitment) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for create_capacity_commitment
 
         DEPRECATED. Please use the `post_create_capacity_commitment_with_metadata`
@@ -377,9 +362,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_create_capacity_commitment_with_metadata(
-        self,
-        response: reservation.CapacityCommitment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.CapacityCommitment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_capacity_commitment
 
@@ -396,13 +379,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_create_reservation(
-        self,
-        request: gcbr_reservation.CreateReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcbr_reservation.CreateReservationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcbr_reservation.CreateReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcbr_reservation.CreateReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -410,9 +388,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_reservation(
-        self, response: gcbr_reservation.Reservation
-    ) -> gcbr_reservation.Reservation:
+    def post_create_reservation(self, response: gcbr_reservation.Reservation) -> gcbr_reservation.Reservation:
         """Post-rpc interceptor for create_reservation
 
         DEPRECATED. Please use the `post_create_reservation_with_metadata`
@@ -426,9 +402,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_create_reservation_with_metadata(
-        self,
-        response: gcbr_reservation.Reservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcbr_reservation.Reservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcbr_reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_reservation
 
@@ -445,13 +419,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_create_reservation_group(
-        self,
-        request: reservation.CreateReservationGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.CreateReservationGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.CreateReservationGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.CreateReservationGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_reservation_group
 
         Override in a subclass to manipulate the request or metadata
@@ -459,9 +428,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_reservation_group(
-        self, response: reservation.ReservationGroup
-    ) -> reservation.ReservationGroup:
+    def post_create_reservation_group(self, response: reservation.ReservationGroup) -> reservation.ReservationGroup:
         """Post-rpc interceptor for create_reservation_group
 
         DEPRECATED. Please use the `post_create_reservation_group_with_metadata`
@@ -475,9 +442,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_create_reservation_group_with_metadata(
-        self,
-        response: reservation.ReservationGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.ReservationGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.ReservationGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_reservation_group
 
@@ -494,12 +459,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_assignment(
-        self,
-        request: reservation.DeleteAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.DeleteAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.DeleteAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.DeleteAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -508,13 +469,8 @@ class ReservationServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_capacity_commitment(
-        self,
-        request: reservation.DeleteCapacityCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.DeleteCapacityCommitmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.DeleteCapacityCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.DeleteCapacityCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_capacity_commitment
 
         Override in a subclass to manipulate the request or metadata
@@ -523,12 +479,8 @@ class ReservationServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_reservation(
-        self,
-        request: reservation.DeleteReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.DeleteReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.DeleteReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.DeleteReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -537,13 +489,8 @@ class ReservationServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_reservation_group(
-        self,
-        request: reservation.DeleteReservationGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.DeleteReservationGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.DeleteReservationGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.DeleteReservationGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_reservation_group
 
         Override in a subclass to manipulate the request or metadata
@@ -552,12 +499,8 @@ class ReservationServiceRestInterceptor:
         return request, metadata
 
     def pre_failover_reservation(
-        self,
-        request: reservation.FailoverReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.FailoverReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.FailoverReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.FailoverReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for failover_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -565,9 +508,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_failover_reservation(
-        self, response: reservation.Reservation
-    ) -> reservation.Reservation:
+    def post_failover_reservation(self, response: reservation.Reservation) -> reservation.Reservation:
         """Post-rpc interceptor for failover_reservation
 
         DEPRECATED. Please use the `post_failover_reservation_with_metadata`
@@ -581,9 +522,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_failover_reservation_with_metadata(
-        self,
-        response: reservation.Reservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.Reservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for failover_reservation
 
@@ -600,12 +539,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_bi_reservation(
-        self,
-        request: reservation.GetBiReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.GetBiReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.GetBiReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.GetBiReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_bi_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -613,9 +548,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_bi_reservation(
-        self, response: reservation.BiReservation
-    ) -> reservation.BiReservation:
+    def post_get_bi_reservation(self, response: reservation.BiReservation) -> reservation.BiReservation:
         """Post-rpc interceptor for get_bi_reservation
 
         DEPRECATED. Please use the `post_get_bi_reservation_with_metadata`
@@ -629,9 +562,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_get_bi_reservation_with_metadata(
-        self,
-        response: reservation.BiReservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.BiReservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.BiReservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_bi_reservation
 
@@ -648,13 +579,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_capacity_commitment(
-        self,
-        request: reservation.GetCapacityCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.GetCapacityCommitmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.GetCapacityCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.GetCapacityCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_capacity_commitment
 
         Override in a subclass to manipulate the request or metadata
@@ -662,9 +588,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_capacity_commitment(
-        self, response: reservation.CapacityCommitment
-    ) -> reservation.CapacityCommitment:
+    def post_get_capacity_commitment(self, response: reservation.CapacityCommitment) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for get_capacity_commitment
 
         DEPRECATED. Please use the `post_get_capacity_commitment_with_metadata`
@@ -678,9 +602,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_get_capacity_commitment_with_metadata(
-        self,
-        response: reservation.CapacityCommitment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.CapacityCommitment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_capacity_commitment
 
@@ -697,12 +619,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -724,9 +642,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -743,12 +659,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_reservation(
-        self,
-        request: reservation.GetReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.GetReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.GetReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.GetReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -756,9 +668,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_reservation(
-        self, response: reservation.Reservation
-    ) -> reservation.Reservation:
+    def post_get_reservation(self, response: reservation.Reservation) -> reservation.Reservation:
         """Post-rpc interceptor for get_reservation
 
         DEPRECATED. Please use the `post_get_reservation_with_metadata`
@@ -772,9 +682,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_get_reservation_with_metadata(
-        self,
-        response: reservation.Reservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.Reservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_reservation
 
@@ -791,12 +699,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_get_reservation_group(
-        self,
-        request: reservation.GetReservationGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.GetReservationGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.GetReservationGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.GetReservationGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_reservation_group
 
         Override in a subclass to manipulate the request or metadata
@@ -804,9 +708,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_reservation_group(
-        self, response: reservation.ReservationGroup
-    ) -> reservation.ReservationGroup:
+    def post_get_reservation_group(self, response: reservation.ReservationGroup) -> reservation.ReservationGroup:
         """Post-rpc interceptor for get_reservation_group
 
         DEPRECATED. Please use the `post_get_reservation_group_with_metadata`
@@ -820,9 +722,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_get_reservation_group_with_metadata(
-        self,
-        response: reservation.ReservationGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.ReservationGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.ReservationGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_reservation_group
 
@@ -839,12 +739,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_assignments(
-        self,
-        request: reservation.ListAssignmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.ListAssignmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assignments
 
         Override in a subclass to manipulate the request or metadata
@@ -852,9 +748,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assignments(
-        self, response: reservation.ListAssignmentsResponse
-    ) -> reservation.ListAssignmentsResponse:
+    def post_list_assignments(self, response: reservation.ListAssignmentsResponse) -> reservation.ListAssignmentsResponse:
         """Post-rpc interceptor for list_assignments
 
         DEPRECATED. Please use the `post_list_assignments_with_metadata`
@@ -868,12 +762,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_list_assignments_with_metadata(
-        self,
-        response: reservation.ListAssignmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: reservation.ListAssignmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assignments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -889,13 +779,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_capacity_commitments(
-        self,
-        request: reservation.ListCapacityCommitmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListCapacityCommitmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.ListCapacityCommitmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListCapacityCommitmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_capacity_commitments
 
         Override in a subclass to manipulate the request or metadata
@@ -903,9 +788,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_capacity_commitments(
-        self, response: reservation.ListCapacityCommitmentsResponse
-    ) -> reservation.ListCapacityCommitmentsResponse:
+    def post_list_capacity_commitments(self, response: reservation.ListCapacityCommitmentsResponse) -> reservation.ListCapacityCommitmentsResponse:
         """Post-rpc interceptor for list_capacity_commitments
 
         DEPRECATED. Please use the `post_list_capacity_commitments_with_metadata`
@@ -919,13 +802,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_list_capacity_commitments_with_metadata(
-        self,
-        response: reservation.ListCapacityCommitmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListCapacityCommitmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: reservation.ListCapacityCommitmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListCapacityCommitmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_capacity_commitments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -941,13 +819,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_reservation_groups(
-        self,
-        request: reservation.ListReservationGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListReservationGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.ListReservationGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListReservationGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reservation_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -955,9 +828,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_reservation_groups(
-        self, response: reservation.ListReservationGroupsResponse
-    ) -> reservation.ListReservationGroupsResponse:
+    def post_list_reservation_groups(self, response: reservation.ListReservationGroupsResponse) -> reservation.ListReservationGroupsResponse:
         """Post-rpc interceptor for list_reservation_groups
 
         DEPRECATED. Please use the `post_list_reservation_groups_with_metadata`
@@ -971,13 +842,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_list_reservation_groups_with_metadata(
-        self,
-        response: reservation.ListReservationGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListReservationGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: reservation.ListReservationGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListReservationGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_reservation_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -993,12 +859,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_list_reservations(
-        self,
-        request: reservation.ListReservationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListReservationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.ListReservationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListReservationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reservations
 
         Override in a subclass to manipulate the request or metadata
@@ -1006,9 +868,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_reservations(
-        self, response: reservation.ListReservationsResponse
-    ) -> reservation.ListReservationsResponse:
+    def post_list_reservations(self, response: reservation.ListReservationsResponse) -> reservation.ListReservationsResponse:
         """Post-rpc interceptor for list_reservations
 
         DEPRECATED. Please use the `post_list_reservations_with_metadata`
@@ -1022,12 +882,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_list_reservations_with_metadata(
-        self,
-        response: reservation.ListReservationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.ListReservationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: reservation.ListReservationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.ListReservationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_reservations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1043,13 +899,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_merge_capacity_commitments(
-        self,
-        request: reservation.MergeCapacityCommitmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.MergeCapacityCommitmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.MergeCapacityCommitmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.MergeCapacityCommitmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for merge_capacity_commitments
 
         Override in a subclass to manipulate the request or metadata
@@ -1057,9 +908,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_merge_capacity_commitments(
-        self, response: reservation.CapacityCommitment
-    ) -> reservation.CapacityCommitment:
+    def post_merge_capacity_commitments(self, response: reservation.CapacityCommitment) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for merge_capacity_commitments
 
         DEPRECATED. Please use the `post_merge_capacity_commitments_with_metadata`
@@ -1073,9 +922,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_merge_capacity_commitments_with_metadata(
-        self,
-        response: reservation.CapacityCommitment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.CapacityCommitment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for merge_capacity_commitments
 
@@ -1092,12 +939,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_move_assignment(
-        self,
-        request: reservation.MoveAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.MoveAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.MoveAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.MoveAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -1105,9 +948,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_move_assignment(
-        self, response: reservation.Assignment
-    ) -> reservation.Assignment:
+    def post_move_assignment(self, response: reservation.Assignment) -> reservation.Assignment:
         """Post-rpc interceptor for move_assignment
 
         DEPRECATED. Please use the `post_move_assignment_with_metadata`
@@ -1121,9 +962,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_move_assignment_with_metadata(
-        self,
-        response: reservation.Assignment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.Assignment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.Assignment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_assignment
 
@@ -1140,12 +979,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_search_all_assignments(
-        self,
-        request: reservation.SearchAllAssignmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.SearchAllAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.SearchAllAssignmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.SearchAllAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_assignments
 
         Override in a subclass to manipulate the request or metadata
@@ -1153,9 +988,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_all_assignments(
-        self, response: reservation.SearchAllAssignmentsResponse
-    ) -> reservation.SearchAllAssignmentsResponse:
+    def post_search_all_assignments(self, response: reservation.SearchAllAssignmentsResponse) -> reservation.SearchAllAssignmentsResponse:
         """Post-rpc interceptor for search_all_assignments
 
         DEPRECATED. Please use the `post_search_all_assignments_with_metadata`
@@ -1169,13 +1002,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_search_all_assignments_with_metadata(
-        self,
-        response: reservation.SearchAllAssignmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.SearchAllAssignmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: reservation.SearchAllAssignmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.SearchAllAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_assignments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1191,12 +1019,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_search_assignments(
-        self,
-        request: reservation.SearchAssignmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.SearchAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.SearchAssignmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.SearchAssignmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_assignments
 
         Override in a subclass to manipulate the request or metadata
@@ -1204,9 +1028,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_assignments(
-        self, response: reservation.SearchAssignmentsResponse
-    ) -> reservation.SearchAssignmentsResponse:
+    def post_search_assignments(self, response: reservation.SearchAssignmentsResponse) -> reservation.SearchAssignmentsResponse:
         """Post-rpc interceptor for search_assignments
 
         DEPRECATED. Please use the `post_search_assignments_with_metadata`
@@ -1220,12 +1042,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_search_assignments_with_metadata(
-        self,
-        response: reservation.SearchAssignmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.SearchAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: reservation.SearchAssignmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.SearchAssignmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_assignments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1241,12 +1059,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1268,9 +1082,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -1287,13 +1099,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_split_capacity_commitment(
-        self,
-        request: reservation.SplitCapacityCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.SplitCapacityCommitmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.SplitCapacityCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.SplitCapacityCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for split_capacity_commitment
 
         Override in a subclass to manipulate the request or metadata
@@ -1301,9 +1108,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_split_capacity_commitment(
-        self, response: reservation.SplitCapacityCommitmentResponse
-    ) -> reservation.SplitCapacityCommitmentResponse:
+    def post_split_capacity_commitment(self, response: reservation.SplitCapacityCommitmentResponse) -> reservation.SplitCapacityCommitmentResponse:
         """Post-rpc interceptor for split_capacity_commitment
 
         DEPRECATED. Please use the `post_split_capacity_commitment_with_metadata`
@@ -1317,13 +1122,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_split_capacity_commitment_with_metadata(
-        self,
-        response: reservation.SplitCapacityCommitmentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.SplitCapacityCommitmentResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: reservation.SplitCapacityCommitmentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.SplitCapacityCommitmentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for split_capacity_commitment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1339,13 +1139,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1353,9 +1148,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -1369,13 +1162,8 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1391,12 +1179,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_assignment(
-        self,
-        request: reservation.UpdateAssignmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.UpdateAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.UpdateAssignmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.UpdateAssignmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_assignment
 
         Override in a subclass to manipulate the request or metadata
@@ -1404,9 +1188,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_assignment(
-        self, response: reservation.Assignment
-    ) -> reservation.Assignment:
+    def post_update_assignment(self, response: reservation.Assignment) -> reservation.Assignment:
         """Post-rpc interceptor for update_assignment
 
         DEPRECATED. Please use the `post_update_assignment_with_metadata`
@@ -1420,9 +1202,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_update_assignment_with_metadata(
-        self,
-        response: reservation.Assignment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.Assignment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.Assignment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_assignment
 
@@ -1439,12 +1219,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_bi_reservation(
-        self,
-        request: reservation.UpdateBiReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.UpdateBiReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: reservation.UpdateBiReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.UpdateBiReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_bi_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -1452,9 +1228,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_bi_reservation(
-        self, response: reservation.BiReservation
-    ) -> reservation.BiReservation:
+    def post_update_bi_reservation(self, response: reservation.BiReservation) -> reservation.BiReservation:
         """Post-rpc interceptor for update_bi_reservation
 
         DEPRECATED. Please use the `post_update_bi_reservation_with_metadata`
@@ -1468,9 +1242,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_update_bi_reservation_with_metadata(
-        self,
-        response: reservation.BiReservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.BiReservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.BiReservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_bi_reservation
 
@@ -1487,13 +1259,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_capacity_commitment(
-        self,
-        request: reservation.UpdateCapacityCommitmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        reservation.UpdateCapacityCommitmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: reservation.UpdateCapacityCommitmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[reservation.UpdateCapacityCommitmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_capacity_commitment
 
         Override in a subclass to manipulate the request or metadata
@@ -1501,9 +1268,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_capacity_commitment(
-        self, response: reservation.CapacityCommitment
-    ) -> reservation.CapacityCommitment:
+    def post_update_capacity_commitment(self, response: reservation.CapacityCommitment) -> reservation.CapacityCommitment:
         """Post-rpc interceptor for update_capacity_commitment
 
         DEPRECATED. Please use the `post_update_capacity_commitment_with_metadata`
@@ -1517,9 +1282,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_update_capacity_commitment_with_metadata(
-        self,
-        response: reservation.CapacityCommitment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reservation.CapacityCommitment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reservation.CapacityCommitment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_capacity_commitment
 
@@ -1536,13 +1299,8 @@ class ReservationServiceRestInterceptor:
         return response, metadata
 
     def pre_update_reservation(
-        self,
-        request: gcbr_reservation.UpdateReservationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcbr_reservation.UpdateReservationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcbr_reservation.UpdateReservationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcbr_reservation.UpdateReservationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_reservation
 
         Override in a subclass to manipulate the request or metadata
@@ -1550,9 +1308,7 @@ class ReservationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_reservation(
-        self, response: gcbr_reservation.Reservation
-    ) -> gcbr_reservation.Reservation:
+    def post_update_reservation(self, response: gcbr_reservation.Reservation) -> gcbr_reservation.Reservation:
         """Post-rpc interceptor for update_reservation
 
         DEPRECATED. Please use the `post_update_reservation_with_metadata`
@@ -1566,9 +1322,7 @@ class ReservationServiceRestInterceptor:
         return response
 
     def post_update_reservation_with_metadata(
-        self,
-        response: gcbr_reservation.Reservation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcbr_reservation.Reservation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcbr_reservation.Reservation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_reservation
 
@@ -1679,31 +1433,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ReservationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAssignment(
-        _BaseReservationServiceRestTransport._BaseCreateAssignment,
-        ReservationServiceRestStub,
-    ):
+    class _CreateAssignment(_BaseReservationServiceRestTransport._BaseCreateAssignment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.CreateAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1749,32 +1490,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseCreateAssignment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_assignment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1798,13 +1525,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._CreateAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1820,12 +1541,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_create_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Assignment.to_json(response)
                 except:
@@ -1846,23 +1563,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _CreateCapacityCommitment(
-        _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment,
-        ReservationServiceRestStub,
-    ):
+    class _CreateCapacityCommitment(_BaseReservationServiceRestTransport._BaseCreateCapacityCommitment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.CreateCapacityCommitment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1918,32 +1624,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_capacity_commitment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_capacity_commitment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateCapacityCommitment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1966,16 +1658,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._CreateCapacityCommitment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._CreateCapacityCommitment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1991,12 +1675,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_create_capacity_commitment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_capacity_commitment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_capacity_commitment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
                 except:
@@ -2017,23 +1697,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _CreateReservation(
-        _BaseReservationServiceRestTransport._BaseCreateReservation,
-        ReservationServiceRestStub,
-    ):
+    class _CreateReservation(_BaseReservationServiceRestTransport._BaseCreateReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.CreateReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2076,32 +1745,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseCreateReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseCreateReservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_reservation(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateReservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_reservation(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateReservation._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseCreateReservation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseCreateReservation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseCreateReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2125,13 +1780,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._CreateReservation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2147,12 +1796,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_create_reservation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_reservation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_reservation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcbr_reservation.Reservation.to_json(response)
                 except:
@@ -2173,23 +1818,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _CreateReservationGroup(
-        _BaseReservationServiceRestTransport._BaseCreateReservationGroup,
-        ReservationServiceRestStub,
-    ):
+    class _CreateReservationGroup(_BaseReservationServiceRestTransport._BaseCreateReservationGroup, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.CreateReservationGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2232,32 +1866,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_reservation_group(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_reservation_group(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseCreateReservationGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2280,16 +1900,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._CreateReservationGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._CreateReservationGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2305,12 +1917,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_create_reservation_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_reservation_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_reservation_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.ReservationGroup.to_json(response)
                 except:
@@ -2331,23 +1939,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _DeleteAssignment(
-        _BaseReservationServiceRestTransport._BaseDeleteAssignment,
-        ReservationServiceRestStub,
-    ):
+    class _DeleteAssignment(_BaseReservationServiceRestTransport._BaseDeleteAssignment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.DeleteAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2385,28 +1982,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_assignment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2430,12 +2015,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._DeleteAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2443,23 +2023,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteCapacityCommitment(
-        _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment,
-        ReservationServiceRestStub,
-    ):
+    class _DeleteCapacityCommitment(_BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.DeleteCapacityCommitment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2496,28 +2065,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_capacity_commitment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_capacity_commitment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteCapacityCommitment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2540,15 +2097,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._DeleteCapacityCommitment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._DeleteCapacityCommitment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2556,23 +2106,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteReservation(
-        _BaseReservationServiceRestTransport._BaseDeleteReservation,
-        ReservationServiceRestStub,
-    ):
+    class _DeleteReservation(_BaseReservationServiceRestTransport._BaseDeleteReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.DeleteReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2608,28 +2147,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseDeleteReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_reservation(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_reservation(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2653,12 +2180,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._DeleteReservation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2666,23 +2188,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteReservationGroup(
-        _BaseReservationServiceRestTransport._BaseDeleteReservationGroup,
-        ReservationServiceRestStub,
-    ):
+    class _DeleteReservationGroup(_BaseReservationServiceRestTransport._BaseDeleteReservationGroup, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.DeleteReservationGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2718,28 +2229,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_reservation_group(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_reservation_group(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseDeleteReservationGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2762,15 +2261,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._DeleteReservationGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._DeleteReservationGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2778,23 +2270,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FailoverReservation(
-        _BaseReservationServiceRestTransport._BaseFailoverReservation,
-        ReservationServiceRestStub,
-    ):
+    class _FailoverReservation(_BaseReservationServiceRestTransport._BaseFailoverReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.FailoverReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2837,32 +2318,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseFailoverReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_failover_reservation(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_failover_reservation(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseFailoverReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2885,16 +2352,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._FailoverReservation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._FailoverReservation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2910,12 +2369,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_failover_reservation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_failover_reservation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_failover_reservation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Reservation.to_json(response)
                 except:
@@ -2936,23 +2391,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _GetBiReservation(
-        _BaseReservationServiceRestTransport._BaseGetBiReservation,
-        ReservationServiceRestStub,
-    ):
+    class _GetBiReservation(_BaseReservationServiceRestTransport._BaseGetBiReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.GetBiReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2992,28 +2436,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     Represents a BI Reservation.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseGetBiReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_bi_reservation(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_bi_reservation(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseGetBiReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3037,12 +2469,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._GetBiReservation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3058,12 +2485,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_get_bi_reservation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_bi_reservation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_bi_reservation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.BiReservation.to_json(response)
                 except:
@@ -3084,23 +2507,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _GetCapacityCommitment(
-        _BaseReservationServiceRestTransport._BaseGetCapacityCommitment,
-        ReservationServiceRestStub,
-    ):
+    class _GetCapacityCommitment(_BaseReservationServiceRestTransport._BaseGetCapacityCommitment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.GetCapacityCommitment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3154,28 +2566,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_capacity_commitment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_capacity_commitment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseGetCapacityCommitment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3198,15 +2598,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._GetCapacityCommitment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._GetCapacityCommitment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3222,12 +2615,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_get_capacity_commitment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_capacity_commitment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_capacity_commitment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
                 except:
@@ -3248,23 +2637,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseReservationServiceRestTransport._BaseGetIamPolicy,
-        ReservationServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseReservationServiceRestTransport._BaseGetIamPolicy, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3378,26 +2756,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3421,12 +2789,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3442,12 +2805,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3468,23 +2827,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _GetReservation(
-        _BaseReservationServiceRestTransport._BaseGetReservation,
-        ReservationServiceRestStub,
-    ):
+    class _GetReservation(_BaseReservationServiceRestTransport._BaseGetReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.GetReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3526,26 +2874,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseGetReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseGetReservation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_reservation(request, metadata)
-            transcoded_request = _BaseReservationServiceRestTransport._BaseGetReservation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetReservation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseGetReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseGetReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3569,12 +2907,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._GetReservation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3590,12 +2923,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_get_reservation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_reservation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_reservation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Reservation.to_json(response)
                 except:
@@ -3616,23 +2945,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _GetReservationGroup(
-        _BaseReservationServiceRestTransport._BaseGetReservationGroup,
-        ReservationServiceRestStub,
-    ):
+    class _GetReservationGroup(_BaseReservationServiceRestTransport._BaseGetReservationGroup, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.GetReservationGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3674,28 +2992,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_reservation_group(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_reservation_group(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseGetReservationGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3718,15 +3024,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._GetReservationGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._GetReservationGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3742,12 +3041,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_get_reservation_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_reservation_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_reservation_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.ReservationGroup.to_json(response)
                 except:
@@ -3768,23 +3063,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _ListAssignments(
-        _BaseReservationServiceRestTransport._BaseListAssignments,
-        ReservationServiceRestStub,
-    ):
+    class _ListAssignments(_BaseReservationServiceRestTransport._BaseListAssignments, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.ListAssignments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3826,28 +3110,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseListAssignments._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseListAssignments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_assignments(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseListAssignments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_assignments(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListAssignments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseListAssignments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseListAssignments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3871,12 +3143,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._ListAssignments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3892,16 +3159,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_list_assignments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assignments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assignments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = reservation.ListAssignmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = reservation.ListAssignmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3920,23 +3181,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _ListCapacityCommitments(
-        _BaseReservationServiceRestTransport._BaseListCapacityCommitments,
-        ReservationServiceRestStub,
-    ):
+    class _ListCapacityCommitments(_BaseReservationServiceRestTransport._BaseListCapacityCommitments, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.ListCapacityCommitments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3978,28 +3228,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_capacity_commitments(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_capacity_commitments(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseListCapacityCommitments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4022,15 +3260,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._ListCapacityCommitments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._ListCapacityCommitments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4046,16 +3277,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_list_capacity_commitments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_capacity_commitments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_capacity_commitments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        reservation.ListCapacityCommitmentsResponse.to_json(response)
-                    )
+                    response_payload = reservation.ListCapacityCommitmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4074,23 +3299,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _ListReservationGroups(
-        _BaseReservationServiceRestTransport._BaseListReservationGroups,
-        ReservationServiceRestStub,
-    ):
+    class _ListReservationGroups(_BaseReservationServiceRestTransport._BaseListReservationGroups, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.ListReservationGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4132,28 +3346,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseListReservationGroups._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_reservation_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_reservation_groups(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseListReservationGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4176,15 +3378,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._ListReservationGroups._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._ListReservationGroups._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4200,16 +3395,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_list_reservation_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_reservation_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_reservation_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        reservation.ListReservationGroupsResponse.to_json(response)
-                    )
+                    response_payload = reservation.ListReservationGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4228,23 +3417,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _ListReservations(
-        _BaseReservationServiceRestTransport._BaseListReservations,
-        ReservationServiceRestStub,
-    ):
+    class _ListReservations(_BaseReservationServiceRestTransport._BaseListReservations, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.ListReservations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4286,28 +3464,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseListReservations._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseListReservations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_reservations(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseListReservations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_reservations(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseListReservations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseListReservations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseListReservations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4331,12 +3497,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._ListReservations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4352,16 +3513,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_list_reservations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_reservations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_reservations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = reservation.ListReservationsResponse.to_json(
-                        response
-                    )
+                    response_payload = reservation.ListReservationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4380,23 +3535,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _MergeCapacityCommitments(
-        _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments,
-        ReservationServiceRestStub,
-    ):
+    class _MergeCapacityCommitments(_BaseReservationServiceRestTransport._BaseMergeCapacityCommitments, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.MergeCapacityCommitments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4452,32 +3596,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_http_options()
 
-            request, metadata = self._interceptor.pre_merge_capacity_commitments(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_merge_capacity_commitments(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseMergeCapacityCommitments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4500,16 +3630,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._MergeCapacityCommitments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._MergeCapacityCommitments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4525,12 +3647,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_merge_capacity_commitments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_merge_capacity_commitments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_merge_capacity_commitments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
                 except:
@@ -4551,23 +3669,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _MoveAssignment(
-        _BaseReservationServiceRestTransport._BaseMoveAssignment,
-        ReservationServiceRestStub,
-    ):
+    class _MoveAssignment(_BaseReservationServiceRestTransport._BaseMoveAssignment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.MoveAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4618,30 +3725,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseMoveAssignment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_http_options()
 
             request, metadata = self._interceptor.pre_move_assignment(request, metadata)
-            transcoded_request = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseMoveAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4665,13 +3760,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._MoveAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4687,12 +3776,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_move_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Assignment.to_json(response)
                 except:
@@ -4713,23 +3798,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _SearchAllAssignments(
-        _BaseReservationServiceRestTransport._BaseSearchAllAssignments,
-        ReservationServiceRestStub,
-    ):
+    class _SearchAllAssignments(_BaseReservationServiceRestTransport._BaseSearchAllAssignments, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.SearchAllAssignments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4773,28 +3847,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_all_assignments(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_all_assignments(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseSearchAllAssignments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4817,15 +3879,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._SearchAllAssignments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ReservationServiceRestTransport._SearchAllAssignments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4841,16 +3896,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_search_all_assignments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_all_assignments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_all_assignments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = reservation.SearchAllAssignmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = reservation.SearchAllAssignmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4869,23 +3918,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _SearchAssignments(
-        _BaseReservationServiceRestTransport._BaseSearchAssignments,
-        ReservationServiceRestStub,
-    ):
+    class _SearchAssignments(_BaseReservationServiceRestTransport._BaseSearchAssignments, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.SearchAssignments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4929,28 +3967,16 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseSearchAssignments._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_assignments(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_assignments(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseSearchAssignments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4974,12 +4000,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._SearchAssignments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4995,16 +4016,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_search_assignments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_assignments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_assignments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = reservation.SearchAssignmentsResponse.to_json(
-                        response
-                    )
+                    response_payload = reservation.SearchAssignmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5023,23 +4038,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseReservationServiceRestTransport._BaseSetIamPolicy,
-        ReservationServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseReservationServiceRestTransport._BaseSetIamPolicy, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5154,30 +4158,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5201,13 +4193,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5223,12 +4209,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5249,23 +4231,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _SplitCapacityCommitment(
-        _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment,
-        ReservationServiceRestStub,
-    ):
+    class _SplitCapacityCommitment(_BaseReservationServiceRestTransport._BaseSplitCapacityCommitment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.SplitCapacityCommitment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5308,32 +4279,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_http_options()
 
-            request, metadata = self._interceptor.pre_split_capacity_commitment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_split_capacity_commitment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseSplitCapacityCommitment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5356,16 +4313,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._SplitCapacityCommitment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._SplitCapacityCommitment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5381,16 +4330,10 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_split_capacity_commitment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_split_capacity_commitment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_split_capacity_commitment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        reservation.SplitCapacityCommitmentResponse.to_json(response)
-                    )
+                    response_payload = reservation.SplitCapacityCommitmentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5409,23 +4352,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseReservationServiceRestTransport._BaseTestIamPermissions,
-        ReservationServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseReservationServiceRestTransport._BaseTestIamPermissions, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5465,32 +4397,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5513,16 +4431,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5538,12 +4448,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5564,23 +4470,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAssignment(
-        _BaseReservationServiceRestTransport._BaseUpdateAssignment,
-        ReservationServiceRestStub,
-    ):
+    class _UpdateAssignment(_BaseReservationServiceRestTransport._BaseUpdateAssignment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.UpdateAssignment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5624,32 +4519,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_assignment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_assignment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateAssignment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5673,13 +4554,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._UpdateAssignment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5695,12 +4570,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_update_assignment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_assignment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_assignment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.Assignment.to_json(response)
                 except:
@@ -5721,23 +4592,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateBiReservation(
-        _BaseReservationServiceRestTransport._BaseUpdateBiReservation,
-        ReservationServiceRestStub,
-    ):
+    class _UpdateBiReservation(_BaseReservationServiceRestTransport._BaseUpdateBiReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.UpdateBiReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5777,32 +4637,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                     Represents a BI Reservation.
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_bi_reservation(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_bi_reservation(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateBiReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5825,16 +4671,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._UpdateBiReservation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._UpdateBiReservation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5850,12 +4688,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_update_bi_reservation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_bi_reservation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_bi_reservation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.BiReservation.to_json(response)
                 except:
@@ -5876,23 +4710,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCapacityCommitment(
-        _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment,
-        ReservationServiceRestStub,
-    ):
+    class _UpdateCapacityCommitment(_BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.UpdateCapacityCommitment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5948,32 +4771,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_capacity_commitment(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_capacity_commitment(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateCapacityCommitment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5996,16 +4805,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                ReservationServiceRestTransport._UpdateCapacityCommitment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ReservationServiceRestTransport._UpdateCapacityCommitment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6021,12 +4822,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_update_capacity_commitment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_capacity_commitment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_capacity_commitment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reservation.CapacityCommitment.to_json(response)
                 except:
@@ -6047,23 +4844,12 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
                 )
             return resp
 
-    class _UpdateReservation(
-        _BaseReservationServiceRestTransport._BaseUpdateReservation,
-        ReservationServiceRestStub,
-    ):
+    class _UpdateReservation(_BaseReservationServiceRestTransport._BaseUpdateReservation, ReservationServiceRestStub):
         def __hash__(self):
             return hash("ReservationServiceRestTransport.UpdateReservation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6106,32 +4892,18 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReservationServiceRestTransport._BaseUpdateReservation._get_http_options()
-            )
+            http_options = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_reservation(
-                request, metadata
-            )
-            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_reservation(request, metadata)
+            transcoded_request = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_transcoded_request(http_options, request)
 
-            body = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseReservationServiceRestTransport._BaseUpdateReservation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6155,13 +4927,7 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             # Send the request
             response = ReservationServiceRestTransport._UpdateReservation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6177,12 +4943,8 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
 
             resp = self._interceptor.post_update_reservation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_reservation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_reservation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcbr_reservation.Reservation.to_json(response)
                 except:
@@ -6204,270 +4966,175 @@ class ReservationServiceRestTransport(_BaseReservationServiceRestTransport):
             return resp
 
     @property
-    def create_assignment(
-        self,
-    ) -> Callable[[reservation.CreateAssignmentRequest], reservation.Assignment]:
+    def create_assignment(self) -> Callable[[reservation.CreateAssignmentRequest], reservation.Assignment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAssignment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.CreateCapacityCommitmentRequest], reservation.CapacityCommitment
-    ]:
+    def create_capacity_commitment(self) -> Callable[[reservation.CreateCapacityCommitmentRequest], reservation.CapacityCommitment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_reservation(
-        self,
-    ) -> Callable[
-        [gcbr_reservation.CreateReservationRequest], gcbr_reservation.Reservation
-    ]:
+    def create_reservation(self) -> Callable[[gcbr_reservation.CreateReservationRequest], gcbr_reservation.Reservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_reservation_group(
-        self,
-    ) -> Callable[
-        [reservation.CreateReservationGroupRequest], reservation.ReservationGroup
-    ]:
+    def create_reservation_group(self) -> Callable[[reservation.CreateReservationGroupRequest], reservation.ReservationGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReservationGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_assignment(
-        self,
-    ) -> Callable[[reservation.DeleteAssignmentRequest], empty_pb2.Empty]:
+    def delete_assignment(self) -> Callable[[reservation.DeleteAssignmentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAssignment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_capacity_commitment(
-        self,
-    ) -> Callable[[reservation.DeleteCapacityCommitmentRequest], empty_pb2.Empty]:
+    def delete_capacity_commitment(self) -> Callable[[reservation.DeleteCapacityCommitmentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_reservation(
-        self,
-    ) -> Callable[[reservation.DeleteReservationRequest], empty_pb2.Empty]:
+    def delete_reservation(self) -> Callable[[reservation.DeleteReservationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_reservation_group(
-        self,
-    ) -> Callable[[reservation.DeleteReservationGroupRequest], empty_pb2.Empty]:
+    def delete_reservation_group(self) -> Callable[[reservation.DeleteReservationGroupRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReservationGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def failover_reservation(
-        self,
-    ) -> Callable[[reservation.FailoverReservationRequest], reservation.Reservation]:
+    def failover_reservation(self) -> Callable[[reservation.FailoverReservationRequest], reservation.Reservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FailoverReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_bi_reservation(
-        self,
-    ) -> Callable[[reservation.GetBiReservationRequest], reservation.BiReservation]:
+    def get_bi_reservation(self) -> Callable[[reservation.GetBiReservationRequest], reservation.BiReservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBiReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.GetCapacityCommitmentRequest], reservation.CapacityCommitment
-    ]:
+    def get_capacity_commitment(self) -> Callable[[reservation.GetCapacityCommitmentRequest], reservation.CapacityCommitment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_reservation(
-        self,
-    ) -> Callable[[reservation.GetReservationRequest], reservation.Reservation]:
+    def get_reservation(self) -> Callable[[reservation.GetReservationRequest], reservation.Reservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_reservation_group(
-        self,
-    ) -> Callable[
-        [reservation.GetReservationGroupRequest], reservation.ReservationGroup
-    ]:
+    def get_reservation_group(self) -> Callable[[reservation.GetReservationGroupRequest], reservation.ReservationGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReservationGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assignments(
-        self,
-    ) -> Callable[
-        [reservation.ListAssignmentsRequest], reservation.ListAssignmentsResponse
-    ]:
+    def list_assignments(self) -> Callable[[reservation.ListAssignmentsRequest], reservation.ListAssignmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssignments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_capacity_commitments(
-        self,
-    ) -> Callable[
-        [reservation.ListCapacityCommitmentsRequest],
-        reservation.ListCapacityCommitmentsResponse,
-    ]:
+    def list_capacity_commitments(self) -> Callable[[reservation.ListCapacityCommitmentsRequest], reservation.ListCapacityCommitmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCapacityCommitments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_reservation_groups(
-        self,
-    ) -> Callable[
-        [reservation.ListReservationGroupsRequest],
-        reservation.ListReservationGroupsResponse,
-    ]:
+    def list_reservation_groups(self) -> Callable[[reservation.ListReservationGroupsRequest], reservation.ListReservationGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReservationGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_reservations(
-        self,
-    ) -> Callable[
-        [reservation.ListReservationsRequest], reservation.ListReservationsResponse
-    ]:
+    def list_reservations(self) -> Callable[[reservation.ListReservationsRequest], reservation.ListReservationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReservations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def merge_capacity_commitments(
-        self,
-    ) -> Callable[
-        [reservation.MergeCapacityCommitmentsRequest], reservation.CapacityCommitment
-    ]:
+    def merge_capacity_commitments(self) -> Callable[[reservation.MergeCapacityCommitmentsRequest], reservation.CapacityCommitment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MergeCapacityCommitments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_assignment(
-        self,
-    ) -> Callable[[reservation.MoveAssignmentRequest], reservation.Assignment]:
+    def move_assignment(self) -> Callable[[reservation.MoveAssignmentRequest], reservation.Assignment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveAssignment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_all_assignments(
-        self,
-    ) -> Callable[
-        [reservation.SearchAllAssignmentsRequest],
-        reservation.SearchAllAssignmentsResponse,
-    ]:
+    def search_all_assignments(self) -> Callable[[reservation.SearchAllAssignmentsRequest], reservation.SearchAllAssignmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAllAssignments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_assignments(
-        self,
-    ) -> Callable[
-        [reservation.SearchAssignmentsRequest], reservation.SearchAssignmentsResponse
-    ]:
+    def search_assignments(self) -> Callable[[reservation.SearchAssignmentsRequest], reservation.SearchAssignmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAssignments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def split_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.SplitCapacityCommitmentRequest],
-        reservation.SplitCapacityCommitmentResponse,
-    ]:
+    def split_capacity_commitment(self) -> Callable[[reservation.SplitCapacityCommitmentRequest], reservation.SplitCapacityCommitmentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SplitCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_assignment(
-        self,
-    ) -> Callable[[reservation.UpdateAssignmentRequest], reservation.Assignment]:
+    def update_assignment(self) -> Callable[[reservation.UpdateAssignmentRequest], reservation.Assignment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAssignment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_bi_reservation(
-        self,
-    ) -> Callable[[reservation.UpdateBiReservationRequest], reservation.BiReservation]:
+    def update_bi_reservation(self) -> Callable[[reservation.UpdateBiReservationRequest], reservation.BiReservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBiReservation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_capacity_commitment(
-        self,
-    ) -> Callable[
-        [reservation.UpdateCapacityCommitmentRequest], reservation.CapacityCommitment
-    ]:
+    def update_capacity_commitment(self) -> Callable[[reservation.UpdateCapacityCommitmentRequest], reservation.CapacityCommitment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCapacityCommitment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_reservation(
-        self,
-    ) -> Callable[
-        [gcbr_reservation.UpdateReservationRequest], gcbr_reservation.Reservation
-    ]:
+    def update_reservation(self) -> Callable[[gcbr_reservation.UpdateReservationRequest], gcbr_reservation.Reservation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReservation(self._session, self._host, self._interceptor)  # type: ignore

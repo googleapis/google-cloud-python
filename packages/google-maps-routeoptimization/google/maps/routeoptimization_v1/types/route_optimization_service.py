@@ -567,9 +567,7 @@ class OptimizeToursRequest(proto.Message):
         number=6,
         enum=SearchMode,
     )
-    injected_first_solution_routes: MutableSequence[
-        "ShipmentRoute"
-    ] = proto.RepeatedField(
+    injected_first_solution_routes: MutableSequence["ShipmentRoute"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="ShipmentRoute",
@@ -749,9 +747,7 @@ class OptimizeToursResponse(proto.Message):
         number=4,
         message="SkippedShipment",
     )
-    validation_errors: MutableSequence[
-        "OptimizeToursValidationError"
-    ] = proto.RepeatedField(
+    validation_errors: MutableSequence["OptimizeToursValidationError"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="OptimizeToursValidationError",
@@ -1091,9 +1087,7 @@ class ShipmentModel(proto.Message):
                 number=2,
             )
 
-        rows: MutableSequence[
-            "ShipmentModel.DurationDistanceMatrix.Row"
-        ] = proto.RepeatedField(
+        rows: MutableSequence["ShipmentModel.DurationDistanceMatrix.Row"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ShipmentModel.DurationDistanceMatrix.Row",
@@ -1197,9 +1191,7 @@ class ShipmentModel(proto.Message):
         proto.DOUBLE,
         number=7,
     )
-    duration_distance_matrices: MutableSequence[
-        DurationDistanceMatrix
-    ] = proto.RepeatedField(
+    duration_distance_matrices: MutableSequence[DurationDistanceMatrix] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=DurationDistanceMatrix,
@@ -1212,23 +1204,17 @@ class ShipmentModel(proto.Message):
         proto.STRING,
         number=10,
     )
-    transition_attributes: MutableSequence[
-        "TransitionAttributes"
-    ] = proto.RepeatedField(
+    transition_attributes: MutableSequence["TransitionAttributes"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="TransitionAttributes",
     )
-    shipment_type_incompatibilities: MutableSequence[
-        "ShipmentTypeIncompatibility"
-    ] = proto.RepeatedField(
+    shipment_type_incompatibilities: MutableSequence["ShipmentTypeIncompatibility"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="ShipmentTypeIncompatibility",
     )
-    shipment_type_requirements: MutableSequence[
-        "ShipmentTypeRequirement"
-    ] = proto.RepeatedField(
+    shipment_type_requirements: MutableSequence["ShipmentTypeRequirement"] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message="ShipmentTypeRequirement",
@@ -2507,9 +2493,7 @@ class Vehicle(proto.Message):
         number=23,
         message="DistanceLimit",
     )
-    extra_visit_duration_for_visit_type: MutableMapping[
-        str, duration_pb2.Duration
-    ] = proto.MapField(
+    extra_visit_duration_for_visit_type: MutableMapping[str, duration_pb2.Duration] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=24,
@@ -3461,9 +3445,7 @@ class ShipmentRoute(proto.Message):
             proto.STRING,
             number=12,
         )
-        vehicle_loads: MutableMapping[
-            str, "ShipmentRoute.VehicleLoad"
-        ] = proto.MapField(
+        vehicle_loads: MutableMapping[str, "ShipmentRoute.VehicleLoad"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=11,
@@ -4208,9 +4190,7 @@ class InjectedSolutionConstraint(proto.Message):
                 number=3,
             )
 
-        relaxations: MutableSequence[
-            "InjectedSolutionConstraint.ConstraintRelaxation.Relaxation"
-        ] = proto.RepeatedField(
+        relaxations: MutableSequence["InjectedSolutionConstraint.ConstraintRelaxation.Relaxation"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="InjectedSolutionConstraint.ConstraintRelaxation.Relaxation",

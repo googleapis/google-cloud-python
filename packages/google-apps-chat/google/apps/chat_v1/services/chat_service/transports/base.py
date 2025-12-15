@@ -27,9 +27,7 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.apps.chat_v1 import gapic_version as package_version
-from google.apps.chat_v1.types import (
-    space_notification_setting as gc_space_notification_setting,
-)
+from google.apps.chat_v1.types import space_notification_setting as gc_space_notification_setting
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
 from google.apps.chat_v1.types import membership as gc_membership
@@ -45,9 +43,7 @@ from google.apps.chat_v1.types import space_read_state
 from google.apps.chat_v1.types import space_read_state as gc_space_read_state
 from google.apps.chat_v1.types import space_setup, thread_read_state
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -139,23 +135,15 @@ class ChatServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -682,282 +670,142 @@ class ChatServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_message(
-        self,
-    ) -> Callable[
-        [gc_message.CreateMessageRequest],
-        Union[gc_message.Message, Awaitable[gc_message.Message]],
-    ]:
+    def create_message(self) -> Callable[[gc_message.CreateMessageRequest], Union[gc_message.Message, Awaitable[gc_message.Message]]]:
         raise NotImplementedError()
 
     @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [message.ListMessagesRequest],
-        Union[message.ListMessagesResponse, Awaitable[message.ListMessagesResponse]],
-    ]:
+    def list_messages(self) -> Callable[[message.ListMessagesRequest], Union[message.ListMessagesResponse, Awaitable[message.ListMessagesResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_memberships(
         self,
-    ) -> Callable[
-        [membership.ListMembershipsRequest],
-        Union[
-            membership.ListMembershipsResponse,
-            Awaitable[membership.ListMembershipsResponse],
-        ],
-    ]:
+    ) -> Callable[[membership.ListMembershipsRequest], Union[membership.ListMembershipsResponse, Awaitable[membership.ListMembershipsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_membership(
-        self,
-    ) -> Callable[
-        [membership.GetMembershipRequest],
-        Union[membership.Membership, Awaitable[membership.Membership]],
-    ]:
+    def get_membership(self) -> Callable[[membership.GetMembershipRequest], Union[membership.Membership, Awaitable[membership.Membership]]]:
         raise NotImplementedError()
 
     @property
-    def get_message(
-        self,
-    ) -> Callable[
-        [message.GetMessageRequest], Union[message.Message, Awaitable[message.Message]]
-    ]:
+    def get_message(self) -> Callable[[message.GetMessageRequest], Union[message.Message, Awaitable[message.Message]]]:
         raise NotImplementedError()
 
     @property
-    def update_message(
-        self,
-    ) -> Callable[
-        [gc_message.UpdateMessageRequest],
-        Union[gc_message.Message, Awaitable[gc_message.Message]],
-    ]:
+    def update_message(self) -> Callable[[gc_message.UpdateMessageRequest], Union[gc_message.Message, Awaitable[gc_message.Message]]]:
         raise NotImplementedError()
 
     @property
-    def delete_message(
-        self,
-    ) -> Callable[
-        [message.DeleteMessageRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_message(self) -> Callable[[message.DeleteMessageRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_attachment(
-        self,
-    ) -> Callable[
-        [attachment.GetAttachmentRequest],
-        Union[attachment.Attachment, Awaitable[attachment.Attachment]],
-    ]:
+    def get_attachment(self) -> Callable[[attachment.GetAttachmentRequest], Union[attachment.Attachment, Awaitable[attachment.Attachment]]]:
         raise NotImplementedError()
 
     @property
     def upload_attachment(
         self,
-    ) -> Callable[
-        [attachment.UploadAttachmentRequest],
-        Union[
-            attachment.UploadAttachmentResponse,
-            Awaitable[attachment.UploadAttachmentResponse],
-        ],
-    ]:
+    ) -> Callable[[attachment.UploadAttachmentRequest], Union[attachment.UploadAttachmentResponse, Awaitable[attachment.UploadAttachmentResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_spaces(
-        self,
-    ) -> Callable[
-        [space.ListSpacesRequest],
-        Union[space.ListSpacesResponse, Awaitable[space.ListSpacesResponse]],
-    ]:
+    def list_spaces(self) -> Callable[[space.ListSpacesRequest], Union[space.ListSpacesResponse, Awaitable[space.ListSpacesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def search_spaces(
-        self,
-    ) -> Callable[
-        [space.SearchSpacesRequest],
-        Union[space.SearchSpacesResponse, Awaitable[space.SearchSpacesResponse]],
-    ]:
+    def search_spaces(self) -> Callable[[space.SearchSpacesRequest], Union[space.SearchSpacesResponse, Awaitable[space.SearchSpacesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_space(
-        self,
-    ) -> Callable[[space.GetSpaceRequest], Union[space.Space, Awaitable[space.Space]]]:
+    def get_space(self) -> Callable[[space.GetSpaceRequest], Union[space.Space, Awaitable[space.Space]]]:
         raise NotImplementedError()
 
     @property
-    def create_space(
-        self,
-    ) -> Callable[
-        [gc_space.CreateSpaceRequest], Union[gc_space.Space, Awaitable[gc_space.Space]]
-    ]:
+    def create_space(self) -> Callable[[gc_space.CreateSpaceRequest], Union[gc_space.Space, Awaitable[gc_space.Space]]]:
         raise NotImplementedError()
 
     @property
-    def set_up_space(
-        self,
-    ) -> Callable[
-        [space_setup.SetUpSpaceRequest], Union[space.Space, Awaitable[space.Space]]
-    ]:
+    def set_up_space(self) -> Callable[[space_setup.SetUpSpaceRequest], Union[space.Space, Awaitable[space.Space]]]:
         raise NotImplementedError()
 
     @property
-    def update_space(
-        self,
-    ) -> Callable[
-        [gc_space.UpdateSpaceRequest], Union[gc_space.Space, Awaitable[gc_space.Space]]
-    ]:
+    def update_space(self) -> Callable[[gc_space.UpdateSpaceRequest], Union[gc_space.Space, Awaitable[gc_space.Space]]]:
         raise NotImplementedError()
 
     @property
-    def delete_space(
-        self,
-    ) -> Callable[
-        [space.DeleteSpaceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_space(self) -> Callable[[space.DeleteSpaceRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def complete_import_space(
         self,
-    ) -> Callable[
-        [space.CompleteImportSpaceRequest],
-        Union[
-            space.CompleteImportSpaceResponse,
-            Awaitable[space.CompleteImportSpaceResponse],
-        ],
-    ]:
+    ) -> Callable[[space.CompleteImportSpaceRequest], Union[space.CompleteImportSpaceResponse, Awaitable[space.CompleteImportSpaceResponse]]]:
         raise NotImplementedError()
 
     @property
-    def find_direct_message(
-        self,
-    ) -> Callable[
-        [space.FindDirectMessageRequest], Union[space.Space, Awaitable[space.Space]]
-    ]:
+    def find_direct_message(self) -> Callable[[space.FindDirectMessageRequest], Union[space.Space, Awaitable[space.Space]]]:
         raise NotImplementedError()
 
     @property
     def create_membership(
         self,
-    ) -> Callable[
-        [gc_membership.CreateMembershipRequest],
-        Union[gc_membership.Membership, Awaitable[gc_membership.Membership]],
-    ]:
+    ) -> Callable[[gc_membership.CreateMembershipRequest], Union[gc_membership.Membership, Awaitable[gc_membership.Membership]]]:
         raise NotImplementedError()
 
     @property
     def update_membership(
         self,
-    ) -> Callable[
-        [gc_membership.UpdateMembershipRequest],
-        Union[gc_membership.Membership, Awaitable[gc_membership.Membership]],
-    ]:
+    ) -> Callable[[gc_membership.UpdateMembershipRequest], Union[gc_membership.Membership, Awaitable[gc_membership.Membership]]]:
         raise NotImplementedError()
 
     @property
-    def delete_membership(
-        self,
-    ) -> Callable[
-        [membership.DeleteMembershipRequest],
-        Union[membership.Membership, Awaitable[membership.Membership]],
-    ]:
+    def delete_membership(self) -> Callable[[membership.DeleteMembershipRequest], Union[membership.Membership, Awaitable[membership.Membership]]]:
         raise NotImplementedError()
 
     @property
-    def create_reaction(
-        self,
-    ) -> Callable[
-        [gc_reaction.CreateReactionRequest],
-        Union[gc_reaction.Reaction, Awaitable[gc_reaction.Reaction]],
-    ]:
+    def create_reaction(self) -> Callable[[gc_reaction.CreateReactionRequest], Union[gc_reaction.Reaction, Awaitable[gc_reaction.Reaction]]]:
         raise NotImplementedError()
 
     @property
     def list_reactions(
         self,
-    ) -> Callable[
-        [reaction.ListReactionsRequest],
-        Union[
-            reaction.ListReactionsResponse, Awaitable[reaction.ListReactionsResponse]
-        ],
-    ]:
+    ) -> Callable[[reaction.ListReactionsRequest], Union[reaction.ListReactionsResponse, Awaitable[reaction.ListReactionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_reaction(
-        self,
-    ) -> Callable[
-        [reaction.DeleteReactionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_reaction(self) -> Callable[[reaction.DeleteReactionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def create_custom_emoji(
-        self,
-    ) -> Callable[
-        [reaction.CreateCustomEmojiRequest],
-        Union[reaction.CustomEmoji, Awaitable[reaction.CustomEmoji]],
-    ]:
+    def create_custom_emoji(self) -> Callable[[reaction.CreateCustomEmojiRequest], Union[reaction.CustomEmoji, Awaitable[reaction.CustomEmoji]]]:
         raise NotImplementedError()
 
     @property
-    def get_custom_emoji(
-        self,
-    ) -> Callable[
-        [reaction.GetCustomEmojiRequest],
-        Union[reaction.CustomEmoji, Awaitable[reaction.CustomEmoji]],
-    ]:
+    def get_custom_emoji(self) -> Callable[[reaction.GetCustomEmojiRequest], Union[reaction.CustomEmoji, Awaitable[reaction.CustomEmoji]]]:
         raise NotImplementedError()
 
     @property
     def list_custom_emojis(
         self,
-    ) -> Callable[
-        [reaction.ListCustomEmojisRequest],
-        Union[
-            reaction.ListCustomEmojisResponse,
-            Awaitable[reaction.ListCustomEmojisResponse],
-        ],
-    ]:
+    ) -> Callable[[reaction.ListCustomEmojisRequest], Union[reaction.ListCustomEmojisResponse, Awaitable[reaction.ListCustomEmojisResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_custom_emoji(
-        self,
-    ) -> Callable[
-        [reaction.DeleteCustomEmojiRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_custom_emoji(self) -> Callable[[reaction.DeleteCustomEmojiRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_space_read_state(
         self,
-    ) -> Callable[
-        [space_read_state.GetSpaceReadStateRequest],
-        Union[
-            space_read_state.SpaceReadState, Awaitable[space_read_state.SpaceReadState]
-        ],
-    ]:
+    ) -> Callable[[space_read_state.GetSpaceReadStateRequest], Union[space_read_state.SpaceReadState, Awaitable[space_read_state.SpaceReadState]]]:
         raise NotImplementedError()
 
     @property
     def update_space_read_state(
         self,
     ) -> Callable[
-        [gc_space_read_state.UpdateSpaceReadStateRequest],
-        Union[
-            gc_space_read_state.SpaceReadState,
-            Awaitable[gc_space_read_state.SpaceReadState],
-        ],
+        [gc_space_read_state.UpdateSpaceReadStateRequest], Union[gc_space_read_state.SpaceReadState, Awaitable[gc_space_read_state.SpaceReadState]]
     ]:
         raise NotImplementedError()
 
@@ -965,33 +813,18 @@ class ChatServiceTransport(abc.ABC):
     def get_thread_read_state(
         self,
     ) -> Callable[
-        [thread_read_state.GetThreadReadStateRequest],
-        Union[
-            thread_read_state.ThreadReadState,
-            Awaitable[thread_read_state.ThreadReadState],
-        ],
+        [thread_read_state.GetThreadReadStateRequest], Union[thread_read_state.ThreadReadState, Awaitable[thread_read_state.ThreadReadState]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_space_event(
-        self,
-    ) -> Callable[
-        [space_event.GetSpaceEventRequest],
-        Union[space_event.SpaceEvent, Awaitable[space_event.SpaceEvent]],
-    ]:
+    def get_space_event(self) -> Callable[[space_event.GetSpaceEventRequest], Union[space_event.SpaceEvent, Awaitable[space_event.SpaceEvent]]]:
         raise NotImplementedError()
 
     @property
     def list_space_events(
         self,
-    ) -> Callable[
-        [space_event.ListSpaceEventsRequest],
-        Union[
-            space_event.ListSpaceEventsResponse,
-            Awaitable[space_event.ListSpaceEventsResponse],
-        ],
-    ]:
+    ) -> Callable[[space_event.ListSpaceEventsRequest], Union[space_event.ListSpaceEventsResponse, Awaitable[space_event.ListSpaceEventsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -999,10 +832,7 @@ class ChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [space_notification_setting.GetSpaceNotificationSettingRequest],
-        Union[
-            space_notification_setting.SpaceNotificationSetting,
-            Awaitable[space_notification_setting.SpaceNotificationSetting],
-        ],
+        Union[space_notification_setting.SpaceNotificationSetting, Awaitable[space_notification_setting.SpaceNotificationSetting]],
     ]:
         raise NotImplementedError()
 
@@ -1011,10 +841,7 @@ class ChatServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [gc_space_notification_setting.UpdateSpaceNotificationSettingRequest],
-        Union[
-            gc_space_notification_setting.SpaceNotificationSetting,
-            Awaitable[gc_space_notification_setting.SpaceNotificationSetting],
-        ],
+        Union[gc_space_notification_setting.SpaceNotificationSetting, Awaitable[gc_space_notification_setting.SpaceNotificationSetting]],
     ]:
         raise NotImplementedError()
 

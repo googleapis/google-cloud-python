@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .quota import (
-    ListQuotaGroupsRequest,
-    ListQuotaGroupsResponse,
-    MethodDetails,
-    QuotaGroup,
-)
+from .quota import ListQuotaGroupsRequest, ListQuotaGroupsResponse, MethodDetails, QuotaGroup
 
 __all__ = (
     "ListQuotaGroupsRequest",

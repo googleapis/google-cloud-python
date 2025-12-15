@@ -225,13 +225,8 @@ class RetrieverServiceRestInterceptor:
     """
 
     def pre_batch_create_chunks(
-        self,
-        request: retriever_service.BatchCreateChunksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.BatchCreateChunksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: retriever_service.BatchCreateChunksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.BatchCreateChunksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_chunks
 
         Override in a subclass to manipulate the request or metadata
@@ -239,9 +234,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_chunks(
-        self, response: retriever_service.BatchCreateChunksResponse
-    ) -> retriever_service.BatchCreateChunksResponse:
+    def post_batch_create_chunks(self, response: retriever_service.BatchCreateChunksResponse) -> retriever_service.BatchCreateChunksResponse:
         """Post-rpc interceptor for batch_create_chunks
 
         DEPRECATED. Please use the `post_batch_create_chunks_with_metadata`
@@ -255,13 +248,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_batch_create_chunks_with_metadata(
-        self,
-        response: retriever_service.BatchCreateChunksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.BatchCreateChunksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: retriever_service.BatchCreateChunksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.BatchCreateChunksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_chunks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,13 +265,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_delete_chunks(
-        self,
-        request: retriever_service.BatchDeleteChunksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.BatchDeleteChunksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: retriever_service.BatchDeleteChunksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.BatchDeleteChunksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_chunks
 
         Override in a subclass to manipulate the request or metadata
@@ -292,13 +275,8 @@ class RetrieverServiceRestInterceptor:
         return request, metadata
 
     def pre_batch_update_chunks(
-        self,
-        request: retriever_service.BatchUpdateChunksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.BatchUpdateChunksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: retriever_service.BatchUpdateChunksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.BatchUpdateChunksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_chunks
 
         Override in a subclass to manipulate the request or metadata
@@ -306,9 +284,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_chunks(
-        self, response: retriever_service.BatchUpdateChunksResponse
-    ) -> retriever_service.BatchUpdateChunksResponse:
+    def post_batch_update_chunks(self, response: retriever_service.BatchUpdateChunksResponse) -> retriever_service.BatchUpdateChunksResponse:
         """Post-rpc interceptor for batch_update_chunks
 
         DEPRECATED. Please use the `post_batch_update_chunks_with_metadata`
@@ -322,13 +298,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_batch_update_chunks_with_metadata(
-        self,
-        response: retriever_service.BatchUpdateChunksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.BatchUpdateChunksResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: retriever_service.BatchUpdateChunksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.BatchUpdateChunksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_chunks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -344,12 +315,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_create_chunk(
-        self,
-        request: retriever_service.CreateChunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.CreateChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.CreateChunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.CreateChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_chunk
 
         Override in a subclass to manipulate the request or metadata
@@ -371,9 +338,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_create_chunk_with_metadata(
-        self,
-        response: retriever.Chunk,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Chunk, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Chunk, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_chunk
 
@@ -390,12 +355,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_create_corpus(
-        self,
-        request: retriever_service.CreateCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.CreateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.CreateCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.CreateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -417,9 +378,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_create_corpus_with_metadata(
-        self,
-        response: retriever.Corpus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Corpus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_corpus
 
@@ -436,12 +395,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_create_document(
-        self,
-        request: retriever_service.CreateDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.CreateDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.CreateDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.CreateDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_document
 
         Override in a subclass to manipulate the request or metadata
@@ -463,9 +418,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_create_document_with_metadata(
-        self,
-        response: retriever.Document,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Document, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_document
 
@@ -482,12 +435,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_chunk(
-        self,
-        request: retriever_service.DeleteChunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.DeleteChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.DeleteChunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.DeleteChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_chunk
 
         Override in a subclass to manipulate the request or metadata
@@ -496,12 +445,8 @@ class RetrieverServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_corpus(
-        self,
-        request: retriever_service.DeleteCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.DeleteCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.DeleteCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.DeleteCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -510,12 +455,8 @@ class RetrieverServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_document(
-        self,
-        request: retriever_service.DeleteDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.DeleteDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.DeleteDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.DeleteDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_document
 
         Override in a subclass to manipulate the request or metadata
@@ -524,12 +465,8 @@ class RetrieverServiceRestInterceptor:
         return request, metadata
 
     def pre_get_chunk(
-        self,
-        request: retriever_service.GetChunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.GetChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.GetChunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.GetChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_chunk
 
         Override in a subclass to manipulate the request or metadata
@@ -551,9 +488,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_get_chunk_with_metadata(
-        self,
-        response: retriever.Chunk,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Chunk, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Chunk, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_chunk
 
@@ -570,12 +505,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_get_corpus(
-        self,
-        request: retriever_service.GetCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.GetCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.GetCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.GetCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -597,9 +528,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_get_corpus_with_metadata(
-        self,
-        response: retriever.Corpus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Corpus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_corpus
 
@@ -616,12 +545,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_get_document(
-        self,
-        request: retriever_service.GetDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.GetDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.GetDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.GetDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_document
 
         Override in a subclass to manipulate the request or metadata
@@ -643,9 +568,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_get_document_with_metadata(
-        self,
-        response: retriever.Document,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Document, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_document
 
@@ -662,12 +585,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_list_chunks(
-        self,
-        request: retriever_service.ListChunksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.ListChunksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.ListChunksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.ListChunksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_chunks
 
         Override in a subclass to manipulate the request or metadata
@@ -675,9 +594,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_chunks(
-        self, response: retriever_service.ListChunksResponse
-    ) -> retriever_service.ListChunksResponse:
+    def post_list_chunks(self, response: retriever_service.ListChunksResponse) -> retriever_service.ListChunksResponse:
         """Post-rpc interceptor for list_chunks
 
         DEPRECATED. Please use the `post_list_chunks_with_metadata`
@@ -691,12 +608,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_list_chunks_with_metadata(
-        self,
-        response: retriever_service.ListChunksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.ListChunksResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: retriever_service.ListChunksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.ListChunksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_chunks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -712,12 +625,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_list_corpora(
-        self,
-        request: retriever_service.ListCorporaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.ListCorporaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.ListCorporaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.ListCorporaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_corpora
 
         Override in a subclass to manipulate the request or metadata
@@ -725,9 +634,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_corpora(
-        self, response: retriever_service.ListCorporaResponse
-    ) -> retriever_service.ListCorporaResponse:
+    def post_list_corpora(self, response: retriever_service.ListCorporaResponse) -> retriever_service.ListCorporaResponse:
         """Post-rpc interceptor for list_corpora
 
         DEPRECATED. Please use the `post_list_corpora_with_metadata`
@@ -741,12 +648,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_list_corpora_with_metadata(
-        self,
-        response: retriever_service.ListCorporaResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.ListCorporaResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: retriever_service.ListCorporaResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.ListCorporaResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_corpora
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -762,12 +665,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_list_documents(
-        self,
-        request: retriever_service.ListDocumentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.ListDocumentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.ListDocumentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.ListDocumentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_documents
 
         Override in a subclass to manipulate the request or metadata
@@ -775,9 +674,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_documents(
-        self, response: retriever_service.ListDocumentsResponse
-    ) -> retriever_service.ListDocumentsResponse:
+    def post_list_documents(self, response: retriever_service.ListDocumentsResponse) -> retriever_service.ListDocumentsResponse:
         """Post-rpc interceptor for list_documents
 
         DEPRECATED. Please use the `post_list_documents_with_metadata`
@@ -791,12 +688,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_list_documents_with_metadata(
-        self,
-        response: retriever_service.ListDocumentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.ListDocumentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: retriever_service.ListDocumentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.ListDocumentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_documents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -812,12 +705,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_query_corpus(
-        self,
-        request: retriever_service.QueryCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.QueryCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.QueryCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.QueryCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -825,9 +714,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_query_corpus(
-        self, response: retriever_service.QueryCorpusResponse
-    ) -> retriever_service.QueryCorpusResponse:
+    def post_query_corpus(self, response: retriever_service.QueryCorpusResponse) -> retriever_service.QueryCorpusResponse:
         """Post-rpc interceptor for query_corpus
 
         DEPRECATED. Please use the `post_query_corpus_with_metadata`
@@ -841,12 +728,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_query_corpus_with_metadata(
-        self,
-        response: retriever_service.QueryCorpusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.QueryCorpusResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: retriever_service.QueryCorpusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.QueryCorpusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_corpus
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -862,12 +745,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_query_document(
-        self,
-        request: retriever_service.QueryDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.QueryDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.QueryDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.QueryDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_document
 
         Override in a subclass to manipulate the request or metadata
@@ -875,9 +754,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_query_document(
-        self, response: retriever_service.QueryDocumentResponse
-    ) -> retriever_service.QueryDocumentResponse:
+    def post_query_document(self, response: retriever_service.QueryDocumentResponse) -> retriever_service.QueryDocumentResponse:
         """Post-rpc interceptor for query_document
 
         DEPRECATED. Please use the `post_query_document_with_metadata`
@@ -891,12 +768,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_query_document_with_metadata(
-        self,
-        response: retriever_service.QueryDocumentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.QueryDocumentResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: retriever_service.QueryDocumentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.QueryDocumentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_document
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -912,12 +785,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_update_chunk(
-        self,
-        request: retriever_service.UpdateChunkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.UpdateChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.UpdateChunkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.UpdateChunkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_chunk
 
         Override in a subclass to manipulate the request or metadata
@@ -939,9 +808,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_update_chunk_with_metadata(
-        self,
-        response: retriever.Chunk,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Chunk, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Chunk, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_chunk
 
@@ -958,12 +825,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_update_corpus(
-        self,
-        request: retriever_service.UpdateCorpusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.UpdateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.UpdateCorpusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.UpdateCorpusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_corpus
 
         Override in a subclass to manipulate the request or metadata
@@ -985,9 +848,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_update_corpus_with_metadata(
-        self,
-        response: retriever.Corpus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Corpus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Corpus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_corpus
 
@@ -1004,12 +865,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_update_document(
-        self,
-        request: retriever_service.UpdateDocumentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        retriever_service.UpdateDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: retriever_service.UpdateDocumentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[retriever_service.UpdateDocumentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_document
 
         Override in a subclass to manipulate the request or metadata
@@ -1031,9 +888,7 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def post_update_document_with_metadata(
-        self,
-        response: retriever.Document,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: retriever.Document, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[retriever.Document, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_document
 
@@ -1050,12 +905,8 @@ class RetrieverServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1073,12 +924,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1096,12 +943,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1109,9 +952,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1121,12 +962,8 @@ class RetrieverServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1134,9 +971,7 @@ class RetrieverServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1226,31 +1061,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RetrieverServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchCreateChunks(
-        _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks,
-        RetrieverServiceRestStub,
-    ):
+    class _BatchCreateChunks(_BaseRetrieverServiceRestTransport._BaseBatchCreateChunks, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.BatchCreateChunks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1292,32 +1114,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_chunks(
-                request, metadata
-            )
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_chunks(request, metadata)
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseBatchCreateChunks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1341,13 +1149,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._BatchCreateChunks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1363,16 +1165,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_chunks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_chunks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_chunks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        retriever_service.BatchCreateChunksResponse.to_json(response)
-                    )
+                    response_payload = retriever_service.BatchCreateChunksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1391,23 +1187,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeleteChunks(
-        _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks,
-        RetrieverServiceRestStub,
-    ):
+    class _BatchDeleteChunks(_BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.BatchDeleteChunks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1443,32 +1228,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_chunks(
-                request, metadata
-            )
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_chunks(request, metadata)
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseBatchDeleteChunks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1492,13 +1263,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._BatchDeleteChunks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1506,23 +1271,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchUpdateChunks(
-        _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks,
-        RetrieverServiceRestStub,
-    ):
+    class _BatchUpdateChunks(_BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.BatchUpdateChunks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1564,32 +1318,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_chunks(
-                request, metadata
-            )
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_chunks(request, metadata)
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseBatchUpdateChunks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1613,13 +1353,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._BatchUpdateChunks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1635,16 +1369,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_chunks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_chunks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_chunks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        retriever_service.BatchUpdateChunksResponse.to_json(response)
-                    )
+                    response_payload = retriever_service.BatchUpdateChunksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1663,22 +1391,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _CreateChunk(
-        _BaseRetrieverServiceRestTransport._BaseCreateChunk, RetrieverServiceRestStub
-    ):
+    class _CreateChunk(_BaseRetrieverServiceRestTransport._BaseCreateChunk, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.CreateChunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1722,30 +1440,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_http_options()
 
             request, metadata = self._interceptor.pre_create_chunk(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseCreateChunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1769,13 +1475,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._CreateChunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1791,12 +1491,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_create_chunk(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_chunk_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_chunk_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Chunk.to_json(response)
                 except:
@@ -1817,22 +1513,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _CreateCorpus(
-        _BaseRetrieverServiceRestTransport._BaseCreateCorpus, RetrieverServiceRestStub
-    ):
+    class _CreateCorpus(_BaseRetrieverServiceRestTransport._BaseCreateCorpus, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.CreateCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1874,30 +1560,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_create_corpus(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseCreateCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1921,13 +1595,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._CreateCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1943,12 +1611,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_create_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Corpus.to_json(response)
                 except:
@@ -1969,22 +1633,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _CreateDocument(
-        _BaseRetrieverServiceRestTransport._BaseCreateDocument, RetrieverServiceRestStub
-    ):
+    class _CreateDocument(_BaseRetrieverServiceRestTransport._BaseCreateDocument, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.CreateDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2026,30 +1680,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_create_document(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseCreateDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2073,13 +1715,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._CreateDocument._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2095,12 +1731,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_create_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Document.to_json(response)
                 except:
@@ -2121,22 +1753,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _DeleteChunk(
-        _BaseRetrieverServiceRestTransport._BaseDeleteChunk, RetrieverServiceRestStub
-    ):
+    class _DeleteChunk(_BaseRetrieverServiceRestTransport._BaseDeleteChunk, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.DeleteChunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2171,26 +1793,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseDeleteChunk._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseDeleteChunk._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_chunk(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteChunk._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteChunk._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteChunk._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteChunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2214,12 +1826,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._DeleteChunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2227,22 +1834,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteCorpus(
-        _BaseRetrieverServiceRestTransport._BaseDeleteCorpus, RetrieverServiceRestStub
-    ):
+    class _DeleteCorpus(_BaseRetrieverServiceRestTransport._BaseDeleteCorpus, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.DeleteCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2277,26 +1874,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseDeleteCorpus._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseDeleteCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_corpus(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteCorpus._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteCorpus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteCorpus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2320,12 +1907,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._DeleteCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2333,22 +1915,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteDocument(
-        _BaseRetrieverServiceRestTransport._BaseDeleteDocument, RetrieverServiceRestStub
-    ):
+    class _DeleteDocument(_BaseRetrieverServiceRestTransport._BaseDeleteDocument, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.DeleteDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2383,26 +1955,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_document(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2426,12 +1988,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._DeleteDocument._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2439,22 +1996,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetChunk(
-        _BaseRetrieverServiceRestTransport._BaseGetChunk, RetrieverServiceRestStub
-    ):
+    class _GetChunk(_BaseRetrieverServiceRestTransport._BaseGetChunk, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.GetChunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2498,28 +2045,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseGetChunk._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseGetChunk._get_http_options()
 
             request, metadata = self._interceptor.pre_get_chunk(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetChunk._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetChunk._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRetrieverServiceRestTransport._BaseGetChunk._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseGetChunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2543,12 +2078,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._GetChunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2564,12 +2094,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_get_chunk(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_chunk_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_chunk_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Chunk.to_json(response)
                 except:
@@ -2590,22 +2116,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _GetCorpus(
-        _BaseRetrieverServiceRestTransport._BaseGetCorpus, RetrieverServiceRestStub
-    ):
+    class _GetCorpus(_BaseRetrieverServiceRestTransport._BaseGetCorpus, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.GetCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2647,26 +2163,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseGetCorpus._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseGetCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_get_corpus(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetCorpus._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetCorpus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseGetCorpus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseGetCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2690,12 +2196,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._GetCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2711,12 +2212,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_get_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Corpus.to_json(response)
                 except:
@@ -2737,22 +2234,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _GetDocument(
-        _BaseRetrieverServiceRestTransport._BaseGetDocument, RetrieverServiceRestStub
-    ):
+    class _GetDocument(_BaseRetrieverServiceRestTransport._BaseGetDocument, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.GetDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2794,26 +2281,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseGetDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseGetDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_get_document(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetDocument._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetDocument._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseGetDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseGetDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2837,12 +2314,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._GetDocument._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2858,12 +2330,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_get_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Document.to_json(response)
                 except:
@@ -2884,22 +2352,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _ListChunks(
-        _BaseRetrieverServiceRestTransport._BaseListChunks, RetrieverServiceRestStub
-    ):
+    class _ListChunks(_BaseRetrieverServiceRestTransport._BaseListChunks, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.ListChunks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2941,26 +2399,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseListChunks._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseListChunks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_chunks(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListChunks._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListChunks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseListChunks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseListChunks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2984,12 +2432,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._ListChunks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3005,16 +2448,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_list_chunks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_chunks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_chunks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = retriever_service.ListChunksResponse.to_json(
-                        response
-                    )
+                    response_payload = retriever_service.ListChunksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3033,22 +2470,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _ListCorpora(
-        _BaseRetrieverServiceRestTransport._BaseListCorpora, RetrieverServiceRestStub
-    ):
+    class _ListCorpora(_BaseRetrieverServiceRestTransport._BaseListCorpora, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.ListCorpora")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3090,26 +2517,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseListCorpora._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseListCorpora._get_http_options()
 
             request, metadata = self._interceptor.pre_list_corpora(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListCorpora._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListCorpora._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseListCorpora._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseListCorpora._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3133,12 +2550,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._ListCorpora._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3154,16 +2566,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_list_corpora(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_corpora_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_corpora_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = retriever_service.ListCorporaResponse.to_json(
-                        response
-                    )
+                    response_payload = retriever_service.ListCorporaResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3182,22 +2588,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _ListDocuments(
-        _BaseRetrieverServiceRestTransport._BaseListDocuments, RetrieverServiceRestStub
-    ):
+    class _ListDocuments(_BaseRetrieverServiceRestTransport._BaseListDocuments, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.ListDocuments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3239,26 +2635,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseListDocuments._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_http_options()
 
             request, metadata = self._interceptor.pre_list_documents(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseListDocuments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3282,12 +2668,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._ListDocuments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3303,16 +2684,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_list_documents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_documents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_documents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = retriever_service.ListDocumentsResponse.to_json(
-                        response
-                    )
+                    response_payload = retriever_service.ListDocumentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3331,22 +2706,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _QueryCorpus(
-        _BaseRetrieverServiceRestTransport._BaseQueryCorpus, RetrieverServiceRestStub
-    ):
+    class _QueryCorpus(_BaseRetrieverServiceRestTransport._BaseQueryCorpus, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.QueryCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3388,30 +2753,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_query_corpus(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseQueryCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3435,13 +2788,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._QueryCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3457,16 +2804,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_query_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = retriever_service.QueryCorpusResponse.to_json(
-                        response
-                    )
+                    response_payload = retriever_service.QueryCorpusResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3485,22 +2826,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _QueryDocument(
-        _BaseRetrieverServiceRestTransport._BaseQueryDocument, RetrieverServiceRestStub
-    ):
+    class _QueryDocument(_BaseRetrieverServiceRestTransport._BaseQueryDocument, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.QueryDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3542,30 +2873,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_query_document(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseQueryDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3589,13 +2908,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._QueryDocument._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3611,16 +2924,10 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_query_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = retriever_service.QueryDocumentResponse.to_json(
-                        response
-                    )
+                    response_payload = retriever_service.QueryDocumentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3639,22 +2946,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _UpdateChunk(
-        _BaseRetrieverServiceRestTransport._BaseUpdateChunk, RetrieverServiceRestStub
-    ):
+    class _UpdateChunk(_BaseRetrieverServiceRestTransport._BaseUpdateChunk, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.UpdateChunk")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3698,30 +2995,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_http_options()
 
             request, metadata = self._interceptor.pre_update_chunk(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseUpdateChunk._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3745,13 +3030,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._UpdateChunk._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3767,12 +3046,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_update_chunk(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_chunk_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_chunk_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Chunk.to_json(response)
                 except:
@@ -3793,22 +3068,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCorpus(
-        _BaseRetrieverServiceRestTransport._BaseUpdateCorpus, RetrieverServiceRestStub
-    ):
+    class _UpdateCorpus(_BaseRetrieverServiceRestTransport._BaseUpdateCorpus, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.UpdateCorpus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3850,30 +3115,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_http_options()
 
             request, metadata = self._interceptor.pre_update_corpus(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseUpdateCorpus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3897,13 +3150,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._UpdateCorpus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3919,12 +3166,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_update_corpus(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_corpus_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_corpus_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Corpus.to_json(response)
                 except:
@@ -3945,22 +3188,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDocument(
-        _BaseRetrieverServiceRestTransport._BaseUpdateDocument, RetrieverServiceRestStub
-    ):
+    class _UpdateDocument(_BaseRetrieverServiceRestTransport._BaseUpdateDocument, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.UpdateDocument")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4002,30 +3235,18 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_http_options()
 
             request, metadata = self._interceptor.pre_update_document(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_transcoded_request(http_options, request)
 
-            body = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseUpdateDocument._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4049,13 +3270,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._UpdateDocument._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4071,12 +3286,8 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             resp = self._interceptor.post_update_document(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_document_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_document_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = retriever.Document.to_json(response)
                 except:
@@ -4098,179 +3309,121 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             return resp
 
     @property
-    def batch_create_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.BatchCreateChunksRequest],
-        retriever_service.BatchCreateChunksResponse,
-    ]:
+    def batch_create_chunks(self) -> Callable[[retriever_service.BatchCreateChunksRequest], retriever_service.BatchCreateChunksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateChunks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_delete_chunks(
-        self,
-    ) -> Callable[[retriever_service.BatchDeleteChunksRequest], empty_pb2.Empty]:
+    def batch_delete_chunks(self) -> Callable[[retriever_service.BatchDeleteChunksRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteChunks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.BatchUpdateChunksRequest],
-        retriever_service.BatchUpdateChunksResponse,
-    ]:
+    def batch_update_chunks(self) -> Callable[[retriever_service.BatchUpdateChunksRequest], retriever_service.BatchUpdateChunksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateChunks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_chunk(
-        self,
-    ) -> Callable[[retriever_service.CreateChunkRequest], retriever.Chunk]:
+    def create_chunk(self) -> Callable[[retriever_service.CreateChunkRequest], retriever.Chunk]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateChunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_corpus(
-        self,
-    ) -> Callable[[retriever_service.CreateCorpusRequest], retriever.Corpus]:
+    def create_corpus(self) -> Callable[[retriever_service.CreateCorpusRequest], retriever.Corpus]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_document(
-        self,
-    ) -> Callable[[retriever_service.CreateDocumentRequest], retriever.Document]:
+    def create_document(self) -> Callable[[retriever_service.CreateDocumentRequest], retriever.Document]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_chunk(
-        self,
-    ) -> Callable[[retriever_service.DeleteChunkRequest], empty_pb2.Empty]:
+    def delete_chunk(self) -> Callable[[retriever_service.DeleteChunkRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteChunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_corpus(
-        self,
-    ) -> Callable[[retriever_service.DeleteCorpusRequest], empty_pb2.Empty]:
+    def delete_corpus(self) -> Callable[[retriever_service.DeleteCorpusRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_document(
-        self,
-    ) -> Callable[[retriever_service.DeleteDocumentRequest], empty_pb2.Empty]:
+    def delete_document(self) -> Callable[[retriever_service.DeleteDocumentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_chunk(
-        self,
-    ) -> Callable[[retriever_service.GetChunkRequest], retriever.Chunk]:
+    def get_chunk(self) -> Callable[[retriever_service.GetChunkRequest], retriever.Chunk]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetChunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_corpus(
-        self,
-    ) -> Callable[[retriever_service.GetCorpusRequest], retriever.Corpus]:
+    def get_corpus(self) -> Callable[[retriever_service.GetCorpusRequest], retriever.Corpus]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_document(
-        self,
-    ) -> Callable[[retriever_service.GetDocumentRequest], retriever.Document]:
+    def get_document(self) -> Callable[[retriever_service.GetDocumentRequest], retriever.Document]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_chunks(
-        self,
-    ) -> Callable[
-        [retriever_service.ListChunksRequest], retriever_service.ListChunksResponse
-    ]:
+    def list_chunks(self) -> Callable[[retriever_service.ListChunksRequest], retriever_service.ListChunksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChunks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_corpora(
-        self,
-    ) -> Callable[
-        [retriever_service.ListCorporaRequest], retriever_service.ListCorporaResponse
-    ]:
+    def list_corpora(self) -> Callable[[retriever_service.ListCorporaRequest], retriever_service.ListCorporaResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCorpora(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_documents(
-        self,
-    ) -> Callable[
-        [retriever_service.ListDocumentsRequest],
-        retriever_service.ListDocumentsResponse,
-    ]:
+    def list_documents(self) -> Callable[[retriever_service.ListDocumentsRequest], retriever_service.ListDocumentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDocuments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_corpus(
-        self,
-    ) -> Callable[
-        [retriever_service.QueryCorpusRequest], retriever_service.QueryCorpusResponse
-    ]:
+    def query_corpus(self) -> Callable[[retriever_service.QueryCorpusRequest], retriever_service.QueryCorpusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_document(
-        self,
-    ) -> Callable[
-        [retriever_service.QueryDocumentRequest],
-        retriever_service.QueryDocumentResponse,
-    ]:
+    def query_document(self) -> Callable[[retriever_service.QueryDocumentRequest], retriever_service.QueryDocumentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryDocument(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_chunk(
-        self,
-    ) -> Callable[[retriever_service.UpdateChunkRequest], retriever.Chunk]:
+    def update_chunk(self) -> Callable[[retriever_service.UpdateChunkRequest], retriever.Chunk]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateChunk(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_corpus(
-        self,
-    ) -> Callable[[retriever_service.UpdateCorpusRequest], retriever.Corpus]:
+    def update_corpus(self) -> Callable[[retriever_service.UpdateCorpusRequest], retriever.Corpus]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCorpus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_document(
-        self,
-    ) -> Callable[[retriever_service.UpdateDocumentRequest], retriever.Document]:
+    def update_document(self) -> Callable[[retriever_service.UpdateDocumentRequest], retriever.Document]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDocument(self._session, self._host, self._interceptor)  # type: ignore
@@ -4279,23 +3432,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseRetrieverServiceRestTransport._BaseCancelOperation,
-        RetrieverServiceRestStub,
-    ):
+    class _CancelOperation(_BaseRetrieverServiceRestTransport._BaseCancelOperation, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4330,28 +3472,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4375,12 +3505,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4394,23 +3519,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseRetrieverServiceRestTransport._BaseDeleteOperation,
-        RetrieverServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseRetrieverServiceRestTransport._BaseDeleteOperation, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4445,28 +3559,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4490,12 +3592,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4509,22 +3606,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseRetrieverServiceRestTransport._BaseGetOperation, RetrieverServiceRestStub
-    ):
+    class _GetOperation(_BaseRetrieverServiceRestTransport._BaseGetOperation, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4562,26 +3649,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4605,12 +3682,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4622,9 +3694,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4649,22 +3719,12 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseRetrieverServiceRestTransport._BaseListOperations, RetrieverServiceRestStub
-    ):
+    class _ListOperations(_BaseRetrieverServiceRestTransport._BaseListOperations, RetrieverServiceRestStub):
         def __hash__(self):
             return hash("RetrieverServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4702,26 +3762,16 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseRetrieverServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseRetrieverServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRetrieverServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRetrieverServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRetrieverServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4745,12 +3795,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
 
             # Send the request
             response = RetrieverServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4762,9 +3807,7 @@ class RetrieverServiceRestTransport(_BaseRetrieverServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

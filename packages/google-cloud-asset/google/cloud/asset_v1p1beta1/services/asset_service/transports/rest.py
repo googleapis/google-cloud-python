@@ -96,13 +96,8 @@ class AssetServiceRestInterceptor:
     """
 
     def pre_search_all_iam_policies(
-        self,
-        request: asset_service.SearchAllIamPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllIamPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: asset_service.SearchAllIamPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllIamPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_iam_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -110,9 +105,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_all_iam_policies(
-        self, response: asset_service.SearchAllIamPoliciesResponse
-    ) -> asset_service.SearchAllIamPoliciesResponse:
+    def post_search_all_iam_policies(self, response: asset_service.SearchAllIamPoliciesResponse) -> asset_service.SearchAllIamPoliciesResponse:
         """Post-rpc interceptor for search_all_iam_policies
 
         DEPRECATED. Please use the `post_search_all_iam_policies_with_metadata`
@@ -126,13 +119,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_search_all_iam_policies_with_metadata(
-        self,
-        response: asset_service.SearchAllIamPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllIamPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.SearchAllIamPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllIamPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_iam_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -148,12 +136,8 @@ class AssetServiceRestInterceptor:
         return response, metadata
 
     def pre_search_all_resources(
-        self,
-        request: asset_service.SearchAllResourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: asset_service.SearchAllResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_all_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -161,9 +145,7 @@ class AssetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_all_resources(
-        self, response: asset_service.SearchAllResourcesResponse
-    ) -> asset_service.SearchAllResourcesResponse:
+    def post_search_all_resources(self, response: asset_service.SearchAllResourcesResponse) -> asset_service.SearchAllResourcesResponse:
         """Post-rpc interceptor for search_all_resources
 
         DEPRECATED. Please use the `post_search_all_resources_with_metadata`
@@ -177,13 +159,8 @@ class AssetServiceRestInterceptor:
         return response
 
     def post_search_all_resources_with_metadata(
-        self,
-        response: asset_service.SearchAllResourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        asset_service.SearchAllResourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: asset_service.SearchAllResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[asset_service.SearchAllResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_all_resources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,30 +255,18 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AssetServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _SearchAllIamPolicies(
-        _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub
-    ):
+    class _SearchAllIamPolicies(_BaseAssetServiceRestTransport._BaseSearchAllIamPolicies, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.SearchAllIamPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -340,28 +305,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Search all IAM policies response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_all_iam_policies(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_all_iam_policies(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllIamPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -385,12 +338,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._SearchAllIamPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -406,16 +354,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_search_all_iam_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_all_iam_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        asset_service.SearchAllIamPoliciesResponse.to_json(response)
-                    )
+                    response_payload = asset_service.SearchAllIamPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -434,22 +376,12 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                 )
             return resp
 
-    class _SearchAllResources(
-        _BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub
-    ):
+    class _SearchAllResources(_BaseAssetServiceRestTransport._BaseSearchAllResources, AssetServiceRestStub):
         def __hash__(self):
             return hash("AssetServiceRestTransport.SearchAllResources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -488,28 +420,16 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
                     Search all resources response.
             """
 
-            http_options = (
-                _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
-            )
+            http_options = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_all_resources(
-                request, metadata
-            )
-            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_all_resources(request, metadata)
+            transcoded_request = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAssetServiceRestTransport._BaseSearchAllResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -533,12 +453,7 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             # Send the request
             response = AssetServiceRestTransport._SearchAllResources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -554,16 +469,10 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
 
             resp = self._interceptor.post_search_all_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_all_resources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_all_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = asset_service.SearchAllResourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = asset_service.SearchAllResourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -583,23 +492,13 @@ class AssetServiceRestTransport(_BaseAssetServiceRestTransport):
             return resp
 
     @property
-    def search_all_iam_policies(
-        self,
-    ) -> Callable[
-        [asset_service.SearchAllIamPoliciesRequest],
-        asset_service.SearchAllIamPoliciesResponse,
-    ]:
+    def search_all_iam_policies(self) -> Callable[[asset_service.SearchAllIamPoliciesRequest], asset_service.SearchAllIamPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAllIamPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_all_resources(
-        self,
-    ) -> Callable[
-        [asset_service.SearchAllResourcesRequest],
-        asset_service.SearchAllResourcesResponse,
-    ]:
+    def search_all_resources(self) -> Callable[[asset_service.SearchAllResourcesRequest], asset_service.SearchAllResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAllResources(self._session, self._host, self._interceptor)  # type: ignore

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import warnings
 
 from google.api_core import exceptions as core_exceptions
@@ -54,18 +43,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.datacatalog_v1.services.data_catalog import pagers
-from google.cloud.datacatalog_v1.types import (
-    common,
-    data_source,
-    datacatalog,
-    gcs_fileset_spec,
-    schema,
-    search,
-    table_spec,
-    tags,
-    timestamps,
-    usage,
-)
+from google.cloud.datacatalog_v1.types import common, data_source, datacatalog, gcs_fileset_spec, schema, search, table_spec, tags, timestamps, usage
 
 from .client import DataCatalogClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataCatalogTransport
@@ -106,35 +84,19 @@ class DataCatalogAsyncClient:
     tag_template_path = staticmethod(DataCatalogClient.tag_template_path)
     parse_tag_template_path = staticmethod(DataCatalogClient.parse_tag_template_path)
     tag_template_field_path = staticmethod(DataCatalogClient.tag_template_field_path)
-    parse_tag_template_field_path = staticmethod(
-        DataCatalogClient.parse_tag_template_field_path
-    )
-    tag_template_field_enum_value_path = staticmethod(
-        DataCatalogClient.tag_template_field_enum_value_path
-    )
-    parse_tag_template_field_enum_value_path = staticmethod(
-        DataCatalogClient.parse_tag_template_field_enum_value_path
-    )
-    common_billing_account_path = staticmethod(
-        DataCatalogClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DataCatalogClient.parse_common_billing_account_path
-    )
+    parse_tag_template_field_path = staticmethod(DataCatalogClient.parse_tag_template_field_path)
+    tag_template_field_enum_value_path = staticmethod(DataCatalogClient.tag_template_field_enum_value_path)
+    parse_tag_template_field_enum_value_path = staticmethod(DataCatalogClient.parse_tag_template_field_enum_value_path)
+    common_billing_account_path = staticmethod(DataCatalogClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DataCatalogClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DataCatalogClient.common_folder_path)
     parse_common_folder_path = staticmethod(DataCatalogClient.parse_common_folder_path)
     common_organization_path = staticmethod(DataCatalogClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        DataCatalogClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(DataCatalogClient.parse_common_organization_path)
     common_project_path = staticmethod(DataCatalogClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DataCatalogClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DataCatalogClient.parse_common_project_path)
     common_location_path = staticmethod(DataCatalogClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DataCatalogClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DataCatalogClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -170,9 +132,7 @@ class DataCatalogAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -239,9 +199,7 @@ class DataCatalogAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, DataCatalogTransport, Callable[..., DataCatalogTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DataCatalogTransport, Callable[..., DataCatalogTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -301,20 +259,14 @@ class DataCatalogAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.datacatalog_v1.DataCatalogAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.datacatalog.v1.DataCatalog",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -427,22 +379,15 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.search_catalog is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.search_catalog is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [scope, query]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -458,9 +403,7 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_catalog
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_catalog]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -607,23 +550,15 @@ class DataCatalogAsyncClient:
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.create_entry_group is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.create_entry_group is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, entry_group_id, entry_group]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -641,15 +576,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_entry_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_entry_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -738,22 +669,15 @@ class DataCatalogAsyncClient:
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.get_entry_group is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.get_entry_group is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, read_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -769,15 +693,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_entry_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_entry_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -875,23 +795,15 @@ class DataCatalogAsyncClient:
                    [Entry][google.cloud.datacatalog.v1.Entry] resources.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.update_entry_group is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.update_entry_group is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [entry_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -907,17 +819,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_entry_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_entry_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("entry_group.name", request.entry_group.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("entry_group.name", request.entry_group.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -991,23 +897,15 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.delete_entry_group is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.delete_entry_group is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1021,15 +919,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_entry_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_entry_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1109,22 +1003,15 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.list_entry_groups is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.list_entry_groups is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1138,15 +1025,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_entry_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_entry_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1283,22 +1166,15 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.create_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.create_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, entry_id, entry]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1316,15 +1192,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1457,22 +1329,15 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.update_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.update_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [entry, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1488,17 +1353,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("entry.name", request.entry.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("entry.name", request.entry.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1576,22 +1435,15 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.delete_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.delete_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1605,15 +1457,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1697,22 +1545,15 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.get_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.get_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1726,15 +1567,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1816,9 +1653,7 @@ class DataCatalogAsyncClient:
                    [Tag][google.cloud.datacatalog.v1.Tag].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.lookup_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.lookup_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -1828,9 +1663,7 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lookup_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.lookup_entry]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1917,22 +1750,15 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.list_entries is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.list_entries is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1946,15 +1772,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_entries
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_entries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2040,10 +1862,7 @@ class DataCatalogAsyncClient:
                 descriptions of entries.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.modify_entry_overview is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.modify_entry_overview is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2053,15 +1872,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.modify_entry_overview
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.modify_entry_overview]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2134,10 +1949,7 @@ class DataCatalogAsyncClient:
             google.cloud.datacatalog_v1.types.Contacts:
                 Contact people for the entry.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.modify_entry_contacts is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.modify_entry_contacts is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -2147,15 +1959,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.modify_entry_contacts
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.modify_entry_contacts]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2268,23 +2076,15 @@ class DataCatalogAsyncClient:
                    template to tag resources.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.create_tag_template is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.create_tag_template is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, tag_template_id, tag_template]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2302,15 +2102,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_tag_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_tag_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2398,22 +2194,15 @@ class DataCatalogAsyncClient:
                    template to tag resources.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.get_tag_template is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.get_tag_template is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2427,15 +2216,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_tag_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_tag_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2548,23 +2333,15 @@ class DataCatalogAsyncClient:
                    template to tag resources.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.update_tag_template is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.update_tag_template is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [tag_template, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2580,17 +2357,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_tag_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_tag_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("tag_template.name", request.tag_template.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("tag_template.name", request.tag_template.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2675,23 +2446,15 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.delete_tag_template is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.delete_tag_template is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, force]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2707,15 +2470,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_tag_template
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_tag_template]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2730,9 +2489,7 @@ class DataCatalogAsyncClient:
 
     async def create_tag_template_field(
         self,
-        request: Optional[
-            Union[datacatalog.CreateTagTemplateFieldRequest, dict]
-        ] = None,
+        request: Optional[Union[datacatalog.CreateTagTemplateFieldRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         tag_template_field_id: Optional[str] = None,
@@ -2827,23 +2584,15 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.create_tag_template_field is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.create_tag_template_field is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, tag_template_field_id, tag_template_field]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2861,15 +2610,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_tag_template_field
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_tag_template_field]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2887,9 +2632,7 @@ class DataCatalogAsyncClient:
 
     async def update_tag_template_field(
         self,
-        request: Optional[
-            Union[datacatalog.UpdateTagTemplateFieldRequest, dict]
-        ] = None,
+        request: Optional[Union[datacatalog.UpdateTagTemplateFieldRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         tag_template_field: Optional[tags.TagTemplateField] = None,
@@ -2990,23 +2733,15 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.update_tag_template_field is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.update_tag_template_field is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, tag_template_field, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3024,15 +2759,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_tag_template_field
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_tag_template_field]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3050,9 +2781,7 @@ class DataCatalogAsyncClient:
 
     async def rename_tag_template_field(
         self,
-        request: Optional[
-            Union[datacatalog.RenameTagTemplateFieldRequest, dict]
-        ] = None,
+        request: Optional[Union[datacatalog.RenameTagTemplateFieldRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         new_tag_template_field_id: Optional[str] = None,
@@ -3126,23 +2855,15 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.rename_tag_template_field is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.rename_tag_template_field is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, new_tag_template_field_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3158,15 +2879,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.rename_tag_template_field
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.rename_tag_template_field]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3184,9 +2901,7 @@ class DataCatalogAsyncClient:
 
     async def rename_tag_template_field_enum_value(
         self,
-        request: Optional[
-            Union[datacatalog.RenameTagTemplateFieldEnumValueRequest, dict]
-        ] = None,
+        request: Optional[Union[datacatalog.RenameTagTemplateFieldEnumValueRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         new_enum_value_display_name: Optional[str] = None,
@@ -3257,23 +2972,15 @@ class DataCatalogAsyncClient:
                 within a tag template.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.rename_tag_template_field_enum_value is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.rename_tag_template_field_enum_value is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, new_enum_value_display_name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3289,15 +2996,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.rename_tag_template_field_enum_value
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.rename_tag_template_field_enum_value]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3315,9 +3018,7 @@ class DataCatalogAsyncClient:
 
     async def delete_tag_template_field(
         self,
-        request: Optional[
-            Union[datacatalog.DeleteTagTemplateFieldRequest, dict]
-        ] = None,
+        request: Optional[Union[datacatalog.DeleteTagTemplateFieldRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         force: Optional[bool] = None,
@@ -3385,23 +3086,15 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.delete_tag_template_field is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.delete_tag_template_field is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, force]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3417,15 +3110,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_tag_template_field
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_tag_template_field]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3536,22 +3225,15 @@ class DataCatalogAsyncClient:
                    or view tags.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.create_tag is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.create_tag is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, tag]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3567,15 +3249,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_tag
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_tag]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3676,22 +3354,15 @@ class DataCatalogAsyncClient:
                    or view tags.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.update_tag is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.update_tag is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [tag, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3707,15 +3378,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_tag
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_tag]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("tag.name", request.tag.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("tag.name", request.tag.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3784,22 +3451,15 @@ class DataCatalogAsyncClient:
                 but for metadata keys ending with the suffix `-bin`, the corresponding values must
                 be of type `bytes`.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.delete_tag is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.delete_tag is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3813,15 +3473,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_tag
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_tag]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3908,22 +3564,15 @@ class DataCatalogAsyncClient:
                 resolve additional pages automatically.
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.list_tags is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.list_tags is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3937,15 +3586,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_tags
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_tags]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4046,9 +3691,7 @@ class DataCatalogAsyncClient:
                    [ReconcileTags][google.cloud.datacatalog.v1.DataCatalog.ReconcileTags].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.reconcile_tags is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.reconcile_tags is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -4058,15 +3701,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reconcile_tags
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reconcile_tags]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4155,22 +3794,15 @@ class DataCatalogAsyncClient:
                    Empty for now
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.star_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.star_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4184,15 +3816,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.star_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.star_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4273,22 +3901,15 @@ class DataCatalogAsyncClient:
                    Empty for now
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.unstar_entry is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.unstar_entry is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4302,15 +3923,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.unstar_entry
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.unstar_entry]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4437,22 +4054,15 @@ class DataCatalogAsyncClient:
                    documentation](https://cloud.google.com/iam/docs/).
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.set_iam_policy is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.set_iam_policy is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -4463,15 +4073,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4602,22 +4208,15 @@ class DataCatalogAsyncClient:
                    documentation](https://cloud.google.com/iam/docs/).
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.get_iam_policy is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.get_iam_policy is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - The request isn't a proto-plus wrapped type,
         #   so it must be constructed via keyword expansion.
@@ -4628,15 +4227,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_iam_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_iam_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4721,10 +4316,7 @@ class DataCatalogAsyncClient:
             google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse:
                 Response message for TestIamPermissions method.
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.test_iam_permissions is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.test_iam_permissions is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - The request isn't a proto-plus wrapped type,
@@ -4736,15 +4328,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4841,9 +4429,7 @@ class DataCatalogAsyncClient:
                    [ImportEntries][google.cloud.datacatalog.v1.DataCatalog.ImportEntries].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.import_entries is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.import_entries is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -4853,15 +4439,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_entries
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_entries]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4945,9 +4527,7 @@ class DataCatalogAsyncClient:
                    [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.set_config is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.set_config is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -4957,15 +4537,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5040,9 +4616,7 @@ class DataCatalogAsyncClient:
                    [RetrieveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveConfig].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.retrieve_config is deprecated", DeprecationWarning
-        )
+        warnings.warn("DataCatalogAsyncClient.retrieve_config is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -5052,15 +4626,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.retrieve_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.retrieve_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5078,9 +4648,7 @@ class DataCatalogAsyncClient:
 
     async def retrieve_effective_config(
         self,
-        request: Optional[
-            Union[datacatalog.RetrieveEffectiveConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[datacatalog.RetrieveEffectiveConfigRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -5141,10 +4709,7 @@ class DataCatalogAsyncClient:
                    [RetrieveEffectiveConfig][google.cloud.datacatalog.v1.DataCatalog.RetrieveEffectiveConfig].
 
         """
-        warnings.warn(
-            "DataCatalogAsyncClient.retrieve_effective_config is deprecated",
-            DeprecationWarning,
-        )
+        warnings.warn("DataCatalogAsyncClient.retrieve_effective_config is deprecated", DeprecationWarning)
 
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
@@ -5154,15 +4719,11 @@ class DataCatalogAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.retrieve_effective_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.retrieve_effective_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5215,9 +4776,7 @@ class DataCatalogAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5270,9 +4829,7 @@ class DataCatalogAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5329,9 +4886,7 @@ class DataCatalogAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5384,9 +4939,7 @@ class DataCatalogAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5406,9 +4959,7 @@ class DataCatalogAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

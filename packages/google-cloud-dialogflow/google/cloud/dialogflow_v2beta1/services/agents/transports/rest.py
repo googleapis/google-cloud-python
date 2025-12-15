@@ -152,9 +152,7 @@ class AgentsRestInterceptor:
     """
 
     def pre_delete_agent(
-        self,
-        request: agent.DeleteAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.DeleteAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.DeleteAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_agent
 
@@ -164,9 +162,7 @@ class AgentsRestInterceptor:
         return request, metadata
 
     def pre_export_agent(
-        self,
-        request: agent.ExportAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.ExportAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.ExportAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_agent
 
@@ -175,9 +171,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_export_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_agent
 
         DEPRECATED. Please use the `post_export_agent_with_metadata`
@@ -191,9 +185,7 @@ class AgentsRestInterceptor:
         return response
 
     def post_export_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_agent
 
@@ -210,9 +202,7 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_get_agent(
-        self,
-        request: agent.GetAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.GetAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.GetAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_agent
 
@@ -252,12 +242,8 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_get_validation_result(
-        self,
-        request: agent.GetValidationResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        agent.GetValidationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: agent.GetValidationResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[agent.GetValidationResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_validation_result
 
         Override in a subclass to manipulate the request or metadata
@@ -265,9 +251,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_validation_result(
-        self, response: validation_result.ValidationResult
-    ) -> validation_result.ValidationResult:
+    def post_get_validation_result(self, response: validation_result.ValidationResult) -> validation_result.ValidationResult:
         """Post-rpc interceptor for get_validation_result
 
         DEPRECATED. Please use the `post_get_validation_result_with_metadata`
@@ -281,12 +265,8 @@ class AgentsRestInterceptor:
         return response
 
     def post_get_validation_result_with_metadata(
-        self,
-        response: validation_result.ValidationResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        validation_result.ValidationResult, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: validation_result.ValidationResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[validation_result.ValidationResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_validation_result
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -302,9 +282,7 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_import_agent(
-        self,
-        request: agent.ImportAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.ImportAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.ImportAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_agent
 
@@ -313,9 +291,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_import_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_agent
 
         DEPRECATED. Please use the `post_import_agent_with_metadata`
@@ -329,9 +305,7 @@ class AgentsRestInterceptor:
         return response
 
     def post_import_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_agent
 
@@ -348,9 +322,7 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_restore_agent(
-        self,
-        request: agent.RestoreAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.RestoreAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.RestoreAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_agent
 
@@ -359,9 +331,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_agent
 
         DEPRECATED. Please use the `post_restore_agent_with_metadata`
@@ -375,9 +345,7 @@ class AgentsRestInterceptor:
         return response
 
     def post_restore_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_agent
 
@@ -394,9 +362,7 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_search_agents(
-        self,
-        request: agent.SearchAgentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.SearchAgentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.SearchAgentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_agents
 
@@ -405,9 +371,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_search_agents(
-        self, response: agent.SearchAgentsResponse
-    ) -> agent.SearchAgentsResponse:
+    def post_search_agents(self, response: agent.SearchAgentsResponse) -> agent.SearchAgentsResponse:
         """Post-rpc interceptor for search_agents
 
         DEPRECATED. Please use the `post_search_agents_with_metadata`
@@ -421,9 +385,7 @@ class AgentsRestInterceptor:
         return response
 
     def post_search_agents_with_metadata(
-        self,
-        response: agent.SearchAgentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: agent.SearchAgentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.SearchAgentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_agents
 
@@ -440,9 +402,7 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_set_agent(
-        self,
-        request: gcd_agent.SetAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcd_agent.SetAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_agent.SetAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_agent
 
@@ -465,9 +425,7 @@ class AgentsRestInterceptor:
         return response
 
     def post_set_agent_with_metadata(
-        self,
-        response: gcd_agent.Agent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_agent.Agent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_agent.Agent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_agent
 
@@ -484,9 +442,7 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_train_agent(
-        self,
-        request: agent.TrainAgentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: agent.TrainAgentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[agent.TrainAgentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for train_agent
 
@@ -495,9 +451,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_train_agent(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_train_agent(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for train_agent
 
         DEPRECATED. Please use the `post_train_agent_with_metadata`
@@ -511,9 +465,7 @@ class AgentsRestInterceptor:
         return response
 
     def post_train_agent_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for train_agent
 
@@ -530,12 +482,8 @@ class AgentsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -543,9 +491,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -555,12 +501,8 @@ class AgentsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -568,9 +510,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -580,12 +520,8 @@ class AgentsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -603,12 +539,8 @@ class AgentsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -616,9 +548,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -628,12 +558,8 @@ class AgentsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -641,9 +567,7 @@ class AgentsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -733,9 +657,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -793,9 +715,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 path_prefix="v2beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -805,15 +725,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.DeleteAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -852,25 +764,13 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseDeleteAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseDeleteAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseDeleteAgent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseDeleteAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseDeleteAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -893,14 +793,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 )
 
             # Send the request
-            response = AgentsRestTransport._DeleteAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AgentsRestTransport._DeleteAgent._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -912,15 +805,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.ExportAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -967,29 +852,15 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseExportAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_export_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseExportAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseExportAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseAgentsRestTransport._BaseExportAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAgentsRestTransport._BaseExportAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseExportAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseExportAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1013,13 +884,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._ExportAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1033,12 +898,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_export_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1064,15 +925,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.GetAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1127,25 +980,13 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseGetAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_get_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseGetAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseGetAgent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseGetAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseGetAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1168,14 +1009,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 )
 
             # Send the request
-            response = AgentsRestTransport._GetAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AgentsRestTransport._GetAgent._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1190,12 +1024,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_get_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = agent.Agent.to_json(response)
                 except:
@@ -1216,22 +1046,12 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 )
             return resp
 
-    class _GetValidationResult(
-        _BaseAgentsRestTransport._BaseGetValidationResult, AgentsRestStub
-    ):
+    class _GetValidationResult(_BaseAgentsRestTransport._BaseGetValidationResult, AgentsRestStub):
         def __hash__(self):
             return hash("AgentsRestTransport.GetValidationResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1273,28 +1093,16 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseGetValidationResult._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseGetValidationResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_validation_result(
-                request, metadata
-            )
-            transcoded_request = _BaseAgentsRestTransport._BaseGetValidationResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_validation_result(request, metadata)
+            transcoded_request = _BaseAgentsRestTransport._BaseGetValidationResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAgentsRestTransport._BaseGetValidationResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAgentsRestTransport._BaseGetValidationResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1318,12 +1126,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._GetValidationResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1339,16 +1142,10 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_get_validation_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_validation_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_validation_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = validation_result.ValidationResult.to_json(
-                        response
-                    )
+                    response_payload = validation_result.ValidationResult.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1372,15 +1169,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.ImportAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1427,29 +1216,15 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseImportAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_import_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseImportAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseImportAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseAgentsRestTransport._BaseImportAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAgentsRestTransport._BaseImportAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseImportAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseImportAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1473,13 +1248,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._ImportAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1493,12 +1262,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_import_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1524,15 +1289,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.RestoreAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1576,34 +1333,18 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseRestoreAgent._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseRestoreAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_restore_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseRestoreAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseRestoreAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseAgentsRestTransport._BaseRestoreAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAgentsRestTransport._BaseRestoreAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseRestoreAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseRestoreAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1627,13 +1368,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._RestoreAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1647,12 +1382,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_restore_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1678,15 +1409,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.SearchAgents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1728,30 +1451,16 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseSearchAgents._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseSearchAgents._get_http_options()
 
             request, metadata = self._interceptor.pre_search_agents(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseSearchAgents._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseSearchAgents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseSearchAgents._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseSearchAgents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1774,14 +1483,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 )
 
             # Send the request
-            response = AgentsRestTransport._SearchAgents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AgentsRestTransport._SearchAgents._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1796,12 +1498,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_search_agents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_agents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_agents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = agent.SearchAgentsResponse.to_json(response)
                 except:
@@ -1827,15 +1525,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.SetAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1891,29 +1581,15 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseSetAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_set_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseSetAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseSetAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseAgentsRestTransport._BaseSetAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAgentsRestTransport._BaseSetAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseSetAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseSetAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1937,13 +1613,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._SetAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1959,12 +1629,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_set_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_agent.Agent.to_json(response)
                 except:
@@ -1990,15 +1656,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.TrainAgent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2045,29 +1703,15 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseTrainAgent._get_http_options()
 
             request, metadata = self._interceptor.pre_train_agent(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseTrainAgent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseTrainAgent._get_transcoded_request(http_options, request)
 
-            body = _BaseAgentsRestTransport._BaseTrainAgent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAgentsRestTransport._BaseTrainAgent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseTrainAgent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseTrainAgent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2091,13 +1735,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._TrainAgent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2111,12 +1749,8 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             resp = self._interceptor.post_train_agent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_train_agent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_train_agent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2144,9 +1778,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
         return self._DeleteAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_agent(
-        self,
-    ) -> Callable[[agent.ExportAgentRequest], operations_pb2.Operation]:
+    def export_agent(self) -> Callable[[agent.ExportAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportAgent(self._session, self._host, self._interceptor)  # type: ignore
@@ -2158,35 +1790,25 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
         return self._GetAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_validation_result(
-        self,
-    ) -> Callable[
-        [agent.GetValidationResultRequest], validation_result.ValidationResult
-    ]:
+    def get_validation_result(self) -> Callable[[agent.GetValidationResultRequest], validation_result.ValidationResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetValidationResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_agent(
-        self,
-    ) -> Callable[[agent.ImportAgentRequest], operations_pb2.Operation]:
+    def import_agent(self) -> Callable[[agent.ImportAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_agent(
-        self,
-    ) -> Callable[[agent.RestoreAgentRequest], operations_pb2.Operation]:
+    def restore_agent(self) -> Callable[[agent.RestoreAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_agents(
-        self,
-    ) -> Callable[[agent.SearchAgentsRequest], agent.SearchAgentsResponse]:
+    def search_agents(self) -> Callable[[agent.SearchAgentsRequest], agent.SearchAgentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchAgents(self._session, self._host, self._interceptor)  # type: ignore
@@ -2198,9 +1820,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
         return self._SetAgent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def train_agent(
-        self,
-    ) -> Callable[[agent.TrainAgentRequest], operations_pb2.Operation]:
+    def train_agent(self) -> Callable[[agent.TrainAgentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TrainAgent(self._session, self._host, self._interceptor)  # type: ignore
@@ -2214,15 +1834,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2263,25 +1875,13 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             http_options = _BaseAgentsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2304,14 +1904,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 )
 
             # Send the request
-            response = AgentsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AgentsRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2322,9 +1915,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2354,15 +1945,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2400,30 +1983,16 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2447,12 +2016,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2464,9 +2028,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2491,22 +2053,12 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAgentsRestTransport._BaseCancelOperation, AgentsRestStub
-    ):
+    class _CancelOperation(_BaseAgentsRestTransport._BaseCancelOperation, AgentsRestStub):
         def __hash__(self):
             return hash("AgentsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2541,32 +2093,16 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAgentsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2590,12 +2126,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2614,15 +2145,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2660,30 +2183,16 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2706,14 +2215,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 )
 
             # Send the request
-            response = AgentsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = AgentsRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2724,9 +2226,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2756,15 +2256,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             return hash("AgentsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2802,30 +2294,16 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAgentsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAgentsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseAgentsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAgentsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAgentsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAgentsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2849,12 +2327,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
 
             # Send the request
             response = AgentsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2866,9 +2339,7 @@ class AgentsRestTransport(_BaseAgentsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

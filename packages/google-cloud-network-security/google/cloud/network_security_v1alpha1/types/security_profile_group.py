@@ -222,13 +222,11 @@ class SecurityProfile(proto.Message):
         oneof="profile",
         message=security_profile_group_intercept.CustomInterceptProfile,
     )
-    url_filtering_profile: security_profile_group_urlfiltering.UrlFilteringProfile = (
-        proto.Field(
-            proto.MESSAGE,
-            number=12,
-            oneof="profile",
-            message=security_profile_group_urlfiltering.UrlFilteringProfile,
-        )
+    url_filtering_profile: security_profile_group_urlfiltering.UrlFilteringProfile = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="profile",
+        message=security_profile_group_urlfiltering.UrlFilteringProfile,
     )
     name: str = proto.Field(
         proto.STRING,

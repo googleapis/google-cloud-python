@@ -124,13 +124,8 @@ class ConversionSourcesServiceRestInterceptor:
     """
 
     def pre_create_conversion_source(
-        self,
-        request: conversionsources.CreateConversionSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.CreateConversionSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversionsources.CreateConversionSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.CreateConversionSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_conversion_source
 
         Override in a subclass to manipulate the request or metadata
@@ -138,9 +133,7 @@ class ConversionSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_conversion_source(
-        self, response: conversionsources.ConversionSource
-    ) -> conversionsources.ConversionSource:
+    def post_create_conversion_source(self, response: conversionsources.ConversionSource) -> conversionsources.ConversionSource:
         """Post-rpc interceptor for create_conversion_source
 
         DEPRECATED. Please use the `post_create_conversion_source_with_metadata`
@@ -154,12 +147,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response
 
     def post_create_conversion_source_with_metadata(
-        self,
-        response: conversionsources.ConversionSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: conversionsources.ConversionSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_conversion_source
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -175,13 +164,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_conversion_source(
-        self,
-        request: conversionsources.DeleteConversionSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.DeleteConversionSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversionsources.DeleteConversionSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.DeleteConversionSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_conversion_source
 
         Override in a subclass to manipulate the request or metadata
@@ -190,13 +174,8 @@ class ConversionSourcesServiceRestInterceptor:
         return request, metadata
 
     def pre_get_conversion_source(
-        self,
-        request: conversionsources.GetConversionSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.GetConversionSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversionsources.GetConversionSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.GetConversionSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_conversion_source
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +183,7 @@ class ConversionSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_conversion_source(
-        self, response: conversionsources.ConversionSource
-    ) -> conversionsources.ConversionSource:
+    def post_get_conversion_source(self, response: conversionsources.ConversionSource) -> conversionsources.ConversionSource:
         """Post-rpc interceptor for get_conversion_source
 
         DEPRECATED. Please use the `post_get_conversion_source_with_metadata`
@@ -220,12 +197,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response
 
     def post_get_conversion_source_with_metadata(
-        self,
-        response: conversionsources.ConversionSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: conversionsources.ConversionSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_conversion_source
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -241,13 +214,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_conversion_sources(
-        self,
-        request: conversionsources.ListConversionSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.ListConversionSourcesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversionsources.ListConversionSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.ListConversionSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_conversion_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -271,13 +239,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response
 
     def post_list_conversion_sources_with_metadata(
-        self,
-        response: conversionsources.ListConversionSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.ListConversionSourcesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: conversionsources.ListConversionSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.ListConversionSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_conversion_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,13 +256,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_undelete_conversion_source(
-        self,
-        request: conversionsources.UndeleteConversionSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.UndeleteConversionSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversionsources.UndeleteConversionSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.UndeleteConversionSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_conversion_source
 
         Override in a subclass to manipulate the request or metadata
@@ -307,9 +265,7 @@ class ConversionSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_conversion_source(
-        self, response: conversionsources.ConversionSource
-    ) -> conversionsources.ConversionSource:
+    def post_undelete_conversion_source(self, response: conversionsources.ConversionSource) -> conversionsources.ConversionSource:
         """Post-rpc interceptor for undelete_conversion_source
 
         DEPRECATED. Please use the `post_undelete_conversion_source_with_metadata`
@@ -323,12 +279,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response
 
     def post_undelete_conversion_source_with_metadata(
-        self,
-        response: conversionsources.ConversionSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: conversionsources.ConversionSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_conversion_source
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -344,13 +296,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_update_conversion_source(
-        self,
-        request: conversionsources.UpdateConversionSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.UpdateConversionSourceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversionsources.UpdateConversionSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.UpdateConversionSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_conversion_source
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +305,7 @@ class ConversionSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_conversion_source(
-        self, response: conversionsources.ConversionSource
-    ) -> conversionsources.ConversionSource:
+    def post_update_conversion_source(self, response: conversionsources.ConversionSource) -> conversionsources.ConversionSource:
         """Post-rpc interceptor for update_conversion_source
 
         DEPRECATED. Please use the `post_update_conversion_source_with_metadata`
@@ -374,12 +319,8 @@ class ConversionSourcesServiceRestInterceptor:
         return response
 
     def post_update_conversion_source_with_metadata(
-        self,
-        response: conversionsources.ConversionSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: conversionsources.ConversionSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversionsources.ConversionSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_conversion_source
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -475,31 +416,18 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ConversionSourcesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateConversionSource(
-        _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource,
-        ConversionSourcesServiceRestStub,
-    ):
+    class _CreateConversionSource(_BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource, ConversionSourcesServiceRestStub):
         def __hash__(self):
             return hash("ConversionSourcesServiceRestTransport.CreateConversionSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -544,32 +472,18 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_http_options()
-            )
+            http_options = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_conversion_source(
-                request, metadata
-            )
-            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_conversion_source(request, metadata)
+            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_transcoded_request(http_options, request)
 
-            body = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversionSourcesServiceRestTransport._BaseCreateConversionSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -593,13 +507,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._CreateConversionSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -615,16 +523,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             resp = self._interceptor.post_create_conversion_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_conversion_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_conversion_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversionsources.ConversionSource.to_json(
-                        response
-                    )
+                    response_payload = conversionsources.ConversionSource.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -643,23 +545,12 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 )
             return resp
 
-    class _DeleteConversionSource(
-        _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource,
-        ConversionSourcesServiceRestStub,
-    ):
+    class _DeleteConversionSource(_BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource, ConversionSourcesServiceRestStub):
         def __hash__(self):
             return hash("ConversionSourcesServiceRestTransport.DeleteConversionSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -695,28 +586,16 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_http_options()
-            )
+            http_options = _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_conversion_source(
-                request, metadata
-            )
-            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_conversion_source(request, metadata)
+            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversionSourcesServiceRestTransport._BaseDeleteConversionSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -740,12 +619,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._DeleteConversionSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -753,23 +627,12 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetConversionSource(
-        _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource,
-        ConversionSourcesServiceRestStub,
-    ):
+    class _GetConversionSource(_BaseConversionSourcesServiceRestTransport._BaseGetConversionSource, ConversionSourcesServiceRestStub):
         def __hash__(self):
             return hash("ConversionSourcesServiceRestTransport.GetConversionSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -813,28 +676,16 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_http_options()
-            )
+            http_options = _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_conversion_source(
-                request, metadata
-            )
-            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_conversion_source(request, metadata)
+            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversionSourcesServiceRestTransport._BaseGetConversionSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -858,12 +709,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._GetConversionSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -879,16 +725,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             resp = self._interceptor.post_get_conversion_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_conversion_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_conversion_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversionsources.ConversionSource.to_json(
-                        response
-                    )
+                    response_payload = conversionsources.ConversionSource.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -907,23 +747,12 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 )
             return resp
 
-    class _ListConversionSources(
-        _BaseConversionSourcesServiceRestTransport._BaseListConversionSources,
-        ConversionSourcesServiceRestStub,
-    ):
+    class _ListConversionSources(_BaseConversionSourcesServiceRestTransport._BaseListConversionSources, ConversionSourcesServiceRestStub):
         def __hash__(self):
             return hash("ConversionSourcesServiceRestTransport.ListConversionSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -965,28 +794,16 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_http_options()
-            )
+            http_options = _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_conversion_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_conversion_sources(request, metadata)
+            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversionSourcesServiceRestTransport._BaseListConversionSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1010,12 +827,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._ListConversionSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1031,18 +843,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             resp = self._interceptor.post_list_conversion_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_conversion_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_conversion_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        conversionsources.ListConversionSourcesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = conversionsources.ListConversionSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1061,25 +865,12 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 )
             return resp
 
-    class _UndeleteConversionSource(
-        _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource,
-        ConversionSourcesServiceRestStub,
-    ):
+    class _UndeleteConversionSource(_BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource, ConversionSourcesServiceRestStub):
         def __hash__(self):
-            return hash(
-                "ConversionSourcesServiceRestTransport.UndeleteConversionSource"
-            )
+            return hash("ConversionSourcesServiceRestTransport.UndeleteConversionSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1125,32 +916,20 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_http_options()
-            )
+            http_options = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_conversion_source(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_undelete_conversion_source(request, metadata)
             transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversionSourcesServiceRestTransport._BaseUndeleteConversionSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1174,13 +953,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._UndeleteConversionSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1196,16 +969,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             resp = self._interceptor.post_undelete_conversion_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_conversion_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_conversion_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversionsources.ConversionSource.to_json(
-                        response
-                    )
+                    response_payload = conversionsources.ConversionSource.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1224,23 +991,12 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
                 )
             return resp
 
-    class _UpdateConversionSource(
-        _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource,
-        ConversionSourcesServiceRestStub,
-    ):
+    class _UpdateConversionSource(_BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource, ConversionSourcesServiceRestStub):
         def __hash__(self):
             return hash("ConversionSourcesServiceRestTransport.UpdateConversionSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1285,32 +1041,18 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             """
 
-            http_options = (
-                _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_http_options()
-            )
+            http_options = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_conversion_source(
-                request, metadata
-            )
-            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_conversion_source(request, metadata)
+            transcoded_request = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_transcoded_request(http_options, request)
 
-            body = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversionSourcesServiceRestTransport._BaseUpdateConversionSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1334,13 +1076,7 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             # Send the request
             response = ConversionSourcesServiceRestTransport._UpdateConversionSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1356,16 +1092,10 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
 
             resp = self._interceptor.post_update_conversion_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_conversion_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_conversion_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversionsources.ConversionSource.to_json(
-                        response
-                    )
+                    response_payload = conversionsources.ConversionSource.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1385,64 +1115,37 @@ class ConversionSourcesServiceRestTransport(_BaseConversionSourcesServiceRestTra
             return resp
 
     @property
-    def create_conversion_source(
-        self,
-    ) -> Callable[
-        [conversionsources.CreateConversionSourceRequest],
-        conversionsources.ConversionSource,
-    ]:
+    def create_conversion_source(self) -> Callable[[conversionsources.CreateConversionSourceRequest], conversionsources.ConversionSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversionSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_conversion_source(
-        self,
-    ) -> Callable[[conversionsources.DeleteConversionSourceRequest], empty_pb2.Empty]:
+    def delete_conversion_source(self) -> Callable[[conversionsources.DeleteConversionSourceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConversionSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_conversion_source(
-        self,
-    ) -> Callable[
-        [conversionsources.GetConversionSourceRequest],
-        conversionsources.ConversionSource,
-    ]:
+    def get_conversion_source(self) -> Callable[[conversionsources.GetConversionSourceRequest], conversionsources.ConversionSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConversionSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_conversion_sources(
-        self,
-    ) -> Callable[
-        [conversionsources.ListConversionSourcesRequest],
-        conversionsources.ListConversionSourcesResponse,
-    ]:
+    def list_conversion_sources(self) -> Callable[[conversionsources.ListConversionSourcesRequest], conversionsources.ListConversionSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConversionSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_conversion_source(
-        self,
-    ) -> Callable[
-        [conversionsources.UndeleteConversionSourceRequest],
-        conversionsources.ConversionSource,
-    ]:
+    def undelete_conversion_source(self) -> Callable[[conversionsources.UndeleteConversionSourceRequest], conversionsources.ConversionSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteConversionSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_conversion_source(
-        self,
-    ) -> Callable[
-        [conversionsources.UpdateConversionSourceRequest],
-        conversionsources.ConversionSource,
-    ]:
+    def update_conversion_source(self) -> Callable[[conversionsources.UpdateConversionSourceRequest], conversionsources.ConversionSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConversionSource(self._session, self._host, self._interceptor)  # type: ignore

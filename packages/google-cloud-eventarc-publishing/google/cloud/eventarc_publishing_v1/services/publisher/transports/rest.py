@@ -103,9 +103,7 @@ class PublisherRestInterceptor:
     """
 
     def pre_publish(
-        self,
-        request: publisher.PublishRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: publisher.PublishRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[publisher.PublishRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for publish
 
@@ -114,9 +112,7 @@ class PublisherRestInterceptor:
         """
         return request, metadata
 
-    def post_publish(
-        self, response: publisher.PublishResponse
-    ) -> publisher.PublishResponse:
+    def post_publish(self, response: publisher.PublishResponse) -> publisher.PublishResponse:
         """Post-rpc interceptor for publish
 
         DEPRECATED. Please use the `post_publish_with_metadata`
@@ -130,9 +126,7 @@ class PublisherRestInterceptor:
         return response
 
     def post_publish_with_metadata(
-        self,
-        response: publisher.PublishResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: publisher.PublishResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[publisher.PublishResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for publish
 
@@ -149,13 +143,8 @@ class PublisherRestInterceptor:
         return response, metadata
 
     def pre_publish_channel_connection_events(
-        self,
-        request: publisher.PublishChannelConnectionEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        publisher.PublishChannelConnectionEventsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: publisher.PublishChannelConnectionEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[publisher.PublishChannelConnectionEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for publish_channel_connection_events
 
         Override in a subclass to manipulate the request or metadata
@@ -179,13 +168,8 @@ class PublisherRestInterceptor:
         return response
 
     def post_publish_channel_connection_events_with_metadata(
-        self,
-        response: publisher.PublishChannelConnectionEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        publisher.PublishChannelConnectionEventsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: publisher.PublishChannelConnectionEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[publisher.PublishChannelConnectionEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for publish_channel_connection_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -201,9 +185,7 @@ class PublisherRestInterceptor:
         return response, metadata
 
     def pre_publish_events(
-        self,
-        request: publisher.PublishEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: publisher.PublishEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[publisher.PublishEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for publish_events
 
@@ -212,9 +194,7 @@ class PublisherRestInterceptor:
         """
         return request, metadata
 
-    def post_publish_events(
-        self, response: publisher.PublishEventsResponse
-    ) -> publisher.PublishEventsResponse:
+    def post_publish_events(self, response: publisher.PublishEventsResponse) -> publisher.PublishEventsResponse:
         """Post-rpc interceptor for publish_events
 
         DEPRECATED. Please use the `post_publish_events_with_metadata`
@@ -228,12 +208,8 @@ class PublisherRestInterceptor:
         return response
 
     def post_publish_events_with_metadata(
-        self,
-        response: publisher.PublishEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        publisher.PublishEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: publisher.PublishEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[publisher.PublishEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for publish_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -362,9 +338,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PublisherRestInterceptor()
@@ -375,15 +349,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             return hash("PublisherRestTransport.Publish")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -429,29 +395,15 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             http_options = _BasePublisherRestTransport._BasePublish._get_http_options()
 
             request, metadata = self._interceptor.pre_publish(request, metadata)
-            transcoded_request = (
-                _BasePublisherRestTransport._BasePublish._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePublisherRestTransport._BasePublish._get_transcoded_request(http_options, request)
 
-            body = _BasePublisherRestTransport._BasePublish._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePublisherRestTransport._BasePublish._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePublisherRestTransport._BasePublish._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePublisherRestTransport._BasePublish._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -475,13 +427,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             # Send the request
             response = PublisherRestTransport._Publish._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -497,12 +443,8 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             resp = self._interceptor.post_publish(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_publish_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_publish_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = publisher.PublishResponse.to_json(response)
                 except:
@@ -523,23 +465,12 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 )
             return resp
 
-    class _PublishChannelConnectionEvents(
-        _BasePublisherRestTransport._BasePublishChannelConnectionEvents,
-        PublisherRestStub,
-    ):
+    class _PublishChannelConnectionEvents(_BasePublisherRestTransport._BasePublishChannelConnectionEvents, PublisherRestStub):
         def __hash__(self):
             return hash("PublisherRestTransport.PublishChannelConnectionEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -583,32 +514,18 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             """
 
-            http_options = (
-                _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_http_options()
-            )
+            http_options = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_publish_channel_connection_events(
-                request, metadata
-            )
-            transcoded_request = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_publish_channel_connection_events(request, metadata)
+            transcoded_request = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_transcoded_request(http_options, request)
 
-            body = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePublisherRestTransport._BasePublishChannelConnectionEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -631,16 +548,8 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 )
 
             # Send the request
-            response = (
-                PublisherRestTransport._PublishChannelConnectionEvents._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PublisherRestTransport._PublishChannelConnectionEvents._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -656,21 +565,10 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             resp = self._interceptor.post_publish_channel_connection_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_publish_channel_connection_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_publish_channel_connection_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        publisher.PublishChannelConnectionEventsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = publisher.PublishChannelConnectionEventsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -689,22 +587,12 @@ class PublisherRestTransport(_BasePublisherRestTransport):
                 )
             return resp
 
-    class _PublishEvents(
-        _BasePublisherRestTransport._BasePublishEvents, PublisherRestStub
-    ):
+    class _PublishEvents(_BasePublisherRestTransport._BasePublishEvents, PublisherRestStub):
         def __hash__(self):
             return hash("PublisherRestTransport.PublishEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -747,36 +635,18 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             """
 
-            http_options = (
-                _BasePublisherRestTransport._BasePublishEvents._get_http_options()
-            )
+            http_options = _BasePublisherRestTransport._BasePublishEvents._get_http_options()
 
             request, metadata = self._interceptor.pre_publish_events(request, metadata)
-            transcoded_request = (
-                _BasePublisherRestTransport._BasePublishEvents._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePublisherRestTransport._BasePublishEvents._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePublisherRestTransport._BasePublishEvents._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePublisherRestTransport._BasePublishEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePublisherRestTransport._BasePublishEvents._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePublisherRestTransport._BasePublishEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -800,13 +670,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             # Send the request
             response = PublisherRestTransport._PublishEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -822,12 +686,8 @@ class PublisherRestTransport(_BasePublisherRestTransport):
 
             resp = self._interceptor.post_publish_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_publish_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_publish_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = publisher.PublishEventsResponse.to_json(response)
                 except:
@@ -849,9 +709,7 @@ class PublisherRestTransport(_BasePublisherRestTransport):
             return resp
 
     @property
-    def publish(
-        self,
-    ) -> Callable[[publisher.PublishRequest], publisher.PublishResponse]:
+    def publish(self) -> Callable[[publisher.PublishRequest], publisher.PublishResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Publish(self._session, self._host, self._interceptor)  # type: ignore
@@ -859,18 +717,13 @@ class PublisherRestTransport(_BasePublisherRestTransport):
     @property
     def publish_channel_connection_events(
         self,
-    ) -> Callable[
-        [publisher.PublishChannelConnectionEventsRequest],
-        publisher.PublishChannelConnectionEventsResponse,
-    ]:
+    ) -> Callable[[publisher.PublishChannelConnectionEventsRequest], publisher.PublishChannelConnectionEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PublishChannelConnectionEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def publish_events(
-        self,
-    ) -> Callable[[publisher.PublishEventsRequest], publisher.PublishEventsResponse]:
+    def publish_events(self) -> Callable[[publisher.PublishEventsRequest], publisher.PublishEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PublishEvents(self._session, self._host, self._interceptor)  # type: ignore

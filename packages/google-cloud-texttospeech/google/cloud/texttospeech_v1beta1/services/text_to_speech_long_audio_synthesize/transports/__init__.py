@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import TextToSpeechLongAudioSynthesizeTransport
 from .grpc import TextToSpeechLongAudioSynthesizeGrpcTransport
 from .grpc_asyncio import TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
-from .rest import (
-    TextToSpeechLongAudioSynthesizeRestInterceptor,
-    TextToSpeechLongAudioSynthesizeRestTransport,
-)
+from .rest import TextToSpeechLongAudioSynthesizeRestInterceptor, TextToSpeechLongAudioSynthesizeRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[TextToSpeechLongAudioSynthesizeTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[TextToSpeechLongAudioSynthesizeTransport]]
 _transport_registry["grpc"] = TextToSpeechLongAudioSynthesizeGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = TextToSpeechLongAudioSynthesizeGrpcAsyncIOTransport
 _transport_registry["rest"] = TextToSpeechLongAudioSynthesizeRestTransport
 
 __all__ = (

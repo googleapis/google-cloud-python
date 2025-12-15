@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -54,9 +43,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.network_security_v1alpha1.services.organization_security_profile_group_service import (
-    pagers,
-)
+from google.cloud.network_security_v1alpha1.services.organization_security_profile_group_service import pagers
 from google.cloud.network_security_v1alpha1.types import (
     security_profile_group_intercept,
     security_profile_group_mirroring,
@@ -64,20 +51,13 @@ from google.cloud.network_security_v1alpha1.types import (
     security_profile_group_threatprevention,
     security_profile_group_urlfiltering,
 )
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group as gcn_security_profile_group,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group as gcn_security_profile_group
 from google.cloud.network_security_v1alpha1.types import common
 from google.cloud.network_security_v1alpha1.types import security_profile_group
 
 from .client import OrganizationSecurityProfileGroupServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    OrganizationSecurityProfileGroupServiceTransport,
-)
-from .transports.grpc_asyncio import (
-    OrganizationSecurityProfileGroupServiceGrpcAsyncIOTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, OrganizationSecurityProfileGroupServiceTransport
+from .transports.grpc_asyncio import OrganizationSecurityProfileGroupServiceGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -99,68 +79,28 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = OrganizationSecurityProfileGroupServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = (
-        OrganizationSecurityProfileGroupServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        OrganizationSecurityProfileGroupServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    DEFAULT_MTLS_ENDPOINT = OrganizationSecurityProfileGroupServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = OrganizationSecurityProfileGroupServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = OrganizationSecurityProfileGroupServiceClient._DEFAULT_UNIVERSE
 
-    intercept_endpoint_group_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.intercept_endpoint_group_path
-    )
-    parse_intercept_endpoint_group_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_intercept_endpoint_group_path
-    )
-    mirroring_endpoint_group_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.mirroring_endpoint_group_path
-    )
-    parse_mirroring_endpoint_group_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_mirroring_endpoint_group_path
-    )
-    security_profile_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.security_profile_path
-    )
-    parse_security_profile_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_security_profile_path
-    )
-    security_profile_group_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.security_profile_group_path
-    )
-    parse_security_profile_group_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_security_profile_group_path
-    )
-    common_billing_account_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        OrganizationSecurityProfileGroupServiceClient.parse_common_location_path
-    )
+    intercept_endpoint_group_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.intercept_endpoint_group_path)
+    parse_intercept_endpoint_group_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_intercept_endpoint_group_path)
+    mirroring_endpoint_group_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.mirroring_endpoint_group_path)
+    parse_mirroring_endpoint_group_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_mirroring_endpoint_group_path)
+    security_profile_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.security_profile_path)
+    parse_security_profile_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_security_profile_path)
+    security_profile_group_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.security_profile_group_path)
+    parse_security_profile_group_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_security_profile_group_path)
+    common_billing_account_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(OrganizationSecurityProfileGroupServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -196,9 +136,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -259,20 +197,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         """
         return self._client._universe_domain
 
-    get_transport_class = (
-        OrganizationSecurityProfileGroupServiceClient.get_transport_class
-    )
+    get_transport_class = OrganizationSecurityProfileGroupServiceClient.get_transport_class
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                OrganizationSecurityProfileGroupServiceTransport,
-                Callable[..., OrganizationSecurityProfileGroupServiceTransport],
-            ]
+            Union[str, OrganizationSecurityProfileGroupServiceTransport, Callable[..., OrganizationSecurityProfileGroupServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -333,20 +265,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networksecurity_v1alpha1.OrganizationSecurityProfileGroupServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networksecurity.v1alpha1.OrganizationSecurityProfileGroupService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -357,9 +283,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def list_security_profile_groups(
         self,
-        request: Optional[
-            Union[security_profile_group_service.ListSecurityProfileGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.ListSecurityProfileGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -430,23 +354,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.ListSecurityProfileGroupsRequest
-        ):
-            request = security_profile_group_service.ListSecurityProfileGroupsRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.ListSecurityProfileGroupsRequest):
+            request = security_profile_group_service.ListSecurityProfileGroupsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -455,15 +370,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_security_profile_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_security_profile_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -492,9 +403,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def get_security_profile_group(
         self,
-        request: Optional[
-            Union[security_profile_group_service.GetSecurityProfileGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.GetSecurityProfileGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -560,23 +469,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.GetSecurityProfileGroupRequest
-        ):
-            request = security_profile_group_service.GetSecurityProfileGroupRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.GetSecurityProfileGroupRequest):
+            request = security_profile_group_service.GetSecurityProfileGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -585,15 +485,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_security_profile_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_security_profile_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -611,16 +507,10 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def create_security_profile_group(
         self,
-        request: Optional[
-            Union[
-                security_profile_group_service.CreateSecurityProfileGroupRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.CreateSecurityProfileGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        security_profile_group: Optional[
-            gcn_security_profile_group.SecurityProfileGroup
-        ] = None,
+        security_profile_group: Optional[gcn_security_profile_group.SecurityProfileGroup] = None,
         security_profile_group_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -709,23 +599,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, security_profile_group, security_profile_group_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.CreateSecurityProfileGroupRequest
-        ):
-            request = security_profile_group_service.CreateSecurityProfileGroupRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.CreateSecurityProfileGroupRequest):
+            request = security_profile_group_service.CreateSecurityProfileGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -738,15 +619,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_security_profile_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_security_profile_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -772,15 +649,9 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def update_security_profile_group(
         self,
-        request: Optional[
-            Union[
-                security_profile_group_service.UpdateSecurityProfileGroupRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.UpdateSecurityProfileGroupRequest, dict]] = None,
         *,
-        security_profile_group: Optional[
-            gcn_security_profile_group.SecurityProfileGroup
-        ] = None,
+        security_profile_group: Optional[gcn_security_profile_group.SecurityProfileGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -859,23 +730,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [security_profile_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.UpdateSecurityProfileGroupRequest
-        ):
-            request = security_profile_group_service.UpdateSecurityProfileGroupRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.UpdateSecurityProfileGroupRequest):
+            request = security_profile_group_service.UpdateSecurityProfileGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -886,16 +748,12 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_security_profile_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_security_profile_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("security_profile_group.name", request.security_profile_group.name),)
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("security_profile_group.name", request.security_profile_group.name),)),
         )
 
         # Validate the universe domain.
@@ -922,11 +780,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def delete_security_profile_group(
         self,
-        request: Optional[
-            Union[
-                security_profile_group_service.DeleteSecurityProfileGroupRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.DeleteSecurityProfileGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1005,23 +859,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.DeleteSecurityProfileGroupRequest
-        ):
-            request = security_profile_group_service.DeleteSecurityProfileGroupRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.DeleteSecurityProfileGroupRequest):
+            request = security_profile_group_service.DeleteSecurityProfileGroupRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1030,15 +875,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_security_profile_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_security_profile_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1064,9 +905,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def list_security_profiles(
         self,
-        request: Optional[
-            Union[security_profile_group_service.ListSecurityProfilesRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.ListSecurityProfilesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1137,23 +976,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.ListSecurityProfilesRequest
-        ):
-            request = security_profile_group_service.ListSecurityProfilesRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.ListSecurityProfilesRequest):
+            request = security_profile_group_service.ListSecurityProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1162,15 +992,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_security_profiles
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_security_profiles]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1199,9 +1025,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def get_security_profile(
         self,
-        request: Optional[
-            Union[security_profile_group_service.GetSecurityProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.GetSecurityProfileRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1267,20 +1091,13 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.GetSecurityProfileRequest
-        ):
+        if not isinstance(request, security_profile_group_service.GetSecurityProfileRequest):
             request = security_profile_group_service.GetSecurityProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1290,15 +1107,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_security_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_security_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1316,9 +1129,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def create_security_profile(
         self,
-        request: Optional[
-            Union[security_profile_group_service.CreateSecurityProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.CreateSecurityProfileRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         security_profile: Optional[security_profile_group.SecurityProfile] = None,
@@ -1410,23 +1221,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, security_profile, security_profile_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.CreateSecurityProfileRequest
-        ):
-            request = security_profile_group_service.CreateSecurityProfileRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.CreateSecurityProfileRequest):
+            request = security_profile_group_service.CreateSecurityProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1439,15 +1241,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_security_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_security_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1473,9 +1271,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def update_security_profile(
         self,
-        request: Optional[
-            Union[security_profile_group_service.UpdateSecurityProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.UpdateSecurityProfileRequest, dict]] = None,
         *,
         security_profile: Optional[security_profile_group.SecurityProfile] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1555,23 +1351,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [security_profile, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.UpdateSecurityProfileRequest
-        ):
-            request = security_profile_group_service.UpdateSecurityProfileRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.UpdateSecurityProfileRequest):
+            request = security_profile_group_service.UpdateSecurityProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1582,17 +1369,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_security_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_security_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("security_profile.name", request.security_profile.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("security_profile.name", request.security_profile.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1618,9 +1399,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
     async def delete_security_profile(
         self,
-        request: Optional[
-            Union[security_profile_group_service.DeleteSecurityProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[security_profile_group_service.DeleteSecurityProfileRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1699,23 +1478,14 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, security_profile_group_service.DeleteSecurityProfileRequest
-        ):
-            request = security_profile_group_service.DeleteSecurityProfileRequest(
-                request
-            )
+        if not isinstance(request, security_profile_group_service.DeleteSecurityProfileRequest):
+            request = security_profile_group_service.DeleteSecurityProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1724,15 +1494,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_security_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_security_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1793,9 +1559,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1848,9 +1612,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1907,9 +1669,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1962,9 +1722,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2080,9 +1838,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2202,9 +1958,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2258,15 +2012,11 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2319,9 +2069,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2374,9 +2122,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2399,9 +2145,7 @@ class OrganizationSecurityProfileGroupServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

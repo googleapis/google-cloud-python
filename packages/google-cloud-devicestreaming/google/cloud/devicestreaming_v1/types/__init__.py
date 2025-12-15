@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .adb_service import (
-    AdbMessage,
-    Close,
-    DeviceMessage,
-    Fail,
-    Okay,
-    Open,
-    StatusUpdate,
-    StreamData,
-    StreamStatus,
-)
+from .adb_service import AdbMessage, Close, DeviceMessage, Fail, Okay, Open, StatusUpdate, StreamData, StreamStatus
 from .service import (
     AndroidDevice,
     CancelDeviceSessionRequest,

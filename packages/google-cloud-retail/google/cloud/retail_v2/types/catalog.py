@@ -489,16 +489,12 @@ class CatalogAttribute(proto.Message):
             number=1,
             message=common.Interval,
         )
-        ignored_facet_values: MutableSequence[
-            "CatalogAttribute.FacetConfig.IgnoredFacetValues"
-        ] = proto.RepeatedField(
+        ignored_facet_values: MutableSequence["CatalogAttribute.FacetConfig.IgnoredFacetValues"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CatalogAttribute.FacetConfig.IgnoredFacetValues",
         )
-        merged_facet_values: MutableSequence[
-            "CatalogAttribute.FacetConfig.MergedFacetValue"
-        ] = proto.RepeatedField(
+        merged_facet_values: MutableSequence["CatalogAttribute.FacetConfig.MergedFacetValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="CatalogAttribute.FacetConfig.MergedFacetValue",

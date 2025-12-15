@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -324,9 +309,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._grpc_channel
 
     @property
-    def list_templates(
-        self,
-    ) -> Callable[[service.ListTemplatesRequest], service.ListTemplatesResponse]:
+    def list_templates(self) -> Callable[[service.ListTemplatesRequest], service.ListTemplatesResponse]:
         r"""Return a callable for the list templates method over gRPC.
 
         Lists Templates in a given project and location.
@@ -374,9 +357,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["get_template"]
 
     @property
-    def create_template(
-        self,
-    ) -> Callable[[service.CreateTemplateRequest], service.Template]:
+    def create_template(self) -> Callable[[service.CreateTemplateRequest], service.Template]:
         r"""Return a callable for the create template method over gRPC.
 
         Creates a new Template in a given project and
@@ -401,9 +382,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["create_template"]
 
     @property
-    def update_template(
-        self,
-    ) -> Callable[[service.UpdateTemplateRequest], service.Template]:
+    def update_template(self) -> Callable[[service.UpdateTemplateRequest], service.Template]:
         r"""Return a callable for the update template method over gRPC.
 
         Updates the parameters of a single Template.
@@ -427,9 +406,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["update_template"]
 
     @property
-    def delete_template(
-        self,
-    ) -> Callable[[service.DeleteTemplateRequest], empty_pb2.Empty]:
+    def delete_template(self) -> Callable[[service.DeleteTemplateRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete template method over gRPC.
 
         Deletes a single Template.
@@ -453,9 +430,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["delete_template"]
 
     @property
-    def get_floor_setting(
-        self,
-    ) -> Callable[[service.GetFloorSettingRequest], service.FloorSetting]:
+    def get_floor_setting(self) -> Callable[[service.GetFloorSettingRequest], service.FloorSetting]:
         r"""Return a callable for the get floor setting method over gRPC.
 
         Gets details of a single floor setting of a project
@@ -479,9 +454,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["get_floor_setting"]
 
     @property
-    def update_floor_setting(
-        self,
-    ) -> Callable[[service.UpdateFloorSettingRequest], service.FloorSetting]:
+    def update_floor_setting(self) -> Callable[[service.UpdateFloorSettingRequest], service.FloorSetting]:
         r"""Return a callable for the update floor setting method over gRPC.
 
         Updates the parameters of a single floor setting of a
@@ -506,11 +479,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["update_floor_setting"]
 
     @property
-    def sanitize_user_prompt(
-        self,
-    ) -> Callable[
-        [service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse
-    ]:
+    def sanitize_user_prompt(self) -> Callable[[service.SanitizeUserPromptRequest], service.SanitizeUserPromptResponse]:
         r"""Return a callable for the sanitize user prompt method over gRPC.
 
         Sanitizes User Prompt.
@@ -534,11 +503,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
         return self._stubs["sanitize_user_prompt"]
 
     @property
-    def sanitize_model_response(
-        self,
-    ) -> Callable[
-        [service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse
-    ]:
+    def sanitize_model_response(self) -> Callable[[service.SanitizeModelResponseRequest], service.SanitizeModelResponseResponse]:
         r"""Return a callable for the sanitize model response method over gRPC.
 
         Sanitizes Model Response.
@@ -567,9 +532,7 @@ class ModelArmorGrpcTransport(ModelArmorTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

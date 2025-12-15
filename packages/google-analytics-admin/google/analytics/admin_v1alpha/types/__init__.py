@@ -241,25 +241,9 @@ from .audience import (
     AudienceSequenceFilter,
     AudienceSimpleFilter,
 )
-from .channel_group import (
-    ChannelGroup,
-    ChannelGroupFilter,
-    ChannelGroupFilterExpression,
-    ChannelGroupFilterExpressionList,
-    GroupingRule,
-)
-from .event_create_and_edit import (
-    EventCreateRule,
-    EventEditRule,
-    MatchingCondition,
-    ParameterMutation,
-)
-from .expanded_data_set import (
-    ExpandedDataSet,
-    ExpandedDataSetFilter,
-    ExpandedDataSetFilterExpression,
-    ExpandedDataSetFilterExpressionList,
-)
+from .channel_group import ChannelGroup, ChannelGroupFilter, ChannelGroupFilterExpression, ChannelGroupFilterExpressionList, GroupingRule
+from .event_create_and_edit import EventCreateRule, EventEditRule, MatchingCondition, ParameterMutation
+from .expanded_data_set import ExpandedDataSet, ExpandedDataSetFilter, ExpandedDataSetFilterExpression, ExpandedDataSetFilterExpressionList
 from .resources import (
     AccessBinding,
     Account,

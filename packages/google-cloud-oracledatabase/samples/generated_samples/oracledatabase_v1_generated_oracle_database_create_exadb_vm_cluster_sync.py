@@ -44,14 +44,9 @@ def sample_create_exadb_vm_cluster():
     exadb_vm_cluster.properties.node_count = 1070
     exadb_vm_cluster.properties.enabled_ecpu_count_per_node = 2826
     exadb_vm_cluster.properties.vm_file_system_storage.size_in_gbs_per_node = 2103
-    exadb_vm_cluster.properties.exascale_db_storage_vault = (
-        "exascale_db_storage_vault_value"
-    )
+    exadb_vm_cluster.properties.exascale_db_storage_vault = "exascale_db_storage_vault_value"
     exadb_vm_cluster.properties.hostname_prefix = "hostname_prefix_value"
-    exadb_vm_cluster.properties.ssh_public_keys = [
-        "ssh_public_keys_value1",
-        "ssh_public_keys_value2",
-    ]
+    exadb_vm_cluster.properties.ssh_public_keys = ["ssh_public_keys_value1", "ssh_public_keys_value2"]
     exadb_vm_cluster.properties.shape_attribute = "BLOCK_STORAGE"
     exadb_vm_cluster.odb_subnet = "odb_subnet_value"
     exadb_vm_cluster.backup_odb_subnet = "backup_odb_subnet_value"

@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -114,9 +103,7 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
-    RecaptchaEnterpriseServiceTransport
-):
+class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(RecaptchaEnterpriseServiceTransport):
     """gRPC AsyncIO backend transport for RecaptchaEnterpriseService.
 
     Service to determine the likelihood an event is legitimate.
@@ -269,18 +256,14 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -316,9 +299,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -333,12 +314,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._grpc_channel
 
     @property
-    def create_assessment(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateAssessmentRequest],
-        Awaitable[recaptchaenterprise.Assessment],
-    ]:
+    def create_assessment(self) -> Callable[[recaptchaenterprise.CreateAssessmentRequest], Awaitable[recaptchaenterprise.Assessment]]:
         r"""Return a callable for the create assessment method over gRPC.
 
         Creates an Assessment of the likelihood an event is
@@ -365,10 +341,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     @property
     def annotate_assessment(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.AnnotateAssessmentRequest],
-        Awaitable[recaptchaenterprise.AnnotateAssessmentResponse],
-    ]:
+    ) -> Callable[[recaptchaenterprise.AnnotateAssessmentRequest], Awaitable[recaptchaenterprise.AnnotateAssessmentResponse]]:
         r"""Return a callable for the annotate assessment method over gRPC.
 
         Annotates a previously created Assessment to provide
@@ -394,11 +367,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["annotate_assessment"]
 
     @property
-    def create_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateKeyRequest], Awaitable[recaptchaenterprise.Key]
-    ]:
+    def create_key(self) -> Callable[[recaptchaenterprise.CreateKeyRequest], Awaitable[recaptchaenterprise.Key]]:
         r"""Return a callable for the create key method over gRPC.
 
         Creates a new reCAPTCHA Enterprise key.
@@ -422,12 +391,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["create_key"]
 
     @property
-    def list_keys(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.ListKeysRequest],
-        Awaitable[recaptchaenterprise.ListKeysResponse],
-    ]:
+    def list_keys(self) -> Callable[[recaptchaenterprise.ListKeysRequest], Awaitable[recaptchaenterprise.ListKeysResponse]]:
         r"""Return a callable for the list keys method over gRPC.
 
         Returns the list of all keys that belong to a
@@ -454,10 +418,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     @property
     def retrieve_legacy_secret_key(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.RetrieveLegacySecretKeyRequest],
-        Awaitable[recaptchaenterprise.RetrieveLegacySecretKeyResponse],
-    ]:
+    ) -> Callable[[recaptchaenterprise.RetrieveLegacySecretKeyRequest], Awaitable[recaptchaenterprise.RetrieveLegacySecretKeyResponse]]:
         r"""Return a callable for the retrieve legacy secret key method over gRPC.
 
         Returns the secret key related to the specified
@@ -475,9 +436,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_legacy_secret_key" not in self._stubs:
-            self._stubs[
-                "retrieve_legacy_secret_key"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["retrieve_legacy_secret_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
                 request_serializer=recaptchaenterprise.RetrieveLegacySecretKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.RetrieveLegacySecretKeyResponse.deserialize,
@@ -485,11 +444,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["retrieve_legacy_secret_key"]
 
     @property
-    def get_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.GetKeyRequest], Awaitable[recaptchaenterprise.Key]
-    ]:
+    def get_key(self) -> Callable[[recaptchaenterprise.GetKeyRequest], Awaitable[recaptchaenterprise.Key]]:
         r"""Return a callable for the get key method over gRPC.
 
         Returns the specified key.
@@ -513,11 +468,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["get_key"]
 
     @property
-    def update_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.UpdateKeyRequest], Awaitable[recaptchaenterprise.Key]
-    ]:
+    def update_key(self) -> Callable[[recaptchaenterprise.UpdateKeyRequest], Awaitable[recaptchaenterprise.Key]]:
         r"""Return a callable for the update key method over gRPC.
 
         Updates the specified key.
@@ -541,9 +492,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["update_key"]
 
     @property
-    def delete_key(
-        self,
-    ) -> Callable[[recaptchaenterprise.DeleteKeyRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_key(self) -> Callable[[recaptchaenterprise.DeleteKeyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete key method over gRPC.
 
         Deletes the specified key.
@@ -567,11 +516,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["delete_key"]
 
     @property
-    def migrate_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.MigrateKeyRequest], Awaitable[recaptchaenterprise.Key]
-    ]:
+    def migrate_key(self) -> Callable[[recaptchaenterprise.MigrateKeyRequest], Awaitable[recaptchaenterprise.Key]]:
         r"""Return a callable for the migrate key method over gRPC.
 
         Migrates an existing key from reCAPTCHA to reCAPTCHA
@@ -601,12 +546,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["migrate_key"]
 
     @property
-    def add_ip_override(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.AddIpOverrideRequest],
-        Awaitable[recaptchaenterprise.AddIpOverrideResponse],
-    ]:
+    def add_ip_override(self) -> Callable[[recaptchaenterprise.AddIpOverrideRequest], Awaitable[recaptchaenterprise.AddIpOverrideResponse]]:
         r"""Return a callable for the add ip override method over gRPC.
 
         Adds an IP override to a key. The following restrictions hold:
@@ -634,12 +574,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["add_ip_override"]
 
     @property
-    def remove_ip_override(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.RemoveIpOverrideRequest],
-        Awaitable[recaptchaenterprise.RemoveIpOverrideResponse],
-    ]:
+    def remove_ip_override(self) -> Callable[[recaptchaenterprise.RemoveIpOverrideRequest], Awaitable[recaptchaenterprise.RemoveIpOverrideResponse]]:
         r"""Return a callable for the remove ip override method over gRPC.
 
         Removes an IP override from a key. The following restrictions
@@ -670,12 +605,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["remove_ip_override"]
 
     @property
-    def list_ip_overrides(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.ListIpOverridesRequest],
-        Awaitable[recaptchaenterprise.ListIpOverridesResponse],
-    ]:
+    def list_ip_overrides(self) -> Callable[[recaptchaenterprise.ListIpOverridesRequest], Awaitable[recaptchaenterprise.ListIpOverridesResponse]]:
         r"""Return a callable for the list ip overrides method over gRPC.
 
         Lists all IP overrides for a key.
@@ -699,11 +629,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["list_ip_overrides"]
 
     @property
-    def get_metrics(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.GetMetricsRequest], Awaitable[recaptchaenterprise.Metrics]
-    ]:
+    def get_metrics(self) -> Callable[[recaptchaenterprise.GetMetricsRequest], Awaitable[recaptchaenterprise.Metrics]]:
         r"""Return a callable for the get metrics method over gRPC.
 
         Get some aggregated metrics for a Key. This data can
@@ -728,12 +654,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["get_metrics"]
 
     @property
-    def create_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateFirewallPolicyRequest],
-        Awaitable[recaptchaenterprise.FirewallPolicy],
-    ]:
+    def create_firewall_policy(self) -> Callable[[recaptchaenterprise.CreateFirewallPolicyRequest], Awaitable[recaptchaenterprise.FirewallPolicy]]:
         r"""Return a callable for the create firewall policy method over gRPC.
 
         Creates a new FirewallPolicy, specifying conditions
@@ -761,10 +682,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     @property
     def list_firewall_policies(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.ListFirewallPoliciesRequest],
-        Awaitable[recaptchaenterprise.ListFirewallPoliciesResponse],
-    ]:
+    ) -> Callable[[recaptchaenterprise.ListFirewallPoliciesRequest], Awaitable[recaptchaenterprise.ListFirewallPoliciesResponse]]:
         r"""Return a callable for the list firewall policies method over gRPC.
 
         Returns the list of all firewall policies that belong
@@ -789,12 +707,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["list_firewall_policies"]
 
     @property
-    def get_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.GetFirewallPolicyRequest],
-        Awaitable[recaptchaenterprise.FirewallPolicy],
-    ]:
+    def get_firewall_policy(self) -> Callable[[recaptchaenterprise.GetFirewallPolicyRequest], Awaitable[recaptchaenterprise.FirewallPolicy]]:
         r"""Return a callable for the get firewall policy method over gRPC.
 
         Returns the specified firewall policy.
@@ -818,12 +731,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["get_firewall_policy"]
 
     @property
-    def update_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.UpdateFirewallPolicyRequest],
-        Awaitable[recaptchaenterprise.FirewallPolicy],
-    ]:
+    def update_firewall_policy(self) -> Callable[[recaptchaenterprise.UpdateFirewallPolicyRequest], Awaitable[recaptchaenterprise.FirewallPolicy]]:
         r"""Return a callable for the update firewall policy method over gRPC.
 
         Updates the specified firewall policy.
@@ -847,11 +755,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         return self._stubs["update_firewall_policy"]
 
     @property
-    def delete_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.DeleteFirewallPolicyRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_firewall_policy(self) -> Callable[[recaptchaenterprise.DeleteFirewallPolicyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete firewall policy method over gRPC.
 
         Deletes the specified firewall policy.
@@ -877,10 +781,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     @property
     def reorder_firewall_policies(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.ReorderFirewallPoliciesRequest],
-        Awaitable[recaptchaenterprise.ReorderFirewallPoliciesResponse],
-    ]:
+    ) -> Callable[[recaptchaenterprise.ReorderFirewallPoliciesRequest], Awaitable[recaptchaenterprise.ReorderFirewallPoliciesResponse]]:
         r"""Return a callable for the reorder firewall policies method over gRPC.
 
         Reorders all firewall policies.
@@ -906,10 +807,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     @property
     def list_related_account_groups(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.ListRelatedAccountGroupsRequest],
-        Awaitable[recaptchaenterprise.ListRelatedAccountGroupsResponse],
-    ]:
+    ) -> Callable[[recaptchaenterprise.ListRelatedAccountGroupsRequest], Awaitable[recaptchaenterprise.ListRelatedAccountGroupsResponse]]:
         r"""Return a callable for the list related account groups method over gRPC.
 
         List groups of related accounts.
@@ -925,9 +823,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_groups" not in self._stubs:
-            self._stubs[
-                "list_related_account_groups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_related_account_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
                 request_serializer=recaptchaenterprise.ListRelatedAccountGroupsRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListRelatedAccountGroupsResponse.deserialize,
@@ -938,8 +834,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     def list_related_account_group_memberships(
         self,
     ) -> Callable[
-        [recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest],
-        Awaitable[recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse],
+        [recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest], Awaitable[recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse]
     ]:
         r"""Return a callable for the list related account group
         memberships method over gRPC.
@@ -957,9 +852,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_group_memberships" not in self._stubs:
-            self._stubs[
-                "list_related_account_group_memberships"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_related_account_group_memberships"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
                 request_serializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse.deserialize,
@@ -970,8 +863,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
     def search_related_account_group_memberships(
         self,
     ) -> Callable[
-        [recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest],
-        Awaitable[recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse],
+        [recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest], Awaitable[recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse]
     ]:
         r"""Return a callable for the search related account group
         memberships method over gRPC.
@@ -989,9 +881,7 @@ class RecaptchaEnterpriseServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_related_account_group_memberships" not in self._stubs:
-            self._stubs[
-                "search_related_account_group_memberships"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_related_account_group_memberships"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
                 request_serializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.serialize,
                 response_deserializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse.deserialize,

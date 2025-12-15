@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class SummarizeMaintenancesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[maintenance_service.MaintenanceSummary]:
@@ -137,9 +120,7 @@ class SummarizeMaintenancesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[maintenance_service.SummarizeMaintenancesResponse]
-        ],
+        method: Callable[..., Awaitable[maintenance_service.SummarizeMaintenancesResponse]],
         request: maintenance_service.SummarizeMaintenancesRequest,
         response: maintenance_service.SummarizeMaintenancesResponse,
         *,
@@ -175,18 +156,11 @@ class SummarizeMaintenancesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[maintenance_service.SummarizeMaintenancesResponse]:
+    async def pages(self) -> AsyncIterator[maintenance_service.SummarizeMaintenancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[maintenance_service.MaintenanceSummary]:
@@ -261,12 +235,7 @@ class ListResourceMaintenancesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[maintenance_service.ResourceMaintenance]:
@@ -297,9 +266,7 @@ class ListResourceMaintenancesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[maintenance_service.ListResourceMaintenancesResponse]
-        ],
+        method: Callable[..., Awaitable[maintenance_service.ListResourceMaintenancesResponse]],
         request: maintenance_service.ListResourceMaintenancesRequest,
         response: maintenance_service.ListResourceMaintenancesResponse,
         *,
@@ -335,18 +302,11 @@ class ListResourceMaintenancesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[maintenance_service.ListResourceMaintenancesResponse]:
+    async def pages(self) -> AsyncIterator[maintenance_service.ListResourceMaintenancesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[maintenance_service.ResourceMaintenance]:

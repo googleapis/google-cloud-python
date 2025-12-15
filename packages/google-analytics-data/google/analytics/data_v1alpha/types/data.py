@@ -1333,17 +1333,13 @@ class ResponseMetaData(proto.Message):
                 number=1,
                 optional=True,
             )
-            restricted_metric_types: MutableSequence[
-                "RestrictedMetricType"
-            ] = proto.RepeatedField(
+            restricted_metric_types: MutableSequence["RestrictedMetricType"] = proto.RepeatedField(
                 proto.ENUM,
                 number=2,
                 enum="RestrictedMetricType",
             )
 
-        active_metric_restrictions: MutableSequence[
-            "ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction"
-        ] = proto.RepeatedField(
+        active_metric_restrictions: MutableSequence["ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction",
@@ -1886,16 +1882,12 @@ class UserSegmentCriteria(proto.Message):
             if ``andConditionGroups`` are specified.
     """
 
-    and_condition_groups: MutableSequence[
-        "UserSegmentConditionGroup"
-    ] = proto.RepeatedField(
+    and_condition_groups: MutableSequence["UserSegmentConditionGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="UserSegmentConditionGroup",
     )
-    and_sequence_groups: MutableSequence[
-        "UserSegmentSequenceGroup"
-    ] = proto.RepeatedField(
+    and_sequence_groups: MutableSequence["UserSegmentSequenceGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="UserSegmentSequenceGroup",
@@ -2100,9 +2092,7 @@ class SessionSegmentCriteria(proto.Message):
             of these ``andConditionGroups``.
     """
 
-    and_condition_groups: MutableSequence[
-        "SessionSegmentConditionGroup"
-    ] = proto.RepeatedField(
+    and_condition_groups: MutableSequence["SessionSegmentConditionGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SessionSegmentConditionGroup",
@@ -2215,9 +2205,7 @@ class EventSegmentCriteria(proto.Message):
             these ``andConditionGroups``.
     """
 
-    and_condition_groups: MutableSequence[
-        "EventSegmentConditionGroup"
-    ] = proto.RepeatedField(
+    and_condition_groups: MutableSequence["EventSegmentConditionGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EventSegmentConditionGroup",
@@ -2569,13 +2557,11 @@ class SegmentEventFilter(proto.Message):
         number=1,
         optional=True,
     )
-    segment_parameter_filter_expression: "SegmentParameterFilterExpression" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            optional=True,
-            message="SegmentParameterFilterExpression",
-        )
+    segment_parameter_filter_expression: "SegmentParameterFilterExpression" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        optional=True,
+        message="SegmentParameterFilterExpression",
     )
 
 
@@ -2646,9 +2632,7 @@ class SegmentParameterFilterExpressionList(proto.Message):
             expressions.
     """
 
-    expressions: MutableSequence[
-        "SegmentParameterFilterExpression"
-    ] = proto.RepeatedField(
+    expressions: MutableSequence["SegmentParameterFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SegmentParameterFilterExpression",
@@ -3061,9 +3045,7 @@ class FunnelParameterFilterExpressionList(proto.Message):
             expressions.
     """
 
-    expressions: MutableSequence[
-        "FunnelParameterFilterExpression"
-    ] = proto.RepeatedField(
+    expressions: MutableSequence["FunnelParameterFilterExpression"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FunnelParameterFilterExpression",

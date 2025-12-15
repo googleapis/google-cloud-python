@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,9 +41,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dialogflow_v2beta1.services.conversation_profiles import pagers
-from google.cloud.dialogflow_v2beta1.types import (
-    conversation_profile as gcd_conversation_profile,
-)
+from google.cloud.dialogflow_v2beta1.types import conversation_profile as gcd_conversation_profile
 from google.cloud.dialogflow_v2beta1.types import audio_config
 from google.cloud.dialogflow_v2beta1.types import conversation_profile
 from google.cloud.dialogflow_v2beta1.types import participant
@@ -89,60 +76,30 @@ class ConversationProfilesAsyncClient:
 
     agent_path = staticmethod(ConversationProfilesClient.agent_path)
     parse_agent_path = staticmethod(ConversationProfilesClient.parse_agent_path)
-    conversation_model_path = staticmethod(
-        ConversationProfilesClient.conversation_model_path
-    )
-    parse_conversation_model_path = staticmethod(
-        ConversationProfilesClient.parse_conversation_model_path
-    )
-    conversation_profile_path = staticmethod(
-        ConversationProfilesClient.conversation_profile_path
-    )
-    parse_conversation_profile_path = staticmethod(
-        ConversationProfilesClient.parse_conversation_profile_path
-    )
-    cx_security_settings_path = staticmethod(
-        ConversationProfilesClient.cx_security_settings_path
-    )
-    parse_cx_security_settings_path = staticmethod(
-        ConversationProfilesClient.parse_cx_security_settings_path
-    )
+    conversation_model_path = staticmethod(ConversationProfilesClient.conversation_model_path)
+    parse_conversation_model_path = staticmethod(ConversationProfilesClient.parse_conversation_model_path)
+    conversation_profile_path = staticmethod(ConversationProfilesClient.conversation_profile_path)
+    parse_conversation_profile_path = staticmethod(ConversationProfilesClient.parse_conversation_profile_path)
+    cx_security_settings_path = staticmethod(ConversationProfilesClient.cx_security_settings_path)
+    parse_cx_security_settings_path = staticmethod(ConversationProfilesClient.parse_cx_security_settings_path)
     document_path = staticmethod(ConversationProfilesClient.document_path)
     parse_document_path = staticmethod(ConversationProfilesClient.parse_document_path)
     generator_path = staticmethod(ConversationProfilesClient.generator_path)
     parse_generator_path = staticmethod(ConversationProfilesClient.parse_generator_path)
     knowledge_base_path = staticmethod(ConversationProfilesClient.knowledge_base_path)
-    parse_knowledge_base_path = staticmethod(
-        ConversationProfilesClient.parse_knowledge_base_path
-    )
+    parse_knowledge_base_path = staticmethod(ConversationProfilesClient.parse_knowledge_base_path)
     phrase_set_path = staticmethod(ConversationProfilesClient.phrase_set_path)
-    parse_phrase_set_path = staticmethod(
-        ConversationProfilesClient.parse_phrase_set_path
-    )
-    common_billing_account_path = staticmethod(
-        ConversationProfilesClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationProfilesClient.parse_common_billing_account_path
-    )
+    parse_phrase_set_path = staticmethod(ConversationProfilesClient.parse_phrase_set_path)
+    common_billing_account_path = staticmethod(ConversationProfilesClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ConversationProfilesClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ConversationProfilesClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ConversationProfilesClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ConversationProfilesClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ConversationProfilesClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ConversationProfilesClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ConversationProfilesClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ConversationProfilesClient.parse_common_organization_path)
     common_project_path = staticmethod(ConversationProfilesClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ConversationProfilesClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(ConversationProfilesClient.parse_common_project_path)
     common_location_path = staticmethod(ConversationProfilesClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        ConversationProfilesClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(ConversationProfilesClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -178,9 +135,7 @@ class ConversationProfilesAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -247,13 +202,7 @@ class ConversationProfilesAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ConversationProfilesTransport,
-                Callable[..., ConversationProfilesTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ConversationProfilesTransport, Callable[..., ConversationProfilesTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -313,20 +262,14 @@ class ConversationProfilesAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.dialogflow_v2beta1.ConversationProfilesAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.dialogflow.v2beta1.ConversationProfiles",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -337,9 +280,7 @@ class ConversationProfilesAsyncClient:
 
     async def list_conversation_profiles(
         self,
-        request: Optional[
-            Union[conversation_profile.ListConversationProfilesRequest, dict]
-        ] = None,
+        request: Optional[Union[conversation_profile.ListConversationProfilesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -409,20 +350,13 @@ class ConversationProfilesAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversation_profile.ListConversationProfilesRequest
-        ):
+        if not isinstance(request, conversation_profile.ListConversationProfilesRequest):
             request = conversation_profile.ListConversationProfilesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -432,15 +366,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_conversation_profiles
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_conversation_profiles]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -469,9 +399,7 @@ class ConversationProfilesAsyncClient:
 
     async def get_conversation_profile(
         self,
-        request: Optional[
-            Union[conversation_profile.GetConversationProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[conversation_profile.GetConversationProfileRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -536,14 +464,9 @@ class ConversationProfilesAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -557,15 +480,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_conversation_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_conversation_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -583,14 +502,10 @@ class ConversationProfilesAsyncClient:
 
     async def create_conversation_profile(
         self,
-        request: Optional[
-            Union[gcd_conversation_profile.CreateConversationProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_conversation_profile.CreateConversationProfileRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        conversation_profile: Optional[
-            gcd_conversation_profile.ConversationProfile
-        ] = None,
+        conversation_profile: Optional[gcd_conversation_profile.ConversationProfile] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -670,20 +585,13 @@ class ConversationProfilesAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, conversation_profile]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.CreateConversationProfileRequest
-        ):
+        if not isinstance(request, gcd_conversation_profile.CreateConversationProfileRequest):
             request = gcd_conversation_profile.CreateConversationProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -695,15 +603,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_conversation_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_conversation_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -721,13 +625,9 @@ class ConversationProfilesAsyncClient:
 
     async def update_conversation_profile(
         self,
-        request: Optional[
-            Union[gcd_conversation_profile.UpdateConversationProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_conversation_profile.UpdateConversationProfileRequest, dict]] = None,
         *,
-        conversation_profile: Optional[
-            gcd_conversation_profile.ConversationProfile
-        ] = None,
+        conversation_profile: Optional[gcd_conversation_profile.ConversationProfile] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -806,20 +706,13 @@ class ConversationProfilesAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [conversation_profile, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.UpdateConversationProfileRequest
-        ):
+        if not isinstance(request, gcd_conversation_profile.UpdateConversationProfileRequest):
             request = gcd_conversation_profile.UpdateConversationProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -831,17 +724,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_conversation_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_conversation_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation_profile.name", request.conversation_profile.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("conversation_profile.name", request.conversation_profile.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -859,9 +746,7 @@ class ConversationProfilesAsyncClient:
 
     async def delete_conversation_profile(
         self,
-        request: Optional[
-            Union[conversation_profile.DeleteConversationProfileRequest, dict]
-        ] = None,
+        request: Optional[Union[conversation_profile.DeleteConversationProfileRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -920,20 +805,13 @@ class ConversationProfilesAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversation_profile.DeleteConversationProfileRequest
-        ):
+        if not isinstance(request, conversation_profile.DeleteConversationProfileRequest):
             request = conversation_profile.DeleteConversationProfileRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -943,15 +821,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_conversation_profile
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_conversation_profile]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -966,15 +840,11 @@ class ConversationProfilesAsyncClient:
 
     async def set_suggestion_feature_config(
         self,
-        request: Optional[
-            Union[gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_conversation_profile.SetSuggestionFeatureConfigRequest, dict]] = None,
         *,
         conversation_profile: Optional[str] = None,
         participant_role: Optional[participant.Participant.Role] = None,
-        suggestion_feature_config: Optional[
-            gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig
-        ] = None,
+        suggestion_feature_config: Optional[gcd_conversation_profile.HumanAgentAssistantConfig.SuggestionFeatureConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1079,28 +949,15 @@ class ConversationProfilesAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            conversation_profile,
-            participant_role,
-            suggestion_feature_config,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [conversation_profile, participant_role, suggestion_feature_config]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.SetSuggestionFeatureConfigRequest
-        ):
-            request = gcd_conversation_profile.SetSuggestionFeatureConfigRequest(
-                request
-            )
+        if not isinstance(request, gcd_conversation_profile.SetSuggestionFeatureConfigRequest):
+            request = gcd_conversation_profile.SetSuggestionFeatureConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1113,17 +970,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_suggestion_feature_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_suggestion_feature_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation_profile", request.conversation_profile),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("conversation_profile", request.conversation_profile),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1149,9 +1000,7 @@ class ConversationProfilesAsyncClient:
 
     async def clear_suggestion_feature_config(
         self,
-        request: Optional[
-            Union[gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[gcd_conversation_profile.ClearSuggestionFeatureConfigRequest, dict]] = None,
         *,
         conversation_profile: Optional[str] = None,
         participant_role: Optional[participant.Participant.Role] = None,
@@ -1253,28 +1102,15 @@ class ConversationProfilesAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            conversation_profile,
-            participant_role,
-            suggestion_feature_type,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [conversation_profile, participant_role, suggestion_feature_type]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcd_conversation_profile.ClearSuggestionFeatureConfigRequest
-        ):
-            request = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(
-                request
-            )
+        if not isinstance(request, gcd_conversation_profile.ClearSuggestionFeatureConfigRequest):
+            request = gcd_conversation_profile.ClearSuggestionFeatureConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1287,17 +1123,11 @@ class ConversationProfilesAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.clear_suggestion_feature_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.clear_suggestion_feature_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation_profile", request.conversation_profile),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("conversation_profile", request.conversation_profile),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1358,9 +1188,7 @@ class ConversationProfilesAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1413,9 +1241,7 @@ class ConversationProfilesAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1471,9 +1297,7 @@ class ConversationProfilesAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1523,9 +1347,7 @@ class ConversationProfilesAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1578,9 +1400,7 @@ class ConversationProfilesAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1603,9 +1423,7 @@ class ConversationProfilesAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

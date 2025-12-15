@@ -43,15 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -71,12 +63,7 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-from google.cloud.config_v1.services.config import (
-    ConfigAsyncClient,
-    ConfigClient,
-    pagers,
-    transports,
-)
+from google.cloud.config_v1.services.config import ConfigAsyncClient, ConfigClient, pagers, transports
 from google.cloud.config_v1.types import config
 
 CRED_INFO_JSON = {
@@ -109,22 +96,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -136,17 +115,9 @@ def test__get_default_mtls_endpoint():
 
     assert ConfigClient._get_default_mtls_endpoint(None) is None
     assert ConfigClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    assert (
-        ConfigClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        ConfigClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        ConfigClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert ConfigClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert ConfigClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert ConfigClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert ConfigClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -159,15 +130,17 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert ConfigClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            ConfigClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                ConfigClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert ConfigClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         assert ConfigClient._read_environment_variables() == (False, "never", None)
@@ -181,13 +154,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             ConfigClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
         assert ConfigClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert ConfigClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert ConfigClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert ConfigClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert ConfigClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert ConfigClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert ConfigClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert ConfigClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert ConfigClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert ConfigClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                ConfigClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert ConfigClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert ConfigClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -195,113 +250,45 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert ConfigClient._get_client_cert_source(None, False) is None
-    assert (
-        ConfigClient._get_client_cert_source(mock_provided_cert_source, False) is None
-    )
-    assert (
-        ConfigClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert ConfigClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert ConfigClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                ConfigClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                ConfigClient._get_client_cert_source(mock_provided_cert_source, "true")
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert ConfigClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert ConfigClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    ConfigClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigClient),
-)
-@mock.patch.object(
-    ConfigAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigAsyncClient),
-)
+@mock.patch.object(ConfigClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigClient))
+@mock.patch.object(ConfigAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = ConfigClient._DEFAULT_UNIVERSE
-    default_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        ConfigClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        ConfigClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == ConfigClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ConfigClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        ConfigClient._get_api_endpoint(None, None, default_universe, "always")
-        == ConfigClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ConfigClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == ConfigClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        ConfigClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        ConfigClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert ConfigClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert ConfigClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == ConfigClient.DEFAULT_MTLS_ENDPOINT
+    assert ConfigClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert ConfigClient._get_api_endpoint(None, None, default_universe, "always") == ConfigClient.DEFAULT_MTLS_ENDPOINT
+    assert ConfigClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == ConfigClient.DEFAULT_MTLS_ENDPOINT
+    assert ConfigClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert ConfigClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        ConfigClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        ConfigClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        ConfigClient._get_universe_domain(client_universe_domain, universe_domain_env)
-        == client_universe_domain
-    )
-    assert (
-        ConfigClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        ConfigClient._get_universe_domain(None, None) == ConfigClient._DEFAULT_UNIVERSE
-    )
+    assert ConfigClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert ConfigClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert ConfigClient._get_universe_domain(None, None) == ConfigClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         ConfigClient._get_universe_domain("", None)
@@ -361,9 +348,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_config_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -371,9 +356,7 @@ def test_config_client_from_service_account_info(client_class, transport_name):
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "config.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://config.googleapis.com"
+            "config.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://config.googleapis.com"
         )
 
 
@@ -386,16 +369,12 @@ def test_config_client_from_service_account_info(client_class, transport_name):
     ],
 )
 def test_config_client_service_account_always_use_jwt(transport_class, transport_name):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -411,26 +390,18 @@ def test_config_client_service_account_always_use_jwt(transport_class, transport
 )
 def test_config_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "config.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://config.googleapis.com"
+            "config.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://config.googleapis.com"
         )
 
 
@@ -454,16 +425,8 @@ def test_config_client_get_transport_class():
         (ConfigClient, transports.ConfigRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    ConfigClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigClient),
-)
-@mock.patch.object(
-    ConfigAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigAsyncClient),
-)
+@mock.patch.object(ConfigClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigClient))
+@mock.patch.object(ConfigAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigAsyncClient))
 def test_config_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ConfigClient, "get_transport_class") as gtc:
@@ -502,9 +465,7 @@ def test_config_client_client_options(client_class, transport_class, transport_n
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -536,21 +497,7 @@ def test_config_client_client_options(client_class, transport_class, transport_n
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -560,9 +507,7 @@ def test_config_client_client_options(client_class, transport_class, transport_n
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -571,18 +516,14 @@ def test_config_client_client_options(client_class, transport_class, transport_n
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -596,57 +537,31 @@ def test_config_client_client_options(client_class, transport_class, transport_n
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (ConfigClient, transports.ConfigGrpcTransport, "grpc", "true"),
-        (
-            ConfigAsyncClient,
-            transports.ConfigGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
+        (ConfigAsyncClient, transports.ConfigGrpcAsyncIOTransport, "grpc_asyncio", "true"),
         (ConfigClient, transports.ConfigGrpcTransport, "grpc", "false"),
-        (
-            ConfigAsyncClient,
-            transports.ConfigGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
+        (ConfigAsyncClient, transports.ConfigGrpcAsyncIOTransport, "grpc_asyncio", "false"),
         (ConfigClient, transports.ConfigRestTransport, "rest", "true"),
         (ConfigClient, transports.ConfigRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    ConfigClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigClient),
-)
-@mock.patch.object(
-    ConfigAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigAsyncClient),
-)
+@mock.patch.object(ConfigClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigClient))
+@mock.patch.object(ConfigAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_config_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_config_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -665,22 +580,12 @@ def test_config_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -701,22 +606,15 @@ def test_config_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -727,24 +625,16 @@ def test_config_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [ConfigClient, ConfigAsyncClient])
-@mock.patch.object(
-    ConfigClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigClient)
-)
-@mock.patch.object(
-    ConfigAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigAsyncClient)
-)
+@mock.patch.object(ConfigClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigClient))
+@mock.patch.object(ConfigAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ConfigAsyncClient))
 def test_config_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -752,14 +642,106 @@ def test_config_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -775,28 +757,16 @@ def test_config_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -806,60 +776,26 @@ def test_config_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [ConfigClient, ConfigAsyncClient])
-@mock.patch.object(
-    ConfigClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigClient),
-)
-@mock.patch.object(
-    ConfigAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(ConfigAsyncClient),
-)
+@mock.patch.object(ConfigClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigClient))
+@mock.patch.object(ConfigAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(ConfigAsyncClient))
 def test_config_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = ConfigClient._DEFAULT_UNIVERSE
-    default_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = ConfigClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -882,19 +818,11 @@ def test_config_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -902,9 +830,7 @@ def test_config_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -916,9 +842,7 @@ def test_config_client_client_api_endpoint(client_class):
         (ConfigClient, transports.ConfigRestTransport, "rest"),
     ],
 )
-def test_config_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_config_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -929,9 +853,7 @@ def test_config_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -945,18 +867,11 @@ def test_config_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (ConfigClient, transports.ConfigGrpcTransport, "grpc", grpc_helpers),
-        (
-            ConfigAsyncClient,
-            transports.ConfigGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (ConfigAsyncClient, transports.ConfigGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
         (ConfigClient, transports.ConfigRestTransport, "rest", None),
     ],
 )
-def test_config_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_config_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -966,9 +881,7 @@ def test_config_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -979,9 +892,7 @@ def test_config_client_client_options_credentials_file(
 
 
 def test_config_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.config_v1.services.config.transports.ConfigGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.config_v1.services.config.transports.ConfigGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
         client = ConfigClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
@@ -1001,17 +912,10 @@ def test_config_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (ConfigClient, transports.ConfigGrpcTransport, "grpc", grpc_helpers),
-        (
-            ConfigAsyncClient,
-            transports.ConfigGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (ConfigAsyncClient, transports.ConfigGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_config_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_config_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1021,9 +925,7 @@ def test_config_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1033,13 +935,9 @@ def test_config_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1119,9 +1017,7 @@ def test_list_deployments_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_deployments(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1151,12 +1047,8 @@ def test_list_deployments_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_deployments
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_deployments] = mock_rpc
         request = {}
         client.list_deployments(request)
 
@@ -1171,9 +1063,7 @@ def test_list_deployments_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_deployments_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_deployments_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1187,17 +1077,12 @@ async def test_list_deployments_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_deployments
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_deployments in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_deployments
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_deployments] = mock_rpc
 
         request = {}
         await client.list_deployments(request)
@@ -1213,9 +1098,7 @@ async def test_list_deployments_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_deployments_async(
-    transport: str = "grpc_asyncio", request_type=config.ListDeploymentsRequest
-):
+async def test_list_deployments_async(transport: str = "grpc_asyncio", request_type=config.ListDeploymentsRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1296,9 +1179,7 @@ async def test_list_deployments_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_deployments), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListDeploymentsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListDeploymentsResponse())
         await client.list_deployments(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1363,9 +1244,7 @@ async def test_list_deployments_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = config.ListDeploymentsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListDeploymentsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListDeploymentsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_deployments(
@@ -1436,9 +1315,7 @@ def test_list_deployments_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_deployments(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -1498,9 +1375,7 @@ async def test_list_deployments_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_deployments), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_deployments), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListDeploymentsResponse(
@@ -1548,9 +1423,7 @@ async def test_list_deployments_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_deployments), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_deployments), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListDeploymentsResponse(
@@ -1582,9 +1455,7 @@ async def test_list_deployments_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_deployments(request={})
-        ).pages:
+        async for page_ in (await client.list_deployments(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -1673,9 +1544,7 @@ def test_get_deployment_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_deployment), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1702,9 +1571,7 @@ def test_get_deployment_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_deployment] = mock_rpc
         request = {}
         client.get_deployment(request)
@@ -1720,9 +1587,7 @@ def test_get_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_deployment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_deployment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1736,17 +1601,12 @@ async def test_get_deployment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_deployment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_deployment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_deployment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_deployment] = mock_rpc
 
         request = {}
         await client.get_deployment(request)
@@ -1762,9 +1622,7 @@ async def test_get_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_deployment_async(
-    transport: str = "grpc_asyncio", request_type=config.GetDeploymentRequest
-):
+async def test_get_deployment_async(transport: str = "grpc_asyncio", request_type=config.GetDeploymentRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1987,9 +1845,7 @@ def test_create_deployment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_deployment(request)
@@ -2022,12 +1878,8 @@ def test_create_deployment_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2056,12 +1908,8 @@ def test_create_deployment_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_deployment] = mock_rpc
         request = {}
         client.create_deployment(request)
 
@@ -2081,9 +1929,7 @@ def test_create_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_deployment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_deployment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2097,17 +1943,12 @@ async def test_create_deployment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_deployment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_deployment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_deployment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_deployment] = mock_rpc
 
         request = {}
         await client.create_deployment(request)
@@ -2128,9 +1969,7 @@ async def test_create_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_deployment_async(
-    transport: str = "grpc_asyncio", request_type=config.CreateDeploymentRequest
-):
+async def test_create_deployment_async(transport: str = "grpc_asyncio", request_type=config.CreateDeploymentRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2141,13 +1980,9 @@ async def test_create_deployment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2177,9 +2012,7 @@ def test_create_deployment_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_deployment(request)
 
@@ -2209,12 +2042,8 @@ async def test_create_deployment_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2236,20 +2065,14 @@ def test_create_deployment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_deployment(
             parent="parent_value",
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             deployment_id="deployment_id_value",
         )
 
@@ -2261,9 +2084,7 @@ def test_create_deployment_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].deployment
-        mock_val = config.Deployment(
-            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
-        )
+        mock_val = config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value"))
         assert arg == mock_val
         arg = args[0].deployment_id
         mock_val = "deployment_id_value"
@@ -2281,11 +2102,7 @@ def test_create_deployment_flattened_error():
         client.create_deployment(
             config.CreateDeploymentRequest(),
             parent="parent_value",
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             deployment_id="deployment_id_value",
         )
 
@@ -2297,24 +2114,16 @@ async def test_create_deployment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_deployment(
             parent="parent_value",
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             deployment_id="deployment_id_value",
         )
 
@@ -2326,9 +2135,7 @@ async def test_create_deployment_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].deployment
-        mock_val = config.Deployment(
-            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
-        )
+        mock_val = config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value"))
         assert arg == mock_val
         arg = args[0].deployment_id
         mock_val = "deployment_id_value"
@@ -2347,11 +2154,7 @@ async def test_create_deployment_flattened_error_async():
         await client.create_deployment(
             config.CreateDeploymentRequest(),
             parent="parent_value",
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             deployment_id="deployment_id_value",
         )
 
@@ -2374,9 +2177,7 @@ def test_update_deployment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.update_deployment(request)
@@ -2407,12 +2208,8 @@ def test_update_deployment_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2439,12 +2236,8 @@ def test_update_deployment_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_deployment] = mock_rpc
         request = {}
         client.update_deployment(request)
 
@@ -2464,9 +2257,7 @@ def test_update_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_deployment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_deployment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2480,17 +2271,12 @@ async def test_update_deployment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_deployment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_deployment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_deployment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_deployment] = mock_rpc
 
         request = {}
         await client.update_deployment(request)
@@ -2511,9 +2297,7 @@ async def test_update_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_deployment_async(
-    transport: str = "grpc_asyncio", request_type=config.UpdateDeploymentRequest
-):
+async def test_update_deployment_async(transport: str = "grpc_asyncio", request_type=config.UpdateDeploymentRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2524,13 +2308,9 @@ async def test_update_deployment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2560,9 +2340,7 @@ def test_update_deployment_field_headers():
     request.deployment.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_deployment(request)
 
@@ -2592,12 +2370,8 @@ async def test_update_deployment_field_headers_async():
     request.deployment.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2619,19 +2393,13 @@ def test_update_deployment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_deployment(
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2640,9 +2408,7 @@ def test_update_deployment_flattened():
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
         arg = args[0].deployment
-        mock_val = config.Deployment(
-            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
-        )
+        mock_val = config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value"))
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2659,11 +2425,7 @@ def test_update_deployment_flattened_error():
     with pytest.raises(ValueError):
         client.update_deployment(
             config.UpdateDeploymentRequest(),
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2675,23 +2437,15 @@ async def test_update_deployment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_deployment(
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2700,9 +2454,7 @@ async def test_update_deployment_flattened_async():
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
         arg = args[0].deployment
-        mock_val = config.Deployment(
-            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
-        )
+        mock_val = config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value"))
         assert arg == mock_val
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
@@ -2720,11 +2472,7 @@ async def test_update_deployment_flattened_error_async():
     with pytest.raises(ValueError):
         await client.update_deployment(
             config.UpdateDeploymentRequest(),
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -2747,9 +2495,7 @@ def test_delete_deployment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_deployment(request)
@@ -2781,12 +2527,8 @@ def test_delete_deployment_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2814,12 +2556,8 @@ def test_delete_deployment_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_deployment] = mock_rpc
         request = {}
         client.delete_deployment(request)
 
@@ -2839,9 +2577,7 @@ def test_delete_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_deployment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_deployment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2855,17 +2591,12 @@ async def test_delete_deployment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_deployment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_deployment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_deployment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_deployment] = mock_rpc
 
         request = {}
         await client.delete_deployment(request)
@@ -2886,9 +2617,7 @@ async def test_delete_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_deployment_async(
-    transport: str = "grpc_asyncio", request_type=config.DeleteDeploymentRequest
-):
+async def test_delete_deployment_async(transport: str = "grpc_asyncio", request_type=config.DeleteDeploymentRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2899,13 +2628,9 @@ async def test_delete_deployment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2935,9 +2660,7 @@ def test_delete_deployment_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_deployment(request)
 
@@ -2967,12 +2690,8 @@ async def test_delete_deployment_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2994,9 +2713,7 @@ def test_delete_deployment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -3035,15 +2752,11 @@ async def test_delete_deployment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_deployment(
@@ -3132,9 +2845,7 @@ def test_list_revisions_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_revisions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3164,9 +2875,7 @@ def test_list_revisions_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_revisions] = mock_rpc
         request = {}
         client.list_revisions(request)
@@ -3182,9 +2891,7 @@ def test_list_revisions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_revisions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_revisions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3198,17 +2905,12 @@ async def test_list_revisions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_revisions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_revisions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_revisions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_revisions] = mock_rpc
 
         request = {}
         await client.list_revisions(request)
@@ -3224,9 +2926,7 @@ async def test_list_revisions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_revisions_async(
-    transport: str = "grpc_asyncio", request_type=config.ListRevisionsRequest
-):
+async def test_list_revisions_async(transport: str = "grpc_asyncio", request_type=config.ListRevisionsRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3307,9 +3007,7 @@ async def test_list_revisions_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListRevisionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListRevisionsResponse())
         await client.list_revisions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3374,9 +3072,7 @@ async def test_list_revisions_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = config.ListRevisionsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListRevisionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListRevisionsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_revisions(
@@ -3447,9 +3143,7 @@ def test_list_revisions_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_revisions(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -3509,9 +3203,7 @@ async def test_list_revisions_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_revisions), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_revisions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListRevisionsResponse(
@@ -3559,9 +3251,7 @@ async def test_list_revisions_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_revisions), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_revisions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListRevisionsResponse(
@@ -3593,9 +3283,7 @@ async def test_list_revisions_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_revisions(request={})
-        ).pages:
+        async for page_ in (await client.list_revisions(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3652,9 +3340,7 @@ def test_get_revision(request_type, transport: str = "grpc"):
     assert response.action == config.Revision.Action.CREATE
     assert response.state == config.Revision.State.APPLYING
     assert response.state_detail == "state_detail_value"
-    assert (
-        response.error_code == config.Revision.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
-    )
+    assert response.error_code == config.Revision.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
     assert response.build == "build_value"
     assert response.logs == "logs_value"
     assert response.error_logs == "error_logs_value"
@@ -3684,9 +3370,7 @@ def test_get_revision_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_revision), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_revision(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3713,9 +3397,7 @@ def test_get_revision_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_revision] = mock_rpc
         request = {}
         client.get_revision(request)
@@ -3731,9 +3413,7 @@ def test_get_revision_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_revision_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_revision_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3747,17 +3427,12 @@ async def test_get_revision_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_revision
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_revision in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_revision
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_revision] = mock_rpc
 
         request = {}
         await client.get_revision(request)
@@ -3773,9 +3448,7 @@ async def test_get_revision_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_revision_async(
-    transport: str = "grpc_asyncio", request_type=config.GetRevisionRequest
-):
+async def test_get_revision_async(transport: str = "grpc_asyncio", request_type=config.GetRevisionRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3821,9 +3494,7 @@ async def test_get_revision_async(
     assert response.action == config.Revision.Action.CREATE
     assert response.state == config.Revision.State.APPLYING
     assert response.state_detail == "state_detail_value"
-    assert (
-        response.error_code == config.Revision.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
-    )
+    assert response.error_code == config.Revision.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
     assert response.build == "build_value"
     assert response.logs == "logs_value"
     assert response.error_logs == "error_logs_value"
@@ -4037,9 +3708,7 @@ def test_get_resource_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_resource), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_resource(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4066,9 +3735,7 @@ def test_get_resource_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_resource] = mock_rpc
         request = {}
         client.get_resource(request)
@@ -4084,9 +3751,7 @@ def test_get_resource_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_resource_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_resource_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4100,17 +3765,12 @@ async def test_get_resource_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_resource
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_resource in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_resource
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_resource] = mock_rpc
 
         request = {}
         await client.get_resource(request)
@@ -4126,9 +3786,7 @@ async def test_get_resource_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_resource_async(
-    transport: str = "grpc_asyncio", request_type=config.GetResourceRequest
-):
+async def test_get_resource_async(transport: str = "grpc_asyncio", request_type=config.GetResourceRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4365,9 +4023,7 @@ def test_list_resources_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_resources), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_resources(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4397,9 +4053,7 @@ def test_list_resources_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_resources] = mock_rpc
         request = {}
         client.list_resources(request)
@@ -4415,9 +4069,7 @@ def test_list_resources_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_resources_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_resources_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4431,17 +4083,12 @@ async def test_list_resources_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_resources
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_resources in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_resources
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_resources] = mock_rpc
 
         request = {}
         await client.list_resources(request)
@@ -4457,9 +4104,7 @@ async def test_list_resources_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_resources_async(
-    transport: str = "grpc_asyncio", request_type=config.ListResourcesRequest
-):
+async def test_list_resources_async(transport: str = "grpc_asyncio", request_type=config.ListResourcesRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4540,9 +4185,7 @@ async def test_list_resources_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_resources), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListResourcesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListResourcesResponse())
         await client.list_resources(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4607,9 +4250,7 @@ async def test_list_resources_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourcesResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListResourcesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListResourcesResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_resources(
@@ -4680,9 +4321,7 @@ def test_list_resources_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_resources(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -4742,9 +4381,7 @@ async def test_list_resources_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resources), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resources), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourcesResponse(
@@ -4792,9 +4429,7 @@ async def test_list_resources_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resources), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resources), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourcesResponse(
@@ -4826,9 +4461,7 @@ async def test_list_resources_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_resources(request={})
-        ).pages:
+        async for page_ in (await client.list_resources(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4852,9 +4485,7 @@ def test_export_deployment_statefile(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.Statefile(
             signed_uri="signed_uri_value",
@@ -4888,12 +4519,8 @@ def test_export_deployment_statefile_non_empty_request_with_auto_populated_field
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.export_deployment_statefile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4916,19 +4543,12 @@ def test_export_deployment_statefile_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_deployment_statefile
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.export_deployment_statefile in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_deployment_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_deployment_statefile] = mock_rpc
         request = {}
         client.export_deployment_statefile(request)
 
@@ -4943,9 +4563,7 @@ def test_export_deployment_statefile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_deployment_statefile_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_export_deployment_statefile_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4959,17 +4577,12 @@ async def test_export_deployment_statefile_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.export_deployment_statefile
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.export_deployment_statefile in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.export_deployment_statefile
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.export_deployment_statefile] = mock_rpc
 
         request = {}
         await client.export_deployment_statefile(request)
@@ -4985,10 +4598,7 @@ async def test_export_deployment_statefile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_deployment_statefile_async(
-    transport: str = "grpc_asyncio",
-    request_type=config.ExportDeploymentStatefileRequest,
-):
+async def test_export_deployment_statefile_async(transport: str = "grpc_asyncio", request_type=config.ExportDeploymentStatefileRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4999,9 +4609,7 @@ async def test_export_deployment_statefile_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.Statefile(
@@ -5038,9 +4646,7 @@ def test_export_deployment_statefile_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         call.return_value = config.Statefile()
         client.export_deployment_statefile(request)
 
@@ -5070,9 +4676,7 @@ async def test_export_deployment_statefile_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.Statefile())
         await client.export_deployment_statefile(request)
 
@@ -5107,9 +4711,7 @@ def test_export_revision_statefile(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.Statefile(
             signed_uri="signed_uri_value",
@@ -5143,12 +4745,8 @@ def test_export_revision_statefile_non_empty_request_with_auto_populated_field()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.export_revision_statefile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5171,19 +4769,12 @@ def test_export_revision_statefile_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_revision_statefile
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.export_revision_statefile in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_revision_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_revision_statefile] = mock_rpc
         request = {}
         client.export_revision_statefile(request)
 
@@ -5198,9 +4789,7 @@ def test_export_revision_statefile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_revision_statefile_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_export_revision_statefile_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5214,17 +4803,12 @@ async def test_export_revision_statefile_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.export_revision_statefile
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.export_revision_statefile in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.export_revision_statefile
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.export_revision_statefile] = mock_rpc
 
         request = {}
         await client.export_revision_statefile(request)
@@ -5240,9 +4824,7 @@ async def test_export_revision_statefile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_revision_statefile_async(
-    transport: str = "grpc_asyncio", request_type=config.ExportRevisionStatefileRequest
-):
+async def test_export_revision_statefile_async(transport: str = "grpc_asyncio", request_type=config.ExportRevisionStatefileRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5253,9 +4835,7 @@ async def test_export_revision_statefile_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.Statefile(
@@ -5292,9 +4872,7 @@ def test_export_revision_statefile_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         call.return_value = config.Statefile()
         client.export_revision_statefile(request)
 
@@ -5324,9 +4902,7 @@ async def test_export_revision_statefile_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.Statefile())
         await client.export_revision_statefile(request)
 
@@ -5396,9 +4972,7 @@ def test_import_statefile_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_statefile), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.import_statefile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5425,12 +4999,8 @@ def test_import_statefile_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.import_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.import_statefile] = mock_rpc
         request = {}
         client.import_statefile(request)
 
@@ -5445,9 +5015,7 @@ def test_import_statefile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_import_statefile_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_import_statefile_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5461,17 +5029,12 @@ async def test_import_statefile_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.import_statefile
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.import_statefile in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.import_statefile
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.import_statefile] = mock_rpc
 
         request = {}
         await client.import_statefile(request)
@@ -5487,9 +5050,7 @@ async def test_import_statefile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_import_statefile_async(
-    transport: str = "grpc_asyncio", request_type=config.ImportStatefileRequest
-):
+async def test_import_statefile_async(transport: str = "grpc_asyncio", request_type=config.ImportStatefileRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5724,9 +5285,7 @@ def test_delete_statefile_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_statefile), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_statefile(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5753,12 +5312,8 @@ def test_delete_statefile_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_statefile] = mock_rpc
         request = {}
         client.delete_statefile(request)
 
@@ -5773,9 +5328,7 @@ def test_delete_statefile_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_statefile_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_statefile_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5789,17 +5342,12 @@ async def test_delete_statefile_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_statefile
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_statefile in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_statefile
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_statefile] = mock_rpc
 
         request = {}
         await client.delete_statefile(request)
@@ -5815,9 +5363,7 @@ async def test_delete_statefile_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_statefile_async(
-    transport: str = "grpc_asyncio", request_type=config.DeleteStatefileRequest
-):
+async def test_delete_statefile_async(transport: str = "grpc_asyncio", request_type=config.DeleteStatefileRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6037,9 +5583,7 @@ def test_lock_deployment_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lock_deployment), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.lock_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6066,9 +5610,7 @@ def test_lock_deployment_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.lock_deployment] = mock_rpc
         request = {}
         client.lock_deployment(request)
@@ -6089,9 +5631,7 @@ def test_lock_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_lock_deployment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_lock_deployment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6105,17 +5645,12 @@ async def test_lock_deployment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.lock_deployment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.lock_deployment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.lock_deployment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.lock_deployment] = mock_rpc
 
         request = {}
         await client.lock_deployment(request)
@@ -6136,9 +5671,7 @@ async def test_lock_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_lock_deployment_async(
-    transport: str = "grpc_asyncio", request_type=config.LockDeploymentRequest
-):
+async def test_lock_deployment_async(transport: str = "grpc_asyncio", request_type=config.LockDeploymentRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6151,9 +5684,7 @@ async def test_lock_deployment_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.lock_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6214,9 +5745,7 @@ async def test_lock_deployment_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lock_deployment), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.lock_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6281,9 +5810,7 @@ async def test_lock_deployment_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.lock_deployment(
@@ -6332,9 +5859,7 @@ def test_unlock_deployment(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.unlock_deployment(request)
@@ -6365,12 +5890,8 @@ def test_unlock_deployment_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.unlock_deployment(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6397,12 +5918,8 @@ def test_unlock_deployment_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.unlock_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.unlock_deployment] = mock_rpc
         request = {}
         client.unlock_deployment(request)
 
@@ -6422,9 +5939,7 @@ def test_unlock_deployment_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_unlock_deployment_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_unlock_deployment_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6438,17 +5953,12 @@ async def test_unlock_deployment_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.unlock_deployment
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.unlock_deployment in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.unlock_deployment
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.unlock_deployment] = mock_rpc
 
         request = {}
         await client.unlock_deployment(request)
@@ -6469,9 +5979,7 @@ async def test_unlock_deployment_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_unlock_deployment_async(
-    transport: str = "grpc_asyncio", request_type=config.UnlockDeploymentRequest
-):
+async def test_unlock_deployment_async(transport: str = "grpc_asyncio", request_type=config.UnlockDeploymentRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6482,13 +5990,9 @@ async def test_unlock_deployment_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.unlock_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6518,9 +6022,7 @@ def test_unlock_deployment_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.unlock_deployment(request)
 
@@ -6550,12 +6052,8 @@ async def test_unlock_deployment_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.unlock_deployment(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6577,9 +6075,7 @@ def test_unlock_deployment_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -6623,15 +6119,11 @@ async def test_unlock_deployment_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.unlock_deployment(
@@ -6728,9 +6220,7 @@ def test_export_lock_info_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_lock_info), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.export_lock_info(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6757,12 +6247,8 @@ def test_export_lock_info_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_lock_info
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_lock_info] = mock_rpc
         request = {}
         client.export_lock_info(request)
 
@@ -6777,9 +6263,7 @@ def test_export_lock_info_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_lock_info_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_export_lock_info_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6793,17 +6277,12 @@ async def test_export_lock_info_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.export_lock_info
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.export_lock_info in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.export_lock_info
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.export_lock_info] = mock_rpc
 
         request = {}
         await client.export_lock_info(request)
@@ -6819,9 +6298,7 @@ async def test_export_lock_info_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_lock_info_async(
-    transport: str = "grpc_asyncio", request_type=config.ExportLockInfoRequest
-):
+async def test_export_lock_info_async(transport: str = "grpc_asyncio", request_type=config.ExportLockInfoRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7055,9 +6532,7 @@ def test_create_preview_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_preview(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7085,9 +6560,7 @@ def test_create_preview_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_preview] = mock_rpc
         request = {}
         client.create_preview(request)
@@ -7108,9 +6581,7 @@ def test_create_preview_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_preview_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_preview_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7124,17 +6595,12 @@ async def test_create_preview_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_preview
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_preview in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_preview
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_preview] = mock_rpc
 
         request = {}
         await client.create_preview(request)
@@ -7155,9 +6621,7 @@ async def test_create_preview_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_preview_async(
-    transport: str = "grpc_asyncio", request_type=config.CreatePreviewRequest
-):
+async def test_create_preview_async(transport: str = "grpc_asyncio", request_type=config.CreatePreviewRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7170,9 +6634,7 @@ async def test_create_preview_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_preview(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7233,9 +6695,7 @@ async def test_create_preview_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_preview(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7264,11 +6724,7 @@ def test_create_preview_flattened():
         # using the keyword arguments to the method.
         client.create_preview(
             parent="parent_value",
-            preview=config.Preview(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            preview=config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
         )
 
         # Establish that the underlying call was made with the expected
@@ -7279,9 +6735,7 @@ def test_create_preview_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].preview
-        mock_val = config.Preview(
-            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
-        )
+        mock_val = config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value"))
         assert arg == mock_val
 
 
@@ -7296,11 +6750,7 @@ def test_create_preview_flattened_error():
         client.create_preview(
             config.CreatePreviewRequest(),
             parent="parent_value",
-            preview=config.Preview(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            preview=config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
         )
 
 
@@ -7315,18 +6765,12 @@ async def test_create_preview_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_preview(
             parent="parent_value",
-            preview=config.Preview(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            preview=config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
         )
 
         # Establish that the underlying call was made with the expected
@@ -7337,9 +6781,7 @@ async def test_create_preview_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].preview
-        mock_val = config.Preview(
-            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
-        )
+        mock_val = config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value"))
         assert arg == mock_val
 
 
@@ -7355,11 +6797,7 @@ async def test_create_preview_flattened_error_async():
         await client.create_preview(
             config.CreatePreviewRequest(),
             parent="parent_value",
-            preview=config.Preview(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            preview=config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
         )
 
 
@@ -7440,9 +6878,7 @@ def test_get_preview_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_preview(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7469,9 +6905,7 @@ def test_get_preview_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_preview] = mock_rpc
         request = {}
         client.get_preview(request)
@@ -7487,9 +6921,7 @@ def test_get_preview_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_preview_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_preview_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7503,17 +6935,12 @@ async def test_get_preview_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_preview
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_preview in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_preview
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_preview] = mock_rpc
 
         request = {}
         await client.get_preview(request)
@@ -7529,9 +6956,7 @@ async def test_get_preview_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_preview_async(
-    transport: str = "grpc_asyncio", request_type=config.GetPreviewRequest
-):
+async def test_get_preview_async(transport: str = "grpc_asyncio", request_type=config.GetPreviewRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7788,9 +7213,7 @@ def test_list_previews_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_previews(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7820,9 +7243,7 @@ def test_list_previews_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_previews] = mock_rpc
         request = {}
         client.list_previews(request)
@@ -7838,9 +7259,7 @@ def test_list_previews_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_previews_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_previews_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7854,17 +7273,12 @@ async def test_list_previews_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_previews
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_previews in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_previews
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_previews] = mock_rpc
 
         request = {}
         await client.list_previews(request)
@@ -7880,9 +7294,7 @@ async def test_list_previews_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_previews_async(
-    transport: str = "grpc_asyncio", request_type=config.ListPreviewsRequest
-):
+async def test_list_previews_async(transport: str = "grpc_asyncio", request_type=config.ListPreviewsRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7963,9 +7375,7 @@ async def test_list_previews_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListPreviewsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListPreviewsResponse())
         await client.list_previews(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8030,9 +7440,7 @@ async def test_list_previews_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = config.ListPreviewsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListPreviewsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListPreviewsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_previews(
@@ -8103,9 +7511,7 @@ def test_list_previews_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_previews(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -8165,9 +7571,7 @@ async def test_list_previews_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_previews), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_previews), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListPreviewsResponse(
@@ -8215,9 +7619,7 @@ async def test_list_previews_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_previews), "__call__", new_callable=mock.AsyncMock
-    ) as call:
+    with mock.patch.object(type(client.transport.list_previews), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListPreviewsResponse(
@@ -8249,9 +7651,7 @@ async def test_list_previews_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_previews(request={})
-        ).pages:
+        async for page_ in (await client.list_previews(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -8307,9 +7707,7 @@ def test_delete_preview_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_preview(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8336,9 +7734,7 @@ def test_delete_preview_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_preview] = mock_rpc
         request = {}
         client.delete_preview(request)
@@ -8359,9 +7755,7 @@ def test_delete_preview_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_preview_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_preview_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8375,17 +7769,12 @@ async def test_delete_preview_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_preview
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_preview in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_preview
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_preview] = mock_rpc
 
         request = {}
         await client.delete_preview(request)
@@ -8406,9 +7795,7 @@ async def test_delete_preview_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_preview_async(
-    transport: str = "grpc_asyncio", request_type=config.DeletePreviewRequest
-):
+async def test_delete_preview_async(transport: str = "grpc_asyncio", request_type=config.DeletePreviewRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8421,9 +7808,7 @@ async def test_delete_preview_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_preview(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8484,9 +7869,7 @@ async def test_delete_preview_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_preview(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8551,9 +7934,7 @@ async def test_delete_preview_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_preview(
@@ -8602,9 +7983,7 @@ def test_export_preview_result(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ExportPreviewResultResponse()
         response = client.export_preview_result(request)
@@ -8635,12 +8014,8 @@ def test_export_preview_result_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.export_preview_result(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8663,19 +8038,12 @@ def test_export_preview_result_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_preview_result
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.export_preview_result in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_preview_result
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_preview_result] = mock_rpc
         request = {}
         client.export_preview_result(request)
 
@@ -8690,9 +8058,7 @@ def test_export_preview_result_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_export_preview_result_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_export_preview_result_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8706,17 +8072,12 @@ async def test_export_preview_result_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.export_preview_result
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.export_preview_result in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.export_preview_result
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.export_preview_result] = mock_rpc
 
         request = {}
         await client.export_preview_result(request)
@@ -8732,9 +8093,7 @@ async def test_export_preview_result_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_export_preview_result_async(
-    transport: str = "grpc_asyncio", request_type=config.ExportPreviewResultRequest
-):
+async def test_export_preview_result_async(transport: str = "grpc_asyncio", request_type=config.ExportPreviewResultRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8745,13 +8104,9 @@ async def test_export_preview_result_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ExportPreviewResultResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ExportPreviewResultResponse())
         response = await client.export_preview_result(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8781,9 +8136,7 @@ def test_export_preview_result_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
         call.return_value = config.ExportPreviewResultResponse()
         client.export_preview_result(request)
 
@@ -8813,12 +8166,8 @@ async def test_export_preview_result_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ExportPreviewResultResponse()
-        )
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ExportPreviewResultResponse())
         await client.export_preview_result(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8852,9 +8201,7 @@ def test_list_terraform_versions(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListTerraformVersionsResponse(
             next_page_token="next_page_token_value",
@@ -8893,12 +8240,8 @@ def test_list_terraform_versions_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_terraform_versions(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8924,19 +8267,12 @@ def test_list_terraform_versions_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_terraform_versions
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_terraform_versions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_terraform_versions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_terraform_versions] = mock_rpc
         request = {}
         client.list_terraform_versions(request)
 
@@ -8951,9 +8287,7 @@ def test_list_terraform_versions_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_terraform_versions_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_terraform_versions_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8967,17 +8301,12 @@ async def test_list_terraform_versions_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_terraform_versions
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_terraform_versions in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_terraform_versions
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_terraform_versions] = mock_rpc
 
         request = {}
         await client.list_terraform_versions(request)
@@ -8993,9 +8322,7 @@ async def test_list_terraform_versions_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_terraform_versions_async(
-    transport: str = "grpc_asyncio", request_type=config.ListTerraformVersionsRequest
-):
+async def test_list_terraform_versions_async(transport: str = "grpc_asyncio", request_type=config.ListTerraformVersionsRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9006,9 +8333,7 @@ async def test_list_terraform_versions_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ListTerraformVersionsResponse(
@@ -9047,9 +8372,7 @@ def test_list_terraform_versions_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         call.return_value = config.ListTerraformVersionsResponse()
         client.list_terraform_versions(request)
 
@@ -9079,12 +8402,8 @@ async def test_list_terraform_versions_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListTerraformVersionsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListTerraformVersionsResponse())
         await client.list_terraform_versions(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9106,9 +8425,7 @@ def test_list_terraform_versions_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListTerraformVersionsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -9147,15 +8464,11 @@ async def test_list_terraform_versions_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListTerraformVersionsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListTerraformVersionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListTerraformVersionsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_terraform_versions(
@@ -9193,9 +8506,7 @@ def test_list_terraform_versions_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListTerraformVersionsResponse(
@@ -9228,9 +8539,7 @@ def test_list_terraform_versions_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_terraform_versions(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -9249,9 +8558,7 @@ def test_list_terraform_versions_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListTerraformVersionsResponse(
@@ -9292,11 +8599,7 @@ async def test_list_terraform_versions_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListTerraformVersionsResponse(
@@ -9344,11 +8647,7 @@ async def test_list_terraform_versions_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListTerraformVersionsResponse(
@@ -9380,9 +8679,7 @@ async def test_list_terraform_versions_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_terraform_versions(request={})
-        ).pages:
+        async for page_ in (await client.list_terraform_versions(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -9406,9 +8703,7 @@ def test_get_terraform_version(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.TerraformVersion(
             name="name_value",
@@ -9444,12 +8739,8 @@ def test_get_terraform_version_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_terraform_version(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9472,19 +8763,12 @@ def test_get_terraform_version_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_terraform_version
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_terraform_version in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_terraform_version
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_terraform_version] = mock_rpc
         request = {}
         client.get_terraform_version(request)
 
@@ -9499,9 +8783,7 @@ def test_get_terraform_version_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_terraform_version_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_terraform_version_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9515,17 +8797,12 @@ async def test_get_terraform_version_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_terraform_version
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_terraform_version in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_terraform_version
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_terraform_version] = mock_rpc
 
         request = {}
         await client.get_terraform_version(request)
@@ -9541,9 +8818,7 @@ async def test_get_terraform_version_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_terraform_version_async(
-    transport: str = "grpc_asyncio", request_type=config.GetTerraformVersionRequest
-):
+async def test_get_terraform_version_async(transport: str = "grpc_asyncio", request_type=config.GetTerraformVersionRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9554,9 +8829,7 @@ async def test_get_terraform_version_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.TerraformVersion(
@@ -9595,9 +8868,7 @@ def test_get_terraform_version_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         call.return_value = config.TerraformVersion()
         client.get_terraform_version(request)
 
@@ -9627,12 +8898,8 @@ async def test_get_terraform_version_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.TerraformVersion()
-        )
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.TerraformVersion())
         await client.get_terraform_version(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9654,9 +8921,7 @@ def test_get_terraform_version_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.TerraformVersion()
         # Call the method with a truthy value for each flattened field,
@@ -9695,15 +8960,11 @@ async def test_get_terraform_version_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.TerraformVersion()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.TerraformVersion()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.TerraformVersion())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_terraform_version(
@@ -9752,9 +9013,7 @@ def test_list_resource_changes(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourceChangesResponse(
             next_page_token="next_page_token_value",
@@ -9793,12 +9052,8 @@ def test_list_resource_changes_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_resource_changes(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -9824,19 +9079,12 @@ def test_list_resource_changes_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_resource_changes
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_resource_changes in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_resource_changes
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_resource_changes] = mock_rpc
         request = {}
         client.list_resource_changes(request)
 
@@ -9851,9 +9099,7 @@ def test_list_resource_changes_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_resource_changes_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_resource_changes_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -9867,17 +9113,12 @@ async def test_list_resource_changes_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_resource_changes
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_resource_changes in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_resource_changes
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_resource_changes] = mock_rpc
 
         request = {}
         await client.list_resource_changes(request)
@@ -9893,9 +9134,7 @@ async def test_list_resource_changes_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_resource_changes_async(
-    transport: str = "grpc_asyncio", request_type=config.ListResourceChangesRequest
-):
+async def test_list_resource_changes_async(transport: str = "grpc_asyncio", request_type=config.ListResourceChangesRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9906,9 +9145,7 @@ async def test_list_resource_changes_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ListResourceChangesResponse(
@@ -9947,9 +9184,7 @@ def test_list_resource_changes_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         call.return_value = config.ListResourceChangesResponse()
         client.list_resource_changes(request)
 
@@ -9979,12 +9214,8 @@ async def test_list_resource_changes_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListResourceChangesResponse()
-        )
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListResourceChangesResponse())
         await client.list_resource_changes(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10006,9 +9237,7 @@ def test_list_resource_changes_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourceChangesResponse()
         # Call the method with a truthy value for each flattened field,
@@ -10047,15 +9276,11 @@ async def test_list_resource_changes_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourceChangesResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListResourceChangesResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListResourceChangesResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_resource_changes(
@@ -10093,9 +9318,7 @@ def test_list_resource_changes_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceChangesResponse(
@@ -10128,9 +9351,7 @@ def test_list_resource_changes_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_resource_changes(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -10149,9 +9370,7 @@ def test_list_resource_changes_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceChangesResponse(
@@ -10192,11 +9411,7 @@ async def test_list_resource_changes_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceChangesResponse(
@@ -10244,11 +9459,7 @@ async def test_list_resource_changes_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceChangesResponse(
@@ -10280,9 +9491,7 @@ async def test_list_resource_changes_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_resource_changes(request={})
-        ).pages:
+        async for page_ in (await client.list_resource_changes(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -10306,9 +9515,7 @@ def test_get_resource_change(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ResourceChange(
             name="name_value",
@@ -10344,12 +9551,8 @@ def test_get_resource_change_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_resource_change(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10372,18 +9575,12 @@ def test_get_resource_change_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_resource_change in client._transport._wrapped_methods
-        )
+        assert client._transport.get_resource_change in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_resource_change
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_resource_change] = mock_rpc
         request = {}
         client.get_resource_change(request)
 
@@ -10398,9 +9595,7 @@ def test_get_resource_change_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_resource_change_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_resource_change_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10414,17 +9609,12 @@ async def test_get_resource_change_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_resource_change
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_resource_change in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_resource_change
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_resource_change] = mock_rpc
 
         request = {}
         await client.get_resource_change(request)
@@ -10440,9 +9630,7 @@ async def test_get_resource_change_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_resource_change_async(
-    transport: str = "grpc_asyncio", request_type=config.GetResourceChangeRequest
-):
+async def test_get_resource_change_async(transport: str = "grpc_asyncio", request_type=config.GetResourceChangeRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10453,9 +9641,7 @@ async def test_get_resource_change_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ResourceChange(
@@ -10494,9 +9680,7 @@ def test_get_resource_change_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         call.return_value = config.ResourceChange()
         client.get_resource_change(request)
 
@@ -10526,12 +9710,8 @@ async def test_get_resource_change_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ResourceChange()
-        )
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ResourceChange())
         await client.get_resource_change(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10553,9 +9733,7 @@ def test_get_resource_change_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ResourceChange()
         # Call the method with a truthy value for each flattened field,
@@ -10594,15 +9772,11 @@ async def test_get_resource_change_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ResourceChange()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ResourceChange()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ResourceChange())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_resource_change(
@@ -10651,9 +9825,7 @@ def test_list_resource_drifts(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourceDriftsResponse(
             next_page_token="next_page_token_value",
@@ -10692,12 +9864,8 @@ def test_list_resource_drifts_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_resource_drifts(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -10723,18 +9891,12 @@ def test_list_resource_drifts_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_resource_drifts in client._transport._wrapped_methods
-        )
+        assert client._transport.list_resource_drifts in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_resource_drifts
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_resource_drifts] = mock_rpc
         request = {}
         client.list_resource_drifts(request)
 
@@ -10749,9 +9911,7 @@ def test_list_resource_drifts_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_resource_drifts_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_resource_drifts_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -10765,17 +9925,12 @@ async def test_list_resource_drifts_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_resource_drifts
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_resource_drifts in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_resource_drifts
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_resource_drifts] = mock_rpc
 
         request = {}
         await client.list_resource_drifts(request)
@@ -10791,9 +9946,7 @@ async def test_list_resource_drifts_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_resource_drifts_async(
-    transport: str = "grpc_asyncio", request_type=config.ListResourceDriftsRequest
-):
+async def test_list_resource_drifts_async(transport: str = "grpc_asyncio", request_type=config.ListResourceDriftsRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -10804,9 +9957,7 @@ async def test_list_resource_drifts_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ListResourceDriftsResponse(
@@ -10845,9 +9996,7 @@ def test_list_resource_drifts_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         call.return_value = config.ListResourceDriftsResponse()
         client.list_resource_drifts(request)
 
@@ -10877,12 +10026,8 @@ async def test_list_resource_drifts_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListResourceDriftsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListResourceDriftsResponse())
         await client.list_resource_drifts(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -10904,9 +10049,7 @@ def test_list_resource_drifts_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourceDriftsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -10945,15 +10088,11 @@ async def test_list_resource_drifts_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ListResourceDriftsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ListResourceDriftsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ListResourceDriftsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_resource_drifts(
@@ -10991,9 +10130,7 @@ def test_list_resource_drifts_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceDriftsResponse(
@@ -11026,9 +10163,7 @@ def test_list_resource_drifts_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_resource_drifts(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -11047,9 +10182,7 @@ def test_list_resource_drifts_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceDriftsResponse(
@@ -11090,11 +10223,7 @@ async def test_list_resource_drifts_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceDriftsResponse(
@@ -11142,11 +10271,7 @@ async def test_list_resource_drifts_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             config.ListResourceDriftsResponse(
@@ -11178,9 +10303,7 @@ async def test_list_resource_drifts_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_resource_drifts(request={})
-        ).pages:
+        async for page_ in (await client.list_resource_drifts(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -11204,9 +10327,7 @@ def test_get_resource_drift(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ResourceDrift(
             name="name_value",
@@ -11240,12 +10361,8 @@ def test_get_resource_drift_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_resource_drift(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -11268,18 +10385,12 @@ def test_get_resource_drift_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_resource_drift in client._transport._wrapped_methods
-        )
+        assert client._transport.get_resource_drift in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_resource_drift
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_resource_drift] = mock_rpc
         request = {}
         client.get_resource_drift(request)
 
@@ -11294,9 +10405,7 @@ def test_get_resource_drift_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_resource_drift_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_resource_drift_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -11310,17 +10419,12 @@ async def test_get_resource_drift_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_resource_drift
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_resource_drift in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_resource_drift
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_resource_drift] = mock_rpc
 
         request = {}
         await client.get_resource_drift(request)
@@ -11336,9 +10440,7 @@ async def test_get_resource_drift_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_resource_drift_async(
-    transport: str = "grpc_asyncio", request_type=config.GetResourceDriftRequest
-):
+async def test_get_resource_drift_async(transport: str = "grpc_asyncio", request_type=config.GetResourceDriftRequest):
     client = ConfigAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -11349,9 +10451,7 @@ async def test_get_resource_drift_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ResourceDrift(
@@ -11388,9 +10488,7 @@ def test_get_resource_drift_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         call.return_value = config.ResourceDrift()
         client.get_resource_drift(request)
 
@@ -11420,12 +10518,8 @@ async def test_get_resource_drift_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ResourceDrift()
-        )
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ResourceDrift())
         await client.get_resource_drift(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -11447,9 +10541,7 @@ def test_get_resource_drift_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ResourceDrift()
         # Call the method with a truthy value for each flattened field,
@@ -11488,15 +10580,11 @@ async def test_get_resource_drift_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = config.ResourceDrift()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ResourceDrift()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ResourceDrift())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_resource_drift(
@@ -11545,12 +10633,8 @@ def test_list_deployments_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_deployments
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_deployments] = mock_rpc
 
         request = {}
         client.list_deployments(request)
@@ -11565,33 +10649,25 @@ def test_list_deployments_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_deployments_rest_required_fields(
-    request_type=config.ListDeploymentsRequest,
-):
+def test_list_deployments_rest_required_fields(request_type=config.ListDeploymentsRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_deployments._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_deployments._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_deployments._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_deployments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11650,9 +10726,7 @@ def test_list_deployments_rest_required_fields(
 
 
 def test_list_deployments_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_deployments._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11704,11 +10778,7 @@ def test_list_deployments_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/deployments"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/deployments" % client.transport._host, args[1])
 
 
 def test_list_deployments_rest_flattened_error(transport: str = "rest"):
@@ -11805,9 +10875,7 @@ def test_get_deployment_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_deployment] = mock_rpc
 
         request = {}
@@ -11830,24 +10898,18 @@ def test_get_deployment_rest_required_fields(request_type=config.GetDeploymentRe
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11897,9 +10959,7 @@ def test_get_deployment_rest_required_fields(request_type=config.GetDeploymentRe
 
 
 def test_get_deployment_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_deployment._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -11917,9 +10977,7 @@ def test_get_deployment_rest_flattened():
         return_value = config.Deployment()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11943,11 +11001,7 @@ def test_get_deployment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*}" % client.transport._host, args[1])
 
 
 def test_get_deployment_rest_flattened_error(transport: str = "rest"):
@@ -11983,12 +11037,8 @@ def test_create_deployment_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_deployment] = mock_rpc
 
         request = {}
         client.create_deployment(request)
@@ -12007,9 +11057,7 @@ def test_create_deployment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_deployment_rest_required_fields(
-    request_type=config.CreateDeploymentRequest,
-):
+def test_create_deployment_rest_required_fields(request_type=config.CreateDeploymentRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
@@ -12017,16 +11065,12 @@ def test_create_deployment_rest_required_fields(
     request_init["deployment_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "deploymentId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12036,9 +11080,7 @@ def test_create_deployment_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["deploymentId"] = "deployment_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12101,9 +11143,7 @@ def test_create_deployment_rest_required_fields(
 
 
 def test_create_deployment_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_deployment._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12140,11 +11180,7 @@ def test_create_deployment_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             deployment_id="deployment_id_value",
         )
         mock_args.update(sample_request)
@@ -12163,11 +11199,7 @@ def test_create_deployment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/deployments"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/deployments" % client.transport._host, args[1])
 
 
 def test_create_deployment_rest_flattened_error(transport: str = "rest"):
@@ -12182,11 +11214,7 @@ def test_create_deployment_rest_flattened_error(transport: str = "rest"):
         client.create_deployment(
             config.CreateDeploymentRequest(),
             parent="parent_value",
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             deployment_id="deployment_id_value",
         )
 
@@ -12209,12 +11237,8 @@ def test_update_deployment_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_deployment] = mock_rpc
 
         request = {}
         client.update_deployment(request)
@@ -12233,30 +11257,22 @@ def test_update_deployment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_deployment_rest_required_fields(
-    request_type=config.UpdateDeploymentRequest,
-):
+def test_update_deployment_rest_required_fields(request_type=config.UpdateDeploymentRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12309,9 +11325,7 @@ def test_update_deployment_rest_required_fields(
 
 
 def test_update_deployment_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_deployment._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12337,19 +11351,11 @@ def test_update_deployment_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "deployment": {
-                "name": "projects/sample1/locations/sample2/deployments/sample3"
-            }
-        }
+        sample_request = {"deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
         mock_args.update(sample_request)
@@ -12368,11 +11374,7 @@ def test_update_deployment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{deployment.name=projects/*/locations/*/deployments/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{deployment.name=projects/*/locations/*/deployments/*}" % client.transport._host, args[1])
 
 
 def test_update_deployment_rest_flattened_error(transport: str = "rest"):
@@ -12386,11 +11388,7 @@ def test_update_deployment_rest_flattened_error(transport: str = "rest"):
     with pytest.raises(ValueError):
         client.update_deployment(
             config.UpdateDeploymentRequest(),
-            deployment=config.Deployment(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            deployment=config.Deployment(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
         )
 
@@ -12413,12 +11411,8 @@ def test_delete_deployment_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_deployment] = mock_rpc
 
         request = {}
         client.delete_deployment(request)
@@ -12437,33 +11431,25 @@ def test_delete_deployment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_deployment_rest_required_fields(
-    request_type=config.DeleteDeploymentRequest,
-):
+def test_delete_deployment_rest_required_fields(request_type=config.DeleteDeploymentRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12518,9 +11504,7 @@ def test_delete_deployment_rest_required_fields(
 
 
 def test_delete_deployment_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_deployment._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12547,9 +11531,7 @@ def test_delete_deployment_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12571,11 +11553,7 @@ def test_delete_deployment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*}" % client.transport._host, args[1])
 
 
 def test_delete_deployment_rest_flattened_error(transport: str = "rest"):
@@ -12611,9 +11589,7 @@ def test_list_revisions_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_revisions] = mock_rpc
 
         request = {}
@@ -12636,24 +11612,18 @@ def test_list_revisions_rest_required_fields(request_type=config.ListRevisionsRe
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_revisions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_revisions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_revisions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_revisions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12712,9 +11682,7 @@ def test_list_revisions_rest_required_fields(request_type=config.ListRevisionsRe
 
 
 def test_list_revisions_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_revisions._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12742,9 +11710,7 @@ def test_list_revisions_rest_flattened():
         return_value = config.ListRevisionsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12768,11 +11734,7 @@ def test_list_revisions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/deployments/*}/revisions"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/deployments/*}/revisions" % client.transport._host, args[1])
 
 
 def test_list_revisions_rest_flattened_error(transport: str = "rest"):
@@ -12838,9 +11800,7 @@ def test_list_revisions_rest_pager(transport: str = "rest"):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
 
         pager = client.list_revisions(request=sample_request)
 
@@ -12871,9 +11831,7 @@ def test_get_revision_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_revision] = mock_rpc
 
         request = {}
@@ -12896,24 +11854,18 @@ def test_get_revision_rest_required_fields(request_type=config.GetRevisionReques
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_revision._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_revision._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_revision._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_revision._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -12963,9 +11915,7 @@ def test_get_revision_rest_required_fields(request_type=config.GetRevisionReques
 
 
 def test_get_revision_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_revision._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -12983,9 +11933,7 @@ def test_get_revision_rest_flattened():
         return_value = config.Revision()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13009,11 +11957,7 @@ def test_get_revision_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*/revisions/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*/revisions/*}" % client.transport._host, args[1])
 
 
 def test_get_revision_rest_flattened_error(transport: str = "rest"):
@@ -13049,9 +11993,7 @@ def test_get_resource_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_resource] = mock_rpc
 
         request = {}
@@ -13074,24 +12016,18 @@ def test_get_resource_rest_required_fields(request_type=config.GetResourceReques
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_resource._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_resource._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_resource._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_resource._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13141,9 +12077,7 @@ def test_get_resource_rest_required_fields(request_type=config.GetResourceReques
 
 
 def test_get_resource_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_resource._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -13161,9 +12095,7 @@ def test_get_resource_rest_flattened():
         return_value = config.Resource()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4/resources/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4/resources/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13187,11 +12119,7 @@ def test_get_resource_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*/revisions/*/resources/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*/revisions/*/resources/*}" % client.transport._host, args[1])
 
 
 def test_get_resource_rest_flattened_error(transport: str = "rest"):
@@ -13227,9 +12155,7 @@ def test_list_resources_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_resources] = mock_rpc
 
         request = {}
@@ -13252,24 +12178,18 @@ def test_list_resources_rest_required_fields(request_type=config.ListResourcesRe
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_resources._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_resources._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_resources._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -13328,9 +12248,7 @@ def test_list_resources_rest_required_fields(request_type=config.ListResourcesRe
 
 
 def test_list_resources_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_resources._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13358,9 +12276,7 @@ def test_list_resources_rest_flattened():
         return_value = config.ListResourcesResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13384,11 +12300,7 @@ def test_list_resources_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/deployments/*/revisions/*}/resources"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/deployments/*/revisions/*}/resources" % client.transport._host, args[1])
 
 
 def test_list_resources_rest_flattened_error(transport: str = "rest"):
@@ -13454,9 +12366,7 @@ def test_list_resources_rest_pager(transport: str = "rest"):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
 
         pager = client.list_resources(request=sample_request)
 
@@ -13483,19 +12393,12 @@ def test_export_deployment_statefile_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_deployment_statefile
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.export_deployment_statefile in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_deployment_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_deployment_statefile] = mock_rpc
 
         request = {}
         client.export_deployment_statefile(request)
@@ -13510,33 +12413,29 @@ def test_export_deployment_statefile_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_export_deployment_statefile_rest_required_fields(
-    request_type=config.ExportDeploymentStatefileRequest,
-):
+def test_export_deployment_statefile_rest_required_fields(request_type=config.ExportDeploymentStatefileRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_deployment_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_deployment_statefile._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_deployment_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_deployment_statefile._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13587,9 +12486,7 @@ def test_export_deployment_statefile_rest_required_fields(
 
 
 def test_export_deployment_statefile_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.export_deployment_statefile._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -13609,19 +12506,12 @@ def test_export_revision_statefile_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_revision_statefile
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.export_revision_statefile in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_revision_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_revision_statefile] = mock_rpc
 
         request = {}
         client.export_revision_statefile(request)
@@ -13636,33 +12526,29 @@ def test_export_revision_statefile_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_export_revision_statefile_rest_required_fields(
-    request_type=config.ExportRevisionStatefileRequest,
-):
+def test_export_revision_statefile_rest_required_fields(request_type=config.ExportRevisionStatefileRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_revision_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_revision_statefile._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_revision_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_revision_statefile._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13713,9 +12599,7 @@ def test_export_revision_statefile_rest_required_fields(
 
 
 def test_export_revision_statefile_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.export_revision_statefile._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -13739,12 +12623,8 @@ def test_import_statefile_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.import_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.import_statefile] = mock_rpc
 
         request = {}
         client.import_statefile(request)
@@ -13759,9 +12639,7 @@ def test_import_statefile_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_import_statefile_rest_required_fields(
-    request_type=config.ImportStatefileRequest,
-):
+def test_import_statefile_rest_required_fields(request_type=config.ImportStatefileRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
@@ -13769,15 +12647,11 @@ def test_import_statefile_rest_required_fields(
     request_init["lock_id"] = 0
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).import_statefile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -13785,9 +12659,7 @@ def test_import_statefile_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["lockId"] = 725
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).import_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).import_statefile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13840,9 +12712,7 @@ def test_import_statefile_rest_required_fields(
 
 
 def test_import_statefile_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.import_statefile._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -13868,9 +12738,7 @@ def test_import_statefile_rest_flattened():
         return_value = config.Statefile()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13895,11 +12763,7 @@ def test_import_statefile_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/deployments/*}:importState"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/deployments/*}:importState" % client.transport._host, args[1])
 
 
 def test_import_statefile_rest_flattened_error(transport: str = "rest"):
@@ -13936,12 +12800,8 @@ def test_delete_statefile_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_statefile
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_statefile] = mock_rpc
 
         request = {}
         client.delete_statefile(request)
@@ -13956,9 +12816,7 @@ def test_delete_statefile_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_statefile_rest_required_fields(
-    request_type=config.DeleteStatefileRequest,
-):
+def test_delete_statefile_rest_required_fields(request_type=config.DeleteStatefileRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
@@ -13966,15 +12824,11 @@ def test_delete_statefile_rest_required_fields(
     request_init["lock_id"] = 0
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_statefile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -13982,9 +12836,7 @@ def test_delete_statefile_rest_required_fields(
     jsonified_request["name"] = "name_value"
     jsonified_request["lockId"] = 725
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_statefile._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_statefile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14034,9 +12886,7 @@ def test_delete_statefile_rest_required_fields(
 
 
 def test_delete_statefile_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_statefile._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -14062,9 +12912,7 @@ def test_delete_statefile_rest_flattened():
         return_value = None
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14086,11 +12934,7 @@ def test_delete_statefile_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*}:deleteState"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*}:deleteState" % client.transport._host, args[1])
 
 
 def test_delete_statefile_rest_flattened_error(transport: str = "rest"):
@@ -14126,9 +12970,7 @@ def test_lock_deployment_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.lock_deployment] = mock_rpc
 
         request = {}
@@ -14148,33 +12990,25 @@ def test_lock_deployment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_lock_deployment_rest_required_fields(
-    request_type=config.LockDeploymentRequest,
-):
+def test_lock_deployment_rest_required_fields(request_type=config.LockDeploymentRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).lock_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).lock_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).lock_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).lock_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14222,9 +13056,7 @@ def test_lock_deployment_rest_required_fields(
 
 
 def test_lock_deployment_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.lock_deployment._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -14242,9 +13074,7 @@ def test_lock_deployment_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14266,11 +13096,7 @@ def test_lock_deployment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*}:lock"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*}:lock" % client.transport._host, args[1])
 
 
 def test_lock_deployment_rest_flattened_error(transport: str = "rest"):
@@ -14306,12 +13132,8 @@ def test_unlock_deployment_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.unlock_deployment
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.unlock_deployment] = mock_rpc
 
         request = {}
         client.unlock_deployment(request)
@@ -14330,9 +13152,7 @@ def test_unlock_deployment_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_unlock_deployment_rest_required_fields(
-    request_type=config.UnlockDeploymentRequest,
-):
+def test_unlock_deployment_rest_required_fields(request_type=config.UnlockDeploymentRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
@@ -14340,15 +13160,11 @@ def test_unlock_deployment_rest_required_fields(
     request_init["lock_id"] = 0
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).unlock_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).unlock_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -14356,9 +13172,7 @@ def test_unlock_deployment_rest_required_fields(
     jsonified_request["name"] = "name_value"
     jsonified_request["lockId"] = 725
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).unlock_deployment._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).unlock_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14408,9 +13222,7 @@ def test_unlock_deployment_rest_required_fields(
 
 
 def test_unlock_deployment_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.unlock_deployment._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -14436,9 +13248,7 @@ def test_unlock_deployment_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14461,11 +13271,7 @@ def test_unlock_deployment_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*}:unlock"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*}:unlock" % client.transport._host, args[1])
 
 
 def test_unlock_deployment_rest_flattened_error(transport: str = "rest"):
@@ -14502,12 +13308,8 @@ def test_export_lock_info_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_lock_info
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_lock_info] = mock_rpc
 
         request = {}
         client.export_lock_info(request)
@@ -14522,33 +13324,25 @@ def test_export_lock_info_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_export_lock_info_rest_required_fields(
-    request_type=config.ExportLockInfoRequest,
-):
+def test_export_lock_info_rest_required_fields(request_type=config.ExportLockInfoRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_lock_info._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_lock_info._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_lock_info._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_lock_info._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14598,9 +13392,7 @@ def test_export_lock_info_rest_required_fields(
 
 
 def test_export_lock_info_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.export_lock_info._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -14618,9 +13410,7 @@ def test_export_lock_info_rest_flattened():
         return_value = config.LockInfo()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/deployments/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -14644,11 +13434,7 @@ def test_export_lock_info_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/deployments/*}:exportLock"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/deployments/*}:exportLock" % client.transport._host, args[1])
 
 
 def test_export_lock_info_rest_flattened_error(transport: str = "rest"):
@@ -14684,9 +13470,7 @@ def test_create_preview_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.create_preview] = mock_rpc
 
         request = {}
@@ -14713,24 +13497,18 @@ def test_create_preview_rest_required_fields(request_type=config.CreatePreviewRe
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_preview._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_preview._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_preview._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_preview._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -14785,9 +13563,7 @@ def test_create_preview_rest_required_fields(request_type=config.CreatePreviewRe
 
 
 def test_create_preview_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_preview._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -14823,11 +13599,7 @@ def test_create_preview_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            preview=config.Preview(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            preview=config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
         )
         mock_args.update(sample_request)
 
@@ -14845,10 +13617,7 @@ def test_create_preview_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/previews" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/previews" % client.transport._host, args[1])
 
 
 def test_create_preview_rest_flattened_error(transport: str = "rest"):
@@ -14863,11 +13632,7 @@ def test_create_preview_rest_flattened_error(transport: str = "rest"):
         client.create_preview(
             config.CreatePreviewRequest(),
             parent="parent_value",
-            preview=config.Preview(
-                terraform_blueprint=config.TerraformBlueprint(
-                    gcs_source="gcs_source_value"
-                )
-            ),
+            preview=config.Preview(terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")),
         )
 
 
@@ -14889,9 +13654,7 @@ def test_get_preview_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_preview] = mock_rpc
 
         request = {}
@@ -14914,24 +13677,18 @@ def test_get_preview_rest_required_fields(request_type=config.GetPreviewRequest)
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_preview._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_preview._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_preview._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_preview._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -14981,9 +13738,7 @@ def test_get_preview_rest_required_fields(request_type=config.GetPreviewRequest)
 
 
 def test_get_preview_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_preview._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -15025,10 +13780,7 @@ def test_get_preview_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/previews/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/previews/*}" % client.transport._host, args[1])
 
 
 def test_get_preview_rest_flattened_error(transport: str = "rest"):
@@ -15064,9 +13816,7 @@ def test_list_previews_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list_previews] = mock_rpc
 
         request = {}
@@ -15089,24 +13839,18 @@ def test_list_previews_rest_required_fields(request_type=config.ListPreviewsRequ
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_previews._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_previews._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_previews._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_previews._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -15165,9 +13909,7 @@ def test_list_previews_rest_required_fields(request_type=config.ListPreviewsRequ
 
 
 def test_list_previews_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_previews._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -15219,10 +13961,7 @@ def test_list_previews_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/previews" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/previews" % client.transport._host, args[1])
 
 
 def test_list_previews_rest_flattened_error(transport: str = "rest"):
@@ -15319,9 +14058,7 @@ def test_delete_preview_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete_preview] = mock_rpc
 
         request = {}
@@ -15348,24 +14085,18 @@ def test_delete_preview_rest_required_fields(request_type=config.DeletePreviewRe
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_preview._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_preview._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_preview._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_preview._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -15414,9 +14145,7 @@ def test_delete_preview_rest_required_fields(request_type=config.DeletePreviewRe
 
 
 def test_delete_preview_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_preview._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
@@ -15456,10 +14185,7 @@ def test_delete_preview_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/previews/*}" % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/previews/*}" % client.transport._host, args[1])
 
 
 def test_delete_preview_rest_flattened_error(transport: str = "rest"):
@@ -15491,19 +14217,12 @@ def test_export_preview_result_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.export_preview_result
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.export_preview_result in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.export_preview_result
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.export_preview_result] = mock_rpc
 
         request = {}
         client.export_preview_result(request)
@@ -15518,33 +14237,29 @@ def test_export_preview_result_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_export_preview_result_rest_required_fields(
-    request_type=config.ExportPreviewResultRequest,
-):
+def test_export_preview_result_rest_required_fields(request_type=config.ExportPreviewResultRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_preview_result._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_preview_result._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).export_preview_result._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).export_preview_result._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15595,9 +14310,7 @@ def test_export_preview_result_rest_required_fields(
 
 
 def test_export_preview_result_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.export_preview_result._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("parent",)))
@@ -15617,19 +14330,12 @@ def test_list_terraform_versions_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_terraform_versions
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_terraform_versions in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_terraform_versions
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_terraform_versions] = mock_rpc
 
         request = {}
         client.list_terraform_versions(request)
@@ -15644,33 +14350,29 @@ def test_list_terraform_versions_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_terraform_versions_rest_required_fields(
-    request_type=config.ListTerraformVersionsRequest,
-):
+def test_list_terraform_versions_rest_required_fields(request_type=config.ListTerraformVersionsRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_terraform_versions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_terraform_versions._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_terraform_versions._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_terraform_versions._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -15729,9 +14431,7 @@ def test_list_terraform_versions_rest_required_fields(
 
 
 def test_list_terraform_versions_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_terraform_versions._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -15783,11 +14483,7 @@ def test_list_terraform_versions_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/terraformVersions"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/terraformVersions" % client.transport._host, args[1])
 
 
 def test_list_terraform_versions_rest_flattened_error(transport: str = "rest"):
@@ -15846,9 +14542,7 @@ def test_list_terraform_versions_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            config.ListTerraformVersionsResponse.to_json(x) for x in response
-        )
+        response = tuple(config.ListTerraformVersionsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -15882,19 +14576,12 @@ def test_get_terraform_version_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_terraform_version
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_terraform_version in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_terraform_version
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_terraform_version] = mock_rpc
 
         request = {}
         client.get_terraform_version(request)
@@ -15909,33 +14596,29 @@ def test_get_terraform_version_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_terraform_version_rest_required_fields(
-    request_type=config.GetTerraformVersionRequest,
-):
+def test_get_terraform_version_rest_required_fields(request_type=config.GetTerraformVersionRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_terraform_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_terraform_version._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_terraform_version._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_terraform_version._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -15985,9 +14668,7 @@ def test_get_terraform_version_rest_required_fields(
 
 
 def test_get_terraform_version_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_terraform_version._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -16005,9 +14686,7 @@ def test_get_terraform_version_rest_flattened():
         return_value = config.TerraformVersion()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/terraformVersions/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/terraformVersions/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16031,11 +14710,7 @@ def test_get_terraform_version_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/terraformVersions/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/terraformVersions/*}" % client.transport._host, args[1])
 
 
 def test_get_terraform_version_rest_flattened_error(transport: str = "rest"):
@@ -16067,19 +14742,12 @@ def test_list_resource_changes_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_resource_changes
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_resource_changes in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_resource_changes
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_resource_changes] = mock_rpc
 
         request = {}
         client.list_resource_changes(request)
@@ -16094,33 +14762,29 @@ def test_list_resource_changes_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_resource_changes_rest_required_fields(
-    request_type=config.ListResourceChangesRequest,
-):
+def test_list_resource_changes_rest_required_fields(request_type=config.ListResourceChangesRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_resource_changes._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_resource_changes._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_resource_changes._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_resource_changes._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -16179,9 +14843,7 @@ def test_list_resource_changes_rest_required_fields(
 
 
 def test_list_resource_changes_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_resource_changes._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -16209,9 +14871,7 @@ def test_list_resource_changes_rest_flattened():
         return_value = config.ListResourceChangesResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/previews/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16235,11 +14895,7 @@ def test_list_resource_changes_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/previews/*}/resourceChanges"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/previews/*}/resourceChanges" % client.transport._host, args[1])
 
 
 def test_list_resource_changes_rest_flattened_error(transport: str = "rest"):
@@ -16298,18 +14954,14 @@ def test_list_resource_changes_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            config.ListResourceChangesResponse.to_json(x) for x in response
-        )
+        response = tuple(config.ListResourceChangesResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/previews/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
 
         pager = client.list_resource_changes(request=sample_request)
 
@@ -16336,18 +14988,12 @@ def test_get_resource_change_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_resource_change in client._transport._wrapped_methods
-        )
+        assert client._transport.get_resource_change in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_resource_change
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_resource_change] = mock_rpc
 
         request = {}
         client.get_resource_change(request)
@@ -16362,33 +15008,29 @@ def test_get_resource_change_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_resource_change_rest_required_fields(
-    request_type=config.GetResourceChangeRequest,
-):
+def test_get_resource_change_rest_required_fields(request_type=config.GetResourceChangeRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_resource_change._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_resource_change._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_resource_change._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_resource_change._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -16438,9 +15080,7 @@ def test_get_resource_change_rest_required_fields(
 
 
 def test_get_resource_change_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_resource_change._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -16458,9 +15098,7 @@ def test_get_resource_change_rest_flattened():
         return_value = config.ResourceChange()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/previews/sample3/resourceChanges/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/previews/sample3/resourceChanges/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16484,11 +15122,7 @@ def test_get_resource_change_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/previews/*/resourceChanges/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/previews/*/resourceChanges/*}" % client.transport._host, args[1])
 
 
 def test_get_resource_change_rest_flattened_error(transport: str = "rest"):
@@ -16520,18 +15154,12 @@ def test_list_resource_drifts_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_resource_drifts in client._transport._wrapped_methods
-        )
+        assert client._transport.list_resource_drifts in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_resource_drifts
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_resource_drifts] = mock_rpc
 
         request = {}
         client.list_resource_drifts(request)
@@ -16546,33 +15174,29 @@ def test_list_resource_drifts_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_resource_drifts_rest_required_fields(
-    request_type=config.ListResourceDriftsRequest,
-):
+def test_list_resource_drifts_rest_required_fields(request_type=config.ListResourceDriftsRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_resource_drifts._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_resource_drifts._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_resource_drifts._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_resource_drifts._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -16631,9 +15255,7 @@ def test_list_resource_drifts_rest_required_fields(
 
 
 def test_list_resource_drifts_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_resource_drifts._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -16661,9 +15283,7 @@ def test_list_resource_drifts_rest_flattened():
         return_value = config.ListResourceDriftsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/previews/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16687,11 +15307,7 @@ def test_list_resource_drifts_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/previews/*}/resourceDrifts"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*/previews/*}/resourceDrifts" % client.transport._host, args[1])
 
 
 def test_list_resource_drifts_rest_flattened_error(transport: str = "rest"):
@@ -16757,9 +15373,7 @@ def test_list_resource_drifts_rest_pager(transport: str = "rest"):
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/previews/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
 
         pager = client.list_resource_drifts(request=sample_request)
 
@@ -16786,18 +15400,12 @@ def test_get_resource_drift_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_resource_drift in client._transport._wrapped_methods
-        )
+        assert client._transport.get_resource_drift in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_resource_drift
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_resource_drift] = mock_rpc
 
         request = {}
         client.get_resource_drift(request)
@@ -16812,33 +15420,25 @@ def test_get_resource_drift_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_resource_drift_rest_required_fields(
-    request_type=config.GetResourceDriftRequest,
-):
+def test_get_resource_drift_rest_required_fields(request_type=config.GetResourceDriftRequest):
     transport_class = transports.ConfigRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_resource_drift._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_resource_drift._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_resource_drift._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_resource_drift._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -16888,9 +15488,7 @@ def test_get_resource_drift_rest_required_fields(
 
 
 def test_get_resource_drift_rest_unset_required_fields():
-    transport = transports.ConfigRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.ConfigRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_resource_drift._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -16908,9 +15506,7 @@ def test_get_resource_drift_rest_flattened():
         return_value = config.ResourceDrift()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/previews/sample3/resourceDrifts/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/previews/sample3/resourceDrifts/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -16934,11 +15530,7 @@ def test_get_resource_drift_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/previews/*/resourceDrifts/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/previews/*/resourceDrifts/*}" % client.transport._host, args[1])
 
 
 def test_get_resource_drift_rest_flattened_error(transport: str = "rest"):
@@ -16993,9 +15585,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ConfigClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = ConfigClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ConfigGrpcTransport(
@@ -17049,16 +15639,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = ConfigClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = ConfigClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -17113,9 +15699,7 @@ def test_create_deployment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_deployment(request=None)
 
@@ -17136,9 +15720,7 @@ def test_update_deployment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_deployment(request=None)
 
@@ -17159,9 +15741,7 @@ def test_delete_deployment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_deployment(request=None)
 
@@ -17266,9 +15846,7 @@ def test_export_deployment_statefile_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         call.return_value = config.Statefile()
         client.export_deployment_statefile(request=None)
 
@@ -17289,9 +15867,7 @@ def test_export_revision_statefile_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         call.return_value = config.Statefile()
         client.export_revision_statefile(request=None)
 
@@ -17375,9 +15951,7 @@ def test_unlock_deployment_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.unlock_deployment(request=None)
 
@@ -17503,9 +16077,7 @@ def test_export_preview_result_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
         call.return_value = config.ExportPreviewResultResponse()
         client.export_preview_result(request=None)
 
@@ -17526,9 +16098,7 @@ def test_list_terraform_versions_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         call.return_value = config.ListTerraformVersionsResponse()
         client.list_terraform_versions(request=None)
 
@@ -17549,9 +16119,7 @@ def test_get_terraform_version_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         call.return_value = config.TerraformVersion()
         client.get_terraform_version(request=None)
 
@@ -17572,9 +16140,7 @@ def test_list_resource_changes_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         call.return_value = config.ListResourceChangesResponse()
         client.list_resource_changes(request=None)
 
@@ -17595,9 +16161,7 @@ def test_get_resource_change_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         call.return_value = config.ResourceChange()
         client.get_resource_change(request=None)
 
@@ -17618,9 +16182,7 @@ def test_list_resource_drifts_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         call.return_value = config.ListResourceDriftsResponse()
         client.list_resource_drifts(request=None)
 
@@ -17641,9 +16203,7 @@ def test_get_resource_drift_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         call.return_value = config.ResourceDrift()
         client.get_resource_drift(request=None)
 
@@ -17656,16 +16216,12 @@ def test_get_resource_drift_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = ConfigAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = ConfigAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = ConfigAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = ConfigAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -17749,13 +16305,9 @@ async def test_create_deployment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17776,13 +16328,9 @@ async def test_update_deployment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17803,13 +16351,9 @@ async def test_delete_deployment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -17956,9 +16500,7 @@ async def test_export_deployment_statefile_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.Statefile(
@@ -17985,9 +16527,7 @@ async def test_export_revision_statefile_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.Statefile(
@@ -18066,9 +16606,7 @@ async def test_lock_deployment_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.lock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.lock_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18089,13 +16627,9 @@ async def test_unlock_deployment_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.unlock_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18149,9 +16683,7 @@ async def test_create_preview_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_preview(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18241,9 +16773,7 @@ async def test_delete_preview_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_preview(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18264,13 +16794,9 @@ async def test_export_preview_result_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            config.ExportPreviewResultResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.ExportPreviewResultResponse())
         await client.export_preview_result(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18291,9 +16817,7 @@ async def test_list_terraform_versions_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ListTerraformVersionsResponse(
@@ -18321,9 +16845,7 @@ async def test_get_terraform_version_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.TerraformVersion(
@@ -18351,9 +16873,7 @@ async def test_list_resource_changes_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ListResourceChangesResponse(
@@ -18381,9 +16901,7 @@ async def test_get_resource_change_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ResourceChange(
@@ -18411,9 +16929,7 @@ async def test_list_resource_drifts_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ListResourceDriftsResponse(
@@ -18441,9 +16957,7 @@ async def test_get_resource_drift_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             config.ResourceDrift(
@@ -18461,24 +16975,18 @@ async def test_get_resource_drift_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = ConfigClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = ConfigClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_list_deployments_rest_bad_request(request_type=config.ListDeploymentsRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18498,9 +17006,7 @@ def test_list_deployments_rest_bad_request(request_type=config.ListDeploymentsRe
     ],
 )
 def test_list_deployments_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -18540,13 +17046,9 @@ def test_list_deployments_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_deployments"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_deployments") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_deployments_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_deployments"
@@ -18565,9 +17067,7 @@ def test_list_deployments_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListDeploymentsResponse.to_json(
-            config.ListDeploymentsResponse()
-        )
+        return_value = config.ListDeploymentsResponse.to_json(config.ListDeploymentsResponse())
         req.return_value.content = return_value
 
         request = config.ListDeploymentsRequest()
@@ -18593,17 +17093,13 @@ def test_list_deployments_rest_interceptors(null_interceptor):
 
 
 def test_get_deployment_rest_bad_request(request_type=config.GetDeploymentRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18623,9 +17119,7 @@ def test_get_deployment_rest_bad_request(request_type=config.GetDeploymentReques
     ],
 )
 def test_get_deployment_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -18693,13 +17187,9 @@ def test_get_deployment_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_deployment"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_deployment") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_deployment_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_deployment"
@@ -18743,20 +17233,14 @@ def test_get_deployment_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_deployment_rest_bad_request(
-    request_type=config.CreateDeploymentRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_deployment_rest_bad_request(request_type=config.CreateDeploymentRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -18776,20 +17260,14 @@ def test_create_deployment_rest_bad_request(
     ],
 )
 def test_create_deployment_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["deployment"] = {
         "terraform_blueprint": {
             "gcs_source": "gcs_source_value",
-            "git_source": {
-                "repo": "repo_value",
-                "directory": "directory_value",
-                "ref": "ref_value",
-            },
+            "git_source": {"repo": "repo_value", "directory": "directory_value", "ref": "ref_value"},
             "input_values": {},
         },
         "name": "name_value",
@@ -18800,11 +17278,7 @@ def test_create_deployment_rest_call_success(request_type):
         "latest_revision": "latest_revision_value",
         "state_detail": "state_detail_value",
         "error_code": 1,
-        "delete_results": {
-            "content": "content_value",
-            "artifacts": "artifacts_value",
-            "outputs": {},
-        },
+        "delete_results": {"content": "content_value", "artifacts": "artifacts_value", "outputs": {}},
         "delete_build": "delete_build_value",
         "delete_logs": "delete_logs_value",
         "tf_errors": [
@@ -18815,12 +17289,7 @@ def test_create_deployment_rest_call_success(request_type):
                 "error": {
                     "code": 411,
                     "message": "message_value",
-                    "details": [
-                        {
-                            "type_url": "type.googleapis.com/google.protobuf.Duration",
-                            "value": b"\x08\x0c\x10\xdb\x07",
-                        }
-                    ],
+                    "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
                 },
             }
         ],
@@ -18860,9 +17329,7 @@ def test_create_deployment_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -18883,13 +17350,7 @@ def test_create_deployment_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -18931,13 +17392,9 @@ def test_create_deployment_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_create_deployment"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_create_deployment_with_metadata"
@@ -18983,22 +17440,14 @@ def test_create_deployment_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_deployment_rest_bad_request(
-    request_type=config.UpdateDeploymentRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_deployment_rest_bad_request(request_type=config.UpdateDeploymentRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    }
+    request_init = {"deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19018,22 +17467,14 @@ def test_update_deployment_rest_bad_request(
     ],
 )
 def test_update_deployment_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}
-    }
+    request_init = {"deployment": {"name": "projects/sample1/locations/sample2/deployments/sample3"}}
     request_init["deployment"] = {
         "terraform_blueprint": {
             "gcs_source": "gcs_source_value",
-            "git_source": {
-                "repo": "repo_value",
-                "directory": "directory_value",
-                "ref": "ref_value",
-            },
+            "git_source": {"repo": "repo_value", "directory": "directory_value", "ref": "ref_value"},
             "input_values": {},
         },
         "name": "projects/sample1/locations/sample2/deployments/sample3",
@@ -19044,11 +17485,7 @@ def test_update_deployment_rest_call_success(request_type):
         "latest_revision": "latest_revision_value",
         "state_detail": "state_detail_value",
         "error_code": 1,
-        "delete_results": {
-            "content": "content_value",
-            "artifacts": "artifacts_value",
-            "outputs": {},
-        },
+        "delete_results": {"content": "content_value", "artifacts": "artifacts_value", "outputs": {}},
         "delete_build": "delete_build_value",
         "delete_logs": "delete_logs_value",
         "tf_errors": [
@@ -19059,12 +17496,7 @@ def test_update_deployment_rest_call_success(request_type):
                 "error": {
                     "code": 411,
                     "message": "message_value",
-                    "details": [
-                        {
-                            "type_url": "type.googleapis.com/google.protobuf.Duration",
-                            "value": b"\x08\x0c\x10\xdb\x07",
-                        }
-                    ],
+                    "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
                 },
             }
         ],
@@ -19104,9 +17536,7 @@ def test_update_deployment_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -19127,13 +17557,7 @@ def test_update_deployment_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -19175,13 +17599,9 @@ def test_update_deployment_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_update_deployment"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_update_deployment_with_metadata"
@@ -19227,20 +17647,14 @@ def test_update_deployment_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_deployment_rest_bad_request(
-    request_type=config.DeleteDeploymentRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_deployment_rest_bad_request(request_type=config.DeleteDeploymentRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19260,9 +17674,7 @@ def test_delete_deployment_rest_bad_request(
     ],
 )
 def test_delete_deployment_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -19294,13 +17706,9 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_delete_deployment"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_delete_deployment_with_metadata"
@@ -19347,17 +17755,13 @@ def test_delete_deployment_rest_interceptors(null_interceptor):
 
 
 def test_list_revisions_rest_bad_request(request_type=config.ListRevisionsRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19377,9 +17781,7 @@ def test_list_revisions_rest_bad_request(request_type=config.ListRevisionsReques
     ],
 )
 def test_list_revisions_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -19419,13 +17821,9 @@ def test_list_revisions_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_revisions"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_revisions") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_revisions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_revisions"
@@ -19444,9 +17842,7 @@ def test_list_revisions_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListRevisionsResponse.to_json(
-            config.ListRevisionsResponse()
-        )
+        return_value = config.ListRevisionsResponse.to_json(config.ListRevisionsResponse())
         req.return_value.content = return_value
 
         request = config.ListRevisionsRequest()
@@ -19472,19 +17868,13 @@ def test_list_revisions_rest_interceptors(null_interceptor):
 
 
 def test_get_revision_rest_bad_request(request_type=config.GetRevisionRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19504,14 +17894,10 @@ def test_get_revision_rest_bad_request(request_type=config.GetRevisionRequest):
     ],
 )
 def test_get_revision_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19553,9 +17939,7 @@ def test_get_revision_rest_call_success(request_type):
     assert response.action == config.Revision.Action.CREATE
     assert response.state == config.Revision.State.APPLYING
     assert response.state_detail == "state_detail_value"
-    assert (
-        response.error_code == config.Revision.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
-    )
+    assert response.error_code == config.Revision.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
     assert response.build == "build_value"
     assert response.logs == "logs_value"
     assert response.error_logs == "error_logs_value"
@@ -19576,13 +17960,9 @@ def test_get_revision_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_revision"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_revision") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_revision_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_revision"
@@ -19627,19 +18007,13 @@ def test_get_revision_rest_interceptors(null_interceptor):
 
 
 def test_get_resource_rest_bad_request(request_type=config.GetResourceRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4/resources/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4/resources/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19659,14 +18033,10 @@ def test_get_resource_rest_bad_request(request_type=config.GetResourceRequest):
     ],
 )
 def test_get_resource_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4/resources/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4/resources/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19705,13 +18075,9 @@ def test_get_resource_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_resource"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_resource") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_resource_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_resource"
@@ -19756,19 +18122,13 @@ def test_get_resource_rest_interceptors(null_interceptor):
 
 
 def test_list_resources_rest_bad_request(request_type=config.ListResourcesRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19788,14 +18148,10 @@ def test_list_resources_rest_bad_request(request_type=config.ListResourcesReques
     ],
 )
 def test_list_resources_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -19832,13 +18188,9 @@ def test_list_resources_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_resources"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_resources") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_resources_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_resources"
@@ -19857,9 +18209,7 @@ def test_list_resources_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListResourcesResponse.to_json(
-            config.ListResourcesResponse()
-        )
+        return_value = config.ListResourcesResponse.to_json(config.ListResourcesResponse())
         req.return_value.content = return_value
 
         request = config.ListResourcesRequest()
@@ -19884,20 +18234,14 @@ def test_list_resources_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_export_deployment_statefile_rest_bad_request(
-    request_type=config.ExportDeploymentStatefileRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_export_deployment_statefile_rest_bad_request(request_type=config.ExportDeploymentStatefileRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -19917,9 +18261,7 @@ def test_export_deployment_statefile_rest_bad_request(
     ],
 )
 def test_export_deployment_statefile_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -19957,24 +18299,17 @@ def test_export_deployment_statefile_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_export_deployment_statefile"
-    ) as post, mock.patch.object(
-        transports.ConfigRestInterceptor,
-        "post_export_deployment_statefile_with_metadata",
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_export_deployment_statefile") as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_export_deployment_statefile_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_deployment_statefile"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.ExportDeploymentStatefileRequest.pb(
-            config.ExportDeploymentStatefileRequest()
-        )
+        pb_message = config.ExportDeploymentStatefileRequest.pb(config.ExportDeploymentStatefileRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20010,22 +18345,14 @@ def test_export_deployment_statefile_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_export_revision_statefile_rest_bad_request(
-    request_type=config.ExportRevisionStatefileRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_export_revision_statefile_rest_bad_request(request_type=config.ExportRevisionStatefileRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20045,14 +18372,10 @@ def test_export_revision_statefile_rest_bad_request(
     ],
 )
 def test_export_revision_statefile_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3/revisions/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -20087,13 +18410,9 @@ def test_export_revision_statefile_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_export_revision_statefile"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_export_revision_statefile") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_revision_statefile_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_revision_statefile"
@@ -20101,9 +18420,7 @@ def test_export_revision_statefile_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.ExportRevisionStatefileRequest.pb(
-            config.ExportRevisionStatefileRequest()
-        )
+        pb_message = config.ExportRevisionStatefileRequest.pb(config.ExportRevisionStatefileRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -20140,17 +18457,13 @@ def test_export_revision_statefile_rest_interceptors(null_interceptor):
 
 
 def test_import_statefile_rest_bad_request(request_type=config.ImportStatefileRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20170,9 +18483,7 @@ def test_import_statefile_rest_bad_request(request_type=config.ImportStatefileRe
     ],
 )
 def test_import_statefile_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -20210,13 +18521,9 @@ def test_import_statefile_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_import_statefile"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_import_statefile") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_import_statefile_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_import_statefile"
@@ -20261,17 +18568,13 @@ def test_import_statefile_rest_interceptors(null_interceptor):
 
 
 def test_delete_statefile_rest_bad_request(request_type=config.DeleteStatefileRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20291,9 +18594,7 @@ def test_delete_statefile_rest_bad_request(request_type=config.DeleteStatefileRe
     ],
 )
 def test_delete_statefile_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -20325,13 +18626,9 @@ def test_delete_statefile_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "pre_delete_statefile"
-    ) as pre:
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "pre_delete_statefile") as pre:
         pre.assert_not_called()
         pb_message = config.DeleteStatefileRequest.pb(config.DeleteStatefileRequest())
         transcode.return_value = {
@@ -20364,17 +18661,13 @@ def test_delete_statefile_rest_interceptors(null_interceptor):
 
 
 def test_lock_deployment_rest_bad_request(request_type=config.LockDeploymentRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20394,9 +18687,7 @@ def test_lock_deployment_rest_bad_request(request_type=config.LockDeploymentRequ
     ],
 )
 def test_lock_deployment_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -20428,13 +18719,9 @@ def test_lock_deployment_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_lock_deployment"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_lock_deployment_with_metadata"
@@ -20480,20 +18767,14 @@ def test_lock_deployment_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_unlock_deployment_rest_bad_request(
-    request_type=config.UnlockDeploymentRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_unlock_deployment_rest_bad_request(request_type=config.UnlockDeploymentRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20513,9 +18794,7 @@ def test_unlock_deployment_rest_bad_request(
     ],
 )
 def test_unlock_deployment_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -20547,13 +18826,9 @@ def test_unlock_deployment_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_unlock_deployment"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_unlock_deployment_with_metadata"
@@ -20600,17 +18875,13 @@ def test_unlock_deployment_rest_interceptors(null_interceptor):
 
 
 def test_export_lock_info_rest_bad_request(request_type=config.ExportLockInfoRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20630,9 +18901,7 @@ def test_export_lock_info_rest_bad_request(request_type=config.ExportLockInfoReq
     ],
 )
 def test_export_lock_info_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/deployments/sample3"}
@@ -20678,13 +18947,9 @@ def test_export_lock_info_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_export_lock_info"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_export_lock_info") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_lock_info_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_lock_info"
@@ -20729,17 +18994,13 @@ def test_export_lock_info_rest_interceptors(null_interceptor):
 
 
 def test_create_preview_rest_bad_request(request_type=config.CreatePreviewRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20759,20 +19020,14 @@ def test_create_preview_rest_bad_request(request_type=config.CreatePreviewReques
     ],
 )
 def test_create_preview_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["preview"] = {
         "terraform_blueprint": {
             "gcs_source": "gcs_source_value",
-            "git_source": {
-                "repo": "repo_value",
-                "directory": "directory_value",
-                "ref": "ref_value",
-            },
+            "git_source": {"repo": "repo_value", "directory": "directory_value", "ref": "ref_value"},
             "input_values": {},
         },
         "name": "name_value",
@@ -20788,27 +19043,14 @@ def test_create_preview_rest_call_success(request_type):
         "error_status": {
             "code": 411,
             "message": "message_value",
-            "details": [
-                {
-                    "type_url": "type.googleapis.com/google.protobuf.Duration",
-                    "value": b"\x08\x0c\x10\xdb\x07",
-                }
-            ],
+            "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
         },
         "build": "build_value",
         "tf_errors": [
-            {
-                "resource_address": "resource_address_value",
-                "http_response_code": 1928,
-                "error_description": "error_description_value",
-                "error": {},
-            }
+            {"resource_address": "resource_address_value", "http_response_code": 1928, "error_description": "error_description_value", "error": {}}
         ],
         "error_logs": "error_logs_value",
-        "preview_artifacts": {
-            "content": "content_value",
-            "artifacts": "artifacts_value",
-        },
+        "preview_artifacts": {"content": "content_value", "artifacts": "artifacts_value"},
         "logs": "logs_value",
         "tf_version": "tf_version_value",
         "tf_version_constraint": "tf_version_constraint_value",
@@ -20839,9 +19081,7 @@ def test_create_preview_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -20862,13 +19102,7 @@ def test_create_preview_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -20910,13 +19144,9 @@ def test_create_preview_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_create_preview"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_create_preview_with_metadata"
@@ -20963,17 +19193,13 @@ def test_create_preview_rest_interceptors(null_interceptor):
 
 
 def test_get_preview_rest_bad_request(request_type=config.GetPreviewRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -20993,9 +19219,7 @@ def test_get_preview_rest_bad_request(request_type=config.GetPreviewRequest):
     ],
 )
 def test_get_preview_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
@@ -21057,13 +19281,9 @@ def test_get_preview_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_preview"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_preview") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_preview_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_preview"
@@ -21108,17 +19328,13 @@ def test_get_preview_rest_interceptors(null_interceptor):
 
 
 def test_list_previews_rest_bad_request(request_type=config.ListPreviewsRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21138,9 +19354,7 @@ def test_list_previews_rest_bad_request(request_type=config.ListPreviewsRequest)
     ],
 )
 def test_list_previews_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -21180,13 +19394,9 @@ def test_list_previews_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_previews"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_previews") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_previews_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_previews"
@@ -21205,9 +19415,7 @@ def test_list_previews_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListPreviewsResponse.to_json(
-            config.ListPreviewsResponse()
-        )
+        return_value = config.ListPreviewsResponse.to_json(config.ListPreviewsResponse())
         req.return_value.content = return_value
 
         request = config.ListPreviewsRequest()
@@ -21233,17 +19441,13 @@ def test_list_previews_rest_interceptors(null_interceptor):
 
 
 def test_delete_preview_rest_bad_request(request_type=config.DeletePreviewRequest):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21263,9 +19467,7 @@ def test_delete_preview_rest_bad_request(request_type=config.DeletePreviewReques
     ],
 )
 def test_delete_preview_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
@@ -21297,13 +19499,9 @@ def test_delete_preview_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.ConfigRestInterceptor, "post_delete_preview"
     ) as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_delete_preview_with_metadata"
@@ -21349,20 +19547,14 @@ def test_delete_preview_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_export_preview_result_rest_bad_request(
-    request_type=config.ExportPreviewResultRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_export_preview_result_rest_bad_request(request_type=config.ExportPreviewResultRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21382,9 +19574,7 @@ def test_export_preview_result_rest_bad_request(
     ],
 )
 def test_export_preview_result_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
@@ -21419,13 +19609,9 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_export_preview_result"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_export_preview_result") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_export_preview_result_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_export_preview_result"
@@ -21433,9 +19619,7 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.ExportPreviewResultRequest.pb(
-            config.ExportPreviewResultRequest()
-        )
+        pb_message = config.ExportPreviewResultRequest.pb(config.ExportPreviewResultRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -21446,9 +19630,7 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ExportPreviewResultResponse.to_json(
-            config.ExportPreviewResultResponse()
-        )
+        return_value = config.ExportPreviewResultResponse.to_json(config.ExportPreviewResultResponse())
         req.return_value.content = return_value
 
         request = config.ExportPreviewResultRequest()
@@ -21473,20 +19655,14 @@ def test_export_preview_result_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_terraform_versions_rest_bad_request(
-    request_type=config.ListTerraformVersionsRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_terraform_versions_rest_bad_request(request_type=config.ListTerraformVersionsRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21506,9 +19682,7 @@ def test_list_terraform_versions_rest_bad_request(
     ],
 )
 def test_list_terraform_versions_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -21548,13 +19722,9 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_terraform_versions"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_terraform_versions") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_terraform_versions_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_terraform_versions"
@@ -21562,9 +19732,7 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.ListTerraformVersionsRequest.pb(
-            config.ListTerraformVersionsRequest()
-        )
+        pb_message = config.ListTerraformVersionsRequest.pb(config.ListTerraformVersionsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -21575,9 +19743,7 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListTerraformVersionsResponse.to_json(
-            config.ListTerraformVersionsResponse()
-        )
+        return_value = config.ListTerraformVersionsResponse.to_json(config.ListTerraformVersionsResponse())
         req.return_value.content = return_value
 
         request = config.ListTerraformVersionsRequest()
@@ -21587,10 +19753,7 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = config.ListTerraformVersionsResponse()
-        post_with_metadata.return_value = (
-            config.ListTerraformVersionsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = config.ListTerraformVersionsResponse(), metadata
 
         client.list_terraform_versions(
             request,
@@ -21605,22 +19768,14 @@ def test_list_terraform_versions_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_terraform_version_rest_bad_request(
-    request_type=config.GetTerraformVersionRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_terraform_version_rest_bad_request(request_type=config.GetTerraformVersionRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/terraformVersions/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/terraformVersions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21640,14 +19795,10 @@ def test_get_terraform_version_rest_bad_request(
     ],
 )
 def test_get_terraform_version_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/terraformVersions/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/terraformVersions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21684,13 +19835,9 @@ def test_get_terraform_version_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_terraform_version"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_terraform_version") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_terraform_version_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_terraform_version"
@@ -21698,9 +19845,7 @@ def test_get_terraform_version_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.GetTerraformVersionRequest.pb(
-            config.GetTerraformVersionRequest()
-        )
+        pb_message = config.GetTerraformVersionRequest.pb(config.GetTerraformVersionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -21736,20 +19881,14 @@ def test_get_terraform_version_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_resource_changes_rest_bad_request(
-    request_type=config.ListResourceChangesRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_resource_changes_rest_bad_request(request_type=config.ListResourceChangesRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21769,9 +19908,7 @@ def test_list_resource_changes_rest_bad_request(
     ],
 )
 def test_list_resource_changes_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
@@ -21811,13 +19948,9 @@ def test_list_resource_changes_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_resource_changes"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_resource_changes") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_resource_changes_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_resource_changes"
@@ -21825,9 +19958,7 @@ def test_list_resource_changes_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.ListResourceChangesRequest.pb(
-            config.ListResourceChangesRequest()
-        )
+        pb_message = config.ListResourceChangesRequest.pb(config.ListResourceChangesRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -21838,9 +19969,7 @@ def test_list_resource_changes_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListResourceChangesResponse.to_json(
-            config.ListResourceChangesResponse()
-        )
+        return_value = config.ListResourceChangesResponse.to_json(config.ListResourceChangesResponse())
         req.return_value.content = return_value
 
         request = config.ListResourceChangesRequest()
@@ -21865,22 +19994,14 @@ def test_list_resource_changes_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_resource_change_rest_bad_request(
-    request_type=config.GetResourceChangeRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_resource_change_rest_bad_request(request_type=config.GetResourceChangeRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/previews/sample3/resourceChanges/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3/resourceChanges/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -21900,14 +20021,10 @@ def test_get_resource_change_rest_bad_request(
     ],
 )
 def test_get_resource_change_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/previews/sample3/resourceChanges/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3/resourceChanges/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -21944,13 +20061,9 @@ def test_get_resource_change_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_resource_change"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_resource_change") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_resource_change_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_resource_change"
@@ -21958,9 +20071,7 @@ def test_get_resource_change_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.GetResourceChangeRequest.pb(
-            config.GetResourceChangeRequest()
-        )
+        pb_message = config.GetResourceChangeRequest.pb(config.GetResourceChangeRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -21996,20 +20107,14 @@ def test_get_resource_change_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_resource_drifts_rest_bad_request(
-    request_type=config.ListResourceDriftsRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_resource_drifts_rest_bad_request(request_type=config.ListResourceDriftsRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -22029,9 +20134,7 @@ def test_list_resource_drifts_rest_bad_request(
     ],
 )
 def test_list_resource_drifts_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
@@ -22071,13 +20174,9 @@ def test_list_resource_drifts_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_list_resource_drifts"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_list_resource_drifts") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_list_resource_drifts_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_list_resource_drifts"
@@ -22085,9 +20184,7 @@ def test_list_resource_drifts_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = config.ListResourceDriftsRequest.pb(
-            config.ListResourceDriftsRequest()
-        )
+        pb_message = config.ListResourceDriftsRequest.pb(config.ListResourceDriftsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -22098,9 +20195,7 @@ def test_list_resource_drifts_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = config.ListResourceDriftsResponse.to_json(
-            config.ListResourceDriftsResponse()
-        )
+        return_value = config.ListResourceDriftsResponse.to_json(config.ListResourceDriftsResponse())
         req.return_value.content = return_value
 
         request = config.ListResourceDriftsRequest()
@@ -22125,22 +20220,14 @@ def test_list_resource_drifts_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_resource_drift_rest_bad_request(
-    request_type=config.GetResourceDriftRequest,
-):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_resource_drift_rest_bad_request(request_type=config.GetResourceDriftRequest):
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/previews/sample3/resourceDrifts/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3/resourceDrifts/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -22160,14 +20247,10 @@ def test_get_resource_drift_rest_bad_request(
     ],
 )
 def test_get_resource_drift_rest_call_success(request_type):
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/previews/sample3/resourceDrifts/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3/resourceDrifts/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -22202,13 +20285,9 @@ def test_get_resource_drift_rest_interceptors(null_interceptor):
     )
     client = ConfigClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.ConfigRestInterceptor, "post_get_resource_drift"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.ConfigRestInterceptor, "post_get_resource_drift") as post, mock.patch.object(
         transports.ConfigRestInterceptor, "post_get_resource_drift_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.ConfigRestInterceptor, "pre_get_resource_drift"
@@ -22258,14 +20337,10 @@ def test_get_location_rest_bad_request(request_type=locations_pb2.GetLocationReq
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22312,9 +20387,7 @@ def test_get_location_rest(request_type):
     assert isinstance(response, locations_pb2.Location)
 
 
-def test_list_locations_rest_bad_request(
-    request_type=locations_pb2.ListLocationsRequest,
-):
+def test_list_locations_rest_bad_request(request_type=locations_pb2.ListLocationsRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
@@ -22323,9 +20396,7 @@ def test_list_locations_rest_bad_request(
     request = json_format.ParseDict({"name": "projects/sample1"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22372,22 +20443,16 @@ def test_list_locations_rest(request_type):
     assert isinstance(response, locations_pb2.ListLocationsResponse)
 
 
-def test_get_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.GetIamPolicyRequest,
-):
+def test_get_iam_policy_rest_bad_request(request_type=iam_policy_pb2.GetIamPolicyRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/deployments/sample3"}, request
-    )
+    request = json_format.ParseDict({"resource": "projects/sample1/locations/sample2/deployments/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22412,9 +20477,7 @@ def test_get_iam_policy_rest(request_type):
         transport="rest",
     )
 
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/deployments/sample3"
-    }
+    request_init = {"resource": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -22436,22 +20499,16 @@ def test_get_iam_policy_rest(request_type):
     assert isinstance(response, policy_pb2.Policy)
 
 
-def test_set_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.SetIamPolicyRequest,
-):
+def test_set_iam_policy_rest_bad_request(request_type=iam_policy_pb2.SetIamPolicyRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/deployments/sample3"}, request
-    )
+    request = json_format.ParseDict({"resource": "projects/sample1/locations/sample2/deployments/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22476,9 +20533,7 @@ def test_set_iam_policy_rest(request_type):
         transport="rest",
     )
 
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/deployments/sample3"
-    }
+    request_init = {"resource": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -22500,22 +20555,16 @@ def test_set_iam_policy_rest(request_type):
     assert isinstance(response, policy_pb2.Policy)
 
 
-def test_test_iam_permissions_rest_bad_request(
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
+def test_test_iam_permissions_rest_bad_request(request_type=iam_policy_pb2.TestIamPermissionsRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"resource": "projects/sample1/locations/sample2/deployments/sample3"}, request
-    )
+    request = json_format.ParseDict({"resource": "projects/sample1/locations/sample2/deployments/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22540,9 +20589,7 @@ def test_test_iam_permissions_rest(request_type):
         transport="rest",
     )
 
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/deployments/sample3"
-    }
+    request_init = {"resource": "projects/sample1/locations/sample2/deployments/sample3"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -22564,22 +20611,16 @@ def test_test_iam_permissions_rest(request_type):
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
 
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22626,22 +20667,16 @@ def test_cancel_operation_rest(request_type):
     assert response is None
 
 
-def test_delete_operation_rest_bad_request(
-    request_type=operations_pb2.DeleteOperationRequest,
-):
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22688,22 +20723,16 @@ def test_delete_operation_rest(request_type):
     assert response is None
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22750,22 +20779,16 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -22813,9 +20836,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -22868,9 +20889,7 @@ def test_create_deployment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_deployment), "__call__") as call:
         client.create_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22890,9 +20909,7 @@ def test_update_deployment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_deployment), "__call__") as call:
         client.update_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -22912,9 +20929,7 @@ def test_delete_deployment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_deployment), "__call__") as call:
         client.delete_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23014,9 +21029,7 @@ def test_export_deployment_statefile_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_deployment_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_deployment_statefile), "__call__") as call:
         client.export_deployment_statefile(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23036,9 +21049,7 @@ def test_export_revision_statefile_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_revision_statefile), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_revision_statefile), "__call__") as call:
         client.export_revision_statefile(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23118,9 +21129,7 @@ def test_unlock_deployment_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.unlock_deployment), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.unlock_deployment), "__call__") as call:
         client.unlock_deployment(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23240,9 +21249,7 @@ def test_export_preview_result_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.export_preview_result), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.export_preview_result), "__call__") as call:
         client.export_preview_result(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23262,9 +21269,7 @@ def test_list_terraform_versions_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_terraform_versions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_terraform_versions), "__call__") as call:
         client.list_terraform_versions(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23284,9 +21289,7 @@ def test_get_terraform_version_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_terraform_version), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_terraform_version), "__call__") as call:
         client.get_terraform_version(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23306,9 +21309,7 @@ def test_list_resource_changes_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_changes), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_changes), "__call__") as call:
         client.list_resource_changes(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23328,9 +21329,7 @@ def test_get_resource_change_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_change), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_change), "__call__") as call:
         client.get_resource_change(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23350,9 +21349,7 @@ def test_list_resource_drifts_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_resource_drifts), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_resource_drifts), "__call__") as call:
         client.list_resource_drifts(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23372,9 +21369,7 @@ def test_get_resource_drift_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_resource_drift), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_resource_drift), "__call__") as call:
         client.get_resource_drift(request=None)
 
         # Establish that the underlying stub method was called.
@@ -23416,17 +21411,12 @@ def test_transport_grpc_default():
 def test_config_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.ConfigTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.ConfigTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_config_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.config_v1.services.config.transports.ConfigTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.config_v1.services.config.transports.ConfigTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.ConfigTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -23495,9 +21485,7 @@ def test_config_base_transport():
 
 def test_config_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.config_v1.services.config.transports.ConfigTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -23572,9 +21560,7 @@ def test_config_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -23582,17 +21568,12 @@ def test_config_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.ConfigGrpcTransport, grpc_helpers),
-        (transports.ConfigGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.ConfigGrpcTransport, grpc_helpers), (transports.ConfigGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_config_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -23615,21 +21596,14 @@ def test_config_transport_create_channel(transport_class, grpc_helpers):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.ConfigGrpcTransport, transports.ConfigGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.ConfigGrpcTransport, transports.ConfigGrpcAsyncIOTransport])
 def test_config_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -23647,24 +21621,15 @@ def test_config_grpc_transport_client_cert_source_for_mtls(transport_class):
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_config_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.ConfigRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.ConfigRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -23679,16 +21644,10 @@ def test_config_http_transport_client_cert_source_for_mtls():
 def test_config_host_no_port(transport_name):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="config.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="config.googleapis.com"),
         transport=transport_name,
     )
-    assert client.transport._host == (
-        "config.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://config.googleapis.com"
-    )
+    assert client.transport._host == ("config.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://config.googleapis.com")
 
 
 @pytest.mark.parametrize(
@@ -23702,15 +21661,11 @@ def test_config_host_no_port(transport_name):
 def test_config_host_with_port(transport_name):
     client = ConfigClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="config.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="config.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "config.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://config.googleapis.com:8000"
+        "config.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://config.googleapis.com:8000"
     )
 
 
@@ -23842,17 +21797,11 @@ def test_config_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.ConfigGrpcTransport, transports.ConfigGrpcAsyncIOTransport],
-)
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.ConfigGrpcTransport, transports.ConfigGrpcAsyncIOTransport])
 def test_config_transport_channel_mtls_with_client_cert_source(transport_class):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -23870,9 +21819,7 @@ def test_config_transport_channel_mtls_with_client_cert_source(transport_class):
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -23891,10 +21838,7 @@ def test_config_transport_channel_mtls_with_client_cert_source(transport_class):
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.ConfigGrpcTransport, transports.ConfigGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.ConfigGrpcTransport, transports.ConfigGrpcAsyncIOTransport])
 def test_config_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -23902,9 +21846,7 @@ def test_config_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -23970,12 +21912,10 @@ def test_deployment_path():
     project = "squid"
     location = "clam"
     deployment = "whelk"
-    expected = (
-        "projects/{project}/locations/{location}/deployments/{deployment}".format(
-            project=project,
-            location=location,
-            deployment=deployment,
-        )
+    expected = "projects/{project}/locations/{location}/deployments/{deployment}".format(
+        project=project,
+        location=location,
+        deployment=deployment,
     )
     actual = ConfigClient.deployment_path(project, location, deployment)
     assert expected == actual
@@ -24033,9 +21973,7 @@ def test_resource_path():
         revision=revision,
         resource=resource,
     )
-    actual = ConfigClient.resource_path(
-        project, location, deployment, revision, resource
-    )
+    actual = ConfigClient.resource_path(project, location, deployment, revision, resource)
     assert expected == actual
 
 
@@ -24065,9 +22003,7 @@ def test_resource_change_path():
         preview=preview,
         resource_change=resource_change,
     )
-    actual = ConfigClient.resource_change_path(
-        project, location, preview, resource_change
-    )
+    actual = ConfigClient.resource_change_path(project, location, preview, resource_change)
     assert expected == actual
 
 
@@ -24096,9 +22032,7 @@ def test_resource_drift_path():
         preview=preview,
         resource_drift=resource_drift,
     )
-    actual = ConfigClient.resource_drift_path(
-        project, location, preview, resource_drift
-    )
+    actual = ConfigClient.resource_drift_path(project, location, preview, resource_drift)
     assert expected == actual
 
 
@@ -24198,12 +22132,10 @@ def test_worker_pool_path():
     project = "winkle"
     location = "nautilus"
     worker_pool = "scallop"
-    expected = (
-        "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
-            project=project,
-            location=location,
-            worker_pool=worker_pool,
-        )
+    expected = "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+        project=project,
+        location=location,
+        worker_pool=worker_pool,
     )
     actual = ConfigClient.worker_pool_path(project, location, worker_pool)
     assert expected == actual
@@ -24328,18 +22260,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.ConfigTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.ConfigTransport, "_prep_wrapped_messages") as prep:
         client = ConfigClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.ConfigTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.ConfigTransport, "_prep_wrapped_messages") as prep:
         transport_class = ConfigClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -24664,9 +22592,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24718,9 +22644,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24760,9 +22684,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -24809,9 +22731,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24863,9 +22783,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -24905,9 +22823,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -24954,9 +22870,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -25008,9 +22922,7 @@ async def test_list_locations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         await client.list_locations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -25050,9 +22962,7 @@ async def test_list_locations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.ListLocationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.ListLocationsResponse())
         response = await client.list_locations(
             request={
                 "name": "locations",
@@ -25099,9 +23009,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -25149,9 +23057,7 @@ async def test_get_location_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_location), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         await client.get_location(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -25191,9 +23097,7 @@ async def test_get_location_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            locations_pb2.Location()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(locations_pb2.Location())
         response = await client.get_location(
             request={
                 "name": "locations",
@@ -25544,9 +23448,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
             permissions=["permissions_value"],
@@ -25578,9 +23480,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy_pb2.TestIamPermissionsResponse(
@@ -25613,9 +23513,7 @@ def test_test_iam_permissions_field_headers():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
         client.test_iam_permissions(request)
@@ -25645,12 +23543,8 @@ async def test_test_iam_permissions_field_headers_async():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
 
         await client.test_iam_permissions(request)
 
@@ -25672,9 +23566,7 @@ def test_test_iam_permissions_from_dict():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
@@ -25693,13 +23585,9 @@ async def test_test_iam_permissions_from_dict_async():
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
 
         response = await client.test_iam_permissions(
             request={
@@ -25711,12 +23599,8 @@ async def test_test_iam_permissions_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -25724,24 +23608,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = ConfigAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = ConfigAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = ConfigClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -25753,9 +23629,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = ConfigClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = ConfigClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -25772,9 +23646,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -25785,9 +23657,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

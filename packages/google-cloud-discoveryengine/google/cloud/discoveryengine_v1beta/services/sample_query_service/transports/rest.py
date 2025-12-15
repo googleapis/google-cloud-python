@@ -129,13 +129,8 @@ class SampleQueryServiceRestInterceptor:
     """
 
     def pre_create_sample_query(
-        self,
-        request: sample_query_service.CreateSampleQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sample_query_service.CreateSampleQueryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sample_query_service.CreateSampleQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sample_query_service.CreateSampleQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_sample_query
 
         Override in a subclass to manipulate the request or metadata
@@ -143,9 +138,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_sample_query(
-        self, response: gcd_sample_query.SampleQuery
-    ) -> gcd_sample_query.SampleQuery:
+    def post_create_sample_query(self, response: gcd_sample_query.SampleQuery) -> gcd_sample_query.SampleQuery:
         """Post-rpc interceptor for create_sample_query
 
         DEPRECATED. Please use the `post_create_sample_query_with_metadata`
@@ -159,9 +152,7 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def post_create_sample_query_with_metadata(
-        self,
-        response: gcd_sample_query.SampleQuery,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_sample_query.SampleQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_sample_query.SampleQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_sample_query
 
@@ -178,13 +169,8 @@ class SampleQueryServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_sample_query(
-        self,
-        request: sample_query_service.DeleteSampleQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sample_query_service.DeleteSampleQueryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sample_query_service.DeleteSampleQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sample_query_service.DeleteSampleQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_sample_query
 
         Override in a subclass to manipulate the request or metadata
@@ -193,13 +179,8 @@ class SampleQueryServiceRestInterceptor:
         return request, metadata
 
     def pre_get_sample_query(
-        self,
-        request: sample_query_service.GetSampleQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sample_query_service.GetSampleQueryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sample_query_service.GetSampleQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sample_query_service.GetSampleQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sample_query
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +188,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_sample_query(
-        self, response: sample_query.SampleQuery
-    ) -> sample_query.SampleQuery:
+    def post_get_sample_query(self, response: sample_query.SampleQuery) -> sample_query.SampleQuery:
         """Post-rpc interceptor for get_sample_query
 
         DEPRECATED. Please use the `post_get_sample_query_with_metadata`
@@ -223,9 +202,7 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def post_get_sample_query_with_metadata(
-        self,
-        response: sample_query.SampleQuery,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sample_query.SampleQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sample_query.SampleQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_sample_query
 
@@ -242,13 +219,8 @@ class SampleQueryServiceRestInterceptor:
         return response, metadata
 
     def pre_import_sample_queries(
-        self,
-        request: import_config.ImportSampleQueriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        import_config.ImportSampleQueriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: import_config.ImportSampleQueriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[import_config.ImportSampleQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_sample_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +228,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_sample_queries(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_sample_queries(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_sample_queries
 
         DEPRECATED. Please use the `post_import_sample_queries_with_metadata`
@@ -272,9 +242,7 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def post_import_sample_queries_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_sample_queries
 
@@ -291,13 +259,8 @@ class SampleQueryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_sample_queries(
-        self,
-        request: sample_query_service.ListSampleQueriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sample_query_service.ListSampleQueriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sample_query_service.ListSampleQueriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sample_query_service.ListSampleQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sample_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -305,9 +268,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sample_queries(
-        self, response: sample_query_service.ListSampleQueriesResponse
-    ) -> sample_query_service.ListSampleQueriesResponse:
+    def post_list_sample_queries(self, response: sample_query_service.ListSampleQueriesResponse) -> sample_query_service.ListSampleQueriesResponse:
         """Post-rpc interceptor for list_sample_queries
 
         DEPRECATED. Please use the `post_list_sample_queries_with_metadata`
@@ -321,13 +282,8 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def post_list_sample_queries_with_metadata(
-        self,
-        response: sample_query_service.ListSampleQueriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sample_query_service.ListSampleQueriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: sample_query_service.ListSampleQueriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sample_query_service.ListSampleQueriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sample_queries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -343,13 +299,8 @@ class SampleQueryServiceRestInterceptor:
         return response, metadata
 
     def pre_update_sample_query(
-        self,
-        request: sample_query_service.UpdateSampleQueryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sample_query_service.UpdateSampleQueryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sample_query_service.UpdateSampleQueryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sample_query_service.UpdateSampleQueryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_sample_query
 
         Override in a subclass to manipulate the request or metadata
@@ -357,9 +308,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_sample_query(
-        self, response: gcd_sample_query.SampleQuery
-    ) -> gcd_sample_query.SampleQuery:
+    def post_update_sample_query(self, response: gcd_sample_query.SampleQuery) -> gcd_sample_query.SampleQuery:
         """Post-rpc interceptor for update_sample_query
 
         DEPRECATED. Please use the `post_update_sample_query_with_metadata`
@@ -373,9 +322,7 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def post_update_sample_query_with_metadata(
-        self,
-        response: gcd_sample_query.SampleQuery,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_sample_query.SampleQuery, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_sample_query.SampleQuery, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_sample_query
 
@@ -392,12 +339,8 @@ class SampleQueryServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -415,12 +358,8 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -428,9 +367,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -440,12 +377,8 @@ class SampleQueryServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -453,9 +386,7 @@ class SampleQueryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -545,9 +476,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -711,30 +640,17 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateSampleQuery(
-        _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery,
-        SampleQueryServiceRestStub,
-    ):
+    class _CreateSampleQuery(_BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.CreateSampleQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -778,32 +694,18 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_sample_query(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_sample_query(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_transcoded_request(http_options, request)
 
-            body = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseCreateSampleQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -827,13 +729,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._CreateSampleQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -849,12 +745,8 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             resp = self._interceptor.post_create_sample_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_sample_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_sample_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_sample_query.SampleQuery.to_json(response)
                 except:
@@ -875,23 +767,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSampleQuery(
-        _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery,
-        SampleQueryServiceRestStub,
-    ):
+    class _DeleteSampleQuery(_BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.DeleteSampleQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -928,28 +809,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_sample_query(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_sample_query(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseDeleteSampleQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -973,12 +842,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._DeleteSampleQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -986,23 +850,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetSampleQuery(
-        _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery,
-        SampleQueryServiceRestStub,
-    ):
+    class _GetSampleQuery(_BaseSampleQueryServiceRestTransport._BaseGetSampleQuery, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.GetSampleQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1045,28 +898,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_sample_query(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_sample_query(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseGetSampleQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1090,12 +931,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._GetSampleQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1111,12 +947,8 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             resp = self._interceptor.post_get_sample_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_sample_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_sample_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sample_query.SampleQuery.to_json(response)
                 except:
@@ -1137,23 +969,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 )
             return resp
 
-    class _ImportSampleQueries(
-        _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries,
-        SampleQueryServiceRestStub,
-    ):
+    class _ImportSampleQueries(_BaseSampleQueryServiceRestTransport._BaseImportSampleQueries, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.ImportSampleQueries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1198,32 +1019,18 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_sample_queries(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_sample_queries(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_transcoded_request(http_options, request)
 
-            body = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseImportSampleQueries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1246,16 +1053,8 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SampleQueryServiceRestTransport._ImportSampleQueries._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SampleQueryServiceRestTransport._ImportSampleQueries._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1269,12 +1068,8 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             resp = self._interceptor.post_import_sample_queries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_sample_queries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_sample_queries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1295,23 +1090,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 )
             return resp
 
-    class _ListSampleQueries(
-        _BaseSampleQueryServiceRestTransport._BaseListSampleQueries,
-        SampleQueryServiceRestStub,
-    ):
+    class _ListSampleQueries(_BaseSampleQueryServiceRestTransport._BaseListSampleQueries, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.ListSampleQueries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1355,28 +1139,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_sample_queries(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_sample_queries(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseListSampleQueries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1400,12 +1172,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._ListSampleQueries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1421,16 +1188,10 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             resp = self._interceptor.post_list_sample_queries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sample_queries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sample_queries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        sample_query_service.ListSampleQueriesResponse.to_json(response)
-                    )
+                    response_payload = sample_query_service.ListSampleQueriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1449,23 +1210,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSampleQuery(
-        _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery,
-        SampleQueryServiceRestStub,
-    ):
+    class _UpdateSampleQuery(_BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.UpdateSampleQuery")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1509,32 +1259,18 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_sample_query(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_sample_query(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_transcoded_request(http_options, request)
 
-            body = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseUpdateSampleQuery._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1558,13 +1294,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._UpdateSampleQuery._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1580,12 +1310,8 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             resp = self._interceptor.post_update_sample_query(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_sample_query_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_sample_query_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_sample_query.SampleQuery.to_json(response)
                 except:
@@ -1607,58 +1333,37 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             return resp
 
     @property
-    def create_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.CreateSampleQueryRequest], gcd_sample_query.SampleQuery
-    ]:
+    def create_sample_query(self) -> Callable[[sample_query_service.CreateSampleQueryRequest], gcd_sample_query.SampleQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSampleQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_sample_query(
-        self,
-    ) -> Callable[[sample_query_service.DeleteSampleQueryRequest], empty_pb2.Empty]:
+    def delete_sample_query(self) -> Callable[[sample_query_service.DeleteSampleQueryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSampleQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.GetSampleQueryRequest], sample_query.SampleQuery
-    ]:
+    def get_sample_query(self) -> Callable[[sample_query_service.GetSampleQueryRequest], sample_query.SampleQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSampleQuery(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_sample_queries(
-        self,
-    ) -> Callable[[import_config.ImportSampleQueriesRequest], operations_pb2.Operation]:
+    def import_sample_queries(self) -> Callable[[import_config.ImportSampleQueriesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportSampleQueries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sample_queries(
-        self,
-    ) -> Callable[
-        [sample_query_service.ListSampleQueriesRequest],
-        sample_query_service.ListSampleQueriesResponse,
-    ]:
+    def list_sample_queries(self) -> Callable[[sample_query_service.ListSampleQueriesRequest], sample_query_service.ListSampleQueriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSampleQueries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_sample_query(
-        self,
-    ) -> Callable[
-        [sample_query_service.UpdateSampleQueryRequest], gcd_sample_query.SampleQuery
-    ]:
+    def update_sample_query(self) -> Callable[[sample_query_service.UpdateSampleQueryRequest], gcd_sample_query.SampleQuery]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSampleQuery(self._session, self._host, self._interceptor)  # type: ignore
@@ -1667,23 +1372,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSampleQueryServiceRestTransport._BaseCancelOperation,
-        SampleQueryServiceRestStub,
-    ):
+    class _CancelOperation(_BaseSampleQueryServiceRestTransport._BaseCancelOperation, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1719,32 +1413,18 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1768,13 +1448,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1788,23 +1462,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSampleQueryServiceRestTransport._BaseGetOperation,
-        SampleQueryServiceRestStub,
-    ):
+    class _GetOperation(_BaseSampleQueryServiceRestTransport._BaseGetOperation, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1842,26 +1505,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1885,12 +1538,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1902,9 +1550,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1929,23 +1575,12 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSampleQueryServiceRestTransport._BaseListOperations,
-        SampleQueryServiceRestStub,
-    ):
+    class _ListOperations(_BaseSampleQueryServiceRestTransport._BaseListOperations, SampleQueryServiceRestStub):
         def __hash__(self):
             return hash("SampleQueryServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1983,26 +1618,16 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSampleQueryServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSampleQueryServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2026,12 +1651,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
 
             # Send the request
             response = SampleQueryServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2043,9 +1663,7 @@ class SampleQueryServiceRestTransport(_BaseSampleQueryServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

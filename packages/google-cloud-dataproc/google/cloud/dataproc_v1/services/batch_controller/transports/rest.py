@@ -111,9 +111,7 @@ class BatchControllerRestInterceptor:
     """
 
     def pre_create_batch(
-        self,
-        request: batches.CreateBatchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: batches.CreateBatchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[batches.CreateBatchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_batch
 
@@ -122,9 +120,7 @@ class BatchControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_batch(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_batch(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_batch
 
         DEPRECATED. Please use the `post_create_batch_with_metadata`
@@ -138,9 +134,7 @@ class BatchControllerRestInterceptor:
         return response
 
     def post_create_batch_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_batch
 
@@ -157,9 +151,7 @@ class BatchControllerRestInterceptor:
         return response, metadata
 
     def pre_delete_batch(
-        self,
-        request: batches.DeleteBatchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: batches.DeleteBatchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[batches.DeleteBatchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_batch
 
@@ -169,9 +161,7 @@ class BatchControllerRestInterceptor:
         return request, metadata
 
     def pre_get_batch(
-        self,
-        request: batches.GetBatchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: batches.GetBatchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[batches.GetBatchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_batch
 
@@ -211,9 +201,7 @@ class BatchControllerRestInterceptor:
         return response, metadata
 
     def pre_list_batches(
-        self,
-        request: batches.ListBatchesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: batches.ListBatchesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[batches.ListBatchesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_batches
 
@@ -222,9 +210,7 @@ class BatchControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_batches(
-        self, response: batches.ListBatchesResponse
-    ) -> batches.ListBatchesResponse:
+    def post_list_batches(self, response: batches.ListBatchesResponse) -> batches.ListBatchesResponse:
         """Post-rpc interceptor for list_batches
 
         DEPRECATED. Please use the `post_list_batches_with_metadata`
@@ -238,9 +224,7 @@ class BatchControllerRestInterceptor:
         return response
 
     def post_list_batches_with_metadata(
-        self,
-        response: batches.ListBatchesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: batches.ListBatchesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[batches.ListBatchesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_batches
 
@@ -257,12 +241,8 @@ class BatchControllerRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -280,12 +260,8 @@ class BatchControllerRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -303,13 +279,8 @@ class BatchControllerRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -317,9 +288,7 @@ class BatchControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -329,12 +298,8 @@ class BatchControllerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -352,12 +317,8 @@ class BatchControllerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -375,12 +336,8 @@ class BatchControllerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -388,9 +345,7 @@ class BatchControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -400,12 +355,8 @@ class BatchControllerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -413,9 +364,7 @@ class BatchControllerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -505,9 +454,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -575,29 +522,17 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateBatch(
-        _BaseBatchControllerRestTransport._BaseCreateBatch, BatchControllerRestStub
-    ):
+    class _CreateBatch(_BaseBatchControllerRestTransport._BaseCreateBatch, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.CreateBatch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -640,30 +575,18 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseCreateBatch._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseCreateBatch._get_http_options()
 
             request, metadata = self._interceptor.pre_create_batch(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseCreateBatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseCreateBatch._get_transcoded_request(http_options, request)
 
-            body = _BaseBatchControllerRestTransport._BaseCreateBatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBatchControllerRestTransport._BaseCreateBatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseCreateBatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseCreateBatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -687,13 +610,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._CreateBatch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -707,12 +624,8 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             resp = self._interceptor.post_create_batch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_batch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_batch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -733,22 +646,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 )
             return resp
 
-    class _DeleteBatch(
-        _BaseBatchControllerRestTransport._BaseDeleteBatch, BatchControllerRestStub
-    ):
+    class _DeleteBatch(_BaseBatchControllerRestTransport._BaseDeleteBatch, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.DeleteBatch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -783,26 +686,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseDeleteBatch._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseDeleteBatch._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_batch(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseDeleteBatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseDeleteBatch._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseDeleteBatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseDeleteBatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -826,12 +719,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._DeleteBatch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -839,22 +727,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetBatch(
-        _BaseBatchControllerRestTransport._BaseGetBatch, BatchControllerRestStub
-    ):
+    class _GetBatch(_BaseBatchControllerRestTransport._BaseGetBatch, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.GetBatch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -896,30 +774,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseGetBatch._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseGetBatch._get_http_options()
 
             request, metadata = self._interceptor.pre_get_batch(request, metadata)
-            transcoded_request = (
-                _BaseBatchControllerRestTransport._BaseGetBatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseGetBatch._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseBatchControllerRestTransport._BaseGetBatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseGetBatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -943,12 +807,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._GetBatch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -964,12 +823,8 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             resp = self._interceptor.post_get_batch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_batch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_batch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = batches.Batch.to_json(response)
                 except:
@@ -990,22 +845,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 )
             return resp
 
-    class _ListBatches(
-        _BaseBatchControllerRestTransport._BaseListBatches, BatchControllerRestStub
-    ):
+    class _ListBatches(_BaseBatchControllerRestTransport._BaseListBatches, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.ListBatches")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1045,26 +890,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                     A list of batch workloads.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseListBatches._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseListBatches._get_http_options()
 
             request, metadata = self._interceptor.pre_list_batches(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseListBatches._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseListBatches._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseListBatches._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseListBatches._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1088,12 +923,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._ListBatches._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1109,12 +939,8 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             resp = self._interceptor.post_list_batches(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_batches_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_batches_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = batches.ListBatchesResponse.to_json(response)
                 except:
@@ -1136,9 +962,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             return resp
 
     @property
-    def create_batch(
-        self,
-    ) -> Callable[[batches.CreateBatchRequest], operations_pb2.Operation]:
+    def create_batch(self) -> Callable[[batches.CreateBatchRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBatch(self._session, self._host, self._interceptor)  # type: ignore
@@ -1156,9 +980,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
         return self._GetBatch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_batches(
-        self,
-    ) -> Callable[[batches.ListBatchesRequest], batches.ListBatchesResponse]:
+    def list_batches(self) -> Callable[[batches.ListBatchesRequest], batches.ListBatchesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBatches(self._session, self._host, self._interceptor)  # type: ignore
@@ -1167,22 +989,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseBatchControllerRestTransport._BaseGetIamPolicy, BatchControllerRestStub
-    ):
+    class _GetIamPolicy(_BaseBatchControllerRestTransport._BaseGetIamPolicy, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1221,30 +1033,18 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1268,13 +1068,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1286,9 +1080,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1313,22 +1105,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseBatchControllerRestTransport._BaseSetIamPolicy, BatchControllerRestStub
-    ):
+    class _SetIamPolicy(_BaseBatchControllerRestTransport._BaseSetIamPolicy, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1367,30 +1149,18 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1414,13 +1184,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1432,9 +1196,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1459,23 +1221,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseBatchControllerRestTransport._BaseTestIamPermissions,
-        BatchControllerRestStub,
-    ):
+    class _TestIamPermissions(_BaseBatchControllerRestTransport._BaseTestIamPermissions, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1514,32 +1265,18 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1563,13 +1300,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1581,9 +1312,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1608,22 +1337,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseBatchControllerRestTransport._BaseCancelOperation, BatchControllerRestStub
-    ):
+    class _CancelOperation(_BaseBatchControllerRestTransport._BaseCancelOperation, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1658,28 +1377,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseBatchControllerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseBatchControllerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1703,12 +1410,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1722,22 +1424,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseBatchControllerRestTransport._BaseDeleteOperation, BatchControllerRestStub
-    ):
+    class _DeleteOperation(_BaseBatchControllerRestTransport._BaseDeleteOperation, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1772,28 +1464,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseBatchControllerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseBatchControllerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1817,12 +1497,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1836,22 +1511,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseBatchControllerRestTransport._BaseGetOperation, BatchControllerRestStub
-    ):
+    class _GetOperation(_BaseBatchControllerRestTransport._BaseGetOperation, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1889,26 +1554,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1932,12 +1587,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1949,9 +1599,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1976,22 +1624,12 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseBatchControllerRestTransport._BaseListOperations, BatchControllerRestStub
-    ):
+    class _ListOperations(_BaseBatchControllerRestTransport._BaseListOperations, BatchControllerRestStub):
         def __hash__(self):
             return hash("BatchControllerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2029,26 +1667,16 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseBatchControllerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseBatchControllerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseBatchControllerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseBatchControllerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseBatchControllerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseBatchControllerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2072,12 +1700,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
 
             # Send the request
             response = BatchControllerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2089,9 +1712,7 @@ class BatchControllerRestTransport(_BaseBatchControllerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

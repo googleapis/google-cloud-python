@@ -66,13 +66,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -82,10 +78,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -104,11 +97,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -287,18 +276,14 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -334,9 +319,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -359,20 +342,13 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_storage_pools(
-        self,
-    ) -> Callable[
-        [storage_pool.ListStoragePoolsRequest],
-        Awaitable[storage_pool.ListStoragePoolsResponse],
-    ]:
+    def list_storage_pools(self) -> Callable[[storage_pool.ListStoragePoolsRequest], Awaitable[storage_pool.ListStoragePoolsResponse]]:
         r"""Return a callable for the list storage pools method over gRPC.
 
         Returns descriptions of all storage pools owned by
@@ -397,11 +373,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_storage_pools"]
 
     @property
-    def create_storage_pool(
-        self,
-    ) -> Callable[
-        [gcn_storage_pool.CreateStoragePoolRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_storage_pool(self) -> Callable[[gcn_storage_pool.CreateStoragePoolRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create storage pool method over gRPC.
 
         Creates a new storage pool.
@@ -425,11 +397,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_storage_pool"]
 
     @property
-    def get_storage_pool(
-        self,
-    ) -> Callable[
-        [storage_pool.GetStoragePoolRequest], Awaitable[storage_pool.StoragePool]
-    ]:
+    def get_storage_pool(self) -> Callable[[storage_pool.GetStoragePoolRequest], Awaitable[storage_pool.StoragePool]]:
         r"""Return a callable for the get storage pool method over gRPC.
 
         Returns the description of the specified storage pool
@@ -454,11 +422,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_storage_pool"]
 
     @property
-    def update_storage_pool(
-        self,
-    ) -> Callable[
-        [gcn_storage_pool.UpdateStoragePoolRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_storage_pool(self) -> Callable[[gcn_storage_pool.UpdateStoragePoolRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update storage pool method over gRPC.
 
         Updates the storage pool properties with the full
@@ -483,11 +447,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_storage_pool"]
 
     @property
-    def delete_storage_pool(
-        self,
-    ) -> Callable[
-        [storage_pool.DeleteStoragePoolRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_storage_pool(self) -> Callable[[storage_pool.DeleteStoragePoolRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete storage pool method over gRPC.
 
         Warning! This operation will permanently delete the
@@ -512,12 +472,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_storage_pool"]
 
     @property
-    def validate_directory_service(
-        self,
-    ) -> Callable[
-        [storage_pool.ValidateDirectoryServiceRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def validate_directory_service(self) -> Callable[[storage_pool.ValidateDirectoryServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the validate directory service method over gRPC.
 
         ValidateDirectoryService does a connectivity check
@@ -535,9 +490,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "validate_directory_service" not in self._stubs:
-            self._stubs[
-                "validate_directory_service"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["validate_directory_service"] = self._logged_channel.unary_unary(
                 "/google.cloud.netapp.v1.NetApp/ValidateDirectoryService",
                 request_serializer=storage_pool.ValidateDirectoryServiceRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -545,12 +498,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["validate_directory_service"]
 
     @property
-    def switch_active_replica_zone(
-        self,
-    ) -> Callable[
-        [storage_pool.SwitchActiveReplicaZoneRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def switch_active_replica_zone(self) -> Callable[[storage_pool.SwitchActiveReplicaZoneRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the switch active replica zone method over gRPC.
 
         This operation will switch the active/replica zone
@@ -567,9 +515,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "switch_active_replica_zone" not in self._stubs:
-            self._stubs[
-                "switch_active_replica_zone"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["switch_active_replica_zone"] = self._logged_channel.unary_unary(
                 "/google.cloud.netapp.v1.NetApp/SwitchActiveReplicaZone",
                 request_serializer=storage_pool.SwitchActiveReplicaZoneRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -577,9 +523,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["switch_active_replica_zone"]
 
     @property
-    def list_volumes(
-        self,
-    ) -> Callable[[volume.ListVolumesRequest], Awaitable[volume.ListVolumesResponse]]:
+    def list_volumes(self) -> Callable[[volume.ListVolumesRequest], Awaitable[volume.ListVolumesResponse]]:
         r"""Return a callable for the list volumes method over gRPC.
 
         Lists Volumes in a given project.
@@ -603,9 +547,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_volumes"]
 
     @property
-    def get_volume(
-        self,
-    ) -> Callable[[volume.GetVolumeRequest], Awaitable[volume.Volume]]:
+    def get_volume(self) -> Callable[[volume.GetVolumeRequest], Awaitable[volume.Volume]]:
         r"""Return a callable for the get volume method over gRPC.
 
         Gets details of a single Volume.
@@ -629,11 +571,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_volume"]
 
     @property
-    def create_volume(
-        self,
-    ) -> Callable[
-        [gcn_volume.CreateVolumeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_volume(self) -> Callable[[gcn_volume.CreateVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create volume method over gRPC.
 
         Creates a new Volume in a given project and location.
@@ -657,11 +595,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_volume"]
 
     @property
-    def update_volume(
-        self,
-    ) -> Callable[
-        [gcn_volume.UpdateVolumeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_volume(self) -> Callable[[gcn_volume.UpdateVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update volume method over gRPC.
 
         Updates the parameters of a single Volume.
@@ -685,9 +619,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_volume"]
 
     @property
-    def delete_volume(
-        self,
-    ) -> Callable[[volume.DeleteVolumeRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_volume(self) -> Callable[[volume.DeleteVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete volume method over gRPC.
 
         Deletes a single Volume.
@@ -711,9 +643,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_volume"]
 
     @property
-    def revert_volume(
-        self,
-    ) -> Callable[[volume.RevertVolumeRequest], Awaitable[operations_pb2.Operation]]:
+    def revert_volume(self) -> Callable[[volume.RevertVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the revert volume method over gRPC.
 
         Revert an existing volume to a specified snapshot.
@@ -739,11 +669,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["revert_volume"]
 
     @property
-    def list_snapshots(
-        self,
-    ) -> Callable[
-        [snapshot.ListSnapshotsRequest], Awaitable[snapshot.ListSnapshotsResponse]
-    ]:
+    def list_snapshots(self) -> Callable[[snapshot.ListSnapshotsRequest], Awaitable[snapshot.ListSnapshotsResponse]]:
         r"""Return a callable for the list snapshots method over gRPC.
 
         Returns descriptions of all snapshots for a volume.
@@ -767,9 +693,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_snapshots"]
 
     @property
-    def get_snapshot(
-        self,
-    ) -> Callable[[snapshot.GetSnapshotRequest], Awaitable[snapshot.Snapshot]]:
+    def get_snapshot(self) -> Callable[[snapshot.GetSnapshotRequest], Awaitable[snapshot.Snapshot]]:
         r"""Return a callable for the get snapshot method over gRPC.
 
         Describe a snapshot for a volume.
@@ -793,11 +717,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_snapshot"]
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[
-        [gcn_snapshot.CreateSnapshotRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_snapshot(self) -> Callable[[gcn_snapshot.CreateSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create snapshot method over gRPC.
 
         Create a new snapshot for a volume.
@@ -821,11 +741,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_snapshot"]
 
     @property
-    def delete_snapshot(
-        self,
-    ) -> Callable[
-        [snapshot.DeleteSnapshotRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_snapshot(self) -> Callable[[snapshot.DeleteSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete snapshot method over gRPC.
 
         Deletes a snapshot.
@@ -849,11 +765,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_snapshot"]
 
     @property
-    def update_snapshot(
-        self,
-    ) -> Callable[
-        [gcn_snapshot.UpdateSnapshotRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_snapshot(self) -> Callable[[gcn_snapshot.UpdateSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update snapshot method over gRPC.
 
         Updates the settings of a specific snapshot.
@@ -879,10 +791,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
     @property
     def list_active_directories(
         self,
-    ) -> Callable[
-        [active_directory.ListActiveDirectoriesRequest],
-        Awaitable[active_directory.ListActiveDirectoriesResponse],
-    ]:
+    ) -> Callable[[active_directory.ListActiveDirectoriesRequest], Awaitable[active_directory.ListActiveDirectoriesResponse]]:
         r"""Return a callable for the list active directories method over gRPC.
 
         Lists active directories.
@@ -906,12 +815,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_active_directories"]
 
     @property
-    def get_active_directory(
-        self,
-    ) -> Callable[
-        [active_directory.GetActiveDirectoryRequest],
-        Awaitable[active_directory.ActiveDirectory],
-    ]:
+    def get_active_directory(self) -> Callable[[active_directory.GetActiveDirectoryRequest], Awaitable[active_directory.ActiveDirectory]]:
         r"""Return a callable for the get active directory method over gRPC.
 
         Describes a specified active directory.
@@ -935,12 +839,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_active_directory"]
 
     @property
-    def create_active_directory(
-        self,
-    ) -> Callable[
-        [gcn_active_directory.CreateActiveDirectoryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_active_directory(self) -> Callable[[gcn_active_directory.CreateActiveDirectoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create active directory method over gRPC.
 
         CreateActiveDirectory
@@ -965,12 +864,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_active_directory"]
 
     @property
-    def update_active_directory(
-        self,
-    ) -> Callable[
-        [gcn_active_directory.UpdateActiveDirectoryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_active_directory(self) -> Callable[[gcn_active_directory.UpdateActiveDirectoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update active directory method over gRPC.
 
         Update the parameters of an active directories.
@@ -994,12 +888,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_active_directory"]
 
     @property
-    def delete_active_directory(
-        self,
-    ) -> Callable[
-        [active_directory.DeleteActiveDirectoryRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_active_directory(self) -> Callable[[active_directory.DeleteActiveDirectoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete active directory method over gRPC.
 
         Delete the active directory specified in the request.
@@ -1023,9 +912,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_active_directory"]
 
     @property
-    def list_kms_configs(
-        self,
-    ) -> Callable[[kms.ListKmsConfigsRequest], Awaitable[kms.ListKmsConfigsResponse]]:
+    def list_kms_configs(self) -> Callable[[kms.ListKmsConfigsRequest], Awaitable[kms.ListKmsConfigsResponse]]:
         r"""Return a callable for the list kms configs method over gRPC.
 
         Returns descriptions of all KMS configs owned by the
@@ -1050,9 +937,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_kms_configs"]
 
     @property
-    def create_kms_config(
-        self,
-    ) -> Callable[[kms.CreateKmsConfigRequest], Awaitable[operations_pb2.Operation]]:
+    def create_kms_config(self) -> Callable[[kms.CreateKmsConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create kms config method over gRPC.
 
         Creates a new KMS config.
@@ -1076,9 +961,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_kms_config"]
 
     @property
-    def get_kms_config(
-        self,
-    ) -> Callable[[kms.GetKmsConfigRequest], Awaitable[kms.KmsConfig]]:
+    def get_kms_config(self) -> Callable[[kms.GetKmsConfigRequest], Awaitable[kms.KmsConfig]]:
         r"""Return a callable for the get kms config method over gRPC.
 
         Returns the description of the specified KMS config by
@@ -1103,9 +986,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_kms_config"]
 
     @property
-    def update_kms_config(
-        self,
-    ) -> Callable[[kms.UpdateKmsConfigRequest], Awaitable[operations_pb2.Operation]]:
+    def update_kms_config(self) -> Callable[[kms.UpdateKmsConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update kms config method over gRPC.
 
         Updates the Kms config properties with the full spec
@@ -1129,9 +1010,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_kms_config"]
 
     @property
-    def encrypt_volumes(
-        self,
-    ) -> Callable[[kms.EncryptVolumesRequest], Awaitable[operations_pb2.Operation]]:
+    def encrypt_volumes(self) -> Callable[[kms.EncryptVolumesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the encrypt volumes method over gRPC.
 
         Encrypt the existing volumes without CMEK encryption
@@ -1156,9 +1035,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["encrypt_volumes"]
 
     @property
-    def verify_kms_config(
-        self,
-    ) -> Callable[[kms.VerifyKmsConfigRequest], Awaitable[kms.VerifyKmsConfigResponse]]:
+    def verify_kms_config(self) -> Callable[[kms.VerifyKmsConfigRequest], Awaitable[kms.VerifyKmsConfigResponse]]:
         r"""Return a callable for the verify kms config method over gRPC.
 
         Verifies KMS config reachability.
@@ -1182,9 +1059,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["verify_kms_config"]
 
     @property
-    def delete_kms_config(
-        self,
-    ) -> Callable[[kms.DeleteKmsConfigRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_kms_config(self) -> Callable[[kms.DeleteKmsConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete kms config method over gRPC.
 
         Warning! This operation will permanently delete the
@@ -1209,12 +1084,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_kms_config"]
 
     @property
-    def list_replications(
-        self,
-    ) -> Callable[
-        [replication.ListReplicationsRequest],
-        Awaitable[replication.ListReplicationsResponse],
-    ]:
+    def list_replications(self) -> Callable[[replication.ListReplicationsRequest], Awaitable[replication.ListReplicationsResponse]]:
         r"""Return a callable for the list replications method over gRPC.
 
         Returns descriptions of all replications for a
@@ -1239,11 +1109,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_replications"]
 
     @property
-    def get_replication(
-        self,
-    ) -> Callable[
-        [replication.GetReplicationRequest], Awaitable[replication.Replication]
-    ]:
+    def get_replication(self) -> Callable[[replication.GetReplicationRequest], Awaitable[replication.Replication]]:
         r"""Return a callable for the get replication method over gRPC.
 
         Describe a replication for a volume.
@@ -1267,11 +1133,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_replication"]
 
     @property
-    def create_replication(
-        self,
-    ) -> Callable[
-        [gcn_replication.CreateReplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_replication(self) -> Callable[[gcn_replication.CreateReplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create replication method over gRPC.
 
         Create a new replication for a volume.
@@ -1295,11 +1157,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_replication"]
 
     @property
-    def delete_replication(
-        self,
-    ) -> Callable[
-        [replication.DeleteReplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_replication(self) -> Callable[[replication.DeleteReplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete replication method over gRPC.
 
         Deletes a replication.
@@ -1323,11 +1181,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_replication"]
 
     @property
-    def update_replication(
-        self,
-    ) -> Callable[
-        [gcn_replication.UpdateReplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_replication(self) -> Callable[[gcn_replication.UpdateReplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update replication method over gRPC.
 
         Updates the settings of a specific replication.
@@ -1351,11 +1205,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_replication"]
 
     @property
-    def stop_replication(
-        self,
-    ) -> Callable[
-        [replication.StopReplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def stop_replication(self) -> Callable[[replication.StopReplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the stop replication method over gRPC.
 
         Stop Cross Region Replication.
@@ -1379,11 +1229,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["stop_replication"]
 
     @property
-    def resume_replication(
-        self,
-    ) -> Callable[
-        [replication.ResumeReplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def resume_replication(self) -> Callable[[replication.ResumeReplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the resume replication method over gRPC.
 
         Resume Cross Region Replication.
@@ -1407,12 +1253,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["resume_replication"]
 
     @property
-    def reverse_replication_direction(
-        self,
-    ) -> Callable[
-        [replication.ReverseReplicationDirectionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def reverse_replication_direction(self) -> Callable[[replication.ReverseReplicationDirectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the reverse replication direction method over gRPC.
 
         Reverses direction of replication. Source becomes
@@ -1429,9 +1270,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "reverse_replication_direction" not in self._stubs:
-            self._stubs[
-                "reverse_replication_direction"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["reverse_replication_direction"] = self._logged_channel.unary_unary(
                 "/google.cloud.netapp.v1.NetApp/ReverseReplicationDirection",
                 request_serializer=replication.ReverseReplicationDirectionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1439,11 +1278,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["reverse_replication_direction"]
 
     @property
-    def establish_peering(
-        self,
-    ) -> Callable[
-        [replication.EstablishPeeringRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def establish_peering(self) -> Callable[[replication.EstablishPeeringRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the establish peering method over gRPC.
 
         Establish replication peering.
@@ -1467,11 +1302,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["establish_peering"]
 
     @property
-    def sync_replication(
-        self,
-    ) -> Callable[
-        [replication.SyncReplicationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def sync_replication(self) -> Callable[[replication.SyncReplicationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the sync replication method over gRPC.
 
         Syncs the replication. This will invoke one time
@@ -1496,11 +1327,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["sync_replication"]
 
     @property
-    def create_backup_vault(
-        self,
-    ) -> Callable[
-        [gcn_backup_vault.CreateBackupVaultRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_backup_vault(self) -> Callable[[gcn_backup_vault.CreateBackupVaultRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup vault method over gRPC.
 
         Creates new backup vault
@@ -1524,11 +1351,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_backup_vault"]
 
     @property
-    def get_backup_vault(
-        self,
-    ) -> Callable[
-        [backup_vault.GetBackupVaultRequest], Awaitable[backup_vault.BackupVault]
-    ]:
+    def get_backup_vault(self) -> Callable[[backup_vault.GetBackupVaultRequest], Awaitable[backup_vault.BackupVault]]:
         r"""Return a callable for the get backup vault method over gRPC.
 
         Returns the description of the specified backup vault
@@ -1552,12 +1375,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_backup_vault"]
 
     @property
-    def list_backup_vaults(
-        self,
-    ) -> Callable[
-        [backup_vault.ListBackupVaultsRequest],
-        Awaitable[backup_vault.ListBackupVaultsResponse],
-    ]:
+    def list_backup_vaults(self) -> Callable[[backup_vault.ListBackupVaultsRequest], Awaitable[backup_vault.ListBackupVaultsResponse]]:
         r"""Return a callable for the list backup vaults method over gRPC.
 
         Returns list of all available backup vaults.
@@ -1581,11 +1399,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_backup_vaults"]
 
     @property
-    def update_backup_vault(
-        self,
-    ) -> Callable[
-        [gcn_backup_vault.UpdateBackupVaultRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup_vault(self) -> Callable[[gcn_backup_vault.UpdateBackupVaultRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup vault method over gRPC.
 
         Updates the settings of a specific backup vault.
@@ -1609,11 +1423,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_backup_vault"]
 
     @property
-    def delete_backup_vault(
-        self,
-    ) -> Callable[
-        [backup_vault.DeleteBackupVaultRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup_vault(self) -> Callable[[backup_vault.DeleteBackupVaultRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup vault method over gRPC.
 
         Warning! This operation will permanently delete the
@@ -1638,11 +1448,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_backup_vault"]
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [gcn_backup.CreateBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_backup(self) -> Callable[[gcn_backup.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
         Creates a backup from the volume specified in the
@@ -1670,9 +1476,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_backup"]
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[backup.GetBackupRequest], Awaitable[backup.Backup]]:
+    def get_backup(self) -> Callable[[backup.GetBackupRequest], Awaitable[backup.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Returns the description of the specified backup
@@ -1696,9 +1500,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_backup"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[[backup.ListBackupsRequest], Awaitable[backup.ListBackupsResponse]]:
+    def list_backups(self) -> Callable[[backup.ListBackupsRequest], Awaitable[backup.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Returns descriptions of all backups for a
@@ -1723,9 +1525,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_backups"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[backup.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_backup(self) -> Callable[[backup.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Warning! This operation will permanently delete the
@@ -1750,11 +1550,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_backup"]
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [gcn_backup.UpdateBackupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_backup(self) -> Callable[[gcn_backup.UpdateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup method over gRPC.
 
         Update backup with full spec.
@@ -1778,12 +1574,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_backup"]
 
     @property
-    def create_backup_policy(
-        self,
-    ) -> Callable[
-        [gcn_backup_policy.CreateBackupPolicyRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_backup_policy(self) -> Callable[[gcn_backup_policy.CreateBackupPolicyRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup policy method over gRPC.
 
         Creates new backup policy
@@ -1807,11 +1598,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_backup_policy"]
 
     @property
-    def get_backup_policy(
-        self,
-    ) -> Callable[
-        [backup_policy.GetBackupPolicyRequest], Awaitable[backup_policy.BackupPolicy]
-    ]:
+    def get_backup_policy(self) -> Callable[[backup_policy.GetBackupPolicyRequest], Awaitable[backup_policy.BackupPolicy]]:
         r"""Return a callable for the get backup policy method over gRPC.
 
         Returns the description of the specified backup policy by
@@ -1836,12 +1623,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_backup_policy"]
 
     @property
-    def list_backup_policies(
-        self,
-    ) -> Callable[
-        [backup_policy.ListBackupPoliciesRequest],
-        Awaitable[backup_policy.ListBackupPoliciesResponse],
-    ]:
+    def list_backup_policies(self) -> Callable[[backup_policy.ListBackupPoliciesRequest], Awaitable[backup_policy.ListBackupPoliciesResponse]]:
         r"""Return a callable for the list backup policies method over gRPC.
 
         Returns list of all available backup policies.
@@ -1865,12 +1647,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_backup_policies"]
 
     @property
-    def update_backup_policy(
-        self,
-    ) -> Callable[
-        [gcn_backup_policy.UpdateBackupPolicyRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_backup_policy(self) -> Callable[[gcn_backup_policy.UpdateBackupPolicyRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update backup policy method over gRPC.
 
         Updates settings of a specific backup policy.
@@ -1894,11 +1671,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_backup_policy"]
 
     @property
-    def delete_backup_policy(
-        self,
-    ) -> Callable[
-        [backup_policy.DeleteBackupPolicyRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_backup_policy(self) -> Callable[[backup_policy.DeleteBackupPolicyRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup policy method over gRPC.
 
         Warning! This operation will permanently delete the
@@ -1923,11 +1696,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["delete_backup_policy"]
 
     @property
-    def list_quota_rules(
-        self,
-    ) -> Callable[
-        [quota_rule.ListQuotaRulesRequest], Awaitable[quota_rule.ListQuotaRulesResponse]
-    ]:
+    def list_quota_rules(self) -> Callable[[quota_rule.ListQuotaRulesRequest], Awaitable[quota_rule.ListQuotaRulesResponse]]:
         r"""Return a callable for the list quota rules method over gRPC.
 
         Returns list of all quota rules in a location.
@@ -1951,9 +1720,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["list_quota_rules"]
 
     @property
-    def get_quota_rule(
-        self,
-    ) -> Callable[[quota_rule.GetQuotaRuleRequest], Awaitable[quota_rule.QuotaRule]]:
+    def get_quota_rule(self) -> Callable[[quota_rule.GetQuotaRuleRequest], Awaitable[quota_rule.QuotaRule]]:
         r"""Return a callable for the get quota rule method over gRPC.
 
         Returns details of the specified quota rule.
@@ -1977,11 +1744,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["get_quota_rule"]
 
     @property
-    def create_quota_rule(
-        self,
-    ) -> Callable[
-        [gcn_quota_rule.CreateQuotaRuleRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_quota_rule(self) -> Callable[[gcn_quota_rule.CreateQuotaRuleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create quota rule method over gRPC.
 
         Creates a new quota rule.
@@ -2005,11 +1768,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["create_quota_rule"]
 
     @property
-    def update_quota_rule(
-        self,
-    ) -> Callable[
-        [gcn_quota_rule.UpdateQuotaRuleRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_quota_rule(self) -> Callable[[gcn_quota_rule.UpdateQuotaRuleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update quota rule method over gRPC.
 
         Updates a quota rule.
@@ -2033,11 +1792,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
         return self._stubs["update_quota_rule"]
 
     @property
-    def delete_quota_rule(
-        self,
-    ) -> Callable[
-        [quota_rule.DeleteQuotaRuleRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_quota_rule(self) -> Callable[[quota_rule.DeleteQuotaRuleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete quota rule method over gRPC.
 
         Deletes a quota rule.
@@ -2623,9 +2378,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2642,9 +2395,7 @@ class NetAppGrpcAsyncIOTransport(NetAppTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

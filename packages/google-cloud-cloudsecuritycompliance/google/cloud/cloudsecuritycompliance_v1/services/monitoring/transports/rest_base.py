@@ -73,20 +73,14 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAggregateFrameworkComplianceReport:
@@ -97,11 +91,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -123,9 +113,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = monitoring.AggregateFrameworkComplianceReportRequest.pb(
-                request
-            )
+            pb_request = monitoring.AggregateFrameworkComplianceReportRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -137,11 +125,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMonitoringRestTransport._BaseAggregateFrameworkComplianceReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -154,11 +138,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -192,11 +172,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMonitoringRestTransport._BaseFetchFrameworkComplianceReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -209,11 +185,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -247,11 +219,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMonitoringRestTransport._BaseListControlComplianceSummaries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -264,11 +232,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -302,11 +266,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMonitoringRestTransport._BaseListFindingSummaries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMonitoringRestTransport._BaseListFindingSummaries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -319,11 +279,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -357,11 +313,7 @@ class _BaseMonitoringRestTransport(MonitoringTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseMonitoringRestTransport._BaseListFrameworkComplianceSummaries._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

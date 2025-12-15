@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,20 +326,13 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_lb_traffic_extensions(
-        self,
-    ) -> Callable[
-        [dep.ListLbTrafficExtensionsRequest],
-        Awaitable[dep.ListLbTrafficExtensionsResponse],
-    ]:
+    def list_lb_traffic_extensions(self) -> Callable[[dep.ListLbTrafficExtensionsRequest], Awaitable[dep.ListLbTrafficExtensionsResponse]]:
         r"""Return a callable for the list lb traffic extensions method over gRPC.
 
         Lists ``LbTrafficExtension`` resources in a given project and
@@ -373,9 +349,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_lb_traffic_extensions" not in self._stubs:
-            self._stubs[
-                "list_lb_traffic_extensions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_lb_traffic_extensions"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.DepService/ListLbTrafficExtensions",
                 request_serializer=dep.ListLbTrafficExtensionsRequest.serialize,
                 response_deserializer=dep.ListLbTrafficExtensionsResponse.deserialize,
@@ -383,11 +357,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["list_lb_traffic_extensions"]
 
     @property
-    def get_lb_traffic_extension(
-        self,
-    ) -> Callable[
-        [dep.GetLbTrafficExtensionRequest], Awaitable[dep.LbTrafficExtension]
-    ]:
+    def get_lb_traffic_extension(self) -> Callable[[dep.GetLbTrafficExtensionRequest], Awaitable[dep.LbTrafficExtension]]:
         r"""Return a callable for the get lb traffic extension method over gRPC.
 
         Gets details of the specified ``LbTrafficExtension`` resource.
@@ -411,11 +381,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["get_lb_traffic_extension"]
 
     @property
-    def create_lb_traffic_extension(
-        self,
-    ) -> Callable[
-        [dep.CreateLbTrafficExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_lb_traffic_extension(self) -> Callable[[dep.CreateLbTrafficExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create lb traffic extension method over gRPC.
 
         Creates a new ``LbTrafficExtension`` resource in a given project
@@ -432,9 +398,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_lb_traffic_extension" not in self._stubs:
-            self._stubs[
-                "create_lb_traffic_extension"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_lb_traffic_extension"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.DepService/CreateLbTrafficExtension",
                 request_serializer=dep.CreateLbTrafficExtensionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -442,11 +406,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["create_lb_traffic_extension"]
 
     @property
-    def update_lb_traffic_extension(
-        self,
-    ) -> Callable[
-        [dep.UpdateLbTrafficExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_lb_traffic_extension(self) -> Callable[[dep.UpdateLbTrafficExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update lb traffic extension method over gRPC.
 
         Updates the parameters of the specified ``LbTrafficExtension``
@@ -463,9 +423,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_lb_traffic_extension" not in self._stubs:
-            self._stubs[
-                "update_lb_traffic_extension"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_lb_traffic_extension"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.DepService/UpdateLbTrafficExtension",
                 request_serializer=dep.UpdateLbTrafficExtensionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -473,11 +431,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["update_lb_traffic_extension"]
 
     @property
-    def delete_lb_traffic_extension(
-        self,
-    ) -> Callable[
-        [dep.DeleteLbTrafficExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_lb_traffic_extension(self) -> Callable[[dep.DeleteLbTrafficExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete lb traffic extension method over gRPC.
 
         Deletes the specified ``LbTrafficExtension`` resource.
@@ -493,9 +447,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_lb_traffic_extension" not in self._stubs:
-            self._stubs[
-                "delete_lb_traffic_extension"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_lb_traffic_extension"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkservices.v1.DepService/DeleteLbTrafficExtension",
                 request_serializer=dep.DeleteLbTrafficExtensionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -503,11 +455,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["delete_lb_traffic_extension"]
 
     @property
-    def list_lb_route_extensions(
-        self,
-    ) -> Callable[
-        [dep.ListLbRouteExtensionsRequest], Awaitable[dep.ListLbRouteExtensionsResponse]
-    ]:
+    def list_lb_route_extensions(self) -> Callable[[dep.ListLbRouteExtensionsRequest], Awaitable[dep.ListLbRouteExtensionsResponse]]:
         r"""Return a callable for the list lb route extensions method over gRPC.
 
         Lists ``LbRouteExtension`` resources in a given project and
@@ -532,9 +480,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["list_lb_route_extensions"]
 
     @property
-    def get_lb_route_extension(
-        self,
-    ) -> Callable[[dep.GetLbRouteExtensionRequest], Awaitable[dep.LbRouteExtension]]:
+    def get_lb_route_extension(self) -> Callable[[dep.GetLbRouteExtensionRequest], Awaitable[dep.LbRouteExtension]]:
         r"""Return a callable for the get lb route extension method over gRPC.
 
         Gets details of the specified ``LbRouteExtension`` resource.
@@ -558,11 +504,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["get_lb_route_extension"]
 
     @property
-    def create_lb_route_extension(
-        self,
-    ) -> Callable[
-        [dep.CreateLbRouteExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_lb_route_extension(self) -> Callable[[dep.CreateLbRouteExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create lb route extension method over gRPC.
 
         Creates a new ``LbRouteExtension`` resource in a given project
@@ -587,11 +529,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["create_lb_route_extension"]
 
     @property
-    def update_lb_route_extension(
-        self,
-    ) -> Callable[
-        [dep.UpdateLbRouteExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_lb_route_extension(self) -> Callable[[dep.UpdateLbRouteExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update lb route extension method over gRPC.
 
         Updates the parameters of the specified ``LbRouteExtension``
@@ -616,11 +554,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["update_lb_route_extension"]
 
     @property
-    def delete_lb_route_extension(
-        self,
-    ) -> Callable[
-        [dep.DeleteLbRouteExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_lb_route_extension(self) -> Callable[[dep.DeleteLbRouteExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete lb route extension method over gRPC.
 
         Deletes the specified ``LbRouteExtension`` resource.
@@ -644,11 +578,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["delete_lb_route_extension"]
 
     @property
-    def list_lb_edge_extensions(
-        self,
-    ) -> Callable[
-        [dep.ListLbEdgeExtensionsRequest], Awaitable[dep.ListLbEdgeExtensionsResponse]
-    ]:
+    def list_lb_edge_extensions(self) -> Callable[[dep.ListLbEdgeExtensionsRequest], Awaitable[dep.ListLbEdgeExtensionsResponse]]:
         r"""Return a callable for the list lb edge extensions method over gRPC.
 
         Lists ``LbEdgeExtension`` resources in a given project and
@@ -673,9 +603,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["list_lb_edge_extensions"]
 
     @property
-    def get_lb_edge_extension(
-        self,
-    ) -> Callable[[dep.GetLbEdgeExtensionRequest], Awaitable[dep.LbEdgeExtension]]:
+    def get_lb_edge_extension(self) -> Callable[[dep.GetLbEdgeExtensionRequest], Awaitable[dep.LbEdgeExtension]]:
         r"""Return a callable for the get lb edge extension method over gRPC.
 
         Gets details of the specified ``LbEdgeExtension`` resource.
@@ -699,11 +627,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["get_lb_edge_extension"]
 
     @property
-    def create_lb_edge_extension(
-        self,
-    ) -> Callable[
-        [dep.CreateLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_lb_edge_extension(self) -> Callable[[dep.CreateLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create lb edge extension method over gRPC.
 
         Creates a new ``LbEdgeExtension`` resource in a given project
@@ -728,11 +652,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["create_lb_edge_extension"]
 
     @property
-    def update_lb_edge_extension(
-        self,
-    ) -> Callable[
-        [dep.UpdateLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_lb_edge_extension(self) -> Callable[[dep.UpdateLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update lb edge extension method over gRPC.
 
         Updates the parameters of the specified ``LbEdgeExtension``
@@ -757,11 +677,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["update_lb_edge_extension"]
 
     @property
-    def delete_lb_edge_extension(
-        self,
-    ) -> Callable[
-        [dep.DeleteLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_lb_edge_extension(self) -> Callable[[dep.DeleteLbEdgeExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete lb edge extension method over gRPC.
 
         Deletes the specified ``LbEdgeExtension`` resource.
@@ -785,11 +701,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["delete_lb_edge_extension"]
 
     @property
-    def list_authz_extensions(
-        self,
-    ) -> Callable[
-        [dep.ListAuthzExtensionsRequest], Awaitable[dep.ListAuthzExtensionsResponse]
-    ]:
+    def list_authz_extensions(self) -> Callable[[dep.ListAuthzExtensionsRequest], Awaitable[dep.ListAuthzExtensionsResponse]]:
         r"""Return a callable for the list authz extensions method over gRPC.
 
         Lists ``AuthzExtension`` resources in a given project and
@@ -814,9 +726,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["list_authz_extensions"]
 
     @property
-    def get_authz_extension(
-        self,
-    ) -> Callable[[dep.GetAuthzExtensionRequest], Awaitable[dep.AuthzExtension]]:
+    def get_authz_extension(self) -> Callable[[dep.GetAuthzExtensionRequest], Awaitable[dep.AuthzExtension]]:
         r"""Return a callable for the get authz extension method over gRPC.
 
         Gets details of the specified ``AuthzExtension`` resource.
@@ -840,11 +750,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["get_authz_extension"]
 
     @property
-    def create_authz_extension(
-        self,
-    ) -> Callable[
-        [dep.CreateAuthzExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_authz_extension(self) -> Callable[[dep.CreateAuthzExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create authz extension method over gRPC.
 
         Creates a new ``AuthzExtension`` resource in a given project and
@@ -869,11 +775,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["create_authz_extension"]
 
     @property
-    def update_authz_extension(
-        self,
-    ) -> Callable[
-        [dep.UpdateAuthzExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_authz_extension(self) -> Callable[[dep.UpdateAuthzExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update authz extension method over gRPC.
 
         Updates the parameters of the specified ``AuthzExtension``
@@ -898,11 +800,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
         return self._stubs["update_authz_extension"]
 
     @property
-    def delete_authz_extension(
-        self,
-    ) -> Callable[
-        [dep.DeleteAuthzExtensionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_authz_extension(self) -> Callable[[dep.DeleteAuthzExtensionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete authz extension method over gRPC.
 
         Deletes the specified ``AuthzExtension`` resource.
@@ -1141,9 +1039,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1160,9 +1056,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1247,10 +1141,7 @@ class DepServiceGrpcAsyncIOTransport(DepServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

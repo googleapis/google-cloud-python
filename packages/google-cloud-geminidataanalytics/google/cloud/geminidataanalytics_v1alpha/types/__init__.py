@@ -13,16 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .context import (
-    AnalysisOptions,
-    ChartOptions,
-    Context,
-    ConversationOptions,
-    DatasourceOptions,
-    ExampleQuery,
-    GlossaryTerm,
-    LookerQuery,
-)
+from .context import AnalysisOptions, ChartOptions, Context, ConversationOptions, DatasourceOptions, ExampleQuery, GlossaryTerm, LookerQuery
 from .conversation import (
     Conversation,
     CreateConversationRequest,

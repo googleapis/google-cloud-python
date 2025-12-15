@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.dataplex_v1 import gapic_version as package_version
 from google.cloud.dataplex_v1.types import analyze, resources, service, tasks
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class DataplexServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -485,293 +475,149 @@ class DataplexServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_lake(
-        self,
-    ) -> Callable[
-        [service.CreateLakeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_lake(self) -> Callable[[service.CreateLakeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_lake(
-        self,
-    ) -> Callable[
-        [service.UpdateLakeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_lake(self) -> Callable[[service.UpdateLakeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_lake(
-        self,
-    ) -> Callable[
-        [service.DeleteLakeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_lake(self) -> Callable[[service.DeleteLakeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_lakes(
-        self,
-    ) -> Callable[
-        [service.ListLakesRequest],
-        Union[service.ListLakesResponse, Awaitable[service.ListLakesResponse]],
-    ]:
+    def list_lakes(self) -> Callable[[service.ListLakesRequest], Union[service.ListLakesResponse, Awaitable[service.ListLakesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_lake(
-        self,
-    ) -> Callable[
-        [service.GetLakeRequest], Union[resources.Lake, Awaitable[resources.Lake]]
-    ]:
+    def get_lake(self) -> Callable[[service.GetLakeRequest], Union[resources.Lake, Awaitable[resources.Lake]]]:
         raise NotImplementedError()
 
     @property
     def list_lake_actions(
         self,
-    ) -> Callable[
-        [service.ListLakeActionsRequest],
-        Union[service.ListActionsResponse, Awaitable[service.ListActionsResponse]],
-    ]:
+    ) -> Callable[[service.ListLakeActionsRequest], Union[service.ListActionsResponse, Awaitable[service.ListActionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_zone(
-        self,
-    ) -> Callable[
-        [service.CreateZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_zone(self) -> Callable[[service.CreateZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_zone(
-        self,
-    ) -> Callable[
-        [service.UpdateZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_zone(self) -> Callable[[service.UpdateZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_zone(
-        self,
-    ) -> Callable[
-        [service.DeleteZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_zone(self) -> Callable[[service.DeleteZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[
-        [service.ListZonesRequest],
-        Union[service.ListZonesResponse, Awaitable[service.ListZonesResponse]],
-    ]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], Union[service.ListZonesResponse, Awaitable[service.ListZonesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_zone(
-        self,
-    ) -> Callable[
-        [service.GetZoneRequest], Union[resources.Zone, Awaitable[resources.Zone]]
-    ]:
+    def get_zone(self) -> Callable[[service.GetZoneRequest], Union[resources.Zone, Awaitable[resources.Zone]]]:
         raise NotImplementedError()
 
     @property
     def list_zone_actions(
         self,
-    ) -> Callable[
-        [service.ListZoneActionsRequest],
-        Union[service.ListActionsResponse, Awaitable[service.ListActionsResponse]],
-    ]:
+    ) -> Callable[[service.ListZoneActionsRequest], Union[service.ListActionsResponse, Awaitable[service.ListActionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[
-        [service.CreateAssetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_asset(self) -> Callable[[service.CreateAssetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[
-        [service.UpdateAssetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_asset(self) -> Callable[[service.UpdateAssetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[
-        [service.DeleteAssetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_asset(self) -> Callable[[service.DeleteAssetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [service.ListAssetsRequest],
-        Union[service.ListAssetsResponse, Awaitable[service.ListAssetsResponse]],
-    ]:
+    def list_assets(self) -> Callable[[service.ListAssetsRequest], Union[service.ListAssetsResponse, Awaitable[service.ListAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[
-        [service.GetAssetRequest], Union[resources.Asset, Awaitable[resources.Asset]]
-    ]:
+    def get_asset(self) -> Callable[[service.GetAssetRequest], Union[resources.Asset, Awaitable[resources.Asset]]]:
         raise NotImplementedError()
 
     @property
     def list_asset_actions(
         self,
-    ) -> Callable[
-        [service.ListAssetActionsRequest],
-        Union[service.ListActionsResponse, Awaitable[service.ListActionsResponse]],
-    ]:
+    ) -> Callable[[service.ListAssetActionsRequest], Union[service.ListActionsResponse, Awaitable[service.ListActionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[
-        [service.CreateTaskRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_task(self) -> Callable[[service.CreateTaskRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_task(
-        self,
-    ) -> Callable[
-        [service.UpdateTaskRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_task(self) -> Callable[[service.UpdateTaskRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[
-        [service.DeleteTaskRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_task(self) -> Callable[[service.DeleteTaskRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[
-        [service.ListTasksRequest],
-        Union[service.ListTasksResponse, Awaitable[service.ListTasksResponse]],
-    ]:
+    def list_tasks(self) -> Callable[[service.ListTasksRequest], Union[service.ListTasksResponse, Awaitable[service.ListTasksResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_task(
-        self,
-    ) -> Callable[[service.GetTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]]:
+    def get_task(self) -> Callable[[service.GetTaskRequest], Union[tasks.Task, Awaitable[tasks.Task]]]:
         raise NotImplementedError()
 
     @property
-    def list_jobs(
-        self,
-    ) -> Callable[
-        [service.ListJobsRequest],
-        Union[service.ListJobsResponse, Awaitable[service.ListJobsResponse]],
-    ]:
+    def list_jobs(self) -> Callable[[service.ListJobsRequest], Union[service.ListJobsResponse, Awaitable[service.ListJobsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def run_task(
-        self,
-    ) -> Callable[
-        [service.RunTaskRequest],
-        Union[service.RunTaskResponse, Awaitable[service.RunTaskResponse]],
-    ]:
+    def run_task(self) -> Callable[[service.RunTaskRequest], Union[service.RunTaskResponse, Awaitable[service.RunTaskResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_job(
-        self,
-    ) -> Callable[[service.GetJobRequest], Union[tasks.Job, Awaitable[tasks.Job]]]:
+    def get_job(self) -> Callable[[service.GetJobRequest], Union[tasks.Job, Awaitable[tasks.Job]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_job(
-        self,
-    ) -> Callable[
-        [service.CancelJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def cancel_job(self) -> Callable[[service.CancelJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_environment(
         self,
-    ) -> Callable[
-        [service.CreateEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateEnvironmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_environment(
         self,
-    ) -> Callable[
-        [service.UpdateEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.UpdateEnvironmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_environment(
         self,
-    ) -> Callable[
-        [service.DeleteEnvironmentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.DeleteEnvironmentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_environments(
         self,
-    ) -> Callable[
-        [service.ListEnvironmentsRequest],
-        Union[
-            service.ListEnvironmentsResponse,
-            Awaitable[service.ListEnvironmentsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListEnvironmentsRequest], Union[service.ListEnvironmentsResponse, Awaitable[service.ListEnvironmentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[
-        [service.GetEnvironmentRequest],
-        Union[analyze.Environment, Awaitable[analyze.Environment]],
-    ]:
+    def get_environment(self) -> Callable[[service.GetEnvironmentRequest], Union[analyze.Environment, Awaitable[analyze.Environment]]]:
         raise NotImplementedError()
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [service.ListSessionsRequest],
-        Union[service.ListSessionsResponse, Awaitable[service.ListSessionsResponse]],
-    ]:
+    def list_sessions(self) -> Callable[[service.ListSessionsRequest], Union[service.ListSessionsResponse, Awaitable[service.ListSessionsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -779,20 +625,14 @@ class DataplexServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -810,22 +650,13 @@ class DataplexServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

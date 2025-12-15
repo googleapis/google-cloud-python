@@ -22,9 +22,7 @@ from .grpc_asyncio import ManagedKafkaConnectGrpcAsyncIOTransport
 from .rest import ManagedKafkaConnectRestInterceptor, ManagedKafkaConnectRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ManagedKafkaConnectTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ManagedKafkaConnectTransport]]
 _transport_registry["grpc"] = ManagedKafkaConnectGrpcTransport
 _transport_registry["grpc_asyncio"] = ManagedKafkaConnectGrpcAsyncIOTransport
 _transport_registry["rest"] = ManagedKafkaConnectRestTransport

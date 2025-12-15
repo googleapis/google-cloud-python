@@ -140,12 +140,8 @@ class GSuiteAddOnsRestInterceptor:
     """
 
     def pre_create_deployment(
-        self,
-        request: gsuiteaddons.CreateDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.CreateDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.CreateDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -153,9 +149,7 @@ class GSuiteAddOnsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_deployment(
-        self, response: gsuiteaddons.Deployment
-    ) -> gsuiteaddons.Deployment:
+    def post_create_deployment(self, response: gsuiteaddons.Deployment) -> gsuiteaddons.Deployment:
         """Post-rpc interceptor for create_deployment
 
         DEPRECATED. Please use the `post_create_deployment_with_metadata`
@@ -169,9 +163,7 @@ class GSuiteAddOnsRestInterceptor:
         return response
 
     def post_create_deployment_with_metadata(
-        self,
-        response: gsuiteaddons.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsuiteaddons.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsuiteaddons.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_deployment
 
@@ -188,12 +180,8 @@ class GSuiteAddOnsRestInterceptor:
         return response, metadata
 
     def pre_delete_deployment(
-        self,
-        request: gsuiteaddons.DeleteDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.DeleteDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.DeleteDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.DeleteDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -202,12 +190,8 @@ class GSuiteAddOnsRestInterceptor:
         return request, metadata
 
     def pre_get_authorization(
-        self,
-        request: gsuiteaddons.GetAuthorizationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.GetAuthorizationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.GetAuthorizationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.GetAuthorizationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_authorization
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +199,7 @@ class GSuiteAddOnsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_authorization(
-        self, response: gsuiteaddons.Authorization
-    ) -> gsuiteaddons.Authorization:
+    def post_get_authorization(self, response: gsuiteaddons.Authorization) -> gsuiteaddons.Authorization:
         """Post-rpc interceptor for get_authorization
 
         DEPRECATED. Please use the `post_get_authorization_with_metadata`
@@ -231,9 +213,7 @@ class GSuiteAddOnsRestInterceptor:
         return response
 
     def post_get_authorization_with_metadata(
-        self,
-        response: gsuiteaddons.Authorization,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsuiteaddons.Authorization, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsuiteaddons.Authorization, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_authorization
 
@@ -250,12 +230,8 @@ class GSuiteAddOnsRestInterceptor:
         return response, metadata
 
     def pre_get_deployment(
-        self,
-        request: gsuiteaddons.GetDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.GetDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.GetDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -263,9 +239,7 @@ class GSuiteAddOnsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_deployment(
-        self, response: gsuiteaddons.Deployment
-    ) -> gsuiteaddons.Deployment:
+    def post_get_deployment(self, response: gsuiteaddons.Deployment) -> gsuiteaddons.Deployment:
         """Post-rpc interceptor for get_deployment
 
         DEPRECATED. Please use the `post_get_deployment_with_metadata`
@@ -279,9 +253,7 @@ class GSuiteAddOnsRestInterceptor:
         return response
 
     def post_get_deployment_with_metadata(
-        self,
-        response: gsuiteaddons.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsuiteaddons.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsuiteaddons.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_deployment
 
@@ -298,12 +270,8 @@ class GSuiteAddOnsRestInterceptor:
         return response, metadata
 
     def pre_get_install_status(
-        self,
-        request: gsuiteaddons.GetInstallStatusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.GetInstallStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.GetInstallStatusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.GetInstallStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_install_status
 
         Override in a subclass to manipulate the request or metadata
@@ -311,9 +279,7 @@ class GSuiteAddOnsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_install_status(
-        self, response: gsuiteaddons.InstallStatus
-    ) -> gsuiteaddons.InstallStatus:
+    def post_get_install_status(self, response: gsuiteaddons.InstallStatus) -> gsuiteaddons.InstallStatus:
         """Post-rpc interceptor for get_install_status
 
         DEPRECATED. Please use the `post_get_install_status_with_metadata`
@@ -327,9 +293,7 @@ class GSuiteAddOnsRestInterceptor:
         return response
 
     def post_get_install_status_with_metadata(
-        self,
-        response: gsuiteaddons.InstallStatus,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsuiteaddons.InstallStatus, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsuiteaddons.InstallStatus, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_install_status
 
@@ -346,12 +310,8 @@ class GSuiteAddOnsRestInterceptor:
         return response, metadata
 
     def pre_install_deployment(
-        self,
-        request: gsuiteaddons.InstallDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.InstallDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.InstallDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.InstallDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for install_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -360,12 +320,8 @@ class GSuiteAddOnsRestInterceptor:
         return request, metadata
 
     def pre_list_deployments(
-        self,
-        request: gsuiteaddons.ListDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.ListDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.ListDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -373,9 +329,7 @@ class GSuiteAddOnsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_deployments(
-        self, response: gsuiteaddons.ListDeploymentsResponse
-    ) -> gsuiteaddons.ListDeploymentsResponse:
+    def post_list_deployments(self, response: gsuiteaddons.ListDeploymentsResponse) -> gsuiteaddons.ListDeploymentsResponse:
         """Post-rpc interceptor for list_deployments
 
         DEPRECATED. Please use the `post_list_deployments_with_metadata`
@@ -389,12 +343,8 @@ class GSuiteAddOnsRestInterceptor:
         return response
 
     def post_list_deployments_with_metadata(
-        self,
-        response: gsuiteaddons.ListDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gsuiteaddons.ListDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.ListDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -410,12 +360,8 @@ class GSuiteAddOnsRestInterceptor:
         return response, metadata
 
     def pre_replace_deployment(
-        self,
-        request: gsuiteaddons.ReplaceDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.ReplaceDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.ReplaceDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.ReplaceDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for replace_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -423,9 +369,7 @@ class GSuiteAddOnsRestInterceptor:
         """
         return request, metadata
 
-    def post_replace_deployment(
-        self, response: gsuiteaddons.Deployment
-    ) -> gsuiteaddons.Deployment:
+    def post_replace_deployment(self, response: gsuiteaddons.Deployment) -> gsuiteaddons.Deployment:
         """Post-rpc interceptor for replace_deployment
 
         DEPRECATED. Please use the `post_replace_deployment_with_metadata`
@@ -439,9 +383,7 @@ class GSuiteAddOnsRestInterceptor:
         return response
 
     def post_replace_deployment_with_metadata(
-        self,
-        response: gsuiteaddons.Deployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsuiteaddons.Deployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsuiteaddons.Deployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for replace_deployment
 
@@ -458,12 +400,8 @@ class GSuiteAddOnsRestInterceptor:
         return response, metadata
 
     def pre_uninstall_deployment(
-        self,
-        request: gsuiteaddons.UninstallDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsuiteaddons.UninstallDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gsuiteaddons.UninstallDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsuiteaddons.UninstallDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for uninstall_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -585,30 +523,18 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GSuiteAddOnsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDeployment(
-        _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment, GSuiteAddOnsRestStub
-    ):
+    class _CreateDeployment(_BaseGSuiteAddOnsRestTransport._BaseCreateDeployment, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.CreateDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -649,32 +575,18 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     A Google Workspace add-on deployment
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_deployment(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseCreateDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -698,13 +610,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._CreateDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -720,12 +626,8 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             resp = self._interceptor.post_create_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Deployment.to_json(response)
                 except:
@@ -746,22 +648,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 )
             return resp
 
-    class _DeleteDeployment(
-        _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment, GSuiteAddOnsRestStub
-    ):
+    class _DeleteDeployment(_BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.DeleteDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -797,28 +689,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_deployment(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseDeleteDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -842,12 +722,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._DeleteDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -855,22 +730,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAuthorization(
-        _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization, GSuiteAddOnsRestStub
-    ):
+    class _GetAuthorization(_BaseGSuiteAddOnsRestTransport._BaseGetAuthorization, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.GetAuthorization")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -913,28 +778,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_authorization(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_authorization(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetAuthorization._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -958,12 +811,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._GetAuthorization._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -979,12 +827,8 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             resp = self._interceptor.post_get_authorization(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_authorization_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_authorization_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Authorization.to_json(response)
                 except:
@@ -1005,22 +849,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 )
             return resp
 
-    class _GetDeployment(
-        _BaseGSuiteAddOnsRestTransport._BaseGetDeployment, GSuiteAddOnsRestStub
-    ):
+    class _GetDeployment(_BaseGSuiteAddOnsRestTransport._BaseGetDeployment, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.GetDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1059,26 +893,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     A Google Workspace add-on deployment
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_http_options()
 
             request, metadata = self._interceptor.pre_get_deployment(request, metadata)
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1102,12 +926,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._GetDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1123,12 +942,8 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             resp = self._interceptor.post_get_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Deployment.to_json(response)
                 except:
@@ -1149,22 +964,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 )
             return resp
 
-    class _GetInstallStatus(
-        _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus, GSuiteAddOnsRestStub
-    ):
+    class _GetInstallStatus(_BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.GetInstallStatus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1206,28 +1011,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_install_status(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_install_status(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseGetInstallStatus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1251,12 +1044,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._GetInstallStatus._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1272,12 +1060,8 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             resp = self._interceptor.post_get_install_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_install_status_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_install_status_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.InstallStatus.to_json(response)
                 except:
@@ -1298,22 +1082,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 )
             return resp
 
-    class _InstallDeployment(
-        _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment, GSuiteAddOnsRestStub
-    ):
+    class _InstallDeployment(_BaseGSuiteAddOnsRestTransport._BaseInstallDeployment, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.InstallDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1350,32 +1124,18 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_install_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_install_deployment(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseInstallDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1399,13 +1159,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._InstallDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1413,22 +1167,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ListDeployments(
-        _BaseGSuiteAddOnsRestTransport._BaseListDeployments, GSuiteAddOnsRestStub
-    ):
+    class _ListDeployments(_BaseGSuiteAddOnsRestTransport._BaseListDeployments, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.ListDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1468,28 +1212,16 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     Response message to list deployments.
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_deployments(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseListDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1513,12 +1245,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._ListDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1534,16 +1261,10 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             resp = self._interceptor.post_list_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gsuiteaddons.ListDeploymentsResponse.to_json(
-                        response
-                    )
+                    response_payload = gsuiteaddons.ListDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1562,22 +1283,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 )
             return resp
 
-    class _ReplaceDeployment(
-        _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment, GSuiteAddOnsRestStub
-    ):
+    class _ReplaceDeployment(_BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.ReplaceDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1618,32 +1329,18 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     A Google Workspace add-on deployment
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_replace_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_replace_deployment(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseReplaceDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1667,13 +1364,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._ReplaceDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1689,12 +1380,8 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             resp = self._interceptor.post_replace_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_replace_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_replace_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsuiteaddons.Deployment.to_json(response)
                 except:
@@ -1715,22 +1402,12 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 )
             return resp
 
-    class _UninstallDeployment(
-        _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment, GSuiteAddOnsRestStub
-    ):
+    class _UninstallDeployment(_BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment, GSuiteAddOnsRestStub):
         def __hash__(self):
             return hash("GSuiteAddOnsRestTransport.UninstallDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1767,32 +1444,18 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_http_options()
-            )
+            http_options = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_uninstall_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_uninstall_deployment(request, metadata)
+            transcoded_request = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGSuiteAddOnsRestTransport._BaseUninstallDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1816,13 +1479,7 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
 
             # Send the request
             response = GSuiteAddOnsRestTransport._UninstallDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1831,75 +1488,55 @@ class GSuiteAddOnsRestTransport(_BaseGSuiteAddOnsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.CreateDeploymentRequest], gsuiteaddons.Deployment]:
+    def create_deployment(self) -> Callable[[gsuiteaddons.CreateDeploymentRequest], gsuiteaddons.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.DeleteDeploymentRequest], empty_pb2.Empty]:
+    def delete_deployment(self) -> Callable[[gsuiteaddons.DeleteDeploymentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_authorization(
-        self,
-    ) -> Callable[[gsuiteaddons.GetAuthorizationRequest], gsuiteaddons.Authorization]:
+    def get_authorization(self) -> Callable[[gsuiteaddons.GetAuthorizationRequest], gsuiteaddons.Authorization]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAuthorization(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.GetDeploymentRequest], gsuiteaddons.Deployment]:
+    def get_deployment(self) -> Callable[[gsuiteaddons.GetDeploymentRequest], gsuiteaddons.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_install_status(
-        self,
-    ) -> Callable[[gsuiteaddons.GetInstallStatusRequest], gsuiteaddons.InstallStatus]:
+    def get_install_status(self) -> Callable[[gsuiteaddons.GetInstallStatusRequest], gsuiteaddons.InstallStatus]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstallStatus(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def install_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.InstallDeploymentRequest], empty_pb2.Empty]:
+    def install_deployment(self) -> Callable[[gsuiteaddons.InstallDeploymentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InstallDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [gsuiteaddons.ListDeploymentsRequest], gsuiteaddons.ListDeploymentsResponse
-    ]:
+    def list_deployments(self) -> Callable[[gsuiteaddons.ListDeploymentsRequest], gsuiteaddons.ListDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeployments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def replace_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.ReplaceDeploymentRequest], gsuiteaddons.Deployment]:
+    def replace_deployment(self) -> Callable[[gsuiteaddons.ReplaceDeploymentRequest], gsuiteaddons.Deployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReplaceDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def uninstall_deployment(
-        self,
-    ) -> Callable[[gsuiteaddons.UninstallDeploymentRequest], empty_pb2.Empty]:
+    def uninstall_deployment(self) -> Callable[[gsuiteaddons.UninstallDeploymentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UninstallDeployment(self._session, self._host, self._interceptor)  # type: ignore

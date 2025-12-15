@@ -18,38 +18,16 @@ from google.ads.datamanager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.ads.datamanager_v1.services.ingestion_service.async_client import (
-    IngestionServiceAsyncClient,
-)
-from google.ads.datamanager_v1.services.ingestion_service.client import (
-    IngestionServiceClient,
-)
-from google.ads.datamanager_v1.types.audience import (
-    AudienceMember,
-    MobileData,
-    PairData,
-)
+from google.ads.datamanager_v1.services.ingestion_service.async_client import IngestionServiceAsyncClient
+from google.ads.datamanager_v1.services.ingestion_service.client import IngestionServiceClient
+from google.ads.datamanager_v1.types.audience import AudienceMember, MobileData, PairData
 from google.ads.datamanager_v1.types.cart_data import CartData, Item
 from google.ads.datamanager_v1.types.consent import Consent, ConsentStatus
-from google.ads.datamanager_v1.types.destination import (
-    Destination,
-    Product,
-    ProductAccount,
-)
+from google.ads.datamanager_v1.types.destination import Destination, Product, ProductAccount
 from google.ads.datamanager_v1.types.device_info import DeviceInfo
-from google.ads.datamanager_v1.types.encryption_info import (
-    AwsWrappedKeyInfo,
-    EncryptionInfo,
-    GcpWrappedKeyInfo,
-)
+from google.ads.datamanager_v1.types.encryption_info import AwsWrappedKeyInfo, EncryptionInfo, GcpWrappedKeyInfo
 from google.ads.datamanager_v1.types.error import ErrorReason
-from google.ads.datamanager_v1.types.event import (
-    AdIdentifiers,
-    CustomVariable,
-    Event,
-    EventParameter,
-    EventSource,
-)
+from google.ads.datamanager_v1.types.event import AdIdentifiers, CustomVariable, Event, EventParameter, EventSource
 from google.ads.datamanager_v1.types.experimental_field import ExperimentalField
 from google.ads.datamanager_v1.types.ingestion_service import (
     Encoding,
@@ -72,24 +50,10 @@ from google.ads.datamanager_v1.types.processing_errors import (
     WarningCount,
     WarningInfo,
 )
-from google.ads.datamanager_v1.types.request_status_per_destination import (
-    RequestStatusPerDestination,
-)
-from google.ads.datamanager_v1.types.terms_of_service import (
-    TermsOfService,
-    TermsOfServiceStatus,
-)
-from google.ads.datamanager_v1.types.user_data import (
-    AddressInfo,
-    UserData,
-    UserIdentifier,
-)
-from google.ads.datamanager_v1.types.user_properties import (
-    CustomerType,
-    CustomerValueBucket,
-    UserProperties,
-    UserProperty,
-)
+from google.ads.datamanager_v1.types.request_status_per_destination import RequestStatusPerDestination
+from google.ads.datamanager_v1.types.terms_of_service import TermsOfService, TermsOfServiceStatus
+from google.ads.datamanager_v1.types.user_data import AddressInfo, UserData, UserIdentifier
+from google.ads.datamanager_v1.types.user_properties import CustomerType, CustomerValueBucket, UserProperties, UserProperty
 
 __all__ = (
     "IngestionServiceClient",

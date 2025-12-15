@@ -2138,9 +2138,7 @@ class FetchLinkableGitRepositoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    linkable_git_repositories: MutableSequence[
-        "LinkableGitRepository"
-    ] = proto.RepeatedField(
+    linkable_git_repositories: MutableSequence["LinkableGitRepository"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="LinkableGitRepository",

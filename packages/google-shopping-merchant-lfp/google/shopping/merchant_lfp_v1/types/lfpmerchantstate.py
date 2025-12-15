@@ -89,12 +89,10 @@ class LfpMerchantState(proto.Message):
             proto.STRING,
             number=1,
         )
-        matching_state: "LfpMerchantState.LfpStoreState.StoreMatchingState" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="LfpMerchantState.LfpStoreState.StoreMatchingState",
-            )
+        matching_state: "LfpMerchantState.LfpStoreState.StoreMatchingState" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="LfpMerchantState.LfpStoreState.StoreMatchingState",
         )
         matching_state_hint: str = proto.Field(
             proto.STRING,
@@ -225,12 +223,10 @@ class LfpMerchantState(proto.Message):
             number=4,
             enum="LfpMerchantState.CountrySettings.VerificationState",
         )
-        product_page_type: "LfpMerchantState.CountrySettings.ProductPageType" = (
-            proto.Field(
-                proto.ENUM,
-                number=5,
-                enum="LfpMerchantState.CountrySettings.ProductPageType",
-            )
+        product_page_type: "LfpMerchantState.CountrySettings.ProductPageType" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="LfpMerchantState.CountrySettings.ProductPageType",
         )
         instock_serving_verification_state: "LfpMerchantState.CountrySettings.VerificationState" = proto.Field(
             proto.ENUM,

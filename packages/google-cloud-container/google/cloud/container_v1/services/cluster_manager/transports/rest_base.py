@@ -72,20 +72,14 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCancelOperation:
@@ -118,9 +112,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -197,9 +189,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -239,9 +229,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -264,11 +252,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -296,9 +280,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -309,11 +291,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseCreateCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseCreateCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -326,11 +304,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -358,9 +332,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -371,11 +343,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseCreateNodePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseCreateNodePool._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -460,11 +428,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -494,11 +458,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseFetchClusterUpgradeInfo._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -511,11 +471,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -545,11 +501,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseFetchNodePoolUpgradeInfo._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -900,9 +852,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -925,11 +875,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -957,9 +903,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -970,11 +914,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetAddonsConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -987,11 +927,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1019,9 +955,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1032,11 +966,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetLabels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetLabels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1049,11 +979,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1081,9 +1007,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1094,11 +1018,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetLegacyAbac._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1111,11 +1031,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1143,9 +1059,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1156,11 +1070,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetLocations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetLocations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1173,11 +1083,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1205,9 +1111,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1218,11 +1122,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetLoggingService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetLoggingService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1235,11 +1135,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1267,9 +1163,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1280,11 +1174,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetMaintenancePolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1297,11 +1187,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1329,9 +1215,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1342,11 +1226,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetMasterAuth._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetMasterAuth._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1359,11 +1239,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1391,9 +1267,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1404,11 +1278,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetMonitoringService._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetMonitoringService._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1421,11 +1291,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1453,9 +1319,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1466,11 +1330,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetNetworkPolicy._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1483,11 +1343,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1515,9 +1371,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1528,11 +1382,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetNodePoolAutoscaling._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1545,11 +1395,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1577,9 +1423,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1590,11 +1434,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetNodePoolManagement._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1607,11 +1447,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1639,9 +1475,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1652,11 +1486,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseSetNodePoolSize._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1691,9 +1521,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1716,11 +1544,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1748,9 +1572,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1761,11 +1583,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseUpdateCluster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseUpdateCluster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1778,11 +1596,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1810,9 +1624,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1823,11 +1635,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseUpdateMaster._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseUpdateMaster._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1840,11 +1648,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1872,9 +1676,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1885,11 +1687,7 @@ class _BaseClusterManagerRestTransport(ClusterManagerTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseClusterManagerRestTransport._BaseUpdateNodePool._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseClusterManagerRestTransport._BaseUpdateNodePool._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

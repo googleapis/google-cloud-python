@@ -31,9 +31,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import (
-    session_entity_type as gcd_session_entity_type,
-)
+from google.cloud.dialogflow_v2.types import session_entity_type as gcd_session_entity_type
 from google.cloud.dialogflow_v2.types import session_entity_type
 
 from .base import DEFAULT_CLIENT_INFO, SessionEntityTypesTransport
@@ -50,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +212,14 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +253,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -331,10 +314,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
     @property
     def list_session_entity_types(
         self,
-    ) -> Callable[
-        [session_entity_type.ListSessionEntityTypesRequest],
-        session_entity_type.ListSessionEntityTypesResponse,
-    ]:
+    ) -> Callable[[session_entity_type.ListSessionEntityTypesRequest], session_entity_type.ListSessionEntityTypesResponse]:
         r"""Return a callable for the list session entity types method over gRPC.
 
         Returns the list of all session entity types in the
@@ -362,12 +342,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         return self._stubs["list_session_entity_types"]
 
     @property
-    def get_session_entity_type(
-        self,
-    ) -> Callable[
-        [session_entity_type.GetSessionEntityTypeRequest],
-        session_entity_type.SessionEntityType,
-    ]:
+    def get_session_entity_type(self) -> Callable[[session_entity_type.GetSessionEntityTypeRequest], session_entity_type.SessionEntityType]:
         r"""Return a callable for the get session entity type method over gRPC.
 
         Retrieves the specified session entity type.
@@ -397,10 +372,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
     @property
     def create_session_entity_type(
         self,
-    ) -> Callable[
-        [gcd_session_entity_type.CreateSessionEntityTypeRequest],
-        gcd_session_entity_type.SessionEntityType,
-    ]:
+    ) -> Callable[[gcd_session_entity_type.CreateSessionEntityTypeRequest], gcd_session_entity_type.SessionEntityType]:
         r"""Return a callable for the create session entity type method over gRPC.
 
         Creates a session entity type.
@@ -423,9 +395,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_session_entity_type" not in self._stubs:
-            self._stubs[
-                "create_session_entity_type"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_session_entity_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.SessionEntityTypes/CreateSessionEntityType",
                 request_serializer=gcd_session_entity_type.CreateSessionEntityTypeRequest.serialize,
                 response_deserializer=gcd_session_entity_type.SessionEntityType.deserialize,
@@ -435,10 +405,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
     @property
     def update_session_entity_type(
         self,
-    ) -> Callable[
-        [gcd_session_entity_type.UpdateSessionEntityTypeRequest],
-        gcd_session_entity_type.SessionEntityType,
-    ]:
+    ) -> Callable[[gcd_session_entity_type.UpdateSessionEntityTypeRequest], gcd_session_entity_type.SessionEntityType]:
         r"""Return a callable for the update session entity type method over gRPC.
 
         Updates the specified session entity type.
@@ -458,9 +425,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_session_entity_type" not in self._stubs:
-            self._stubs[
-                "update_session_entity_type"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_session_entity_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.SessionEntityTypes/UpdateSessionEntityType",
                 request_serializer=gcd_session_entity_type.UpdateSessionEntityTypeRequest.serialize,
                 response_deserializer=gcd_session_entity_type.SessionEntityType.deserialize,
@@ -468,11 +433,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         return self._stubs["update_session_entity_type"]
 
     @property
-    def delete_session_entity_type(
-        self,
-    ) -> Callable[
-        [session_entity_type.DeleteSessionEntityTypeRequest], empty_pb2.Empty
-    ]:
+    def delete_session_entity_type(self) -> Callable[[session_entity_type.DeleteSessionEntityTypeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete session entity type method over gRPC.
 
         Deletes the specified session entity type.
@@ -492,9 +453,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_session_entity_type" not in self._stubs:
-            self._stubs[
-                "delete_session_entity_type"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_session_entity_type"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.SessionEntityTypes/DeleteSessionEntityType",
                 request_serializer=session_entity_type.DeleteSessionEntityTypeRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -541,9 +500,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -560,9 +517,7 @@ class SessionEntityTypesGrpcTransport(SessionEntityTypesTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

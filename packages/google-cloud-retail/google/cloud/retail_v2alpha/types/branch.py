@@ -289,9 +289,7 @@ class Branch(proto.Message):
             proto.DOUBLE,
             number=4,
         )
-        unqualified_sample_products: MutableSequence[
-            product.Product
-        ] = proto.RepeatedField(
+        unqualified_sample_products: MutableSequence[product.Product] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=product.Product,

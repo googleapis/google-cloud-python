@@ -18,12 +18,8 @@ from google.cloud.apigateway import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.apigateway_v1.services.api_gateway_service.async_client import (
-    ApiGatewayServiceAsyncClient,
-)
-from google.cloud.apigateway_v1.services.api_gateway_service.client import (
-    ApiGatewayServiceClient,
-)
+from google.cloud.apigateway_v1.services.api_gateway_service.async_client import ApiGatewayServiceAsyncClient
+from google.cloud.apigateway_v1.services.api_gateway_service.client import ApiGatewayServiceClient
 from google.cloud.apigateway_v1.types.apigateway import (
     Api,
     ApiConfig,

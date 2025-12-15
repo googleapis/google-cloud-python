@@ -49,9 +49,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +78,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -228,18 +219,14 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -273,9 +260,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -342,17 +327,13 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_glossary(
-        self,
-    ) -> Callable[[business_glossary.CreateGlossaryRequest], operations_pb2.Operation]:
+    def create_glossary(self) -> Callable[[business_glossary.CreateGlossaryRequest], operations_pb2.Operation]:
         r"""Return a callable for the create glossary method over gRPC.
 
         Creates a new Glossary resource.
@@ -376,9 +357,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["create_glossary"]
 
     @property
-    def update_glossary(
-        self,
-    ) -> Callable[[business_glossary.UpdateGlossaryRequest], operations_pb2.Operation]:
+    def update_glossary(self) -> Callable[[business_glossary.UpdateGlossaryRequest], operations_pb2.Operation]:
         r"""Return a callable for the update glossary method over gRPC.
 
         Updates a Glossary resource.
@@ -402,9 +381,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["update_glossary"]
 
     @property
-    def delete_glossary(
-        self,
-    ) -> Callable[[business_glossary.DeleteGlossaryRequest], operations_pb2.Operation]:
+    def delete_glossary(self) -> Callable[[business_glossary.DeleteGlossaryRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete glossary method over gRPC.
 
         Deletes a Glossary resource. All the categories and
@@ -430,9 +407,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["delete_glossary"]
 
     @property
-    def get_glossary(
-        self,
-    ) -> Callable[[business_glossary.GetGlossaryRequest], business_glossary.Glossary]:
+    def get_glossary(self) -> Callable[[business_glossary.GetGlossaryRequest], business_glossary.Glossary]:
         r"""Return a callable for the get glossary method over gRPC.
 
         Gets a Glossary resource.
@@ -456,12 +431,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["get_glossary"]
 
     @property
-    def list_glossaries(
-        self,
-    ) -> Callable[
-        [business_glossary.ListGlossariesRequest],
-        business_glossary.ListGlossariesResponse,
-    ]:
+    def list_glossaries(self) -> Callable[[business_glossary.ListGlossariesRequest], business_glossary.ListGlossariesResponse]:
         r"""Return a callable for the list glossaries method over gRPC.
 
         Lists Glossary resources in a project and location.
@@ -485,12 +455,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["list_glossaries"]
 
     @property
-    def create_glossary_category(
-        self,
-    ) -> Callable[
-        [business_glossary.CreateGlossaryCategoryRequest],
-        business_glossary.GlossaryCategory,
-    ]:
+    def create_glossary_category(self) -> Callable[[business_glossary.CreateGlossaryCategoryRequest], business_glossary.GlossaryCategory]:
         r"""Return a callable for the create glossary category method over gRPC.
 
         Creates a new GlossaryCategory resource.
@@ -514,12 +479,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["create_glossary_category"]
 
     @property
-    def update_glossary_category(
-        self,
-    ) -> Callable[
-        [business_glossary.UpdateGlossaryCategoryRequest],
-        business_glossary.GlossaryCategory,
-    ]:
+    def update_glossary_category(self) -> Callable[[business_glossary.UpdateGlossaryCategoryRequest], business_glossary.GlossaryCategory]:
         r"""Return a callable for the update glossary category method over gRPC.
 
         Updates a GlossaryCategory resource.
@@ -543,9 +503,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["update_glossary_category"]
 
     @property
-    def delete_glossary_category(
-        self,
-    ) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], empty_pb2.Empty]:
+    def delete_glossary_category(self) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete glossary category method over gRPC.
 
         Deletes a GlossaryCategory resource. All the
@@ -572,12 +530,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["delete_glossary_category"]
 
     @property
-    def get_glossary_category(
-        self,
-    ) -> Callable[
-        [business_glossary.GetGlossaryCategoryRequest],
-        business_glossary.GlossaryCategory,
-    ]:
+    def get_glossary_category(self) -> Callable[[business_glossary.GetGlossaryCategoryRequest], business_glossary.GlossaryCategory]:
         r"""Return a callable for the get glossary category method over gRPC.
 
         Gets a GlossaryCategory resource.
@@ -603,10 +556,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
     @property
     def list_glossary_categories(
         self,
-    ) -> Callable[
-        [business_glossary.ListGlossaryCategoriesRequest],
-        business_glossary.ListGlossaryCategoriesResponse,
-    ]:
+    ) -> Callable[[business_glossary.ListGlossaryCategoriesRequest], business_glossary.ListGlossaryCategoriesResponse]:
         r"""Return a callable for the list glossary categories method over gRPC.
 
         Lists GlossaryCategory resources in a Glossary.
@@ -630,11 +580,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["list_glossary_categories"]
 
     @property
-    def create_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.CreateGlossaryTermRequest], business_glossary.GlossaryTerm
-    ]:
+    def create_glossary_term(self) -> Callable[[business_glossary.CreateGlossaryTermRequest], business_glossary.GlossaryTerm]:
         r"""Return a callable for the create glossary term method over gRPC.
 
         Creates a new GlossaryTerm resource.
@@ -658,11 +604,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["create_glossary_term"]
 
     @property
-    def update_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.UpdateGlossaryTermRequest], business_glossary.GlossaryTerm
-    ]:
+    def update_glossary_term(self) -> Callable[[business_glossary.UpdateGlossaryTermRequest], business_glossary.GlossaryTerm]:
         r"""Return a callable for the update glossary term method over gRPC.
 
         Updates a GlossaryTerm resource.
@@ -686,9 +628,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["update_glossary_term"]
 
     @property
-    def delete_glossary_term(
-        self,
-    ) -> Callable[[business_glossary.DeleteGlossaryTermRequest], empty_pb2.Empty]:
+    def delete_glossary_term(self) -> Callable[[business_glossary.DeleteGlossaryTermRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete glossary term method over gRPC.
 
         Deletes a GlossaryTerm resource.
@@ -712,11 +652,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["delete_glossary_term"]
 
     @property
-    def get_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.GetGlossaryTermRequest], business_glossary.GlossaryTerm
-    ]:
+    def get_glossary_term(self) -> Callable[[business_glossary.GetGlossaryTermRequest], business_glossary.GlossaryTerm]:
         r"""Return a callable for the get glossary term method over gRPC.
 
         Gets a GlossaryTerm resource.
@@ -740,12 +676,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
         return self._stubs["get_glossary_term"]
 
     @property
-    def list_glossary_terms(
-        self,
-    ) -> Callable[
-        [business_glossary.ListGlossaryTermsRequest],
-        business_glossary.ListGlossaryTermsResponse,
-    ]:
+    def list_glossary_terms(self) -> Callable[[business_glossary.ListGlossaryTermsRequest], business_glossary.ListGlossaryTermsResponse]:
         r"""Return a callable for the list glossary terms method over gRPC.
 
         Lists GlossaryTerm resources in a Glossary.
@@ -825,9 +756,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -844,9 +773,7 @@ class BusinessGlossaryServiceGrpcTransport(BusinessGlossaryServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

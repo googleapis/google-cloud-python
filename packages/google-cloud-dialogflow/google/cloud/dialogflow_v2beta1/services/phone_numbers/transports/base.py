@@ -31,9 +31,7 @@ from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 from google.cloud.dialogflow_v2beta1.types import phone_number as gcd_phone_number
 from google.cloud.dialogflow_v2beta1.types import phone_number
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class PhoneNumbersTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -199,39 +189,26 @@ class PhoneNumbersTransport(abc.ABC):
     def list_phone_numbers(
         self,
     ) -> Callable[
-        [phone_number.ListPhoneNumbersRequest],
-        Union[
-            phone_number.ListPhoneNumbersResponse,
-            Awaitable[phone_number.ListPhoneNumbersResponse],
-        ],
+        [phone_number.ListPhoneNumbersRequest], Union[phone_number.ListPhoneNumbersResponse, Awaitable[phone_number.ListPhoneNumbersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_phone_number(
         self,
-    ) -> Callable[
-        [gcd_phone_number.UpdatePhoneNumberRequest],
-        Union[gcd_phone_number.PhoneNumber, Awaitable[gcd_phone_number.PhoneNumber]],
-    ]:
+    ) -> Callable[[gcd_phone_number.UpdatePhoneNumberRequest], Union[gcd_phone_number.PhoneNumber, Awaitable[gcd_phone_number.PhoneNumber]]]:
         raise NotImplementedError()
 
     @property
     def delete_phone_number(
         self,
-    ) -> Callable[
-        [phone_number.DeletePhoneNumberRequest],
-        Union[phone_number.PhoneNumber, Awaitable[phone_number.PhoneNumber]],
-    ]:
+    ) -> Callable[[phone_number.DeletePhoneNumberRequest], Union[phone_number.PhoneNumber, Awaitable[phone_number.PhoneNumber]]]:
         raise NotImplementedError()
 
     @property
     def undelete_phone_number(
         self,
-    ) -> Callable[
-        [phone_number.UndeletePhoneNumberRequest],
-        Union[phone_number.PhoneNumber, Awaitable[phone_number.PhoneNumber]],
-    ]:
+    ) -> Callable[[phone_number.UndeletePhoneNumberRequest], Union[phone_number.PhoneNumber, Awaitable[phone_number.PhoneNumber]]]:
         raise NotImplementedError()
 
     @property
@@ -239,20 +216,14 @@ class PhoneNumbersTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -264,22 +235,13 @@ class PhoneNumbersTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

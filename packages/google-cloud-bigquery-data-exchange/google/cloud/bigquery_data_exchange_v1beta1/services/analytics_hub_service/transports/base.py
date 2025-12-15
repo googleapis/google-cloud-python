@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.bigquery_data_exchange_v1beta1 import gapic_version as package_version
 from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class AnalyticsHubServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -240,11 +230,7 @@ class AnalyticsHubServiceTransport(abc.ABC):
     def list_data_exchanges(
         self,
     ) -> Callable[
-        [dataexchange.ListDataExchangesRequest],
-        Union[
-            dataexchange.ListDataExchangesResponse,
-            Awaitable[dataexchange.ListDataExchangesResponse],
-        ],
+        [dataexchange.ListDataExchangesRequest], Union[dataexchange.ListDataExchangesResponse, Awaitable[dataexchange.ListDataExchangesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -253,125 +239,68 @@ class AnalyticsHubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [dataexchange.ListOrgDataExchangesRequest],
-        Union[
-            dataexchange.ListOrgDataExchangesResponse,
-            Awaitable[dataexchange.ListOrgDataExchangesResponse],
-        ],
+        Union[dataexchange.ListOrgDataExchangesResponse, Awaitable[dataexchange.ListOrgDataExchangesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_data_exchange(
         self,
-    ) -> Callable[
-        [dataexchange.GetDataExchangeRequest],
-        Union[dataexchange.DataExchange, Awaitable[dataexchange.DataExchange]],
-    ]:
+    ) -> Callable[[dataexchange.GetDataExchangeRequest], Union[dataexchange.DataExchange, Awaitable[dataexchange.DataExchange]]]:
         raise NotImplementedError()
 
     @property
     def create_data_exchange(
         self,
-    ) -> Callable[
-        [dataexchange.CreateDataExchangeRequest],
-        Union[dataexchange.DataExchange, Awaitable[dataexchange.DataExchange]],
-    ]:
+    ) -> Callable[[dataexchange.CreateDataExchangeRequest], Union[dataexchange.DataExchange, Awaitable[dataexchange.DataExchange]]]:
         raise NotImplementedError()
 
     @property
     def update_data_exchange(
         self,
-    ) -> Callable[
-        [dataexchange.UpdateDataExchangeRequest],
-        Union[dataexchange.DataExchange, Awaitable[dataexchange.DataExchange]],
-    ]:
+    ) -> Callable[[dataexchange.UpdateDataExchangeRequest], Union[dataexchange.DataExchange, Awaitable[dataexchange.DataExchange]]]:
         raise NotImplementedError()
 
     @property
-    def delete_data_exchange(
-        self,
-    ) -> Callable[
-        [dataexchange.DeleteDataExchangeRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_data_exchange(self) -> Callable[[dataexchange.DeleteDataExchangeRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_listings(
         self,
-    ) -> Callable[
-        [dataexchange.ListListingsRequest],
-        Union[
-            dataexchange.ListListingsResponse,
-            Awaitable[dataexchange.ListListingsResponse],
-        ],
-    ]:
+    ) -> Callable[[dataexchange.ListListingsRequest], Union[dataexchange.ListListingsResponse, Awaitable[dataexchange.ListListingsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_listing(
-        self,
-    ) -> Callable[
-        [dataexchange.GetListingRequest],
-        Union[dataexchange.Listing, Awaitable[dataexchange.Listing]],
-    ]:
+    def get_listing(self) -> Callable[[dataexchange.GetListingRequest], Union[dataexchange.Listing, Awaitable[dataexchange.Listing]]]:
         raise NotImplementedError()
 
     @property
-    def create_listing(
-        self,
-    ) -> Callable[
-        [dataexchange.CreateListingRequest],
-        Union[dataexchange.Listing, Awaitable[dataexchange.Listing]],
-    ]:
+    def create_listing(self) -> Callable[[dataexchange.CreateListingRequest], Union[dataexchange.Listing, Awaitable[dataexchange.Listing]]]:
         raise NotImplementedError()
 
     @property
-    def update_listing(
-        self,
-    ) -> Callable[
-        [dataexchange.UpdateListingRequest],
-        Union[dataexchange.Listing, Awaitable[dataexchange.Listing]],
-    ]:
+    def update_listing(self) -> Callable[[dataexchange.UpdateListingRequest], Union[dataexchange.Listing, Awaitable[dataexchange.Listing]]]:
         raise NotImplementedError()
 
     @property
-    def delete_listing(
-        self,
-    ) -> Callable[
-        [dataexchange.DeleteListingRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_listing(self) -> Callable[[dataexchange.DeleteListingRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def subscribe_listing(
         self,
     ) -> Callable[
-        [dataexchange.SubscribeListingRequest],
-        Union[
-            dataexchange.SubscribeListingResponse,
-            Awaitable[dataexchange.SubscribeListingResponse],
-        ],
+        [dataexchange.SubscribeListingRequest], Union[dataexchange.SubscribeListingResponse, Awaitable[dataexchange.SubscribeListingResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -379,32 +308,20 @@ class AnalyticsHubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

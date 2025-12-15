@@ -29,9 +29,7 @@ import google.protobuf
 from google.ads.admanager_v1 import gapic_version as package_version
 from google.ads.admanager_v1.types import order_messages, order_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class OrderServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -161,33 +151,19 @@ class OrderServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_order(
-        self,
-    ) -> Callable[
-        [order_service.GetOrderRequest],
-        Union[order_messages.Order, Awaitable[order_messages.Order]],
-    ]:
+    def get_order(self) -> Callable[[order_service.GetOrderRequest], Union[order_messages.Order, Awaitable[order_messages.Order]]]:
         raise NotImplementedError()
 
     @property
     def list_orders(
         self,
-    ) -> Callable[
-        [order_service.ListOrdersRequest],
-        Union[
-            order_service.ListOrdersResponse,
-            Awaitable[order_service.ListOrdersResponse],
-        ],
-    ]:
+    ) -> Callable[[order_service.ListOrdersRequest], Union[order_service.ListOrdersResponse, Awaitable[order_service.ListOrdersResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

@@ -141,9 +141,7 @@ class ListPrivateAuctionDealsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_auction_deals: MutableSequence[
-        private_auction_deal_messages.PrivateAuctionDeal
-    ] = proto.RepeatedField(
+    private_auction_deals: MutableSequence[private_auction_deal_messages.PrivateAuctionDeal] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=private_auction_deal_messages.PrivateAuctionDeal,
@@ -174,12 +172,10 @@ class CreatePrivateAuctionDealRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    private_auction_deal: private_auction_deal_messages.PrivateAuctionDeal = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=private_auction_deal_messages.PrivateAuctionDeal,
-        )
+    private_auction_deal: private_auction_deal_messages.PrivateAuctionDeal = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=private_auction_deal_messages.PrivateAuctionDeal,
     )
 
 
@@ -196,12 +192,10 @@ class UpdatePrivateAuctionDealRequest(proto.Message):
             Required. The list of fields to update.
     """
 
-    private_auction_deal: private_auction_deal_messages.PrivateAuctionDeal = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=private_auction_deal_messages.PrivateAuctionDeal,
-        )
+    private_auction_deal: private_auction_deal_messages.PrivateAuctionDeal = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=private_auction_deal_messages.PrivateAuctionDeal,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,

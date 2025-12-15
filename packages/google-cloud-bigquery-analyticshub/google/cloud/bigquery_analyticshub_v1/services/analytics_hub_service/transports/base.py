@@ -32,9 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.bigquery_analyticshub_v1 import gapic_version as package_version
 from google.cloud.bigquery_analyticshub_v1.types import analyticshub
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class AnalyticsHubServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -305,11 +295,7 @@ class AnalyticsHubServiceTransport(abc.ABC):
     def list_data_exchanges(
         self,
     ) -> Callable[
-        [analyticshub.ListDataExchangesRequest],
-        Union[
-            analyticshub.ListDataExchangesResponse,
-            Awaitable[analyticshub.ListDataExchangesResponse],
-        ],
+        [analyticshub.ListDataExchangesRequest], Union[analyticshub.ListDataExchangesResponse, Awaitable[analyticshub.ListDataExchangesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -318,145 +304,85 @@ class AnalyticsHubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analyticshub.ListOrgDataExchangesRequest],
-        Union[
-            analyticshub.ListOrgDataExchangesResponse,
-            Awaitable[analyticshub.ListOrgDataExchangesResponse],
-        ],
+        Union[analyticshub.ListOrgDataExchangesResponse, Awaitable[analyticshub.ListOrgDataExchangesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_data_exchange(
         self,
-    ) -> Callable[
-        [analyticshub.GetDataExchangeRequest],
-        Union[analyticshub.DataExchange, Awaitable[analyticshub.DataExchange]],
-    ]:
+    ) -> Callable[[analyticshub.GetDataExchangeRequest], Union[analyticshub.DataExchange, Awaitable[analyticshub.DataExchange]]]:
         raise NotImplementedError()
 
     @property
     def create_data_exchange(
         self,
-    ) -> Callable[
-        [analyticshub.CreateDataExchangeRequest],
-        Union[analyticshub.DataExchange, Awaitable[analyticshub.DataExchange]],
-    ]:
+    ) -> Callable[[analyticshub.CreateDataExchangeRequest], Union[analyticshub.DataExchange, Awaitable[analyticshub.DataExchange]]]:
         raise NotImplementedError()
 
     @property
     def update_data_exchange(
         self,
-    ) -> Callable[
-        [analyticshub.UpdateDataExchangeRequest],
-        Union[analyticshub.DataExchange, Awaitable[analyticshub.DataExchange]],
-    ]:
+    ) -> Callable[[analyticshub.UpdateDataExchangeRequest], Union[analyticshub.DataExchange, Awaitable[analyticshub.DataExchange]]]:
         raise NotImplementedError()
 
     @property
-    def delete_data_exchange(
-        self,
-    ) -> Callable[
-        [analyticshub.DeleteDataExchangeRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_data_exchange(self) -> Callable[[analyticshub.DeleteDataExchangeRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_listings(
         self,
-    ) -> Callable[
-        [analyticshub.ListListingsRequest],
-        Union[
-            analyticshub.ListListingsResponse,
-            Awaitable[analyticshub.ListListingsResponse],
-        ],
-    ]:
+    ) -> Callable[[analyticshub.ListListingsRequest], Union[analyticshub.ListListingsResponse, Awaitable[analyticshub.ListListingsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_listing(
-        self,
-    ) -> Callable[
-        [analyticshub.GetListingRequest],
-        Union[analyticshub.Listing, Awaitable[analyticshub.Listing]],
-    ]:
+    def get_listing(self) -> Callable[[analyticshub.GetListingRequest], Union[analyticshub.Listing, Awaitable[analyticshub.Listing]]]:
         raise NotImplementedError()
 
     @property
-    def create_listing(
-        self,
-    ) -> Callable[
-        [analyticshub.CreateListingRequest],
-        Union[analyticshub.Listing, Awaitable[analyticshub.Listing]],
-    ]:
+    def create_listing(self) -> Callable[[analyticshub.CreateListingRequest], Union[analyticshub.Listing, Awaitable[analyticshub.Listing]]]:
         raise NotImplementedError()
 
     @property
-    def update_listing(
-        self,
-    ) -> Callable[
-        [analyticshub.UpdateListingRequest],
-        Union[analyticshub.Listing, Awaitable[analyticshub.Listing]],
-    ]:
+    def update_listing(self) -> Callable[[analyticshub.UpdateListingRequest], Union[analyticshub.Listing, Awaitable[analyticshub.Listing]]]:
         raise NotImplementedError()
 
     @property
-    def delete_listing(
-        self,
-    ) -> Callable[
-        [analyticshub.DeleteListingRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_listing(self) -> Callable[[analyticshub.DeleteListingRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def subscribe_listing(
         self,
     ) -> Callable[
-        [analyticshub.SubscribeListingRequest],
-        Union[
-            analyticshub.SubscribeListingResponse,
-            Awaitable[analyticshub.SubscribeListingResponse],
-        ],
+        [analyticshub.SubscribeListingRequest], Union[analyticshub.SubscribeListingResponse, Awaitable[analyticshub.SubscribeListingResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def subscribe_data_exchange(
         self,
-    ) -> Callable[
-        [analyticshub.SubscribeDataExchangeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[analyticshub.SubscribeDataExchangeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def refresh_subscription(
         self,
-    ) -> Callable[
-        [analyticshub.RefreshSubscriptionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[analyticshub.RefreshSubscriptionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_subscription(
         self,
-    ) -> Callable[
-        [analyticshub.GetSubscriptionRequest],
-        Union[analyticshub.Subscription, Awaitable[analyticshub.Subscription]],
-    ]:
+    ) -> Callable[[analyticshub.GetSubscriptionRequest], Union[analyticshub.Subscription, Awaitable[analyticshub.Subscription]]]:
         raise NotImplementedError()
 
     @property
     def list_subscriptions(
         self,
     ) -> Callable[
-        [analyticshub.ListSubscriptionsRequest],
-        Union[
-            analyticshub.ListSubscriptionsResponse,
-            Awaitable[analyticshub.ListSubscriptionsResponse],
-        ],
+        [analyticshub.ListSubscriptionsRequest], Union[analyticshub.ListSubscriptionsResponse, Awaitable[analyticshub.ListSubscriptionsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -465,10 +391,7 @@ class AnalyticsHubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [analyticshub.ListSharedResourceSubscriptionsRequest],
-        Union[
-            analyticshub.ListSharedResourceSubscriptionsResponse,
-            Awaitable[analyticshub.ListSharedResourceSubscriptionsResponse],
-        ],
+        Union[analyticshub.ListSharedResourceSubscriptionsResponse, Awaitable[analyticshub.ListSharedResourceSubscriptionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -476,39 +399,22 @@ class AnalyticsHubServiceTransport(abc.ABC):
     def revoke_subscription(
         self,
     ) -> Callable[
-        [analyticshub.RevokeSubscriptionRequest],
-        Union[
-            analyticshub.RevokeSubscriptionResponse,
-            Awaitable[analyticshub.RevokeSubscriptionResponse],
-        ],
+        [analyticshub.RevokeSubscriptionRequest], Union[analyticshub.RevokeSubscriptionResponse, Awaitable[analyticshub.RevokeSubscriptionResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_subscription(
         self,
-    ) -> Callable[
-        [analyticshub.DeleteSubscriptionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[analyticshub.DeleteSubscriptionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -516,77 +422,50 @@ class AnalyticsHubServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_query_template(
         self,
-    ) -> Callable[
-        [analyticshub.CreateQueryTemplateRequest],
-        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
-    ]:
+    ) -> Callable[[analyticshub.CreateQueryTemplateRequest], Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]]]:
         raise NotImplementedError()
 
     @property
     def get_query_template(
         self,
-    ) -> Callable[
-        [analyticshub.GetQueryTemplateRequest],
-        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
-    ]:
+    ) -> Callable[[analyticshub.GetQueryTemplateRequest], Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]]]:
         raise NotImplementedError()
 
     @property
     def list_query_templates(
         self,
     ) -> Callable[
-        [analyticshub.ListQueryTemplatesRequest],
-        Union[
-            analyticshub.ListQueryTemplatesResponse,
-            Awaitable[analyticshub.ListQueryTemplatesResponse],
-        ],
+        [analyticshub.ListQueryTemplatesRequest], Union[analyticshub.ListQueryTemplatesResponse, Awaitable[analyticshub.ListQueryTemplatesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def update_query_template(
         self,
-    ) -> Callable[
-        [analyticshub.UpdateQueryTemplateRequest],
-        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
-    ]:
+    ) -> Callable[[analyticshub.UpdateQueryTemplateRequest], Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]]]:
         raise NotImplementedError()
 
     @property
-    def delete_query_template(
-        self,
-    ) -> Callable[
-        [analyticshub.DeleteQueryTemplateRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_query_template(self) -> Callable[[analyticshub.DeleteQueryTemplateRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def submit_query_template(
         self,
-    ) -> Callable[
-        [analyticshub.SubmitQueryTemplateRequest],
-        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
-    ]:
+    ) -> Callable[[analyticshub.SubmitQueryTemplateRequest], Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]]]:
         raise NotImplementedError()
 
     @property
     def approve_query_template(
         self,
-    ) -> Callable[
-        [analyticshub.ApproveQueryTemplateRequest],
-        Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]],
-    ]:
+    ) -> Callable[[analyticshub.ApproveQueryTemplateRequest], Union[analyticshub.QueryTemplate, Awaitable[analyticshub.QueryTemplate]]]:
         raise NotImplementedError()
 
     @property

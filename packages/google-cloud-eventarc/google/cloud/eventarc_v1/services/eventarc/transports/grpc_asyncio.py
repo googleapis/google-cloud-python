@@ -35,17 +35,8 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.eventarc_v1.types import (
-    channel,
-    channel_connection,
-    discovery,
-    enrollment,
-    eventarc,
-    google_api_source,
-)
-from google.cloud.eventarc_v1.types import (
-    google_channel_config as gce_google_channel_config,
-)
+from google.cloud.eventarc_v1.types import channel, channel_connection, discovery, enrollment, eventarc, google_api_source
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
@@ -62,13 +53,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -78,10 +65,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -100,11 +84,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -285,18 +265,14 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -332,9 +308,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -357,17 +331,13 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_trigger(
-        self,
-    ) -> Callable[[eventarc.GetTriggerRequest], Awaitable[trigger.Trigger]]:
+    def get_trigger(self) -> Callable[[eventarc.GetTriggerRequest], Awaitable[trigger.Trigger]]:
         r"""Return a callable for the get trigger method over gRPC.
 
         Get a single trigger.
@@ -391,11 +361,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_trigger"]
 
     @property
-    def list_triggers(
-        self,
-    ) -> Callable[
-        [eventarc.ListTriggersRequest], Awaitable[eventarc.ListTriggersResponse]
-    ]:
+    def list_triggers(self) -> Callable[[eventarc.ListTriggersRequest], Awaitable[eventarc.ListTriggersResponse]]:
         r"""Return a callable for the list triggers method over gRPC.
 
         List triggers.
@@ -419,9 +385,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_triggers"]
 
     @property
-    def create_trigger(
-        self,
-    ) -> Callable[[eventarc.CreateTriggerRequest], Awaitable[operations_pb2.Operation]]:
+    def create_trigger(self) -> Callable[[eventarc.CreateTriggerRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create trigger method over gRPC.
 
         Create a new trigger in a particular project and
@@ -446,9 +410,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_trigger"]
 
     @property
-    def update_trigger(
-        self,
-    ) -> Callable[[eventarc.UpdateTriggerRequest], Awaitable[operations_pb2.Operation]]:
+    def update_trigger(self) -> Callable[[eventarc.UpdateTriggerRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update trigger method over gRPC.
 
         Update a single trigger.
@@ -472,9 +434,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_trigger"]
 
     @property
-    def delete_trigger(
-        self,
-    ) -> Callable[[eventarc.DeleteTriggerRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_trigger(self) -> Callable[[eventarc.DeleteTriggerRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete trigger method over gRPC.
 
         Delete a single trigger.
@@ -498,9 +458,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["delete_trigger"]
 
     @property
-    def get_channel(
-        self,
-    ) -> Callable[[eventarc.GetChannelRequest], Awaitable[channel.Channel]]:
+    def get_channel(self) -> Callable[[eventarc.GetChannelRequest], Awaitable[channel.Channel]]:
         r"""Return a callable for the get channel method over gRPC.
 
         Get a single Channel.
@@ -524,11 +482,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_channel"]
 
     @property
-    def list_channels(
-        self,
-    ) -> Callable[
-        [eventarc.ListChannelsRequest], Awaitable[eventarc.ListChannelsResponse]
-    ]:
+    def list_channels(self) -> Callable[[eventarc.ListChannelsRequest], Awaitable[eventarc.ListChannelsResponse]]:
         r"""Return a callable for the list channels method over gRPC.
 
         List channels.
@@ -552,9 +506,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_channels"]
 
     @property
-    def create_channel_(
-        self,
-    ) -> Callable[[eventarc.CreateChannelRequest], Awaitable[operations_pb2.Operation]]:
+    def create_channel_(self) -> Callable[[eventarc.CreateChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create channel method over gRPC.
 
         Create a new channel in a particular project and
@@ -579,9 +531,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_channel_"]
 
     @property
-    def update_channel(
-        self,
-    ) -> Callable[[eventarc.UpdateChannelRequest], Awaitable[operations_pb2.Operation]]:
+    def update_channel(self) -> Callable[[eventarc.UpdateChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update channel method over gRPC.
 
         Update a single channel.
@@ -605,9 +555,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_channel"]
 
     @property
-    def delete_channel(
-        self,
-    ) -> Callable[[eventarc.DeleteChannelRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_channel(self) -> Callable[[eventarc.DeleteChannelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete channel method over gRPC.
 
         Delete a single channel.
@@ -631,9 +579,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["delete_channel"]
 
     @property
-    def get_provider(
-        self,
-    ) -> Callable[[eventarc.GetProviderRequest], Awaitable[discovery.Provider]]:
+    def get_provider(self) -> Callable[[eventarc.GetProviderRequest], Awaitable[discovery.Provider]]:
         r"""Return a callable for the get provider method over gRPC.
 
         Get a single Provider.
@@ -657,11 +603,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_provider"]
 
     @property
-    def list_providers(
-        self,
-    ) -> Callable[
-        [eventarc.ListProvidersRequest], Awaitable[eventarc.ListProvidersResponse]
-    ]:
+    def list_providers(self) -> Callable[[eventarc.ListProvidersRequest], Awaitable[eventarc.ListProvidersResponse]]:
         r"""Return a callable for the list providers method over gRPC.
 
         List providers.
@@ -685,12 +627,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_providers"]
 
     @property
-    def get_channel_connection(
-        self,
-    ) -> Callable[
-        [eventarc.GetChannelConnectionRequest],
-        Awaitable[channel_connection.ChannelConnection],
-    ]:
+    def get_channel_connection(self) -> Callable[[eventarc.GetChannelConnectionRequest], Awaitable[channel_connection.ChannelConnection]]:
         r"""Return a callable for the get channel connection method over gRPC.
 
         Get a single ChannelConnection.
@@ -714,12 +651,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_channel_connection"]
 
     @property
-    def list_channel_connections(
-        self,
-    ) -> Callable[
-        [eventarc.ListChannelConnectionsRequest],
-        Awaitable[eventarc.ListChannelConnectionsResponse],
-    ]:
+    def list_channel_connections(self) -> Callable[[eventarc.ListChannelConnectionsRequest], Awaitable[eventarc.ListChannelConnectionsResponse]]:
         r"""Return a callable for the list channel connections method over gRPC.
 
         List channel connections.
@@ -743,11 +675,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_channel_connections"]
 
     @property
-    def create_channel_connection(
-        self,
-    ) -> Callable[
-        [eventarc.CreateChannelConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_channel_connection(self) -> Callable[[eventarc.CreateChannelConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create channel connection method over gRPC.
 
         Create a new ChannelConnection in a particular
@@ -772,11 +700,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_channel_connection"]
 
     @property
-    def delete_channel_connection(
-        self,
-    ) -> Callable[
-        [eventarc.DeleteChannelConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_channel_connection(self) -> Callable[[eventarc.DeleteChannelConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete channel connection method over gRPC.
 
         Delete a single ChannelConnection.
@@ -800,12 +724,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["delete_channel_connection"]
 
     @property
-    def get_google_channel_config(
-        self,
-    ) -> Callable[
-        [eventarc.GetGoogleChannelConfigRequest],
-        Awaitable[google_channel_config.GoogleChannelConfig],
-    ]:
+    def get_google_channel_config(self) -> Callable[[eventarc.GetGoogleChannelConfigRequest], Awaitable[google_channel_config.GoogleChannelConfig]]:
         r"""Return a callable for the get google channel config method over gRPC.
 
         Get a GoogleChannelConfig.
@@ -833,10 +752,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     @property
     def update_google_channel_config(
         self,
-    ) -> Callable[
-        [eventarc.UpdateGoogleChannelConfigRequest],
-        Awaitable[gce_google_channel_config.GoogleChannelConfig],
-    ]:
+    ) -> Callable[[eventarc.UpdateGoogleChannelConfigRequest], Awaitable[gce_google_channel_config.GoogleChannelConfig]]:
         r"""Return a callable for the update google channel config method over gRPC.
 
         Update a single GoogleChannelConfig
@@ -852,9 +768,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_google_channel_config" not in self._stubs:
-            self._stubs[
-                "update_google_channel_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_google_channel_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.eventarc.v1.Eventarc/UpdateGoogleChannelConfig",
                 request_serializer=eventarc.UpdateGoogleChannelConfigRequest.serialize,
                 response_deserializer=gce_google_channel_config.GoogleChannelConfig.deserialize,
@@ -862,9 +776,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_google_channel_config"]
 
     @property
-    def get_message_bus(
-        self,
-    ) -> Callable[[eventarc.GetMessageBusRequest], Awaitable[message_bus.MessageBus]]:
+    def get_message_bus(self) -> Callable[[eventarc.GetMessageBusRequest], Awaitable[message_bus.MessageBus]]:
         r"""Return a callable for the get message bus method over gRPC.
 
         Get a single MessageBus.
@@ -888,11 +800,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_message_bus"]
 
     @property
-    def list_message_buses(
-        self,
-    ) -> Callable[
-        [eventarc.ListMessageBusesRequest], Awaitable[eventarc.ListMessageBusesResponse]
-    ]:
+    def list_message_buses(self) -> Callable[[eventarc.ListMessageBusesRequest], Awaitable[eventarc.ListMessageBusesResponse]]:
         r"""Return a callable for the list message buses method over gRPC.
 
         List message buses.
@@ -918,10 +826,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     @property
     def list_message_bus_enrollments(
         self,
-    ) -> Callable[
-        [eventarc.ListMessageBusEnrollmentsRequest],
-        Awaitable[eventarc.ListMessageBusEnrollmentsResponse],
-    ]:
+    ) -> Callable[[eventarc.ListMessageBusEnrollmentsRequest], Awaitable[eventarc.ListMessageBusEnrollmentsResponse]]:
         r"""Return a callable for the list message bus enrollments method over gRPC.
 
         List message bus enrollments.
@@ -937,9 +842,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_message_bus_enrollments" not in self._stubs:
-            self._stubs[
-                "list_message_bus_enrollments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_message_bus_enrollments"] = self._logged_channel.unary_unary(
                 "/google.cloud.eventarc.v1.Eventarc/ListMessageBusEnrollments",
                 request_serializer=eventarc.ListMessageBusEnrollmentsRequest.serialize,
                 response_deserializer=eventarc.ListMessageBusEnrollmentsResponse.deserialize,
@@ -947,11 +850,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_message_bus_enrollments"]
 
     @property
-    def create_message_bus(
-        self,
-    ) -> Callable[
-        [eventarc.CreateMessageBusRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_message_bus(self) -> Callable[[eventarc.CreateMessageBusRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create message bus method over gRPC.
 
         Create a new MessageBus in a particular project and
@@ -976,11 +875,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_message_bus"]
 
     @property
-    def update_message_bus(
-        self,
-    ) -> Callable[
-        [eventarc.UpdateMessageBusRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_message_bus(self) -> Callable[[eventarc.UpdateMessageBusRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update message bus method over gRPC.
 
         Update a single message bus.
@@ -1004,11 +899,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_message_bus"]
 
     @property
-    def delete_message_bus(
-        self,
-    ) -> Callable[
-        [eventarc.DeleteMessageBusRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_message_bus(self) -> Callable[[eventarc.DeleteMessageBusRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete message bus method over gRPC.
 
         Delete a single message bus.
@@ -1032,9 +923,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["delete_message_bus"]
 
     @property
-    def get_enrollment(
-        self,
-    ) -> Callable[[eventarc.GetEnrollmentRequest], Awaitable[enrollment.Enrollment]]:
+    def get_enrollment(self) -> Callable[[eventarc.GetEnrollmentRequest], Awaitable[enrollment.Enrollment]]:
         r"""Return a callable for the get enrollment method over gRPC.
 
         Get a single Enrollment.
@@ -1058,11 +947,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_enrollment"]
 
     @property
-    def list_enrollments(
-        self,
-    ) -> Callable[
-        [eventarc.ListEnrollmentsRequest], Awaitable[eventarc.ListEnrollmentsResponse]
-    ]:
+    def list_enrollments(self) -> Callable[[eventarc.ListEnrollmentsRequest], Awaitable[eventarc.ListEnrollmentsResponse]]:
         r"""Return a callable for the list enrollments method over gRPC.
 
         List Enrollments.
@@ -1086,11 +971,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_enrollments"]
 
     @property
-    def create_enrollment(
-        self,
-    ) -> Callable[
-        [eventarc.CreateEnrollmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_enrollment(self) -> Callable[[eventarc.CreateEnrollmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create enrollment method over gRPC.
 
         Create a new Enrollment in a particular project and
@@ -1115,11 +996,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_enrollment"]
 
     @property
-    def update_enrollment(
-        self,
-    ) -> Callable[
-        [eventarc.UpdateEnrollmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_enrollment(self) -> Callable[[eventarc.UpdateEnrollmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update enrollment method over gRPC.
 
         Update a single Enrollment.
@@ -1143,11 +1020,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_enrollment"]
 
     @property
-    def delete_enrollment(
-        self,
-    ) -> Callable[
-        [eventarc.DeleteEnrollmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_enrollment(self) -> Callable[[eventarc.DeleteEnrollmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete enrollment method over gRPC.
 
         Delete a single Enrollment.
@@ -1171,9 +1044,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["delete_enrollment"]
 
     @property
-    def get_pipeline(
-        self,
-    ) -> Callable[[eventarc.GetPipelineRequest], Awaitable[pipeline.Pipeline]]:
+    def get_pipeline(self) -> Callable[[eventarc.GetPipelineRequest], Awaitable[pipeline.Pipeline]]:
         r"""Return a callable for the get pipeline method over gRPC.
 
         Get a single Pipeline.
@@ -1197,11 +1068,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_pipeline"]
 
     @property
-    def list_pipelines(
-        self,
-    ) -> Callable[
-        [eventarc.ListPipelinesRequest], Awaitable[eventarc.ListPipelinesResponse]
-    ]:
+    def list_pipelines(self) -> Callable[[eventarc.ListPipelinesRequest], Awaitable[eventarc.ListPipelinesResponse]]:
         r"""Return a callable for the list pipelines method over gRPC.
 
         List pipelines.
@@ -1225,11 +1092,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_pipelines"]
 
     @property
-    def create_pipeline(
-        self,
-    ) -> Callable[
-        [eventarc.CreatePipelineRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_pipeline(self) -> Callable[[eventarc.CreatePipelineRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create pipeline method over gRPC.
 
         Create a new Pipeline in a particular project and
@@ -1254,11 +1117,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_pipeline"]
 
     @property
-    def update_pipeline(
-        self,
-    ) -> Callable[
-        [eventarc.UpdatePipelineRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_pipeline(self) -> Callable[[eventarc.UpdatePipelineRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update pipeline method over gRPC.
 
         Update a single pipeline.
@@ -1282,11 +1141,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_pipeline"]
 
     @property
-    def delete_pipeline(
-        self,
-    ) -> Callable[
-        [eventarc.DeletePipelineRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_pipeline(self) -> Callable[[eventarc.DeletePipelineRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete pipeline method over gRPC.
 
         Delete a single pipeline.
@@ -1310,12 +1165,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["delete_pipeline"]
 
     @property
-    def get_google_api_source(
-        self,
-    ) -> Callable[
-        [eventarc.GetGoogleApiSourceRequest],
-        Awaitable[google_api_source.GoogleApiSource],
-    ]:
+    def get_google_api_source(self) -> Callable[[eventarc.GetGoogleApiSourceRequest], Awaitable[google_api_source.GoogleApiSource]]:
         r"""Return a callable for the get google api source method over gRPC.
 
         Get a single GoogleApiSource.
@@ -1339,12 +1189,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["get_google_api_source"]
 
     @property
-    def list_google_api_sources(
-        self,
-    ) -> Callable[
-        [eventarc.ListGoogleApiSourcesRequest],
-        Awaitable[eventarc.ListGoogleApiSourcesResponse],
-    ]:
+    def list_google_api_sources(self) -> Callable[[eventarc.ListGoogleApiSourcesRequest], Awaitable[eventarc.ListGoogleApiSourcesResponse]]:
         r"""Return a callable for the list google api sources method over gRPC.
 
         List GoogleApiSources.
@@ -1368,11 +1213,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["list_google_api_sources"]
 
     @property
-    def create_google_api_source(
-        self,
-    ) -> Callable[
-        [eventarc.CreateGoogleApiSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_google_api_source(self) -> Callable[[eventarc.CreateGoogleApiSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create google api source method over gRPC.
 
         Create a new GoogleApiSource in a particular project
@@ -1397,11 +1238,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["create_google_api_source"]
 
     @property
-    def update_google_api_source(
-        self,
-    ) -> Callable[
-        [eventarc.UpdateGoogleApiSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_google_api_source(self) -> Callable[[eventarc.UpdateGoogleApiSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update google api source method over gRPC.
 
         Update a single GoogleApiSource.
@@ -1425,11 +1262,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
         return self._stubs["update_google_api_source"]
 
     @property
-    def delete_google_api_source(
-        self,
-    ) -> Callable[
-        [eventarc.DeleteGoogleApiSourceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_google_api_source(self) -> Callable[[eventarc.DeleteGoogleApiSourceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete google api source method over gRPC.
 
         Delete a single GoogleApiSource.
@@ -1943,9 +1776,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1962,9 +1793,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2049,10 +1878,7 @@ class EventarcGrpcAsyncIOTransport(EventarcTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

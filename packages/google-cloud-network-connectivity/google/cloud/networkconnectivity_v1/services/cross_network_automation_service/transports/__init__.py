@@ -21,9 +21,7 @@ from .grpc import CrossNetworkAutomationServiceGrpcTransport
 from .grpc_asyncio import CrossNetworkAutomationServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CrossNetworkAutomationServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CrossNetworkAutomationServiceTransport]]
 _transport_registry["grpc"] = CrossNetworkAutomationServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CrossNetworkAutomationServiceGrpcAsyncIOTransport
 

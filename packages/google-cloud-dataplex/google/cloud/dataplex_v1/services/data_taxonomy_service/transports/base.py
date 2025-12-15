@@ -33,9 +33,7 @@ from google.cloud.dataplex_v1 import gapic_version as package_version
 from google.cloud.dataplex_v1.types import data_taxonomy
 from google.cloud.dataplex_v1.types import data_taxonomy as gcd_data_taxonomy
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class DataTaxonomyServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -262,28 +252,19 @@ class DataTaxonomyServiceTransport(abc.ABC):
     @property
     def create_data_taxonomy(
         self,
-    ) -> Callable[
-        [gcd_data_taxonomy.CreateDataTaxonomyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcd_data_taxonomy.CreateDataTaxonomyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_data_taxonomy(
         self,
-    ) -> Callable[
-        [gcd_data_taxonomy.UpdateDataTaxonomyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gcd_data_taxonomy.UpdateDataTaxonomyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_data_taxonomy(
         self,
-    ) -> Callable[
-        [data_taxonomy.DeleteDataTaxonomyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.DeleteDataTaxonomyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -291,47 +272,32 @@ class DataTaxonomyServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_taxonomy.ListDataTaxonomiesRequest],
-        Union[
-            data_taxonomy.ListDataTaxonomiesResponse,
-            Awaitable[data_taxonomy.ListDataTaxonomiesResponse],
-        ],
+        Union[data_taxonomy.ListDataTaxonomiesResponse, Awaitable[data_taxonomy.ListDataTaxonomiesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_data_taxonomy(
         self,
-    ) -> Callable[
-        [data_taxonomy.GetDataTaxonomyRequest],
-        Union[data_taxonomy.DataTaxonomy, Awaitable[data_taxonomy.DataTaxonomy]],
-    ]:
+    ) -> Callable[[data_taxonomy.GetDataTaxonomyRequest], Union[data_taxonomy.DataTaxonomy, Awaitable[data_taxonomy.DataTaxonomy]]]:
         raise NotImplementedError()
 
     @property
     def create_data_attribute_binding(
         self,
-    ) -> Callable[
-        [data_taxonomy.CreateDataAttributeBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.CreateDataAttributeBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_data_attribute_binding(
         self,
-    ) -> Callable[
-        [data_taxonomy.UpdateDataAttributeBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.UpdateDataAttributeBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_data_attribute_binding(
         self,
-    ) -> Callable[
-        [data_taxonomy.DeleteDataAttributeBindingRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.DeleteDataAttributeBindingRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -339,10 +305,7 @@ class DataTaxonomyServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_taxonomy.ListDataAttributeBindingsRequest],
-        Union[
-            data_taxonomy.ListDataAttributeBindingsResponse,
-            Awaitable[data_taxonomy.ListDataAttributeBindingsResponse],
-        ],
+        Union[data_taxonomy.ListDataAttributeBindingsResponse, Awaitable[data_taxonomy.ListDataAttributeBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -350,39 +313,26 @@ class DataTaxonomyServiceTransport(abc.ABC):
     def get_data_attribute_binding(
         self,
     ) -> Callable[
-        [data_taxonomy.GetDataAttributeBindingRequest],
-        Union[
-            data_taxonomy.DataAttributeBinding,
-            Awaitable[data_taxonomy.DataAttributeBinding],
-        ],
+        [data_taxonomy.GetDataAttributeBindingRequest], Union[data_taxonomy.DataAttributeBinding, Awaitable[data_taxonomy.DataAttributeBinding]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_data_attribute(
         self,
-    ) -> Callable[
-        [data_taxonomy.CreateDataAttributeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.CreateDataAttributeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_data_attribute(
         self,
-    ) -> Callable[
-        [data_taxonomy.UpdateDataAttributeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.UpdateDataAttributeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_data_attribute(
         self,
-    ) -> Callable[
-        [data_taxonomy.DeleteDataAttributeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_taxonomy.DeleteDataAttributeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -390,20 +340,14 @@ class DataTaxonomyServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_taxonomy.ListDataAttributesRequest],
-        Union[
-            data_taxonomy.ListDataAttributesResponse,
-            Awaitable[data_taxonomy.ListDataAttributesResponse],
-        ],
+        Union[data_taxonomy.ListDataAttributesResponse, Awaitable[data_taxonomy.ListDataAttributesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_data_attribute(
         self,
-    ) -> Callable[
-        [data_taxonomy.GetDataAttributeRequest],
-        Union[data_taxonomy.DataAttribute, Awaitable[data_taxonomy.DataAttribute]],
-    ]:
+    ) -> Callable[[data_taxonomy.GetDataAttributeRequest], Union[data_taxonomy.DataAttribute, Awaitable[data_taxonomy.DataAttribute]]]:
         raise NotImplementedError()
 
     @property
@@ -411,20 +355,14 @@ class DataTaxonomyServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -442,22 +380,13 @@ class DataTaxonomyServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

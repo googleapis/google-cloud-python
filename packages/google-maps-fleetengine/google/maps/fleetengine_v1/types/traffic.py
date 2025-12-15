@@ -94,9 +94,7 @@ class ConsumableTrafficPolyline(proto.Message):
             ``speed_reading_interval``). Decoding is not yet supported.
     """
 
-    speed_reading_interval: MutableSequence[
-        "SpeedReadingInterval"
-    ] = proto.RepeatedField(
+    speed_reading_interval: MutableSequence["SpeedReadingInterval"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SpeedReadingInterval",

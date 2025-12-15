@@ -191,9 +191,7 @@ class ListPatchJobInstanceDetailsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    patch_job_instance_details: MutableSequence[
-        "PatchJobInstanceDetails"
-    ] = proto.RepeatedField(
+    patch_job_instance_details: MutableSequence["PatchJobInstanceDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PatchJobInstanceDetails",

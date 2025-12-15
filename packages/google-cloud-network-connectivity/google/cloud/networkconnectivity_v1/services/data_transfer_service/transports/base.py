@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.networkconnectivity_v1 import gapic_version as package_version
 from google.cloud.networkconnectivity_v1.types import data_transfer
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class DataTransferServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -263,10 +253,7 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_transfer.ListMulticloudDataTransferConfigsRequest],
-        Union[
-            data_transfer.ListMulticloudDataTransferConfigsResponse,
-            Awaitable[data_transfer.ListMulticloudDataTransferConfigsResponse],
-        ],
+        Union[data_transfer.ListMulticloudDataTransferConfigsResponse, Awaitable[data_transfer.ListMulticloudDataTransferConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -275,86 +262,58 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_transfer.GetMulticloudDataTransferConfigRequest],
-        Union[
-            data_transfer.MulticloudDataTransferConfig,
-            Awaitable[data_transfer.MulticloudDataTransferConfig],
-        ],
+        Union[data_transfer.MulticloudDataTransferConfig, Awaitable[data_transfer.MulticloudDataTransferConfig]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_multicloud_data_transfer_config(
         self,
-    ) -> Callable[
-        [data_transfer.CreateMulticloudDataTransferConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_transfer.CreateMulticloudDataTransferConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_multicloud_data_transfer_config(
         self,
-    ) -> Callable[
-        [data_transfer.UpdateMulticloudDataTransferConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_transfer.UpdateMulticloudDataTransferConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_multicloud_data_transfer_config(
         self,
-    ) -> Callable[
-        [data_transfer.DeleteMulticloudDataTransferConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_transfer.DeleteMulticloudDataTransferConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_destinations(
         self,
     ) -> Callable[
-        [data_transfer.ListDestinationsRequest],
-        Union[
-            data_transfer.ListDestinationsResponse,
-            Awaitable[data_transfer.ListDestinationsResponse],
-        ],
+        [data_transfer.ListDestinationsRequest], Union[data_transfer.ListDestinationsResponse, Awaitable[data_transfer.ListDestinationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_destination(
         self,
-    ) -> Callable[
-        [data_transfer.GetDestinationRequest],
-        Union[data_transfer.Destination, Awaitable[data_transfer.Destination]],
-    ]:
+    ) -> Callable[[data_transfer.GetDestinationRequest], Union[data_transfer.Destination, Awaitable[data_transfer.Destination]]]:
         raise NotImplementedError()
 
     @property
     def create_destination(
         self,
-    ) -> Callable[
-        [data_transfer.CreateDestinationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_transfer.CreateDestinationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_destination(
         self,
-    ) -> Callable[
-        [data_transfer.UpdateDestinationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_transfer.UpdateDestinationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_destination(
         self,
-    ) -> Callable[
-        [data_transfer.DeleteDestinationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_transfer.DeleteDestinationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -362,10 +321,7 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_transfer.GetMulticloudDataTransferSupportedServiceRequest],
-        Union[
-            data_transfer.MulticloudDataTransferSupportedService,
-            Awaitable[data_transfer.MulticloudDataTransferSupportedService],
-        ],
+        Union[data_transfer.MulticloudDataTransferSupportedService, Awaitable[data_transfer.MulticloudDataTransferSupportedService]],
     ]:
         raise NotImplementedError()
 
@@ -376,9 +332,7 @@ class DataTransferServiceTransport(abc.ABC):
         [data_transfer.ListMulticloudDataTransferSupportedServicesRequest],
         Union[
             data_transfer.ListMulticloudDataTransferSupportedServicesResponse,
-            Awaitable[
-                data_transfer.ListMulticloudDataTransferSupportedServicesResponse
-            ],
+            Awaitable[data_transfer.ListMulticloudDataTransferSupportedServicesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -388,20 +342,14 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -419,19 +367,13 @@ class DataTransferServiceTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -449,22 +391,13 @@ class DataTransferServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

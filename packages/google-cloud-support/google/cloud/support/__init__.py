@@ -18,26 +18,15 @@ from google.cloud.support import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.support_v2.services.case_attachment_service.async_client import (
-    CaseAttachmentServiceAsyncClient,
-)
-from google.cloud.support_v2.services.case_attachment_service.client import (
-    CaseAttachmentServiceClient,
-)
-from google.cloud.support_v2.services.case_service.async_client import (
-    CaseServiceAsyncClient,
-)
+from google.cloud.support_v2.services.case_attachment_service.async_client import CaseAttachmentServiceAsyncClient
+from google.cloud.support_v2.services.case_attachment_service.client import CaseAttachmentServiceClient
+from google.cloud.support_v2.services.case_service.async_client import CaseServiceAsyncClient
 from google.cloud.support_v2.services.case_service.client import CaseServiceClient
-from google.cloud.support_v2.services.comment_service.async_client import (
-    CommentServiceAsyncClient,
-)
+from google.cloud.support_v2.services.comment_service.async_client import CommentServiceAsyncClient
 from google.cloud.support_v2.services.comment_service.client import CommentServiceClient
 from google.cloud.support_v2.types.actor import Actor
 from google.cloud.support_v2.types.attachment import Attachment
-from google.cloud.support_v2.types.attachment_service import (
-    ListAttachmentsRequest,
-    ListAttachmentsResponse,
-)
+from google.cloud.support_v2.types.attachment_service import ListAttachmentsRequest, ListAttachmentsResponse
 from google.cloud.support_v2.types.case import Case, CaseClassification
 from google.cloud.support_v2.types.case_service import (
     CloseCaseRequest,
@@ -53,11 +42,7 @@ from google.cloud.support_v2.types.case_service import (
     UpdateCaseRequest,
 )
 from google.cloud.support_v2.types.comment import Comment
-from google.cloud.support_v2.types.comment_service import (
-    CreateCommentRequest,
-    ListCommentsRequest,
-    ListCommentsResponse,
-)
+from google.cloud.support_v2.types.comment_service import CreateCommentRequest, ListCommentsRequest, ListCommentsResponse
 from google.cloud.support_v2.types.escalation import Escalation
 
 __all__ = (

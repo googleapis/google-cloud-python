@@ -164,13 +164,11 @@ class AdBreak(proto.Message):
         optional=True,
         message=duration_pb2.Duration,
     )
-    break_state: early_ad_break_notification_enums.AdBreakStateEnum.AdBreakState = (
-        proto.Field(
-            proto.ENUM,
-            number=7,
-            optional=True,
-            enum=early_ad_break_notification_enums.AdBreakStateEnum.AdBreakState,
-        )
+    break_state: early_ad_break_notification_enums.AdBreakStateEnum.AdBreakState = proto.Field(
+        proto.ENUM,
+        number=7,
+        optional=True,
+        enum=early_ad_break_notification_enums.AdBreakStateEnum.AdBreakState,
     )
     break_sequence: int = proto.Field(
         proto.INT64,

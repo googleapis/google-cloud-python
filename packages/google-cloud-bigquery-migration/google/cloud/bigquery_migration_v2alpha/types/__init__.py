@@ -14,12 +14,7 @@
 # limitations under the License.
 #
 from .assessment_task import AssessmentOrchestrationResultDetails, AssessmentTaskDetails
-from .migration_entities import (
-    MigrationSubtask,
-    MigrationTask,
-    MigrationTaskOrchestrationResult,
-    MigrationWorkflow,
-)
+from .migration_entities import MigrationSubtask, MigrationTask, MigrationTaskOrchestrationResult, MigrationWorkflow
 from .migration_error_details import ErrorDetail, ErrorLocation, ResourceErrorDetail
 from .migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
 from .migration_service import (
@@ -33,13 +28,7 @@ from .migration_service import (
     ListMigrationWorkflowsResponse,
     StartMigrationWorkflowRequest,
 )
-from .translation_service import (
-    SqlTranslationError,
-    SqlTranslationErrorDetail,
-    SqlTranslationWarning,
-    TranslateQueryRequest,
-    TranslateQueryResponse,
-)
+from .translation_service import SqlTranslationError, SqlTranslationErrorDetail, SqlTranslationWarning, TranslateQueryRequest, TranslateQueryResponse
 from .translation_task import (
     BteqOptions,
     DatasetReference,

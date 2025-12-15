@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -115,9 +104,7 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class NotificationChannelServiceGrpcAsyncIOTransport(
-    NotificationChannelServiceTransport
-):
+class NotificationChannelServiceGrpcAsyncIOTransport(NotificationChannelServiceTransport):
     """gRPC AsyncIO backend transport for NotificationChannelService.
 
     The Notification Channel API provides access to configuration
@@ -271,18 +258,14 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +301,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -338,8 +319,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     def list_notification_channel_descriptors(
         self,
     ) -> Callable[
-        [notification_service.ListNotificationChannelDescriptorsRequest],
-        Awaitable[notification_service.ListNotificationChannelDescriptorsResponse],
+        [notification_service.ListNotificationChannelDescriptorsRequest], Awaitable[notification_service.ListNotificationChannelDescriptorsResponse]
     ]:
         r"""Return a callable for the list notification channel
         descriptors method over gRPC.
@@ -359,9 +339,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_notification_channel_descriptors" not in self._stubs:
-            self._stubs[
-                "list_notification_channel_descriptors"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_notification_channel_descriptors"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/ListNotificationChannelDescriptors",
                 request_serializer=notification_service.ListNotificationChannelDescriptorsRequest.serialize,
                 response_deserializer=notification_service.ListNotificationChannelDescriptorsResponse.deserialize,
@@ -371,10 +349,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     @property
     def get_notification_channel_descriptor(
         self,
-    ) -> Callable[
-        [notification_service.GetNotificationChannelDescriptorRequest],
-        Awaitable[notification.NotificationChannelDescriptor],
-    ]:
+    ) -> Callable[[notification_service.GetNotificationChannelDescriptorRequest], Awaitable[notification.NotificationChannelDescriptor]]:
         r"""Return a callable for the get notification channel
         descriptor method over gRPC.
 
@@ -393,9 +368,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_notification_channel_descriptor" not in self._stubs:
-            self._stubs[
-                "get_notification_channel_descriptor"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_notification_channel_descriptor"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelDescriptor",
                 request_serializer=notification_service.GetNotificationChannelDescriptorRequest.serialize,
                 response_deserializer=notification.NotificationChannelDescriptor.deserialize,
@@ -405,10 +378,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     @property
     def list_notification_channels(
         self,
-    ) -> Callable[
-        [notification_service.ListNotificationChannelsRequest],
-        Awaitable[notification_service.ListNotificationChannelsResponse],
-    ]:
+    ) -> Callable[[notification_service.ListNotificationChannelsRequest], Awaitable[notification_service.ListNotificationChannelsResponse]]:
         r"""Return a callable for the list notification channels method over gRPC.
 
         Lists the notification channels that have been created for the
@@ -427,9 +397,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_notification_channels" not in self._stubs:
-            self._stubs[
-                "list_notification_channels"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_notification_channels"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/ListNotificationChannels",
                 request_serializer=notification_service.ListNotificationChannelsRequest.serialize,
                 response_deserializer=notification_service.ListNotificationChannelsResponse.deserialize,
@@ -437,12 +405,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         return self._stubs["list_notification_channels"]
 
     @property
-    def get_notification_channel(
-        self,
-    ) -> Callable[
-        [notification_service.GetNotificationChannelRequest],
-        Awaitable[notification.NotificationChannel],
-    ]:
+    def get_notification_channel(self) -> Callable[[notification_service.GetNotificationChannelRequest], Awaitable[notification.NotificationChannel]]:
         r"""Return a callable for the get notification channel method over gRPC.
 
         Gets a single notification channel. The channel
@@ -474,10 +437,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     @property
     def create_notification_channel(
         self,
-    ) -> Callable[
-        [notification_service.CreateNotificationChannelRequest],
-        Awaitable[notification.NotificationChannel],
-    ]:
+    ) -> Callable[[notification_service.CreateNotificationChannelRequest], Awaitable[notification.NotificationChannel]]:
         r"""Return a callable for the create notification channel method over gRPC.
 
         Creates a new notification channel, representing a
@@ -501,9 +461,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_notification_channel" not in self._stubs:
-            self._stubs[
-                "create_notification_channel"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_notification_channel"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/CreateNotificationChannel",
                 request_serializer=notification_service.CreateNotificationChannelRequest.serialize,
                 response_deserializer=notification.NotificationChannel.deserialize,
@@ -513,10 +471,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     @property
     def update_notification_channel(
         self,
-    ) -> Callable[
-        [notification_service.UpdateNotificationChannelRequest],
-        Awaitable[notification.NotificationChannel],
-    ]:
+    ) -> Callable[[notification_service.UpdateNotificationChannelRequest], Awaitable[notification.NotificationChannel]]:
         r"""Return a callable for the update notification channel method over gRPC.
 
         Updates a notification channel. Fields not specified
@@ -539,9 +494,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_notification_channel" not in self._stubs:
-            self._stubs[
-                "update_notification_channel"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_notification_channel"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/UpdateNotificationChannel",
                 request_serializer=notification_service.UpdateNotificationChannelRequest.serialize,
                 response_deserializer=notification.NotificationChannel.deserialize,
@@ -549,12 +502,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         return self._stubs["update_notification_channel"]
 
     @property
-    def delete_notification_channel(
-        self,
-    ) -> Callable[
-        [notification_service.DeleteNotificationChannelRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_notification_channel(self) -> Callable[[notification_service.DeleteNotificationChannelRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete notification channel method over gRPC.
 
         Deletes a notification channel.
@@ -576,9 +524,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_notification_channel" not in self._stubs:
-            self._stubs[
-                "delete_notification_channel"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_notification_channel"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/DeleteNotificationChannel",
                 request_serializer=notification_service.DeleteNotificationChannelRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -588,10 +534,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     @property
     def send_notification_channel_verification_code(
         self,
-    ) -> Callable[
-        [notification_service.SendNotificationChannelVerificationCodeRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    ) -> Callable[[notification_service.SendNotificationChannelVerificationCodeRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the send notification channel
         verification code method over gRPC.
 
@@ -610,9 +553,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "send_notification_channel_verification_code" not in self._stubs:
-            self._stubs[
-                "send_notification_channel_verification_code"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["send_notification_channel_verification_code"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/SendNotificationChannelVerificationCode",
                 request_serializer=notification_service.SendNotificationChannelVerificationCodeRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -669,9 +610,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_notification_channel_verification_code" not in self._stubs:
-            self._stubs[
-                "get_notification_channel_verification_code"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_notification_channel_verification_code"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/GetNotificationChannelVerificationCode",
                 request_serializer=notification_service.GetNotificationChannelVerificationCodeRequest.serialize,
                 response_deserializer=notification_service.GetNotificationChannelVerificationCodeResponse.deserialize,
@@ -681,10 +620,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
     @property
     def verify_notification_channel(
         self,
-    ) -> Callable[
-        [notification_service.VerifyNotificationChannelRequest],
-        Awaitable[notification.NotificationChannel],
-    ]:
+    ) -> Callable[[notification_service.VerifyNotificationChannelRequest], Awaitable[notification.NotificationChannel]]:
         r"""Return a callable for the verify notification channel method over gRPC.
 
         Verifies a ``NotificationChannel`` by proving receipt of the
@@ -702,9 +638,7 @@ class NotificationChannelServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "verify_notification_channel" not in self._stubs:
-            self._stubs[
-                "verify_notification_channel"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["verify_notification_channel"] = self._logged_channel.unary_unary(
                 "/google.monitoring.v3.NotificationChannelService/VerifyNotificationChannel",
                 request_serializer=notification_service.VerifyNotificationChannelRequest.serialize,
                 response_deserializer=notification.NotificationChannel.deserialize,

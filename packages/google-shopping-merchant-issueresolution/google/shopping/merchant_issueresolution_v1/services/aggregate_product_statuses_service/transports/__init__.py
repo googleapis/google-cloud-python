@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import AggregateProductStatusesServiceTransport
 from .grpc import AggregateProductStatusesServiceGrpcTransport
 from .grpc_asyncio import AggregateProductStatusesServiceGrpcAsyncIOTransport
-from .rest import (
-    AggregateProductStatusesServiceRestInterceptor,
-    AggregateProductStatusesServiceRestTransport,
-)
+from .rest import AggregateProductStatusesServiceRestInterceptor, AggregateProductStatusesServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AggregateProductStatusesServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AggregateProductStatusesServiceTransport]]
 _transport_registry["grpc"] = AggregateProductStatusesServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = AggregateProductStatusesServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = AggregateProductStatusesServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = AggregateProductStatusesServiceRestTransport
 
 __all__ = (

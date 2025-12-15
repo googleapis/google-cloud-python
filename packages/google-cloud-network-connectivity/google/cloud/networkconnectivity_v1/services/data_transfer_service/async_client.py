@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -84,45 +73,23 @@ class DataTransferServiceAsyncClient:
     _DEFAULT_UNIVERSE = DataTransferServiceClient._DEFAULT_UNIVERSE
 
     destination_path = staticmethod(DataTransferServiceClient.destination_path)
-    parse_destination_path = staticmethod(
-        DataTransferServiceClient.parse_destination_path
-    )
-    multicloud_data_transfer_config_path = staticmethod(
-        DataTransferServiceClient.multicloud_data_transfer_config_path
-    )
-    parse_multicloud_data_transfer_config_path = staticmethod(
-        DataTransferServiceClient.parse_multicloud_data_transfer_config_path
-    )
-    multicloud_data_transfer_supported_service_path = staticmethod(
-        DataTransferServiceClient.multicloud_data_transfer_supported_service_path
-    )
+    parse_destination_path = staticmethod(DataTransferServiceClient.parse_destination_path)
+    multicloud_data_transfer_config_path = staticmethod(DataTransferServiceClient.multicloud_data_transfer_config_path)
+    parse_multicloud_data_transfer_config_path = staticmethod(DataTransferServiceClient.parse_multicloud_data_transfer_config_path)
+    multicloud_data_transfer_supported_service_path = staticmethod(DataTransferServiceClient.multicloud_data_transfer_supported_service_path)
     parse_multicloud_data_transfer_supported_service_path = staticmethod(
         DataTransferServiceClient.parse_multicloud_data_transfer_supported_service_path
     )
-    common_billing_account_path = staticmethod(
-        DataTransferServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DataTransferServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DataTransferServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DataTransferServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DataTransferServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DataTransferServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DataTransferServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DataTransferServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DataTransferServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DataTransferServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DataTransferServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DataTransferServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DataTransferServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DataTransferServiceClient.parse_common_project_path)
     common_location_path = staticmethod(DataTransferServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DataTransferServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DataTransferServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -158,9 +125,7 @@ class DataTransferServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -227,13 +192,7 @@ class DataTransferServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                DataTransferServiceTransport,
-                Callable[..., DataTransferServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DataTransferServiceTransport, Callable[..., DataTransferServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -293,20 +252,14 @@ class DataTransferServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networkconnectivity_v1.DataTransferServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networkconnectivity.v1.DataTransferService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -317,9 +270,7 @@ class DataTransferServiceAsyncClient:
 
     async def list_multicloud_data_transfer_configs(
         self,
-        request: Optional[
-            Union[data_transfer.ListMulticloudDataTransferConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[data_transfer.ListMulticloudDataTransferConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -388,20 +339,13 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.ListMulticloudDataTransferConfigsRequest
-        ):
+        if not isinstance(request, data_transfer.ListMulticloudDataTransferConfigsRequest):
             request = data_transfer.ListMulticloudDataTransferConfigsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -411,15 +355,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_multicloud_data_transfer_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_multicloud_data_transfer_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -448,9 +388,7 @@ class DataTransferServiceAsyncClient:
 
     async def get_multicloud_data_transfer_config(
         self,
-        request: Optional[
-            Union[data_transfer.GetMulticloudDataTransferConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[data_transfer.GetMulticloudDataTransferConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -515,20 +453,13 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.GetMulticloudDataTransferConfigRequest
-        ):
+        if not isinstance(request, data_transfer.GetMulticloudDataTransferConfigRequest):
             request = data_transfer.GetMulticloudDataTransferConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -538,15 +469,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_multicloud_data_transfer_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_multicloud_data_transfer_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -564,14 +491,10 @@ class DataTransferServiceAsyncClient:
 
     async def create_multicloud_data_transfer_config(
         self,
-        request: Optional[
-            Union[data_transfer.CreateMulticloudDataTransferConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[data_transfer.CreateMulticloudDataTransferConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        multicloud_data_transfer_config: Optional[
-            data_transfer.MulticloudDataTransferConfig
-        ] = None,
+        multicloud_data_transfer_config: Optional[data_transfer.MulticloudDataTransferConfig] = None,
         multicloud_data_transfer_config_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -658,25 +581,14 @@ class DataTransferServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            multicloud_data_transfer_config,
-            multicloud_data_transfer_config_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, multicloud_data_transfer_config, multicloud_data_transfer_config_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.CreateMulticloudDataTransferConfigRequest
-        ):
+        if not isinstance(request, data_transfer.CreateMulticloudDataTransferConfigRequest):
             request = data_transfer.CreateMulticloudDataTransferConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -686,21 +598,15 @@ class DataTransferServiceAsyncClient:
         if multicloud_data_transfer_config is not None:
             request.multicloud_data_transfer_config = multicloud_data_transfer_config
         if multicloud_data_transfer_config_id is not None:
-            request.multicloud_data_transfer_config_id = (
-                multicloud_data_transfer_config_id
-            )
+            request.multicloud_data_transfer_config_id = multicloud_data_transfer_config_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_multicloud_data_transfer_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_multicloud_data_transfer_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -726,13 +632,9 @@ class DataTransferServiceAsyncClient:
 
     async def update_multicloud_data_transfer_config(
         self,
-        request: Optional[
-            Union[data_transfer.UpdateMulticloudDataTransferConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[data_transfer.UpdateMulticloudDataTransferConfigRequest, dict]] = None,
         *,
-        multicloud_data_transfer_config: Optional[
-            data_transfer.MulticloudDataTransferConfig
-        ] = None,
+        multicloud_data_transfer_config: Optional[data_transfer.MulticloudDataTransferConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -814,20 +716,13 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [multicloud_data_transfer_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.UpdateMulticloudDataTransferConfigRequest
-        ):
+        if not isinstance(request, data_transfer.UpdateMulticloudDataTransferConfigRequest):
             request = data_transfer.UpdateMulticloudDataTransferConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -839,21 +734,12 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_multicloud_data_transfer_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_multicloud_data_transfer_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "multicloud_data_transfer_config.name",
-                        request.multicloud_data_transfer_config.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("multicloud_data_transfer_config.name", request.multicloud_data_transfer_config.name),)),
         )
 
         # Validate the universe domain.
@@ -880,9 +766,7 @@ class DataTransferServiceAsyncClient:
 
     async def delete_multicloud_data_transfer_config(
         self,
-        request: Optional[
-            Union[data_transfer.DeleteMulticloudDataTransferConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[data_transfer.DeleteMulticloudDataTransferConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -960,20 +844,13 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.DeleteMulticloudDataTransferConfigRequest
-        ):
+        if not isinstance(request, data_transfer.DeleteMulticloudDataTransferConfigRequest):
             request = data_transfer.DeleteMulticloudDataTransferConfigRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -983,15 +860,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_multicloud_data_transfer_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_multicloud_data_transfer_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1084,14 +957,9 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1105,15 +973,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_destinations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_destinations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1207,14 +1071,9 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1228,15 +1087,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_destination
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_destination]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1347,14 +1202,9 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, destination, destination_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1372,15 +1222,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_destination
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_destination]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1491,14 +1337,9 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [destination, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1514,17 +1355,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_destination
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_destination]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("destination.name", request.destination.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("destination.name", request.destination.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1627,14 +1462,9 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1648,15 +1478,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_destination
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_destination]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1682,9 +1508,7 @@ class DataTransferServiceAsyncClient:
 
     async def get_multicloud_data_transfer_supported_service(
         self,
-        request: Optional[
-            Union[data_transfer.GetMulticloudDataTransferSupportedServiceRequest, dict]
-        ] = None,
+        request: Optional[Union[data_transfer.GetMulticloudDataTransferSupportedServiceRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1750,23 +1574,14 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.GetMulticloudDataTransferSupportedServiceRequest
-        ):
-            request = data_transfer.GetMulticloudDataTransferSupportedServiceRequest(
-                request
-            )
+        if not isinstance(request, data_transfer.GetMulticloudDataTransferSupportedServiceRequest):
+            request = data_transfer.GetMulticloudDataTransferSupportedServiceRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1775,15 +1590,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_multicloud_data_transfer_supported_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_multicloud_data_transfer_supported_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1801,11 +1612,7 @@ class DataTransferServiceAsyncClient:
 
     async def list_multicloud_data_transfer_supported_services(
         self,
-        request: Optional[
-            Union[
-                data_transfer.ListMulticloudDataTransferSupportedServicesRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[data_transfer.ListMulticloudDataTransferSupportedServicesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1878,23 +1685,14 @@ class DataTransferServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, data_transfer.ListMulticloudDataTransferSupportedServicesRequest
-        ):
-            request = data_transfer.ListMulticloudDataTransferSupportedServicesRequest(
-                request
-            )
+        if not isinstance(request, data_transfer.ListMulticloudDataTransferSupportedServicesRequest):
+            request = data_transfer.ListMulticloudDataTransferSupportedServicesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1903,15 +1701,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_multicloud_data_transfer_supported_services
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_multicloud_data_transfer_supported_services]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1975,9 +1769,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2030,9 +1822,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2089,9 +1879,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2144,9 +1932,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2262,9 +2048,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2384,9 +2168,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2440,15 +2222,11 @@ class DataTransferServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2501,9 +2279,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2556,9 +2332,7 @@ class DataTransferServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2581,9 +2355,7 @@ class DataTransferServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

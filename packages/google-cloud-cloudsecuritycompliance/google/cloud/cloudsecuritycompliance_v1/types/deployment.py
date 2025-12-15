@@ -185,9 +185,7 @@ class FrameworkDeployment(proto.Message):
         proto.STRING,
         number=5,
     )
-    cloud_control_metadata: MutableSequence[
-        "CloudControlMetadata"
-    ] = proto.RepeatedField(
+    cloud_control_metadata: MutableSequence["CloudControlMetadata"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="CloudControlMetadata",
@@ -215,9 +213,7 @@ class FrameworkDeployment(proto.Message):
         proto.STRING,
         number=13,
     )
-    cloud_control_deployment_references: MutableSequence[
-        "CloudControlDeploymentReference"
-    ] = proto.RepeatedField(
+    cloud_control_deployment_references: MutableSequence["CloudControlDeploymentReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=14,
         message="CloudControlDeploymentReference",
@@ -328,9 +324,7 @@ class CloudControlDeployment(proto.Message):
         number=10,
         message=common.CloudControl,
     )
-    framework_deployment_references: MutableSequence[
-        "FrameworkDeploymentReference"
-    ] = proto.RepeatedField(
+    framework_deployment_references: MutableSequence["FrameworkDeploymentReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="FrameworkDeploymentReference",
@@ -746,9 +740,7 @@ class ListCloudControlDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cloud_control_deployments: MutableSequence[
-        "CloudControlDeployment"
-    ] = proto.RepeatedField(
+    cloud_control_deployments: MutableSequence["CloudControlDeployment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CloudControlDeployment",

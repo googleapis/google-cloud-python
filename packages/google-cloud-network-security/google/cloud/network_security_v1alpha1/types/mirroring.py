@@ -248,9 +248,7 @@ class MirroringEndpointGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_deployment_groups: MutableSequence[
-        ConnectedDeploymentGroup
-    ] = proto.RepeatedField(
+    connected_deployment_groups: MutableSequence[ConnectedDeploymentGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=ConnectedDeploymentGroup,
@@ -350,9 +348,7 @@ class ListMirroringEndpointGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_endpoint_groups: MutableSequence[
-        "MirroringEndpointGroup"
-    ] = proto.RepeatedField(
+    mirroring_endpoint_groups: MutableSequence["MirroringEndpointGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MirroringEndpointGroup",
@@ -733,9 +729,7 @@ class ListMirroringEndpointGroupAssociationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_endpoint_group_associations: MutableSequence[
-        "MirroringEndpointGroupAssociation"
-    ] = proto.RepeatedField(
+    mirroring_endpoint_group_associations: MutableSequence["MirroringEndpointGroupAssociation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MirroringEndpointGroupAssociation",
@@ -792,12 +786,10 @@ class CreateMirroringEndpointGroupAssociationRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    mirroring_endpoint_group_association: "MirroringEndpointGroupAssociation" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="MirroringEndpointGroupAssociation",
-        )
+    mirroring_endpoint_group_association: "MirroringEndpointGroupAssociation" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="MirroringEndpointGroupAssociation",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -828,12 +820,10 @@ class UpdateMirroringEndpointGroupAssociationRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    mirroring_endpoint_group_association: "MirroringEndpointGroupAssociation" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="MirroringEndpointGroupAssociation",
-        )
+    mirroring_endpoint_group_association: "MirroringEndpointGroupAssociation" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="MirroringEndpointGroupAssociation",
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -1001,9 +991,7 @@ class MirroringDeploymentGroup(proto.Message):
         proto.STRING,
         number=5,
     )
-    connected_endpoint_groups: MutableSequence[
-        ConnectedEndpointGroup
-    ] = proto.RepeatedField(
+    connected_endpoint_groups: MutableSequence[ConnectedEndpointGroup] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=ConnectedEndpointGroup,
@@ -1104,9 +1092,7 @@ class ListMirroringDeploymentGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    mirroring_deployment_groups: MutableSequence[
-        "MirroringDeploymentGroup"
-    ] = proto.RepeatedField(
+    mirroring_deployment_groups: MutableSequence["MirroringDeploymentGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="MirroringDeploymentGroup",

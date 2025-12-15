@@ -18,12 +18,8 @@ from google.cloud.artifactregistry import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.artifactregistry_v1.services.artifact_registry.async_client import (
-    ArtifactRegistryAsyncClient,
-)
-from google.cloud.artifactregistry_v1.services.artifact_registry.client import (
-    ArtifactRegistryClient,
-)
+from google.cloud.artifactregistry_v1.services.artifact_registry.async_client import ArtifactRegistryAsyncClient
+from google.cloud.artifactregistry_v1.services.artifact_registry.client import ArtifactRegistryClient
 from google.cloud.artifactregistry_v1.types.apt_artifact import (
     AptArtifact,
     ImportAptArtifactsErrorInfo,
@@ -59,11 +55,7 @@ from google.cloud.artifactregistry_v1.types.attachment import (
     ListAttachmentsRequest,
     ListAttachmentsResponse,
 )
-from google.cloud.artifactregistry_v1.types.export import (
-    ExportArtifactMetadata,
-    ExportArtifactRequest,
-    ExportArtifactResponse,
-)
+from google.cloud.artifactregistry_v1.types.export import ExportArtifactMetadata, ExportArtifactRequest, ExportArtifactResponse
 from google.cloud.artifactregistry_v1.types.file import (
     DeleteFileRequest,
     File,
@@ -109,11 +101,7 @@ from google.cloud.artifactregistry_v1.types.rule import (
     UpdateRuleRequest,
 )
 from google.cloud.artifactregistry_v1.types.service import OperationMetadata
-from google.cloud.artifactregistry_v1.types.settings import (
-    GetProjectSettingsRequest,
-    ProjectSettings,
-    UpdateProjectSettingsRequest,
-)
+from google.cloud.artifactregistry_v1.types.settings import GetProjectSettingsRequest, ProjectSettings, UpdateProjectSettingsRequest
 from google.cloud.artifactregistry_v1.types.tag import (
     CreateTagRequest,
     DeleteTagRequest,
@@ -134,11 +122,7 @@ from google.cloud.artifactregistry_v1.types.version import (
     Version,
     VersionView,
 )
-from google.cloud.artifactregistry_v1.types.vpcsc_config import (
-    GetVPCSCConfigRequest,
-    UpdateVPCSCConfigRequest,
-    VPCSCConfig,
-)
+from google.cloud.artifactregistry_v1.types.vpcsc_config import GetVPCSCConfigRequest, UpdateVPCSCConfigRequest, VPCSCConfig
 from google.cloud.artifactregistry_v1.types.yum_artifact import (
     ImportYumArtifactsErrorInfo,
     ImportYumArtifactsGcsSource,

@@ -51,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -89,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -277,18 +266,14 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -324,9 +309,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -349,19 +332,13 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.CreateEntryTypeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_entry_type(self) -> Callable[[catalog.CreateEntryTypeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create entry type method over gRPC.
 
         Creates an EntryType.
@@ -385,11 +362,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_entry_type"]
 
     @property
-    def update_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.UpdateEntryTypeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_entry_type(self) -> Callable[[catalog.UpdateEntryTypeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update entry type method over gRPC.
 
         Updates an EntryType.
@@ -413,11 +386,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_entry_type"]
 
     @property
-    def delete_entry_type(
-        self,
-    ) -> Callable[
-        [catalog.DeleteEntryTypeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_entry_type(self) -> Callable[[catalog.DeleteEntryTypeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete entry type method over gRPC.
 
         Deletes an EntryType.
@@ -441,11 +410,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["delete_entry_type"]
 
     @property
-    def list_entry_types(
-        self,
-    ) -> Callable[
-        [catalog.ListEntryTypesRequest], Awaitable[catalog.ListEntryTypesResponse]
-    ]:
+    def list_entry_types(self) -> Callable[[catalog.ListEntryTypesRequest], Awaitable[catalog.ListEntryTypesResponse]]:
         r"""Return a callable for the list entry types method over gRPC.
 
         Lists EntryType resources in a project and location.
@@ -469,9 +434,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["list_entry_types"]
 
     @property
-    def get_entry_type(
-        self,
-    ) -> Callable[[catalog.GetEntryTypeRequest], Awaitable[catalog.EntryType]]:
+    def get_entry_type(self) -> Callable[[catalog.GetEntryTypeRequest], Awaitable[catalog.EntryType]]:
         r"""Return a callable for the get entry type method over gRPC.
 
         Gets an EntryType.
@@ -495,11 +458,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_entry_type"]
 
     @property
-    def create_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.CreateAspectTypeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_aspect_type(self) -> Callable[[catalog.CreateAspectTypeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create aspect type method over gRPC.
 
         Creates an AspectType.
@@ -523,11 +482,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_aspect_type"]
 
     @property
-    def update_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.UpdateAspectTypeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_aspect_type(self) -> Callable[[catalog.UpdateAspectTypeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update aspect type method over gRPC.
 
         Updates an AspectType.
@@ -551,11 +506,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_aspect_type"]
 
     @property
-    def delete_aspect_type(
-        self,
-    ) -> Callable[
-        [catalog.DeleteAspectTypeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_aspect_type(self) -> Callable[[catalog.DeleteAspectTypeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete aspect type method over gRPC.
 
         Deletes an AspectType.
@@ -579,11 +530,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["delete_aspect_type"]
 
     @property
-    def list_aspect_types(
-        self,
-    ) -> Callable[
-        [catalog.ListAspectTypesRequest], Awaitable[catalog.ListAspectTypesResponse]
-    ]:
+    def list_aspect_types(self) -> Callable[[catalog.ListAspectTypesRequest], Awaitable[catalog.ListAspectTypesResponse]]:
         r"""Return a callable for the list aspect types method over gRPC.
 
         Lists AspectType resources in a project and location.
@@ -607,9 +554,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["list_aspect_types"]
 
     @property
-    def get_aspect_type(
-        self,
-    ) -> Callable[[catalog.GetAspectTypeRequest], Awaitable[catalog.AspectType]]:
+    def get_aspect_type(self) -> Callable[[catalog.GetAspectTypeRequest], Awaitable[catalog.AspectType]]:
         r"""Return a callable for the get aspect type method over gRPC.
 
         Gets an AspectType.
@@ -633,11 +578,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_aspect_type"]
 
     @property
-    def create_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.CreateEntryGroupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_entry_group(self) -> Callable[[catalog.CreateEntryGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create entry group method over gRPC.
 
         Creates an EntryGroup.
@@ -661,11 +602,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_entry_group"]
 
     @property
-    def update_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.UpdateEntryGroupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_entry_group(self) -> Callable[[catalog.UpdateEntryGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update entry group method over gRPC.
 
         Updates an EntryGroup.
@@ -689,11 +626,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_entry_group"]
 
     @property
-    def delete_entry_group(
-        self,
-    ) -> Callable[
-        [catalog.DeleteEntryGroupRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_entry_group(self) -> Callable[[catalog.DeleteEntryGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete entry group method over gRPC.
 
         Deletes an EntryGroup.
@@ -717,11 +650,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["delete_entry_group"]
 
     @property
-    def list_entry_groups(
-        self,
-    ) -> Callable[
-        [catalog.ListEntryGroupsRequest], Awaitable[catalog.ListEntryGroupsResponse]
-    ]:
+    def list_entry_groups(self) -> Callable[[catalog.ListEntryGroupsRequest], Awaitable[catalog.ListEntryGroupsResponse]]:
         r"""Return a callable for the list entry groups method over gRPC.
 
         Lists EntryGroup resources in a project and location.
@@ -745,9 +674,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["list_entry_groups"]
 
     @property
-    def get_entry_group(
-        self,
-    ) -> Callable[[catalog.GetEntryGroupRequest], Awaitable[catalog.EntryGroup]]:
+    def get_entry_group(self) -> Callable[[catalog.GetEntryGroupRequest], Awaitable[catalog.EntryGroup]]:
         r"""Return a callable for the get entry group method over gRPC.
 
         Gets an EntryGroup.
@@ -771,9 +698,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_entry_group"]
 
     @property
-    def create_entry(
-        self,
-    ) -> Callable[[catalog.CreateEntryRequest], Awaitable[catalog.Entry]]:
+    def create_entry(self) -> Callable[[catalog.CreateEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the create entry method over gRPC.
 
         Creates an Entry.
@@ -797,9 +722,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_entry"]
 
     @property
-    def update_entry(
-        self,
-    ) -> Callable[[catalog.UpdateEntryRequest], Awaitable[catalog.Entry]]:
+    def update_entry(self) -> Callable[[catalog.UpdateEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the update entry method over gRPC.
 
         Updates an Entry.
@@ -823,9 +746,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["update_entry"]
 
     @property
-    def delete_entry(
-        self,
-    ) -> Callable[[catalog.DeleteEntryRequest], Awaitable[catalog.Entry]]:
+    def delete_entry(self) -> Callable[[catalog.DeleteEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the delete entry method over gRPC.
 
         Deletes an Entry.
@@ -849,9 +770,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["delete_entry"]
 
     @property
-    def list_entries(
-        self,
-    ) -> Callable[[catalog.ListEntriesRequest], Awaitable[catalog.ListEntriesResponse]]:
+    def list_entries(self) -> Callable[[catalog.ListEntriesRequest], Awaitable[catalog.ListEntriesResponse]]:
         r"""Return a callable for the list entries method over gRPC.
 
         Lists Entries within an EntryGroup. Caution: The Vertex AI,
@@ -880,9 +799,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["list_entries"]
 
     @property
-    def get_entry(
-        self,
-    ) -> Callable[[catalog.GetEntryRequest], Awaitable[catalog.Entry]]:
+    def get_entry(self) -> Callable[[catalog.GetEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the get entry method over gRPC.
 
         Gets an Entry. Caution: The Vertex AI, Bigtable, Spanner,
@@ -911,9 +828,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_entry"]
 
     @property
-    def lookup_entry(
-        self,
-    ) -> Callable[[catalog.LookupEntryRequest], Awaitable[catalog.Entry]]:
+    def lookup_entry(self) -> Callable[[catalog.LookupEntryRequest], Awaitable[catalog.Entry]]:
         r"""Return a callable for the lookup entry method over gRPC.
 
         Looks up an entry by name using the permission on the source
@@ -942,11 +857,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["lookup_entry"]
 
     @property
-    def search_entries(
-        self,
-    ) -> Callable[
-        [catalog.SearchEntriesRequest], Awaitable[catalog.SearchEntriesResponse]
-    ]:
+    def search_entries(self) -> Callable[[catalog.SearchEntriesRequest], Awaitable[catalog.SearchEntriesResponse]]:
         r"""Return a callable for the search entries method over gRPC.
 
         Searches for Entries matching the given query and
@@ -971,11 +882,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["search_entries"]
 
     @property
-    def create_metadata_job(
-        self,
-    ) -> Callable[
-        [catalog.CreateMetadataJobRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_metadata_job(self) -> Callable[[catalog.CreateMetadataJobRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create metadata job method over gRPC.
 
         Creates a metadata job. For example, use a metadata
@@ -1001,9 +908,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_metadata_job"]
 
     @property
-    def get_metadata_job(
-        self,
-    ) -> Callable[[catalog.GetMetadataJobRequest], Awaitable[catalog.MetadataJob]]:
+    def get_metadata_job(self) -> Callable[[catalog.GetMetadataJobRequest], Awaitable[catalog.MetadataJob]]:
         r"""Return a callable for the get metadata job method over gRPC.
 
         Gets a metadata job.
@@ -1027,11 +932,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["get_metadata_job"]
 
     @property
-    def list_metadata_jobs(
-        self,
-    ) -> Callable[
-        [catalog.ListMetadataJobsRequest], Awaitable[catalog.ListMetadataJobsResponse]
-    ]:
+    def list_metadata_jobs(self) -> Callable[[catalog.ListMetadataJobsRequest], Awaitable[catalog.ListMetadataJobsResponse]]:
         r"""Return a callable for the list metadata jobs method over gRPC.
 
         Lists metadata jobs.
@@ -1055,9 +956,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["list_metadata_jobs"]
 
     @property
-    def cancel_metadata_job(
-        self,
-    ) -> Callable[[catalog.CancelMetadataJobRequest], Awaitable[empty_pb2.Empty]]:
+    def cancel_metadata_job(self) -> Callable[[catalog.CancelMetadataJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the cancel metadata job method over gRPC.
 
         Cancels a metadata job.
@@ -1087,9 +986,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["cancel_metadata_job"]
 
     @property
-    def create_entry_link(
-        self,
-    ) -> Callable[[catalog.CreateEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+    def create_entry_link(self) -> Callable[[catalog.CreateEntryLinkRequest], Awaitable[catalog.EntryLink]]:
         r"""Return a callable for the create entry link method over gRPC.
 
         Creates an Entry Link.
@@ -1113,9 +1010,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["create_entry_link"]
 
     @property
-    def delete_entry_link(
-        self,
-    ) -> Callable[[catalog.DeleteEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+    def delete_entry_link(self) -> Callable[[catalog.DeleteEntryLinkRequest], Awaitable[catalog.EntryLink]]:
         r"""Return a callable for the delete entry link method over gRPC.
 
         Deletes an Entry Link.
@@ -1139,9 +1034,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
         return self._stubs["delete_entry_link"]
 
     @property
-    def get_entry_link(
-        self,
-    ) -> Callable[[catalog.GetEntryLinkRequest], Awaitable[catalog.EntryLink]]:
+    def get_entry_link(self) -> Callable[[catalog.GetEntryLinkRequest], Awaitable[catalog.EntryLink]]:
         r"""Return a callable for the get entry link method over gRPC.
 
         Gets an Entry Link.
@@ -1520,9 +1413,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1539,9 +1430,7 @@ class CatalogServiceGrpcAsyncIOTransport(CatalogServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

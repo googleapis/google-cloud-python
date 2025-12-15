@@ -121,9 +121,7 @@ class PoliciesRestInterceptor:
     """
 
     def pre_create_policy(
-        self,
-        request: gi_policy.CreatePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gi_policy.CreatePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gi_policy.CreatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_policy
 
@@ -132,9 +130,7 @@ class PoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_policy
 
         DEPRECATED. Please use the `post_create_policy_with_metadata`
@@ -148,9 +144,7 @@ class PoliciesRestInterceptor:
         return response
 
     def post_create_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_policy
 
@@ -167,9 +161,7 @@ class PoliciesRestInterceptor:
         return response, metadata
 
     def pre_delete_policy(
-        self,
-        request: policy.DeletePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: policy.DeletePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy.DeletePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_policy
 
@@ -178,9 +170,7 @@ class PoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_policy
 
         DEPRECATED. Please use the `post_delete_policy_with_metadata`
@@ -194,9 +184,7 @@ class PoliciesRestInterceptor:
         return response
 
     def post_delete_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_policy
 
@@ -213,9 +201,7 @@ class PoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_policy(
-        self,
-        request: policy.GetPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: policy.GetPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy.GetPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_policy
 
@@ -255,9 +241,7 @@ class PoliciesRestInterceptor:
         return response, metadata
 
     def pre_list_policies(
-        self,
-        request: policy.ListPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: policy.ListPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy.ListPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_policies
 
@@ -266,9 +250,7 @@ class PoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_policies(
-        self, response: policy.ListPoliciesResponse
-    ) -> policy.ListPoliciesResponse:
+    def post_list_policies(self, response: policy.ListPoliciesResponse) -> policy.ListPoliciesResponse:
         """Post-rpc interceptor for list_policies
 
         DEPRECATED. Please use the `post_list_policies_with_metadata`
@@ -282,9 +264,7 @@ class PoliciesRestInterceptor:
         return response
 
     def post_list_policies_with_metadata(
-        self,
-        response: policy.ListPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy.ListPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy.ListPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_policies
 
@@ -301,9 +281,7 @@ class PoliciesRestInterceptor:
         return response, metadata
 
     def pre_update_policy(
-        self,
-        request: policy.UpdatePolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: policy.UpdatePolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy.UpdatePolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_policy
 
@@ -312,9 +290,7 @@ class PoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_policy
 
         DEPRECATED. Please use the `post_update_policy_with_metadata`
@@ -328,9 +304,7 @@ class PoliciesRestInterceptor:
         return response
 
     def post_update_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_policy
 
@@ -347,12 +321,8 @@ class PoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -360,9 +330,7 @@ class PoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -452,9 +420,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -488,9 +454,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -500,15 +464,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return hash("PoliciesRestTransport.CreatePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -551,34 +507,18 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BasePoliciesRestTransport._BaseCreatePolicy._get_http_options()
-            )
+            http_options = _BasePoliciesRestTransport._BaseCreatePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_create_policy(request, metadata)
-            transcoded_request = (
-                _BasePoliciesRestTransport._BaseCreatePolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePoliciesRestTransport._BaseCreatePolicy._get_transcoded_request(http_options, request)
 
-            body = _BasePoliciesRestTransport._BaseCreatePolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePoliciesRestTransport._BaseCreatePolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePoliciesRestTransport._BaseCreatePolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePoliciesRestTransport._BaseCreatePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -602,13 +542,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             # Send the request
             response = PoliciesRestTransport._CreatePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -622,12 +556,8 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             resp = self._interceptor.post_create_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -653,15 +583,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return hash("PoliciesRestTransport.DeletePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -703,30 +625,16 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BasePoliciesRestTransport._BaseDeletePolicy._get_http_options()
-            )
+            http_options = _BasePoliciesRestTransport._BaseDeletePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_policy(request, metadata)
-            transcoded_request = (
-                _BasePoliciesRestTransport._BaseDeletePolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePoliciesRestTransport._BaseDeletePolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePoliciesRestTransport._BaseDeletePolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePoliciesRestTransport._BaseDeletePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -750,12 +658,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             # Send the request
             response = PoliciesRestTransport._DeletePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -769,12 +672,8 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             resp = self._interceptor.post_delete_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -800,15 +699,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return hash("PoliciesRestTransport.GetPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -850,25 +741,13 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             http_options = _BasePoliciesRestTransport._BaseGetPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_policy(request, metadata)
-            transcoded_request = (
-                _BasePoliciesRestTransport._BaseGetPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePoliciesRestTransport._BaseGetPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePoliciesRestTransport._BaseGetPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePoliciesRestTransport._BaseGetPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -891,14 +770,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
                 )
 
             # Send the request
-            response = PoliciesRestTransport._GetPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PoliciesRestTransport._GetPolicy._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -913,12 +785,8 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             resp = self._interceptor.post_get_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = policy.Policy.to_json(response)
                 except:
@@ -944,15 +812,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return hash("PoliciesRestTransport.ListPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -991,30 +851,16 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
                     Response message for ``ListPolicies``.
             """
 
-            http_options = (
-                _BasePoliciesRestTransport._BaseListPolicies._get_http_options()
-            )
+            http_options = _BasePoliciesRestTransport._BaseListPolicies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_policies(request, metadata)
-            transcoded_request = (
-                _BasePoliciesRestTransport._BaseListPolicies._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePoliciesRestTransport._BaseListPolicies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePoliciesRestTransport._BaseListPolicies._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePoliciesRestTransport._BaseListPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1038,12 +884,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             # Send the request
             response = PoliciesRestTransport._ListPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1059,12 +900,8 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             resp = self._interceptor.post_list_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = policy.ListPoliciesResponse.to_json(response)
                 except:
@@ -1090,15 +927,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return hash("PoliciesRestTransport.UpdatePolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1141,34 +970,18 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BasePoliciesRestTransport._BaseUpdatePolicy._get_http_options()
-            )
+            http_options = _BasePoliciesRestTransport._BaseUpdatePolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_update_policy(request, metadata)
-            transcoded_request = (
-                _BasePoliciesRestTransport._BaseUpdatePolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePoliciesRestTransport._BaseUpdatePolicy._get_transcoded_request(http_options, request)
 
-            body = _BasePoliciesRestTransport._BaseUpdatePolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePoliciesRestTransport._BaseUpdatePolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePoliciesRestTransport._BaseUpdatePolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePoliciesRestTransport._BaseUpdatePolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1192,13 +1005,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             # Send the request
             response = PoliciesRestTransport._UpdatePolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1212,12 +1019,8 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             resp = self._interceptor.post_update_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1239,17 +1042,13 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return resp
 
     @property
-    def create_policy(
-        self,
-    ) -> Callable[[gi_policy.CreatePolicyRequest], operations_pb2.Operation]:
+    def create_policy(self) -> Callable[[gi_policy.CreatePolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_policy(
-        self,
-    ) -> Callable[[policy.DeletePolicyRequest], operations_pb2.Operation]:
+    def delete_policy(self) -> Callable[[policy.DeletePolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1261,17 +1060,13 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
         return self._GetPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_policies(
-        self,
-    ) -> Callable[[policy.ListPoliciesRequest], policy.ListPoliciesResponse]:
+    def list_policies(self) -> Callable[[policy.ListPoliciesRequest], policy.ListPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_policy(
-        self,
-    ) -> Callable[[policy.UpdatePolicyRequest], operations_pb2.Operation]:
+    def update_policy(self) -> Callable[[policy.UpdatePolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1285,15 +1080,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             return hash("PoliciesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1331,30 +1118,16 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePoliciesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePoliciesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BasePoliciesRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePoliciesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePoliciesRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePoliciesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1378,12 +1151,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
 
             # Send the request
             response = PoliciesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1395,9 +1163,7 @@ class PoliciesRestTransport(_BasePoliciesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

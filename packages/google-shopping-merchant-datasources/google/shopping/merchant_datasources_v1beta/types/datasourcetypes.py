@@ -162,9 +162,7 @@ class PrimaryProductDataSource(proto.Message):
                 is not set in ``1001``.
         """
 
-        take_from_data_sources: MutableSequence[
-            "DataSourceReference"
-        ] = proto.RepeatedField(
+        take_from_data_sources: MutableSequence["DataSourceReference"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="DataSourceReference",
@@ -305,9 +303,7 @@ class SupplementalProductDataSource(proto.Message):
         number=5,
         optional=True,
     )
-    referencing_primary_data_sources: MutableSequence[
-        "DataSourceReference"
-    ] = proto.RepeatedField(
+    referencing_primary_data_sources: MutableSequence["DataSourceReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="DataSourceReference",

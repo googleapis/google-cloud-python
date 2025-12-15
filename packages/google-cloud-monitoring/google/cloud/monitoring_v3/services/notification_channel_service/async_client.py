@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,12 +41,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 from google.cloud.monitoring_v3.services.notification_channel_service import pagers
-from google.cloud.monitoring_v3.types import (
-    common,
-    mutation_record,
-    notification,
-    notification_service,
-)
+from google.cloud.monitoring_v3.types import common, mutation_record, notification, notification_service
 
 from .client import NotificationChannelServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, NotificationChannelServiceTransport
@@ -84,53 +68,23 @@ class NotificationChannelServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = NotificationChannelServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = NotificationChannelServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        NotificationChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = NotificationChannelServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = NotificationChannelServiceClient._DEFAULT_UNIVERSE
 
-    notification_channel_path = staticmethod(
-        NotificationChannelServiceClient.notification_channel_path
-    )
-    parse_notification_channel_path = staticmethod(
-        NotificationChannelServiceClient.parse_notification_channel_path
-    )
-    notification_channel_descriptor_path = staticmethod(
-        NotificationChannelServiceClient.notification_channel_descriptor_path
-    )
-    parse_notification_channel_descriptor_path = staticmethod(
-        NotificationChannelServiceClient.parse_notification_channel_descriptor_path
-    )
-    common_billing_account_path = staticmethod(
-        NotificationChannelServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        NotificationChannelServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        NotificationChannelServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        NotificationChannelServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        NotificationChannelServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        NotificationChannelServiceClient.parse_common_location_path
-    )
+    notification_channel_path = staticmethod(NotificationChannelServiceClient.notification_channel_path)
+    parse_notification_channel_path = staticmethod(NotificationChannelServiceClient.parse_notification_channel_path)
+    notification_channel_descriptor_path = staticmethod(NotificationChannelServiceClient.notification_channel_descriptor_path)
+    parse_notification_channel_descriptor_path = staticmethod(NotificationChannelServiceClient.parse_notification_channel_descriptor_path)
+    common_billing_account_path = staticmethod(NotificationChannelServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(NotificationChannelServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(NotificationChannelServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(NotificationChannelServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(NotificationChannelServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(NotificationChannelServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(NotificationChannelServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(NotificationChannelServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(NotificationChannelServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(NotificationChannelServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -166,9 +120,7 @@ class NotificationChannelServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -235,13 +187,7 @@ class NotificationChannelServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                NotificationChannelServiceTransport,
-                Callable[..., NotificationChannelServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, NotificationChannelServiceTransport, Callable[..., NotificationChannelServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -301,20 +247,14 @@ class NotificationChannelServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.monitoring_v3.NotificationChannelServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.monitoring.v3.NotificationChannelService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -325,9 +265,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def list_notification_channel_descriptors(
         self,
-        request: Optional[
-            Union[notification_service.ListNotificationChannelDescriptorsRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.ListNotificationChannelDescriptorsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -408,23 +346,14 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.ListNotificationChannelDescriptorsRequest
-        ):
-            request = notification_service.ListNotificationChannelDescriptorsRequest(
-                request
-            )
+        if not isinstance(request, notification_service.ListNotificationChannelDescriptorsRequest):
+            request = notification_service.ListNotificationChannelDescriptorsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -433,15 +362,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_notification_channel_descriptors
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_notification_channel_descriptors]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -470,9 +395,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def get_notification_channel_descriptor(
         self,
-        request: Optional[
-            Union[notification_service.GetNotificationChannelDescriptorRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.GetNotificationChannelDescriptorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -544,23 +467,14 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.GetNotificationChannelDescriptorRequest
-        ):
-            request = notification_service.GetNotificationChannelDescriptorRequest(
-                request
-            )
+        if not isinstance(request, notification_service.GetNotificationChannelDescriptorRequest):
+            request = notification_service.GetNotificationChannelDescriptorRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -569,15 +483,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_notification_channel_descriptor
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_notification_channel_descriptor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -595,9 +505,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def list_notification_channels(
         self,
-        request: Optional[
-            Union[notification_service.ListNotificationChannelsRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.ListNotificationChannelsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -678,20 +586,13 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.ListNotificationChannelsRequest
-        ):
+        if not isinstance(request, notification_service.ListNotificationChannelsRequest):
             request = notification_service.ListNotificationChannelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -701,15 +602,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_notification_channels
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_notification_channels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -738,9 +635,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def get_notification_channel(
         self,
-        request: Optional[
-            Union[notification_service.GetNotificationChannelRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.GetNotificationChannelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -818,14 +713,9 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -839,15 +729,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_notification_channel
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_notification_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -865,9 +751,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def create_notification_channel(
         self,
-        request: Optional[
-            Union[notification_service.CreateNotificationChannelRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.CreateNotificationChannelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         notification_channel: Optional[notification.NotificationChannel] = None,
@@ -963,20 +847,13 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, notification_channel]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.CreateNotificationChannelRequest
-        ):
+        if not isinstance(request, notification_service.CreateNotificationChannelRequest):
             request = notification_service.CreateNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -988,15 +865,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_notification_channel
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_notification_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1014,9 +887,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def update_notification_channel(
         self,
-        request: Optional[
-            Union[notification_service.UpdateNotificationChannelRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.UpdateNotificationChannelRequest, dict]] = None,
         *,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         notification_channel: Optional[notification.NotificationChannel] = None,
@@ -1099,20 +970,13 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [update_mask, notification_channel]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.UpdateNotificationChannelRequest
-        ):
+        if not isinstance(request, notification_service.UpdateNotificationChannelRequest):
             request = notification_service.UpdateNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1124,17 +988,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_notification_channel
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_notification_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("notification_channel.name", request.notification_channel.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("notification_channel.name", request.notification_channel.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1152,9 +1010,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def delete_notification_channel(
         self,
-        request: Optional[
-            Union[notification_service.DeleteNotificationChannelRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.DeleteNotificationChannelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         force: Optional[bool] = None,
@@ -1231,20 +1087,13 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, force]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.DeleteNotificationChannelRequest
-        ):
+        if not isinstance(request, notification_service.DeleteNotificationChannelRequest):
             request = notification_service.DeleteNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1256,15 +1105,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_notification_channel
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_notification_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1279,12 +1124,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def send_notification_channel_verification_code(
         self,
-        request: Optional[
-            Union[
-                notification_service.SendNotificationChannelVerificationCodeRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[notification_service.SendNotificationChannelVerificationCodeRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1340,25 +1180,14 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.SendNotificationChannelVerificationCodeRequest
-        ):
-            request = (
-                notification_service.SendNotificationChannelVerificationCodeRequest(
-                    request
-                )
-            )
+        if not isinstance(request, notification_service.SendNotificationChannelVerificationCodeRequest):
+            request = notification_service.SendNotificationChannelVerificationCodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1367,15 +1196,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.send_notification_channel_verification_code
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.send_notification_channel_verification_code]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1390,11 +1215,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def get_notification_channel_verification_code(
         self,
-        request: Optional[
-            Union[
-                notification_service.GetNotificationChannelVerificationCodeRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[notification_service.GetNotificationChannelVerificationCodeRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1486,25 +1307,14 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.GetNotificationChannelVerificationCodeRequest
-        ):
-            request = (
-                notification_service.GetNotificationChannelVerificationCodeRequest(
-                    request
-                )
-            )
+        if not isinstance(request, notification_service.GetNotificationChannelVerificationCodeRequest):
+            request = notification_service.GetNotificationChannelVerificationCodeRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1513,15 +1323,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_notification_channel_verification_code
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_notification_channel_verification_code]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1539,9 +1345,7 @@ class NotificationChannelServiceAsyncClient:
 
     async def verify_notification_channel(
         self,
-        request: Optional[
-            Union[notification_service.VerifyNotificationChannelRequest, dict]
-        ] = None,
+        request: Optional[Union[notification_service.VerifyNotificationChannelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         code: Optional[str] = None,
@@ -1627,20 +1431,13 @@ class NotificationChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, code]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, notification_service.VerifyNotificationChannelRequest
-        ):
+        if not isinstance(request, notification_service.VerifyNotificationChannelRequest):
             request = notification_service.VerifyNotificationChannelRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1652,15 +1449,11 @@ class NotificationChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.verify_notification_channel
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.verify_notification_channel]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1683,9 +1476,7 @@ class NotificationChannelServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

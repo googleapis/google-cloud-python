@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 import uuid
 
 from google.api_core import exceptions as core_exceptions
@@ -96,45 +85,21 @@ class DataprocMetastoreFederationAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = DataprocMetastoreFederationClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DataprocMetastoreFederationClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        DataprocMetastoreFederationClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = DataprocMetastoreFederationClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DataprocMetastoreFederationClient._DEFAULT_UNIVERSE
 
     federation_path = staticmethod(DataprocMetastoreFederationClient.federation_path)
-    parse_federation_path = staticmethod(
-        DataprocMetastoreFederationClient.parse_federation_path
-    )
-    common_billing_account_path = staticmethod(
-        DataprocMetastoreFederationClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DataprocMetastoreFederationClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        DataprocMetastoreFederationClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        DataprocMetastoreFederationClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DataprocMetastoreFederationClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DataprocMetastoreFederationClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        DataprocMetastoreFederationClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        DataprocMetastoreFederationClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        DataprocMetastoreFederationClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        DataprocMetastoreFederationClient.parse_common_location_path
-    )
+    parse_federation_path = staticmethod(DataprocMetastoreFederationClient.parse_federation_path)
+    common_billing_account_path = staticmethod(DataprocMetastoreFederationClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DataprocMetastoreFederationClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(DataprocMetastoreFederationClient.common_folder_path)
+    parse_common_folder_path = staticmethod(DataprocMetastoreFederationClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DataprocMetastoreFederationClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DataprocMetastoreFederationClient.parse_common_organization_path)
+    common_project_path = staticmethod(DataprocMetastoreFederationClient.common_project_path)
+    parse_common_project_path = staticmethod(DataprocMetastoreFederationClient.parse_common_project_path)
+    common_location_path = staticmethod(DataprocMetastoreFederationClient.common_location_path)
+    parse_common_location_path = staticmethod(DataprocMetastoreFederationClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -170,9 +135,7 @@ class DataprocMetastoreFederationAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -239,13 +202,7 @@ class DataprocMetastoreFederationAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                DataprocMetastoreFederationTransport,
-                Callable[..., DataprocMetastoreFederationTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DataprocMetastoreFederationTransport, Callable[..., DataprocMetastoreFederationTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -305,20 +262,14 @@ class DataprocMetastoreFederationAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.metastore_v1alpha.DataprocMetastoreFederationAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.metastore.v1alpha.DataprocMetastoreFederation",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -329,9 +280,7 @@ class DataprocMetastoreFederationAsyncClient:
 
     async def list_federations(
         self,
-        request: Optional[
-            Union[metastore_federation.ListFederationsRequest, dict]
-        ] = None,
+        request: Optional[Union[metastore_federation.ListFederationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -399,14 +348,9 @@ class DataprocMetastoreFederationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -420,15 +364,11 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_federations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_federations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -457,9 +397,7 @@ class DataprocMetastoreFederationAsyncClient:
 
     async def get_federation(
         self,
-        request: Optional[
-            Union[metastore_federation.GetFederationRequest, dict]
-        ] = None,
+        request: Optional[Union[metastore_federation.GetFederationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -524,14 +462,9 @@ class DataprocMetastoreFederationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -545,15 +478,11 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_federation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_federation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -571,9 +500,7 @@ class DataprocMetastoreFederationAsyncClient:
 
     async def create_federation(
         self,
-        request: Optional[
-            Union[metastore_federation.CreateFederationRequest, dict]
-        ] = None,
+        request: Optional[Union[metastore_federation.CreateFederationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         federation: Optional[metastore_federation.Federation] = None,
@@ -674,14 +601,9 @@ class DataprocMetastoreFederationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, federation, federation_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -699,15 +621,11 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_federation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_federation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -733,9 +651,7 @@ class DataprocMetastoreFederationAsyncClient:
 
     async def update_federation(
         self,
-        request: Optional[
-            Union[metastore_federation.UpdateFederationRequest, dict]
-        ] = None,
+        request: Optional[Union[metastore_federation.UpdateFederationRequest, dict]] = None,
         *,
         federation: Optional[metastore_federation.Federation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -819,14 +735,9 @@ class DataprocMetastoreFederationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [federation, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -842,17 +753,11 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_federation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_federation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("federation.name", request.federation.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("federation.name", request.federation.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -878,9 +783,7 @@ class DataprocMetastoreFederationAsyncClient:
 
     async def delete_federation(
         self,
-        request: Optional[
-            Union[metastore_federation.DeleteFederationRequest, dict]
-        ] = None,
+        request: Optional[Union[metastore_federation.DeleteFederationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -959,14 +862,9 @@ class DataprocMetastoreFederationAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -980,15 +878,11 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_federation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_federation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1049,9 +943,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1104,9 +996,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1163,9 +1053,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1218,9 +1106,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1336,9 +1222,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1458,9 +1342,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1514,15 +1396,11 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1575,9 +1453,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1630,9 +1506,7 @@ class DataprocMetastoreFederationAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1655,9 +1529,7 @@ class DataprocMetastoreFederationAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

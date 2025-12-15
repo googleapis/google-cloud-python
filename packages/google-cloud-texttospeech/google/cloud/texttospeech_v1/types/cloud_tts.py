@@ -454,9 +454,7 @@ class MultiSpeakerVoiceConfig(proto.Message):
             voice configurations must be provided.
     """
 
-    speaker_voice_configs: MutableSequence[
-        "MultispeakerPrebuiltVoice"
-    ] = proto.RepeatedField(
+    speaker_voice_configs: MutableSequence["MultispeakerPrebuiltVoice"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MultispeakerPrebuiltVoice",

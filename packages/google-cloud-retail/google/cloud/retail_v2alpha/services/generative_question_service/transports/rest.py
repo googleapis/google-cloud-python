@@ -30,10 +30,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.retail_v2alpha.types import (
-    generative_question,
-    generative_question_service,
-)
+from google.cloud.retail_v2alpha.types import generative_question, generative_question_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseGenerativeQuestionServiceRestTransport
@@ -124,13 +121,8 @@ class GenerativeQuestionServiceRestInterceptor:
     """
 
     def pre_batch_update_generative_question_configs(
-        self,
-        request: generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_generative_question_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -139,8 +131,7 @@ class GenerativeQuestionServiceRestInterceptor:
         return request, metadata
 
     def post_batch_update_generative_question_configs(
-        self,
-        response: generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
+        self, response: generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse
     ) -> generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse:
         """Post-rpc interceptor for batch_update_generative_question_configs
 
@@ -155,13 +146,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response
 
     def post_batch_update_generative_question_configs_with_metadata(
-        self,
-        response: generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_generative_question_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -177,13 +163,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_get_generative_questions_feature_config(
-        self,
-        request: generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.GetGenerativeQuestionsFeatureConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: generative_question_service.GetGenerativeQuestionsFeatureConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.GetGenerativeQuestionsFeatureConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_generative_questions_feature_config
 
         Override in a subclass to manipulate the request or metadata
@@ -207,13 +188,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response
 
     def post_get_generative_questions_feature_config_with_metadata(
-        self,
-        response: generative_question.GenerativeQuestionsFeatureConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question.GenerativeQuestionsFeatureConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: generative_question.GenerativeQuestionsFeatureConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question.GenerativeQuestionsFeatureConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_generative_questions_feature_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -229,13 +205,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_list_generative_question_configs(
-        self,
-        request: generative_question_service.ListGenerativeQuestionConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.ListGenerativeQuestionConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: generative_question_service.ListGenerativeQuestionConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.ListGenerativeQuestionConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_generative_question_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -244,8 +215,7 @@ class GenerativeQuestionServiceRestInterceptor:
         return request, metadata
 
     def post_list_generative_question_configs(
-        self,
-        response: generative_question_service.ListGenerativeQuestionConfigsResponse,
+        self, response: generative_question_service.ListGenerativeQuestionConfigsResponse
     ) -> generative_question_service.ListGenerativeQuestionConfigsResponse:
         """Post-rpc interceptor for list_generative_question_configs
 
@@ -260,13 +230,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response
 
     def post_list_generative_question_configs_with_metadata(
-        self,
-        response: generative_question_service.ListGenerativeQuestionConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.ListGenerativeQuestionConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: generative_question_service.ListGenerativeQuestionConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.ListGenerativeQuestionConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_generative_question_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -282,13 +247,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_update_generative_question_config(
-        self,
-        request: generative_question_service.UpdateGenerativeQuestionConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.UpdateGenerativeQuestionConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: generative_question_service.UpdateGenerativeQuestionConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.UpdateGenerativeQuestionConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_generative_question_config
 
         Override in a subclass to manipulate the request or metadata
@@ -312,13 +272,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response
 
     def post_update_generative_question_config_with_metadata(
-        self,
-        response: generative_question.GenerativeQuestionConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question.GenerativeQuestionConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: generative_question.GenerativeQuestionConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question.GenerativeQuestionConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_generative_question_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -334,13 +289,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_update_generative_questions_feature_config(
-        self,
-        request: generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_generative_questions_feature_config
 
         Override in a subclass to manipulate the request or metadata
@@ -364,13 +314,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response
 
     def post_update_generative_questions_feature_config_with_metadata(
-        self,
-        response: generative_question.GenerativeQuestionsFeatureConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generative_question.GenerativeQuestionsFeatureConfig,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: generative_question.GenerativeQuestionsFeatureConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generative_question.GenerativeQuestionsFeatureConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_generative_questions_feature_config
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -386,12 +331,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +340,7 @@ class GenerativeQuestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -411,12 +350,8 @@ class GenerativeQuestionServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -424,9 +359,7 @@ class GenerativeQuestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -443,9 +376,7 @@ class GenerativeQuestionServiceRestStub:
     _interceptor: GenerativeQuestionServiceRestInterceptor
 
 
-class GenerativeQuestionServiceRestTransport(
-    _BaseGenerativeQuestionServiceRestTransport
-):
+class GenerativeQuestionServiceRestTransport(_BaseGenerativeQuestionServiceRestTransport):
     """REST backend synchronous transport for GenerativeQuestionService.
 
     Service for managing LLM generated questions in search
@@ -518,33 +449,20 @@ class GenerativeQuestionServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GenerativeQuestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _BatchUpdateGenerativeQuestionConfigs(
-        _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs,
-        GenerativeQuestionServiceRestStub,
+        _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs, GenerativeQuestionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "GenerativeQuestionServiceRestTransport.BatchUpdateGenerativeQuestionConfigs"
-            )
+            return hash("GenerativeQuestionServiceRestTransport.BatchUpdateGenerativeQuestionConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -589,35 +507,22 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_batch_update_generative_question_configs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_batch_update_generative_question_configs(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseBatchUpdateGenerativeQuestionConfigs._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -641,13 +546,7 @@ class GenerativeQuestionServiceRestTransport(
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._BatchUpdateGenerativeQuestionConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -656,30 +555,17 @@ class GenerativeQuestionServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
-            )
-            pb_resp = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(
-                resp
-            )
+            resp = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse()
+            pb_resp = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_batch_update_generative_question_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_update_generative_question_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_generative_question_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -699,24 +585,13 @@ class GenerativeQuestionServiceRestTransport(
             return resp
 
     class _GetGenerativeQuestionsFeatureConfig(
-        _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig,
-        GenerativeQuestionServiceRestStub,
+        _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig, GenerativeQuestionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "GenerativeQuestionServiceRestTransport.GetGenerativeQuestionsFeatureConfig"
-            )
+            return hash("GenerativeQuestionServiceRestTransport.GetGenerativeQuestionsFeatureConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -760,16 +635,9 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_generative_questions_feature_config(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_generative_questions_feature_config(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseGetGenerativeQuestionsFeatureConfig._get_transcoded_request(
                 http_options, request
             )
@@ -779,12 +647,8 @@ class GenerativeQuestionServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -808,12 +672,7 @@ class GenerativeQuestionServiceRestTransport(
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._GetGenerativeQuestionsFeatureConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -829,21 +688,10 @@ class GenerativeQuestionServiceRestTransport(
 
             resp = self._interceptor.post_get_generative_questions_feature_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_generative_questions_feature_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_generative_questions_feature_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        generative_question.GenerativeQuestionsFeatureConfig.to_json(
-                            response
-                        )
-                    )
+                    response_payload = generative_question.GenerativeQuestionsFeatureConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -863,24 +711,13 @@ class GenerativeQuestionServiceRestTransport(
             return resp
 
     class _ListGenerativeQuestionConfigs(
-        _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs,
-        GenerativeQuestionServiceRestStub,
+        _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs, GenerativeQuestionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "GenerativeQuestionServiceRestTransport.ListGenerativeQuestionConfigs"
-            )
+            return hash("GenerativeQuestionServiceRestTransport.ListGenerativeQuestionConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -920,28 +757,18 @@ class GenerativeQuestionServiceRestTransport(
                         Response for ListQuestions method.
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_generative_question_configs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_generative_question_configs(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseListGenerativeQuestionConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -965,12 +792,7 @@ class GenerativeQuestionServiceRestTransport(
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._ListGenerativeQuestionConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -980,29 +802,16 @@ class GenerativeQuestionServiceRestTransport(
 
             # Return the response
             resp = generative_question_service.ListGenerativeQuestionConfigsResponse()
-            pb_resp = (
-                generative_question_service.ListGenerativeQuestionConfigsResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = generative_question_service.ListGenerativeQuestionConfigsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_generative_question_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_generative_question_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_generative_question_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = generative_question_service.ListGenerativeQuestionConfigsResponse.to_json(
-                        response
-                    )
+                    response_payload = generative_question_service.ListGenerativeQuestionConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1022,24 +831,13 @@ class GenerativeQuestionServiceRestTransport(
             return resp
 
     class _UpdateGenerativeQuestionConfig(
-        _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig,
-        GenerativeQuestionServiceRestStub,
+        _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig, GenerativeQuestionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "GenerativeQuestionServiceRestTransport.UpdateGenerativeQuestionConfig"
-            )
+            return hash("GenerativeQuestionServiceRestTransport.UpdateGenerativeQuestionConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1083,32 +881,20 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_generative_question_config(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_generative_question_config(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1132,13 +918,7 @@ class GenerativeQuestionServiceRestTransport(
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._UpdateGenerativeQuestionConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1154,19 +934,10 @@ class GenerativeQuestionServiceRestTransport(
 
             resp = self._interceptor.post_update_generative_question_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_generative_question_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_generative_question_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        generative_question.GenerativeQuestionConfig.to_json(response)
-                    )
+                    response_payload = generative_question.GenerativeQuestionConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1186,24 +957,13 @@ class GenerativeQuestionServiceRestTransport(
             return resp
 
     class _UpdateGenerativeQuestionsFeatureConfig(
-        _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig,
-        GenerativeQuestionServiceRestStub,
+        _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig, GenerativeQuestionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "GenerativeQuestionServiceRestTransport.UpdateGenerativeQuestionsFeatureConfig"
-            )
+            return hash("GenerativeQuestionServiceRestTransport.UpdateGenerativeQuestionsFeatureConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1248,35 +1008,22 @@ class GenerativeQuestionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_generative_questions_feature_config(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_generative_questions_feature_config(request, metadata)
             transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseGenerativeQuestionServiceRestTransport._BaseUpdateGenerativeQuestionsFeatureConfig._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1300,13 +1047,7 @@ class GenerativeQuestionServiceRestTransport(
 
             # Send the request
             response = GenerativeQuestionServiceRestTransport._UpdateGenerativeQuestionsFeatureConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1320,25 +1061,12 @@ class GenerativeQuestionServiceRestTransport(
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_update_generative_questions_feature_config(
-                resp
-            )
+            resp = self._interceptor.post_update_generative_questions_feature_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_generative_questions_feature_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_generative_questions_feature_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        generative_question.GenerativeQuestionsFeatureConfig.to_json(
-                            response
-                        )
-                    )
+                    response_payload = generative_question.GenerativeQuestionsFeatureConfig.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1371,10 +1099,7 @@ class GenerativeQuestionServiceRestTransport(
     @property
     def get_generative_questions_feature_config(
         self,
-    ) -> Callable[
-        [generative_question_service.GetGenerativeQuestionsFeatureConfigRequest],
-        generative_question.GenerativeQuestionsFeatureConfig,
-    ]:
+    ) -> Callable[[generative_question_service.GetGenerativeQuestionsFeatureConfigRequest], generative_question.GenerativeQuestionsFeatureConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGenerativeQuestionsFeatureConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -1383,8 +1108,7 @@ class GenerativeQuestionServiceRestTransport(
     def list_generative_question_configs(
         self,
     ) -> Callable[
-        [generative_question_service.ListGenerativeQuestionConfigsRequest],
-        generative_question_service.ListGenerativeQuestionConfigsResponse,
+        [generative_question_service.ListGenerativeQuestionConfigsRequest], generative_question_service.ListGenerativeQuestionConfigsResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1393,10 +1117,7 @@ class GenerativeQuestionServiceRestTransport(
     @property
     def update_generative_question_config(
         self,
-    ) -> Callable[
-        [generative_question_service.UpdateGenerativeQuestionConfigRequest],
-        generative_question.GenerativeQuestionConfig,
-    ]:
+    ) -> Callable[[generative_question_service.UpdateGenerativeQuestionConfigRequest], generative_question.GenerativeQuestionConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGenerativeQuestionConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -1404,10 +1125,7 @@ class GenerativeQuestionServiceRestTransport(
     @property
     def update_generative_questions_feature_config(
         self,
-    ) -> Callable[
-        [generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest],
-        generative_question.GenerativeQuestionsFeatureConfig,
-    ]:
+    ) -> Callable[[generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest], generative_question.GenerativeQuestionsFeatureConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGenerativeQuestionsFeatureConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -1416,23 +1134,12 @@ class GenerativeQuestionServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation,
-        GenerativeQuestionServiceRestStub,
-    ):
+    class _GetOperation(_BaseGenerativeQuestionServiceRestTransport._BaseGetOperation, GenerativeQuestionServiceRestStub):
         def __hash__(self):
             return hash("GenerativeQuestionServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1470,26 +1177,16 @@ class GenerativeQuestionServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1512,15 +1209,8 @@ class GenerativeQuestionServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                GenerativeQuestionServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GenerativeQuestionServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1532,9 +1222,7 @@ class GenerativeQuestionServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1559,23 +1247,12 @@ class GenerativeQuestionServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseGenerativeQuestionServiceRestTransport._BaseListOperations,
-        GenerativeQuestionServiceRestStub,
-    ):
+    class _ListOperations(_BaseGenerativeQuestionServiceRestTransport._BaseListOperations, GenerativeQuestionServiceRestStub):
         def __hash__(self):
             return hash("GenerativeQuestionServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1613,26 +1290,16 @@ class GenerativeQuestionServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGenerativeQuestionServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1655,15 +1322,8 @@ class GenerativeQuestionServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                GenerativeQuestionServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GenerativeQuestionServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1675,9 +1335,7 @@ class GenerativeQuestionServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

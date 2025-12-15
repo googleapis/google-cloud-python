@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    custom_targeting_value_messages,
-    custom_targeting_value_service,
-)
+from google.ads.admanager_v1.types import custom_targeting_value_messages, custom_targeting_value_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseCustomTargetingValueServiceRestTransport
@@ -99,13 +96,8 @@ class CustomTargetingValueServiceRestInterceptor:
     """
 
     def pre_get_custom_targeting_value(
-        self,
-        request: custom_targeting_value_service.GetCustomTargetingValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        custom_targeting_value_service.GetCustomTargetingValueRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: custom_targeting_value_service.GetCustomTargetingValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[custom_targeting_value_service.GetCustomTargetingValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_custom_targeting_value
 
         Override in a subclass to manipulate the request or metadata
@@ -129,13 +121,8 @@ class CustomTargetingValueServiceRestInterceptor:
         return response
 
     def post_get_custom_targeting_value_with_metadata(
-        self,
-        response: custom_targeting_value_messages.CustomTargetingValue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        custom_targeting_value_messages.CustomTargetingValue,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: custom_targeting_value_messages.CustomTargetingValue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[custom_targeting_value_messages.CustomTargetingValue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_custom_targeting_value
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +138,8 @@ class CustomTargetingValueServiceRestInterceptor:
         return response, metadata
 
     def pre_list_custom_targeting_values(
-        self,
-        request: custom_targeting_value_service.ListCustomTargetingValuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        custom_targeting_value_service.ListCustomTargetingValuesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: custom_targeting_value_service.ListCustomTargetingValuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[custom_targeting_value_service.ListCustomTargetingValuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_custom_targeting_values
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +163,8 @@ class CustomTargetingValueServiceRestInterceptor:
         return response
 
     def post_list_custom_targeting_values_with_metadata(
-        self,
-        response: custom_targeting_value_service.ListCustomTargetingValuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        custom_targeting_value_service.ListCustomTargetingValuesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: custom_targeting_value_service.ListCustomTargetingValuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[custom_targeting_value_service.ListCustomTargetingValuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_custom_targeting_values
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +180,8 @@ class CustomTargetingValueServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +189,7 @@ class CustomTargetingValueServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -235,9 +206,7 @@ class CustomTargetingValueServiceRestStub:
     _interceptor: CustomTargetingValueServiceRestInterceptor
 
 
-class CustomTargetingValueServiceRestTransport(
-    _BaseCustomTargetingValueServiceRestTransport
-):
+class CustomTargetingValueServiceRestTransport(_BaseCustomTargetingValueServiceRestTransport):
     """REST backend synchronous transport for CustomTargetingValueService.
 
     Provides methods for handling ``CustomTargetingValue`` objects.
@@ -309,33 +278,18 @@ class CustomTargetingValueServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CustomTargetingValueServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetCustomTargetingValue(
-        _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue,
-        CustomTargetingValueServiceRestStub,
-    ):
+    class _GetCustomTargetingValue(_BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue, CustomTargetingValueServiceRestStub):
         def __hash__(self):
-            return hash(
-                "CustomTargetingValueServiceRestTransport.GetCustomTargetingValue"
-            )
+            return hash("CustomTargetingValueServiceRestTransport.GetCustomTargetingValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -375,28 +329,18 @@ class CustomTargetingValueServiceRestTransport(
                         The ``CustomTargetingValue`` resource.
             """
 
-            http_options = (
-                _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue._get_http_options()
-            )
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_custom_targeting_value(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_custom_targeting_value(request, metadata)
             transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseGetCustomTargetingValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -420,12 +364,7 @@ class CustomTargetingValueServiceRestTransport(
 
             # Send the request
             response = CustomTargetingValueServiceRestTransport._GetCustomTargetingValue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -441,18 +380,10 @@ class CustomTargetingValueServiceRestTransport(
 
             resp = self._interceptor.post_get_custom_targeting_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_custom_targeting_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_custom_targeting_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        custom_targeting_value_messages.CustomTargetingValue.to_json(
-                            response
-                        )
-                    )
+                    response_payload = custom_targeting_value_messages.CustomTargetingValue.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -472,24 +403,13 @@ class CustomTargetingValueServiceRestTransport(
             return resp
 
     class _ListCustomTargetingValues(
-        _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues,
-        CustomTargetingValueServiceRestStub,
+        _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues, CustomTargetingValueServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "CustomTargetingValueServiceRestTransport.ListCustomTargetingValues"
-            )
+            return hash("CustomTargetingValueServiceRestTransport.ListCustomTargetingValues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -531,28 +451,18 @@ class CustomTargetingValueServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues._get_http_options()
-            )
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_custom_targeting_values(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_custom_targeting_values(request, metadata)
             transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseListCustomTargetingValues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -576,12 +486,7 @@ class CustomTargetingValueServiceRestTransport(
 
             # Send the request
             response = CustomTargetingValueServiceRestTransport._ListCustomTargetingValues._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -591,26 +496,16 @@ class CustomTargetingValueServiceRestTransport(
 
             # Return the response
             resp = custom_targeting_value_service.ListCustomTargetingValuesResponse()
-            pb_resp = (
-                custom_targeting_value_service.ListCustomTargetingValuesResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = custom_targeting_value_service.ListCustomTargetingValuesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_custom_targeting_values(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_custom_targeting_values_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_custom_targeting_values_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = custom_targeting_value_service.ListCustomTargetingValuesResponse.to_json(
-                        response
-                    )
+                    response_payload = custom_targeting_value_service.ListCustomTargetingValuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -632,10 +527,7 @@ class CustomTargetingValueServiceRestTransport(
     @property
     def get_custom_targeting_value(
         self,
-    ) -> Callable[
-        [custom_targeting_value_service.GetCustomTargetingValueRequest],
-        custom_targeting_value_messages.CustomTargetingValue,
-    ]:
+    ) -> Callable[[custom_targeting_value_service.GetCustomTargetingValueRequest], custom_targeting_value_messages.CustomTargetingValue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomTargetingValue(self._session, self._host, self._interceptor)  # type: ignore
@@ -644,8 +536,7 @@ class CustomTargetingValueServiceRestTransport(
     def list_custom_targeting_values(
         self,
     ) -> Callable[
-        [custom_targeting_value_service.ListCustomTargetingValuesRequest],
-        custom_targeting_value_service.ListCustomTargetingValuesResponse,
+        [custom_targeting_value_service.ListCustomTargetingValuesRequest], custom_targeting_value_service.ListCustomTargetingValuesResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -655,23 +546,12 @@ class CustomTargetingValueServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation,
-        CustomTargetingValueServiceRestStub,
-    ):
+    class _GetOperation(_BaseCustomTargetingValueServiceRestTransport._BaseGetOperation, CustomTargetingValueServiceRestStub):
         def __hash__(self):
             return hash("CustomTargetingValueServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -709,26 +589,16 @@ class CustomTargetingValueServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCustomTargetingValueServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -751,15 +621,8 @@ class CustomTargetingValueServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                CustomTargetingValueServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CustomTargetingValueServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -771,9 +634,7 @@ class CustomTargetingValueServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

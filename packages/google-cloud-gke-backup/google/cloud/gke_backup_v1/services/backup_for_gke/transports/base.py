@@ -43,9 +43,7 @@ from google.cloud.gke_backup_v1.types import (
     volume,
 )
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -107,23 +105,15 @@ class BackupForGKETransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -596,97 +586,61 @@ class BackupForGKETransport(abc.ABC):
     @property
     def create_backup_plan(
         self,
-    ) -> Callable[
-        [gkebackup.CreateBackupPlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.CreateBackupPlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_backup_plans(
         self,
-    ) -> Callable[
-        [gkebackup.ListBackupPlansRequest],
-        Union[
-            gkebackup.ListBackupPlansResponse,
-            Awaitable[gkebackup.ListBackupPlansResponse],
-        ],
-    ]:
+    ) -> Callable[[gkebackup.ListBackupPlansRequest], Union[gkebackup.ListBackupPlansResponse, Awaitable[gkebackup.ListBackupPlansResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.GetBackupPlanRequest],
-        Union[backup_plan.BackupPlan, Awaitable[backup_plan.BackupPlan]],
-    ]:
+    def get_backup_plan(self) -> Callable[[gkebackup.GetBackupPlanRequest], Union[backup_plan.BackupPlan, Awaitable[backup_plan.BackupPlan]]]:
         raise NotImplementedError()
 
     @property
     def update_backup_plan(
         self,
-    ) -> Callable[
-        [gkebackup.UpdateBackupPlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.UpdateBackupPlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup_plan(
         self,
-    ) -> Callable[
-        [gkebackup.DeleteBackupPlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.DeleteBackupPlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_backup_channel(
         self,
-    ) -> Callable[
-        [gkebackup.CreateBackupChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.CreateBackupChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_backup_channels(
         self,
     ) -> Callable[
-        [gkebackup.ListBackupChannelsRequest],
-        Union[
-            gkebackup.ListBackupChannelsResponse,
-            Awaitable[gkebackup.ListBackupChannelsResponse],
-        ],
+        [gkebackup.ListBackupChannelsRequest], Union[gkebackup.ListBackupChannelsResponse, Awaitable[gkebackup.ListBackupChannelsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_backup_channel(
         self,
-    ) -> Callable[
-        [gkebackup.GetBackupChannelRequest],
-        Union[backup_channel.BackupChannel, Awaitable[backup_channel.BackupChannel]],
-    ]:
+    ) -> Callable[[gkebackup.GetBackupChannelRequest], Union[backup_channel.BackupChannel, Awaitable[backup_channel.BackupChannel]]]:
         raise NotImplementedError()
 
     @property
     def update_backup_channel(
         self,
-    ) -> Callable[
-        [gkebackup.UpdateBackupChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.UpdateBackupChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup_channel(
         self,
-    ) -> Callable[
-        [gkebackup.DeleteBackupChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.DeleteBackupChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -694,10 +648,7 @@ class BackupForGKETransport(abc.ABC):
         self,
     ) -> Callable[
         [gkebackup.ListBackupPlanBindingsRequest],
-        Union[
-            gkebackup.ListBackupPlanBindingsResponse,
-            Awaitable[gkebackup.ListBackupPlanBindingsResponse],
-        ],
+        Union[gkebackup.ListBackupPlanBindingsResponse, Awaitable[gkebackup.ListBackupPlanBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -705,175 +656,100 @@ class BackupForGKETransport(abc.ABC):
     def get_backup_plan_binding(
         self,
     ) -> Callable[
-        [gkebackup.GetBackupPlanBindingRequest],
-        Union[
-            backup_plan_binding.BackupPlanBinding,
-            Awaitable[backup_plan_binding.BackupPlanBinding],
-        ],
+        [gkebackup.GetBackupPlanBindingRequest], Union[backup_plan_binding.BackupPlanBinding, Awaitable[backup_plan_binding.BackupPlanBinding]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_backup(self) -> Callable[[gkebackup.CreateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_backups(
         self,
-    ) -> Callable[
-        [gkebackup.ListBackupsRequest],
-        Union[gkebackup.ListBackupsResponse, Awaitable[gkebackup.ListBackupsResponse]],
-    ]:
+    ) -> Callable[[gkebackup.ListBackupsRequest], Union[gkebackup.ListBackupsResponse, Awaitable[gkebackup.ListBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [gkebackup.GetBackupRequest], Union[backup.Backup, Awaitable[backup.Backup]]
-    ]:
+    def get_backup(self) -> Callable[[gkebackup.GetBackupRequest], Union[backup.Backup, Awaitable[backup.Backup]]]:
         raise NotImplementedError()
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_backup(self) -> Callable[[gkebackup.UpdateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_backup(self) -> Callable[[gkebackup.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_volume_backups(
         self,
-    ) -> Callable[
-        [gkebackup.ListVolumeBackupsRequest],
-        Union[
-            gkebackup.ListVolumeBackupsResponse,
-            Awaitable[gkebackup.ListVolumeBackupsResponse],
-        ],
-    ]:
+    ) -> Callable[[gkebackup.ListVolumeBackupsRequest], Union[gkebackup.ListVolumeBackupsResponse, Awaitable[gkebackup.ListVolumeBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_volume_backup(
-        self,
-    ) -> Callable[
-        [gkebackup.GetVolumeBackupRequest],
-        Union[volume.VolumeBackup, Awaitable[volume.VolumeBackup]],
-    ]:
+    def get_volume_backup(self) -> Callable[[gkebackup.GetVolumeBackupRequest], Union[volume.VolumeBackup, Awaitable[volume.VolumeBackup]]]:
         raise NotImplementedError()
 
     @property
     def create_restore_plan(
         self,
-    ) -> Callable[
-        [gkebackup.CreateRestorePlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.CreateRestorePlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_restore_plans(
         self,
-    ) -> Callable[
-        [gkebackup.ListRestorePlansRequest],
-        Union[
-            gkebackup.ListRestorePlansResponse,
-            Awaitable[gkebackup.ListRestorePlansResponse],
-        ],
-    ]:
+    ) -> Callable[[gkebackup.ListRestorePlansRequest], Union[gkebackup.ListRestorePlansResponse, Awaitable[gkebackup.ListRestorePlansResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_restore_plan(
-        self,
-    ) -> Callable[
-        [gkebackup.GetRestorePlanRequest],
-        Union[restore_plan.RestorePlan, Awaitable[restore_plan.RestorePlan]],
-    ]:
+    def get_restore_plan(self) -> Callable[[gkebackup.GetRestorePlanRequest], Union[restore_plan.RestorePlan, Awaitable[restore_plan.RestorePlan]]]:
         raise NotImplementedError()
 
     @property
     def update_restore_plan(
         self,
-    ) -> Callable[
-        [gkebackup.UpdateRestorePlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.UpdateRestorePlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_restore_plan(
         self,
-    ) -> Callable[
-        [gkebackup.DeleteRestorePlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.DeleteRestorePlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_restore_channel(
         self,
-    ) -> Callable[
-        [gkebackup.CreateRestoreChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.CreateRestoreChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_restore_channels(
         self,
     ) -> Callable[
-        [gkebackup.ListRestoreChannelsRequest],
-        Union[
-            gkebackup.ListRestoreChannelsResponse,
-            Awaitable[gkebackup.ListRestoreChannelsResponse],
-        ],
+        [gkebackup.ListRestoreChannelsRequest], Union[gkebackup.ListRestoreChannelsResponse, Awaitable[gkebackup.ListRestoreChannelsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_restore_channel(
         self,
-    ) -> Callable[
-        [gkebackup.GetRestoreChannelRequest],
-        Union[
-            restore_channel.RestoreChannel, Awaitable[restore_channel.RestoreChannel]
-        ],
-    ]:
+    ) -> Callable[[gkebackup.GetRestoreChannelRequest], Union[restore_channel.RestoreChannel, Awaitable[restore_channel.RestoreChannel]]]:
         raise NotImplementedError()
 
     @property
     def update_restore_channel(
         self,
-    ) -> Callable[
-        [gkebackup.UpdateRestoreChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.UpdateRestoreChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_restore_channel(
         self,
-    ) -> Callable[
-        [gkebackup.DeleteRestoreChannelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gkebackup.DeleteRestoreChannelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -881,10 +757,7 @@ class BackupForGKETransport(abc.ABC):
         self,
     ) -> Callable[
         [gkebackup.ListRestorePlanBindingsRequest],
-        Union[
-            gkebackup.ListRestorePlanBindingsResponse,
-            Awaitable[gkebackup.ListRestorePlanBindingsResponse],
-        ],
+        Union[gkebackup.ListRestorePlanBindingsResponse, Awaitable[gkebackup.ListRestorePlanBindingsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -892,80 +765,42 @@ class BackupForGKETransport(abc.ABC):
     def get_restore_plan_binding(
         self,
     ) -> Callable[
-        [gkebackup.GetRestorePlanBindingRequest],
-        Union[
-            restore_plan_binding.RestorePlanBinding,
-            Awaitable[restore_plan_binding.RestorePlanBinding],
-        ],
+        [gkebackup.GetRestorePlanBindingRequest], Union[restore_plan_binding.RestorePlanBinding, Awaitable[restore_plan_binding.RestorePlanBinding]]
     ]:
         raise NotImplementedError()
 
     @property
-    def create_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.CreateRestoreRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_restore(self) -> Callable[[gkebackup.CreateRestoreRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_restores(
         self,
-    ) -> Callable[
-        [gkebackup.ListRestoresRequest],
-        Union[
-            gkebackup.ListRestoresResponse, Awaitable[gkebackup.ListRestoresResponse]
-        ],
-    ]:
+    ) -> Callable[[gkebackup.ListRestoresRequest], Union[gkebackup.ListRestoresResponse, Awaitable[gkebackup.ListRestoresResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.GetRestoreRequest],
-        Union[restore.Restore, Awaitable[restore.Restore]],
-    ]:
+    def get_restore(self) -> Callable[[gkebackup.GetRestoreRequest], Union[restore.Restore, Awaitable[restore.Restore]]]:
         raise NotImplementedError()
 
     @property
-    def update_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.UpdateRestoreRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_restore(self) -> Callable[[gkebackup.UpdateRestoreRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.DeleteRestoreRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_restore(self) -> Callable[[gkebackup.DeleteRestoreRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_volume_restores(
         self,
     ) -> Callable[
-        [gkebackup.ListVolumeRestoresRequest],
-        Union[
-            gkebackup.ListVolumeRestoresResponse,
-            Awaitable[gkebackup.ListVolumeRestoresResponse],
-        ],
+        [gkebackup.ListVolumeRestoresRequest], Union[gkebackup.ListVolumeRestoresResponse, Awaitable[gkebackup.ListVolumeRestoresResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_volume_restore(
-        self,
-    ) -> Callable[
-        [gkebackup.GetVolumeRestoreRequest],
-        Union[volume.VolumeRestore, Awaitable[volume.VolumeRestore]],
-    ]:
+    def get_volume_restore(self) -> Callable[[gkebackup.GetVolumeRestoreRequest], Union[volume.VolumeRestore, Awaitable[volume.VolumeRestore]]]:
         raise NotImplementedError()
 
     @property
@@ -973,10 +808,7 @@ class BackupForGKETransport(abc.ABC):
         self,
     ) -> Callable[
         [gkebackup.GetBackupIndexDownloadUrlRequest],
-        Union[
-            gkebackup.GetBackupIndexDownloadUrlResponse,
-            Awaitable[gkebackup.GetBackupIndexDownloadUrlResponse],
-        ],
+        Union[gkebackup.GetBackupIndexDownloadUrlResponse, Awaitable[gkebackup.GetBackupIndexDownloadUrlResponse]],
     ]:
         raise NotImplementedError()
 
@@ -985,20 +817,14 @@ class BackupForGKETransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1016,19 +842,13 @@ class BackupForGKETransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -1046,22 +866,13 @@ class BackupForGKETransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

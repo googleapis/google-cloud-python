@@ -29,9 +29,7 @@ from google.cloud.compute_v1 import gapic_version as package_version
 from google.cloud.compute_v1.services import global_operations
 from google.cloud.compute_v1.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class FirewallsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -180,57 +170,27 @@ class FirewallsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteFirewallRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteFirewallRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetFirewallRequest],
-        Union[compute.Firewall, Awaitable[compute.Firewall]],
-    ]:
+    def get(self) -> Callable[[compute.GetFirewallRequest], Union[compute.Firewall, Awaitable[compute.Firewall]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertFirewallRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertFirewallRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListFirewallsRequest],
-        Union[compute.FirewallList, Awaitable[compute.FirewallList]],
-    ]:
+    def list(self) -> Callable[[compute.ListFirewallsRequest], Union[compute.FirewallList, Awaitable[compute.FirewallList]]]:
         raise NotImplementedError()
 
     @property
-    def patch(
-        self,
-    ) -> Callable[
-        [compute.PatchFirewallRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch(self) -> Callable[[compute.PatchFirewallRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateFirewallRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateFirewallRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

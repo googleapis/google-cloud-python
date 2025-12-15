@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,18 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.certificate_manager_v1.types import (
-    certificate_issuance_config,
-    certificate_manager,
-    trust_config,
-)
+from google.cloud.certificate_manager_v1.types import certificate_issuance_config, certificate_manager, trust_config
 
 
 class ListCertificatesPager:
@@ -105,12 +89,7 @@ class ListCertificatesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.Certificate]:
@@ -177,18 +156,11 @@ class ListCertificatesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[certificate_manager.ListCertificatesResponse]:
+    async def pages(self) -> AsyncIterator[certificate_manager.ListCertificatesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.Certificate]:
@@ -263,12 +235,7 @@ class ListCertificateMapsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.CertificateMap]:
@@ -299,9 +266,7 @@ class ListCertificateMapsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[certificate_manager.ListCertificateMapsResponse]
-        ],
+        method: Callable[..., Awaitable[certificate_manager.ListCertificateMapsResponse]],
         request: certificate_manager.ListCertificateMapsRequest,
         response: certificate_manager.ListCertificateMapsResponse,
         *,
@@ -337,18 +302,11 @@ class ListCertificateMapsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[certificate_manager.ListCertificateMapsResponse]:
+    async def pages(self) -> AsyncIterator[certificate_manager.ListCertificateMapsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.CertificateMap]:
@@ -423,12 +381,7 @@ class ListCertificateMapEntriesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.CertificateMapEntry]:
@@ -459,9 +412,7 @@ class ListCertificateMapEntriesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[certificate_manager.ListCertificateMapEntriesResponse]
-        ],
+        method: Callable[..., Awaitable[certificate_manager.ListCertificateMapEntriesResponse]],
         request: certificate_manager.ListCertificateMapEntriesRequest,
         response: certificate_manager.ListCertificateMapEntriesResponse,
         *,
@@ -497,18 +448,11 @@ class ListCertificateMapEntriesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[certificate_manager.ListCertificateMapEntriesResponse]:
+    async def pages(self) -> AsyncIterator[certificate_manager.ListCertificateMapEntriesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.CertificateMapEntry]:
@@ -583,12 +527,7 @@ class ListDnsAuthorizationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[certificate_manager.DnsAuthorization]:
@@ -619,9 +558,7 @@ class ListDnsAuthorizationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[certificate_manager.ListDnsAuthorizationsResponse]
-        ],
+        method: Callable[..., Awaitable[certificate_manager.ListDnsAuthorizationsResponse]],
         request: certificate_manager.ListDnsAuthorizationsRequest,
         response: certificate_manager.ListDnsAuthorizationsResponse,
         *,
@@ -657,18 +594,11 @@ class ListDnsAuthorizationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[certificate_manager.ListDnsAuthorizationsResponse]:
+    async def pages(self) -> AsyncIterator[certificate_manager.ListDnsAuthorizationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[certificate_manager.DnsAuthorization]:
@@ -703,9 +633,7 @@ class ListCertificateIssuanceConfigsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., certificate_issuance_config.ListCertificateIssuanceConfigsResponse
-        ],
+        method: Callable[..., certificate_issuance_config.ListCertificateIssuanceConfigsResponse],
         request: certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
         response: certificate_issuance_config.ListCertificateIssuanceConfigsResponse,
         *,
@@ -731,9 +659,7 @@ class ListCertificateIssuanceConfigsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
-        )
+        self._request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -743,23 +669,14 @@ class ListCertificateIssuanceConfigsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[certificate_issuance_config.ListCertificateIssuanceConfigsResponse]:
+    def pages(self) -> Iterator[certificate_issuance_config.ListCertificateIssuanceConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[certificate_issuance_config.CertificateIssuanceConfig]:
+    def __iter__(self) -> Iterator[certificate_issuance_config.CertificateIssuanceConfig]:
         for page in self.pages:
             yield from page.certificate_issuance_configs
 
@@ -787,12 +704,7 @@ class ListCertificateIssuanceConfigsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                certificate_issuance_config.ListCertificateIssuanceConfigsResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[certificate_issuance_config.ListCertificateIssuanceConfigsResponse]],
         request: certificate_issuance_config.ListCertificateIssuanceConfigsRequest,
         response: certificate_issuance_config.ListCertificateIssuanceConfigsResponse,
         *,
@@ -818,9 +730,7 @@ class ListCertificateIssuanceConfigsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
-        )
+        self._request = certificate_issuance_config.ListCertificateIssuanceConfigsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -830,25 +740,14 @@ class ListCertificateIssuanceConfigsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        certificate_issuance_config.ListCertificateIssuanceConfigsResponse
-    ]:
+    async def pages(self) -> AsyncIterator[certificate_issuance_config.ListCertificateIssuanceConfigsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[certificate_issuance_config.CertificateIssuanceConfig]:
+    def __aiter__(self) -> AsyncIterator[certificate_issuance_config.CertificateIssuanceConfig]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.certificate_issuance_configs:
@@ -920,12 +819,7 @@ class ListTrustConfigsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[trust_config.TrustConfig]:
@@ -996,12 +890,7 @@ class ListTrustConfigsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[trust_config.TrustConfig]:

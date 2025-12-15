@@ -18,23 +18,12 @@ from google.cloud.servicedirectory import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.servicedirectory_v1.services.lookup_service.async_client import (
-    LookupServiceAsyncClient,
-)
-from google.cloud.servicedirectory_v1.services.lookup_service.client import (
-    LookupServiceClient,
-)
-from google.cloud.servicedirectory_v1.services.registration_service.async_client import (
-    RegistrationServiceAsyncClient,
-)
-from google.cloud.servicedirectory_v1.services.registration_service.client import (
-    RegistrationServiceClient,
-)
+from google.cloud.servicedirectory_v1.services.lookup_service.async_client import LookupServiceAsyncClient
+from google.cloud.servicedirectory_v1.services.lookup_service.client import LookupServiceClient
+from google.cloud.servicedirectory_v1.services.registration_service.async_client import RegistrationServiceAsyncClient
+from google.cloud.servicedirectory_v1.services.registration_service.client import RegistrationServiceClient
 from google.cloud.servicedirectory_v1.types.endpoint import Endpoint
-from google.cloud.servicedirectory_v1.types.lookup_service import (
-    ResolveServiceRequest,
-    ResolveServiceResponse,
-)
+from google.cloud.servicedirectory_v1.types.lookup_service import ResolveServiceRequest, ResolveServiceResponse
 from google.cloud.servicedirectory_v1.types.namespace import Namespace
 from google.cloud.servicedirectory_v1.types.registration_service import (
     CreateEndpointRequest,

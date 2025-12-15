@@ -28,18 +28,9 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.channel_v1 import gapic_version as package_version
-from google.cloud.channel_v1.types import (
-    channel_partner_links,
-    customers,
-    entitlements,
-    offers,
-    repricing,
-    service,
-)
+from google.cloud.channel_v1.types import channel_partner_links, customers, entitlements, offers, repricing, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -101,23 +92,15 @@ class CloudChannelServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -426,19 +409,11 @@ class CloudChannelServiceTransport(abc.ABC):
     @property
     def list_customers(
         self,
-    ) -> Callable[
-        [service.ListCustomersRequest],
-        Union[service.ListCustomersResponse, Awaitable[service.ListCustomersResponse]],
-    ]:
+    ) -> Callable[[service.ListCustomersRequest], Union[service.ListCustomersResponse, Awaitable[service.ListCustomersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_customer(
-        self,
-    ) -> Callable[
-        [service.GetCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def get_customer(self) -> Callable[[service.GetCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
@@ -446,79 +421,43 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.CheckCloudIdentityAccountsExistRequest],
-        Union[
-            service.CheckCloudIdentityAccountsExistResponse,
-            Awaitable[service.CheckCloudIdentityAccountsExistResponse],
-        ],
+        Union[service.CheckCloudIdentityAccountsExistResponse, Awaitable[service.CheckCloudIdentityAccountsExistResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_customer(
-        self,
-    ) -> Callable[
-        [service.CreateCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def create_customer(self) -> Callable[[service.CreateCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
-    def update_customer(
-        self,
-    ) -> Callable[
-        [service.UpdateCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def update_customer(self) -> Callable[[service.UpdateCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
-    def delete_customer(
-        self,
-    ) -> Callable[
-        [service.DeleteCustomerRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_customer(self) -> Callable[[service.DeleteCustomerRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def import_customer(
-        self,
-    ) -> Callable[
-        [service.ImportCustomerRequest],
-        Union[customers.Customer, Awaitable[customers.Customer]],
-    ]:
+    def import_customer(self) -> Callable[[service.ImportCustomerRequest], Union[customers.Customer, Awaitable[customers.Customer]]]:
         raise NotImplementedError()
 
     @property
     def provision_cloud_identity(
         self,
-    ) -> Callable[
-        [service.ProvisionCloudIdentityRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.ProvisionCloudIdentityRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_entitlements(
         self,
-    ) -> Callable[
-        [service.ListEntitlementsRequest],
-        Union[
-            service.ListEntitlementsResponse,
-            Awaitable[service.ListEntitlementsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListEntitlementsRequest], Union[service.ListEntitlementsResponse, Awaitable[service.ListEntitlementsResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_transferable_skus(
         self,
     ) -> Callable[
-        [service.ListTransferableSkusRequest],
-        Union[
-            service.ListTransferableSkusResponse,
-            Awaitable[service.ListTransferableSkusResponse],
-        ],
+        [service.ListTransferableSkusRequest], Union[service.ListTransferableSkusResponse, Awaitable[service.ListTransferableSkusResponse]]
     ]:
         raise NotImplementedError()
 
@@ -526,122 +465,73 @@ class CloudChannelServiceTransport(abc.ABC):
     def list_transferable_offers(
         self,
     ) -> Callable[
-        [service.ListTransferableOffersRequest],
-        Union[
-            service.ListTransferableOffersResponse,
-            Awaitable[service.ListTransferableOffersResponse],
-        ],
+        [service.ListTransferableOffersRequest], Union[service.ListTransferableOffersResponse, Awaitable[service.ListTransferableOffersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_entitlement(
-        self,
-    ) -> Callable[
-        [service.GetEntitlementRequest],
-        Union[entitlements.Entitlement, Awaitable[entitlements.Entitlement]],
-    ]:
+    def get_entitlement(self) -> Callable[[service.GetEntitlementRequest], Union[entitlements.Entitlement, Awaitable[entitlements.Entitlement]]]:
         raise NotImplementedError()
 
     @property
     def create_entitlement(
         self,
-    ) -> Callable[
-        [service.CreateEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def change_parameters(
-        self,
-    ) -> Callable[
-        [service.ChangeParametersRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def change_parameters(self) -> Callable[[service.ChangeParametersRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def change_renewal_settings(
         self,
-    ) -> Callable[
-        [service.ChangeRenewalSettingsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.ChangeRenewalSettingsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def change_offer(
-        self,
-    ) -> Callable[
-        [service.ChangeOfferRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def change_offer(self) -> Callable[[service.ChangeOfferRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def start_paid_service(
-        self,
-    ) -> Callable[
-        [service.StartPaidServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def start_paid_service(self) -> Callable[[service.StartPaidServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def suspend_entitlement(
         self,
-    ) -> Callable[
-        [service.SuspendEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.SuspendEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def cancel_entitlement(
         self,
-    ) -> Callable[
-        [service.CancelEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CancelEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def activate_entitlement(
         self,
-    ) -> Callable[
-        [service.ActivateEntitlementRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.ActivateEntitlementRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def transfer_entitlements(
         self,
-    ) -> Callable[
-        [service.TransferEntitlementsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.TransferEntitlementsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def transfer_entitlements_to_google(
         self,
-    ) -> Callable[
-        [service.TransferEntitlementsToGoogleRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.TransferEntitlementsToGoogleRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_channel_partner_links(
         self,
     ) -> Callable[
-        [service.ListChannelPartnerLinksRequest],
-        Union[
-            service.ListChannelPartnerLinksResponse,
-            Awaitable[service.ListChannelPartnerLinksResponse],
-        ],
+        [service.ListChannelPartnerLinksRequest], Union[service.ListChannelPartnerLinksResponse, Awaitable[service.ListChannelPartnerLinksResponse]]
     ]:
         raise NotImplementedError()
 
@@ -649,11 +539,7 @@ class CloudChannelServiceTransport(abc.ABC):
     def get_channel_partner_link(
         self,
     ) -> Callable[
-        [service.GetChannelPartnerLinkRequest],
-        Union[
-            channel_partner_links.ChannelPartnerLink,
-            Awaitable[channel_partner_links.ChannelPartnerLink],
-        ],
+        [service.GetChannelPartnerLinkRequest], Union[channel_partner_links.ChannelPartnerLink, Awaitable[channel_partner_links.ChannelPartnerLink]]
     ]:
         raise NotImplementedError()
 
@@ -662,10 +548,7 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.CreateChannelPartnerLinkRequest],
-        Union[
-            channel_partner_links.ChannelPartnerLink,
-            Awaitable[channel_partner_links.ChannelPartnerLink],
-        ],
+        Union[channel_partner_links.ChannelPartnerLink, Awaitable[channel_partner_links.ChannelPartnerLink]],
     ]:
         raise NotImplementedError()
 
@@ -674,10 +557,7 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.UpdateChannelPartnerLinkRequest],
-        Union[
-            channel_partner_links.ChannelPartnerLink,
-            Awaitable[channel_partner_links.ChannelPartnerLink],
-        ],
+        Union[channel_partner_links.ChannelPartnerLink, Awaitable[channel_partner_links.ChannelPartnerLink]],
     ]:
         raise NotImplementedError()
 
@@ -685,11 +565,7 @@ class CloudChannelServiceTransport(abc.ABC):
     def get_customer_repricing_config(
         self,
     ) -> Callable[
-        [service.GetCustomerRepricingConfigRequest],
-        Union[
-            repricing.CustomerRepricingConfig,
-            Awaitable[repricing.CustomerRepricingConfig],
-        ],
+        [service.GetCustomerRepricingConfigRequest], Union[repricing.CustomerRepricingConfig, Awaitable[repricing.CustomerRepricingConfig]]
     ]:
         raise NotImplementedError()
 
@@ -698,10 +574,7 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListCustomerRepricingConfigsRequest],
-        Union[
-            service.ListCustomerRepricingConfigsResponse,
-            Awaitable[service.ListCustomerRepricingConfigsResponse],
-        ],
+        Union[service.ListCustomerRepricingConfigsResponse, Awaitable[service.ListCustomerRepricingConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -709,11 +582,7 @@ class CloudChannelServiceTransport(abc.ABC):
     def create_customer_repricing_config(
         self,
     ) -> Callable[
-        [service.CreateCustomerRepricingConfigRequest],
-        Union[
-            repricing.CustomerRepricingConfig,
-            Awaitable[repricing.CustomerRepricingConfig],
-        ],
+        [service.CreateCustomerRepricingConfigRequest], Union[repricing.CustomerRepricingConfig, Awaitable[repricing.CustomerRepricingConfig]]
     ]:
         raise NotImplementedError()
 
@@ -721,21 +590,14 @@ class CloudChannelServiceTransport(abc.ABC):
     def update_customer_repricing_config(
         self,
     ) -> Callable[
-        [service.UpdateCustomerRepricingConfigRequest],
-        Union[
-            repricing.CustomerRepricingConfig,
-            Awaitable[repricing.CustomerRepricingConfig],
-        ],
+        [service.UpdateCustomerRepricingConfigRequest], Union[repricing.CustomerRepricingConfig, Awaitable[repricing.CustomerRepricingConfig]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_customer_repricing_config(
         self,
-    ) -> Callable[
-        [service.DeleteCustomerRepricingConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[service.DeleteCustomerRepricingConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -743,10 +605,7 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.GetChannelPartnerRepricingConfigRequest],
-        Union[
-            repricing.ChannelPartnerRepricingConfig,
-            Awaitable[repricing.ChannelPartnerRepricingConfig],
-        ],
+        Union[repricing.ChannelPartnerRepricingConfig, Awaitable[repricing.ChannelPartnerRepricingConfig]],
     ]:
         raise NotImplementedError()
 
@@ -755,10 +614,7 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListChannelPartnerRepricingConfigsRequest],
-        Union[
-            service.ListChannelPartnerRepricingConfigsResponse,
-            Awaitable[service.ListChannelPartnerRepricingConfigsResponse],
-        ],
+        Union[service.ListChannelPartnerRepricingConfigsResponse, Awaitable[service.ListChannelPartnerRepricingConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -767,10 +623,7 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.CreateChannelPartnerRepricingConfigRequest],
-        Union[
-            repricing.ChannelPartnerRepricingConfig,
-            Awaitable[repricing.ChannelPartnerRepricingConfig],
-        ],
+        Union[repricing.ChannelPartnerRepricingConfig, Awaitable[repricing.ChannelPartnerRepricingConfig]],
     ]:
         raise NotImplementedError()
 
@@ -779,29 +632,20 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.UpdateChannelPartnerRepricingConfigRequest],
-        Union[
-            repricing.ChannelPartnerRepricingConfig,
-            Awaitable[repricing.ChannelPartnerRepricingConfig],
-        ],
+        Union[repricing.ChannelPartnerRepricingConfig, Awaitable[repricing.ChannelPartnerRepricingConfig]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_channel_partner_repricing_config(
         self,
-    ) -> Callable[
-        [service.DeleteChannelPartnerRepricingConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[service.DeleteChannelPartnerRepricingConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_sku_groups(
         self,
-    ) -> Callable[
-        [service.ListSkuGroupsRequest],
-        Union[service.ListSkuGroupsResponse, Awaitable[service.ListSkuGroupsResponse]],
-    ]:
+    ) -> Callable[[service.ListSkuGroupsRequest], Union[service.ListSkuGroupsResponse, Awaitable[service.ListSkuGroupsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -809,69 +653,37 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.ListSkuGroupBillableSkusRequest],
-        Union[
-            service.ListSkuGroupBillableSkusResponse,
-            Awaitable[service.ListSkuGroupBillableSkusResponse],
-        ],
+        Union[service.ListSkuGroupBillableSkusResponse, Awaitable[service.ListSkuGroupBillableSkusResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def lookup_offer(
-        self,
-    ) -> Callable[
-        [service.LookupOfferRequest], Union[offers.Offer, Awaitable[offers.Offer]]
-    ]:
+    def lookup_offer(self) -> Callable[[service.LookupOfferRequest], Union[offers.Offer, Awaitable[offers.Offer]]]:
         raise NotImplementedError()
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [service.ListProductsRequest],
-        Union[service.ListProductsResponse, Awaitable[service.ListProductsResponse]],
-    ]:
+    def list_products(self) -> Callable[[service.ListProductsRequest], Union[service.ListProductsResponse, Awaitable[service.ListProductsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_skus(
-        self,
-    ) -> Callable[
-        [service.ListSkusRequest],
-        Union[service.ListSkusResponse, Awaitable[service.ListSkusResponse]],
-    ]:
+    def list_skus(self) -> Callable[[service.ListSkusRequest], Union[service.ListSkusResponse, Awaitable[service.ListSkusResponse]]]:
         raise NotImplementedError()
 
     @property
-    def list_offers(
-        self,
-    ) -> Callable[
-        [service.ListOffersRequest],
-        Union[service.ListOffersResponse, Awaitable[service.ListOffersResponse]],
-    ]:
+    def list_offers(self) -> Callable[[service.ListOffersRequest], Union[service.ListOffersResponse, Awaitable[service.ListOffersResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_purchasable_skus(
         self,
-    ) -> Callable[
-        [service.ListPurchasableSkusRequest],
-        Union[
-            service.ListPurchasableSkusResponse,
-            Awaitable[service.ListPurchasableSkusResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListPurchasableSkusRequest], Union[service.ListPurchasableSkusResponse, Awaitable[service.ListPurchasableSkusResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_purchasable_offers(
         self,
     ) -> Callable[
-        [service.ListPurchasableOffersRequest],
-        Union[
-            service.ListPurchasableOffersResponse,
-            Awaitable[service.ListPurchasableOffersResponse],
-        ],
+        [service.ListPurchasableOffersRequest], Union[service.ListPurchasableOffersResponse, Awaitable[service.ListPurchasableOffersResponse]]
     ]:
         raise NotImplementedError()
 
@@ -880,57 +692,35 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [service.QueryEligibleBillingAccountsRequest],
-        Union[
-            service.QueryEligibleBillingAccountsResponse,
-            Awaitable[service.QueryEligibleBillingAccountsResponse],
-        ],
+        Union[service.QueryEligibleBillingAccountsResponse, Awaitable[service.QueryEligibleBillingAccountsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def register_subscriber(
         self,
-    ) -> Callable[
-        [service.RegisterSubscriberRequest],
-        Union[
-            service.RegisterSubscriberResponse,
-            Awaitable[service.RegisterSubscriberResponse],
-        ],
-    ]:
+    ) -> Callable[[service.RegisterSubscriberRequest], Union[service.RegisterSubscriberResponse, Awaitable[service.RegisterSubscriberResponse]]]:
         raise NotImplementedError()
 
     @property
     def unregister_subscriber(
         self,
     ) -> Callable[
-        [service.UnregisterSubscriberRequest],
-        Union[
-            service.UnregisterSubscriberResponse,
-            Awaitable[service.UnregisterSubscriberResponse],
-        ],
+        [service.UnregisterSubscriberRequest], Union[service.UnregisterSubscriberResponse, Awaitable[service.UnregisterSubscriberResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_subscribers(
         self,
-    ) -> Callable[
-        [service.ListSubscribersRequest],
-        Union[
-            service.ListSubscribersResponse, Awaitable[service.ListSubscribersResponse]
-        ],
-    ]:
+    ) -> Callable[[service.ListSubscribersRequest], Union[service.ListSubscribersResponse, Awaitable[service.ListSubscribersResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_entitlement_changes(
         self,
     ) -> Callable[
-        [service.ListEntitlementChangesRequest],
-        Union[
-            service.ListEntitlementChangesResponse,
-            Awaitable[service.ListEntitlementChangesResponse],
-        ],
+        [service.ListEntitlementChangesRequest], Union[service.ListEntitlementChangesResponse, Awaitable[service.ListEntitlementChangesResponse]]
     ]:
         raise NotImplementedError()
 
@@ -939,20 +729,14 @@ class CloudChannelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

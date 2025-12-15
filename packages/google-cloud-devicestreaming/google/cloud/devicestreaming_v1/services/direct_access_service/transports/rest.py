@@ -116,12 +116,8 @@ class DirectAccessServiceRestInterceptor:
     """
 
     def pre_cancel_device_session(
-        self,
-        request: service.CancelDeviceSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CancelDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CancelDeviceSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CancelDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_device_session
 
         Override in a subclass to manipulate the request or metadata
@@ -130,12 +126,8 @@ class DirectAccessServiceRestInterceptor:
         return request, metadata
 
     def pre_create_device_session(
-        self,
-        request: service.CreateDeviceSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateDeviceSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_device_session
 
         Override in a subclass to manipulate the request or metadata
@@ -143,9 +135,7 @@ class DirectAccessServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_device_session(
-        self, response: service.DeviceSession
-    ) -> service.DeviceSession:
+    def post_create_device_session(self, response: service.DeviceSession) -> service.DeviceSession:
         """Post-rpc interceptor for create_device_session
 
         DEPRECATED. Please use the `post_create_device_session_with_metadata`
@@ -159,9 +149,7 @@ class DirectAccessServiceRestInterceptor:
         return response
 
     def post_create_device_session_with_metadata(
-        self,
-        response: service.DeviceSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.DeviceSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeviceSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_device_session
 
@@ -178,12 +166,8 @@ class DirectAccessServiceRestInterceptor:
         return response, metadata
 
     def pre_get_device_session(
-        self,
-        request: service.GetDeviceSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.GetDeviceSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_device_session
 
         Override in a subclass to manipulate the request or metadata
@@ -191,9 +175,7 @@ class DirectAccessServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_device_session(
-        self, response: service.DeviceSession
-    ) -> service.DeviceSession:
+    def post_get_device_session(self, response: service.DeviceSession) -> service.DeviceSession:
         """Post-rpc interceptor for get_device_session
 
         DEPRECATED. Please use the `post_get_device_session_with_metadata`
@@ -207,9 +189,7 @@ class DirectAccessServiceRestInterceptor:
         return response
 
     def post_get_device_session_with_metadata(
-        self,
-        response: service.DeviceSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.DeviceSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeviceSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_device_session
 
@@ -226,12 +206,8 @@ class DirectAccessServiceRestInterceptor:
         return response, metadata
 
     def pre_list_device_sessions(
-        self,
-        request: service.ListDeviceSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListDeviceSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListDeviceSessionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListDeviceSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_device_sessions
 
         Override in a subclass to manipulate the request or metadata
@@ -239,9 +215,7 @@ class DirectAccessServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_device_sessions(
-        self, response: service.ListDeviceSessionsResponse
-    ) -> service.ListDeviceSessionsResponse:
+    def post_list_device_sessions(self, response: service.ListDeviceSessionsResponse) -> service.ListDeviceSessionsResponse:
         """Post-rpc interceptor for list_device_sessions
 
         DEPRECATED. Please use the `post_list_device_sessions_with_metadata`
@@ -255,12 +229,8 @@ class DirectAccessServiceRestInterceptor:
         return response
 
     def post_list_device_sessions_with_metadata(
-        self,
-        response: service.ListDeviceSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListDeviceSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListDeviceSessionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListDeviceSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_device_sessions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -276,12 +246,8 @@ class DirectAccessServiceRestInterceptor:
         return response, metadata
 
     def pre_update_device_session(
-        self,
-        request: service.UpdateDeviceSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateDeviceSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateDeviceSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_device_session
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +255,7 @@ class DirectAccessServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_device_session(
-        self, response: service.DeviceSession
-    ) -> service.DeviceSession:
+    def post_update_device_session(self, response: service.DeviceSession) -> service.DeviceSession:
         """Post-rpc interceptor for update_device_session
 
         DEPRECATED. Please use the `post_update_device_session_with_metadata`
@@ -305,9 +269,7 @@ class DirectAccessServiceRestInterceptor:
         return response
 
     def post_update_device_session_with_metadata(
-        self,
-        response: service.DeviceSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.DeviceSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeviceSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_device_session
 
@@ -413,18 +375,13 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DirectAccessServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AdbConnect(
-        _BaseDirectAccessServiceRestTransport._BaseAdbConnect,
-        DirectAccessServiceRestStub,
-    ):
+    class _AdbConnect(_BaseDirectAccessServiceRestTransport._BaseAdbConnect, DirectAccessServiceRestStub):
         def __hash__(self):
             return hash("DirectAccessServiceRestTransport.AdbConnect")
 
@@ -436,27 +393,14 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method AdbConnect is not available over REST transport"
-            )
+            raise NotImplementedError("Method AdbConnect is not available over REST transport")
 
-    class _CancelDeviceSession(
-        _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession,
-        DirectAccessServiceRestStub,
-    ):
+    class _CancelDeviceSession(_BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession, DirectAccessServiceRestStub):
         def __hash__(self):
             return hash("DirectAccessServiceRestTransport.CancelDeviceSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -493,32 +437,18 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_device_session(
-                request, metadata
-            )
-            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_device_session(request, metadata)
+            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_transcoded_request(http_options, request)
 
-            body = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDirectAccessServiceRestTransport._BaseCancelDeviceSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -541,16 +471,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DirectAccessServiceRestTransport._CancelDeviceSession._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DirectAccessServiceRestTransport._CancelDeviceSession._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -558,23 +480,12 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateDeviceSession(
-        _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession,
-        DirectAccessServiceRestStub,
-    ):
+    class _CreateDeviceSession(_BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession, DirectAccessServiceRestStub):
         def __hash__(self):
             return hash("DirectAccessServiceRestTransport.CreateDeviceSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -617,32 +528,18 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_device_session(
-                request, metadata
-            )
-            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_device_session(request, metadata)
+            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_transcoded_request(http_options, request)
 
-            body = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDirectAccessServiceRestTransport._BaseCreateDeviceSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -665,16 +562,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DirectAccessServiceRestTransport._CreateDeviceSession._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DirectAccessServiceRestTransport._CreateDeviceSession._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -690,12 +579,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             resp = self._interceptor.post_create_device_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_device_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_device_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DeviceSession.to_json(response)
                 except:
@@ -716,23 +601,12 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
             return resp
 
-    class _GetDeviceSession(
-        _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession,
-        DirectAccessServiceRestStub,
-    ):
+    class _GetDeviceSession(_BaseDirectAccessServiceRestTransport._BaseGetDeviceSession, DirectAccessServiceRestStub):
         def __hash__(self):
             return hash("DirectAccessServiceRestTransport.GetDeviceSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -774,28 +648,16 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_device_session(
-                request, metadata
-            )
-            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_device_session(request, metadata)
+            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDirectAccessServiceRestTransport._BaseGetDeviceSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -819,12 +681,7 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             # Send the request
             response = DirectAccessServiceRestTransport._GetDeviceSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -840,12 +697,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             resp = self._interceptor.post_get_device_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_device_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_device_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DeviceSession.to_json(response)
                 except:
@@ -866,23 +719,12 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
             return resp
 
-    class _ListDeviceSessions(
-        _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions,
-        DirectAccessServiceRestStub,
-    ):
+    class _ListDeviceSessions(_BaseDirectAccessServiceRestTransport._BaseListDeviceSessions, DirectAccessServiceRestStub):
         def __hash__(self):
             return hash("DirectAccessServiceRestTransport.ListDeviceSessions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -924,28 +766,16 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_device_sessions(
-                request, metadata
-            )
-            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_device_sessions(request, metadata)
+            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDirectAccessServiceRestTransport._BaseListDeviceSessions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -968,15 +798,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DirectAccessServiceRestTransport._ListDeviceSessions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DirectAccessServiceRestTransport._ListDeviceSessions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -992,16 +815,10 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             resp = self._interceptor.post_list_device_sessions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_device_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_device_sessions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListDeviceSessionsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListDeviceSessionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1020,23 +837,12 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDeviceSession(
-        _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession,
-        DirectAccessServiceRestStub,
-    ):
+    class _UpdateDeviceSession(_BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession, DirectAccessServiceRestStub):
         def __hash__(self):
             return hash("DirectAccessServiceRestTransport.UpdateDeviceSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1079,32 +885,18 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_http_options()
-            )
+            http_options = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_device_session(
-                request, metadata
-            )
-            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_device_session(request, metadata)
+            transcoded_request = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_transcoded_request(http_options, request)
 
-            body = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDirectAccessServiceRestTransport._BaseUpdateDeviceSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1127,16 +919,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DirectAccessServiceRestTransport._UpdateDeviceSession._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DirectAccessServiceRestTransport._UpdateDeviceSession._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1152,12 +936,8 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
 
             resp = self._interceptor.post_update_device_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_device_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_device_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.DeviceSession.to_json(response)
                 except:
@@ -1179,51 +959,37 @@ class DirectAccessServiceRestTransport(_BaseDirectAccessServiceRestTransport):
             return resp
 
     @property
-    def adb_connect(
-        self,
-    ) -> Callable[[adb_service.AdbMessage], adb_service.DeviceMessage]:
+    def adb_connect(self) -> Callable[[adb_service.AdbMessage], adb_service.DeviceMessage]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AdbConnect(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_device_session(
-        self,
-    ) -> Callable[[service.CancelDeviceSessionRequest], empty_pb2.Empty]:
+    def cancel_device_session(self) -> Callable[[service.CancelDeviceSessionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelDeviceSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_device_session(
-        self,
-    ) -> Callable[[service.CreateDeviceSessionRequest], service.DeviceSession]:
+    def create_device_session(self) -> Callable[[service.CreateDeviceSessionRequest], service.DeviceSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDeviceSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_device_session(
-        self,
-    ) -> Callable[[service.GetDeviceSessionRequest], service.DeviceSession]:
+    def get_device_session(self) -> Callable[[service.GetDeviceSessionRequest], service.DeviceSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeviceSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_device_sessions(
-        self,
-    ) -> Callable[
-        [service.ListDeviceSessionsRequest], service.ListDeviceSessionsResponse
-    ]:
+    def list_device_sessions(self) -> Callable[[service.ListDeviceSessionsRequest], service.ListDeviceSessionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeviceSessions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_device_session(
-        self,
-    ) -> Callable[[service.UpdateDeviceSessionRequest], service.DeviceSession]:
+    def update_device_session(self) -> Callable[[service.UpdateDeviceSessionRequest], service.DeviceSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDeviceSession(self._session, self._host, self._interceptor)  # type: ignore

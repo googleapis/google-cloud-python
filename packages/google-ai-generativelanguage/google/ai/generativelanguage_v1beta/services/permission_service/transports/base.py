@@ -32,9 +32,7 @@ from google.ai.generativelanguage_v1beta.types import permission as gag_permissi
 from google.ai.generativelanguage_v1beta.types import permission
 from google.ai.generativelanguage_v1beta.types import permission_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class PermissionServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -246,19 +236,11 @@ class PermissionServiceTransport(abc.ABC):
     @property
     def create_permission(
         self,
-    ) -> Callable[
-        [permission_service.CreatePermissionRequest],
-        Union[gag_permission.Permission, Awaitable[gag_permission.Permission]],
-    ]:
+    ) -> Callable[[permission_service.CreatePermissionRequest], Union[gag_permission.Permission, Awaitable[gag_permission.Permission]]]:
         raise NotImplementedError()
 
     @property
-    def get_permission(
-        self,
-    ) -> Callable[
-        [permission_service.GetPermissionRequest],
-        Union[permission.Permission, Awaitable[permission.Permission]],
-    ]:
+    def get_permission(self) -> Callable[[permission_service.GetPermissionRequest], Union[permission.Permission, Awaitable[permission.Permission]]]:
         raise NotImplementedError()
 
     @property
@@ -266,29 +248,18 @@ class PermissionServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [permission_service.ListPermissionsRequest],
-        Union[
-            permission_service.ListPermissionsResponse,
-            Awaitable[permission_service.ListPermissionsResponse],
-        ],
+        Union[permission_service.ListPermissionsResponse, Awaitable[permission_service.ListPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_permission(
         self,
-    ) -> Callable[
-        [permission_service.UpdatePermissionRequest],
-        Union[gag_permission.Permission, Awaitable[gag_permission.Permission]],
-    ]:
+    ) -> Callable[[permission_service.UpdatePermissionRequest], Union[gag_permission.Permission, Awaitable[gag_permission.Permission]]]:
         raise NotImplementedError()
 
     @property
-    def delete_permission(
-        self,
-    ) -> Callable[
-        [permission_service.DeletePermissionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_permission(self) -> Callable[[permission_service.DeletePermissionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -296,10 +267,7 @@ class PermissionServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [permission_service.TransferOwnershipRequest],
-        Union[
-            permission_service.TransferOwnershipResponse,
-            Awaitable[permission_service.TransferOwnershipResponse],
-        ],
+        Union[permission_service.TransferOwnershipResponse, Awaitable[permission_service.TransferOwnershipResponse]],
     ]:
         raise NotImplementedError()
 
@@ -308,20 +276,14 @@ class PermissionServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.speech_v2 import gapic_version as package_version
 from google.cloud.speech_v2.types import cloud_speech
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class SpeechTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -299,222 +289,135 @@ class SpeechTransport(abc.ABC):
     @property
     def create_recognizer(
         self,
-    ) -> Callable[
-        [cloud_speech.CreateRecognizerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.CreateRecognizerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_recognizers(
         self,
     ) -> Callable[
-        [cloud_speech.ListRecognizersRequest],
-        Union[
-            cloud_speech.ListRecognizersResponse,
-            Awaitable[cloud_speech.ListRecognizersResponse],
-        ],
+        [cloud_speech.ListRecognizersRequest], Union[cloud_speech.ListRecognizersResponse, Awaitable[cloud_speech.ListRecognizersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_recognizer(
-        self,
-    ) -> Callable[
-        [cloud_speech.GetRecognizerRequest],
-        Union[cloud_speech.Recognizer, Awaitable[cloud_speech.Recognizer]],
-    ]:
+    def get_recognizer(self) -> Callable[[cloud_speech.GetRecognizerRequest], Union[cloud_speech.Recognizer, Awaitable[cloud_speech.Recognizer]]]:
         raise NotImplementedError()
 
     @property
     def update_recognizer(
         self,
-    ) -> Callable[
-        [cloud_speech.UpdateRecognizerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.UpdateRecognizerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_recognizer(
         self,
-    ) -> Callable[
-        [cloud_speech.DeleteRecognizerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.DeleteRecognizerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undelete_recognizer(
         self,
-    ) -> Callable[
-        [cloud_speech.UndeleteRecognizerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.UndeleteRecognizerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def recognize(
         self,
-    ) -> Callable[
-        [cloud_speech.RecognizeRequest],
-        Union[
-            cloud_speech.RecognizeResponse, Awaitable[cloud_speech.RecognizeResponse]
-        ],
-    ]:
+    ) -> Callable[[cloud_speech.RecognizeRequest], Union[cloud_speech.RecognizeResponse, Awaitable[cloud_speech.RecognizeResponse]]]:
         raise NotImplementedError()
 
     @property
     def streaming_recognize(
         self,
     ) -> Callable[
-        [cloud_speech.StreamingRecognizeRequest],
-        Union[
-            cloud_speech.StreamingRecognizeResponse,
-            Awaitable[cloud_speech.StreamingRecognizeResponse],
-        ],
+        [cloud_speech.StreamingRecognizeRequest], Union[cloud_speech.StreamingRecognizeResponse, Awaitable[cloud_speech.StreamingRecognizeResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def batch_recognize(
-        self,
-    ) -> Callable[
-        [cloud_speech.BatchRecognizeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def batch_recognize(self) -> Callable[[cloud_speech.BatchRecognizeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[
-        [cloud_speech.GetConfigRequest],
-        Union[cloud_speech.Config, Awaitable[cloud_speech.Config]],
-    ]:
+    def get_config(self) -> Callable[[cloud_speech.GetConfigRequest], Union[cloud_speech.Config, Awaitable[cloud_speech.Config]]]:
         raise NotImplementedError()
 
     @property
-    def update_config(
-        self,
-    ) -> Callable[
-        [cloud_speech.UpdateConfigRequest],
-        Union[cloud_speech.Config, Awaitable[cloud_speech.Config]],
-    ]:
+    def update_config(self) -> Callable[[cloud_speech.UpdateConfigRequest], Union[cloud_speech.Config, Awaitable[cloud_speech.Config]]]:
         raise NotImplementedError()
 
     @property
     def create_custom_class(
         self,
-    ) -> Callable[
-        [cloud_speech.CreateCustomClassRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.CreateCustomClassRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_custom_classes(
         self,
     ) -> Callable[
-        [cloud_speech.ListCustomClassesRequest],
-        Union[
-            cloud_speech.ListCustomClassesResponse,
-            Awaitable[cloud_speech.ListCustomClassesResponse],
-        ],
+        [cloud_speech.ListCustomClassesRequest], Union[cloud_speech.ListCustomClassesResponse, Awaitable[cloud_speech.ListCustomClassesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_custom_class(
         self,
-    ) -> Callable[
-        [cloud_speech.GetCustomClassRequest],
-        Union[cloud_speech.CustomClass, Awaitable[cloud_speech.CustomClass]],
-    ]:
+    ) -> Callable[[cloud_speech.GetCustomClassRequest], Union[cloud_speech.CustomClass, Awaitable[cloud_speech.CustomClass]]]:
         raise NotImplementedError()
 
     @property
     def update_custom_class(
         self,
-    ) -> Callable[
-        [cloud_speech.UpdateCustomClassRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.UpdateCustomClassRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_custom_class(
         self,
-    ) -> Callable[
-        [cloud_speech.DeleteCustomClassRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.DeleteCustomClassRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undelete_custom_class(
         self,
-    ) -> Callable[
-        [cloud_speech.UndeleteCustomClassRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.UndeleteCustomClassRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_phrase_set(
         self,
-    ) -> Callable[
-        [cloud_speech.CreatePhraseSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.CreatePhraseSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_phrase_sets(
         self,
-    ) -> Callable[
-        [cloud_speech.ListPhraseSetsRequest],
-        Union[
-            cloud_speech.ListPhraseSetsResponse,
-            Awaitable[cloud_speech.ListPhraseSetsResponse],
-        ],
-    ]:
+    ) -> Callable[[cloud_speech.ListPhraseSetsRequest], Union[cloud_speech.ListPhraseSetsResponse, Awaitable[cloud_speech.ListPhraseSetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_phrase_set(
-        self,
-    ) -> Callable[
-        [cloud_speech.GetPhraseSetRequest],
-        Union[cloud_speech.PhraseSet, Awaitable[cloud_speech.PhraseSet]],
-    ]:
+    def get_phrase_set(self) -> Callable[[cloud_speech.GetPhraseSetRequest], Union[cloud_speech.PhraseSet, Awaitable[cloud_speech.PhraseSet]]]:
         raise NotImplementedError()
 
     @property
     def update_phrase_set(
         self,
-    ) -> Callable[
-        [cloud_speech.UpdatePhraseSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.UpdatePhraseSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_phrase_set(
         self,
-    ) -> Callable[
-        [cloud_speech.DeletePhraseSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.DeletePhraseSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undelete_phrase_set(
         self,
-    ) -> Callable[
-        [cloud_speech.UndeletePhraseSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[cloud_speech.UndeletePhraseSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -522,20 +425,14 @@ class SpeechTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -553,22 +450,13 @@ class SpeechTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

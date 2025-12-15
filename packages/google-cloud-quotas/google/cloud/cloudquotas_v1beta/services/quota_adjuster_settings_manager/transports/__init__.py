@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import QuotaAdjusterSettingsManagerTransport
 from .grpc import QuotaAdjusterSettingsManagerGrpcTransport
 from .grpc_asyncio import QuotaAdjusterSettingsManagerGrpcAsyncIOTransport
-from .rest import (
-    QuotaAdjusterSettingsManagerRestInterceptor,
-    QuotaAdjusterSettingsManagerRestTransport,
-)
+from .rest import QuotaAdjusterSettingsManagerRestInterceptor, QuotaAdjusterSettingsManagerRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[QuotaAdjusterSettingsManagerTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[QuotaAdjusterSettingsManagerTransport]]
 _transport_registry["grpc"] = QuotaAdjusterSettingsManagerGrpcTransport
 _transport_registry["grpc_asyncio"] = QuotaAdjusterSettingsManagerGrpcAsyncIOTransport
 _transport_registry["rest"] = QuotaAdjusterSettingsManagerRestTransport

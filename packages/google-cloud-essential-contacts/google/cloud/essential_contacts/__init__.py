@@ -18,16 +18,9 @@ from google.cloud.essential_contacts import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.essential_contacts_v1.services.essential_contacts_service.async_client import (
-    EssentialContactsServiceAsyncClient,
-)
-from google.cloud.essential_contacts_v1.services.essential_contacts_service.client import (
-    EssentialContactsServiceClient,
-)
-from google.cloud.essential_contacts_v1.types.enums import (
-    NotificationCategory,
-    ValidationState,
-)
+from google.cloud.essential_contacts_v1.services.essential_contacts_service.async_client import EssentialContactsServiceAsyncClient
+from google.cloud.essential_contacts_v1.services.essential_contacts_service.client import EssentialContactsServiceClient
+from google.cloud.essential_contacts_v1.types.enums import NotificationCategory, ValidationState
 from google.cloud.essential_contacts_v1.types.service import (
     ComputeContactsRequest,
     ComputeContactsResponse,

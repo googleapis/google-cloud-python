@@ -740,9 +740,7 @@ class Workload(proto.Message):
             optional=True,
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
-        setup_errors: MutableSequence[
-            "Workload.SaaEnrollmentResponse.SetupError"
-        ] = proto.RepeatedField(
+        setup_errors: MutableSequence["Workload.SaaEnrollmentResponse.SetupError"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="Workload.SaaEnrollmentResponse.SetupError",
@@ -881,9 +879,7 @@ class CreateWorkloadOperationMetadata(proto.Message):
         number=4,
         enum="Workload.ComplianceRegime",
     )
-    resource_settings: MutableSequence[
-        "Workload.ResourceSettings"
-    ] = proto.RepeatedField(
+    resource_settings: MutableSequence["Workload.ResourceSettings"] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message="Workload.ResourceSettings",

@@ -32,12 +32,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.maps.fleetengine_delivery_v1.types import (
-    delivery_api,
-    delivery_vehicles,
-    task_tracking_info,
-    tasks,
-)
+from google.maps.fleetengine_delivery_v1.types import delivery_api, delivery_vehicles, task_tracking_info, tasks
 
 from .base import DEFAULT_CLIENT_INFO, DeliveryServiceTransport
 from .grpc import DeliveryServiceGrpcTransport
@@ -52,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -68,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -90,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +256,14 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +299,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -336,12 +314,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.CreateDeliveryVehicleRequest],
-        Awaitable[delivery_vehicles.DeliveryVehicle],
-    ]:
+    def create_delivery_vehicle(self) -> Callable[[delivery_api.CreateDeliveryVehicleRequest], Awaitable[delivery_vehicles.DeliveryVehicle]]:
         r"""Return a callable for the create delivery vehicle method over gRPC.
 
         Creates and returns a new ``DeliveryVehicle``.
@@ -365,12 +338,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["create_delivery_vehicle"]
 
     @property
-    def get_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.GetDeliveryVehicleRequest],
-        Awaitable[delivery_vehicles.DeliveryVehicle],
-    ]:
+    def get_delivery_vehicle(self) -> Callable[[delivery_api.GetDeliveryVehicleRequest], Awaitable[delivery_vehicles.DeliveryVehicle]]:
         r"""Return a callable for the get delivery vehicle method over gRPC.
 
         Returns the specified ``DeliveryVehicle`` instance.
@@ -394,11 +362,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["get_delivery_vehicle"]
 
     @property
-    def delete_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.DeleteDeliveryVehicleRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_delivery_vehicle(self) -> Callable[[delivery_api.DeleteDeliveryVehicleRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete delivery vehicle method over gRPC.
 
         Deletes a DeliveryVehicle from the Fleet Engine.
@@ -425,12 +389,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["delete_delivery_vehicle"]
 
     @property
-    def update_delivery_vehicle(
-        self,
-    ) -> Callable[
-        [delivery_api.UpdateDeliveryVehicleRequest],
-        Awaitable[delivery_vehicles.DeliveryVehicle],
-    ]:
+    def update_delivery_vehicle(self) -> Callable[[delivery_api.UpdateDeliveryVehicleRequest], Awaitable[delivery_vehicles.DeliveryVehicle]]:
         r"""Return a callable for the update delivery vehicle method over gRPC.
 
         Writes updated ``DeliveryVehicle`` data to Fleet Engine, and
@@ -462,12 +421,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["update_delivery_vehicle"]
 
     @property
-    def batch_create_tasks(
-        self,
-    ) -> Callable[
-        [delivery_api.BatchCreateTasksRequest],
-        Awaitable[delivery_api.BatchCreateTasksResponse],
-    ]:
+    def batch_create_tasks(self) -> Callable[[delivery_api.BatchCreateTasksRequest], Awaitable[delivery_api.BatchCreateTasksResponse]]:
         r"""Return a callable for the batch create tasks method over gRPC.
 
         Creates and returns a batch of new ``Task`` objects.
@@ -491,9 +445,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["batch_create_tasks"]
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[[delivery_api.CreateTaskRequest], Awaitable[tasks.Task]]:
+    def create_task(self) -> Callable[[delivery_api.CreateTaskRequest], Awaitable[tasks.Task]]:
         r"""Return a callable for the create task method over gRPC.
 
         Creates and returns a new ``Task`` object.
@@ -517,9 +469,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["create_task"]
 
     @property
-    def get_task(
-        self,
-    ) -> Callable[[delivery_api.GetTaskRequest], Awaitable[tasks.Task]]:
+    def get_task(self) -> Callable[[delivery_api.GetTaskRequest], Awaitable[tasks.Task]]:
         r"""Return a callable for the get task method over gRPC.
 
         Gets information about a ``Task``.
@@ -543,9 +493,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["get_task"]
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[[delivery_api.DeleteTaskRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_task(self) -> Callable[[delivery_api.DeleteTaskRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete task method over gRPC.
 
         Deletes a single Task.
@@ -572,9 +520,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["delete_task"]
 
     @property
-    def update_task(
-        self,
-    ) -> Callable[[delivery_api.UpdateTaskRequest], Awaitable[tasks.Task]]:
+    def update_task(self) -> Callable[[delivery_api.UpdateTaskRequest], Awaitable[tasks.Task]]:
         r"""Return a callable for the update task method over gRPC.
 
         Updates ``Task`` data.
@@ -598,11 +544,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["update_task"]
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[
-        [delivery_api.ListTasksRequest], Awaitable[delivery_api.ListTasksResponse]
-    ]:
+    def list_tasks(self) -> Callable[[delivery_api.ListTasksRequest], Awaitable[delivery_api.ListTasksResponse]]:
         r"""Return a callable for the list tasks method over gRPC.
 
         Gets all ``Task``\ s that meet the specified filtering criteria.
@@ -626,12 +568,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["list_tasks"]
 
     @property
-    def get_task_tracking_info(
-        self,
-    ) -> Callable[
-        [delivery_api.GetTaskTrackingInfoRequest],
-        Awaitable[task_tracking_info.TaskTrackingInfo],
-    ]:
+    def get_task_tracking_info(self) -> Callable[[delivery_api.GetTaskTrackingInfoRequest], Awaitable[task_tracking_info.TaskTrackingInfo]]:
         r"""Return a callable for the get task tracking info method over gRPC.
 
         Returns the specified ``TaskTrackingInfo`` instance.
@@ -655,12 +592,7 @@ class DeliveryServiceGrpcAsyncIOTransport(DeliveryServiceTransport):
         return self._stubs["get_task_tracking_info"]
 
     @property
-    def list_delivery_vehicles(
-        self,
-    ) -> Callable[
-        [delivery_api.ListDeliveryVehiclesRequest],
-        Awaitable[delivery_api.ListDeliveryVehiclesResponse],
-    ]:
+    def list_delivery_vehicles(self) -> Callable[[delivery_api.ListDeliveryVehiclesRequest], Awaitable[delivery_api.ListDeliveryVehiclesResponse]]:
         r"""Return a callable for the list delivery vehicles method over gRPC.
 
         Gets all ``DeliveryVehicle``\ s that meet the specified

@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.contentwarehouse_v1.types import (
-    document_schema as gcc_document_schema,
-)
+from google.cloud.contentwarehouse_v1.types import document_schema as gcc_document_schema
 from google.cloud.contentwarehouse_v1.types import document_schema
 from google.cloud.contentwarehouse_v1.types import document_schema_service
 
@@ -121,13 +119,8 @@ class DocumentSchemaServiceRestInterceptor:
     """
 
     def pre_create_document_schema(
-        self,
-        request: document_schema_service.CreateDocumentSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_schema_service.CreateDocumentSchemaRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_schema_service.CreateDocumentSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_schema_service.CreateDocumentSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_document_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -135,9 +128,7 @@ class DocumentSchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_document_schema(
-        self, response: gcc_document_schema.DocumentSchema
-    ) -> gcc_document_schema.DocumentSchema:
+    def post_create_document_schema(self, response: gcc_document_schema.DocumentSchema) -> gcc_document_schema.DocumentSchema:
         """Post-rpc interceptor for create_document_schema
 
         DEPRECATED. Please use the `post_create_document_schema_with_metadata`
@@ -151,12 +142,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response
 
     def post_create_document_schema_with_metadata(
-        self,
-        response: gcc_document_schema.DocumentSchema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcc_document_schema.DocumentSchema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcc_document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_document_schema
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -172,13 +159,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_document_schema(
-        self,
-        request: document_schema_service.DeleteDocumentSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_schema_service.DeleteDocumentSchemaRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_schema_service.DeleteDocumentSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_schema_service.DeleteDocumentSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_document_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -187,13 +169,8 @@ class DocumentSchemaServiceRestInterceptor:
         return request, metadata
 
     def pre_get_document_schema(
-        self,
-        request: document_schema_service.GetDocumentSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_schema_service.GetDocumentSchemaRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_schema_service.GetDocumentSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_schema_service.GetDocumentSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_document_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -201,9 +178,7 @@ class DocumentSchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_document_schema(
-        self, response: document_schema.DocumentSchema
-    ) -> document_schema.DocumentSchema:
+    def post_get_document_schema(self, response: document_schema.DocumentSchema) -> document_schema.DocumentSchema:
         """Post-rpc interceptor for get_document_schema
 
         DEPRECATED. Please use the `post_get_document_schema_with_metadata`
@@ -217,9 +192,7 @@ class DocumentSchemaServiceRestInterceptor:
         return response
 
     def post_get_document_schema_with_metadata(
-        self,
-        response: document_schema.DocumentSchema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: document_schema.DocumentSchema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_document_schema
 
@@ -236,13 +209,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_list_document_schemas(
-        self,
-        request: document_schema_service.ListDocumentSchemasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_schema_service.ListDocumentSchemasRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_schema_service.ListDocumentSchemasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_schema_service.ListDocumentSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_document_schemas
 
         Override in a subclass to manipulate the request or metadata
@@ -266,13 +234,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response
 
     def post_list_document_schemas_with_metadata(
-        self,
-        response: document_schema_service.ListDocumentSchemasResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_schema_service.ListDocumentSchemasResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: document_schema_service.ListDocumentSchemasResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_schema_service.ListDocumentSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_document_schemas
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -288,13 +251,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_update_document_schema(
-        self,
-        request: document_schema_service.UpdateDocumentSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        document_schema_service.UpdateDocumentSchemaRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: document_schema_service.UpdateDocumentSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[document_schema_service.UpdateDocumentSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_document_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +260,7 @@ class DocumentSchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_document_schema(
-        self, response: gcc_document_schema.DocumentSchema
-    ) -> gcc_document_schema.DocumentSchema:
+    def post_update_document_schema(self, response: gcc_document_schema.DocumentSchema) -> gcc_document_schema.DocumentSchema:
         """Post-rpc interceptor for update_document_schema
 
         DEPRECATED. Please use the `post_update_document_schema_with_metadata`
@@ -318,12 +274,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response
 
     def post_update_document_schema_with_metadata(
-        self,
-        response: gcc_document_schema.DocumentSchema,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcc_document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gcc_document_schema.DocumentSchema, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcc_document_schema.DocumentSchema, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_document_schema
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -339,12 +291,8 @@ class DocumentSchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -352,9 +300,7 @@ class DocumentSchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -443,31 +389,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DocumentSchemaServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDocumentSchema(
-        _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema,
-        DocumentSchemaServiceRestStub,
-    ):
+    class _CreateDocumentSchema(_BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema, DocumentSchemaServiceRestStub):
         def __hash__(self):
             return hash("DocumentSchemaServiceRestTransport.CreateDocumentSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -510,32 +443,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_http_options()
-            )
+            http_options = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_document_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_document_schema(request, metadata)
+            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentSchemaServiceRestTransport._BaseCreateDocumentSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -558,16 +477,8 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DocumentSchemaServiceRestTransport._CreateDocumentSchema._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentSchemaServiceRestTransport._CreateDocumentSchema._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -583,16 +494,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             resp = self._interceptor.post_create_document_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_document_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_document_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcc_document_schema.DocumentSchema.to_json(
-                        response
-                    )
+                    response_payload = gcc_document_schema.DocumentSchema.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -611,23 +516,12 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
             return resp
 
-    class _DeleteDocumentSchema(
-        _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema,
-        DocumentSchemaServiceRestStub,
-    ):
+    class _DeleteDocumentSchema(_BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema, DocumentSchemaServiceRestStub):
         def __hash__(self):
             return hash("DocumentSchemaServiceRestTransport.DeleteDocumentSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -663,28 +557,16 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_http_options()
-            )
+            http_options = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_document_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_document_schema(request, metadata)
+            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentSchemaServiceRestTransport._BaseDeleteDocumentSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -707,15 +589,8 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DocumentSchemaServiceRestTransport._DeleteDocumentSchema._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentSchemaServiceRestTransport._DeleteDocumentSchema._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -723,23 +598,12 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDocumentSchema(
-        _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema,
-        DocumentSchemaServiceRestStub,
-    ):
+    class _GetDocumentSchema(_BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema, DocumentSchemaServiceRestStub):
         def __hash__(self):
             return hash("DocumentSchemaServiceRestTransport.GetDocumentSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -781,28 +645,16 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_http_options()
-            )
+            http_options = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_document_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_document_schema(request, metadata)
+            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentSchemaServiceRestTransport._BaseGetDocumentSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -825,15 +677,8 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DocumentSchemaServiceRestTransport._GetDocumentSchema._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentSchemaServiceRestTransport._GetDocumentSchema._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -849,12 +694,8 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             resp = self._interceptor.post_get_document_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_document_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_document_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = document_schema.DocumentSchema.to_json(response)
                 except:
@@ -875,23 +716,12 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
             return resp
 
-    class _ListDocumentSchemas(
-        _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas,
-        DocumentSchemaServiceRestStub,
-    ):
+    class _ListDocumentSchemas(_BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas, DocumentSchemaServiceRestStub):
         def __hash__(self):
             return hash("DocumentSchemaServiceRestTransport.ListDocumentSchemas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -933,28 +763,16 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_http_options()
-            )
+            http_options = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_document_schemas(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_document_schemas(request, metadata)
+            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentSchemaServiceRestTransport._BaseListDocumentSchemas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -977,15 +795,8 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DocumentSchemaServiceRestTransport._ListDocumentSchemas._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DocumentSchemaServiceRestTransport._ListDocumentSchemas._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1001,18 +812,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             resp = self._interceptor.post_list_document_schemas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_document_schemas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_document_schemas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        document_schema_service.ListDocumentSchemasResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = document_schema_service.ListDocumentSchemasResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1031,23 +834,12 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
             return resp
 
-    class _UpdateDocumentSchema(
-        _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema,
-        DocumentSchemaServiceRestStub,
-    ):
+    class _UpdateDocumentSchema(_BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema, DocumentSchemaServiceRestStub):
         def __hash__(self):
             return hash("DocumentSchemaServiceRestTransport.UpdateDocumentSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1090,32 +882,18 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_http_options()
-            )
+            http_options = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_document_schema(
-                request, metadata
-            )
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_document_schema(request, metadata)
+            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_transcoded_request(http_options, request)
 
-            body = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentSchemaServiceRestTransport._BaseUpdateDocumentSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1138,16 +916,8 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DocumentSchemaServiceRestTransport._UpdateDocumentSchema._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DocumentSchemaServiceRestTransport._UpdateDocumentSchema._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1163,16 +933,10 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             resp = self._interceptor.post_update_document_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_document_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_document_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gcc_document_schema.DocumentSchema.to_json(
-                        response
-                    )
+                    response_payload = gcc_document_schema.DocumentSchema.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1192,33 +956,19 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             return resp
 
     @property
-    def create_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.CreateDocumentSchemaRequest],
-        gcc_document_schema.DocumentSchema,
-    ]:
+    def create_document_schema(self) -> Callable[[document_schema_service.CreateDocumentSchemaRequest], gcc_document_schema.DocumentSchema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDocumentSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.DeleteDocumentSchemaRequest], empty_pb2.Empty
-    ]:
+    def delete_document_schema(self) -> Callable[[document_schema_service.DeleteDocumentSchemaRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDocumentSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.GetDocumentSchemaRequest],
-        document_schema.DocumentSchema,
-    ]:
+    def get_document_schema(self) -> Callable[[document_schema_service.GetDocumentSchemaRequest], document_schema.DocumentSchema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDocumentSchema(self._session, self._host, self._interceptor)  # type: ignore
@@ -1226,21 +976,13 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
     @property
     def list_document_schemas(
         self,
-    ) -> Callable[
-        [document_schema_service.ListDocumentSchemasRequest],
-        document_schema_service.ListDocumentSchemasResponse,
-    ]:
+    ) -> Callable[[document_schema_service.ListDocumentSchemasRequest], document_schema_service.ListDocumentSchemasResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDocumentSchemas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_document_schema(
-        self,
-    ) -> Callable[
-        [document_schema_service.UpdateDocumentSchemaRequest],
-        gcc_document_schema.DocumentSchema,
-    ]:
+    def update_document_schema(self) -> Callable[[document_schema_service.UpdateDocumentSchemaRequest], gcc_document_schema.DocumentSchema]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDocumentSchema(self._session, self._host, self._interceptor)  # type: ignore
@@ -1249,23 +991,12 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDocumentSchemaServiceRestTransport._BaseGetOperation,
-        DocumentSchemaServiceRestStub,
-    ):
+    class _GetOperation(_BaseDocumentSchemaServiceRestTransport._BaseGetOperation, DocumentSchemaServiceRestStub):
         def __hash__(self):
             return hash("DocumentSchemaServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1303,26 +1034,16 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDocumentSchemaServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1346,12 +1067,7 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
 
             # Send the request
             response = DocumentSchemaServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1363,9 +1079,7 @@ class DocumentSchemaServiceRestTransport(_BaseDocumentSchemaServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

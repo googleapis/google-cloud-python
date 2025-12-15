@@ -32,10 +32,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.network_security_v1alpha1.types import (
-    security_profile_group,
-    security_profile_group_service,
-)
+from google.cloud.network_security_v1alpha1.types import security_profile_group, security_profile_group_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseOrganizationSecurityProfileGroupServiceRestTransport
@@ -166,13 +163,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
     """
 
     def pre_create_security_profile(
-        self,
-        request: security_profile_group_service.CreateSecurityProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.CreateSecurityProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.CreateSecurityProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.CreateSecurityProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_security_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -180,9 +172,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_security_profile(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_security_profile(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_security_profile
 
         DEPRECATED. Please use the `post_create_security_profile_with_metadata`
@@ -196,9 +186,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_create_security_profile_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_security_profile
 
@@ -215,13 +203,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_create_security_profile_group(
-        self,
-        request: security_profile_group_service.CreateSecurityProfileGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.CreateSecurityProfileGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.CreateSecurityProfileGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.CreateSecurityProfileGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_security_profile_group
 
         Override in a subclass to manipulate the request or metadata
@@ -229,9 +212,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_security_profile_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_security_profile_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_security_profile_group
 
         DEPRECATED. Please use the `post_create_security_profile_group_with_metadata`
@@ -245,9 +226,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_create_security_profile_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_security_profile_group
 
@@ -264,13 +243,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_security_profile(
-        self,
-        request: security_profile_group_service.DeleteSecurityProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.DeleteSecurityProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.DeleteSecurityProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.DeleteSecurityProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_security_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -278,9 +252,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_security_profile(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_security_profile(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_security_profile
 
         DEPRECATED. Please use the `post_delete_security_profile_with_metadata`
@@ -294,9 +266,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_delete_security_profile_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_security_profile
 
@@ -313,13 +283,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_security_profile_group(
-        self,
-        request: security_profile_group_service.DeleteSecurityProfileGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.DeleteSecurityProfileGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.DeleteSecurityProfileGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.DeleteSecurityProfileGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_security_profile_group
 
         Override in a subclass to manipulate the request or metadata
@@ -327,9 +292,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_security_profile_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_security_profile_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_security_profile_group
 
         DEPRECATED. Please use the `post_delete_security_profile_group_with_metadata`
@@ -343,9 +306,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_delete_security_profile_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_security_profile_group
 
@@ -362,13 +323,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_get_security_profile(
-        self,
-        request: security_profile_group_service.GetSecurityProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.GetSecurityProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.GetSecurityProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.GetSecurityProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_security_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -376,9 +332,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_security_profile(
-        self, response: security_profile_group.SecurityProfile
-    ) -> security_profile_group.SecurityProfile:
+    def post_get_security_profile(self, response: security_profile_group.SecurityProfile) -> security_profile_group.SecurityProfile:
         """Post-rpc interceptor for get_security_profile
 
         DEPRECATED. Please use the `post_get_security_profile_with_metadata`
@@ -392,12 +346,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_get_security_profile_with_metadata(
-        self,
-        response: security_profile_group.SecurityProfile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group.SecurityProfile, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: security_profile_group.SecurityProfile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group.SecurityProfile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_security_profile
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -413,13 +363,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_get_security_profile_group(
-        self,
-        request: security_profile_group_service.GetSecurityProfileGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.GetSecurityProfileGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.GetSecurityProfileGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.GetSecurityProfileGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_security_profile_group
 
         Override in a subclass to manipulate the request or metadata
@@ -427,9 +372,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_security_profile_group(
-        self, response: security_profile_group.SecurityProfileGroup
-    ) -> security_profile_group.SecurityProfileGroup:
+    def post_get_security_profile_group(self, response: security_profile_group.SecurityProfileGroup) -> security_profile_group.SecurityProfileGroup:
         """Post-rpc interceptor for get_security_profile_group
 
         DEPRECATED. Please use the `post_get_security_profile_group_with_metadata`
@@ -443,13 +386,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_get_security_profile_group_with_metadata(
-        self,
-        response: security_profile_group.SecurityProfileGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group.SecurityProfileGroup,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_profile_group.SecurityProfileGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group.SecurityProfileGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_security_profile_group
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -465,13 +403,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_list_security_profile_groups(
-        self,
-        request: security_profile_group_service.ListSecurityProfileGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.ListSecurityProfileGroupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.ListSecurityProfileGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.ListSecurityProfileGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_security_profile_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -495,13 +428,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_list_security_profile_groups_with_metadata(
-        self,
-        response: security_profile_group_service.ListSecurityProfileGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.ListSecurityProfileGroupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_profile_group_service.ListSecurityProfileGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.ListSecurityProfileGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_security_profile_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -517,13 +445,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_list_security_profiles(
-        self,
-        request: security_profile_group_service.ListSecurityProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.ListSecurityProfilesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.ListSecurityProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.ListSecurityProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_security_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -547,13 +470,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_list_security_profiles_with_metadata(
-        self,
-        response: security_profile_group_service.ListSecurityProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.ListSecurityProfilesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_profile_group_service.ListSecurityProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.ListSecurityProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_security_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -569,13 +487,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_update_security_profile(
-        self,
-        request: security_profile_group_service.UpdateSecurityProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.UpdateSecurityProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.UpdateSecurityProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.UpdateSecurityProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_security_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -583,9 +496,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_security_profile(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_security_profile(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_security_profile
 
         DEPRECATED. Please use the `post_update_security_profile_with_metadata`
@@ -599,9 +510,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_update_security_profile_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_security_profile
 
@@ -618,13 +527,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_update_security_profile_group(
-        self,
-        request: security_profile_group_service.UpdateSecurityProfileGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_profile_group_service.UpdateSecurityProfileGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_profile_group_service.UpdateSecurityProfileGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_profile_group_service.UpdateSecurityProfileGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_security_profile_group
 
         Override in a subclass to manipulate the request or metadata
@@ -632,9 +536,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_security_profile_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_security_profile_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_security_profile_group
 
         DEPRECATED. Please use the `post_update_security_profile_group_with_metadata`
@@ -648,9 +550,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def post_update_security_profile_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_security_profile_group
 
@@ -667,12 +567,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -680,9 +576,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -692,12 +586,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -705,9 +595,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -717,12 +605,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -740,12 +624,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -763,13 +643,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -777,9 +652,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -789,12 +662,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -812,12 +681,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -835,12 +700,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -848,9 +709,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -860,12 +719,8 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -873,9 +728,7 @@ class OrganizationSecurityProfileGroupServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -892,9 +745,7 @@ class OrganizationSecurityProfileGroupServiceRestStub:
     _interceptor: OrganizationSecurityProfileGroupServiceRestInterceptor
 
 
-class OrganizationSecurityProfileGroupServiceRestTransport(
-    _BaseOrganizationSecurityProfileGroupServiceRestTransport
-):
+class OrganizationSecurityProfileGroupServiceRestTransport(_BaseOrganizationSecurityProfileGroupServiceRestTransport):
     """REST backend synchronous transport for OrganizationSecurityProfileGroupService.
 
     Organization SecurityProfileGroup is created under
@@ -919,9 +770,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[
-            OrganizationSecurityProfileGroupServiceRestInterceptor
-        ] = None,
+        interceptor: Optional[OrganizationSecurityProfileGroupServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -969,15 +818,11 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or OrganizationSecurityProfileGroupServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or OrganizationSecurityProfileGroupServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -1043,32 +888,19 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 path_prefix="v1alpha1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
     class _CreateSecurityProfile(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.CreateSecurityProfile"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.CreateSecurityProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1112,32 +944,22 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_security_profile(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_security_profile(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfile._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1161,13 +983,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._CreateSecurityProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1181,12 +997,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_create_security_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_security_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_security_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1208,24 +1020,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _CreateSecurityProfileGroup(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.CreateSecurityProfileGroup"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.CreateSecurityProfileGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1270,13 +1071,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_security_profile_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_security_profile_group(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCreateSecurityProfileGroup._get_transcoded_request(
                 http_options, request
             )
@@ -1290,12 +1087,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1319,13 +1112,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._CreateSecurityProfileGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1339,15 +1126,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_create_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_security_profile_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_security_profile_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1369,24 +1149,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _DeleteSecurityProfile(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.DeleteSecurityProfile"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.DeleteSecurityProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1429,13 +1198,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_security_profile(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_security_profile(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfile._get_transcoded_request(
                 http_options, request
             )
@@ -1445,12 +1210,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1474,12 +1235,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._DeleteSecurityProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1493,12 +1249,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_delete_security_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_security_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_security_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1520,24 +1272,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _DeleteSecurityProfileGroup(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.DeleteSecurityProfileGroup"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.DeleteSecurityProfileGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1581,13 +1322,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_security_profile_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_security_profile_group(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteSecurityProfileGroup._get_transcoded_request(
                 http_options, request
             )
@@ -1597,12 +1334,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1626,12 +1359,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._DeleteSecurityProfileGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1645,15 +1373,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_delete_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_security_profile_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_security_profile_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1675,24 +1396,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _GetSecurityProfile(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.GetSecurityProfile"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.GetSecurityProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1735,13 +1445,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_security_profile(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_security_profile(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfile._get_transcoded_request(
                 http_options, request
             )
@@ -1751,12 +1457,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1780,12 +1482,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._GetSecurityProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1801,16 +1498,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_get_security_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_security_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_security_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_profile_group.SecurityProfile.to_json(
-                        response
-                    )
+                    response_payload = security_profile_group.SecurityProfile.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1830,24 +1521,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _GetSecurityProfileGroup(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.GetSecurityProfileGroup"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.GetSecurityProfileGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1891,13 +1571,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_security_profile_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_security_profile_group(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetSecurityProfileGroup._get_transcoded_request(
                 http_options, request
             )
@@ -1907,12 +1583,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1936,12 +1608,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._GetSecurityProfileGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1957,16 +1624,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_get_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_security_profile_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_security_profile_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        security_profile_group.SecurityProfileGroup.to_json(response)
-                    )
+                    response_payload = security_profile_group.SecurityProfileGroup.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1986,24 +1647,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _ListSecurityProfileGroups(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.ListSecurityProfileGroups"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.ListSecurityProfileGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2046,13 +1696,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_security_profile_groups(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_security_profile_groups(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfileGroups._get_transcoded_request(
                 http_options, request
             )
@@ -2062,12 +1708,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2091,12 +1733,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._ListSecurityProfileGroups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2106,26 +1743,16 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Return the response
             resp = security_profile_group_service.ListSecurityProfileGroupsResponse()
-            pb_resp = (
-                security_profile_group_service.ListSecurityProfileGroupsResponse.pb(
-                    resp
-                )
-            )
+            pb_resp = security_profile_group_service.ListSecurityProfileGroupsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_security_profile_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_security_profile_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_security_profile_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_profile_group_service.ListSecurityProfileGroupsResponse.to_json(
-                        response
-                    )
+                    response_payload = security_profile_group_service.ListSecurityProfileGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2145,24 +1772,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _ListSecurityProfiles(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.ListSecurityProfiles"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.ListSecurityProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2204,13 +1820,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_security_profiles(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_security_profiles(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListSecurityProfiles._get_transcoded_request(
                 http_options, request
             )
@@ -2220,12 +1832,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2249,12 +1857,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._ListSecurityProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2264,24 +1867,16 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Return the response
             resp = security_profile_group_service.ListSecurityProfilesResponse()
-            pb_resp = security_profile_group_service.ListSecurityProfilesResponse.pb(
-                resp
-            )
+            pb_resp = security_profile_group_service.ListSecurityProfilesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_security_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_security_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_security_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_profile_group_service.ListSecurityProfilesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_profile_group_service.ListSecurityProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2301,24 +1896,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _UpdateSecurityProfile(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.UpdateSecurityProfile"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.UpdateSecurityProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2362,32 +1946,22 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_security_profile(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_security_profile(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfile._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2411,13 +1985,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._UpdateSecurityProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2431,12 +1999,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_update_security_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_security_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_security_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2458,24 +2022,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     class _UpdateSecurityProfileGroup(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.UpdateSecurityProfileGroup"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.UpdateSecurityProfileGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2520,13 +2073,9 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_security_profile_group(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_security_profile_group(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseUpdateSecurityProfileGroup._get_transcoded_request(
                 http_options, request
             )
@@ -2540,12 +2089,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2569,13 +2114,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._UpdateSecurityProfileGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2589,15 +2128,8 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             resp = self._interceptor.post_update_security_profile_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_security_profile_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_security_profile_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2619,56 +2151,31 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             return resp
 
     @property
-    def create_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.CreateSecurityProfileRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_security_profile(self) -> Callable[[security_profile_group_service.CreateSecurityProfileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSecurityProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_security_profile_group(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.CreateSecurityProfileGroupRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_security_profile_group(self) -> Callable[[security_profile_group_service.CreateSecurityProfileGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.DeleteSecurityProfileRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_security_profile(self) -> Callable[[security_profile_group_service.DeleteSecurityProfileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSecurityProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_security_profile_group(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.DeleteSecurityProfileGroupRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_security_profile_group(self) -> Callable[[security_profile_group_service.DeleteSecurityProfileGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.GetSecurityProfileRequest],
-        security_profile_group.SecurityProfile,
-    ]:
+    def get_security_profile(self) -> Callable[[security_profile_group_service.GetSecurityProfileRequest], security_profile_group.SecurityProfile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSecurityProfile(self._session, self._host, self._interceptor)  # type: ignore
@@ -2676,10 +2183,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     @property
     def get_security_profile_group(
         self,
-    ) -> Callable[
-        [security_profile_group_service.GetSecurityProfileGroupRequest],
-        security_profile_group.SecurityProfileGroup,
-    ]:
+    ) -> Callable[[security_profile_group_service.GetSecurityProfileGroupRequest], security_profile_group.SecurityProfileGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -2688,8 +2192,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     def list_security_profile_groups(
         self,
     ) -> Callable[
-        [security_profile_group_service.ListSecurityProfileGroupsRequest],
-        security_profile_group_service.ListSecurityProfileGroupsResponse,
+        [security_profile_group_service.ListSecurityProfileGroupsRequest], security_profile_group_service.ListSecurityProfileGroupsResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -2698,32 +2201,19 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     @property
     def list_security_profiles(
         self,
-    ) -> Callable[
-        [security_profile_group_service.ListSecurityProfilesRequest],
-        security_profile_group_service.ListSecurityProfilesResponse,
-    ]:
+    ) -> Callable[[security_profile_group_service.ListSecurityProfilesRequest], security_profile_group_service.ListSecurityProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSecurityProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_security_profile(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.UpdateSecurityProfileRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_security_profile(self) -> Callable[[security_profile_group_service.UpdateSecurityProfileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSecurityProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_security_profile_group(
-        self,
-    ) -> Callable[
-        [security_profile_group_service.UpdateSecurityProfileGroupRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_security_profile_group(self) -> Callable[[security_profile_group_service.UpdateSecurityProfileGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSecurityProfileGroup(self._session, self._host, self._interceptor)  # type: ignore
@@ -2732,25 +2222,12 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation,
-        OrganizationSecurityProfileGroupServiceRestStub,
-    ):
+    class _GetLocation(_BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation, OrganizationSecurityProfileGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.GetLocation"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2788,9 +2265,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_transcoded_request(
@@ -2798,16 +2273,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2831,12 +2300,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2848,9 +2312,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2876,24 +2338,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListLocations(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.ListLocations"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2931,9 +2382,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_transcoded_request(
@@ -2941,16 +2390,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2974,12 +2417,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2991,9 +2429,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3018,25 +2454,12 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy,
-        OrganizationSecurityProfileGroupServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy, OrganizationSecurityProfileGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.GetIamPolicy"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3074,9 +2497,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
@@ -3084,16 +2505,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3117,12 +2532,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3134,9 +2544,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3161,25 +2569,12 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy,
-        OrganizationSecurityProfileGroupServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy, OrganizationSecurityProfileGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.SetIamPolicy"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3218,30 +2613,20 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3265,13 +2650,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3283,9 +2662,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3311,24 +2688,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     class _TestIamPermissions(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.TestIamPermissions"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3367,32 +2733,22 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3416,13 +2772,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3434,9 +2784,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3462,24 +2810,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _CancelOperation(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.CancelOperation"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3515,32 +2852,20 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3564,13 +2889,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3585,24 +2904,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
     class _DeleteOperation(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.DeleteOperation"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3637,28 +2945,18 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3682,12 +2980,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3701,25 +2994,12 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation,
-        OrganizationSecurityProfileGroupServiceRestStub,
-    ):
+    class _GetOperation(_BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation, OrganizationSecurityProfileGroupServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.GetOperation"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3757,9 +3037,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_transcoded_request(
@@ -3767,16 +3045,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3800,12 +3072,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3817,9 +3084,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3845,24 +3110,13 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
     class _ListOperations(
-        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations,
-        OrganizationSecurityProfileGroupServiceRestStub,
+        _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations, OrganizationSecurityProfileGroupServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrganizationSecurityProfileGroupServiceRestTransport.ListOperations"
-            )
+            return hash("OrganizationSecurityProfileGroupServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3900,9 +3154,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
             transcoded_request = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_transcoded_request(
@@ -3910,16 +3162,10 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             )
 
             # Jsonify the query params
-            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrganizationSecurityProfileGroupServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3943,12 +3189,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
 
             # Send the request
             response = OrganizationSecurityProfileGroupServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3960,9 +3201,7 @@ class OrganizationSecurityProfileGroupServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

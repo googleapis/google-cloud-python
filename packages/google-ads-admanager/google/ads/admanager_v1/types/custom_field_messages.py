@@ -104,29 +104,23 @@ class CustomField(proto.Message):
         optional=True,
         enum=custom_field_enums.CustomFieldStatusEnum.CustomFieldStatus,
     )
-    entity_type: custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType = (
-        proto.Field(
-            proto.ENUM,
-            number=7,
-            optional=True,
-            enum=custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType,
-        )
+    entity_type: custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType = proto.Field(
+        proto.ENUM,
+        number=7,
+        optional=True,
+        enum=custom_field_enums.CustomFieldEntityTypeEnum.CustomFieldEntityType,
     )
-    data_type: custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType = (
-        proto.Field(
-            proto.ENUM,
-            number=8,
-            optional=True,
-            enum=custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType,
-        )
+    data_type: custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType = proto.Field(
+        proto.ENUM,
+        number=8,
+        optional=True,
+        enum=custom_field_enums.CustomFieldDataTypeEnum.CustomFieldDataType,
     )
-    visibility: custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility = (
-        proto.Field(
-            proto.ENUM,
-            number=9,
-            optional=True,
-            enum=custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility,
-        )
+    visibility: custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility = proto.Field(
+        proto.ENUM,
+        number=9,
+        optional=True,
+        enum=custom_field_enums.CustomFieldVisibilityEnum.CustomFieldVisibility,
     )
     options: MutableSequence["CustomFieldOption"] = proto.RepeatedField(
         proto.MESSAGE,

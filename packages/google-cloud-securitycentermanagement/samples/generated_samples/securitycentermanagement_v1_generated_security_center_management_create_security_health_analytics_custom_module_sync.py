@@ -39,10 +39,8 @@ def sample_create_security_health_analytics_custom_module():
     client = securitycentermanagement_v1.SecurityCenterManagementClient()
 
     # Initialize request argument(s)
-    request = (
-        securitycentermanagement_v1.CreateSecurityHealthAnalyticsCustomModuleRequest(
-            parent="parent_value",
-        )
+    request = securitycentermanagement_v1.CreateSecurityHealthAnalyticsCustomModuleRequest(
+        parent="parent_value",
     )
 
     # Make the request

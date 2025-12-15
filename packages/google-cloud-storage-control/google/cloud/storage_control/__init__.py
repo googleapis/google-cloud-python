@@ -18,12 +18,8 @@ from google.cloud.storage_control import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.storage_control_v2.services.storage_control.async_client import (
-    StorageControlAsyncClient,
-)
-from google.cloud.storage_control_v2.services.storage_control.client import (
-    StorageControlClient,
-)
+from google.cloud.storage_control_v2.services.storage_control.async_client import StorageControlAsyncClient
+from google.cloud.storage_control_v2.services.storage_control.client import StorageControlClient
 from google.cloud.storage_control_v2.types.storage_control import (
     AnywhereCache,
     CommonLongRunningOperationMetadata,

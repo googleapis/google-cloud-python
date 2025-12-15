@@ -95,13 +95,8 @@ class ShippingSettingsServiceRestInterceptor:
     """
 
     def pre_get_shipping_settings(
-        self,
-        request: shippingsettings.GetShippingSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        shippingsettings.GetShippingSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: shippingsettings.GetShippingSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[shippingsettings.GetShippingSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_shipping_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class ShippingSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_shipping_settings(
-        self, response: shippingsettings.ShippingSettings
-    ) -> shippingsettings.ShippingSettings:
+    def post_get_shipping_settings(self, response: shippingsettings.ShippingSettings) -> shippingsettings.ShippingSettings:
         """Post-rpc interceptor for get_shipping_settings
 
         DEPRECATED. Please use the `post_get_shipping_settings_with_metadata`
@@ -125,12 +118,8 @@ class ShippingSettingsServiceRestInterceptor:
         return response
 
     def post_get_shipping_settings_with_metadata(
-        self,
-        response: shippingsettings.ShippingSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        shippingsettings.ShippingSettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: shippingsettings.ShippingSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[shippingsettings.ShippingSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_shipping_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,13 +135,8 @@ class ShippingSettingsServiceRestInterceptor:
         return response, metadata
 
     def pre_insert_shipping_settings(
-        self,
-        request: shippingsettings.InsertShippingSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        shippingsettings.InsertShippingSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: shippingsettings.InsertShippingSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[shippingsettings.InsertShippingSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_shipping_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +144,7 @@ class ShippingSettingsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_shipping_settings(
-        self, response: shippingsettings.ShippingSettings
-    ) -> shippingsettings.ShippingSettings:
+    def post_insert_shipping_settings(self, response: shippingsettings.ShippingSettings) -> shippingsettings.ShippingSettings:
         """Post-rpc interceptor for insert_shipping_settings
 
         DEPRECATED. Please use the `post_insert_shipping_settings_with_metadata`
@@ -176,12 +158,8 @@ class ShippingSettingsServiceRestInterceptor:
         return response
 
     def post_insert_shipping_settings_with_metadata(
-        self,
-        response: shippingsettings.ShippingSettings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        shippingsettings.ShippingSettings, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: shippingsettings.ShippingSettings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[shippingsettings.ShippingSettings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_shipping_settings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,31 +255,18 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ShippingSettingsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetShippingSettings(
-        _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings,
-        ShippingSettingsServiceRestStub,
-    ):
+    class _GetShippingSettings(_BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings, ShippingSettingsServiceRestStub):
         def __hash__(self):
             return hash("ShippingSettingsServiceRestTransport.GetShippingSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -342,28 +307,16 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings._get_http_options()
-            )
+            http_options = _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_shipping_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_shipping_settings(request, metadata)
+            transcoded_request = _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseShippingSettingsServiceRestTransport._BaseGetShippingSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -386,15 +339,8 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                ShippingSettingsServiceRestTransport._GetShippingSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ShippingSettingsServiceRestTransport._GetShippingSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -410,16 +356,10 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             resp = self._interceptor.post_get_shipping_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_shipping_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_shipping_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = shippingsettings.ShippingSettings.to_json(
-                        response
-                    )
+                    response_payload = shippingsettings.ShippingSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -438,23 +378,12 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
                 )
             return resp
 
-    class _InsertShippingSettings(
-        _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings,
-        ShippingSettingsServiceRestStub,
-    ):
+    class _InsertShippingSettings(_BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings, ShippingSettingsServiceRestStub):
         def __hash__(self):
             return hash("ShippingSettingsServiceRestTransport.InsertShippingSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -497,32 +426,18 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_http_options()
-            )
+            http_options = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_shipping_settings(
-                request, metadata
-            )
-            transcoded_request = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_shipping_settings(request, metadata)
+            transcoded_request = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseShippingSettingsServiceRestTransport._BaseInsertShippingSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -546,13 +461,7 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             # Send the request
             response = ShippingSettingsServiceRestTransport._InsertShippingSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -568,16 +477,10 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
 
             resp = self._interceptor.post_insert_shipping_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_shipping_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_shipping_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = shippingsettings.ShippingSettings.to_json(
-                        response
-                    )
+                    response_payload = shippingsettings.ShippingSettings.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -597,22 +500,13 @@ class ShippingSettingsServiceRestTransport(_BaseShippingSettingsServiceRestTrans
             return resp
 
     @property
-    def get_shipping_settings(
-        self,
-    ) -> Callable[
-        [shippingsettings.GetShippingSettingsRequest], shippingsettings.ShippingSettings
-    ]:
+    def get_shipping_settings(self) -> Callable[[shippingsettings.GetShippingSettingsRequest], shippingsettings.ShippingSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetShippingSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_shipping_settings(
-        self,
-    ) -> Callable[
-        [shippingsettings.InsertShippingSettingsRequest],
-        shippingsettings.ShippingSettings,
-    ]:
+    def insert_shipping_settings(self) -> Callable[[shippingsettings.InsertShippingSettingsRequest], shippingsettings.ShippingSettings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertShippingSettings(self._session, self._host, self._interceptor)  # type: ignore

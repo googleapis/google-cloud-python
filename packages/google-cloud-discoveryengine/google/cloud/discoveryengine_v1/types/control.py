@@ -344,9 +344,7 @@ class Control(proto.Message):
                 number=3,
                 enum="Control.BoostAction.InterpolationBoostSpec.InterpolationType",
             )
-            control_points: MutableSequence[
-                "Control.BoostAction.InterpolationBoostSpec.ControlPoint"
-            ] = proto.RepeatedField(
+            control_points: MutableSequence["Control.BoostAction.InterpolationBoostSpec.ControlPoint"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Control.BoostAction.InterpolationBoostSpec.ControlPoint",
@@ -357,13 +355,11 @@ class Control(proto.Message):
             number=4,
             oneof="boost_spec",
         )
-        interpolation_boost_spec: "Control.BoostAction.InterpolationBoostSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                oneof="boost_spec",
-                message="Control.BoostAction.InterpolationBoostSpec",
-            )
+        interpolation_boost_spec: "Control.BoostAction.InterpolationBoostSpec" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="boost_spec",
+            message="Control.BoostAction.InterpolationBoostSpec",
         )
         boost: float = proto.Field(
             proto.FLOAT,

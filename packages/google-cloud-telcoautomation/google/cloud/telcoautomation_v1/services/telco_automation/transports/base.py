@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.telcoautomation_v1 import gapic_version as package_version
 from google.cloud.telcoautomation_v1.types import telcoautomation
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class TelcoAutomationTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -367,10 +357,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.ListOrchestrationClustersRequest],
-        Union[
-            telcoautomation.ListOrchestrationClustersResponse,
-            Awaitable[telcoautomation.ListOrchestrationClustersResponse],
-        ],
+        Union[telcoautomation.ListOrchestrationClustersResponse, Awaitable[telcoautomation.ListOrchestrationClustersResponse]],
     ]:
         raise NotImplementedError()
 
@@ -378,144 +365,92 @@ class TelcoAutomationTransport(abc.ABC):
     def get_orchestration_cluster(
         self,
     ) -> Callable[
-        [telcoautomation.GetOrchestrationClusterRequest],
-        Union[
-            telcoautomation.OrchestrationCluster,
-            Awaitable[telcoautomation.OrchestrationCluster],
-        ],
+        [telcoautomation.GetOrchestrationClusterRequest], Union[telcoautomation.OrchestrationCluster, Awaitable[telcoautomation.OrchestrationCluster]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_orchestration_cluster(
         self,
-    ) -> Callable[
-        [telcoautomation.CreateOrchestrationClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[telcoautomation.CreateOrchestrationClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_orchestration_cluster(
         self,
-    ) -> Callable[
-        [telcoautomation.DeleteOrchestrationClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[telcoautomation.DeleteOrchestrationClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_edge_slms(
         self,
     ) -> Callable[
-        [telcoautomation.ListEdgeSlmsRequest],
-        Union[
-            telcoautomation.ListEdgeSlmsResponse,
-            Awaitable[telcoautomation.ListEdgeSlmsResponse],
-        ],
+        [telcoautomation.ListEdgeSlmsRequest], Union[telcoautomation.ListEdgeSlmsResponse, Awaitable[telcoautomation.ListEdgeSlmsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_edge_slm(
-        self,
-    ) -> Callable[
-        [telcoautomation.GetEdgeSlmRequest],
-        Union[telcoautomation.EdgeSlm, Awaitable[telcoautomation.EdgeSlm]],
-    ]:
+    def get_edge_slm(self) -> Callable[[telcoautomation.GetEdgeSlmRequest], Union[telcoautomation.EdgeSlm, Awaitable[telcoautomation.EdgeSlm]]]:
         raise NotImplementedError()
 
     @property
     def create_edge_slm(
         self,
-    ) -> Callable[
-        [telcoautomation.CreateEdgeSlmRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[telcoautomation.CreateEdgeSlmRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_edge_slm(
         self,
-    ) -> Callable[
-        [telcoautomation.DeleteEdgeSlmRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[telcoautomation.DeleteEdgeSlmRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.CreateBlueprintRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
+    ) -> Callable[[telcoautomation.CreateBlueprintRequest], Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]]]:
         raise NotImplementedError()
 
     @property
     def update_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.UpdateBlueprintRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
+    ) -> Callable[[telcoautomation.UpdateBlueprintRequest], Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]]]:
         raise NotImplementedError()
 
     @property
     def get_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.GetBlueprintRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
+    ) -> Callable[[telcoautomation.GetBlueprintRequest], Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]]]:
         raise NotImplementedError()
 
     @property
-    def delete_blueprint(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteBlueprintRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_blueprint(self) -> Callable[[telcoautomation.DeleteBlueprintRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_blueprints(
         self,
     ) -> Callable[
-        [telcoautomation.ListBlueprintsRequest],
-        Union[
-            telcoautomation.ListBlueprintsResponse,
-            Awaitable[telcoautomation.ListBlueprintsResponse],
-        ],
+        [telcoautomation.ListBlueprintsRequest], Union[telcoautomation.ListBlueprintsResponse, Awaitable[telcoautomation.ListBlueprintsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def approve_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.ApproveBlueprintRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
+    ) -> Callable[[telcoautomation.ApproveBlueprintRequest], Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]]]:
         raise NotImplementedError()
 
     @property
     def propose_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.ProposeBlueprintRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
+    ) -> Callable[[telcoautomation.ProposeBlueprintRequest], Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]]]:
         raise NotImplementedError()
 
     @property
     def reject_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.RejectBlueprintRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
+    ) -> Callable[[telcoautomation.RejectBlueprintRequest], Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]]]:
         raise NotImplementedError()
 
     @property
@@ -523,10 +458,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.ListBlueprintRevisionsRequest],
-        Union[
-            telcoautomation.ListBlueprintRevisionsResponse,
-            Awaitable[telcoautomation.ListBlueprintRevisionsResponse],
-        ],
+        Union[telcoautomation.ListBlueprintRevisionsResponse, Awaitable[telcoautomation.ListBlueprintRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -535,10 +467,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.SearchBlueprintRevisionsRequest],
-        Union[
-            telcoautomation.SearchBlueprintRevisionsResponse,
-            Awaitable[telcoautomation.SearchBlueprintRevisionsResponse],
-        ],
+        Union[telcoautomation.SearchBlueprintRevisionsResponse, Awaitable[telcoautomation.SearchBlueprintRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -547,10 +476,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.SearchDeploymentRevisionsRequest],
-        Union[
-            telcoautomation.SearchDeploymentRevisionsResponse,
-            Awaitable[telcoautomation.SearchDeploymentRevisionsResponse],
-        ],
+        Union[telcoautomation.SearchDeploymentRevisionsResponse, Awaitable[telcoautomation.SearchDeploymentRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -559,10 +485,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.DiscardBlueprintChangesRequest],
-        Union[
-            telcoautomation.DiscardBlueprintChangesResponse,
-            Awaitable[telcoautomation.DiscardBlueprintChangesResponse],
-        ],
+        Union[telcoautomation.DiscardBlueprintChangesResponse, Awaitable[telcoautomation.DiscardBlueprintChangesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -571,69 +494,43 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.ListPublicBlueprintsRequest],
-        Union[
-            telcoautomation.ListPublicBlueprintsResponse,
-            Awaitable[telcoautomation.ListPublicBlueprintsResponse],
-        ],
+        Union[telcoautomation.ListPublicBlueprintsResponse, Awaitable[telcoautomation.ListPublicBlueprintsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_public_blueprint(
         self,
-    ) -> Callable[
-        [telcoautomation.GetPublicBlueprintRequest],
-        Union[
-            telcoautomation.PublicBlueprint, Awaitable[telcoautomation.PublicBlueprint]
-        ],
-    ]:
+    ) -> Callable[[telcoautomation.GetPublicBlueprintRequest], Union[telcoautomation.PublicBlueprint, Awaitable[telcoautomation.PublicBlueprint]]]:
         raise NotImplementedError()
 
     @property
     def create_deployment(
         self,
-    ) -> Callable[
-        [telcoautomation.CreateDeploymentRequest],
-        Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]],
-    ]:
+    ) -> Callable[[telcoautomation.CreateDeploymentRequest], Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]]]:
         raise NotImplementedError()
 
     @property
     def update_deployment(
         self,
-    ) -> Callable[
-        [telcoautomation.UpdateDeploymentRequest],
-        Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]],
-    ]:
+    ) -> Callable[[telcoautomation.UpdateDeploymentRequest], Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]]]:
         raise NotImplementedError()
 
     @property
     def get_deployment(
         self,
-    ) -> Callable[
-        [telcoautomation.GetDeploymentRequest],
-        Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]],
-    ]:
+    ) -> Callable[[telcoautomation.GetDeploymentRequest], Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]]]:
         raise NotImplementedError()
 
     @property
-    def remove_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.RemoveDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def remove_deployment(self) -> Callable[[telcoautomation.RemoveDeploymentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_deployments(
         self,
     ) -> Callable[
-        [telcoautomation.ListDeploymentsRequest],
-        Union[
-            telcoautomation.ListDeploymentsResponse,
-            Awaitable[telcoautomation.ListDeploymentsResponse],
-        ],
+        [telcoautomation.ListDeploymentsRequest], Union[telcoautomation.ListDeploymentsResponse, Awaitable[telcoautomation.ListDeploymentsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -642,10 +539,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.ListDeploymentRevisionsRequest],
-        Union[
-            telcoautomation.ListDeploymentRevisionsResponse,
-            Awaitable[telcoautomation.ListDeploymentRevisionsResponse],
-        ],
+        Union[telcoautomation.ListDeploymentRevisionsResponse, Awaitable[telcoautomation.ListDeploymentRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -654,20 +548,14 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.DiscardDeploymentChangesRequest],
-        Union[
-            telcoautomation.DiscardDeploymentChangesResponse,
-            Awaitable[telcoautomation.DiscardDeploymentChangesResponse],
-        ],
+        Union[telcoautomation.DiscardDeploymentChangesResponse, Awaitable[telcoautomation.DiscardDeploymentChangesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def apply_deployment(
         self,
-    ) -> Callable[
-        [telcoautomation.ApplyDeploymentRequest],
-        Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]],
-    ]:
+    ) -> Callable[[telcoautomation.ApplyDeploymentRequest], Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]]]:
         raise NotImplementedError()
 
     @property
@@ -675,31 +563,21 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.ComputeDeploymentStatusRequest],
-        Union[
-            telcoautomation.ComputeDeploymentStatusResponse,
-            Awaitable[telcoautomation.ComputeDeploymentStatusResponse],
-        ],
+        Union[telcoautomation.ComputeDeploymentStatusResponse, Awaitable[telcoautomation.ComputeDeploymentStatusResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def rollback_deployment(
         self,
-    ) -> Callable[
-        [telcoautomation.RollbackDeploymentRequest],
-        Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]],
-    ]:
+    ) -> Callable[[telcoautomation.RollbackDeploymentRequest], Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]]]:
         raise NotImplementedError()
 
     @property
     def get_hydrated_deployment(
         self,
     ) -> Callable[
-        [telcoautomation.GetHydratedDeploymentRequest],
-        Union[
-            telcoautomation.HydratedDeployment,
-            Awaitable[telcoautomation.HydratedDeployment],
-        ],
+        [telcoautomation.GetHydratedDeploymentRequest], Union[telcoautomation.HydratedDeployment, Awaitable[telcoautomation.HydratedDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -708,10 +586,7 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [telcoautomation.ListHydratedDeploymentsRequest],
-        Union[
-            telcoautomation.ListHydratedDeploymentsResponse,
-            Awaitable[telcoautomation.ListHydratedDeploymentsResponse],
-        ],
+        Union[telcoautomation.ListHydratedDeploymentsResponse, Awaitable[telcoautomation.ListHydratedDeploymentsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -719,11 +594,7 @@ class TelcoAutomationTransport(abc.ABC):
     def update_hydrated_deployment(
         self,
     ) -> Callable[
-        [telcoautomation.UpdateHydratedDeploymentRequest],
-        Union[
-            telcoautomation.HydratedDeployment,
-            Awaitable[telcoautomation.HydratedDeployment],
-        ],
+        [telcoautomation.UpdateHydratedDeploymentRequest], Union[telcoautomation.HydratedDeployment, Awaitable[telcoautomation.HydratedDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -731,11 +602,7 @@ class TelcoAutomationTransport(abc.ABC):
     def apply_hydrated_deployment(
         self,
     ) -> Callable[
-        [telcoautomation.ApplyHydratedDeploymentRequest],
-        Union[
-            telcoautomation.HydratedDeployment,
-            Awaitable[telcoautomation.HydratedDeployment],
-        ],
+        [telcoautomation.ApplyHydratedDeploymentRequest], Union[telcoautomation.HydratedDeployment, Awaitable[telcoautomation.HydratedDeployment]]
     ]:
         raise NotImplementedError()
 
@@ -744,20 +611,14 @@ class TelcoAutomationTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -775,22 +636,13 @@ class TelcoAutomationTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -23,12 +23,7 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    completion,
-    document,
-    sample_query,
-    user_event,
-)
+from google.cloud.discoveryengine_v1beta.types import completion, document, sample_query, user_event
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -354,9 +349,7 @@ class BigtableOptions(proto.Message):
             number=3,
             enum="BigtableOptions.Type",
         )
-        columns: MutableSequence[
-            "BigtableOptions.BigtableColumn"
-        ] = proto.RepeatedField(
+        columns: MutableSequence["BigtableOptions.BigtableColumn"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="BigtableOptions.BigtableColumn",
@@ -1220,9 +1213,7 @@ class ImportSuggestionDenyListEntriesRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        entries: MutableSequence[
-            completion.SuggestionDenyListEntry
-        ] = proto.RepeatedField(
+        entries: MutableSequence[completion.SuggestionDenyListEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=completion.SuggestionDenyListEntry,
@@ -1348,9 +1339,7 @@ class ImportCompletionSuggestionsRequest(proto.Message):
                 import. Max of 1000 items.
         """
 
-        suggestions: MutableSequence[
-            completion.CompletionSuggestion
-        ] = proto.RepeatedField(
+        suggestions: MutableSequence[completion.CompletionSuggestion] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=completion.CompletionSuggestion,

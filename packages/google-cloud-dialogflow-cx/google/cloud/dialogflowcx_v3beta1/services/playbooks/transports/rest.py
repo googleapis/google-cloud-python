@@ -171,12 +171,8 @@ class PlaybooksRestInterceptor:
     """
 
     def pre_create_playbook(
-        self,
-        request: gcdc_playbook.CreatePlaybookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_playbook.CreatePlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_playbook.CreatePlaybookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_playbook.CreatePlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_playbook
 
         Override in a subclass to manipulate the request or metadata
@@ -184,9 +180,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_create_playbook(
-        self, response: gcdc_playbook.Playbook
-    ) -> gcdc_playbook.Playbook:
+    def post_create_playbook(self, response: gcdc_playbook.Playbook) -> gcdc_playbook.Playbook:
         """Post-rpc interceptor for create_playbook
 
         DEPRECATED. Please use the `post_create_playbook_with_metadata`
@@ -200,9 +194,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_create_playbook_with_metadata(
-        self,
-        response: gcdc_playbook.Playbook,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_playbook.Playbook, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_playbook.Playbook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_playbook
 
@@ -219,12 +211,8 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_create_playbook_version(
-        self,
-        request: playbook.CreatePlaybookVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.CreatePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: playbook.CreatePlaybookVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.CreatePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_playbook_version
 
         Override in a subclass to manipulate the request or metadata
@@ -232,9 +220,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_create_playbook_version(
-        self, response: playbook.PlaybookVersion
-    ) -> playbook.PlaybookVersion:
+    def post_create_playbook_version(self, response: playbook.PlaybookVersion) -> playbook.PlaybookVersion:
         """Post-rpc interceptor for create_playbook_version
 
         DEPRECATED. Please use the `post_create_playbook_version_with_metadata`
@@ -248,9 +234,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_create_playbook_version_with_metadata(
-        self,
-        response: playbook.PlaybookVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: playbook.PlaybookVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.PlaybookVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_playbook_version
 
@@ -267,9 +251,7 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_delete_playbook(
-        self,
-        request: playbook.DeletePlaybookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: playbook.DeletePlaybookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.DeletePlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_playbook
 
@@ -279,12 +261,8 @@ class PlaybooksRestInterceptor:
         return request, metadata
 
     def pre_delete_playbook_version(
-        self,
-        request: playbook.DeletePlaybookVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.DeletePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: playbook.DeletePlaybookVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.DeletePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_playbook_version
 
         Override in a subclass to manipulate the request or metadata
@@ -293,9 +271,7 @@ class PlaybooksRestInterceptor:
         return request, metadata
 
     def pre_export_playbook(
-        self,
-        request: playbook.ExportPlaybookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: playbook.ExportPlaybookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.ExportPlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_playbook
 
@@ -304,9 +280,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_export_playbook(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_playbook(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_playbook
 
         DEPRECATED. Please use the `post_export_playbook_with_metadata`
@@ -320,9 +294,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_export_playbook_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_playbook
 
@@ -339,9 +311,7 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_get_playbook(
-        self,
-        request: playbook.GetPlaybookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: playbook.GetPlaybookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.GetPlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_playbook
 
@@ -364,9 +334,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_get_playbook_with_metadata(
-        self,
-        response: playbook.Playbook,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: playbook.Playbook, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.Playbook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_playbook
 
@@ -383,12 +351,8 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_get_playbook_version(
-        self,
-        request: playbook.GetPlaybookVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.GetPlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: playbook.GetPlaybookVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.GetPlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_playbook_version
 
         Override in a subclass to manipulate the request or metadata
@@ -396,9 +360,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_playbook_version(
-        self, response: playbook.PlaybookVersion
-    ) -> playbook.PlaybookVersion:
+    def post_get_playbook_version(self, response: playbook.PlaybookVersion) -> playbook.PlaybookVersion:
         """Post-rpc interceptor for get_playbook_version
 
         DEPRECATED. Please use the `post_get_playbook_version_with_metadata`
@@ -412,9 +374,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_get_playbook_version_with_metadata(
-        self,
-        response: playbook.PlaybookVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: playbook.PlaybookVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.PlaybookVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_playbook_version
 
@@ -431,9 +391,7 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_import_playbook(
-        self,
-        request: playbook.ImportPlaybookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: playbook.ImportPlaybookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.ImportPlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_playbook
 
@@ -442,9 +400,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_import_playbook(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_playbook(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_playbook
 
         DEPRECATED. Please use the `post_import_playbook_with_metadata`
@@ -458,9 +414,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_import_playbook_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_playbook
 
@@ -477,9 +431,7 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_list_playbooks(
-        self,
-        request: playbook.ListPlaybooksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: playbook.ListPlaybooksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.ListPlaybooksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_playbooks
 
@@ -488,9 +440,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_playbooks(
-        self, response: playbook.ListPlaybooksResponse
-    ) -> playbook.ListPlaybooksResponse:
+    def post_list_playbooks(self, response: playbook.ListPlaybooksResponse) -> playbook.ListPlaybooksResponse:
         """Post-rpc interceptor for list_playbooks
 
         DEPRECATED. Please use the `post_list_playbooks_with_metadata`
@@ -504,9 +454,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_list_playbooks_with_metadata(
-        self,
-        response: playbook.ListPlaybooksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: playbook.ListPlaybooksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[playbook.ListPlaybooksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_playbooks
 
@@ -523,12 +471,8 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_list_playbook_versions(
-        self,
-        request: playbook.ListPlaybookVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.ListPlaybookVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: playbook.ListPlaybookVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.ListPlaybookVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_playbook_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -536,9 +480,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_playbook_versions(
-        self, response: playbook.ListPlaybookVersionsResponse
-    ) -> playbook.ListPlaybookVersionsResponse:
+    def post_list_playbook_versions(self, response: playbook.ListPlaybookVersionsResponse) -> playbook.ListPlaybookVersionsResponse:
         """Post-rpc interceptor for list_playbook_versions
 
         DEPRECATED. Please use the `post_list_playbook_versions_with_metadata`
@@ -552,12 +494,8 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_list_playbook_versions_with_metadata(
-        self,
-        response: playbook.ListPlaybookVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.ListPlaybookVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: playbook.ListPlaybookVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.ListPlaybookVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_playbook_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -573,12 +511,8 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_restore_playbook_version(
-        self,
-        request: playbook.RestorePlaybookVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.RestorePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: playbook.RestorePlaybookVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.RestorePlaybookVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_playbook_version
 
         Override in a subclass to manipulate the request or metadata
@@ -586,9 +520,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_playbook_version(
-        self, response: playbook.RestorePlaybookVersionResponse
-    ) -> playbook.RestorePlaybookVersionResponse:
+    def post_restore_playbook_version(self, response: playbook.RestorePlaybookVersionResponse) -> playbook.RestorePlaybookVersionResponse:
         """Post-rpc interceptor for restore_playbook_version
 
         DEPRECATED. Please use the `post_restore_playbook_version_with_metadata`
@@ -602,12 +534,8 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_restore_playbook_version_with_metadata(
-        self,
-        response: playbook.RestorePlaybookVersionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        playbook.RestorePlaybookVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: playbook.RestorePlaybookVersionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[playbook.RestorePlaybookVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_playbook_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -623,12 +551,8 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_update_playbook(
-        self,
-        request: gcdc_playbook.UpdatePlaybookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_playbook.UpdatePlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_playbook.UpdatePlaybookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_playbook.UpdatePlaybookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_playbook
 
         Override in a subclass to manipulate the request or metadata
@@ -636,9 +560,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_update_playbook(
-        self, response: gcdc_playbook.Playbook
-    ) -> gcdc_playbook.Playbook:
+    def post_update_playbook(self, response: gcdc_playbook.Playbook) -> gcdc_playbook.Playbook:
         """Post-rpc interceptor for update_playbook
 
         DEPRECATED. Please use the `post_update_playbook_with_metadata`
@@ -652,9 +574,7 @@ class PlaybooksRestInterceptor:
         return response
 
     def post_update_playbook_with_metadata(
-        self,
-        response: gcdc_playbook.Playbook,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_playbook.Playbook, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_playbook.Playbook, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_playbook
 
@@ -671,12 +591,8 @@ class PlaybooksRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -684,9 +600,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -696,12 +610,8 @@ class PlaybooksRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -709,9 +619,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -721,12 +629,8 @@ class PlaybooksRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -744,12 +648,8 @@ class PlaybooksRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -757,9 +657,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -769,12 +667,8 @@ class PlaybooksRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -782,9 +676,7 @@ class PlaybooksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -874,9 +766,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -934,29 +824,17 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 path_prefix="v3beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreatePlaybook(
-        _BasePlaybooksRestTransport._BaseCreatePlaybook, PlaybooksRestStub
-    ):
+    class _CreatePlaybook(_BasePlaybooksRestTransport._BaseCreatePlaybook, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.CreatePlaybook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1010,36 +888,18 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseCreatePlaybook._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseCreatePlaybook._get_http_options()
 
             request, metadata = self._interceptor.pre_create_playbook(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseCreatePlaybook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseCreatePlaybook._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePlaybooksRestTransport._BaseCreatePlaybook._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePlaybooksRestTransport._BaseCreatePlaybook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseCreatePlaybook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseCreatePlaybook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1063,13 +923,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._CreatePlaybook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1085,12 +939,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_create_playbook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_playbook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_playbook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_playbook.Playbook.to_json(response)
                 except:
@@ -1111,22 +961,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _CreatePlaybookVersion(
-        _BasePlaybooksRestTransport._BaseCreatePlaybookVersion, PlaybooksRestStub
-    ):
+    class _CreatePlaybookVersion(_BasePlaybooksRestTransport._BaseCreatePlaybookVersion, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.CreatePlaybookVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1169,32 +1009,18 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_playbook_version(
-                request, metadata
-            )
-            transcoded_request = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_playbook_version(request, metadata)
+            transcoded_request = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_transcoded_request(http_options, request)
 
-            body = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlaybooksRestTransport._BaseCreatePlaybookVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1218,13 +1044,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._CreatePlaybookVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1240,12 +1060,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_create_playbook_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_playbook_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_playbook_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = playbook.PlaybookVersion.to_json(response)
                 except:
@@ -1266,22 +1082,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _DeletePlaybook(
-        _BasePlaybooksRestTransport._BaseDeletePlaybook, PlaybooksRestStub
-    ):
+    class _DeletePlaybook(_BasePlaybooksRestTransport._BaseDeletePlaybook, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.DeletePlaybook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1317,30 +1123,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseDeletePlaybook._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseDeletePlaybook._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_playbook(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseDeletePlaybook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseDeletePlaybook._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseDeletePlaybook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseDeletePlaybook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1364,12 +1156,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._DeletePlaybook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1377,22 +1164,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeletePlaybookVersion(
-        _BasePlaybooksRestTransport._BaseDeletePlaybookVersion, PlaybooksRestStub
-    ):
+    class _DeletePlaybookVersion(_BasePlaybooksRestTransport._BaseDeletePlaybookVersion, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.DeletePlaybookVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1428,28 +1205,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseDeletePlaybookVersion._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseDeletePlaybookVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_playbook_version(
-                request, metadata
-            )
-            transcoded_request = _BasePlaybooksRestTransport._BaseDeletePlaybookVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_playbook_version(request, metadata)
+            transcoded_request = _BasePlaybooksRestTransport._BaseDeletePlaybookVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePlaybooksRestTransport._BaseDeletePlaybookVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlaybooksRestTransport._BaseDeletePlaybookVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1473,12 +1238,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._DeletePlaybookVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1486,22 +1246,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExportPlaybook(
-        _BasePlaybooksRestTransport._BaseExportPlaybook, PlaybooksRestStub
-    ):
+    class _ExportPlaybook(_BasePlaybooksRestTransport._BaseExportPlaybook, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.ExportPlaybook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1545,36 +1295,18 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseExportPlaybook._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseExportPlaybook._get_http_options()
 
             request, metadata = self._interceptor.pre_export_playbook(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseExportPlaybook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseExportPlaybook._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePlaybooksRestTransport._BaseExportPlaybook._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePlaybooksRestTransport._BaseExportPlaybook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseExportPlaybook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseExportPlaybook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1598,13 +1330,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._ExportPlaybook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1618,12 +1344,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_export_playbook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_playbook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_playbook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1649,15 +1371,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             return hash("PlaybooksRestTransport.GetPlaybook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1710,30 +1424,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseGetPlaybook._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseGetPlaybook._get_http_options()
 
             request, metadata = self._interceptor.pre_get_playbook(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseGetPlaybook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseGetPlaybook._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseGetPlaybook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseGetPlaybook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1757,12 +1457,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._GetPlaybook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1778,12 +1473,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_get_playbook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_playbook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_playbook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = playbook.Playbook.to_json(response)
                 except:
@@ -1804,22 +1495,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _GetPlaybookVersion(
-        _BasePlaybooksRestTransport._BaseGetPlaybookVersion, PlaybooksRestStub
-    ):
+    class _GetPlaybookVersion(_BasePlaybooksRestTransport._BaseGetPlaybookVersion, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.GetPlaybookVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1861,28 +1542,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseGetPlaybookVersion._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseGetPlaybookVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_playbook_version(
-                request, metadata
-            )
-            transcoded_request = _BasePlaybooksRestTransport._BaseGetPlaybookVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_playbook_version(request, metadata)
+            transcoded_request = _BasePlaybooksRestTransport._BaseGetPlaybookVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePlaybooksRestTransport._BaseGetPlaybookVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlaybooksRestTransport._BaseGetPlaybookVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1906,12 +1575,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._GetPlaybookVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1927,12 +1591,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_get_playbook_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_playbook_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_playbook_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = playbook.PlaybookVersion.to_json(response)
                 except:
@@ -1953,22 +1613,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _ImportPlaybook(
-        _BasePlaybooksRestTransport._BaseImportPlaybook, PlaybooksRestStub
-    ):
+    class _ImportPlaybook(_BasePlaybooksRestTransport._BaseImportPlaybook, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.ImportPlaybook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2012,36 +1662,18 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseImportPlaybook._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseImportPlaybook._get_http_options()
 
             request, metadata = self._interceptor.pre_import_playbook(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseImportPlaybook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseImportPlaybook._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePlaybooksRestTransport._BaseImportPlaybook._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePlaybooksRestTransport._BaseImportPlaybook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseImportPlaybook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseImportPlaybook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2065,13 +1697,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._ImportPlaybook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2085,12 +1711,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_import_playbook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_playbook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_playbook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2111,22 +1733,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _ListPlaybooks(
-        _BasePlaybooksRestTransport._BaseListPlaybooks, PlaybooksRestStub
-    ):
+    class _ListPlaybooks(_BasePlaybooksRestTransport._BaseListPlaybooks, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.ListPlaybooks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2168,30 +1780,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseListPlaybooks._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseListPlaybooks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_playbooks(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseListPlaybooks._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseListPlaybooks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseListPlaybooks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseListPlaybooks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2215,12 +1813,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._ListPlaybooks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2236,12 +1829,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_list_playbooks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_playbooks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_playbooks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = playbook.ListPlaybooksResponse.to_json(response)
                 except:
@@ -2262,22 +1851,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _ListPlaybookVersions(
-        _BasePlaybooksRestTransport._BaseListPlaybookVersions, PlaybooksRestStub
-    ):
+    class _ListPlaybookVersions(_BasePlaybooksRestTransport._BaseListPlaybookVersions, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.ListPlaybookVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2319,28 +1898,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseListPlaybookVersions._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseListPlaybookVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_playbook_versions(
-                request, metadata
-            )
-            transcoded_request = _BasePlaybooksRestTransport._BaseListPlaybookVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_playbook_versions(request, metadata)
+            transcoded_request = _BasePlaybooksRestTransport._BaseListPlaybookVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePlaybooksRestTransport._BaseListPlaybookVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlaybooksRestTransport._BaseListPlaybookVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2364,12 +1931,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._ListPlaybookVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2385,16 +1947,10 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_list_playbook_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_playbook_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_playbook_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = playbook.ListPlaybookVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = playbook.ListPlaybookVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2413,22 +1969,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _RestorePlaybookVersion(
-        _BasePlaybooksRestTransport._BaseRestorePlaybookVersion, PlaybooksRestStub
-    ):
+    class _RestorePlaybookVersion(_BasePlaybooksRestTransport._BaseRestorePlaybookVersion, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.RestorePlaybookVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2471,32 +2017,18 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_playbook_version(
-                request, metadata
-            )
-            transcoded_request = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restore_playbook_version(request, metadata)
+            transcoded_request = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_transcoded_request(http_options, request)
 
-            body = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlaybooksRestTransport._BaseRestorePlaybookVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2520,13 +2052,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._RestorePlaybookVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2542,16 +2068,10 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_restore_playbook_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_playbook_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_playbook_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = playbook.RestorePlaybookVersionResponse.to_json(
-                        response
-                    )
+                    response_payload = playbook.RestorePlaybookVersionResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2570,22 +2090,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 )
             return resp
 
-    class _UpdatePlaybook(
-        _BasePlaybooksRestTransport._BaseUpdatePlaybook, PlaybooksRestStub
-    ):
+    class _UpdatePlaybook(_BasePlaybooksRestTransport._BaseUpdatePlaybook, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.UpdatePlaybook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2639,36 +2149,18 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_http_options()
 
             request, metadata = self._interceptor.pre_update_playbook(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseUpdatePlaybook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2692,13 +2184,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._UpdatePlaybook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2714,12 +2200,8 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             resp = self._interceptor.post_update_playbook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_playbook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_playbook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_playbook.Playbook.to_json(response)
                 except:
@@ -2741,102 +2223,73 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             return resp
 
     @property
-    def create_playbook(
-        self,
-    ) -> Callable[[gcdc_playbook.CreatePlaybookRequest], gcdc_playbook.Playbook]:
+    def create_playbook(self) -> Callable[[gcdc_playbook.CreatePlaybookRequest], gcdc_playbook.Playbook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePlaybook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_playbook_version(
-        self,
-    ) -> Callable[[playbook.CreatePlaybookVersionRequest], playbook.PlaybookVersion]:
+    def create_playbook_version(self) -> Callable[[playbook.CreatePlaybookVersionRequest], playbook.PlaybookVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_playbook(
-        self,
-    ) -> Callable[[playbook.DeletePlaybookRequest], empty_pb2.Empty]:
+    def delete_playbook(self) -> Callable[[playbook.DeletePlaybookRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePlaybook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_playbook_version(
-        self,
-    ) -> Callable[[playbook.DeletePlaybookVersionRequest], empty_pb2.Empty]:
+    def delete_playbook_version(self) -> Callable[[playbook.DeletePlaybookVersionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_playbook(
-        self,
-    ) -> Callable[[playbook.ExportPlaybookRequest], operations_pb2.Operation]:
+    def export_playbook(self) -> Callable[[playbook.ExportPlaybookRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportPlaybook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_playbook(
-        self,
-    ) -> Callable[[playbook.GetPlaybookRequest], playbook.Playbook]:
+    def get_playbook(self) -> Callable[[playbook.GetPlaybookRequest], playbook.Playbook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPlaybook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_playbook_version(
-        self,
-    ) -> Callable[[playbook.GetPlaybookVersionRequest], playbook.PlaybookVersion]:
+    def get_playbook_version(self) -> Callable[[playbook.GetPlaybookVersionRequest], playbook.PlaybookVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_playbook(
-        self,
-    ) -> Callable[[playbook.ImportPlaybookRequest], operations_pb2.Operation]:
+    def import_playbook(self) -> Callable[[playbook.ImportPlaybookRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportPlaybook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_playbooks(
-        self,
-    ) -> Callable[[playbook.ListPlaybooksRequest], playbook.ListPlaybooksResponse]:
+    def list_playbooks(self) -> Callable[[playbook.ListPlaybooksRequest], playbook.ListPlaybooksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPlaybooks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_playbook_versions(
-        self,
-    ) -> Callable[
-        [playbook.ListPlaybookVersionsRequest], playbook.ListPlaybookVersionsResponse
-    ]:
+    def list_playbook_versions(self) -> Callable[[playbook.ListPlaybookVersionsRequest], playbook.ListPlaybookVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPlaybookVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_playbook_version(
-        self,
-    ) -> Callable[
-        [playbook.RestorePlaybookVersionRequest],
-        playbook.RestorePlaybookVersionResponse,
-    ]:
+    def restore_playbook_version(self) -> Callable[[playbook.RestorePlaybookVersionRequest], playbook.RestorePlaybookVersionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestorePlaybookVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_playbook(
-        self,
-    ) -> Callable[[gcdc_playbook.UpdatePlaybookRequest], gcdc_playbook.Playbook]:
+    def update_playbook(self) -> Callable[[gcdc_playbook.UpdatePlaybookRequest], gcdc_playbook.Playbook]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePlaybook(self._session, self._host, self._interceptor)  # type: ignore
@@ -2850,15 +2303,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             return hash("PlaybooksRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2896,30 +2341,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2943,12 +2374,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2960,9 +2386,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2987,22 +2411,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BasePlaybooksRestTransport._BaseListLocations, PlaybooksRestStub
-    ):
+    class _ListLocations(_BasePlaybooksRestTransport._BaseListLocations, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3040,30 +2454,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3087,12 +2487,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3104,9 +2499,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3131,22 +2524,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BasePlaybooksRestTransport._BaseCancelOperation, PlaybooksRestStub
-    ):
+    class _CancelOperation(_BasePlaybooksRestTransport._BaseCancelOperation, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3181,30 +2564,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePlaybooksRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BasePlaybooksRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3228,12 +2597,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3247,22 +2611,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePlaybooksRestTransport._BaseGetOperation, PlaybooksRestStub
-    ):
+    class _GetOperation(_BasePlaybooksRestTransport._BaseGetOperation, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3300,30 +2654,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3347,12 +2687,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3364,9 +2699,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3391,22 +2724,12 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BasePlaybooksRestTransport._BaseListOperations, PlaybooksRestStub
-    ):
+    class _ListOperations(_BasePlaybooksRestTransport._BaseListOperations, PlaybooksRestStub):
         def __hash__(self):
             return hash("PlaybooksRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3444,30 +2767,16 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePlaybooksRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePlaybooksRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BasePlaybooksRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlaybooksRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlaybooksRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlaybooksRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3491,12 +2800,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
 
             # Send the request
             response = PlaybooksRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3508,9 +2812,7 @@ class PlaybooksRestTransport(_BasePlaybooksRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

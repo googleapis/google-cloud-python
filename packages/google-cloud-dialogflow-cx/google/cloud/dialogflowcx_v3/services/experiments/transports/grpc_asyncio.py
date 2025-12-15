@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -335,12 +318,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._grpc_channel
 
     @property
-    def list_experiments(
-        self,
-    ) -> Callable[
-        [experiment.ListExperimentsRequest],
-        Awaitable[experiment.ListExperimentsResponse],
-    ]:
+    def list_experiments(self) -> Callable[[experiment.ListExperimentsRequest], Awaitable[experiment.ListExperimentsResponse]]:
         r"""Return a callable for the list experiments method over gRPC.
 
         Returns the list of all experiments in the specified
@@ -365,9 +343,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._stubs["list_experiments"]
 
     @property
-    def get_experiment(
-        self,
-    ) -> Callable[[experiment.GetExperimentRequest], Awaitable[experiment.Experiment]]:
+    def get_experiment(self) -> Callable[[experiment.GetExperimentRequest], Awaitable[experiment.Experiment]]:
         r"""Return a callable for the get experiment method over gRPC.
 
         Retrieves the specified
@@ -392,11 +368,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._stubs["get_experiment"]
 
     @property
-    def create_experiment(
-        self,
-    ) -> Callable[
-        [gcdc_experiment.CreateExperimentRequest], Awaitable[gcdc_experiment.Experiment]
-    ]:
+    def create_experiment(self) -> Callable[[gcdc_experiment.CreateExperimentRequest], Awaitable[gcdc_experiment.Experiment]]:
         r"""Return a callable for the create experiment method over gRPC.
 
         Creates an
@@ -423,11 +395,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._stubs["create_experiment"]
 
     @property
-    def update_experiment(
-        self,
-    ) -> Callable[
-        [gcdc_experiment.UpdateExperimentRequest], Awaitable[gcdc_experiment.Experiment]
-    ]:
+    def update_experiment(self) -> Callable[[gcdc_experiment.UpdateExperimentRequest], Awaitable[gcdc_experiment.Experiment]]:
         r"""Return a callable for the update experiment method over gRPC.
 
         Updates the specified
@@ -452,9 +420,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._stubs["update_experiment"]
 
     @property
-    def delete_experiment(
-        self,
-    ) -> Callable[[experiment.DeleteExperimentRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_experiment(self) -> Callable[[experiment.DeleteExperimentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete experiment method over gRPC.
 
         Deletes the specified
@@ -479,11 +445,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._stubs["delete_experiment"]
 
     @property
-    def start_experiment(
-        self,
-    ) -> Callable[
-        [experiment.StartExperimentRequest], Awaitable[experiment.Experiment]
-    ]:
+    def start_experiment(self) -> Callable[[experiment.StartExperimentRequest], Awaitable[experiment.Experiment]]:
         r"""Return a callable for the start experiment method over gRPC.
 
         Starts the specified
@@ -509,9 +471,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
         return self._stubs["start_experiment"]
 
     @property
-    def stop_experiment(
-        self,
-    ) -> Callable[[experiment.StopExperimentRequest], Awaitable[experiment.Experiment]]:
+    def stop_experiment(self) -> Callable[[experiment.StopExperimentRequest], Awaitable[experiment.Experiment]]:
         r"""Return a callable for the stop experiment method over gRPC.
 
         Stops the specified
@@ -650,9 +610,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -669,9 +627,7 @@ class ExperimentsGrpcAsyncIOTransport(ExperimentsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

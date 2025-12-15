@@ -335,12 +335,10 @@ class AuthzPolicy(proto.Message):
                     number=1,
                 )
 
-            tag_value_id_set: "AuthzPolicy.AuthzRule.RequestResource.TagValueIdSet" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    message="AuthzPolicy.AuthzRule.RequestResource.TagValueIdSet",
-                )
+            tag_value_id_set: "AuthzPolicy.AuthzRule.RequestResource.TagValueIdSet" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="AuthzPolicy.AuthzRule.RequestResource.TagValueIdSet",
             )
             iam_service_account: "AuthzPolicy.AuthzRule.StringMatch" = proto.Field(
                 proto.MESSAGE,
@@ -425,12 +423,10 @@ class AuthzPolicy(proto.Message):
                 CLIENT_CERT_DNS_NAME_SAN = 2
                 CLIENT_CERT_COMMON_NAME = 3
 
-            principal_selector: "AuthzPolicy.AuthzRule.Principal.PrincipalSelector" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="AuthzPolicy.AuthzRule.Principal.PrincipalSelector",
-                )
+            principal_selector: "AuthzPolicy.AuthzRule.Principal.PrincipalSelector" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="AuthzPolicy.AuthzRule.Principal.PrincipalSelector",
             )
             principal: "AuthzPolicy.AuthzRule.StringMatch" = proto.Field(
                 proto.MESSAGE,
@@ -493,38 +489,28 @@ class AuthzPolicy(proto.Message):
                         Authorization Policy.
                 """
 
-                principals: MutableSequence[
-                    "AuthzPolicy.AuthzRule.Principal"
-                ] = proto.RepeatedField(
+                principals: MutableSequence["AuthzPolicy.AuthzRule.Principal"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="AuthzPolicy.AuthzRule.Principal",
                 )
-                ip_blocks: MutableSequence[
-                    "AuthzPolicy.AuthzRule.IpBlock"
-                ] = proto.RepeatedField(
+                ip_blocks: MutableSequence["AuthzPolicy.AuthzRule.IpBlock"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=2,
                     message="AuthzPolicy.AuthzRule.IpBlock",
                 )
-                resources: MutableSequence[
-                    "AuthzPolicy.AuthzRule.RequestResource"
-                ] = proto.RepeatedField(
+                resources: MutableSequence["AuthzPolicy.AuthzRule.RequestResource"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=3,
                     message="AuthzPolicy.AuthzRule.RequestResource",
                 )
 
-            sources: MutableSequence[
-                "AuthzPolicy.AuthzRule.From.RequestSource"
-            ] = proto.RepeatedField(
+            sources: MutableSequence["AuthzPolicy.AuthzRule.From.RequestSource"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="AuthzPolicy.AuthzRule.From.RequestSource",
             )
-            not_sources: MutableSequence[
-                "AuthzPolicy.AuthzRule.From.RequestSource"
-            ] = proto.RepeatedField(
+            not_sources: MutableSequence["AuthzPolicy.AuthzRule.From.RequestSource"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="AuthzPolicy.AuthzRule.From.RequestSource",
@@ -600,31 +586,23 @@ class AuthzPolicy(proto.Message):
                             to 10 headers per Authorization Policy.
                     """
 
-                    headers: MutableSequence[
-                        "AuthzPolicy.AuthzRule.HeaderMatch"
-                    ] = proto.RepeatedField(
+                    headers: MutableSequence["AuthzPolicy.AuthzRule.HeaderMatch"] = proto.RepeatedField(
                         proto.MESSAGE,
                         number=1,
                         message="AuthzPolicy.AuthzRule.HeaderMatch",
                     )
 
-                header_set: "AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet" = (
-                    proto.Field(
-                        proto.MESSAGE,
-                        number=1,
-                        message="AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet",
-                    )
+                header_set: "AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet" = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    message="AuthzPolicy.AuthzRule.To.RequestOperation.HeaderSet",
                 )
-                hosts: MutableSequence[
-                    "AuthzPolicy.AuthzRule.StringMatch"
-                ] = proto.RepeatedField(
+                hosts: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=2,
                     message="AuthzPolicy.AuthzRule.StringMatch",
                 )
-                paths: MutableSequence[
-                    "AuthzPolicy.AuthzRule.StringMatch"
-                ] = proto.RepeatedField(
+                paths: MutableSequence["AuthzPolicy.AuthzRule.StringMatch"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=3,
                     message="AuthzPolicy.AuthzRule.StringMatch",
@@ -634,16 +612,12 @@ class AuthzPolicy(proto.Message):
                     number=4,
                 )
 
-            operations: MutableSequence[
-                "AuthzPolicy.AuthzRule.To.RequestOperation"
-            ] = proto.RepeatedField(
+            operations: MutableSequence["AuthzPolicy.AuthzRule.To.RequestOperation"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="AuthzPolicy.AuthzRule.To.RequestOperation",
             )
-            not_operations: MutableSequence[
-                "AuthzPolicy.AuthzRule.To.RequestOperation"
-            ] = proto.RepeatedField(
+            not_operations: MutableSequence["AuthzPolicy.AuthzRule.To.RequestOperation"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="AuthzPolicy.AuthzRule.To.RequestOperation",

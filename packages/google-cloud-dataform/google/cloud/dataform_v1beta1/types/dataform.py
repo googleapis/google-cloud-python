@@ -631,21 +631,17 @@ class CommitRepositoryChangesRequest(proto.Message):
         class DeleteFile(proto.Message):
             r"""Represents the delete file operation."""
 
-        write_file: "CommitRepositoryChangesRequest.FileOperation.WriteFile" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="operation",
-                message="CommitRepositoryChangesRequest.FileOperation.WriteFile",
-            )
+        write_file: "CommitRepositoryChangesRequest.FileOperation.WriteFile" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="operation",
+            message="CommitRepositoryChangesRequest.FileOperation.WriteFile",
         )
-        delete_file: "CommitRepositoryChangesRequest.FileOperation.DeleteFile" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="operation",
-                message="CommitRepositoryChangesRequest.FileOperation.DeleteFile",
-            )
+        delete_file: "CommitRepositoryChangesRequest.FileOperation.DeleteFile" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="operation",
+            message="CommitRepositoryChangesRequest.FileOperation.DeleteFile",
         )
 
     name: str = proto.Field(
@@ -1341,9 +1337,7 @@ class FetchFileGitStatusesResponse(proto.Message):
             enum="FetchFileGitStatusesResponse.UncommittedFileChange.State",
         )
 
-    uncommitted_file_changes: MutableSequence[
-        UncommittedFileChange
-    ] = proto.RepeatedField(
+    uncommitted_file_changes: MutableSequence[UncommittedFileChange] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=UncommittedFileChange,
@@ -2096,9 +2090,7 @@ class ReleaseConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_release_records: MutableSequence[
-        ScheduledReleaseRecord
-    ] = proto.RepeatedField(
+    recent_scheduled_release_records: MutableSequence[ScheduledReleaseRecord] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ScheduledReleaseRecord,
@@ -3196,12 +3188,10 @@ class CompilationResultAction(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            error_table: "CompilationResultAction.DataPreparation.ErrorTable" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    message="CompilationResultAction.DataPreparation.ErrorTable",
-                )
+            error_table: "CompilationResultAction.DataPreparation.ErrorTable" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="CompilationResultAction.DataPreparation.ErrorTable",
             )
             load: "CompilationResultAction.LoadConfig" = proto.Field(
                 proto.MESSAGE,
@@ -3236,13 +3226,11 @@ class CompilationResultAction(proto.Message):
             number=5,
             oneof="definition",
         )
-        contents_sql: "CompilationResultAction.DataPreparation.SqlDefinition" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=6,
-                oneof="definition",
-                message="CompilationResultAction.DataPreparation.SqlDefinition",
-            )
+        contents_sql: "CompilationResultAction.DataPreparation.SqlDefinition" = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            oneof="definition",
+            message="CompilationResultAction.DataPreparation.SqlDefinition",
         )
         dependency_targets: MutableSequence["Target"] = proto.RepeatedField(
             proto.MESSAGE,
@@ -3447,9 +3435,7 @@ class QueryCompilationResultActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    compilation_result_actions: MutableSequence[
-        "CompilationResultAction"
-    ] = proto.RepeatedField(
+    compilation_result_actions: MutableSequence["CompilationResultAction"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CompilationResultAction",
@@ -3575,9 +3561,7 @@ class WorkflowConfig(proto.Message):
         proto.STRING,
         number=7,
     )
-    recent_scheduled_execution_records: MutableSequence[
-        ScheduledExecutionRecord
-    ] = proto.RepeatedField(
+    recent_scheduled_execution_records: MutableSequence[ScheduledExecutionRecord] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ScheduledExecutionRecord,
@@ -4501,9 +4485,7 @@ class QueryWorkflowInvocationActionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workflow_invocation_actions: MutableSequence[
-        "WorkflowInvocationAction"
-    ] = proto.RepeatedField(
+    workflow_invocation_actions: MutableSequence["WorkflowInvocationAction"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="WorkflowInvocationAction",

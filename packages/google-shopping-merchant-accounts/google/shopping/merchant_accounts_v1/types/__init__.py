@@ -14,11 +14,7 @@
 # limitations under the License.
 #
 from .accessright import AccessRight
-from .accountissue import (
-    AccountIssue,
-    ListAccountIssuesRequest,
-    ListAccountIssuesResponse,
-)
+from .accountissue import AccountIssue, ListAccountIssuesRequest, ListAccountIssuesResponse
 from .accountrelationships import (
     AccountRelationship,
     GetAccountRelationshipRequest,
@@ -53,11 +49,7 @@ from .accountservices import (
     ProposeAccountServiceRequest,
     RejectAccountServiceRequest,
 )
-from .autofeedsettings import (
-    AutofeedSettings,
-    GetAutofeedSettingsRequest,
-    UpdateAutofeedSettingsRequest,
-)
+from .autofeedsettings import AutofeedSettings, GetAutofeedSettingsRequest, UpdateAutofeedSettingsRequest
 from .automaticimprovements import (
     AutomaticImageImprovements,
     AutomaticImprovements,
@@ -66,16 +58,8 @@ from .automaticimprovements import (
     GetAutomaticImprovementsRequest,
     UpdateAutomaticImprovementsRequest,
 )
-from .businessidentity import (
-    BusinessIdentity,
-    GetBusinessIdentityRequest,
-    UpdateBusinessIdentityRequest,
-)
-from .businessinfo import (
-    BusinessInfo,
-    GetBusinessInfoRequest,
-    UpdateBusinessInfoRequest,
-)
+from .businessidentity import BusinessIdentity, GetBusinessIdentityRequest, UpdateBusinessIdentityRequest
+from .businessinfo import BusinessInfo, GetBusinessInfoRequest, UpdateBusinessInfoRequest
 from .checkoutsettings import (
     CheckoutSettings,
     CreateCheckoutSettingsRequest,
@@ -92,32 +76,10 @@ from .developerregistration import (
     RegisterGcpRequest,
     UnregisterGcpRequest,
 )
-from .emailpreferences import (
-    EmailPreferences,
-    GetEmailPreferencesRequest,
-    UpdateEmailPreferencesRequest,
-)
-from .gbpaccounts import (
-    GbpAccount,
-    LinkGbpAccountRequest,
-    LinkGbpAccountResponse,
-    ListGbpAccountsRequest,
-    ListGbpAccountsResponse,
-)
-from .homepage import (
-    ClaimHomepageRequest,
-    GetHomepageRequest,
-    Homepage,
-    UnclaimHomepageRequest,
-    UpdateHomepageRequest,
-)
-from .lfpproviders import (
-    FindLfpProvidersRequest,
-    FindLfpProvidersResponse,
-    LfpProvider,
-    LinkLfpProviderRequest,
-    LinkLfpProviderResponse,
-)
+from .emailpreferences import EmailPreferences, GetEmailPreferencesRequest, UpdateEmailPreferencesRequest
+from .gbpaccounts import GbpAccount, LinkGbpAccountRequest, LinkGbpAccountResponse, ListGbpAccountsRequest, ListGbpAccountsResponse
+from .homepage import ClaimHomepageRequest, GetHomepageRequest, Homepage, UnclaimHomepageRequest, UpdateHomepageRequest
+from .lfpproviders import FindLfpProvidersRequest, FindLfpProvidersResponse, LfpProvider, LinkLfpProviderRequest, LinkLfpProviderResponse
 from .omnichannelsettings import (
     About,
     CreateOmnichannelSettingRequest,
@@ -144,14 +106,7 @@ from .online_return_policy import (
     OnlineReturnPolicy,
 )
 from .phoneverificationstate import PhoneVerificationState
-from .programs import (
-    DisableProgramRequest,
-    EnableProgramRequest,
-    GetProgramRequest,
-    ListProgramsRequest,
-    ListProgramsResponse,
-    Program,
-)
+from .programs import DisableProgramRequest, EnableProgramRequest, GetProgramRequest, ListProgramsRequest, ListProgramsResponse, Program
 from .regions import (
     BatchCreateRegionsRequest,
     BatchCreateRegionsResponse,

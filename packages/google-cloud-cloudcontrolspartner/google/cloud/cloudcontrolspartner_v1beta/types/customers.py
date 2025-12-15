@@ -21,9 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.cloudcontrolspartner_v1beta.types import (
-    completion_state as gcc_completion_state,
-)
+from google.cloud.cloudcontrolspartner_v1beta.types import completion_state as gcc_completion_state
 
 __protobuf__ = proto.module(
     package="google.cloud.cloudcontrolspartner.v1beta",

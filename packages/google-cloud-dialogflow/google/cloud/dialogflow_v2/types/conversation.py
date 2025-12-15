@@ -21,9 +21,7 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import (
-    conversation_profile as gcd_conversation_profile,
-)
+from google.cloud.dialogflow_v2.types import conversation_profile as gcd_conversation_profile
 from google.cloud.dialogflow_v2.types import generator as gcd_generator
 from google.cloud.dialogflow_v2.types import participant, session
 
@@ -213,16 +211,12 @@ class Conversation(proto.Message):
             proto.STRING,
             number=5,
         )
-        sip_headers: MutableSequence[
-            "Conversation.TelephonyConnectionInfo.SipHeader"
-        ] = proto.RepeatedField(
+        sip_headers: MutableSequence["Conversation.TelephonyConnectionInfo.SipHeader"] = proto.RepeatedField(
             proto.MESSAGE,
             number=12,
             message="Conversation.TelephonyConnectionInfo.SipHeader",
         )
-        extra_mime_contents: MutableSequence[
-            "Conversation.TelephonyConnectionInfo.MimeContent"
-        ] = proto.RepeatedField(
+        extra_mime_contents: MutableSequence["Conversation.TelephonyConnectionInfo.MimeContent"] = proto.RepeatedField(
             proto.MESSAGE,
             number=13,
             message="Conversation.TelephonyConnectionInfo.MimeContent",
@@ -309,9 +303,7 @@ class Conversation(proto.Message):
                 message=timestamp_pb2.Timestamp,
             )
 
-        context_contents: MutableSequence[
-            "Conversation.ContextReference.ContextContent"
-        ] = proto.RepeatedField(
+        context_contents: MutableSequence["Conversation.ContextReference.ContextContent"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Conversation.ContextReference.ContextContent",
@@ -648,9 +640,7 @@ class IngestContextReferencesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
+    context_references: MutableMapping[str, "Conversation.ContextReference"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=2,
@@ -667,9 +657,7 @@ class IngestContextReferencesResponse(proto.Message):
             All context references ingested.
     """
 
-    ingested_context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
+    ingested_context_references: MutableMapping[str, "Conversation.ContextReference"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,
@@ -998,9 +986,7 @@ class GenerateStatelessSuggestionRequest(proto.Message):
         number=3,
         oneof="generator_resource",
     )
-    context_references: MutableMapping[
-        str, "Conversation.ContextReference"
-    ] = proto.MapField(
+    context_references: MutableMapping[str, "Conversation.ContextReference"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,
@@ -1355,9 +1341,7 @@ class SearchKnowledgeRequest(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            spec: MutableSequence[
-                "SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec"
-            ] = proto.RepeatedField(
+            spec: MutableSequence["SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="SearchKnowledgeRequest.SearchConfig.BoostSpecs.BoostSpec",
@@ -1388,16 +1372,12 @@ class SearchKnowledgeRequest(proto.Message):
                 number=2,
             )
 
-        boost_specs: MutableSequence[
-            "SearchKnowledgeRequest.SearchConfig.BoostSpecs"
-        ] = proto.RepeatedField(
+        boost_specs: MutableSequence["SearchKnowledgeRequest.SearchConfig.BoostSpecs"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchKnowledgeRequest.SearchConfig.BoostSpecs",
         )
-        filter_specs: MutableSequence[
-            "SearchKnowledgeRequest.SearchConfig.FilterSpecs"
-        ] = proto.RepeatedField(
+        filter_specs: MutableSequence["SearchKnowledgeRequest.SearchConfig.FilterSpecs"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SearchKnowledgeRequest.SearchConfig.FilterSpecs",

@@ -30,9 +30,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.dialogflow_v2.types import (
-    conversation_model as gcd_conversation_model,
-)
+from google.cloud.dialogflow_v2.types import conversation_model as gcd_conversation_model
 from google.cloud.dialogflow_v2.types import conversation_model
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -156,13 +154,8 @@ class ConversationModelsRestInterceptor:
     """
 
     def pre_create_conversation_model(
-        self,
-        request: gcd_conversation_model.CreateConversationModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_conversation_model.CreateConversationModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_conversation_model.CreateConversationModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_conversation_model.CreateConversationModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_conversation_model
 
         Override in a subclass to manipulate the request or metadata
@@ -170,9 +163,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_conversation_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_conversation_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_conversation_model
 
         DEPRECATED. Please use the `post_create_conversation_model_with_metadata`
@@ -186,9 +177,7 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_create_conversation_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_conversation_model
 
@@ -205,13 +194,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_create_conversation_model_evaluation(
-        self,
-        request: conversation_model.CreateConversationModelEvaluationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.CreateConversationModelEvaluationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.CreateConversationModelEvaluationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.CreateConversationModelEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_conversation_model_evaluation
 
         Override in a subclass to manipulate the request or metadata
@@ -219,9 +203,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_conversation_model_evaluation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_conversation_model_evaluation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_conversation_model_evaluation
 
         DEPRECATED. Please use the `post_create_conversation_model_evaluation_with_metadata`
@@ -235,9 +217,7 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_create_conversation_model_evaluation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_conversation_model_evaluation
 
@@ -254,13 +234,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_delete_conversation_model(
-        self,
-        request: conversation_model.DeleteConversationModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.DeleteConversationModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.DeleteConversationModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.DeleteConversationModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_conversation_model
 
         Override in a subclass to manipulate the request or metadata
@@ -268,9 +243,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_conversation_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_conversation_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_conversation_model
 
         DEPRECATED. Please use the `post_delete_conversation_model_with_metadata`
@@ -284,9 +257,7 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_delete_conversation_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_conversation_model
 
@@ -303,13 +274,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_deploy_conversation_model(
-        self,
-        request: conversation_model.DeployConversationModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.DeployConversationModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.DeployConversationModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.DeployConversationModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_conversation_model
 
         Override in a subclass to manipulate the request or metadata
@@ -317,9 +283,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_conversation_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deploy_conversation_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_conversation_model
 
         DEPRECATED. Please use the `post_deploy_conversation_model_with_metadata`
@@ -333,9 +297,7 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_deploy_conversation_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_conversation_model
 
@@ -352,13 +314,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_get_conversation_model(
-        self,
-        request: conversation_model.GetConversationModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.GetConversationModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.GetConversationModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.GetConversationModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_conversation_model
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +323,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_conversation_model(
-        self, response: conversation_model.ConversationModel
-    ) -> conversation_model.ConversationModel:
+    def post_get_conversation_model(self, response: conversation_model.ConversationModel) -> conversation_model.ConversationModel:
         """Post-rpc interceptor for get_conversation_model
 
         DEPRECATED. Please use the `post_get_conversation_model_with_metadata`
@@ -382,12 +337,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_get_conversation_model_with_metadata(
-        self,
-        response: conversation_model.ConversationModel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.ConversationModel, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: conversation_model.ConversationModel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.ConversationModel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_conversation_model
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -403,13 +354,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_get_conversation_model_evaluation(
-        self,
-        request: conversation_model.GetConversationModelEvaluationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.GetConversationModelEvaluationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.GetConversationModelEvaluationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.GetConversationModelEvaluationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_conversation_model_evaluation
 
         Override in a subclass to manipulate the request or metadata
@@ -433,13 +379,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_get_conversation_model_evaluation_with_metadata(
-        self,
-        response: conversation_model.ConversationModelEvaluation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.ConversationModelEvaluation,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: conversation_model.ConversationModelEvaluation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.ConversationModelEvaluation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_conversation_model_evaluation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -455,13 +396,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_list_conversation_model_evaluations(
-        self,
-        request: conversation_model.ListConversationModelEvaluationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.ListConversationModelEvaluationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.ListConversationModelEvaluationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.ListConversationModelEvaluationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_conversation_model_evaluations
 
         Override in a subclass to manipulate the request or metadata
@@ -485,13 +421,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_list_conversation_model_evaluations_with_metadata(
-        self,
-        response: conversation_model.ListConversationModelEvaluationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.ListConversationModelEvaluationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: conversation_model.ListConversationModelEvaluationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.ListConversationModelEvaluationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_conversation_model_evaluations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -507,13 +438,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_list_conversation_models(
-        self,
-        request: conversation_model.ListConversationModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.ListConversationModelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.ListConversationModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.ListConversationModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_conversation_models
 
         Override in a subclass to manipulate the request or metadata
@@ -537,13 +463,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_list_conversation_models_with_metadata(
-        self,
-        response: conversation_model.ListConversationModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.ListConversationModelsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: conversation_model.ListConversationModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.ListConversationModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_conversation_models
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -559,13 +480,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_undeploy_conversation_model(
-        self,
-        request: conversation_model.UndeployConversationModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation_model.UndeployConversationModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: conversation_model.UndeployConversationModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation_model.UndeployConversationModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_conversation_model
 
         Override in a subclass to manipulate the request or metadata
@@ -573,9 +489,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_undeploy_conversation_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undeploy_conversation_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_conversation_model
 
         DEPRECATED. Please use the `post_undeploy_conversation_model_with_metadata`
@@ -589,9 +503,7 @@ class ConversationModelsRestInterceptor:
         return response
 
     def post_undeploy_conversation_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undeploy_conversation_model
 
@@ -608,12 +520,8 @@ class ConversationModelsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -621,9 +529,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -633,12 +539,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -646,9 +548,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -658,12 +558,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -681,12 +577,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -694,9 +586,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -706,12 +596,8 @@ class ConversationModelsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -719,9 +605,7 @@ class ConversationModelsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -810,9 +694,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -870,30 +752,17 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateConversationModel(
-        _BaseConversationModelsRestTransport._BaseCreateConversationModel,
-        ConversationModelsRestStub,
-    ):
+    class _CreateConversationModel(_BaseConversationModelsRestTransport._BaseCreateConversationModel, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.CreateConversationModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -937,32 +806,18 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_conversation_model(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_conversation_model(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_transcoded_request(http_options, request)
 
-            body = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -985,16 +840,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
 
             # Send the request
-            response = (
-                ConversationModelsRestTransport._CreateConversationModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConversationModelsRestTransport._CreateConversationModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1008,12 +855,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_create_conversation_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_conversation_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_conversation_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1034,25 +877,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _CreateConversationModelEvaluation(
-        _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation,
-        ConversationModelsRestStub,
-    ):
+    class _CreateConversationModelEvaluation(_BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation, ConversationModelsRestStub):
         def __hash__(self):
-            return hash(
-                "ConversationModelsRestTransport.CreateConversationModelEvaluation"
-            )
+            return hash("ConversationModelsRestTransport.CreateConversationModelEvaluation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1097,35 +927,20 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_conversation_model_evaluation(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_conversation_model_evaluation(request, metadata)
             transcoded_request = _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1149,13 +964,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._CreateConversationModelEvaluation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1169,15 +978,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_create_conversation_model_evaluation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_conversation_model_evaluation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_conversation_model_evaluation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1198,23 +1000,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _DeleteConversationModel(
-        _BaseConversationModelsRestTransport._BaseDeleteConversationModel,
-        ConversationModelsRestStub,
-    ):
+    class _DeleteConversationModel(_BaseConversationModelsRestTransport._BaseDeleteConversationModel, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.DeleteConversationModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1257,28 +1048,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_conversation_model(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_conversation_model(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1301,15 +1080,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
 
             # Send the request
-            response = (
-                ConversationModelsRestTransport._DeleteConversationModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConversationModelsRestTransport._DeleteConversationModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1323,12 +1095,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_delete_conversation_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_conversation_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_conversation_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1349,23 +1117,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _DeployConversationModel(
-        _BaseConversationModelsRestTransport._BaseDeployConversationModel,
-        ConversationModelsRestStub,
-    ):
+    class _DeployConversationModel(_BaseConversationModelsRestTransport._BaseDeployConversationModel, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.DeployConversationModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1409,32 +1166,18 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_deploy_conversation_model(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deploy_conversation_model(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_transcoded_request(http_options, request)
 
-            body = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1457,16 +1200,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
 
             # Send the request
-            response = (
-                ConversationModelsRestTransport._DeployConversationModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConversationModelsRestTransport._DeployConversationModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1480,12 +1215,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_deploy_conversation_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_conversation_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_conversation_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1506,23 +1237,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _GetConversationModel(
-        _BaseConversationModelsRestTransport._BaseGetConversationModel,
-        ConversationModelsRestStub,
-    ):
+    class _GetConversationModel(_BaseConversationModelsRestTransport._BaseGetConversationModel, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.GetConversationModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1562,28 +1282,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                     Represents a conversation model.
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseGetConversationModel._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseGetConversationModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_conversation_model(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseGetConversationModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_conversation_model(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseGetConversationModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseGetConversationModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseGetConversationModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1606,15 +1314,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
 
             # Send the request
-            response = (
-                ConversationModelsRestTransport._GetConversationModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConversationModelsRestTransport._GetConversationModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1630,16 +1331,10 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_get_conversation_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_conversation_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_conversation_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversation_model.ConversationModel.to_json(
-                        response
-                    )
+                    response_payload = conversation_model.ConversationModel.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1658,25 +1353,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _GetConversationModelEvaluation(
-        _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation,
-        ConversationModelsRestStub,
-    ):
+    class _GetConversationModelEvaluation(_BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation, ConversationModelsRestStub):
         def __hash__(self):
-            return hash(
-                "ConversationModelsRestTransport.GetConversationModelEvaluation"
-            )
+            return hash("ConversationModelsRestTransport.GetConversationModelEvaluation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1719,28 +1401,18 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_conversation_model_evaluation(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_conversation_model_evaluation(request, metadata)
             transcoded_request = _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1764,12 +1436,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._GetConversationModelEvaluation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1785,19 +1452,10 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_get_conversation_model_evaluation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_conversation_model_evaluation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_conversation_model_evaluation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        conversation_model.ConversationModelEvaluation.to_json(response)
-                    )
+                    response_payload = conversation_model.ConversationModelEvaluation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1816,25 +1474,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _ListConversationModelEvaluations(
-        _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations,
-        ConversationModelsRestStub,
-    ):
+    class _ListConversationModelEvaluations(_BaseConversationModelsRestTransport._BaseListConversationModelEvaluations, ConversationModelsRestStub):
         def __hash__(self):
-            return hash(
-                "ConversationModelsRestTransport.ListConversationModelEvaluations"
-            )
+            return hash("ConversationModelsRestTransport.ListConversationModelEvaluations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1877,31 +1522,18 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_conversation_model_evaluations(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_conversation_model_evaluations(request, metadata)
             transcoded_request = _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1925,12 +1557,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._ListConversationModelEvaluations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1940,27 +1567,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Return the response
             resp = conversation_model.ListConversationModelEvaluationsResponse()
-            pb_resp = conversation_model.ListConversationModelEvaluationsResponse.pb(
-                resp
-            )
+            pb_resp = conversation_model.ListConversationModelEvaluationsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_conversation_model_evaluations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_conversation_model_evaluations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_conversation_model_evaluations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversation_model.ListConversationModelEvaluationsResponse.to_json(
-                        response
-                    )
+                    response_payload = conversation_model.ListConversationModelEvaluationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1979,23 +1595,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _ListConversationModels(
-        _BaseConversationModelsRestTransport._BaseListConversationModels,
-        ConversationModelsRestStub,
-    ):
+    class _ListConversationModels(_BaseConversationModelsRestTransport._BaseListConversationModels, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.ListConversationModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2037,28 +1642,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseListConversationModels._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseListConversationModels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_conversation_models(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseListConversationModels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_conversation_models(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseListConversationModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseListConversationModels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseListConversationModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2081,15 +1674,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
 
             # Send the request
-            response = (
-                ConversationModelsRestTransport._ListConversationModels._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConversationModelsRestTransport._ListConversationModels._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2105,18 +1691,10 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_list_conversation_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_conversation_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_conversation_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        conversation_model.ListConversationModelsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = conversation_model.ListConversationModelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2135,23 +1713,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 )
             return resp
 
-    class _UndeployConversationModel(
-        _BaseConversationModelsRestTransport._BaseUndeployConversationModel,
-        ConversationModelsRestStub,
-    ):
+    class _UndeployConversationModel(_BaseConversationModelsRestTransport._BaseUndeployConversationModel, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.UndeployConversationModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2196,32 +1763,18 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_undeploy_conversation_model(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undeploy_conversation_model(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_transcoded_request(http_options, request)
 
-            body = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2245,13 +1798,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._UndeployConversationModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2265,12 +1812,8 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             resp = self._interceptor.post_undeploy_conversation_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undeploy_conversation_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undeploy_conversation_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2292,12 +1835,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
             return resp
 
     @property
-    def create_conversation_model(
-        self,
-    ) -> Callable[
-        [gcd_conversation_model.CreateConversationModelRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_conversation_model(self) -> Callable[[gcd_conversation_model.CreateConversationModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversationModel(self._session, self._host, self._interceptor)  # type: ignore
@@ -2305,41 +1843,25 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     @property
     def create_conversation_model_evaluation(
         self,
-    ) -> Callable[
-        [conversation_model.CreateConversationModelEvaluationRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[conversation_model.CreateConversationModelEvaluationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversationModelEvaluation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_conversation_model(
-        self,
-    ) -> Callable[
-        [conversation_model.DeleteConversationModelRequest], operations_pb2.Operation
-    ]:
+    def delete_conversation_model(self) -> Callable[[conversation_model.DeleteConversationModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConversationModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_conversation_model(
-        self,
-    ) -> Callable[
-        [conversation_model.DeployConversationModelRequest], operations_pb2.Operation
-    ]:
+    def deploy_conversation_model(self) -> Callable[[conversation_model.DeployConversationModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployConversationModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_conversation_model(
-        self,
-    ) -> Callable[
-        [conversation_model.GetConversationModelRequest],
-        conversation_model.ConversationModel,
-    ]:
+    def get_conversation_model(self) -> Callable[[conversation_model.GetConversationModelRequest], conversation_model.ConversationModel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConversationModel(self._session, self._host, self._interceptor)  # type: ignore
@@ -2347,10 +1869,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     @property
     def get_conversation_model_evaluation(
         self,
-    ) -> Callable[
-        [conversation_model.GetConversationModelEvaluationRequest],
-        conversation_model.ConversationModelEvaluation,
-    ]:
+    ) -> Callable[[conversation_model.GetConversationModelEvaluationRequest], conversation_model.ConversationModelEvaluation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConversationModelEvaluation(self._session, self._host, self._interceptor)  # type: ignore
@@ -2358,10 +1877,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     @property
     def list_conversation_model_evaluations(
         self,
-    ) -> Callable[
-        [conversation_model.ListConversationModelEvaluationsRequest],
-        conversation_model.ListConversationModelEvaluationsResponse,
-    ]:
+    ) -> Callable[[conversation_model.ListConversationModelEvaluationsRequest], conversation_model.ListConversationModelEvaluationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConversationModelEvaluations(self._session, self._host, self._interceptor)  # type: ignore
@@ -2369,20 +1885,13 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     @property
     def list_conversation_models(
         self,
-    ) -> Callable[
-        [conversation_model.ListConversationModelsRequest],
-        conversation_model.ListConversationModelsResponse,
-    ]:
+    ) -> Callable[[conversation_model.ListConversationModelsRequest], conversation_model.ListConversationModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConversationModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undeploy_conversation_model(
-        self,
-    ) -> Callable[
-        [conversation_model.UndeployConversationModelRequest], operations_pb2.Operation
-    ]:
+    def undeploy_conversation_model(self) -> Callable[[conversation_model.UndeployConversationModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeployConversationModel(self._session, self._host, self._interceptor)  # type: ignore
@@ -2391,23 +1900,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseConversationModelsRestTransport._BaseGetLocation,
-        ConversationModelsRestStub,
-    ):
+    class _GetLocation(_BaseConversationModelsRestTransport._BaseGetLocation, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2445,26 +1943,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseConversationModelsRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConversationModelsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2488,12 +1976,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2505,9 +1988,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2532,23 +2013,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseConversationModelsRestTransport._BaseListLocations,
-        ConversationModelsRestStub,
-    ):
+    class _ListLocations(_BaseConversationModelsRestTransport._BaseListLocations, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2586,26 +2056,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseConversationModelsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConversationModelsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2629,12 +2089,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2646,9 +2101,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2673,23 +2126,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseConversationModelsRestTransport._BaseCancelOperation,
-        ConversationModelsRestStub,
-    ):
+    class _CancelOperation(_BaseConversationModelsRestTransport._BaseCancelOperation, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2724,28 +2166,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseConversationModelsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseConversationModelsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2769,12 +2199,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2788,23 +2213,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseConversationModelsRestTransport._BaseGetOperation,
-        ConversationModelsRestStub,
-    ):
+    class _GetOperation(_BaseConversationModelsRestTransport._BaseGetOperation, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2842,26 +2256,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseConversationModelsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConversationModelsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2885,12 +2289,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2902,9 +2301,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2929,23 +2326,12 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseConversationModelsRestTransport._BaseListOperations,
-        ConversationModelsRestStub,
-    ):
+    class _ListOperations(_BaseConversationModelsRestTransport._BaseListOperations, ConversationModelsRestStub):
         def __hash__(self):
             return hash("ConversationModelsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2983,26 +2369,16 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseConversationModelsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseConversationModelsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseConversationModelsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConversationModelsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConversationModelsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConversationModelsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3026,12 +2402,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
 
             # Send the request
             response = ConversationModelsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3043,9 +2414,7 @@ class ConversationModelsRestTransport(_BaseConversationModelsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

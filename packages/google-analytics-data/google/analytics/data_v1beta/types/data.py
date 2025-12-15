@@ -968,9 +968,7 @@ class OrderBy(proto.Message):
             proto.STRING,
             number=1,
         )
-        pivot_selections: MutableSequence[
-            "OrderBy.PivotOrderBy.PivotSelection"
-        ] = proto.RepeatedField(
+        pivot_selections: MutableSequence["OrderBy.PivotOrderBy.PivotSelection"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="OrderBy.PivotOrderBy.PivotSelection",
@@ -1386,17 +1384,13 @@ class ResponseMetaData(proto.Message):
                 number=1,
                 optional=True,
             )
-            restricted_metric_types: MutableSequence[
-                "RestrictedMetricType"
-            ] = proto.RepeatedField(
+            restricted_metric_types: MutableSequence["RestrictedMetricType"] = proto.RepeatedField(
                 proto.ENUM,
                 number=2,
                 enum="RestrictedMetricType",
             )
 
-        active_metric_restrictions: MutableSequence[
-            "ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction"
-        ] = proto.RepeatedField(
+        active_metric_restrictions: MutableSequence["ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ResponseMetaData.SchemaRestrictionResponse.ActiveMetricRestriction",
@@ -1530,9 +1524,7 @@ class PivotHeader(proto.Message):
             ``offset`` and ``limit`` are specified in the request.
     """
 
-    pivot_dimension_headers: MutableSequence[
-        "PivotDimensionHeader"
-    ] = proto.RepeatedField(
+    pivot_dimension_headers: MutableSequence["PivotDimensionHeader"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PivotDimensionHeader",

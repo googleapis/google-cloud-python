@@ -293,9 +293,7 @@ class Message(proto.Message):
         proto.STRING,
         number=43,
     )
-    cards: MutableSequence[
-        contextual_addon.ContextualAddOnMarkup.Card
-    ] = proto.RepeatedField(
+    cards: MutableSequence[contextual_addon.ContextualAddOnMarkup.Card] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=contextual_addon.ContextualAddOnMarkup.Card,
@@ -356,9 +354,7 @@ class Message(proto.Message):
         proto.STRING,
         number=32,
     )
-    emoji_reaction_summaries: MutableSequence[
-        reaction.EmojiReactionSummary
-    ] = proto.RepeatedField(
+    emoji_reaction_summaries: MutableSequence[reaction.EmojiReactionSummary] = proto.RepeatedField(
         proto.MESSAGE,
         number=33,
         message=reaction.EmojiReactionSummary,
@@ -543,9 +539,7 @@ class ActionResponse(proto.Message):
                 An array of the SelectionItem objects.
         """
 
-        items: MutableSequence[
-            gac_card.SelectionInput.SelectionItem
-        ] = proto.RepeatedField(
+        items: MutableSequence[gac_card.SelectionInput.SelectionItem] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=gac_card.SelectionInput.SelectionItem,

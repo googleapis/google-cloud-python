@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +261,14 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +304,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -344,9 +327,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -354,10 +335,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def list_mirroring_endpoint_groups(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringEndpointGroupsRequest],
-        Awaitable[mirroring.ListMirroringEndpointGroupsResponse],
-    ]:
+    ) -> Callable[[mirroring.ListMirroringEndpointGroupsRequest], Awaitable[mirroring.ListMirroringEndpointGroupsResponse]]:
         r"""Return a callable for the list mirroring endpoint groups method over gRPC.
 
         Lists endpoint groups in a given project and
@@ -374,9 +352,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_endpoint_groups" not in self._stubs:
-            self._stubs[
-                "list_mirroring_endpoint_groups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_mirroring_endpoint_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringEndpointGroups",
                 request_serializer=mirroring.ListMirroringEndpointGroupsRequest.serialize,
                 response_deserializer=mirroring.ListMirroringEndpointGroupsResponse.deserialize,
@@ -384,12 +360,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["list_mirroring_endpoint_groups"]
 
     @property
-    def get_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.GetMirroringEndpointGroupRequest],
-        Awaitable[mirroring.MirroringEndpointGroup],
-    ]:
+    def get_mirroring_endpoint_group(self) -> Callable[[mirroring.GetMirroringEndpointGroupRequest], Awaitable[mirroring.MirroringEndpointGroup]]:
         r"""Return a callable for the get mirroring endpoint group method over gRPC.
 
         Gets a specific endpoint group.
@@ -406,9 +377,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "get_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_mirroring_endpoint_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringEndpointGroup",
                 request_serializer=mirroring.GetMirroringEndpointGroupRequest.serialize,
                 response_deserializer=mirroring.MirroringEndpointGroup.deserialize,
@@ -416,12 +385,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["get_mirroring_endpoint_group"]
 
     @property
-    def create_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.CreateMirroringEndpointGroupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_mirroring_endpoint_group(self) -> Callable[[mirroring.CreateMirroringEndpointGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create mirroring endpoint
         group method over gRPC.
 
@@ -439,9 +403,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "create_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_mirroring_endpoint_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringEndpointGroup",
                 request_serializer=mirroring.CreateMirroringEndpointGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -449,12 +411,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["create_mirroring_endpoint_group"]
 
     @property
-    def update_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringEndpointGroupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_mirroring_endpoint_group(self) -> Callable[[mirroring.UpdateMirroringEndpointGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update mirroring endpoint
         group method over gRPC.
 
@@ -472,9 +429,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "update_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_mirroring_endpoint_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringEndpointGroup",
                 request_serializer=mirroring.UpdateMirroringEndpointGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -482,12 +437,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["update_mirroring_endpoint_group"]
 
     @property
-    def delete_mirroring_endpoint_group(
-        self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringEndpointGroupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_mirroring_endpoint_group(self) -> Callable[[mirroring.DeleteMirroringEndpointGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete mirroring endpoint
         group method over gRPC.
 
@@ -505,9 +455,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_endpoint_group" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_endpoint_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_mirroring_endpoint_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringEndpointGroup",
                 request_serializer=mirroring.DeleteMirroringEndpointGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -517,10 +465,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def list_mirroring_endpoint_group_associations(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringEndpointGroupAssociationsRequest],
-        Awaitable[mirroring.ListMirroringEndpointGroupAssociationsResponse],
-    ]:
+    ) -> Callable[[mirroring.ListMirroringEndpointGroupAssociationsRequest], Awaitable[mirroring.ListMirroringEndpointGroupAssociationsResponse]]:
         r"""Return a callable for the list mirroring endpoint group
         associations method over gRPC.
 
@@ -538,9 +483,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_endpoint_group_associations" not in self._stubs:
-            self._stubs[
-                "list_mirroring_endpoint_group_associations"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_mirroring_endpoint_group_associations"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringEndpointGroupAssociations",
                 request_serializer=mirroring.ListMirroringEndpointGroupAssociationsRequest.serialize,
                 response_deserializer=mirroring.ListMirroringEndpointGroupAssociationsResponse.deserialize,
@@ -550,10 +493,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def get_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.GetMirroringEndpointGroupAssociationRequest],
-        Awaitable[mirroring.MirroringEndpointGroupAssociation],
-    ]:
+    ) -> Callable[[mirroring.GetMirroringEndpointGroupAssociationRequest], Awaitable[mirroring.MirroringEndpointGroupAssociation]]:
         r"""Return a callable for the get mirroring endpoint group
         association method over gRPC.
 
@@ -571,9 +511,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "get_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_mirroring_endpoint_group_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringEndpointGroupAssociation",
                 request_serializer=mirroring.GetMirroringEndpointGroupAssociationRequest.serialize,
                 response_deserializer=mirroring.MirroringEndpointGroupAssociation.deserialize,
@@ -583,10 +521,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def create_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.CreateMirroringEndpointGroupAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[mirroring.CreateMirroringEndpointGroupAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create mirroring endpoint
         group association method over gRPC.
 
@@ -604,9 +539,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "create_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_mirroring_endpoint_group_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringEndpointGroupAssociation",
                 request_serializer=mirroring.CreateMirroringEndpointGroupAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -616,10 +549,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def update_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringEndpointGroupAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[mirroring.UpdateMirroringEndpointGroupAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update mirroring endpoint
         group association method over gRPC.
 
@@ -637,9 +567,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "update_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_mirroring_endpoint_group_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringEndpointGroupAssociation",
                 request_serializer=mirroring.UpdateMirroringEndpointGroupAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -649,10 +577,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def delete_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringEndpointGroupAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[mirroring.DeleteMirroringEndpointGroupAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete mirroring endpoint
         group association method over gRPC.
 
@@ -670,9 +595,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_endpoint_group_association" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_endpoint_group_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_mirroring_endpoint_group_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringEndpointGroupAssociation",
                 request_serializer=mirroring.DeleteMirroringEndpointGroupAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -682,10 +605,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def list_mirroring_deployment_groups(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringDeploymentGroupsRequest],
-        Awaitable[mirroring.ListMirroringDeploymentGroupsResponse],
-    ]:
+    ) -> Callable[[mirroring.ListMirroringDeploymentGroupsRequest], Awaitable[mirroring.ListMirroringDeploymentGroupsResponse]]:
         r"""Return a callable for the list mirroring deployment
         groups method over gRPC.
 
@@ -703,9 +623,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_deployment_groups" not in self._stubs:
-            self._stubs[
-                "list_mirroring_deployment_groups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_mirroring_deployment_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringDeploymentGroups",
                 request_serializer=mirroring.ListMirroringDeploymentGroupsRequest.serialize,
                 response_deserializer=mirroring.ListMirroringDeploymentGroupsResponse.deserialize,
@@ -715,10 +633,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def get_mirroring_deployment_group(
         self,
-    ) -> Callable[
-        [mirroring.GetMirroringDeploymentGroupRequest],
-        Awaitable[mirroring.MirroringDeploymentGroup],
-    ]:
+    ) -> Callable[[mirroring.GetMirroringDeploymentGroupRequest], Awaitable[mirroring.MirroringDeploymentGroup]]:
         r"""Return a callable for the get mirroring deployment group method over gRPC.
 
         Gets a specific deployment group.
@@ -735,9 +650,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "get_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_mirroring_deployment_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/GetMirroringDeploymentGroup",
                 request_serializer=mirroring.GetMirroringDeploymentGroupRequest.serialize,
                 response_deserializer=mirroring.MirroringDeploymentGroup.deserialize,
@@ -745,12 +658,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["get_mirroring_deployment_group"]
 
     @property
-    def create_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.CreateMirroringDeploymentGroupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_mirroring_deployment_group(self) -> Callable[[mirroring.CreateMirroringDeploymentGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create mirroring deployment
         group method over gRPC.
 
@@ -768,9 +676,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "create_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_mirroring_deployment_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringDeploymentGroup",
                 request_serializer=mirroring.CreateMirroringDeploymentGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -778,12 +684,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["create_mirroring_deployment_group"]
 
     @property
-    def update_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringDeploymentGroupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_mirroring_deployment_group(self) -> Callable[[mirroring.UpdateMirroringDeploymentGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update mirroring deployment
         group method over gRPC.
 
@@ -801,9 +702,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "update_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_mirroring_deployment_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringDeploymentGroup",
                 request_serializer=mirroring.UpdateMirroringDeploymentGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -811,12 +710,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["update_mirroring_deployment_group"]
 
     @property
-    def delete_mirroring_deployment_group(
-        self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringDeploymentGroupRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_mirroring_deployment_group(self) -> Callable[[mirroring.DeleteMirroringDeploymentGroupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete mirroring deployment
         group method over gRPC.
 
@@ -834,9 +728,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_deployment_group" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_deployment_group"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_mirroring_deployment_group"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringDeploymentGroup",
                 request_serializer=mirroring.DeleteMirroringDeploymentGroupRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -846,10 +738,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def list_mirroring_deployments(
         self,
-    ) -> Callable[
-        [mirroring.ListMirroringDeploymentsRequest],
-        Awaitable[mirroring.ListMirroringDeploymentsResponse],
-    ]:
+    ) -> Callable[[mirroring.ListMirroringDeploymentsRequest], Awaitable[mirroring.ListMirroringDeploymentsResponse]]:
         r"""Return a callable for the list mirroring deployments method over gRPC.
 
         Lists deployments in a given project and location.
@@ -866,9 +755,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_mirroring_deployments" not in self._stubs:
-            self._stubs[
-                "list_mirroring_deployments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_mirroring_deployments"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/ListMirroringDeployments",
                 request_serializer=mirroring.ListMirroringDeploymentsRequest.serialize,
                 response_deserializer=mirroring.ListMirroringDeploymentsResponse.deserialize,
@@ -876,12 +763,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["list_mirroring_deployments"]
 
     @property
-    def get_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.GetMirroringDeploymentRequest],
-        Awaitable[mirroring.MirroringDeployment],
-    ]:
+    def get_mirroring_deployment(self) -> Callable[[mirroring.GetMirroringDeploymentRequest], Awaitable[mirroring.MirroringDeployment]]:
         r"""Return a callable for the get mirroring deployment method over gRPC.
 
         Gets a specific deployment.
@@ -906,12 +788,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["get_mirroring_deployment"]
 
     @property
-    def create_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.CreateMirroringDeploymentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_mirroring_deployment(self) -> Callable[[mirroring.CreateMirroringDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create mirroring deployment method over gRPC.
 
         Creates a deployment in a given project and location.
@@ -928,9 +805,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_mirroring_deployment" not in self._stubs:
-            self._stubs[
-                "create_mirroring_deployment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_mirroring_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/CreateMirroringDeployment",
                 request_serializer=mirroring.CreateMirroringDeploymentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -938,12 +813,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["create_mirroring_deployment"]
 
     @property
-    def update_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringDeploymentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_mirroring_deployment(self) -> Callable[[mirroring.UpdateMirroringDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update mirroring deployment method over gRPC.
 
         Updates a deployment.
@@ -960,9 +830,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_mirroring_deployment" not in self._stubs:
-            self._stubs[
-                "update_mirroring_deployment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_mirroring_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/UpdateMirroringDeployment",
                 request_serializer=mirroring.UpdateMirroringDeploymentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -970,12 +838,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         return self._stubs["update_mirroring_deployment"]
 
     @property
-    def delete_mirroring_deployment(
-        self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringDeploymentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_mirroring_deployment(self) -> Callable[[mirroring.DeleteMirroringDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete mirroring deployment method over gRPC.
 
         Deletes a deployment.
@@ -992,9 +855,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_mirroring_deployment" not in self._stubs:
-            self._stubs[
-                "delete_mirroring_deployment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_mirroring_deployment"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.Mirroring/DeleteMirroringDeployment",
                 request_serializer=mirroring.DeleteMirroringDeploymentRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1217,9 +1078,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1236,9 +1095,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1323,10 +1180,7 @@ class MirroringGrpcAsyncIOTransport(MirroringTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

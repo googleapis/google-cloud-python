@@ -30,10 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.contentwarehouse_v1.types import (
-    synonymset,
-    synonymset_service_request,
-)
+from google.cloud.contentwarehouse_v1.types import synonymset, synonymset_service_request
 
 from .base import DEFAULT_CLIENT_INFO, SynonymSetServiceTransport
 
@@ -49,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -221,18 +209,14 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -266,9 +250,7 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -327,11 +309,7 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.CreateSynonymSetRequest], synonymset.SynonymSet
-    ]:
+    def create_synonym_set(self) -> Callable[[synonymset_service_request.CreateSynonymSetRequest], synonymset.SynonymSet]:
         r"""Return a callable for the create synonym set method over gRPC.
 
         Creates a SynonymSet for a single context. Throws an
@@ -357,11 +335,7 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
         return self._stubs["create_synonym_set"]
 
     @property
-    def get_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.GetSynonymSetRequest], synonymset.SynonymSet
-    ]:
+    def get_synonym_set(self) -> Callable[[synonymset_service_request.GetSynonymSetRequest], synonymset.SynonymSet]:
         r"""Return a callable for the get synonym set method over gRPC.
 
         Gets a SynonymSet for a particular context. Throws a NOT_FOUND
@@ -386,11 +360,7 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
         return self._stubs["get_synonym_set"]
 
     @property
-    def update_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.UpdateSynonymSetRequest], synonymset.SynonymSet
-    ]:
+    def update_synonym_set(self) -> Callable[[synonymset_service_request.UpdateSynonymSetRequest], synonymset.SynonymSet]:
         r"""Return a callable for the update synonym set method over gRPC.
 
         Remove the existing SynonymSet for the context and replaces it
@@ -416,11 +386,7 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
         return self._stubs["update_synonym_set"]
 
     @property
-    def delete_synonym_set(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.DeleteSynonymSetRequest], empty_pb2.Empty
-    ]:
+    def delete_synonym_set(self) -> Callable[[synonymset_service_request.DeleteSynonymSetRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete synonym set method over gRPC.
 
         Deletes a SynonymSet for a given context. Throws a NOT_FOUND
@@ -445,12 +411,7 @@ class SynonymSetServiceGrpcTransport(SynonymSetServiceTransport):
         return self._stubs["delete_synonym_set"]
 
     @property
-    def list_synonym_sets(
-        self,
-    ) -> Callable[
-        [synonymset_service_request.ListSynonymSetsRequest],
-        synonymset_service_request.ListSynonymSetsResponse,
-    ]:
+    def list_synonym_sets(self) -> Callable[[synonymset_service_request.ListSynonymSetsRequest], synonymset_service_request.ListSynonymSetsResponse]:
         r"""Return a callable for the list synonym sets method over gRPC.
 
         Returns all SynonymSets (for all contexts) for the

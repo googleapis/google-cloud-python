@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import CssProductInputsServiceTransport
 from .grpc import CssProductInputsServiceGrpcTransport
 from .grpc_asyncio import CssProductInputsServiceGrpcAsyncIOTransport
-from .rest import (
-    CssProductInputsServiceRestInterceptor,
-    CssProductInputsServiceRestTransport,
-)
+from .rest import CssProductInputsServiceRestInterceptor, CssProductInputsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CssProductInputsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CssProductInputsServiceTransport]]
 _transport_registry["grpc"] = CssProductInputsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CssProductInputsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = CssProductInputsServiceRestTransport

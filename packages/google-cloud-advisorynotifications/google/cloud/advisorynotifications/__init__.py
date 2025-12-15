@@ -18,12 +18,8 @@ from google.cloud.advisorynotifications import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.advisorynotifications_v1.services.advisory_notifications_service.async_client import (
-    AdvisoryNotificationsServiceAsyncClient,
-)
-from google.cloud.advisorynotifications_v1.services.advisory_notifications_service.client import (
-    AdvisoryNotificationsServiceClient,
-)
+from google.cloud.advisorynotifications_v1.services.advisory_notifications_service.async_client import AdvisoryNotificationsServiceAsyncClient
+from google.cloud.advisorynotifications_v1.services.advisory_notifications_service.client import AdvisoryNotificationsServiceClient
 from google.cloud.advisorynotifications_v1.types.service import (
     Attachment,
     Csv,

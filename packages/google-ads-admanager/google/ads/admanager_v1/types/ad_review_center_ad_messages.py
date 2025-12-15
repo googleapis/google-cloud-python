@@ -19,10 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    ad_review_center_ad_enums,
-    exchange_syndication_product_enum,
-)
+from google.ads.admanager_v1.types import ad_review_center_ad_enums, exchange_syndication_product_enum
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",

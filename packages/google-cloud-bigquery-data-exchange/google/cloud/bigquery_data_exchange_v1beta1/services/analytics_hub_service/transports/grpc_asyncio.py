@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -276,18 +265,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -323,9 +308,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -340,12 +323,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._grpc_channel
 
     @property
-    def list_data_exchanges(
-        self,
-    ) -> Callable[
-        [dataexchange.ListDataExchangesRequest],
-        Awaitable[dataexchange.ListDataExchangesResponse],
-    ]:
+    def list_data_exchanges(self) -> Callable[[dataexchange.ListDataExchangesRequest], Awaitable[dataexchange.ListDataExchangesResponse]]:
         r"""Return a callable for the list data exchanges method over gRPC.
 
         Lists all data exchanges in a given project and
@@ -370,12 +348,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["list_data_exchanges"]
 
     @property
-    def list_org_data_exchanges(
-        self,
-    ) -> Callable[
-        [dataexchange.ListOrgDataExchangesRequest],
-        Awaitable[dataexchange.ListOrgDataExchangesResponse],
-    ]:
+    def list_org_data_exchanges(self) -> Callable[[dataexchange.ListOrgDataExchangesRequest], Awaitable[dataexchange.ListOrgDataExchangesResponse]]:
         r"""Return a callable for the list org data exchanges method over gRPC.
 
         Lists all data exchanges from projects in a given
@@ -400,11 +373,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["list_org_data_exchanges"]
 
     @property
-    def get_data_exchange(
-        self,
-    ) -> Callable[
-        [dataexchange.GetDataExchangeRequest], Awaitable[dataexchange.DataExchange]
-    ]:
+    def get_data_exchange(self) -> Callable[[dataexchange.GetDataExchangeRequest], Awaitable[dataexchange.DataExchange]]:
         r"""Return a callable for the get data exchange method over gRPC.
 
         Gets the details of a data exchange.
@@ -428,11 +397,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["get_data_exchange"]
 
     @property
-    def create_data_exchange(
-        self,
-    ) -> Callable[
-        [dataexchange.CreateDataExchangeRequest], Awaitable[dataexchange.DataExchange]
-    ]:
+    def create_data_exchange(self) -> Callable[[dataexchange.CreateDataExchangeRequest], Awaitable[dataexchange.DataExchange]]:
         r"""Return a callable for the create data exchange method over gRPC.
 
         Creates a new data exchange.
@@ -456,11 +421,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["create_data_exchange"]
 
     @property
-    def update_data_exchange(
-        self,
-    ) -> Callable[
-        [dataexchange.UpdateDataExchangeRequest], Awaitable[dataexchange.DataExchange]
-    ]:
+    def update_data_exchange(self) -> Callable[[dataexchange.UpdateDataExchangeRequest], Awaitable[dataexchange.DataExchange]]:
         r"""Return a callable for the update data exchange method over gRPC.
 
         Updates an existing data exchange.
@@ -484,9 +445,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["update_data_exchange"]
 
     @property
-    def delete_data_exchange(
-        self,
-    ) -> Callable[[dataexchange.DeleteDataExchangeRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_data_exchange(self) -> Callable[[dataexchange.DeleteDataExchangeRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete data exchange method over gRPC.
 
         Deletes an existing data exchange.
@@ -510,11 +469,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["delete_data_exchange"]
 
     @property
-    def list_listings(
-        self,
-    ) -> Callable[
-        [dataexchange.ListListingsRequest], Awaitable[dataexchange.ListListingsResponse]
-    ]:
+    def list_listings(self) -> Callable[[dataexchange.ListListingsRequest], Awaitable[dataexchange.ListListingsResponse]]:
         r"""Return a callable for the list listings method over gRPC.
 
         Lists all listings in a given project and location.
@@ -538,9 +493,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["list_listings"]
 
     @property
-    def get_listing(
-        self,
-    ) -> Callable[[dataexchange.GetListingRequest], Awaitable[dataexchange.Listing]]:
+    def get_listing(self) -> Callable[[dataexchange.GetListingRequest], Awaitable[dataexchange.Listing]]:
         r"""Return a callable for the get listing method over gRPC.
 
         Gets the details of a listing.
@@ -564,9 +517,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["get_listing"]
 
     @property
-    def create_listing(
-        self,
-    ) -> Callable[[dataexchange.CreateListingRequest], Awaitable[dataexchange.Listing]]:
+    def create_listing(self) -> Callable[[dataexchange.CreateListingRequest], Awaitable[dataexchange.Listing]]:
         r"""Return a callable for the create listing method over gRPC.
 
         Creates a new listing.
@@ -590,9 +541,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["create_listing"]
 
     @property
-    def update_listing(
-        self,
-    ) -> Callable[[dataexchange.UpdateListingRequest], Awaitable[dataexchange.Listing]]:
+    def update_listing(self) -> Callable[[dataexchange.UpdateListingRequest], Awaitable[dataexchange.Listing]]:
         r"""Return a callable for the update listing method over gRPC.
 
         Updates an existing listing.
@@ -616,9 +565,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["update_listing"]
 
     @property
-    def delete_listing(
-        self,
-    ) -> Callable[[dataexchange.DeleteListingRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_listing(self) -> Callable[[dataexchange.DeleteListingRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete listing method over gRPC.
 
         Deletes a listing.
@@ -642,12 +589,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["delete_listing"]
 
     @property
-    def subscribe_listing(
-        self,
-    ) -> Callable[
-        [dataexchange.SubscribeListingRequest],
-        Awaitable[dataexchange.SubscribeListingResponse],
-    ]:
+    def subscribe_listing(self) -> Callable[[dataexchange.SubscribeListingRequest], Awaitable[dataexchange.SubscribeListingResponse]]:
         r"""Return a callable for the subscribe listing method over gRPC.
 
         Subscribes to a listing.
@@ -677,9 +619,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["subscribe_listing"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy.
@@ -703,9 +643,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM policy.
@@ -729,12 +667,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns the permissions that a caller has.
@@ -862,9 +795,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -25,22 +25,8 @@ from .discuss_service import (
 )
 from .model import Model
 from .model_service import GetModelRequest, ListModelsRequest, ListModelsResponse
-from .safety import (
-    ContentFilter,
-    HarmCategory,
-    SafetyFeedback,
-    SafetyRating,
-    SafetySetting,
-)
-from .text_service import (
-    Embedding,
-    EmbedTextRequest,
-    EmbedTextResponse,
-    GenerateTextRequest,
-    GenerateTextResponse,
-    TextCompletion,
-    TextPrompt,
-)
+from .safety import ContentFilter, HarmCategory, SafetyFeedback, SafetyRating, SafetySetting
+from .text_service import Embedding, EmbedTextRequest, EmbedTextResponse, GenerateTextRequest, GenerateTextResponse, TextCompletion, TextPrompt
 
 __all__ = (
     "CitationMetadata",

@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import EnterpriseKnowledgeGraphServiceTransport
 from .grpc import EnterpriseKnowledgeGraphServiceGrpcTransport
 from .grpc_asyncio import EnterpriseKnowledgeGraphServiceGrpcAsyncIOTransport
-from .rest import (
-    EnterpriseKnowledgeGraphServiceRestInterceptor,
-    EnterpriseKnowledgeGraphServiceRestTransport,
-)
+from .rest import EnterpriseKnowledgeGraphServiceRestInterceptor, EnterpriseKnowledgeGraphServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[EnterpriseKnowledgeGraphServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[EnterpriseKnowledgeGraphServiceTransport]]
 _transport_registry["grpc"] = EnterpriseKnowledgeGraphServiceGrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = EnterpriseKnowledgeGraphServiceGrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = EnterpriseKnowledgeGraphServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = EnterpriseKnowledgeGraphServiceRestTransport
 
 __all__ = (

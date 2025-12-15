@@ -29,9 +29,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.services import global_operations
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class UrlMapsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -202,94 +192,47 @@ class UrlMapsTransport(abc.ABC):
     @property
     def aggregated_list(
         self,
-    ) -> Callable[
-        [compute.AggregatedListUrlMapsRequest],
-        Union[compute.UrlMapsAggregatedList, Awaitable[compute.UrlMapsAggregatedList]],
-    ]:
+    ) -> Callable[[compute.AggregatedListUrlMapsRequest], Union[compute.UrlMapsAggregatedList, Awaitable[compute.UrlMapsAggregatedList]]]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteUrlMapRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteUrlMapRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetUrlMapRequest], Union[compute.UrlMap, Awaitable[compute.UrlMap]]
-    ]:
+    def get(self) -> Callable[[compute.GetUrlMapRequest], Union[compute.UrlMap, Awaitable[compute.UrlMap]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertUrlMapRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertUrlMapRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def invalidate_cache(
-        self,
-    ) -> Callable[
-        [compute.InvalidateCacheUrlMapRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def invalidate_cache(self) -> Callable[[compute.InvalidateCacheUrlMapRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListUrlMapsRequest],
-        Union[compute.UrlMapList, Awaitable[compute.UrlMapList]],
-    ]:
+    def list(self) -> Callable[[compute.ListUrlMapsRequest], Union[compute.UrlMapList, Awaitable[compute.UrlMapList]]]:
         raise NotImplementedError()
 
     @property
-    def patch(
-        self,
-    ) -> Callable[
-        [compute.PatchUrlMapRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch(self) -> Callable[[compute.PatchUrlMapRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [compute.TestIamPermissionsUrlMapRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
-    ]:
+    ) -> Callable[[compute.TestIamPermissionsUrlMapRequest], Union[compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateUrlMapRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateUrlMapRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def validate(
         self,
-    ) -> Callable[
-        [compute.ValidateUrlMapRequest],
-        Union[
-            compute.UrlMapsValidateResponse, Awaitable[compute.UrlMapsValidateResponse]
-        ],
-    ]:
+    ) -> Callable[[compute.ValidateUrlMapRequest], Union[compute.UrlMapsValidateResponse, Awaitable[compute.UrlMapsValidateResponse]]]:
         raise NotImplementedError()
 
     @property

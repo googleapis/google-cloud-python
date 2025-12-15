@@ -395,16 +395,12 @@ class FrameworkAudit(proto.Message):
         number=9,
         message="ReportSummary",
     )
-    cloud_control_group_audit_details: MutableSequence[
-        "CloudControlGroupAuditDetails"
-    ] = proto.RepeatedField(
+    cloud_control_group_audit_details: MutableSequence["CloudControlGroupAuditDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="CloudControlGroupAuditDetails",
     )
-    cloud_control_audit_details: MutableSequence[
-        "CloudControlAuditDetails"
-    ] = proto.RepeatedField(
+    cloud_control_audit_details: MutableSequence["CloudControlAuditDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message="CloudControlAuditDetails",
@@ -605,9 +601,7 @@ class CloudControlGroupAuditDetails(proto.Message):
         number=11,
         message=common.ControlFamily,
     )
-    cloud_control_details: MutableSequence[
-        "CloudControlAuditDetails"
-    ] = proto.RepeatedField(
+    cloud_control_details: MutableSequence["CloudControlAuditDetails"] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message="CloudControlAuditDetails",

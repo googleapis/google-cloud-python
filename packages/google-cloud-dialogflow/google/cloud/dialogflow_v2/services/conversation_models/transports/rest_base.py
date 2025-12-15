@@ -22,9 +22,7 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.dialogflow_v2.types import (
-    conversation_model as gcd_conversation_model,
-)
+from google.cloud.dialogflow_v2.types import conversation_model as gcd_conversation_model
 from google.cloud.dialogflow_v2.types import conversation_model
 
 from .base import DEFAULT_CLIENT_INFO, ConversationModelsTransport
@@ -76,20 +74,14 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateConversationModel:
@@ -100,11 +92,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -124,9 +112,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = gcd_conversation_model.CreateConversationModelRequest.pb(
-                request
-            )
+            pb_request = gcd_conversation_model.CreateConversationModelRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -134,9 +120,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -147,11 +131,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseCreateConversationModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseCreateConversationModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -164,11 +144,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -183,9 +159,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversation_model.CreateConversationModelEvaluationRequest.pb(
-                request
-            )
+            pb_request = conversation_model.CreateConversationModelEvaluationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -193,9 +167,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -206,11 +178,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseCreateConversationModelEvaluation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -223,11 +191,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -257,11 +221,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseDeleteConversationModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -274,11 +234,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -306,9 +262,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -319,11 +273,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseDeployConversationModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseDeployConversationModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -336,11 +286,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -370,11 +316,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseGetConversationModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseGetConversationModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -387,11 +329,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -409,9 +347,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversation_model.GetConversationModelEvaluationRequest.pb(
-                request
-            )
+            pb_request = conversation_model.GetConversationModelEvaluationRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -423,11 +359,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseGetConversationModelEvaluation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -440,11 +372,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -462,9 +390,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = conversation_model.ListConversationModelEvaluationsRequest.pb(
-                request
-            )
+            pb_request = conversation_model.ListConversationModelEvaluationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -476,11 +402,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseListConversationModelEvaluations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -493,11 +415,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -527,11 +445,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseListConversationModels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseListConversationModels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -544,11 +458,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -576,9 +486,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -589,11 +497,7 @@ class _BaseConversationModelsRestTransport(ConversationModelsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseConversationModelsRestTransport._BaseUndeployConversationModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

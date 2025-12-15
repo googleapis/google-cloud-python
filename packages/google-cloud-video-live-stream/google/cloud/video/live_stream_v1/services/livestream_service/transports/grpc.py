@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -225,18 +216,14 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -270,9 +257,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -339,17 +324,13 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_channel_(
-        self,
-    ) -> Callable[[service.CreateChannelRequest], operations_pb2.Operation]:
+    def create_channel_(self) -> Callable[[service.CreateChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the create channel method over gRPC.
 
         Creates a channel with the provided unique ID in the
@@ -374,9 +355,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["create_channel_"]
 
     @property
-    def list_channels(
-        self,
-    ) -> Callable[[service.ListChannelsRequest], service.ListChannelsResponse]:
+    def list_channels(self) -> Callable[[service.ListChannelsRequest], service.ListChannelsResponse]:
         r"""Return a callable for the list channels method over gRPC.
 
         Returns a list of all channels in the specified
@@ -425,9 +404,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["get_channel"]
 
     @property
-    def delete_channel(
-        self,
-    ) -> Callable[[service.DeleteChannelRequest], operations_pb2.Operation]:
+    def delete_channel(self) -> Callable[[service.DeleteChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete channel method over gRPC.
 
         Deletes the specified channel.
@@ -451,9 +428,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["delete_channel"]
 
     @property
-    def update_channel(
-        self,
-    ) -> Callable[[service.UpdateChannelRequest], operations_pb2.Operation]:
+    def update_channel(self) -> Callable[[service.UpdateChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the update channel method over gRPC.
 
         Updates the specified channel.
@@ -477,9 +452,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["update_channel"]
 
     @property
-    def start_channel(
-        self,
-    ) -> Callable[[service.StartChannelRequest], operations_pb2.Operation]:
+    def start_channel(self) -> Callable[[service.StartChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the start channel method over gRPC.
 
         Starts the specified channel. Part of the video
@@ -505,9 +478,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["start_channel"]
 
     @property
-    def stop_channel(
-        self,
-    ) -> Callable[[service.StopChannelRequest], operations_pb2.Operation]:
+    def stop_channel(self) -> Callable[[service.StopChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the stop channel method over gRPC.
 
         Stops the specified channel. Part of the video
@@ -533,9 +504,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["stop_channel"]
 
     @property
-    def start_distribution(
-        self,
-    ) -> Callable[[service.StartDistributionRequest], operations_pb2.Operation]:
+    def start_distribution(self) -> Callable[[service.StartDistributionRequest], operations_pb2.Operation]:
         r"""Return a callable for the start distribution method over gRPC.
 
         Starts distribution which delivers outputs to the
@@ -560,9 +529,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["start_distribution"]
 
     @property
-    def stop_distribution(
-        self,
-    ) -> Callable[[service.StopDistributionRequest], operations_pb2.Operation]:
+    def stop_distribution(self) -> Callable[[service.StopDistributionRequest], operations_pb2.Operation]:
         r"""Return a callable for the stop distribution method over gRPC.
 
         Stops the specified distribution.
@@ -586,9 +553,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["stop_distribution"]
 
     @property
-    def create_input(
-        self,
-    ) -> Callable[[service.CreateInputRequest], operations_pb2.Operation]:
+    def create_input(self) -> Callable[[service.CreateInputRequest], operations_pb2.Operation]:
         r"""Return a callable for the create input method over gRPC.
 
         Creates an input with the provided unique ID in the
@@ -613,9 +578,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["create_input"]
 
     @property
-    def list_inputs(
-        self,
-    ) -> Callable[[service.ListInputsRequest], service.ListInputsResponse]:
+    def list_inputs(self) -> Callable[[service.ListInputsRequest], service.ListInputsResponse]:
         r"""Return a callable for the list inputs method over gRPC.
 
         Returns a list of all inputs in the specified region.
@@ -663,9 +626,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["get_input"]
 
     @property
-    def delete_input(
-        self,
-    ) -> Callable[[service.DeleteInputRequest], operations_pb2.Operation]:
+    def delete_input(self) -> Callable[[service.DeleteInputRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete input method over gRPC.
 
         Deletes the specified input.
@@ -689,9 +650,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["delete_input"]
 
     @property
-    def update_input(
-        self,
-    ) -> Callable[[service.UpdateInputRequest], operations_pb2.Operation]:
+    def update_input(self) -> Callable[[service.UpdateInputRequest], operations_pb2.Operation]:
         r"""Return a callable for the update input method over gRPC.
 
         Updates the specified input.
@@ -715,9 +674,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["update_input"]
 
     @property
-    def preview_input(
-        self,
-    ) -> Callable[[service.PreviewInputRequest], service.PreviewInputResponse]:
+    def preview_input(self) -> Callable[[service.PreviewInputRequest], service.PreviewInputResponse]:
         r"""Return a callable for the preview input method over gRPC.
 
         Preview the streaming content of the specified input.
@@ -766,9 +723,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["create_event"]
 
     @property
-    def list_events(
-        self,
-    ) -> Callable[[service.ListEventsRequest], service.ListEventsResponse]:
+    def list_events(self) -> Callable[[service.ListEventsRequest], service.ListEventsResponse]:
         r"""Return a callable for the list events method over gRPC.
 
         Returns a list of all events in the specified
@@ -841,9 +796,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["delete_event"]
 
     @property
-    def list_clips(
-        self,
-    ) -> Callable[[service.ListClipsRequest], service.ListClipsResponse]:
+    def list_clips(self) -> Callable[[service.ListClipsRequest], service.ListClipsResponse]:
         r"""Return a callable for the list clips method over gRPC.
 
         Returns a list of all clips in the specified channel.
@@ -891,9 +844,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["get_clip"]
 
     @property
-    def create_clip(
-        self,
-    ) -> Callable[[service.CreateClipRequest], operations_pb2.Operation]:
+    def create_clip(self) -> Callable[[service.CreateClipRequest], operations_pb2.Operation]:
         r"""Return a callable for the create clip method over gRPC.
 
         Creates a clip with the provided clip ID in the
@@ -918,9 +869,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["create_clip"]
 
     @property
-    def delete_clip(
-        self,
-    ) -> Callable[[service.DeleteClipRequest], operations_pb2.Operation]:
+    def delete_clip(self) -> Callable[[service.DeleteClipRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete clip method over gRPC.
 
         Deletes the specified clip job resource. This method
@@ -946,9 +895,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["delete_clip"]
 
     @property
-    def create_dvr_session(
-        self,
-    ) -> Callable[[service.CreateDvrSessionRequest], operations_pb2.Operation]:
+    def create_dvr_session(self) -> Callable[[service.CreateDvrSessionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create dvr session method over gRPC.
 
         Creates a DVR session with the provided unique ID in
@@ -973,9 +920,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["create_dvr_session"]
 
     @property
-    def list_dvr_sessions(
-        self,
-    ) -> Callable[[service.ListDvrSessionsRequest], service.ListDvrSessionsResponse]:
+    def list_dvr_sessions(self) -> Callable[[service.ListDvrSessionsRequest], service.ListDvrSessionsResponse]:
         r"""Return a callable for the list dvr sessions method over gRPC.
 
         Returns a list of all DVR sessions in the specified
@@ -1000,9 +945,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["list_dvr_sessions"]
 
     @property
-    def get_dvr_session(
-        self,
-    ) -> Callable[[service.GetDvrSessionRequest], resources.DvrSession]:
+    def get_dvr_session(self) -> Callable[[service.GetDvrSessionRequest], resources.DvrSession]:
         r"""Return a callable for the get dvr session method over gRPC.
 
         Returns the specified DVR session.
@@ -1026,9 +969,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["get_dvr_session"]
 
     @property
-    def delete_dvr_session(
-        self,
-    ) -> Callable[[service.DeleteDvrSessionRequest], operations_pb2.Operation]:
+    def delete_dvr_session(self) -> Callable[[service.DeleteDvrSessionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete dvr session method over gRPC.
 
         Deletes the specified DVR session.
@@ -1052,9 +993,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["delete_dvr_session"]
 
     @property
-    def update_dvr_session(
-        self,
-    ) -> Callable[[service.UpdateDvrSessionRequest], operations_pb2.Operation]:
+    def update_dvr_session(self) -> Callable[[service.UpdateDvrSessionRequest], operations_pb2.Operation]:
         r"""Return a callable for the update dvr session method over gRPC.
 
         Updates the specified DVR session.
@@ -1078,9 +1017,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["update_dvr_session"]
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
+    def create_asset(self) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create asset method over gRPC.
 
         Creates a Asset with the provided unique ID in the
@@ -1105,9 +1042,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["create_asset"]
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
+    def delete_asset(self) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete asset method over gRPC.
 
         Deletes the specified asset if it is not used.
@@ -1155,9 +1090,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["get_asset"]
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
+    def list_assets(self) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
         r"""Return a callable for the list assets method over gRPC.
 
         Returns a list of all assets in the specified region.
@@ -1205,9 +1138,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
         return self._stubs["get_pool"]
 
     @property
-    def update_pool(
-        self,
-    ) -> Callable[[service.UpdatePoolRequest], operations_pb2.Operation]:
+    def update_pool(self) -> Callable[[service.UpdatePoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the update pool method over gRPC.
 
         Updates the specified pool.
@@ -1287,9 +1218,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1306,9 +1235,7 @@ class LivestreamServiceGrpcTransport(LivestreamServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

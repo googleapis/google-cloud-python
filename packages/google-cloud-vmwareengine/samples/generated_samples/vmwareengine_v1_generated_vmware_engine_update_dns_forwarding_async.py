@@ -41,10 +41,7 @@ async def sample_update_dns_forwarding():
     # Initialize request argument(s)
     dns_forwarding = vmwareengine_v1.DnsForwarding()
     dns_forwarding.forwarding_rules.domain = "domain_value"
-    dns_forwarding.forwarding_rules.name_servers = [
-        "name_servers_value1",
-        "name_servers_value2",
-    ]
+    dns_forwarding.forwarding_rules.name_servers = ["name_servers_value1", "name_servers_value2"]
 
     request = vmwareengine_v1.UpdateDnsForwardingRequest(
         dns_forwarding=dns_forwarding,

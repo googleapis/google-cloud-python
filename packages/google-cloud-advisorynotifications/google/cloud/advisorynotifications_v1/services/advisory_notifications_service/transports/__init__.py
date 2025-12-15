@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import AdvisoryNotificationsServiceTransport
 from .grpc import AdvisoryNotificationsServiceGrpcTransport
 from .grpc_asyncio import AdvisoryNotificationsServiceGrpcAsyncIOTransport
-from .rest import (
-    AdvisoryNotificationsServiceRestInterceptor,
-    AdvisoryNotificationsServiceRestTransport,
-)
+from .rest import AdvisoryNotificationsServiceRestInterceptor, AdvisoryNotificationsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AdvisoryNotificationsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AdvisoryNotificationsServiceTransport]]
 _transport_registry["grpc"] = AdvisoryNotificationsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = AdvisoryNotificationsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = AdvisoryNotificationsServiceRestTransport

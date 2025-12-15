@@ -13,24 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .config_common import (
-    OSPolicyComplianceState,
-    OSPolicyResourceCompliance,
-    OSPolicyResourceConfigStep,
-)
+from .config_common import OSPolicyComplianceState, OSPolicyResourceCompliance, OSPolicyResourceConfigStep
 from .instance_os_policies_compliance import (
     GetInstanceOSPoliciesComplianceRequest,
     InstanceOSPoliciesCompliance,
     ListInstanceOSPoliciesCompliancesRequest,
     ListInstanceOSPoliciesCompliancesResponse,
 )
-from .inventory import (
-    GetInventoryRequest,
-    Inventory,
-    InventoryView,
-    ListInventoriesRequest,
-    ListInventoriesResponse,
-)
+from .inventory import GetInventoryRequest, Inventory, InventoryView, ListInventoriesRequest, ListInventoriesResponse
 from .os_policy import OSPolicy
 from .os_policy_assignment_reports import (
     GetOSPolicyAssignmentReportRequest,

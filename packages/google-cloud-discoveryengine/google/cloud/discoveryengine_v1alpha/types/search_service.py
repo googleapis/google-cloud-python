@@ -853,9 +853,7 @@ class SearchRequest(proto.Message):
                     number=3,
                     enum="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
                 )
-                control_points: MutableSequence[
-                    "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
-                ] = proto.RepeatedField(
+                control_points: MutableSequence["SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=4,
                     message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
@@ -875,9 +873,7 @@ class SearchRequest(proto.Message):
                 message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec",
             )
 
-        condition_boost_specs: MutableSequence[
-            "SearchRequest.BoostSpec.ConditionBoostSpec"
-        ] = proto.RepeatedField(
+        condition_boost_specs: MutableSequence["SearchRequest.BoostSpec.ConditionBoostSpec"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.BoostSpec.ConditionBoostSpec",
@@ -1207,12 +1203,10 @@ class SearchRequest(proto.Message):
                 proto.STRING,
                 number=6,
             )
-            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=7,
-                    message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
-                )
+            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
             )
             use_semantic_chunks: bool = proto.Field(
                 proto.BOOL,
@@ -1339,12 +1333,10 @@ class SearchRequest(proto.Message):
             number=3,
             message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
         )
-        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="SearchRequest.ContentSearchSpec.SearchResultMode",
-            )
+        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="SearchRequest.ContentSearchSpec.SearchResultMode",
         )
         chunk_spec: "SearchRequest.ContentSearchSpec.ChunkSpec" = proto.Field(
             proto.MESSAGE,
@@ -1381,9 +1373,7 @@ class SearchRequest(proto.Message):
                 number=2,
             )
 
-        embedding_vectors: MutableSequence[
-            "SearchRequest.EmbeddingSpec.EmbeddingVector"
-        ] = proto.RepeatedField(
+        embedding_vectors: MutableSequence["SearchRequest.EmbeddingSpec.EmbeddingVector"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.EmbeddingSpec.EmbeddingVector",
@@ -1428,9 +1418,7 @@ class SearchRequest(proto.Message):
             number=1,
             enum="SearchRequest.NaturalLanguageQueryUnderstandingSpec.FilterExtractionCondition",
         )
-        geo_search_query_detection_field_names: MutableSequence[
-            str
-        ] = proto.RepeatedField(
+        geo_search_query_detection_field_names: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=2,
         )
@@ -1644,12 +1632,10 @@ class SearchRequest(proto.Message):
         proto.STRING,
         number=22,
     )
-    natural_language_query_understanding_spec: NaturalLanguageQueryUnderstandingSpec = (
-        proto.Field(
-            proto.MESSAGE,
-            number=28,
-            message=NaturalLanguageQueryUnderstandingSpec,
-        )
+    natural_language_query_understanding_spec: NaturalLanguageQueryUnderstandingSpec = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=NaturalLanguageQueryUnderstandingSpec,
     )
     search_as_you_type_spec: SearchAsYouTypeSpec = proto.Field(
         proto.MESSAGE,
@@ -1870,9 +1856,7 @@ class SearchResponse(proto.Message):
                 proto.FLOAT,
                 number=32,
             )
-            custom_signals: MutableSequence[
-                "SearchResponse.SearchResult.RankSignals.CustomSignal"
-            ] = proto.RepeatedField(
+            custom_signals: MutableSequence["SearchResponse.SearchResult.RankSignals.CustomSignal"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=33,
                 message="SearchResponse.SearchResult.RankSignals.CustomSignal",
@@ -1964,9 +1948,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SearchResponse.Facet.FacetValue",
@@ -2009,9 +1991,7 @@ class SearchResponse(proto.Message):
                 number=2,
             )
 
-        refinement_attributes: MutableSequence[
-            "SearchResponse.GuidedSearchResult.RefinementAttribute"
-        ] = proto.RepeatedField(
+        refinement_attributes: MutableSequence["SearchResponse.GuidedSearchResult.RefinementAttribute"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchResponse.GuidedSearchResult.RefinementAttribute",
@@ -2145,9 +2125,7 @@ class SearchResponse(proto.Message):
                     Citations for segments.
             """
 
-            citations: MutableSequence[
-                "SearchResponse.Summary.Citation"
-            ] = proto.RepeatedField(
+            citations: MutableSequence["SearchResponse.Summary.Citation"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="SearchResponse.Summary.Citation",
@@ -2174,9 +2152,7 @@ class SearchResponse(proto.Message):
                 proto.INT64,
                 number=2,
             )
-            sources: MutableSequence[
-                "SearchResponse.Summary.CitationSource"
-            ] = proto.RepeatedField(
+            sources: MutableSequence["SearchResponse.Summary.CitationSource"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="SearchResponse.Summary.CitationSource",
@@ -2248,9 +2224,7 @@ class SearchResponse(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            chunk_contents: MutableSequence[
-                "SearchResponse.Summary.Reference.ChunkContent"
-            ] = proto.RepeatedField(
+            chunk_contents: MutableSequence["SearchResponse.Summary.Reference.ChunkContent"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="SearchResponse.Summary.Reference.ChunkContent",
@@ -2277,9 +2251,7 @@ class SearchResponse(proto.Message):
                 number=2,
                 message="SearchResponse.Summary.CitationMetadata",
             )
-            references: MutableSequence[
-                "SearchResponse.Summary.Reference"
-            ] = proto.RepeatedField(
+            references: MutableSequence["SearchResponse.Summary.Reference"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="SearchResponse.Summary.Reference",
@@ -2289,9 +2261,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        summary_skipped_reasons: MutableSequence[
-            "SearchResponse.Summary.SummarySkippedReason"
-        ] = proto.RepeatedField(
+        summary_skipped_reasons: MutableSequence["SearchResponse.Summary.SummarySkippedReason"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="SearchResponse.Summary.SummarySkippedReason",
@@ -2301,12 +2271,10 @@ class SearchResponse(proto.Message):
             number=3,
             message="SearchResponse.Summary.SafetyAttributes",
         )
-        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="SearchResponse.Summary.SummaryWithMetadata",
-            )
+        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="SearchResponse.Summary.SummaryWithMetadata",
         )
 
     class GeoSearchDebugInfo(proto.Message):
@@ -2462,10 +2430,12 @@ class SearchResponse(proto.Message):
                     proto.STRING,
                     number=1,
                 )
-                comparison: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison" = proto.Field(
-                    proto.ENUM,
-                    number=2,
-                    enum="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison",
+                comparison: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison" = (
+                    proto.Field(
+                        proto.ENUM,
+                        number=2,
+                        enum="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint.Comparison",
+                    )
                 )
                 value: float = proto.Field(
                     proto.DOUBLE,
@@ -2602,11 +2572,13 @@ class SearchResponse(proto.Message):
                     oneof="expr",
                     message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.NumberConstraint",
                 )
-                geolocation_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint" = proto.Field(
-                    proto.MESSAGE,
-                    number=3,
-                    oneof="expr",
-                    message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint",
+                geolocation_constraint: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint" = (
+                    proto.Field(
+                        proto.MESSAGE,
+                        number=3,
+                        oneof="expr",
+                        message="SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.GeolocationConstraint",
+                    )
                 )
                 and_expr: "SearchResponse.NaturalLanguageQueryUnderstandingInfo.StructuredExtractedFilter.AndExpression" = proto.Field(
                     proto.MESSAGE,
@@ -2704,9 +2676,7 @@ class SearchResponse(proto.Message):
             number=1,
             enum="SearchResponse.OneBoxResult.OneBoxType",
         )
-        search_results: MutableSequence[
-            "SearchResponse.SearchResult"
-        ] = proto.RepeatedField(
+        search_results: MutableSequence["SearchResponse.SearchResult"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SearchResponse.SearchResult",
@@ -2770,12 +2740,10 @@ class SearchResponse(proto.Message):
         number=14,
         message=QueryExpansionInfo,
     )
-    natural_language_query_understanding_info: NaturalLanguageQueryUnderstandingInfo = (
-        proto.Field(
-            proto.MESSAGE,
-            number=15,
-            message=NaturalLanguageQueryUnderstandingInfo,
-        )
+    natural_language_query_understanding_info: NaturalLanguageQueryUnderstandingInfo = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=NaturalLanguageQueryUnderstandingInfo,
     )
     session_info: SessionInfo = proto.Field(
         proto.MESSAGE,

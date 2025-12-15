@@ -163,13 +163,11 @@ class RequestStatusPerDestination(proto.Message):
                 This field is a member of `oneof`_ ``status``.
         """
 
-        user_data_removal_status: "RequestStatusPerDestination.RemoveUserDataStatus" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="status",
-                message="RequestStatusPerDestination.RemoveUserDataStatus",
-            )
+        user_data_removal_status: "RequestStatusPerDestination.RemoveUserDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="status",
+            message="RequestStatusPerDestination.RemoveUserDataStatus",
         )
         mobile_data_removal_status: "RequestStatusPerDestination.RemoveMobileDataStatus" = proto.Field(
             proto.MESSAGE,
@@ -177,13 +175,11 @@ class RequestStatusPerDestination(proto.Message):
             oneof="status",
             message="RequestStatusPerDestination.RemoveMobileDataStatus",
         )
-        pair_data_removal_status: "RequestStatusPerDestination.RemovePairDataStatus" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="status",
-                message="RequestStatusPerDestination.RemovePairDataStatus",
-            )
+        pair_data_removal_status: "RequestStatusPerDestination.RemovePairDataStatus" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="status",
+            message="RequestStatusPerDestination.RemovePairDataStatus",
         )
 
     class IngestEventsStatus(proto.Message):

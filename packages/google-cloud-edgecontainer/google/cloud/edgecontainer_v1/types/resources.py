@@ -317,12 +317,10 @@ class Cluster(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            shared_deployment_policy: "Cluster.ControlPlane.SharedDeploymentPolicy" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=4,
-                    enum="Cluster.ControlPlane.SharedDeploymentPolicy",
-                )
+            shared_deployment_policy: "Cluster.ControlPlane.SharedDeploymentPolicy" = proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="Cluster.ControlPlane.SharedDeploymentPolicy",
             )
             control_plane_node_storage_schema: str = proto.Field(
                 proto.STRING,
@@ -731,9 +729,7 @@ class Cluster(proto.Message):
         number=16,
         message=SystemAddonsConfig,
     )
-    external_load_balancer_ipv4_address_pools: MutableSequence[
-        str
-    ] = proto.RepeatedField(
+    external_load_balancer_ipv4_address_pools: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=17,
     )
@@ -766,9 +762,7 @@ class Cluster(proto.Message):
         number=24,
         message=SurvivabilityConfig,
     )
-    external_load_balancer_ipv6_address_pools: MutableSequence[
-        str
-    ] = proto.RepeatedField(
+    external_load_balancer_ipv6_address_pools: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=25,
     )
@@ -1264,9 +1258,7 @@ class VpnConnection(proto.Message):
             number=3,
             message="VpnConnection.Details.CloudRouter",
         )
-        cloud_vpns: MutableSequence[
-            "VpnConnection.Details.CloudVpn"
-        ] = proto.RepeatedField(
+        cloud_vpns: MutableSequence["VpnConnection.Details.CloudVpn"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="VpnConnection.Details.CloudVpn",
@@ -1466,9 +1458,7 @@ class MaintenancePolicy(proto.Message):
         number=1,
         message="MaintenanceWindow",
     )
-    maintenance_exclusions: MutableSequence[
-        "MaintenanceExclusionWindow"
-    ] = proto.RepeatedField(
+    maintenance_exclusions: MutableSequence["MaintenanceExclusionWindow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="MaintenanceExclusionWindow",

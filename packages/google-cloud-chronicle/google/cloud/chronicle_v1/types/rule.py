@@ -292,9 +292,7 @@ class Rule(proto.Message):
         proto.STRING,
         number=16,
     )
-    compilation_diagnostics: MutableSequence[
-        "CompilationDiagnostic"
-    ] = proto.RepeatedField(
+    compilation_diagnostics: MutableSequence["CompilationDiagnostic"] = proto.RepeatedField(
         proto.MESSAGE,
         number=17,
         message="CompilationDiagnostic",

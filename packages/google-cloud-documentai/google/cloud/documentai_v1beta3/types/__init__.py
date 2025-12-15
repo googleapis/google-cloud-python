@@ -16,15 +16,7 @@
 from .barcode import Barcode
 from .dataset import BatchDatasetDocuments, Dataset, DatasetSchema, DocumentId
 from .document import Document, RevisionRef
-from .document_io import (
-    BatchDocumentsInputConfig,
-    DocumentOutputConfig,
-    GcsDocument,
-    GcsDocuments,
-    GcsPrefix,
-    OcrConfig,
-    RawDocument,
-)
+from .document_io import BatchDocumentsInputConfig, DocumentOutputConfig, GcsDocument, GcsDocuments, GcsPrefix, OcrConfig, RawDocument
 from .document_processor_service import (
     BatchProcessMetadata,
     BatchProcessRequest,
@@ -80,13 +72,7 @@ from .document_processor_service import (
     UndeployProcessorVersionRequest,
     UndeployProcessorVersionResponse,
 )
-from .document_schema import (
-    DocumentSchema,
-    EntityTypeMetadata,
-    FieldExtractionMetadata,
-    PropertyMetadata,
-    SummaryOptions,
-)
+from .document_schema import DocumentSchema, EntityTypeMetadata, FieldExtractionMetadata, PropertyMetadata, SummaryOptions
 from .document_service import (
     BatchDeleteDocumentsMetadata,
     BatchDeleteDocumentsRequest,

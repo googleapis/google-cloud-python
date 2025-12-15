@@ -15,13 +15,7 @@
 #
 from .crawled_url import CrawledUrl
 from .finding import Finding
-from .finding_addon import (
-    OutdatedLibrary,
-    ViolatingResource,
-    VulnerableHeaders,
-    VulnerableParameters,
-    Xss,
-)
+from .finding_addon import OutdatedLibrary, ViolatingResource, VulnerableHeaders, VulnerableParameters, Xss
 from .finding_type_stats import FindingTypeStats
 from .scan_config import ScanConfig
 from .scan_run import ScanRun

@@ -199,12 +199,8 @@ class NodeGroupsRestInterceptor:
     """
 
     def pre_add_nodes(
-        self,
-        request: compute.AddNodesNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddNodesNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AddNodesNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddNodesNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_nodes
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +222,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_add_nodes_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_nodes
 
@@ -245,12 +239,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListNodeGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListNodeGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AggregatedListNodeGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListNodeGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -258,9 +248,7 @@ class NodeGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.NodeGroupAggregatedList
-    ) -> compute.NodeGroupAggregatedList:
+    def post_aggregated_list(self, response: compute.NodeGroupAggregatedList) -> compute.NodeGroupAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -274,12 +262,8 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.NodeGroupAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NodeGroupAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.NodeGroupAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NodeGroupAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -295,9 +279,7 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.DeleteNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DeleteNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
@@ -320,9 +302,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -339,12 +319,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_delete_nodes(
-        self,
-        request: compute.DeleteNodesNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteNodesNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteNodesNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteNodesNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_nodes
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +342,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_delete_nodes_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_nodes
 
@@ -385,9 +359,7 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -410,9 +382,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.NodeGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NodeGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NodeGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -429,12 +399,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetIamPolicyNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -456,9 +422,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -475,9 +439,7 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.InsertNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.InsertNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
@@ -500,9 +462,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -519,9 +479,7 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListNodeGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListNodeGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListNodeGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -544,9 +502,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.NodeGroupList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NodeGroupList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NodeGroupList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -563,12 +519,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_list_nodes(
-        self,
-        request: compute.ListNodesNodeGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListNodesNodeGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListNodesNodeGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListNodesNodeGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_nodes
 
         Override in a subclass to manipulate the request or metadata
@@ -576,9 +528,7 @@ class NodeGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_nodes(
-        self, response: compute.NodeGroupsListNodes
-    ) -> compute.NodeGroupsListNodes:
+    def post_list_nodes(self, response: compute.NodeGroupsListNodes) -> compute.NodeGroupsListNodes:
         """Post-rpc interceptor for list_nodes
 
         DEPRECATED. Please use the `post_list_nodes_with_metadata`
@@ -592,9 +542,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_list_nodes_with_metadata(
-        self,
-        response: compute.NodeGroupsListNodes,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NodeGroupsListNodes, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NodeGroupsListNodes, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_nodes
 
@@ -611,9 +559,7 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.PatchNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PatchNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
@@ -636,9 +582,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -655,13 +599,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_perform_maintenance(
-        self,
-        request: compute.PerformMaintenanceNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PerformMaintenanceNodeGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PerformMaintenanceNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PerformMaintenanceNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for perform_maintenance
 
         Override in a subclass to manipulate the request or metadata
@@ -669,9 +608,7 @@ class NodeGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_perform_maintenance(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_perform_maintenance(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for perform_maintenance
 
         DEPRECATED. Please use the `post_perform_maintenance_with_metadata`
@@ -685,9 +622,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_perform_maintenance_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for perform_maintenance
 
@@ -704,12 +639,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetIamPolicyNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -731,9 +662,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -750,12 +679,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_set_node_template(
-        self,
-        request: compute.SetNodeTemplateNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetNodeTemplateNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetNodeTemplateNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetNodeTemplateNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_node_template
 
         Override in a subclass to manipulate the request or metadata
@@ -777,9 +702,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_set_node_template_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_node_template
 
@@ -796,13 +719,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_simulate_maintenance_event(
-        self,
-        request: compute.SimulateMaintenanceEventNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SimulateMaintenanceEventNodeGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SimulateMaintenanceEventNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SimulateMaintenanceEventNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for simulate_maintenance_event
 
         Override in a subclass to manipulate the request or metadata
@@ -810,9 +728,7 @@ class NodeGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_simulate_maintenance_event(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_simulate_maintenance_event(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for simulate_maintenance_event
 
         DEPRECATED. Please use the `post_simulate_maintenance_event_with_metadata`
@@ -826,9 +742,7 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_simulate_maintenance_event_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for simulate_maintenance_event
 
@@ -845,13 +759,8 @@ class NodeGroupsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsNodeGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsNodeGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsNodeGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsNodeGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -859,9 +768,7 @@ class NodeGroupsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -875,12 +782,8 @@ class NodeGroupsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -979,9 +882,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or NodeGroupsRestInterceptor()
@@ -992,15 +893,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.AddNodes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1059,34 +952,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseAddNodes._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseAddNodes._get_http_options()
 
             request, metadata = self._interceptor.pre_add_nodes(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseAddNodes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseAddNodes._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BaseAddNodes._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BaseAddNodes._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseAddNodes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseAddNodes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1110,13 +987,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._AddNodes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1132,12 +1003,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_add_nodes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_nodes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_nodes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1158,22 +1025,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _AggregatedList(
-        _BaseNodeGroupsRestTransport._BaseAggregatedList, NodeGroupsRestStub
-    ):
+    class _AggregatedList(_BaseNodeGroupsRestTransport._BaseAggregatedList, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1214,28 +1071,16 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseNodeGroupsRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseAggregatedList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1259,12 +1104,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1280,12 +1120,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroupAggregatedList.to_json(response)
                 except:
@@ -1311,15 +1147,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1380,25 +1208,13 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             http_options = _BaseNodeGroupsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1421,14 +1237,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
 
             # Send the request
-            response = NodeGroupsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NodeGroupsRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1443,12 +1252,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1469,22 +1274,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _DeleteNodes(
-        _BaseNodeGroupsRestTransport._BaseDeleteNodes, NodeGroupsRestStub
-    ):
+    class _DeleteNodes(_BaseNodeGroupsRestTransport._BaseDeleteNodes, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.DeleteNodes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1543,34 +1338,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_nodes(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseDeleteNodes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1594,13 +1373,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._DeleteNodes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1616,12 +1389,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_delete_nodes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_nodes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_nodes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1647,15 +1416,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1709,23 +1470,13 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             http_options = _BaseNodeGroupsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseNodeGroupsRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1748,14 +1499,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
 
             # Send the request
-            response = NodeGroupsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NodeGroupsRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1771,9 +1515,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroup.to_json(response)
                 except:
@@ -1794,22 +1536,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseNodeGroupsRestTransport._BaseGetIamPolicy, NodeGroupsRestStub
-    ):
+    class _GetIamPolicy(_BaseNodeGroupsRestTransport._BaseGetIamPolicy, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1873,30 +1605,16 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1920,12 +1638,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1941,12 +1654,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1972,15 +1681,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2042,29 +1743,15 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             http_options = _BaseNodeGroupsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2088,13 +1775,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2110,12 +1791,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2141,15 +1818,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2193,25 +1862,13 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             http_options = _BaseNodeGroupsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2234,14 +1891,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
 
             # Send the request
-            response = NodeGroupsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = NodeGroupsRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2257,9 +1907,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroupList.to_json(response)
                 except:
@@ -2285,15 +1933,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.ListNodes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2334,30 +1974,16 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseListNodes._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseListNodes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_nodes(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseListNodes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseListNodes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseListNodes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseListNodes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2381,12 +2007,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._ListNodes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2402,12 +2023,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_list_nodes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_nodes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_nodes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NodeGroupsListNodes.to_json(response)
                 except:
@@ -2433,15 +2050,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return hash("NodeGroupsRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2503,29 +2112,15 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             http_options = _BaseNodeGroupsRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2549,13 +2144,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2571,12 +2160,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2597,22 +2182,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _PerformMaintenance(
-        _BaseNodeGroupsRestTransport._BasePerformMaintenance, NodeGroupsRestStub
-    ):
+    class _PerformMaintenance(_BaseNodeGroupsRestTransport._BasePerformMaintenance, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.PerformMaintenance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2671,32 +2246,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_http_options()
 
-            request, metadata = self._interceptor.pre_perform_maintenance(
-                request, metadata
-            )
-            transcoded_request = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_perform_maintenance(request, metadata)
+            transcoded_request = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNodeGroupsRestTransport._BasePerformMaintenance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2720,13 +2281,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._PerformMaintenance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2742,12 +2297,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_perform_maintenance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_perform_maintenance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2768,22 +2319,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseNodeGroupsRestTransport._BaseSetIamPolicy, NodeGroupsRestStub
-    ):
+    class _SetIamPolicy(_BaseNodeGroupsRestTransport._BaseSetIamPolicy, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2848,36 +2389,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2901,13 +2424,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2923,12 +2440,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2949,22 +2462,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _SetNodeTemplate(
-        _BaseNodeGroupsRestTransport._BaseSetNodeTemplate, NodeGroupsRestStub
-    ):
+    class _SetNodeTemplate(_BaseNodeGroupsRestTransport._BaseSetNodeTemplate, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.SetNodeTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3023,32 +2526,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_node_template(
-                request, metadata
-            )
-            transcoded_request = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_node_template(request, metadata)
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseSetNodeTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3072,13 +2561,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._SetNodeTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3094,12 +2577,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_set_node_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_node_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_node_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3120,22 +2599,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _SimulateMaintenanceEvent(
-        _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent, NodeGroupsRestStub
-    ):
+    class _SimulateMaintenanceEvent(_BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.SimulateMaintenanceEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3195,32 +2664,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_simulate_maintenance_event(
-                request, metadata
-            )
-            transcoded_request = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_simulate_maintenance_event(request, metadata)
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseSimulateMaintenanceEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3244,13 +2699,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._SimulateMaintenanceEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3266,12 +2715,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_simulate_maintenance_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_simulate_maintenance_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_simulate_maintenance_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3292,22 +2737,12 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseNodeGroupsRestTransport._BaseTestIamPermissions, NodeGroupsRestStub
-    ):
+    class _TestIamPermissions(_BaseNodeGroupsRestTransport._BaseTestIamPermissions, NodeGroupsRestStub):
         def __hash__(self):
             return hash("NodeGroupsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3349,32 +2784,18 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             """
 
-            http_options = (
-                _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseNodeGroupsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3398,13 +2819,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             # Send the request
             response = NodeGroupsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3420,12 +2835,8 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -3447,19 +2858,13 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
             return resp
 
     @property
-    def add_nodes(
-        self,
-    ) -> Callable[[compute.AddNodesNodeGroupRequest], compute.Operation]:
+    def add_nodes(self) -> Callable[[compute.AddNodesNodeGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddNodes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListNodeGroupsRequest], compute.NodeGroupAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListNodeGroupsRequest], compute.NodeGroupAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
@@ -3471,9 +2876,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_nodes(
-        self,
-    ) -> Callable[[compute.DeleteNodesNodeGroupRequest], compute.Operation]:
+    def delete_nodes(self) -> Callable[[compute.DeleteNodesNodeGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNodes(self._session, self._host, self._interceptor)  # type: ignore
@@ -3485,9 +2888,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyNodeGroupRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyNodeGroupRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3505,9 +2906,7 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_nodes(
-        self,
-    ) -> Callable[[compute.ListNodesNodeGroupsRequest], compute.NodeGroupsListNodes]:
+    def list_nodes(self) -> Callable[[compute.ListNodesNodeGroupsRequest], compute.NodeGroupsListNodes]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNodes(self._session, self._host, self._interceptor)  # type: ignore
@@ -3519,45 +2918,31 @@ class NodeGroupsRestTransport(_BaseNodeGroupsRestTransport):
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def perform_maintenance(
-        self,
-    ) -> Callable[[compute.PerformMaintenanceNodeGroupRequest], compute.Operation]:
+    def perform_maintenance(self) -> Callable[[compute.PerformMaintenanceNodeGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PerformMaintenance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyNodeGroupRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyNodeGroupRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_node_template(
-        self,
-    ) -> Callable[[compute.SetNodeTemplateNodeGroupRequest], compute.Operation]:
+    def set_node_template(self) -> Callable[[compute.SetNodeTemplateNodeGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetNodeTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def simulate_maintenance_event(
-        self,
-    ) -> Callable[
-        [compute.SimulateMaintenanceEventNodeGroupRequest], compute.Operation
-    ]:
+    def simulate_maintenance_event(self) -> Callable[[compute.SimulateMaintenanceEventNodeGroupRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SimulateMaintenanceEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsNodeGroupRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsNodeGroupRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

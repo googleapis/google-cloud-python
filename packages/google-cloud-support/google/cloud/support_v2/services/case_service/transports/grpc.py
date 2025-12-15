@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class CaseServiceGrpcTransport(CaseServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class CaseServiceGrpcTransport(CaseServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -348,9 +333,7 @@ class CaseServiceGrpcTransport(CaseServiceTransport):
         return self._stubs["get_case"]
 
     @property
-    def list_cases(
-        self,
-    ) -> Callable[[case_service.ListCasesRequest], case_service.ListCasesResponse]:
+    def list_cases(self) -> Callable[[case_service.ListCasesRequest], case_service.ListCasesResponse]:
         r"""Return a callable for the list cases method over gRPC.
 
         Retrieve all cases under a parent, but not its children.
@@ -379,9 +362,7 @@ class CaseServiceGrpcTransport(CaseServiceTransport):
         return self._stubs["list_cases"]
 
     @property
-    def search_cases(
-        self,
-    ) -> Callable[[case_service.SearchCasesRequest], case_service.SearchCasesResponse]:
+    def search_cases(self) -> Callable[[case_service.SearchCasesRequest], case_service.SearchCasesResponse]:
         r"""Return a callable for the search cases method over gRPC.
 
         Search for cases using a query.
@@ -514,10 +495,7 @@ class CaseServiceGrpcTransport(CaseServiceTransport):
     @property
     def search_case_classifications(
         self,
-    ) -> Callable[
-        [case_service.SearchCaseClassificationsRequest],
-        case_service.SearchCaseClassificationsResponse,
-    ]:
+    ) -> Callable[[case_service.SearchCaseClassificationsRequest], case_service.SearchCaseClassificationsResponse]:
         r"""Return a callable for the search case classifications method over gRPC.
 
         Retrieve valid classifications to use when creating a support
@@ -544,9 +522,7 @@ class CaseServiceGrpcTransport(CaseServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_case_classifications" not in self._stubs:
-            self._stubs[
-                "search_case_classifications"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_case_classifications"] = self._logged_channel.unary_unary(
                 "/google.cloud.support.v2.CaseService/SearchCaseClassifications",
                 request_serializer=case_service.SearchCaseClassificationsRequest.serialize,
                 response_deserializer=case_service.SearchCaseClassificationsResponse.deserialize,

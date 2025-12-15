@@ -138,9 +138,7 @@ class ListCustomTargetingValuesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_targeting_values: MutableSequence[
-        custom_targeting_value_messages.CustomTargetingValue
-    ] = proto.RepeatedField(
+    custom_targeting_values: MutableSequence[custom_targeting_value_messages.CustomTargetingValue] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_targeting_value_messages.CustomTargetingValue,

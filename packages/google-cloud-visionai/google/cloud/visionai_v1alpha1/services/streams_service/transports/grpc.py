@@ -32,11 +32,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.visionai_v1alpha1.types import (
-    common,
-    streams_resources,
-    streams_service,
-)
+from google.cloud.visionai_v1alpha1.types import common, streams_resources, streams_service
 
 from .base import DEFAULT_CLIENT_INFO, StreamsServiceTransport
 
@@ -52,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -229,18 +216,14 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -274,9 +257,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -343,19 +324,13 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [streams_service.ListClustersRequest], streams_service.ListClustersResponse
-    ]:
+    def list_clusters(self) -> Callable[[streams_service.ListClustersRequest], streams_service.ListClustersResponse]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists Clusters in a given project and location.
@@ -379,9 +354,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["list_clusters"]
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[streams_service.GetClusterRequest], common.Cluster]:
+    def get_cluster(self) -> Callable[[streams_service.GetClusterRequest], common.Cluster]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Gets details of a single Cluster.
@@ -405,9 +378,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[streams_service.CreateClusterRequest], operations_pb2.Operation]:
+    def create_cluster(self) -> Callable[[streams_service.CreateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a new Cluster in a given project and
@@ -432,9 +403,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["create_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[streams_service.UpdateClusterRequest], operations_pb2.Operation]:
+    def update_cluster(self) -> Callable[[streams_service.UpdateClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Updates the parameters of a single Cluster.
@@ -458,9 +427,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[streams_service.DeleteClusterRequest], operations_pb2.Operation]:
+    def delete_cluster(self) -> Callable[[streams_service.DeleteClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes a single Cluster.
@@ -484,11 +451,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def list_streams(
-        self,
-    ) -> Callable[
-        [streams_service.ListStreamsRequest], streams_service.ListStreamsResponse
-    ]:
+    def list_streams(self) -> Callable[[streams_service.ListStreamsRequest], streams_service.ListStreamsResponse]:
         r"""Return a callable for the list streams method over gRPC.
 
         Lists Streams in a given project and location.
@@ -512,9 +475,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["list_streams"]
 
     @property
-    def get_stream(
-        self,
-    ) -> Callable[[streams_service.GetStreamRequest], streams_resources.Stream]:
+    def get_stream(self) -> Callable[[streams_service.GetStreamRequest], streams_resources.Stream]:
         r"""Return a callable for the get stream method over gRPC.
 
         Gets details of a single Stream.
@@ -538,9 +499,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["get_stream"]
 
     @property
-    def create_stream(
-        self,
-    ) -> Callable[[streams_service.CreateStreamRequest], operations_pb2.Operation]:
+    def create_stream(self) -> Callable[[streams_service.CreateStreamRequest], operations_pb2.Operation]:
         r"""Return a callable for the create stream method over gRPC.
 
         Creates a new Stream in a given project and location.
@@ -564,9 +523,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["create_stream"]
 
     @property
-    def update_stream(
-        self,
-    ) -> Callable[[streams_service.UpdateStreamRequest], operations_pb2.Operation]:
+    def update_stream(self) -> Callable[[streams_service.UpdateStreamRequest], operations_pb2.Operation]:
         r"""Return a callable for the update stream method over gRPC.
 
         Updates the parameters of a single Stream.
@@ -590,9 +547,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["update_stream"]
 
     @property
-    def delete_stream(
-        self,
-    ) -> Callable[[streams_service.DeleteStreamRequest], operations_pb2.Operation]:
+    def delete_stream(self) -> Callable[[streams_service.DeleteStreamRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete stream method over gRPC.
 
         Deletes a single Stream.
@@ -616,12 +571,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["delete_stream"]
 
     @property
-    def generate_stream_hls_token(
-        self,
-    ) -> Callable[
-        [streams_service.GenerateStreamHlsTokenRequest],
-        streams_service.GenerateStreamHlsTokenResponse,
-    ]:
+    def generate_stream_hls_token(self) -> Callable[[streams_service.GenerateStreamHlsTokenRequest], streams_service.GenerateStreamHlsTokenResponse]:
         r"""Return a callable for the generate stream hls token method over gRPC.
 
         Generate the JWT auth token required to get the
@@ -646,11 +596,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["generate_stream_hls_token"]
 
     @property
-    def list_events(
-        self,
-    ) -> Callable[
-        [streams_service.ListEventsRequest], streams_service.ListEventsResponse
-    ]:
+    def list_events(self) -> Callable[[streams_service.ListEventsRequest], streams_service.ListEventsResponse]:
         r"""Return a callable for the list events method over gRPC.
 
         Lists Events in a given project and location.
@@ -674,9 +620,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["list_events"]
 
     @property
-    def get_event(
-        self,
-    ) -> Callable[[streams_service.GetEventRequest], streams_resources.Event]:
+    def get_event(self) -> Callable[[streams_service.GetEventRequest], streams_resources.Event]:
         r"""Return a callable for the get event method over gRPC.
 
         Gets details of a single Event.
@@ -700,9 +644,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["get_event"]
 
     @property
-    def create_event(
-        self,
-    ) -> Callable[[streams_service.CreateEventRequest], operations_pb2.Operation]:
+    def create_event(self) -> Callable[[streams_service.CreateEventRequest], operations_pb2.Operation]:
         r"""Return a callable for the create event method over gRPC.
 
         Creates a new Event in a given project and location.
@@ -726,9 +668,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["create_event"]
 
     @property
-    def update_event(
-        self,
-    ) -> Callable[[streams_service.UpdateEventRequest], operations_pb2.Operation]:
+    def update_event(self) -> Callable[[streams_service.UpdateEventRequest], operations_pb2.Operation]:
         r"""Return a callable for the update event method over gRPC.
 
         Updates the parameters of a single Event.
@@ -752,9 +692,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["update_event"]
 
     @property
-    def delete_event(
-        self,
-    ) -> Callable[[streams_service.DeleteEventRequest], operations_pb2.Operation]:
+    def delete_event(self) -> Callable[[streams_service.DeleteEventRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete event method over gRPC.
 
         Deletes a single Event.
@@ -778,11 +716,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["delete_event"]
 
     @property
-    def list_series(
-        self,
-    ) -> Callable[
-        [streams_service.ListSeriesRequest], streams_service.ListSeriesResponse
-    ]:
+    def list_series(self) -> Callable[[streams_service.ListSeriesRequest], streams_service.ListSeriesResponse]:
         r"""Return a callable for the list series method over gRPC.
 
         Lists Series in a given project and location.
@@ -806,9 +740,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["list_series"]
 
     @property
-    def get_series(
-        self,
-    ) -> Callable[[streams_service.GetSeriesRequest], streams_resources.Series]:
+    def get_series(self) -> Callable[[streams_service.GetSeriesRequest], streams_resources.Series]:
         r"""Return a callable for the get series method over gRPC.
 
         Gets details of a single Series.
@@ -832,9 +764,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["get_series"]
 
     @property
-    def create_series(
-        self,
-    ) -> Callable[[streams_service.CreateSeriesRequest], operations_pb2.Operation]:
+    def create_series(self) -> Callable[[streams_service.CreateSeriesRequest], operations_pb2.Operation]:
         r"""Return a callable for the create series method over gRPC.
 
         Creates a new Series in a given project and location.
@@ -858,9 +788,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["create_series"]
 
     @property
-    def update_series(
-        self,
-    ) -> Callable[[streams_service.UpdateSeriesRequest], operations_pb2.Operation]:
+    def update_series(self) -> Callable[[streams_service.UpdateSeriesRequest], operations_pb2.Operation]:
         r"""Return a callable for the update series method over gRPC.
 
         Updates the parameters of a single Event.
@@ -884,9 +812,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["update_series"]
 
     @property
-    def delete_series(
-        self,
-    ) -> Callable[[streams_service.DeleteSeriesRequest], operations_pb2.Operation]:
+    def delete_series(self) -> Callable[[streams_service.DeleteSeriesRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete series method over gRPC.
 
         Deletes a single Series.
@@ -910,11 +836,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
         return self._stubs["delete_series"]
 
     @property
-    def materialize_channel(
-        self,
-    ) -> Callable[
-        [streams_service.MaterializeChannelRequest], operations_pb2.Operation
-    ]:
+    def materialize_channel(self) -> Callable[[streams_service.MaterializeChannelRequest], operations_pb2.Operation]:
         r"""Return a callable for the materialize channel method over gRPC.
 
         Materialize a channel.
@@ -994,9 +916,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1013,9 +933,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1100,10 +1018,7 @@ class StreamsServiceGrpcTransport(StreamsServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

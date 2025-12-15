@@ -169,9 +169,7 @@ class AttackPath(proto.Message):
             proto.STRING,
             number=3,
         )
-        associated_findings: MutableSequence[
-            "AttackPath.AttackPathNode.PathNodeAssociatedFinding"
-        ] = proto.RepeatedField(
+        associated_findings: MutableSequence["AttackPath.AttackPathNode.PathNodeAssociatedFinding"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="AttackPath.AttackPathNode.PathNodeAssociatedFinding",
@@ -180,9 +178,7 @@ class AttackPath(proto.Message):
             proto.STRING,
             number=5,
         )
-        attack_steps: MutableSequence[
-            "AttackPath.AttackPathNode.AttackStepNode"
-        ] = proto.RepeatedField(
+        attack_steps: MutableSequence["AttackPath.AttackPathNode.AttackStepNode"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="AttackPath.AttackPathNode.AttackStepNode",

@@ -230,9 +230,7 @@ class ListPrivateCloudsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_clouds: MutableSequence[
-        vmwareengine_resources.PrivateCloud
-    ] = proto.RepeatedField(
+    private_clouds: MutableSequence[vmwareengine_resources.PrivateCloud] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.PrivateCloud,
@@ -907,9 +905,7 @@ class ListExternalAddressesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    external_addresses: MutableSequence[
-        vmwareengine_resources.ExternalAddress
-    ] = proto.RepeatedField(
+    external_addresses: MutableSequence[vmwareengine_resources.ExternalAddress] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.ExternalAddress,
@@ -986,9 +982,7 @@ class FetchNetworkPolicyExternalAddressesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    external_addresses: MutableSequence[
-        vmwareengine_resources.ExternalAddress
-    ] = proto.RepeatedField(
+    external_addresses: MutableSequence[vmwareengine_resources.ExternalAddress] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.ExternalAddress,
@@ -1417,9 +1411,7 @@ class ListExternalAccessRulesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    external_access_rules: MutableSequence[
-        vmwareengine_resources.ExternalAccessRule
-    ] = proto.RepeatedField(
+    external_access_rules: MutableSequence[vmwareengine_resources.ExternalAccessRule] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.ExternalAccessRule,
@@ -1729,9 +1721,7 @@ class ListLoggingServersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    logging_servers: MutableSequence[
-        vmwareengine_resources.LoggingServer
-    ] = proto.RepeatedField(
+    logging_servers: MutableSequence[vmwareengine_resources.LoggingServer] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.LoggingServer,
@@ -2307,9 +2297,7 @@ class ListHcxActivationKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    hcx_activation_keys: MutableSequence[
-        vmwareengine_resources.HcxActivationKey
-    ] = proto.RepeatedField(
+    hcx_activation_keys: MutableSequence[vmwareengine_resources.HcxActivationKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.HcxActivationKey,
@@ -2820,9 +2808,7 @@ class ListNetworkPeeringsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    network_peerings: MutableSequence[
-        vmwareengine_resources.NetworkPeering
-    ] = proto.RepeatedField(
+    network_peerings: MutableSequence[vmwareengine_resources.NetworkPeering] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.NetworkPeering,
@@ -2906,9 +2892,7 @@ class ListPeeringRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    peering_routes: MutableSequence[
-        vmwareengine_resources.PeeringRoute
-    ] = proto.RepeatedField(
+    peering_routes: MutableSequence[vmwareengine_resources.PeeringRoute] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.PeeringRoute,
@@ -3023,9 +3007,7 @@ class ListNetworkPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    network_policies: MutableSequence[
-        vmwareengine_resources.NetworkPolicy
-    ] = proto.RepeatedField(
+    network_policies: MutableSequence[vmwareengine_resources.NetworkPolicy] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.NetworkPolicy,
@@ -3334,9 +3316,7 @@ class ListManagementDnsZoneBindingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    management_dns_zone_bindings: MutableSequence[
-        vmwareengine_resources.ManagementDnsZoneBinding
-    ] = proto.RepeatedField(
+    management_dns_zone_bindings: MutableSequence[vmwareengine_resources.ManagementDnsZoneBinding] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.ManagementDnsZoneBinding,
@@ -3427,12 +3407,10 @@ class CreateManagementDnsZoneBindingRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    management_dns_zone_binding: vmwareengine_resources.ManagementDnsZoneBinding = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=vmwareengine_resources.ManagementDnsZoneBinding,
-        )
+    management_dns_zone_binding: vmwareengine_resources.ManagementDnsZoneBinding = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.ManagementDnsZoneBinding,
     )
     management_dns_zone_binding_id: str = proto.Field(
         proto.STRING,
@@ -3487,12 +3465,10 @@ class UpdateManagementDnsZoneBindingRequest(proto.Message):
         number=1,
         message=field_mask_pb2.FieldMask,
     )
-    management_dns_zone_binding: vmwareengine_resources.ManagementDnsZoneBinding = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=vmwareengine_resources.ManagementDnsZoneBinding,
-        )
+    management_dns_zone_binding: vmwareengine_resources.ManagementDnsZoneBinding = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.ManagementDnsZoneBinding,
     )
     request_id: str = proto.Field(
         proto.STRING,
@@ -3895,9 +3871,7 @@ class ListVmwareEngineNetworksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vmware_engine_networks: MutableSequence[
-        vmwareengine_resources.VmwareEngineNetwork
-    ] = proto.RepeatedField(
+    vmware_engine_networks: MutableSequence[vmwareengine_resources.VmwareEngineNetwork] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.VmwareEngineNetwork,
@@ -4105,9 +4079,7 @@ class ListPrivateConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    private_connections: MutableSequence[
-        vmwareengine_resources.PrivateConnection
-    ] = proto.RepeatedField(
+    private_connections: MutableSequence[vmwareengine_resources.PrivateConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.PrivateConnection,
@@ -4278,9 +4250,7 @@ class ListPrivateConnectionPeeringRoutesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    peering_routes: MutableSequence[
-        vmwareengine_resources.PeeringRoute
-    ] = proto.RepeatedField(
+    peering_routes: MutableSequence[vmwareengine_resources.PeeringRoute] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=vmwareengine_resources.PeeringRoute,

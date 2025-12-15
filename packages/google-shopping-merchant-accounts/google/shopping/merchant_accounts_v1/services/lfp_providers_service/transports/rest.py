@@ -95,12 +95,8 @@ class LfpProvidersServiceRestInterceptor:
     """
 
     def pre_find_lfp_providers(
-        self,
-        request: lfpproviders.FindLfpProvidersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lfpproviders.FindLfpProvidersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lfpproviders.FindLfpProvidersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lfpproviders.FindLfpProvidersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for find_lfp_providers
 
         Override in a subclass to manipulate the request or metadata
@@ -108,9 +104,7 @@ class LfpProvidersServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_find_lfp_providers(
-        self, response: lfpproviders.FindLfpProvidersResponse
-    ) -> lfpproviders.FindLfpProvidersResponse:
+    def post_find_lfp_providers(self, response: lfpproviders.FindLfpProvidersResponse) -> lfpproviders.FindLfpProvidersResponse:
         """Post-rpc interceptor for find_lfp_providers
 
         DEPRECATED. Please use the `post_find_lfp_providers_with_metadata`
@@ -124,12 +118,8 @@ class LfpProvidersServiceRestInterceptor:
         return response
 
     def post_find_lfp_providers_with_metadata(
-        self,
-        response: lfpproviders.FindLfpProvidersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lfpproviders.FindLfpProvidersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: lfpproviders.FindLfpProvidersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lfpproviders.FindLfpProvidersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for find_lfp_providers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -145,12 +135,8 @@ class LfpProvidersServiceRestInterceptor:
         return response, metadata
 
     def pre_link_lfp_provider(
-        self,
-        request: lfpproviders.LinkLfpProviderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lfpproviders.LinkLfpProviderRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lfpproviders.LinkLfpProviderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lfpproviders.LinkLfpProviderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for link_lfp_provider
 
         Override in a subclass to manipulate the request or metadata
@@ -158,9 +144,7 @@ class LfpProvidersServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_link_lfp_provider(
-        self, response: lfpproviders.LinkLfpProviderResponse
-    ) -> lfpproviders.LinkLfpProviderResponse:
+    def post_link_lfp_provider(self, response: lfpproviders.LinkLfpProviderResponse) -> lfpproviders.LinkLfpProviderResponse:
         """Post-rpc interceptor for link_lfp_provider
 
         DEPRECATED. Please use the `post_link_lfp_provider_with_metadata`
@@ -174,12 +158,8 @@ class LfpProvidersServiceRestInterceptor:
         return response
 
     def post_link_lfp_provider_with_metadata(
-        self,
-        response: lfpproviders.LinkLfpProviderResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lfpproviders.LinkLfpProviderResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: lfpproviders.LinkLfpProviderResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lfpproviders.LinkLfpProviderResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for link_lfp_provider
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,31 +257,18 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or LfpProvidersServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _FindLfpProviders(
-        _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders,
-        LfpProvidersServiceRestStub,
-    ):
+    class _FindLfpProviders(_BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders, LfpProvidersServiceRestStub):
         def __hash__(self):
             return hash("LfpProvidersServiceRestTransport.FindLfpProviders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -343,28 +310,16 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders._get_http_options()
-            )
+            http_options = _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders._get_http_options()
 
-            request, metadata = self._interceptor.pre_find_lfp_providers(
-                request, metadata
-            )
-            transcoded_request = _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_find_lfp_providers(request, metadata)
+            transcoded_request = _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpProvidersServiceRestTransport._BaseFindLfpProviders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -388,12 +343,7 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
 
             # Send the request
             response = LfpProvidersServiceRestTransport._FindLfpProviders._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -409,16 +359,10 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
 
             resp = self._interceptor.post_find_lfp_providers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_find_lfp_providers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_find_lfp_providers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = lfpproviders.FindLfpProvidersResponse.to_json(
-                        response
-                    )
+                    response_payload = lfpproviders.FindLfpProvidersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -437,23 +381,12 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
                 )
             return resp
 
-    class _LinkLfpProvider(
-        _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider,
-        LfpProvidersServiceRestStub,
-    ):
+    class _LinkLfpProvider(_BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider, LfpProvidersServiceRestStub):
         def __hash__(self):
             return hash("LfpProvidersServiceRestTransport.LinkLfpProvider")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -496,32 +429,18 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_http_options()
-            )
+            http_options = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_http_options()
 
-            request, metadata = self._interceptor.pre_link_lfp_provider(
-                request, metadata
-            )
-            transcoded_request = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_link_lfp_provider(request, metadata)
+            transcoded_request = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_transcoded_request(http_options, request)
 
-            body = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLfpProvidersServiceRestTransport._BaseLinkLfpProvider._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -545,13 +464,7 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
 
             # Send the request
             response = LfpProvidersServiceRestTransport._LinkLfpProvider._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -567,16 +480,10 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
 
             resp = self._interceptor.post_link_lfp_provider(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_link_lfp_provider_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_link_lfp_provider_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = lfpproviders.LinkLfpProviderResponse.to_json(
-                        response
-                    )
+                    response_payload = lfpproviders.LinkLfpProviderResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -596,21 +503,13 @@ class LfpProvidersServiceRestTransport(_BaseLfpProvidersServiceRestTransport):
             return resp
 
     @property
-    def find_lfp_providers(
-        self,
-    ) -> Callable[
-        [lfpproviders.FindLfpProvidersRequest], lfpproviders.FindLfpProvidersResponse
-    ]:
+    def find_lfp_providers(self) -> Callable[[lfpproviders.FindLfpProvidersRequest], lfpproviders.FindLfpProvidersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FindLfpProviders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def link_lfp_provider(
-        self,
-    ) -> Callable[
-        [lfpproviders.LinkLfpProviderRequest], lfpproviders.LinkLfpProviderResponse
-    ]:
+    def link_lfp_provider(self) -> Callable[[lfpproviders.LinkLfpProviderRequest], lfpproviders.LinkLfpProviderResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LinkLfpProvider(self._session, self._host, self._interceptor)  # type: ignore

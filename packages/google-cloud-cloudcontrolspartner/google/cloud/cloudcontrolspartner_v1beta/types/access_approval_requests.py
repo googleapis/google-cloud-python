@@ -134,9 +134,7 @@ class ListAccessApprovalRequestsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    access_approval_requests: MutableSequence[
-        "AccessApprovalRequest"
-    ] = proto.RepeatedField(
+    access_approval_requests: MutableSequence["AccessApprovalRequest"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="AccessApprovalRequest",

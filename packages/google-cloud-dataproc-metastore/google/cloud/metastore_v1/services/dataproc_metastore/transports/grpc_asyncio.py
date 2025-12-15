@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -291,18 +280,14 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -338,9 +323,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -363,19 +346,13 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[
-        [metastore.ListServicesRequest], Awaitable[metastore.ListServicesResponse]
-    ]:
+    def list_services(self) -> Callable[[metastore.ListServicesRequest], Awaitable[metastore.ListServicesResponse]]:
         r"""Return a callable for the list services method over gRPC.
 
         Lists services in a project and location.
@@ -399,9 +376,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["list_services"]
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[[metastore.GetServiceRequest], Awaitable[metastore.Service]]:
+    def get_service(self) -> Callable[[metastore.GetServiceRequest], Awaitable[metastore.Service]]:
         r"""Return a callable for the get service method over gRPC.
 
         Gets the details of a single service.
@@ -425,11 +400,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["get_service"]
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[
-        [metastore.CreateServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_service(self) -> Callable[[metastore.CreateServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create service method over gRPC.
 
         Creates a metastore service in a project and
@@ -454,11 +425,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["create_service"]
 
     @property
-    def update_service(
-        self,
-    ) -> Callable[
-        [metastore.UpdateServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_service(self) -> Callable[[metastore.UpdateServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update service method over gRPC.
 
         Updates the parameters of a single service.
@@ -482,11 +449,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["update_service"]
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[
-        [metastore.DeleteServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_service(self) -> Callable[[metastore.DeleteServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete service method over gRPC.
 
         Deletes a single service.
@@ -510,12 +473,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["delete_service"]
 
     @property
-    def list_metadata_imports(
-        self,
-    ) -> Callable[
-        [metastore.ListMetadataImportsRequest],
-        Awaitable[metastore.ListMetadataImportsResponse],
-    ]:
+    def list_metadata_imports(self) -> Callable[[metastore.ListMetadataImportsRequest], Awaitable[metastore.ListMetadataImportsResponse]]:
         r"""Return a callable for the list metadata imports method over gRPC.
 
         Lists imports in a service.
@@ -539,11 +497,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["list_metadata_imports"]
 
     @property
-    def get_metadata_import(
-        self,
-    ) -> Callable[
-        [metastore.GetMetadataImportRequest], Awaitable[metastore.MetadataImport]
-    ]:
+    def get_metadata_import(self) -> Callable[[metastore.GetMetadataImportRequest], Awaitable[metastore.MetadataImport]]:
         r"""Return a callable for the get metadata import method over gRPC.
 
         Gets details of a single import.
@@ -567,11 +521,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["get_metadata_import"]
 
     @property
-    def create_metadata_import(
-        self,
-    ) -> Callable[
-        [metastore.CreateMetadataImportRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_metadata_import(self) -> Callable[[metastore.CreateMetadataImportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create metadata import method over gRPC.
 
         Creates a new MetadataImport in a given project and
@@ -596,11 +546,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["create_metadata_import"]
 
     @property
-    def update_metadata_import(
-        self,
-    ) -> Callable[
-        [metastore.UpdateMetadataImportRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_metadata_import(self) -> Callable[[metastore.UpdateMetadataImportRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update metadata import method over gRPC.
 
         Updates a single import.
@@ -626,11 +572,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["update_metadata_import"]
 
     @property
-    def export_metadata(
-        self,
-    ) -> Callable[
-        [metastore.ExportMetadataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def export_metadata(self) -> Callable[[metastore.ExportMetadataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export metadata method over gRPC.
 
         Exports metadata from a service.
@@ -654,11 +596,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["export_metadata"]
 
     @property
-    def restore_service(
-        self,
-    ) -> Callable[
-        [metastore.RestoreServiceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def restore_service(self) -> Callable[[metastore.RestoreServiceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the restore service method over gRPC.
 
         Restores a service from a backup.
@@ -682,11 +620,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["restore_service"]
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [metastore.ListBackupsRequest], Awaitable[metastore.ListBackupsResponse]
-    ]:
+    def list_backups(self) -> Callable[[metastore.ListBackupsRequest], Awaitable[metastore.ListBackupsResponse]]:
         r"""Return a callable for the list backups method over gRPC.
 
         Lists backups in a service.
@@ -710,9 +644,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["list_backups"]
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[[metastore.GetBackupRequest], Awaitable[metastore.Backup]]:
+    def get_backup(self) -> Callable[[metastore.GetBackupRequest], Awaitable[metastore.Backup]]:
         r"""Return a callable for the get backup method over gRPC.
 
         Gets details of a single backup.
@@ -736,9 +668,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["get_backup"]
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[[metastore.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
+    def create_backup(self) -> Callable[[metastore.CreateBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create backup method over gRPC.
 
         Creates a new backup in a given project and location.
@@ -762,9 +692,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["create_backup"]
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[[metastore.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_backup(self) -> Callable[[metastore.DeleteBackupRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete backup method over gRPC.
 
         Deletes a single backup.
@@ -788,11 +716,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["delete_backup"]
 
     @property
-    def query_metadata(
-        self,
-    ) -> Callable[
-        [metastore.QueryMetadataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def query_metadata(self) -> Callable[[metastore.QueryMetadataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the query metadata method over gRPC.
 
         Query DPMS metadata.
@@ -816,11 +740,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["query_metadata"]
 
     @property
-    def move_table_to_database(
-        self,
-    ) -> Callable[
-        [metastore.MoveTableToDatabaseRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def move_table_to_database(self) -> Callable[[metastore.MoveTableToDatabaseRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the move table to database method over gRPC.
 
         Move a table to another database.
@@ -844,12 +764,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         return self._stubs["move_table_to_database"]
 
     @property
-    def alter_metadata_resource_location(
-        self,
-    ) -> Callable[
-        [metastore.AlterMetadataResourceLocationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def alter_metadata_resource_location(self) -> Callable[[metastore.AlterMetadataResourceLocationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the alter metadata resource
         location method over gRPC.
 
@@ -870,9 +785,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "alter_metadata_resource_location" not in self._stubs:
-            self._stubs[
-                "alter_metadata_resource_location"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["alter_metadata_resource_location"] = self._logged_channel.unary_unary(
                 "/google.cloud.metastore.v1.DataprocMetastore/AlterMetadataResourceLocation",
                 request_serializer=metastore.AlterMetadataResourceLocationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1085,9 +998,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1104,9 +1015,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1191,10 +1100,7 @@ class DataprocMetastoreGrpcAsyncIOTransport(DataprocMetastoreTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

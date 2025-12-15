@@ -136,12 +136,8 @@ class DataFusionRestInterceptor:
     """
 
     def pre_create_instance(
-        self,
-        request: datafusion.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datafusion.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +145,7 @@ class DataFusionRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -165,9 +159,7 @@ class DataFusionRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -184,12 +176,8 @@ class DataFusionRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: datafusion.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datafusion.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -197,9 +185,7 @@ class DataFusionRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -213,9 +199,7 @@ class DataFusionRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -232,9 +216,7 @@ class DataFusionRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: datafusion.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datafusion.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datafusion.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
@@ -257,9 +239,7 @@ class DataFusionRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: datafusion.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datafusion.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datafusion.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -276,12 +256,8 @@ class DataFusionRestInterceptor:
         return response, metadata
 
     def pre_list_available_versions(
-        self,
-        request: datafusion.ListAvailableVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.ListAvailableVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datafusion.ListAvailableVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.ListAvailableVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_available_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +265,7 @@ class DataFusionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_available_versions(
-        self, response: datafusion.ListAvailableVersionsResponse
-    ) -> datafusion.ListAvailableVersionsResponse:
+    def post_list_available_versions(self, response: datafusion.ListAvailableVersionsResponse) -> datafusion.ListAvailableVersionsResponse:
         """Post-rpc interceptor for list_available_versions
 
         DEPRECATED. Please use the `post_list_available_versions_with_metadata`
@@ -305,13 +279,8 @@ class DataFusionRestInterceptor:
         return response
 
     def post_list_available_versions_with_metadata(
-        self,
-        response: datafusion.ListAvailableVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.ListAvailableVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datafusion.ListAvailableVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.ListAvailableVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_available_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -327,12 +296,8 @@ class DataFusionRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: datafusion.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datafusion.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -340,9 +305,7 @@ class DataFusionRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: datafusion.ListInstancesResponse
-    ) -> datafusion.ListInstancesResponse:
+    def post_list_instances(self, response: datafusion.ListInstancesResponse) -> datafusion.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -356,12 +319,8 @@ class DataFusionRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: datafusion.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datafusion.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -377,12 +336,8 @@ class DataFusionRestInterceptor:
         return response, metadata
 
     def pre_restart_instance(
-        self,
-        request: datafusion.RestartInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.RestartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datafusion.RestartInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.RestartInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restart_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -390,9 +345,7 @@ class DataFusionRestInterceptor:
         """
         return request, metadata
 
-    def post_restart_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restart_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restart_instance
 
         DEPRECATED. Please use the `post_restart_instance_with_metadata`
@@ -406,9 +359,7 @@ class DataFusionRestInterceptor:
         return response
 
     def post_restart_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restart_instance
 
@@ -425,12 +376,8 @@ class DataFusionRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: datafusion.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datafusion.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datafusion.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datafusion.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -438,9 +385,7 @@ class DataFusionRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -454,9 +399,7 @@ class DataFusionRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -554,9 +497,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -609,29 +550,17 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateInstance(
-        _BaseDataFusionRestTransport._BaseCreateInstance, DataFusionRestStub
-    ):
+    class _CreateInstance(_BaseDataFusionRestTransport._BaseCreateInstance, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -675,34 +604,18 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseDataFusionRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataFusionRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataFusionRestTransport._BaseCreateInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataFusionRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataFusionRestTransport._BaseCreateInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataFusionRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -726,13 +639,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -746,12 +653,8 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -772,22 +675,12 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 )
             return resp
 
-    class _DeleteInstance(
-        _BaseDataFusionRestTransport._BaseDeleteInstance, DataFusionRestStub
-    ):
+    class _DeleteInstance(_BaseDataFusionRestTransport._BaseDeleteInstance, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -830,28 +723,16 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseDataFusionRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataFusionRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataFusionRestTransport._BaseDeleteInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataFusionRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -875,12 +756,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -894,12 +770,8 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -920,22 +792,12 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseDataFusionRestTransport._BaseGetInstance, DataFusionRestStub
-    ):
+    class _GetInstance(_BaseDataFusionRestTransport._BaseGetInstance, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -975,30 +837,16 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                     Represents a Data Fusion instance.
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = (
-                _BaseDataFusionRestTransport._BaseGetInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataFusionRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataFusionRestTransport._BaseGetInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataFusionRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1022,12 +870,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1043,12 +886,8 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datafusion.Instance.to_json(response)
                 except:
@@ -1069,22 +908,12 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 )
             return resp
 
-    class _ListAvailableVersions(
-        _BaseDataFusionRestTransport._BaseListAvailableVersions, DataFusionRestStub
-    ):
+    class _ListAvailableVersions(_BaseDataFusionRestTransport._BaseListAvailableVersions, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.ListAvailableVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1126,28 +955,16 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseListAvailableVersions._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseListAvailableVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_available_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataFusionRestTransport._BaseListAvailableVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_available_versions(request, metadata)
+            transcoded_request = _BaseDataFusionRestTransport._BaseListAvailableVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataFusionRestTransport._BaseListAvailableVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataFusionRestTransport._BaseListAvailableVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1171,12 +988,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._ListAvailableVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1192,16 +1004,10 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_list_available_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_available_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_available_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datafusion.ListAvailableVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = datafusion.ListAvailableVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1220,22 +1026,12 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseDataFusionRestTransport._BaseListInstances, DataFusionRestStub
-    ):
+    class _ListInstances(_BaseDataFusionRestTransport._BaseListInstances, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1277,30 +1073,16 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = (
-                _BaseDataFusionRestTransport._BaseListInstances._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataFusionRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataFusionRestTransport._BaseListInstances._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataFusionRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1324,12 +1106,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1345,16 +1122,10 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datafusion.ListInstancesResponse.to_json(
-                        response
-                    )
+                    response_payload = datafusion.ListInstancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1373,22 +1144,12 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 )
             return resp
 
-    class _RestartInstance(
-        _BaseDataFusionRestTransport._BaseRestartInstance, DataFusionRestStub
-    ):
+    class _RestartInstance(_BaseDataFusionRestTransport._BaseRestartInstance, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.RestartInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1432,32 +1193,18 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseRestartInstance._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseRestartInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_restart_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseDataFusionRestTransport._BaseRestartInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restart_instance(request, metadata)
+            transcoded_request = _BaseDataFusionRestTransport._BaseRestartInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseDataFusionRestTransport._BaseRestartInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataFusionRestTransport._BaseRestartInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataFusionRestTransport._BaseRestartInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataFusionRestTransport._BaseRestartInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1481,13 +1228,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._RestartInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1501,12 +1242,8 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_restart_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restart_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restart_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1527,22 +1264,12 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
                 )
             return resp
 
-    class _UpdateInstance(
-        _BaseDataFusionRestTransport._BaseUpdateInstance, DataFusionRestStub
-    ):
+    class _UpdateInstance(_BaseDataFusionRestTransport._BaseUpdateInstance, DataFusionRestStub):
         def __hash__(self):
             return hash("DataFusionRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1589,34 +1316,18 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataFusionRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseDataFusionRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseDataFusionRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataFusionRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataFusionRestTransport._BaseUpdateInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataFusionRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataFusionRestTransport._BaseUpdateInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataFusionRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1640,13 +1351,7 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             # Send the request
             response = DataFusionRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1660,12 +1365,8 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1687,60 +1388,43 @@ class DataFusionRestTransport(_BaseDataFusionRestTransport):
             return resp
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[[datafusion.CreateInstanceRequest], operations_pb2.Operation]:
+    def create_instance(self) -> Callable[[datafusion.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[[datafusion.DeleteInstanceRequest], operations_pb2.Operation]:
+    def delete_instance(self) -> Callable[[datafusion.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[datafusion.GetInstanceRequest], datafusion.Instance]:
+    def get_instance(self) -> Callable[[datafusion.GetInstanceRequest], datafusion.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_available_versions(
-        self,
-    ) -> Callable[
-        [datafusion.ListAvailableVersionsRequest],
-        datafusion.ListAvailableVersionsResponse,
-    ]:
+    def list_available_versions(self) -> Callable[[datafusion.ListAvailableVersionsRequest], datafusion.ListAvailableVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAvailableVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[[datafusion.ListInstancesRequest], datafusion.ListInstancesResponse]:
+    def list_instances(self) -> Callable[[datafusion.ListInstancesRequest], datafusion.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restart_instance(
-        self,
-    ) -> Callable[[datafusion.RestartInstanceRequest], operations_pb2.Operation]:
+    def restart_instance(self) -> Callable[[datafusion.RestartInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestartInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[[datafusion.UpdateInstanceRequest], operations_pb2.Operation]:
+    def update_instance(self) -> Callable[[datafusion.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore

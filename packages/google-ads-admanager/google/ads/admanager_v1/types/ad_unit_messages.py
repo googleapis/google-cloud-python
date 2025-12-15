@@ -21,11 +21,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    ad_unit_enums,
-    applied_label,
-    environment_type_enum,
-)
+from google.ads.admanager_v1.types import ad_unit_enums, applied_label, environment_type_enum
 from google.ads.admanager_v1.types import frequency_cap as gaa_frequency_cap
 from google.ads.admanager_v1.types import size as gaa_size
 
@@ -282,23 +278,17 @@ class AdUnit(proto.Message):
         number=21,
         message=applied_label.AppliedLabel,
     )
-    effective_applied_labels: MutableSequence[
-        applied_label.AppliedLabel
-    ] = proto.RepeatedField(
+    effective_applied_labels: MutableSequence[applied_label.AppliedLabel] = proto.RepeatedField(
         proto.MESSAGE,
         number=22,
         message=applied_label.AppliedLabel,
     )
-    applied_label_frequency_caps: MutableSequence[
-        "LabelFrequencyCap"
-    ] = proto.RepeatedField(
+    applied_label_frequency_caps: MutableSequence["LabelFrequencyCap"] = proto.RepeatedField(
         proto.MESSAGE,
         number=23,
         message="LabelFrequencyCap",
     )
-    effective_label_frequency_caps: MutableSequence[
-        "LabelFrequencyCap"
-    ] = proto.RepeatedField(
+    effective_label_frequency_caps: MutableSequence["LabelFrequencyCap"] = proto.RepeatedField(
         proto.MESSAGE,
         number=24,
         message="LabelFrequencyCap",
@@ -349,13 +339,11 @@ class AdUnitSize(proto.Message):
         optional=True,
         message=gaa_size.Size,
     )
-    environment_type: environment_type_enum.EnvironmentTypeEnum.EnvironmentType = (
-        proto.Field(
-            proto.ENUM,
-            number=2,
-            optional=True,
-            enum=environment_type_enum.EnvironmentTypeEnum.EnvironmentType,
-        )
+    environment_type: environment_type_enum.EnvironmentTypeEnum.EnvironmentType = proto.Field(
+        proto.ENUM,
+        number=2,
+        optional=True,
+        enum=environment_type_enum.EnvironmentTypeEnum.EnvironmentType,
     )
     companions: MutableSequence[gaa_size.Size] = proto.RepeatedField(
         proto.MESSAGE,

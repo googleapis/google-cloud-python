@@ -42,10 +42,7 @@ def sample_batch_create_resource_value_configs():
     requests = securitycenter_v1.CreateResourceValueConfigRequest()
     requests.parent = "parent_value"
     requests.resource_value_config.resource_value = "NONE"
-    requests.resource_value_config.tag_values = [
-        "tag_values_value1",
-        "tag_values_value2",
-    ]
+    requests.resource_value_config.tag_values = ["tag_values_value1", "tag_values_value2"]
 
     request = securitycenter_v1.BatchCreateResourceValueConfigsRequest(
         parent="parent_value",

@@ -18,12 +18,8 @@ from google.cloud.certificate_manager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.certificate_manager_v1.services.certificate_manager.async_client import (
-    CertificateManagerAsyncClient,
-)
-from google.cloud.certificate_manager_v1.services.certificate_manager.client import (
-    CertificateManagerClient,
-)
+from google.cloud.certificate_manager_v1.services.certificate_manager.async_client import CertificateManagerAsyncClient
+from google.cloud.certificate_manager_v1.services.certificate_manager.client import CertificateManagerClient
 from google.cloud.certificate_manager_v1.types.certificate_issuance_config import (
     CertificateIssuanceConfig,
     CreateCertificateIssuanceConfigRequest,

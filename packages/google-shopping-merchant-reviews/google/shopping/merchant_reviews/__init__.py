@@ -18,18 +18,10 @@ from google.shopping.merchant_reviews import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.shopping.merchant_reviews_v1beta.services.merchant_reviews_service.async_client import (
-    MerchantReviewsServiceAsyncClient,
-)
-from google.shopping.merchant_reviews_v1beta.services.merchant_reviews_service.client import (
-    MerchantReviewsServiceClient,
-)
-from google.shopping.merchant_reviews_v1beta.services.product_reviews_service.async_client import (
-    ProductReviewsServiceAsyncClient,
-)
-from google.shopping.merchant_reviews_v1beta.services.product_reviews_service.client import (
-    ProductReviewsServiceClient,
-)
+from google.shopping.merchant_reviews_v1beta.services.merchant_reviews_service.async_client import MerchantReviewsServiceAsyncClient
+from google.shopping.merchant_reviews_v1beta.services.merchant_reviews_service.client import MerchantReviewsServiceClient
+from google.shopping.merchant_reviews_v1beta.services.product_reviews_service.async_client import ProductReviewsServiceAsyncClient
+from google.shopping.merchant_reviews_v1beta.services.product_reviews_service.client import ProductReviewsServiceClient
 from google.shopping.merchant_reviews_v1beta.types.merchantreviews import (
     DeleteMerchantReviewRequest,
     GetMerchantReviewRequest,
@@ -38,10 +30,7 @@ from google.shopping.merchant_reviews_v1beta.types.merchantreviews import (
     ListMerchantReviewsResponse,
     MerchantReview,
 )
-from google.shopping.merchant_reviews_v1beta.types.merchantreviews_common import (
-    MerchantReviewAttributes,
-    MerchantReviewStatus,
-)
+from google.shopping.merchant_reviews_v1beta.types.merchantreviews_common import MerchantReviewAttributes, MerchantReviewStatus
 from google.shopping.merchant_reviews_v1beta.types.productreviews import (
     DeleteProductReviewRequest,
     GetProductReviewRequest,
@@ -50,10 +39,7 @@ from google.shopping.merchant_reviews_v1beta.types.productreviews import (
     ListProductReviewsResponse,
     ProductReview,
 )
-from google.shopping.merchant_reviews_v1beta.types.productreviews_common import (
-    ProductReviewAttributes,
-    ProductReviewStatus,
-)
+from google.shopping.merchant_reviews_v1beta.types.productreviews_common import ProductReviewAttributes, ProductReviewStatus
 
 __all__ = (
     "MerchantReviewsServiceClient",

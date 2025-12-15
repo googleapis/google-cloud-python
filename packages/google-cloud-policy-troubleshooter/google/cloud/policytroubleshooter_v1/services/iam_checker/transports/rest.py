@@ -87,12 +87,8 @@ class IamCheckerRestInterceptor:
     """
 
     def pre_troubleshoot_iam_policy(
-        self,
-        request: checker.TroubleshootIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        checker.TroubleshootIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: checker.TroubleshootIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[checker.TroubleshootIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for troubleshoot_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -100,9 +96,7 @@ class IamCheckerRestInterceptor:
         """
         return request, metadata
 
-    def post_troubleshoot_iam_policy(
-        self, response: checker.TroubleshootIamPolicyResponse
-    ) -> checker.TroubleshootIamPolicyResponse:
+    def post_troubleshoot_iam_policy(self, response: checker.TroubleshootIamPolicyResponse) -> checker.TroubleshootIamPolicyResponse:
         """Post-rpc interceptor for troubleshoot_iam_policy
 
         DEPRECATED. Please use the `post_troubleshoot_iam_policy_with_metadata`
@@ -116,12 +110,8 @@ class IamCheckerRestInterceptor:
         return response
 
     def post_troubleshoot_iam_policy_with_metadata(
-        self,
-        response: checker.TroubleshootIamPolicyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        checker.TroubleshootIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: checker.TroubleshootIamPolicyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[checker.TroubleshootIamPolicyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for troubleshoot_iam_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -219,30 +209,18 @@ class IamCheckerRestTransport(_BaseIamCheckerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IamCheckerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _TroubleshootIamPolicy(
-        _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy, IamCheckerRestStub
-    ):
+    class _TroubleshootIamPolicy(_BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy, IamCheckerRestStub):
         def __hash__(self):
             return hash("IamCheckerRestTransport.TroubleshootIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -285,32 +263,18 @@ class IamCheckerRestTransport(_BaseIamCheckerRestTransport):
 
             """
 
-            http_options = (
-                _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_http_options()
-            )
+            http_options = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_troubleshoot_iam_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_troubleshoot_iam_policy(request, metadata)
+            transcoded_request = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIamCheckerRestTransport._BaseTroubleshootIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -334,13 +298,7 @@ class IamCheckerRestTransport(_BaseIamCheckerRestTransport):
 
             # Send the request
             response = IamCheckerRestTransport._TroubleshootIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -356,16 +314,10 @@ class IamCheckerRestTransport(_BaseIamCheckerRestTransport):
 
             resp = self._interceptor.post_troubleshoot_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_troubleshoot_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_troubleshoot_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = checker.TroubleshootIamPolicyResponse.to_json(
-                        response
-                    )
+                    response_payload = checker.TroubleshootIamPolicyResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -385,11 +337,7 @@ class IamCheckerRestTransport(_BaseIamCheckerRestTransport):
             return resp
 
     @property
-    def troubleshoot_iam_policy(
-        self,
-    ) -> Callable[
-        [checker.TroubleshootIamPolicyRequest], checker.TroubleshootIamPolicyResponse
-    ]:
+    def troubleshoot_iam_policy(self) -> Callable[[checker.TroubleshootIamPolicyRequest], checker.TroubleshootIamPolicyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TroubleshootIamPolicy(self._session, self._host, self._interceptor)  # type: ignore

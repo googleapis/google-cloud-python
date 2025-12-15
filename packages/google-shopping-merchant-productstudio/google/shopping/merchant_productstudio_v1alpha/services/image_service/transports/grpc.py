@@ -44,9 +44,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -56,10 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -78,11 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -217,18 +208,14 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -262,9 +249,7 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,10 +310,7 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
     @property
     def generate_product_image_background(
         self,
-    ) -> Callable[
-        [image.GenerateProductImageBackgroundRequest],
-        image.GenerateProductImageBackgroundResponse,
-    ]:
+    ) -> Callable[[image.GenerateProductImageBackgroundRequest], image.GenerateProductImageBackgroundResponse]:
         r"""Return a callable for the generate product image
         background method over gRPC.
 
@@ -348,9 +330,7 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_product_image_background" not in self._stubs:
-            self._stubs[
-                "generate_product_image_background"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_product_image_background"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.productstudio.v1alpha.ImageService/GenerateProductImageBackground",
                 request_serializer=image.GenerateProductImageBackgroundRequest.serialize,
                 response_deserializer=image.GenerateProductImageBackgroundResponse.deserialize,
@@ -358,12 +338,7 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
         return self._stubs["generate_product_image_background"]
 
     @property
-    def remove_product_image_background(
-        self,
-    ) -> Callable[
-        [image.RemoveProductImageBackgroundRequest],
-        image.RemoveProductImageBackgroundResponse,
-    ]:
+    def remove_product_image_background(self) -> Callable[[image.RemoveProductImageBackgroundRequest], image.RemoveProductImageBackgroundResponse]:
         r"""Return a callable for the remove product image
         background method over gRPC.
 
@@ -381,9 +356,7 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "remove_product_image_background" not in self._stubs:
-            self._stubs[
-                "remove_product_image_background"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["remove_product_image_background"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.productstudio.v1alpha.ImageService/RemoveProductImageBackground",
                 request_serializer=image.RemoveProductImageBackgroundRequest.serialize,
                 response_deserializer=image.RemoveProductImageBackgroundResponse.deserialize,
@@ -391,11 +364,7 @@ class ImageServiceGrpcTransport(ImageServiceTransport):
         return self._stubs["remove_product_image_background"]
 
     @property
-    def upscale_product_image(
-        self,
-    ) -> Callable[
-        [image.UpscaleProductImageRequest], image.UpscaleProductImageResponse
-    ]:
+    def upscale_product_image(self) -> Callable[[image.UpscaleProductImageRequest], image.UpscaleProductImageResponse]:
         r"""Return a callable for the upscale product image method over gRPC.
 
         UpscaleProductImage generates a new image where the

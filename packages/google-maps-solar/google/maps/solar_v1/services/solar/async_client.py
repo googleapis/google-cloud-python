@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -78,15 +67,11 @@ class SolarAsyncClient:
     _DEFAULT_UNIVERSE = SolarClient._DEFAULT_UNIVERSE
 
     common_billing_account_path = staticmethod(SolarClient.common_billing_account_path)
-    parse_common_billing_account_path = staticmethod(
-        SolarClient.parse_common_billing_account_path
-    )
+    parse_common_billing_account_path = staticmethod(SolarClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(SolarClient.common_folder_path)
     parse_common_folder_path = staticmethod(SolarClient.parse_common_folder_path)
     common_organization_path = staticmethod(SolarClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        SolarClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(SolarClient.parse_common_organization_path)
     common_project_path = staticmethod(SolarClient.common_project_path)
     parse_common_project_path = staticmethod(SolarClient.parse_common_project_path)
     common_location_path = staticmethod(SolarClient.common_location_path)
@@ -126,9 +111,7 @@ class SolarAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -195,9 +178,7 @@ class SolarAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, SolarTransport, Callable[..., SolarTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, SolarTransport, Callable[..., SolarTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -257,20 +238,14 @@ class SolarAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.maps.solar_v1.SolarAsyncClient`.",
                 extra={
                     "serviceName": "google.maps.solar.v1.Solar",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -281,9 +256,7 @@ class SolarAsyncClient:
 
     async def find_closest_building_insights(
         self,
-        request: Optional[
-            Union[solar_service.FindClosestBuildingInsightsRequest, dict]
-        ] = None,
+        request: Optional[Union[solar_service.FindClosestBuildingInsightsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -345,9 +318,7 @@ class SolarAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.find_closest_building_insights
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.find_closest_building_insights]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -437,9 +408,7 @@ class SolarAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_data_layers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_data_layers]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -560,9 +529,7 @@ class SolarAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_geo_tiff
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_geo_tiff]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -585,9 +552,7 @@ class SolarAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

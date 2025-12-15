@@ -87,13 +87,8 @@ class OrderTrackingSignalsServiceRestInterceptor:
     """
 
     def pre_create_order_tracking_signal(
-        self,
-        request: order_tracking_signals.CreateOrderTrackingSignalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        order_tracking_signals.CreateOrderTrackingSignalRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: order_tracking_signals.CreateOrderTrackingSignalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[order_tracking_signals.CreateOrderTrackingSignalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_order_tracking_signal
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +96,7 @@ class OrderTrackingSignalsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_order_tracking_signal(
-        self, response: order_tracking_signals.OrderTrackingSignal
-    ) -> order_tracking_signals.OrderTrackingSignal:
+    def post_create_order_tracking_signal(self, response: order_tracking_signals.OrderTrackingSignal) -> order_tracking_signals.OrderTrackingSignal:
         """Post-rpc interceptor for create_order_tracking_signal
 
         DEPRECATED. Please use the `post_create_order_tracking_signal_with_metadata`
@@ -117,13 +110,8 @@ class OrderTrackingSignalsServiceRestInterceptor:
         return response
 
     def post_create_order_tracking_signal_with_metadata(
-        self,
-        response: order_tracking_signals.OrderTrackingSignal,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        order_tracking_signals.OrderTrackingSignal,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: order_tracking_signals.OrderTrackingSignal, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[order_tracking_signals.OrderTrackingSignal, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_order_tracking_signal
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,9 +134,7 @@ class OrderTrackingSignalsServiceRestStub:
     _interceptor: OrderTrackingSignalsServiceRestInterceptor
 
 
-class OrderTrackingSignalsServiceRestTransport(
-    _BaseOrderTrackingSignalsServiceRestTransport
-):
+class OrderTrackingSignalsServiceRestTransport(_BaseOrderTrackingSignalsServiceRestTransport):
     """REST backend synchronous transport for OrderTrackingSignalsService.
 
     Service to serve order tracking signals public API.
@@ -220,33 +206,20 @@ class OrderTrackingSignalsServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OrderTrackingSignalsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CreateOrderTrackingSignal(
-        _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal,
-        OrderTrackingSignalsServiceRestStub,
+        _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal, OrderTrackingSignalsServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OrderTrackingSignalsServiceRestTransport.CreateOrderTrackingSignal"
-            )
+            return hash("OrderTrackingSignalsServiceRestTransport.CreateOrderTrackingSignal")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -293,32 +266,20 @@ class OrderTrackingSignalsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_http_options()
-            )
+            http_options = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_order_tracking_signal(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_order_tracking_signal(request, metadata)
             transcoded_request = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOrderTrackingSignalsServiceRestTransport._BaseCreateOrderTrackingSignal._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -342,13 +303,7 @@ class OrderTrackingSignalsServiceRestTransport(
 
             # Send the request
             response = OrderTrackingSignalsServiceRestTransport._CreateOrderTrackingSignal._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -364,16 +319,10 @@ class OrderTrackingSignalsServiceRestTransport(
 
             resp = self._interceptor.post_create_order_tracking_signal(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_order_tracking_signal_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_order_tracking_signal_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        order_tracking_signals.OrderTrackingSignal.to_json(response)
-                    )
+                    response_payload = order_tracking_signals.OrderTrackingSignal.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -395,10 +344,7 @@ class OrderTrackingSignalsServiceRestTransport(
     @property
     def create_order_tracking_signal(
         self,
-    ) -> Callable[
-        [order_tracking_signals.CreateOrderTrackingSignalRequest],
-        order_tracking_signals.OrderTrackingSignal,
-    ]:
+    ) -> Callable[[order_tracking_signals.CreateOrderTrackingSignalRequest], order_tracking_signals.OrderTrackingSignal]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOrderTrackingSignal(self._session, self._host, self._interceptor)  # type: ignore

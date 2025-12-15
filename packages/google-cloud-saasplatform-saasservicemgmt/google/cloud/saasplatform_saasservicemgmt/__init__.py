@@ -18,18 +18,10 @@ from google.cloud.saasplatform_saasservicemgmt import gapic_version as package_v
 __version__ = package_version.__version__
 
 
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.async_client import (
-    SaasDeploymentsAsyncClient,
-)
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.client import (
-    SaasDeploymentsClient,
-)
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts.async_client import (
-    SaasRolloutsAsyncClient,
-)
-from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts.client import (
-    SaasRolloutsClient,
-)
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.async_client import SaasDeploymentsAsyncClient
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_deployments.client import SaasDeploymentsClient
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts.async_client import SaasRolloutsAsyncClient
+from google.cloud.saasplatform_saasservicemgmt_v1beta1.services.saas_rollouts.client import SaasRolloutsClient
 from google.cloud.saasplatform_saasservicemgmt_v1beta1.types.common import (
     Aggregate,
     Blueprint,

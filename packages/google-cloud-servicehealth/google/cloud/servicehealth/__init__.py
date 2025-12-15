@@ -18,12 +18,8 @@ from google.cloud.servicehealth import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.servicehealth_v1.services.service_health.async_client import (
-    ServiceHealthAsyncClient,
-)
-from google.cloud.servicehealth_v1.services.service_health.client import (
-    ServiceHealthClient,
-)
+from google.cloud.servicehealth_v1.services.service_health.async_client import ServiceHealthAsyncClient
+from google.cloud.servicehealth_v1.services.service_health.client import ServiceHealthClient
 from google.cloud.servicehealth_v1.types.event_resources import (
     Asset,
     Event,

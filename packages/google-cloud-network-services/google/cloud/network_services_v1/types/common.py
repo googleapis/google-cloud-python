@@ -232,9 +232,7 @@ class EndpointMatcher(proto.Message):
             number=1,
             enum="EndpointMatcher.MetadataLabelMatcher.MetadataLabelMatchCriteria",
         )
-        metadata_labels: MutableSequence[
-            "EndpointMatcher.MetadataLabelMatcher.MetadataLabels"
-        ] = proto.RepeatedField(
+        metadata_labels: MutableSequence["EndpointMatcher.MetadataLabelMatcher.MetadataLabels"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="EndpointMatcher.MetadataLabelMatcher.MetadataLabels",

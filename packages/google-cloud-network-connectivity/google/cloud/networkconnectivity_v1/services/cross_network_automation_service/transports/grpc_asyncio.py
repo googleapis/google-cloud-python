@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -117,9 +106,7 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
-    CrossNetworkAutomationServiceTransport
-):
+class CrossNetworkAutomationServiceGrpcAsyncIOTransport(CrossNetworkAutomationServiceTransport):
     """gRPC AsyncIO backend transport for CrossNetworkAutomationService.
 
     The service for CrossNetworkAutomation resources.
@@ -273,18 +260,14 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +303,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -345,9 +326,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -355,10 +334,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def list_service_connection_maps(
         self,
-    ) -> Callable[
-        [cross_network_automation.ListServiceConnectionMapsRequest],
-        Awaitable[cross_network_automation.ListServiceConnectionMapsResponse],
-    ]:
+    ) -> Callable[[cross_network_automation.ListServiceConnectionMapsRequest], Awaitable[cross_network_automation.ListServiceConnectionMapsResponse]]:
         r"""Return a callable for the list service connection maps method over gRPC.
 
         Lists ServiceConnectionMaps in a given project and
@@ -375,9 +351,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_service_connection_maps" not in self._stubs:
-            self._stubs[
-                "list_service_connection_maps"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_service_connection_maps"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionMaps",
                 request_serializer=cross_network_automation.ListServiceConnectionMapsRequest.serialize,
                 response_deserializer=cross_network_automation.ListServiceConnectionMapsResponse.deserialize,
@@ -387,10 +361,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def get_service_connection_map(
         self,
-    ) -> Callable[
-        [cross_network_automation.GetServiceConnectionMapRequest],
-        Awaitable[cross_network_automation.ServiceConnectionMap],
-    ]:
+    ) -> Callable[[cross_network_automation.GetServiceConnectionMapRequest], Awaitable[cross_network_automation.ServiceConnectionMap]]:
         r"""Return a callable for the get service connection map method over gRPC.
 
         Gets details of a single ServiceConnectionMap.
@@ -406,9 +377,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_service_connection_map" not in self._stubs:
-            self._stubs[
-                "get_service_connection_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_service_connection_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionMap",
                 request_serializer=cross_network_automation.GetServiceConnectionMapRequest.serialize,
                 response_deserializer=cross_network_automation.ServiceConnectionMap.deserialize,
@@ -418,10 +387,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def create_service_connection_map(
         self,
-    ) -> Callable[
-        [cross_network_automation.CreateServiceConnectionMapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.CreateServiceConnectionMapRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create service connection map method over gRPC.
 
         Creates a new ServiceConnectionMap in a given project
@@ -438,9 +404,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_connection_map" not in self._stubs:
-            self._stubs[
-                "create_service_connection_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_service_connection_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionMap",
                 request_serializer=cross_network_automation.CreateServiceConnectionMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -450,10 +414,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def update_service_connection_map(
         self,
-    ) -> Callable[
-        [cross_network_automation.UpdateServiceConnectionMapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.UpdateServiceConnectionMapRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update service connection map method over gRPC.
 
         Updates the parameters of a single
@@ -470,9 +431,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_service_connection_map" not in self._stubs:
-            self._stubs[
-                "update_service_connection_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_service_connection_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceConnectionMap",
                 request_serializer=cross_network_automation.UpdateServiceConnectionMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -482,10 +441,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def delete_service_connection_map(
         self,
-    ) -> Callable[
-        [cross_network_automation.DeleteServiceConnectionMapRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.DeleteServiceConnectionMapRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete service connection map method over gRPC.
 
         Deletes a single ServiceConnectionMap.
@@ -501,9 +457,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_connection_map" not in self._stubs:
-            self._stubs[
-                "delete_service_connection_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_service_connection_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionMap",
                 request_serializer=cross_network_automation.DeleteServiceConnectionMapRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -514,8 +468,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     def list_service_connection_policies(
         self,
     ) -> Callable[
-        [cross_network_automation.ListServiceConnectionPoliciesRequest],
-        Awaitable[cross_network_automation.ListServiceConnectionPoliciesResponse],
+        [cross_network_automation.ListServiceConnectionPoliciesRequest], Awaitable[cross_network_automation.ListServiceConnectionPoliciesResponse]
     ]:
         r"""Return a callable for the list service connection
         policies method over gRPC.
@@ -534,9 +487,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_service_connection_policies" not in self._stubs:
-            self._stubs[
-                "list_service_connection_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_service_connection_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionPolicies",
                 request_serializer=cross_network_automation.ListServiceConnectionPoliciesRequest.serialize,
                 response_deserializer=cross_network_automation.ListServiceConnectionPoliciesResponse.deserialize,
@@ -546,10 +497,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def get_service_connection_policy(
         self,
-    ) -> Callable[
-        [cross_network_automation.GetServiceConnectionPolicyRequest],
-        Awaitable[cross_network_automation.ServiceConnectionPolicy],
-    ]:
+    ) -> Callable[[cross_network_automation.GetServiceConnectionPolicyRequest], Awaitable[cross_network_automation.ServiceConnectionPolicy]]:
         r"""Return a callable for the get service connection policy method over gRPC.
 
         Gets details of a single ServiceConnectionPolicy.
@@ -565,9 +513,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_service_connection_policy" not in self._stubs:
-            self._stubs[
-                "get_service_connection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_service_connection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionPolicy",
                 request_serializer=cross_network_automation.GetServiceConnectionPolicyRequest.serialize,
                 response_deserializer=cross_network_automation.ServiceConnectionPolicy.deserialize,
@@ -577,10 +523,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def create_service_connection_policy(
         self,
-    ) -> Callable[
-        [cross_network_automation.CreateServiceConnectionPolicyRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.CreateServiceConnectionPolicyRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create service connection
         policy method over gRPC.
 
@@ -598,9 +541,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_connection_policy" not in self._stubs:
-            self._stubs[
-                "create_service_connection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_service_connection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionPolicy",
                 request_serializer=cross_network_automation.CreateServiceConnectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -610,10 +551,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def update_service_connection_policy(
         self,
-    ) -> Callable[
-        [cross_network_automation.UpdateServiceConnectionPolicyRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.UpdateServiceConnectionPolicyRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update service connection
         policy method over gRPC.
 
@@ -631,9 +569,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_service_connection_policy" not in self._stubs:
-            self._stubs[
-                "update_service_connection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_service_connection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/UpdateServiceConnectionPolicy",
                 request_serializer=cross_network_automation.UpdateServiceConnectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -643,10 +579,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def delete_service_connection_policy(
         self,
-    ) -> Callable[
-        [cross_network_automation.DeleteServiceConnectionPolicyRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.DeleteServiceConnectionPolicyRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete service connection
         policy method over gRPC.
 
@@ -663,9 +596,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_connection_policy" not in self._stubs:
-            self._stubs[
-                "delete_service_connection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_service_connection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionPolicy",
                 request_serializer=cross_network_automation.DeleteServiceConnectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -675,10 +606,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def list_service_classes(
         self,
-    ) -> Callable[
-        [cross_network_automation.ListServiceClassesRequest],
-        Awaitable[cross_network_automation.ListServiceClassesResponse],
-    ]:
+    ) -> Callable[[cross_network_automation.ListServiceClassesRequest], Awaitable[cross_network_automation.ListServiceClassesResponse]]:
         r"""Return a callable for the list service classes method over gRPC.
 
         Lists ServiceClasses in a given project and location.
@@ -702,12 +630,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         return self._stubs["list_service_classes"]
 
     @property
-    def get_service_class(
-        self,
-    ) -> Callable[
-        [cross_network_automation.GetServiceClassRequest],
-        Awaitable[cross_network_automation.ServiceClass],
-    ]:
+    def get_service_class(self) -> Callable[[cross_network_automation.GetServiceClassRequest], Awaitable[cross_network_automation.ServiceClass]]:
         r"""Return a callable for the get service class method over gRPC.
 
         Gets details of a single ServiceClass.
@@ -731,12 +654,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         return self._stubs["get_service_class"]
 
     @property
-    def update_service_class(
-        self,
-    ) -> Callable[
-        [cross_network_automation.UpdateServiceClassRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_service_class(self) -> Callable[[cross_network_automation.UpdateServiceClassRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update service class method over gRPC.
 
         Updates the parameters of a single ServiceClass.
@@ -760,12 +678,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         return self._stubs["update_service_class"]
 
     @property
-    def delete_service_class(
-        self,
-    ) -> Callable[
-        [cross_network_automation.DeleteServiceClassRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_service_class(self) -> Callable[[cross_network_automation.DeleteServiceClassRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete service class method over gRPC.
 
         Deletes a single ServiceClass.
@@ -791,10 +704,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def get_service_connection_token(
         self,
-    ) -> Callable[
-        [cross_network_automation.GetServiceConnectionTokenRequest],
-        Awaitable[cross_network_automation.ServiceConnectionToken],
-    ]:
+    ) -> Callable[[cross_network_automation.GetServiceConnectionTokenRequest], Awaitable[cross_network_automation.ServiceConnectionToken]]:
         r"""Return a callable for the get service connection token method over gRPC.
 
         Gets details of a single ServiceConnectionToken.
@@ -810,9 +720,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_service_connection_token" not in self._stubs:
-            self._stubs[
-                "get_service_connection_token"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_service_connection_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/GetServiceConnectionToken",
                 request_serializer=cross_network_automation.GetServiceConnectionTokenRequest.serialize,
                 response_deserializer=cross_network_automation.ServiceConnectionToken.deserialize,
@@ -823,8 +731,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     def list_service_connection_tokens(
         self,
     ) -> Callable[
-        [cross_network_automation.ListServiceConnectionTokensRequest],
-        Awaitable[cross_network_automation.ListServiceConnectionTokensResponse],
+        [cross_network_automation.ListServiceConnectionTokensRequest], Awaitable[cross_network_automation.ListServiceConnectionTokensResponse]
     ]:
         r"""Return a callable for the list service connection tokens method over gRPC.
 
@@ -842,9 +749,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_service_connection_tokens" not in self._stubs:
-            self._stubs[
-                "list_service_connection_tokens"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_service_connection_tokens"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/ListServiceConnectionTokens",
                 request_serializer=cross_network_automation.ListServiceConnectionTokensRequest.serialize,
                 response_deserializer=cross_network_automation.ListServiceConnectionTokensResponse.deserialize,
@@ -854,10 +759,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def create_service_connection_token(
         self,
-    ) -> Callable[
-        [cross_network_automation.CreateServiceConnectionTokenRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.CreateServiceConnectionTokenRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create service connection
         token method over gRPC.
 
@@ -875,9 +777,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_service_connection_token" not in self._stubs:
-            self._stubs[
-                "create_service_connection_token"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_service_connection_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/CreateServiceConnectionToken",
                 request_serializer=cross_network_automation.CreateServiceConnectionTokenRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -887,10 +787,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def delete_service_connection_token(
         self,
-    ) -> Callable[
-        [cross_network_automation.DeleteServiceConnectionTokenRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[cross_network_automation.DeleteServiceConnectionTokenRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete service connection
         token method over gRPC.
 
@@ -907,9 +804,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_service_connection_token" not in self._stubs:
-            self._stubs[
-                "delete_service_connection_token"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_service_connection_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.networkconnectivity.v1.CrossNetworkAutomationService/DeleteServiceConnectionToken",
                 request_serializer=cross_network_automation.DeleteServiceConnectionTokenRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1122,9 +1017,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1141,9 +1034,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1228,10 +1119,7 @@ class CrossNetworkAutomationServiceGrpcAsyncIOTransport(
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

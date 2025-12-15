@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +213,14 @@ class StorageControlGrpcTransport(StorageControlTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +254,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,17 +321,13 @@ class StorageControlGrpcTransport(StorageControlTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_folder(
-        self,
-    ) -> Callable[[storage_control.CreateFolderRequest], storage_control.Folder]:
+    def create_folder(self) -> Callable[[storage_control.CreateFolderRequest], storage_control.Folder]:
         r"""Return a callable for the create folder method over gRPC.
 
         Creates a new folder. This operation is only
@@ -371,9 +352,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["create_folder"]
 
     @property
-    def delete_folder(
-        self,
-    ) -> Callable[[storage_control.DeleteFolderRequest], empty_pb2.Empty]:
+    def delete_folder(self) -> Callable[[storage_control.DeleteFolderRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete folder method over gRPC.
 
         Permanently deletes an empty folder. This operation
@@ -399,9 +378,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["delete_folder"]
 
     @property
-    def get_folder(
-        self,
-    ) -> Callable[[storage_control.GetFolderRequest], storage_control.Folder]:
+    def get_folder(self) -> Callable[[storage_control.GetFolderRequest], storage_control.Folder]:
         r"""Return a callable for the get folder method over gRPC.
 
         Returns metadata for the specified folder. This
@@ -427,11 +404,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["get_folder"]
 
     @property
-    def list_folders(
-        self,
-    ) -> Callable[
-        [storage_control.ListFoldersRequest], storage_control.ListFoldersResponse
-    ]:
+    def list_folders(self) -> Callable[[storage_control.ListFoldersRequest], storage_control.ListFoldersResponse]:
         r"""Return a callable for the list folders method over gRPC.
 
         Retrieves a list of folders. This operation is only
@@ -456,9 +429,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["list_folders"]
 
     @property
-    def rename_folder(
-        self,
-    ) -> Callable[[storage_control.RenameFolderRequest], operations_pb2.Operation]:
+    def rename_folder(self) -> Callable[[storage_control.RenameFolderRequest], operations_pb2.Operation]:
         r"""Return a callable for the rename folder method over gRPC.
 
         Renames a source folder to a destination folder. This
@@ -486,11 +457,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["rename_folder"]
 
     @property
-    def get_storage_layout(
-        self,
-    ) -> Callable[
-        [storage_control.GetStorageLayoutRequest], storage_control.StorageLayout
-    ]:
+    def get_storage_layout(self) -> Callable[[storage_control.GetStorageLayoutRequest], storage_control.StorageLayout]:
         r"""Return a callable for the get storage layout method over gRPC.
 
         Returns the storage layout configuration for a given
@@ -515,11 +482,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["get_storage_layout"]
 
     @property
-    def create_managed_folder(
-        self,
-    ) -> Callable[
-        [storage_control.CreateManagedFolderRequest], storage_control.ManagedFolder
-    ]:
+    def create_managed_folder(self) -> Callable[[storage_control.CreateManagedFolderRequest], storage_control.ManagedFolder]:
         r"""Return a callable for the create managed folder method over gRPC.
 
         Creates a new managed folder.
@@ -543,9 +506,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["create_managed_folder"]
 
     @property
-    def delete_managed_folder(
-        self,
-    ) -> Callable[[storage_control.DeleteManagedFolderRequest], empty_pb2.Empty]:
+    def delete_managed_folder(self) -> Callable[[storage_control.DeleteManagedFolderRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete managed folder method over gRPC.
 
         Permanently deletes an empty managed folder.
@@ -569,11 +530,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["delete_managed_folder"]
 
     @property
-    def get_managed_folder(
-        self,
-    ) -> Callable[
-        [storage_control.GetManagedFolderRequest], storage_control.ManagedFolder
-    ]:
+    def get_managed_folder(self) -> Callable[[storage_control.GetManagedFolderRequest], storage_control.ManagedFolder]:
         r"""Return a callable for the get managed folder method over gRPC.
 
         Returns metadata for the specified managed folder.
@@ -597,12 +554,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["get_managed_folder"]
 
     @property
-    def list_managed_folders(
-        self,
-    ) -> Callable[
-        [storage_control.ListManagedFoldersRequest],
-        storage_control.ListManagedFoldersResponse,
-    ]:
+    def list_managed_folders(self) -> Callable[[storage_control.ListManagedFoldersRequest], storage_control.ListManagedFoldersResponse]:
         r"""Return a callable for the list managed folders method over gRPC.
 
         Retrieves a list of managed folders for a given
@@ -627,11 +579,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["list_managed_folders"]
 
     @property
-    def create_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.CreateAnywhereCacheRequest], operations_pb2.Operation
-    ]:
+    def create_anywhere_cache(self) -> Callable[[storage_control.CreateAnywhereCacheRequest], operations_pb2.Operation]:
         r"""Return a callable for the create anywhere cache method over gRPC.
 
         Creates an Anywhere Cache instance.
@@ -655,11 +603,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["create_anywhere_cache"]
 
     @property
-    def update_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.UpdateAnywhereCacheRequest], operations_pb2.Operation
-    ]:
+    def update_anywhere_cache(self) -> Callable[[storage_control.UpdateAnywhereCacheRequest], operations_pb2.Operation]:
         r"""Return a callable for the update anywhere cache method over gRPC.
 
         Updates an Anywhere Cache instance. Mutable fields include
@@ -684,11 +628,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["update_anywhere_cache"]
 
     @property
-    def disable_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.DisableAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def disable_anywhere_cache(self) -> Callable[[storage_control.DisableAnywhereCacheRequest], storage_control.AnywhereCache]:
         r"""Return a callable for the disable anywhere cache method over gRPC.
 
         Disables an Anywhere Cache instance. A disabled
@@ -716,11 +656,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["disable_anywhere_cache"]
 
     @property
-    def pause_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.PauseAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def pause_anywhere_cache(self) -> Callable[[storage_control.PauseAnywhereCacheRequest], storage_control.AnywhereCache]:
         r"""Return a callable for the pause anywhere cache method over gRPC.
 
         Pauses an Anywhere Cache instance.
@@ -744,11 +680,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["pause_anywhere_cache"]
 
     @property
-    def resume_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.ResumeAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def resume_anywhere_cache(self) -> Callable[[storage_control.ResumeAnywhereCacheRequest], storage_control.AnywhereCache]:
         r"""Return a callable for the resume anywhere cache method over gRPC.
 
         Resumes a disabled or paused Anywhere Cache instance.
@@ -772,11 +704,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["resume_anywhere_cache"]
 
     @property
-    def get_anywhere_cache(
-        self,
-    ) -> Callable[
-        [storage_control.GetAnywhereCacheRequest], storage_control.AnywhereCache
-    ]:
+    def get_anywhere_cache(self) -> Callable[[storage_control.GetAnywhereCacheRequest], storage_control.AnywhereCache]:
         r"""Return a callable for the get anywhere cache method over gRPC.
 
         Gets an Anywhere Cache instance.
@@ -800,12 +728,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["get_anywhere_cache"]
 
     @property
-    def list_anywhere_caches(
-        self,
-    ) -> Callable[
-        [storage_control.ListAnywhereCachesRequest],
-        storage_control.ListAnywhereCachesResponse,
-    ]:
+    def list_anywhere_caches(self) -> Callable[[storage_control.ListAnywhereCachesRequest], storage_control.ListAnywhereCachesResponse]:
         r"""Return a callable for the list anywhere caches method over gRPC.
 
         Lists Anywhere Cache instances for a given bucket.
@@ -829,12 +752,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["list_anywhere_caches"]
 
     @property
-    def get_project_intelligence_config(
-        self,
-    ) -> Callable[
-        [storage_control.GetProjectIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    def get_project_intelligence_config(self) -> Callable[[storage_control.GetProjectIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         r"""Return a callable for the get project intelligence
         config method over gRPC.
 
@@ -852,9 +770,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_project_intelligence_config" not in self._stubs:
-            self._stubs[
-                "get_project_intelligence_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_project_intelligence_config"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/GetProjectIntelligenceConfig",
                 request_serializer=storage_control.GetProjectIntelligenceConfigRequest.serialize,
                 response_deserializer=storage_control.IntelligenceConfig.deserialize,
@@ -864,10 +780,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
     @property
     def update_project_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.UpdateProjectIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.UpdateProjectIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         r"""Return a callable for the update project intelligence
         config method over gRPC.
 
@@ -885,9 +798,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_project_intelligence_config" not in self._stubs:
-            self._stubs[
-                "update_project_intelligence_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_project_intelligence_config"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/UpdateProjectIntelligenceConfig",
                 request_serializer=storage_control.UpdateProjectIntelligenceConfigRequest.serialize,
                 response_deserializer=storage_control.IntelligenceConfig.deserialize,
@@ -895,12 +806,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["update_project_intelligence_config"]
 
     @property
-    def get_folder_intelligence_config(
-        self,
-    ) -> Callable[
-        [storage_control.GetFolderIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    def get_folder_intelligence_config(self) -> Callable[[storage_control.GetFolderIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         r"""Return a callable for the get folder intelligence config method over gRPC.
 
         Returns the Folder scoped singleton
@@ -917,9 +823,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_folder_intelligence_config" not in self._stubs:
-            self._stubs[
-                "get_folder_intelligence_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_folder_intelligence_config"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/GetFolderIntelligenceConfig",
                 request_serializer=storage_control.GetFolderIntelligenceConfigRequest.serialize,
                 response_deserializer=storage_control.IntelligenceConfig.deserialize,
@@ -929,10 +833,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
     @property
     def update_folder_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.UpdateFolderIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.UpdateFolderIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         r"""Return a callable for the update folder intelligence
         config method over gRPC.
 
@@ -950,9 +851,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_folder_intelligence_config" not in self._stubs:
-            self._stubs[
-                "update_folder_intelligence_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_folder_intelligence_config"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/UpdateFolderIntelligenceConfig",
                 request_serializer=storage_control.UpdateFolderIntelligenceConfigRequest.serialize,
                 response_deserializer=storage_control.IntelligenceConfig.deserialize,
@@ -962,10 +861,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
     @property
     def get_organization_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.GetOrganizationIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.GetOrganizationIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         r"""Return a callable for the get organization intelligence
         config method over gRPC.
 
@@ -983,9 +879,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_organization_intelligence_config" not in self._stubs:
-            self._stubs[
-                "get_organization_intelligence_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_organization_intelligence_config"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/GetOrganizationIntelligenceConfig",
                 request_serializer=storage_control.GetOrganizationIntelligenceConfigRequest.serialize,
                 response_deserializer=storage_control.IntelligenceConfig.deserialize,
@@ -995,10 +889,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
     @property
     def update_organization_intelligence_config(
         self,
-    ) -> Callable[
-        [storage_control.UpdateOrganizationIntelligenceConfigRequest],
-        storage_control.IntelligenceConfig,
-    ]:
+    ) -> Callable[[storage_control.UpdateOrganizationIntelligenceConfigRequest], storage_control.IntelligenceConfig]:
         r"""Return a callable for the update organization
         intelligence config method over gRPC.
 
@@ -1016,9 +907,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_organization_intelligence_config" not in self._stubs:
-            self._stubs[
-                "update_organization_intelligence_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_organization_intelligence_config"] = self._logged_channel.unary_unary(
                 "/google.storage.control.v2.StorageControl/UpdateOrganizationIntelligenceConfig",
                 request_serializer=storage_control.UpdateOrganizationIntelligenceConfigRequest.serialize,
                 response_deserializer=storage_control.IntelligenceConfig.deserialize,
@@ -1026,9 +915,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["update_organization_intelligence_config"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for a specified bucket. The ``resource``
@@ -1056,9 +943,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Updates an IAM policy for the specified bucket. The ``resource``
@@ -1086,12 +971,7 @@ class StorageControlGrpcTransport(StorageControlTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests a set of permissions on the given bucket, object, or

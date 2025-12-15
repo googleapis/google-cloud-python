@@ -54,13 +54,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -70,10 +66,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -92,11 +85,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -275,18 +264,14 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -322,9 +307,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -339,11 +322,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._grpc_channel
 
     @property
-    def list_queues(
-        self,
-    ) -> Callable[
-        [cloudtasks.ListQueuesRequest], Awaitable[cloudtasks.ListQueuesResponse]
-    ]:
+    def list_queues(self) -> Callable[[cloudtasks.ListQueuesRequest], Awaitable[cloudtasks.ListQueuesResponse]]:
         r"""Return a callable for the list queues method over gRPC.
 
         Lists queues.
@@ -369,9 +348,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["list_queues"]
 
     @property
-    def get_queue(
-        self,
-    ) -> Callable[[cloudtasks.GetQueueRequest], Awaitable[queue.Queue]]:
+    def get_queue(self) -> Callable[[cloudtasks.GetQueueRequest], Awaitable[queue.Queue]]:
         r"""Return a callable for the get queue method over gRPC.
 
         Gets a queue.
@@ -395,9 +372,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["get_queue"]
 
     @property
-    def create_queue(
-        self,
-    ) -> Callable[[cloudtasks.CreateQueueRequest], Awaitable[gct_queue.Queue]]:
+    def create_queue(self) -> Callable[[cloudtasks.CreateQueueRequest], Awaitable[gct_queue.Queue]]:
         r"""Return a callable for the create queue method over gRPC.
 
         Creates a queue.
@@ -431,9 +406,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["create_queue"]
 
     @property
-    def update_queue(
-        self,
-    ) -> Callable[[cloudtasks.UpdateQueueRequest], Awaitable[gct_queue.Queue]]:
+    def update_queue(self) -> Callable[[cloudtasks.UpdateQueueRequest], Awaitable[gct_queue.Queue]]:
         r"""Return a callable for the update queue method over gRPC.
 
         Updates a queue.
@@ -470,9 +443,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["update_queue"]
 
     @property
-    def delete_queue(
-        self,
-    ) -> Callable[[cloudtasks.DeleteQueueRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_queue(self) -> Callable[[cloudtasks.DeleteQueueRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete queue method over gRPC.
 
         Deletes a queue.
@@ -507,9 +478,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["delete_queue"]
 
     @property
-    def purge_queue(
-        self,
-    ) -> Callable[[cloudtasks.PurgeQueueRequest], Awaitable[queue.Queue]]:
+    def purge_queue(self) -> Callable[[cloudtasks.PurgeQueueRequest], Awaitable[queue.Queue]]:
         r"""Return a callable for the purge queue method over gRPC.
 
         Purges a queue by deleting all of its tasks.
@@ -540,9 +509,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["purge_queue"]
 
     @property
-    def pause_queue(
-        self,
-    ) -> Callable[[cloudtasks.PauseQueueRequest], Awaitable[queue.Queue]]:
+    def pause_queue(self) -> Callable[[cloudtasks.PauseQueueRequest], Awaitable[queue.Queue]]:
         r"""Return a callable for the pause queue method over gRPC.
 
         Pauses the queue.
@@ -573,9 +540,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["pause_queue"]
 
     @property
-    def resume_queue(
-        self,
-    ) -> Callable[[cloudtasks.ResumeQueueRequest], Awaitable[queue.Queue]]:
+    def resume_queue(self) -> Callable[[cloudtasks.ResumeQueueRequest], Awaitable[queue.Queue]]:
         r"""Return a callable for the resume queue method over gRPC.
 
         Resume a queue.
@@ -613,9 +578,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["resume_queue"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a
@@ -647,9 +610,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy for a
@@ -685,12 +646,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], Awaitable[iam_policy_pb2.TestIamPermissionsResponse]]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns permissions that a caller has on a
@@ -722,11 +678,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["test_iam_permissions"]
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[
-        [cloudtasks.ListTasksRequest], Awaitable[cloudtasks.ListTasksResponse]
-    ]:
+    def list_tasks(self) -> Callable[[cloudtasks.ListTasksRequest], Awaitable[cloudtasks.ListTasksResponse]]:
         r"""Return a callable for the list tasks method over gRPC.
 
         Lists the tasks in a queue.
@@ -783,9 +735,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["get_task"]
 
     @property
-    def create_task(
-        self,
-    ) -> Callable[[cloudtasks.CreateTaskRequest], Awaitable[gct_task.Task]]:
+    def create_task(self) -> Callable[[cloudtasks.CreateTaskRequest], Awaitable[gct_task.Task]]:
         r"""Return a callable for the create task method over gRPC.
 
         Creates a task and adds it to a queue.
@@ -814,9 +764,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
         return self._stubs["create_task"]
 
     @property
-    def delete_task(
-        self,
-    ) -> Callable[[cloudtasks.DeleteTaskRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_task(self) -> Callable[[cloudtasks.DeleteTaskRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete task method over gRPC.
 
         Deletes a task.
@@ -1084,9 +1032,7 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

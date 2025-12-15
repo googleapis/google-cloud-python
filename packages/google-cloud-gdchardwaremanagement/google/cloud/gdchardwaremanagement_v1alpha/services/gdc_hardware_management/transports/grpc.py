@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -333,17 +318,13 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_orders(
-        self,
-    ) -> Callable[[service.ListOrdersRequest], service.ListOrdersResponse]:
+    def list_orders(self) -> Callable[[service.ListOrdersRequest], service.ListOrdersResponse]:
         r"""Return a callable for the list orders method over gRPC.
 
         Lists orders in a given project and location.
@@ -391,9 +372,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_order"]
 
     @property
-    def create_order(
-        self,
-    ) -> Callable[[service.CreateOrderRequest], operations_pb2.Operation]:
+    def create_order(self) -> Callable[[service.CreateOrderRequest], operations_pb2.Operation]:
         r"""Return a callable for the create order method over gRPC.
 
         Creates a new order in a given project and location.
@@ -417,9 +396,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_order"]
 
     @property
-    def update_order(
-        self,
-    ) -> Callable[[service.UpdateOrderRequest], operations_pb2.Operation]:
+    def update_order(self) -> Callable[[service.UpdateOrderRequest], operations_pb2.Operation]:
         r"""Return a callable for the update order method over gRPC.
 
         Updates the parameters of an order.
@@ -443,9 +420,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["update_order"]
 
     @property
-    def delete_order(
-        self,
-    ) -> Callable[[service.DeleteOrderRequest], operations_pb2.Operation]:
+    def delete_order(self) -> Callable[[service.DeleteOrderRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete order method over gRPC.
 
         Deletes an order.
@@ -469,9 +444,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["delete_order"]
 
     @property
-    def submit_order(
-        self,
-    ) -> Callable[[service.SubmitOrderRequest], operations_pb2.Operation]:
+    def submit_order(self) -> Callable[[service.SubmitOrderRequest], operations_pb2.Operation]:
         r"""Return a callable for the submit order method over gRPC.
 
         Submits an order.
@@ -495,9 +468,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["submit_order"]
 
     @property
-    def cancel_order(
-        self,
-    ) -> Callable[[service.CancelOrderRequest], operations_pb2.Operation]:
+    def cancel_order(self) -> Callable[[service.CancelOrderRequest], operations_pb2.Operation]:
         r"""Return a callable for the cancel order method over gRPC.
 
         Cancels an order.
@@ -521,9 +492,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["cancel_order"]
 
     @property
-    def list_sites(
-        self,
-    ) -> Callable[[service.ListSitesRequest], service.ListSitesResponse]:
+    def list_sites(self) -> Callable[[service.ListSitesRequest], service.ListSitesResponse]:
         r"""Return a callable for the list sites method over gRPC.
 
         Lists sites in a given project and location.
@@ -571,9 +540,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_site"]
 
     @property
-    def create_site(
-        self,
-    ) -> Callable[[service.CreateSiteRequest], operations_pb2.Operation]:
+    def create_site(self) -> Callable[[service.CreateSiteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create site method over gRPC.
 
         Creates a new site in a given project and location.
@@ -597,9 +564,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_site"]
 
     @property
-    def update_site(
-        self,
-    ) -> Callable[[service.UpdateSiteRequest], operations_pb2.Operation]:
+    def update_site(self) -> Callable[[service.UpdateSiteRequest], operations_pb2.Operation]:
         r"""Return a callable for the update site method over gRPC.
 
         Updates the parameters of a site.
@@ -623,9 +588,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["update_site"]
 
     @property
-    def delete_site(
-        self,
-    ) -> Callable[[service.DeleteSiteRequest], operations_pb2.Operation]:
+    def delete_site(self) -> Callable[[service.DeleteSiteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete site method over gRPC.
 
         Deletes a site.
@@ -649,11 +612,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["delete_site"]
 
     @property
-    def list_hardware_groups(
-        self,
-    ) -> Callable[
-        [service.ListHardwareGroupsRequest], service.ListHardwareGroupsResponse
-    ]:
+    def list_hardware_groups(self) -> Callable[[service.ListHardwareGroupsRequest], service.ListHardwareGroupsResponse]:
         r"""Return a callable for the list hardware groups method over gRPC.
 
         Lists hardware groups in a given order.
@@ -677,9 +636,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["list_hardware_groups"]
 
     @property
-    def get_hardware_group(
-        self,
-    ) -> Callable[[service.GetHardwareGroupRequest], resources.HardwareGroup]:
+    def get_hardware_group(self) -> Callable[[service.GetHardwareGroupRequest], resources.HardwareGroup]:
         r"""Return a callable for the get hardware group method over gRPC.
 
         Gets details of a hardware group.
@@ -703,9 +660,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_hardware_group"]
 
     @property
-    def create_hardware_group(
-        self,
-    ) -> Callable[[service.CreateHardwareGroupRequest], operations_pb2.Operation]:
+    def create_hardware_group(self) -> Callable[[service.CreateHardwareGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the create hardware group method over gRPC.
 
         Creates a new hardware group in a given order.
@@ -729,9 +684,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_hardware_group"]
 
     @property
-    def update_hardware_group(
-        self,
-    ) -> Callable[[service.UpdateHardwareGroupRequest], operations_pb2.Operation]:
+    def update_hardware_group(self) -> Callable[[service.UpdateHardwareGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the update hardware group method over gRPC.
 
         Updates the parameters of a hardware group.
@@ -755,9 +708,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["update_hardware_group"]
 
     @property
-    def delete_hardware_group(
-        self,
-    ) -> Callable[[service.DeleteHardwareGroupRequest], operations_pb2.Operation]:
+    def delete_hardware_group(self) -> Callable[[service.DeleteHardwareGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete hardware group method over gRPC.
 
         Deletes a hardware group.
@@ -781,9 +732,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["delete_hardware_group"]
 
     @property
-    def list_hardware(
-        self,
-    ) -> Callable[[service.ListHardwareRequest], service.ListHardwareResponse]:
+    def list_hardware(self) -> Callable[[service.ListHardwareRequest], service.ListHardwareResponse]:
         r"""Return a callable for the list hardware method over gRPC.
 
         Lists hardware in a given project and location.
@@ -807,9 +756,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["list_hardware"]
 
     @property
-    def get_hardware(
-        self,
-    ) -> Callable[[service.GetHardwareRequest], resources.Hardware]:
+    def get_hardware(self) -> Callable[[service.GetHardwareRequest], resources.Hardware]:
         r"""Return a callable for the get hardware method over gRPC.
 
         Gets hardware details.
@@ -833,9 +780,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_hardware"]
 
     @property
-    def create_hardware(
-        self,
-    ) -> Callable[[service.CreateHardwareRequest], operations_pb2.Operation]:
+    def create_hardware(self) -> Callable[[service.CreateHardwareRequest], operations_pb2.Operation]:
         r"""Return a callable for the create hardware method over gRPC.
 
         Creates new hardware in a given project and location.
@@ -859,9 +804,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_hardware"]
 
     @property
-    def update_hardware(
-        self,
-    ) -> Callable[[service.UpdateHardwareRequest], operations_pb2.Operation]:
+    def update_hardware(self) -> Callable[[service.UpdateHardwareRequest], operations_pb2.Operation]:
         r"""Return a callable for the update hardware method over gRPC.
 
         Updates hardware parameters.
@@ -885,9 +828,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["update_hardware"]
 
     @property
-    def delete_hardware(
-        self,
-    ) -> Callable[[service.DeleteHardwareRequest], operations_pb2.Operation]:
+    def delete_hardware(self) -> Callable[[service.DeleteHardwareRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete hardware method over gRPC.
 
         Deletes hardware.
@@ -911,9 +852,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["delete_hardware"]
 
     @property
-    def list_comments(
-        self,
-    ) -> Callable[[service.ListCommentsRequest], service.ListCommentsResponse]:
+    def list_comments(self) -> Callable[[service.ListCommentsRequest], service.ListCommentsResponse]:
         r"""Return a callable for the list comments method over gRPC.
 
         Lists the comments on an order.
@@ -961,9 +900,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_comment"]
 
     @property
-    def create_comment(
-        self,
-    ) -> Callable[[service.CreateCommentRequest], operations_pb2.Operation]:
+    def create_comment(self) -> Callable[[service.CreateCommentRequest], operations_pb2.Operation]:
         r"""Return a callable for the create comment method over gRPC.
 
         Creates a new comment on an order.
@@ -987,9 +924,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_comment"]
 
     @property
-    def record_action_on_comment(
-        self,
-    ) -> Callable[[service.RecordActionOnCommentRequest], resources.Comment]:
+    def record_action_on_comment(self) -> Callable[[service.RecordActionOnCommentRequest], resources.Comment]:
         r"""Return a callable for the record action on comment method over gRPC.
 
         Record Action on a Comment. If the Action specified
@@ -1018,11 +953,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["record_action_on_comment"]
 
     @property
-    def list_change_log_entries(
-        self,
-    ) -> Callable[
-        [service.ListChangeLogEntriesRequest], service.ListChangeLogEntriesResponse
-    ]:
+    def list_change_log_entries(self) -> Callable[[service.ListChangeLogEntriesRequest], service.ListChangeLogEntriesResponse]:
         r"""Return a callable for the list change log entries method over gRPC.
 
         Lists the changes made to an order.
@@ -1046,9 +977,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["list_change_log_entries"]
 
     @property
-    def get_change_log_entry(
-        self,
-    ) -> Callable[[service.GetChangeLogEntryRequest], resources.ChangeLogEntry]:
+    def get_change_log_entry(self) -> Callable[[service.GetChangeLogEntryRequest], resources.ChangeLogEntry]:
         r"""Return a callable for the get change log entry method over gRPC.
 
         Gets details of a change to an order.
@@ -1072,9 +1001,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_change_log_entry"]
 
     @property
-    def list_skus(
-        self,
-    ) -> Callable[[service.ListSkusRequest], service.ListSkusResponse]:
+    def list_skus(self) -> Callable[[service.ListSkusRequest], service.ListSkusResponse]:
         r"""Return a callable for the list skus method over gRPC.
 
         Lists SKUs for a given project and location.
@@ -1122,9 +1049,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_sku"]
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], service.ListZonesResponse]:
         r"""Return a callable for the list zones method over gRPC.
 
         Lists zones in a given project and location.
@@ -1172,9 +1097,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["get_zone"]
 
     @property
-    def create_zone(
-        self,
-    ) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
+    def create_zone(self) -> Callable[[service.CreateZoneRequest], operations_pb2.Operation]:
         r"""Return a callable for the create zone method over gRPC.
 
         Creates a new zone in a given project and location.
@@ -1198,9 +1121,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["create_zone"]
 
     @property
-    def update_zone(
-        self,
-    ) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
+    def update_zone(self) -> Callable[[service.UpdateZoneRequest], operations_pb2.Operation]:
         r"""Return a callable for the update zone method over gRPC.
 
         Updates the parameters of a zone.
@@ -1224,9 +1145,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["update_zone"]
 
     @property
-    def delete_zone(
-        self,
-    ) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
+    def delete_zone(self) -> Callable[[service.DeleteZoneRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete zone method over gRPC.
 
         Deletes a zone.
@@ -1250,9 +1169,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["delete_zone"]
 
     @property
-    def signal_zone_state(
-        self,
-    ) -> Callable[[service.SignalZoneStateRequest], operations_pb2.Operation]:
+    def signal_zone_state(self) -> Callable[[service.SignalZoneStateRequest], operations_pb2.Operation]:
         r"""Return a callable for the signal zone state method over gRPC.
 
         Signals the state of a zone.
@@ -1276,9 +1193,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
         return self._stubs["signal_zone_state"]
 
     @property
-    def request_order_date_change(
-        self,
-    ) -> Callable[[service.RequestOrderDateChangeRequest], operations_pb2.Operation]:
+    def request_order_date_change(self) -> Callable[[service.RequestOrderDateChangeRequest], operations_pb2.Operation]:
         r"""Return a callable for the request order date change method over gRPC.
 
         Updates the requested date change of a single Order.
@@ -1358,9 +1273,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1377,9 +1290,7 @@ class GDCHardwareManagementGrpcTransport(GDCHardwareManagementTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

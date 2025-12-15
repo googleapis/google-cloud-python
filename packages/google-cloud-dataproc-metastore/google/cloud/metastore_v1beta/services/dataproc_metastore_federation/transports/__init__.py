@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import DataprocMetastoreFederationTransport
 from .grpc import DataprocMetastoreFederationGrpcTransport
 from .grpc_asyncio import DataprocMetastoreFederationGrpcAsyncIOTransport
-from .rest import (
-    DataprocMetastoreFederationRestInterceptor,
-    DataprocMetastoreFederationRestTransport,
-)
+from .rest import DataprocMetastoreFederationRestInterceptor, DataprocMetastoreFederationRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[DataprocMetastoreFederationTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[DataprocMetastoreFederationTransport]]
 _transport_registry["grpc"] = DataprocMetastoreFederationGrpcTransport
 _transport_registry["grpc_asyncio"] = DataprocMetastoreFederationGrpcAsyncIOTransport
 _transport_registry["rest"] = DataprocMetastoreFederationRestTransport

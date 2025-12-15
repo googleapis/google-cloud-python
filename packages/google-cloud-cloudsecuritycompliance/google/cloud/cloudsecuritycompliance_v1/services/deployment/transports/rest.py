@@ -129,13 +129,8 @@ class DeploymentRestInterceptor:
     """
 
     def pre_create_framework_deployment(
-        self,
-        request: deployment.CreateFrameworkDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.CreateFrameworkDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployment.CreateFrameworkDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.CreateFrameworkDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_framework_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -143,9 +138,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_create_framework_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_framework_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_framework_deployment
 
         DEPRECATED. Please use the `post_create_framework_deployment_with_metadata`
@@ -159,9 +152,7 @@ class DeploymentRestInterceptor:
         return response
 
     def post_create_framework_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_framework_deployment
 
@@ -178,13 +169,8 @@ class DeploymentRestInterceptor:
         return response, metadata
 
     def pre_delete_framework_deployment(
-        self,
-        request: deployment.DeleteFrameworkDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.DeleteFrameworkDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployment.DeleteFrameworkDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.DeleteFrameworkDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_framework_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +178,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_framework_deployment(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_framework_deployment(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_framework_deployment
 
         DEPRECATED. Please use the `post_delete_framework_deployment_with_metadata`
@@ -208,9 +192,7 @@ class DeploymentRestInterceptor:
         return response
 
     def post_delete_framework_deployment_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_framework_deployment
 
@@ -227,13 +209,8 @@ class DeploymentRestInterceptor:
         return response, metadata
 
     def pre_get_cloud_control_deployment(
-        self,
-        request: deployment.GetCloudControlDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.GetCloudControlDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployment.GetCloudControlDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.GetCloudControlDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cloud_control_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -241,9 +218,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cloud_control_deployment(
-        self, response: deployment.CloudControlDeployment
-    ) -> deployment.CloudControlDeployment:
+    def post_get_cloud_control_deployment(self, response: deployment.CloudControlDeployment) -> deployment.CloudControlDeployment:
         """Post-rpc interceptor for get_cloud_control_deployment
 
         DEPRECATED. Please use the `post_get_cloud_control_deployment_with_metadata`
@@ -257,12 +232,8 @@ class DeploymentRestInterceptor:
         return response
 
     def post_get_cloud_control_deployment_with_metadata(
-        self,
-        response: deployment.CloudControlDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.CloudControlDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: deployment.CloudControlDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.CloudControlDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cloud_control_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,13 +249,8 @@ class DeploymentRestInterceptor:
         return response, metadata
 
     def pre_get_framework_deployment(
-        self,
-        request: deployment.GetFrameworkDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.GetFrameworkDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployment.GetFrameworkDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.GetFrameworkDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_framework_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -292,9 +258,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_framework_deployment(
-        self, response: deployment.FrameworkDeployment
-    ) -> deployment.FrameworkDeployment:
+    def post_get_framework_deployment(self, response: deployment.FrameworkDeployment) -> deployment.FrameworkDeployment:
         """Post-rpc interceptor for get_framework_deployment
 
         DEPRECATED. Please use the `post_get_framework_deployment_with_metadata`
@@ -308,9 +272,7 @@ class DeploymentRestInterceptor:
         return response
 
     def post_get_framework_deployment_with_metadata(
-        self,
-        response: deployment.FrameworkDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: deployment.FrameworkDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[deployment.FrameworkDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_framework_deployment
 
@@ -327,13 +289,8 @@ class DeploymentRestInterceptor:
         return response, metadata
 
     def pre_list_cloud_control_deployments(
-        self,
-        request: deployment.ListCloudControlDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.ListCloudControlDeploymentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployment.ListCloudControlDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.ListCloudControlDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cloud_control_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -357,13 +314,8 @@ class DeploymentRestInterceptor:
         return response
 
     def post_list_cloud_control_deployments_with_metadata(
-        self,
-        response: deployment.ListCloudControlDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.ListCloudControlDeploymentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: deployment.ListCloudControlDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.ListCloudControlDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cloud_control_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -379,13 +331,8 @@ class DeploymentRestInterceptor:
         return response, metadata
 
     def pre_list_framework_deployments(
-        self,
-        request: deployment.ListFrameworkDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.ListFrameworkDeploymentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: deployment.ListFrameworkDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.ListFrameworkDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_framework_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -393,9 +340,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_list_framework_deployments(
-        self, response: deployment.ListFrameworkDeploymentsResponse
-    ) -> deployment.ListFrameworkDeploymentsResponse:
+    def post_list_framework_deployments(self, response: deployment.ListFrameworkDeploymentsResponse) -> deployment.ListFrameworkDeploymentsResponse:
         """Post-rpc interceptor for list_framework_deployments
 
         DEPRECATED. Please use the `post_list_framework_deployments_with_metadata`
@@ -409,13 +354,8 @@ class DeploymentRestInterceptor:
         return response
 
     def post_list_framework_deployments_with_metadata(
-        self,
-        response: deployment.ListFrameworkDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        deployment.ListFrameworkDeploymentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: deployment.ListFrameworkDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[deployment.ListFrameworkDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_framework_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -431,12 +371,8 @@ class DeploymentRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -444,9 +380,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -456,12 +390,8 @@ class DeploymentRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -469,9 +399,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -481,12 +409,8 @@ class DeploymentRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -504,12 +428,8 @@ class DeploymentRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -527,12 +447,8 @@ class DeploymentRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -540,9 +456,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -552,12 +466,8 @@ class DeploymentRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -565,9 +475,7 @@ class DeploymentRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -657,9 +565,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -712,29 +618,17 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateFrameworkDeployment(
-        _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment, DeploymentRestStub
-    ):
+    class _CreateFrameworkDeployment(_BaseDeploymentRestTransport._BaseCreateFrameworkDeployment, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.CreateFrameworkDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -778,32 +672,18 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_framework_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_framework_deployment(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseCreateFrameworkDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -827,13 +707,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._CreateFrameworkDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -847,12 +721,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_create_framework_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_framework_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_framework_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -873,22 +743,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 )
             return resp
 
-    class _DeleteFrameworkDeployment(
-        _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment, DeploymentRestStub
-    ):
+    class _DeleteFrameworkDeployment(_BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.DeleteFrameworkDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -931,28 +791,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_framework_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_framework_deployment(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseDeleteFrameworkDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -976,12 +824,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._DeleteFrameworkDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -995,12 +838,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_delete_framework_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_framework_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_framework_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1021,22 +860,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 )
             return resp
 
-    class _GetCloudControlDeployment(
-        _BaseDeploymentRestTransport._BaseGetCloudControlDeployment, DeploymentRestStub
-    ):
+    class _GetCloudControlDeployment(_BaseDeploymentRestTransport._BaseGetCloudControlDeployment, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.GetCloudControlDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1081,28 +910,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_cloud_control_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_cloud_control_deployment(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseGetCloudControlDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1126,12 +943,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._GetCloudControlDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1147,16 +959,10 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_get_cloud_control_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cloud_control_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cloud_control_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = deployment.CloudControlDeployment.to_json(
-                        response
-                    )
+                    response_payload = deployment.CloudControlDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1175,22 +981,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 )
             return resp
 
-    class _GetFrameworkDeployment(
-        _BaseDeploymentRestTransport._BaseGetFrameworkDeployment, DeploymentRestStub
-    ):
+    class _GetFrameworkDeployment(_BaseDeploymentRestTransport._BaseGetFrameworkDeployment, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.GetFrameworkDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1233,28 +1029,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_framework_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_framework_deployment(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseGetFrameworkDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1278,12 +1062,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._GetFrameworkDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1299,12 +1078,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_get_framework_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_framework_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_framework_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = deployment.FrameworkDeployment.to_json(response)
                 except:
@@ -1325,23 +1100,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 )
             return resp
 
-    class _ListCloudControlDeployments(
-        _BaseDeploymentRestTransport._BaseListCloudControlDeployments,
-        DeploymentRestStub,
-    ):
+    class _ListCloudControlDeployments(_BaseDeploymentRestTransport._BaseListCloudControlDeployments, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.ListCloudControlDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1383,28 +1147,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cloud_control_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cloud_control_deployments(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseListCloudControlDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1427,15 +1179,8 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 )
 
             # Send the request
-            response = (
-                DeploymentRestTransport._ListCloudControlDeployments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeploymentRestTransport._ListCloudControlDeployments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1451,19 +1196,10 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_list_cloud_control_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_cloud_control_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cloud_control_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        deployment.ListCloudControlDeploymentsResponse.to_json(response)
-                    )
+                    response_payload = deployment.ListCloudControlDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1482,22 +1218,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 )
             return resp
 
-    class _ListFrameworkDeployments(
-        _BaseDeploymentRestTransport._BaseListFrameworkDeployments, DeploymentRestStub
-    ):
+    class _ListFrameworkDeployments(_BaseDeploymentRestTransport._BaseListFrameworkDeployments, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.ListFrameworkDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1537,28 +1263,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                         The response message for [ListFrameworkDeployments][].
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_framework_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_framework_deployments(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseListFrameworkDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1582,12 +1296,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._ListFrameworkDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1603,16 +1312,10 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             resp = self._interceptor.post_list_framework_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_framework_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_framework_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        deployment.ListFrameworkDeploymentsResponse.to_json(response)
-                    )
+                    response_payload = deployment.ListFrameworkDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1632,41 +1335,25 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
             return resp
 
     @property
-    def create_framework_deployment(
-        self,
-    ) -> Callable[
-        [deployment.CreateFrameworkDeploymentRequest], operations_pb2.Operation
-    ]:
+    def create_framework_deployment(self) -> Callable[[deployment.CreateFrameworkDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFrameworkDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_framework_deployment(
-        self,
-    ) -> Callable[
-        [deployment.DeleteFrameworkDeploymentRequest], operations_pb2.Operation
-    ]:
+    def delete_framework_deployment(self) -> Callable[[deployment.DeleteFrameworkDeploymentRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFrameworkDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cloud_control_deployment(
-        self,
-    ) -> Callable[
-        [deployment.GetCloudControlDeploymentRequest], deployment.CloudControlDeployment
-    ]:
+    def get_cloud_control_deployment(self) -> Callable[[deployment.GetCloudControlDeploymentRequest], deployment.CloudControlDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCloudControlDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_framework_deployment(
-        self,
-    ) -> Callable[
-        [deployment.GetFrameworkDeploymentRequest], deployment.FrameworkDeployment
-    ]:
+    def get_framework_deployment(self) -> Callable[[deployment.GetFrameworkDeploymentRequest], deployment.FrameworkDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFrameworkDeployment(self._session, self._host, self._interceptor)  # type: ignore
@@ -1674,21 +1361,13 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     @property
     def list_cloud_control_deployments(
         self,
-    ) -> Callable[
-        [deployment.ListCloudControlDeploymentsRequest],
-        deployment.ListCloudControlDeploymentsResponse,
-    ]:
+    ) -> Callable[[deployment.ListCloudControlDeploymentsRequest], deployment.ListCloudControlDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCloudControlDeployments(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_framework_deployments(
-        self,
-    ) -> Callable[
-        [deployment.ListFrameworkDeploymentsRequest],
-        deployment.ListFrameworkDeploymentsResponse,
-    ]:
+    def list_framework_deployments(self) -> Callable[[deployment.ListFrameworkDeploymentsRequest], deployment.ListFrameworkDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFrameworkDeployments(self._session, self._host, self._interceptor)  # type: ignore
@@ -1697,22 +1376,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDeploymentRestTransport._BaseGetLocation, DeploymentRestStub
-    ):
+    class _GetLocation(_BaseDeploymentRestTransport._BaseGetLocation, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1750,30 +1419,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseDeploymentRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDeploymentRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDeploymentRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDeploymentRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1797,12 +1452,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1814,9 +1464,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1841,22 +1489,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDeploymentRestTransport._BaseListLocations, DeploymentRestStub
-    ):
+    class _ListLocations(_BaseDeploymentRestTransport._BaseListLocations, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1894,30 +1532,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseDeploymentRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDeploymentRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDeploymentRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDeploymentRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1941,12 +1565,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1958,9 +1577,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1985,22 +1602,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDeploymentRestTransport._BaseCancelOperation, DeploymentRestStub
-    ):
+    class _CancelOperation(_BaseDeploymentRestTransport._BaseCancelOperation, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2036,32 +1643,18 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDeploymentRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDeploymentRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2085,13 +1678,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2105,22 +1692,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDeploymentRestTransport._BaseDeleteOperation, DeploymentRestStub
-    ):
+    class _DeleteOperation(_BaseDeploymentRestTransport._BaseDeleteOperation, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2155,28 +1732,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDeploymentRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDeploymentRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeploymentRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeploymentRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2200,12 +1765,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2219,22 +1779,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDeploymentRestTransport._BaseGetOperation, DeploymentRestStub
-    ):
+    class _GetOperation(_BaseDeploymentRestTransport._BaseGetOperation, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2272,30 +1822,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseDeploymentRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDeploymentRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDeploymentRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDeploymentRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2319,12 +1855,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2336,9 +1867,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2363,22 +1892,12 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDeploymentRestTransport._BaseListOperations, DeploymentRestStub
-    ):
+    class _ListOperations(_BaseDeploymentRestTransport._BaseListOperations, DeploymentRestStub):
         def __hash__(self):
             return hash("DeploymentRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2416,28 +1935,16 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDeploymentRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDeploymentRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDeploymentRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeploymentRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDeploymentRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDeploymentRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2461,12 +1968,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
 
             # Send the request
             response = DeploymentRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2478,9 +1980,7 @@ class DeploymentRestTransport(_BaseDeploymentRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

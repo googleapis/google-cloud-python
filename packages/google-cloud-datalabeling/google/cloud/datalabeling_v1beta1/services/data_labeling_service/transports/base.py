@@ -28,9 +28,7 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.datalabeling_v1beta1 import gapic_version as package_version
-from google.cloud.datalabeling_v1beta1.types import (
-    annotation_spec_set as gcd_annotation_spec_set,
-)
+from google.cloud.datalabeling_v1beta1.types import annotation_spec_set as gcd_annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import data_labeling_service
@@ -40,9 +38,7 @@ from google.cloud.datalabeling_v1beta1.types import evaluation
 from google.cloud.datalabeling_v1beta1.types import evaluation_job
 from google.cloud.datalabeling_v1beta1.types import instruction
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -104,23 +100,15 @@ class DataLabelingServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -542,21 +530,11 @@ class DataLabelingServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.CreateDatasetRequest],
-        Union[gcd_dataset.Dataset, Awaitable[gcd_dataset.Dataset]],
-    ]:
+    def create_dataset(self) -> Callable[[data_labeling_service.CreateDatasetRequest], Union[gcd_dataset.Dataset, Awaitable[gcd_dataset.Dataset]]]:
         raise NotImplementedError()
 
     @property
-    def get_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetDatasetRequest],
-        Union[dataset.Dataset, Awaitable[dataset.Dataset]],
-    ]:
+    def get_dataset(self) -> Callable[[data_labeling_service.GetDatasetRequest], Union[dataset.Dataset, Awaitable[dataset.Dataset]]]:
         raise NotImplementedError()
 
     @property
@@ -564,47 +542,28 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListDatasetsRequest],
-        Union[
-            data_labeling_service.ListDatasetsResponse,
-            Awaitable[data_labeling_service.ListDatasetsResponse],
-        ],
+        Union[data_labeling_service.ListDatasetsResponse, Awaitable[data_labeling_service.ListDatasetsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteDatasetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_dataset(self) -> Callable[[data_labeling_service.DeleteDatasetRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def import_data(
         self,
-    ) -> Callable[
-        [data_labeling_service.ImportDataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_labeling_service.ImportDataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_data(
         self,
-    ) -> Callable[
-        [data_labeling_service.ExportDataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_labeling_service.ExportDataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_data_item(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetDataItemRequest],
-        Union[dataset.DataItem, Awaitable[dataset.DataItem]],
-    ]:
+    def get_data_item(self) -> Callable[[data_labeling_service.GetDataItemRequest], Union[dataset.DataItem, Awaitable[dataset.DataItem]]]:
         raise NotImplementedError()
 
     @property
@@ -612,20 +571,14 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListDataItemsRequest],
-        Union[
-            data_labeling_service.ListDataItemsResponse,
-            Awaitable[data_labeling_service.ListDataItemsResponse],
-        ],
+        Union[data_labeling_service.ListDataItemsResponse, Awaitable[data_labeling_service.ListDataItemsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_annotated_dataset(
         self,
-    ) -> Callable[
-        [data_labeling_service.GetAnnotatedDatasetRequest],
-        Union[dataset.AnnotatedDataset, Awaitable[dataset.AnnotatedDataset]],
-    ]:
+    ) -> Callable[[data_labeling_service.GetAnnotatedDatasetRequest], Union[dataset.AnnotatedDataset, Awaitable[dataset.AnnotatedDataset]]]:
         raise NotImplementedError()
 
     @property
@@ -633,56 +586,34 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListAnnotatedDatasetsRequest],
-        Union[
-            data_labeling_service.ListAnnotatedDatasetsResponse,
-            Awaitable[data_labeling_service.ListAnnotatedDatasetsResponse],
-        ],
+        Union[data_labeling_service.ListAnnotatedDatasetsResponse, Awaitable[data_labeling_service.ListAnnotatedDatasetsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_annotated_dataset(
         self,
-    ) -> Callable[
-        [data_labeling_service.DeleteAnnotatedDatasetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[data_labeling_service.DeleteAnnotatedDatasetRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def label_image(
         self,
-    ) -> Callable[
-        [data_labeling_service.LabelImageRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_labeling_service.LabelImageRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def label_video(
         self,
-    ) -> Callable[
-        [data_labeling_service.LabelVideoRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_labeling_service.LabelVideoRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def label_text(
-        self,
-    ) -> Callable[
-        [data_labeling_service.LabelTextRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def label_text(self) -> Callable[[data_labeling_service.LabelTextRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_example(
-        self,
-    ) -> Callable[
-        [data_labeling_service.GetExampleRequest],
-        Union[dataset.Example, Awaitable[dataset.Example]],
-    ]:
+    def get_example(self) -> Callable[[data_labeling_service.GetExampleRequest], Union[dataset.Example, Awaitable[dataset.Example]]]:
         raise NotImplementedError()
 
     @property
@@ -690,10 +621,7 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListExamplesRequest],
-        Union[
-            data_labeling_service.ListExamplesResponse,
-            Awaitable[data_labeling_service.ListExamplesResponse],
-        ],
+        Union[data_labeling_service.ListExamplesResponse, Awaitable[data_labeling_service.ListExamplesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -702,10 +630,7 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.CreateAnnotationSpecSetRequest],
-        Union[
-            gcd_annotation_spec_set.AnnotationSpecSet,
-            Awaitable[gcd_annotation_spec_set.AnnotationSpecSet],
-        ],
+        Union[gcd_annotation_spec_set.AnnotationSpecSet, Awaitable[gcd_annotation_spec_set.AnnotationSpecSet]],
     ]:
         raise NotImplementedError()
 
@@ -714,10 +639,7 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.GetAnnotationSpecSetRequest],
-        Union[
-            annotation_spec_set.AnnotationSpecSet,
-            Awaitable[annotation_spec_set.AnnotationSpecSet],
-        ],
+        Union[annotation_spec_set.AnnotationSpecSet, Awaitable[annotation_spec_set.AnnotationSpecSet]],
     ]:
         raise NotImplementedError()
 
@@ -726,38 +648,26 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListAnnotationSpecSetsRequest],
-        Union[
-            data_labeling_service.ListAnnotationSpecSetsResponse,
-            Awaitable[data_labeling_service.ListAnnotationSpecSetsResponse],
-        ],
+        Union[data_labeling_service.ListAnnotationSpecSetsResponse, Awaitable[data_labeling_service.ListAnnotationSpecSetsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_annotation_spec_set(
         self,
-    ) -> Callable[
-        [data_labeling_service.DeleteAnnotationSpecSetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[data_labeling_service.DeleteAnnotationSpecSetRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_instruction(
         self,
-    ) -> Callable[
-        [data_labeling_service.CreateInstructionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[data_labeling_service.CreateInstructionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_instruction(
         self,
-    ) -> Callable[
-        [data_labeling_service.GetInstructionRequest],
-        Union[instruction.Instruction, Awaitable[instruction.Instruction]],
-    ]:
+    ) -> Callable[[data_labeling_service.GetInstructionRequest], Union[instruction.Instruction, Awaitable[instruction.Instruction]]]:
         raise NotImplementedError()
 
     @property
@@ -765,29 +675,18 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListInstructionsRequest],
-        Union[
-            data_labeling_service.ListInstructionsResponse,
-            Awaitable[data_labeling_service.ListInstructionsResponse],
-        ],
+        Union[data_labeling_service.ListInstructionsResponse, Awaitable[data_labeling_service.ListInstructionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_instruction(
-        self,
-    ) -> Callable[
-        [data_labeling_service.DeleteInstructionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_instruction(self) -> Callable[[data_labeling_service.DeleteInstructionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_evaluation(
         self,
-    ) -> Callable[
-        [data_labeling_service.GetEvaluationRequest],
-        Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]],
-    ]:
+    ) -> Callable[[data_labeling_service.GetEvaluationRequest], Union[evaluation.Evaluation, Awaitable[evaluation.Evaluation]]]:
         raise NotImplementedError()
 
     @property
@@ -795,10 +694,7 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.SearchEvaluationsRequest],
-        Union[
-            data_labeling_service.SearchEvaluationsResponse,
-            Awaitable[data_labeling_service.SearchEvaluationsResponse],
-        ],
+        Union[data_labeling_service.SearchEvaluationsResponse, Awaitable[data_labeling_service.SearchEvaluationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -807,68 +703,44 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.SearchExampleComparisonsRequest],
-        Union[
-            data_labeling_service.SearchExampleComparisonsResponse,
-            Awaitable[data_labeling_service.SearchExampleComparisonsResponse],
-        ],
+        Union[data_labeling_service.SearchExampleComparisonsResponse, Awaitable[data_labeling_service.SearchExampleComparisonsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_evaluation_job(
         self,
-    ) -> Callable[
-        [data_labeling_service.CreateEvaluationJobRequest],
-        Union[evaluation_job.EvaluationJob, Awaitable[evaluation_job.EvaluationJob]],
-    ]:
+    ) -> Callable[[data_labeling_service.CreateEvaluationJobRequest], Union[evaluation_job.EvaluationJob, Awaitable[evaluation_job.EvaluationJob]]]:
         raise NotImplementedError()
 
     @property
     def update_evaluation_job(
         self,
     ) -> Callable[
-        [data_labeling_service.UpdateEvaluationJobRequest],
-        Union[
-            gcd_evaluation_job.EvaluationJob,
-            Awaitable[gcd_evaluation_job.EvaluationJob],
-        ],
+        [data_labeling_service.UpdateEvaluationJobRequest], Union[gcd_evaluation_job.EvaluationJob, Awaitable[gcd_evaluation_job.EvaluationJob]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_evaluation_job(
         self,
-    ) -> Callable[
-        [data_labeling_service.GetEvaluationJobRequest],
-        Union[evaluation_job.EvaluationJob, Awaitable[evaluation_job.EvaluationJob]],
-    ]:
+    ) -> Callable[[data_labeling_service.GetEvaluationJobRequest], Union[evaluation_job.EvaluationJob, Awaitable[evaluation_job.EvaluationJob]]]:
         raise NotImplementedError()
 
     @property
-    def pause_evaluation_job(
-        self,
-    ) -> Callable[
-        [data_labeling_service.PauseEvaluationJobRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def pause_evaluation_job(self) -> Callable[[data_labeling_service.PauseEvaluationJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def resume_evaluation_job(
         self,
-    ) -> Callable[
-        [data_labeling_service.ResumeEvaluationJobRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[data_labeling_service.ResumeEvaluationJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def delete_evaluation_job(
         self,
-    ) -> Callable[
-        [data_labeling_service.DeleteEvaluationJobRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[data_labeling_service.DeleteEvaluationJobRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -876,10 +748,7 @@ class DataLabelingServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [data_labeling_service.ListEvaluationJobsRequest],
-        Union[
-            data_labeling_service.ListEvaluationJobsResponse,
-            Awaitable[data_labeling_service.ListEvaluationJobsResponse],
-        ],
+        Union[data_labeling_service.ListEvaluationJobsResponse, Awaitable[data_labeling_service.ListEvaluationJobsResponse]],
     ]:
         raise NotImplementedError()
 

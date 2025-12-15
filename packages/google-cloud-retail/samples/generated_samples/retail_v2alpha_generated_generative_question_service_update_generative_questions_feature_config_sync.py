@@ -39,9 +39,7 @@ def sample_update_generative_questions_feature_config():
     client = retail_v2alpha.GenerativeQuestionServiceClient()
 
     # Initialize request argument(s)
-    generative_questions_feature_config = (
-        retail_v2alpha.GenerativeQuestionsFeatureConfig()
-    )
+    generative_questions_feature_config = retail_v2alpha.GenerativeQuestionsFeatureConfig()
     generative_questions_feature_config.catalog = "catalog_value"
 
     request = retail_v2alpha.UpdateGenerativeQuestionsFeatureConfigRequest(

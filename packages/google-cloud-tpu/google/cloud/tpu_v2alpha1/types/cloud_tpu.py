@@ -811,12 +811,10 @@ class QueuedResource(proto.Message):
                 proto.STRING,
                 number=2,
             )
-            multi_node_params: "QueuedResource.Tpu.NodeSpec.MultiNodeParams" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=6,
-                    message="QueuedResource.Tpu.NodeSpec.MultiNodeParams",
-                )
+            multi_node_params: "QueuedResource.Tpu.NodeSpec.MultiNodeParams" = proto.Field(
+                proto.MESSAGE,
+                number=6,
+                message="QueuedResource.Tpu.NodeSpec.MultiNodeParams",
             )
             node: "Node" = proto.Field(
                 proto.MESSAGE,

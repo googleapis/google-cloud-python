@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,19 +319,13 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListAssetsRequest], migrationcenter.ListAssetsResponse
-    ]:
+    def list_assets(self) -> Callable[[migrationcenter.ListAssetsRequest], migrationcenter.ListAssetsResponse]:
         r"""Return a callable for the list assets method over gRPC.
 
         Lists all the assets in a given project and location.
@@ -370,9 +349,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_assets"]
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[[migrationcenter.GetAssetRequest], migrationcenter.Asset]:
+    def get_asset(self) -> Callable[[migrationcenter.GetAssetRequest], migrationcenter.Asset]:
         r"""Return a callable for the get asset method over gRPC.
 
         Gets the details of an asset.
@@ -396,9 +373,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_asset"]
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[[migrationcenter.UpdateAssetRequest], migrationcenter.Asset]:
+    def update_asset(self) -> Callable[[migrationcenter.UpdateAssetRequest], migrationcenter.Asset]:
         r"""Return a callable for the update asset method over gRPC.
 
         Updates the parameters of an asset.
@@ -422,12 +397,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["update_asset"]
 
     @property
-    def batch_update_assets(
-        self,
-    ) -> Callable[
-        [migrationcenter.BatchUpdateAssetsRequest],
-        migrationcenter.BatchUpdateAssetsResponse,
-    ]:
+    def batch_update_assets(self) -> Callable[[migrationcenter.BatchUpdateAssetsRequest], migrationcenter.BatchUpdateAssetsResponse]:
         r"""Return a callable for the batch update assets method over gRPC.
 
         Updates the parameters of a list of assets.
@@ -451,9 +421,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["batch_update_assets"]
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[migrationcenter.DeleteAssetRequest], empty_pb2.Empty]:
+    def delete_asset(self) -> Callable[[migrationcenter.DeleteAssetRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete asset method over gRPC.
 
         Deletes an asset.
@@ -477,9 +445,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_asset"]
 
     @property
-    def batch_delete_assets(
-        self,
-    ) -> Callable[[migrationcenter.BatchDeleteAssetsRequest], empty_pb2.Empty]:
+    def batch_delete_assets(self) -> Callable[[migrationcenter.BatchDeleteAssetsRequest], empty_pb2.Empty]:
         r"""Return a callable for the batch delete assets method over gRPC.
 
         Deletes list of Assets.
@@ -503,12 +469,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["batch_delete_assets"]
 
     @property
-    def report_asset_frames(
-        self,
-    ) -> Callable[
-        [migrationcenter.ReportAssetFramesRequest],
-        migrationcenter.ReportAssetFramesResponse,
-    ]:
+    def report_asset_frames(self) -> Callable[[migrationcenter.ReportAssetFramesRequest], migrationcenter.ReportAssetFramesResponse]:
         r"""Return a callable for the report asset frames method over gRPC.
 
         Reports a set of frames.
@@ -532,12 +493,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["report_asset_frames"]
 
     @property
-    def aggregate_assets_values(
-        self,
-    ) -> Callable[
-        [migrationcenter.AggregateAssetsValuesRequest],
-        migrationcenter.AggregateAssetsValuesResponse,
-    ]:
+    def aggregate_assets_values(self) -> Callable[[migrationcenter.AggregateAssetsValuesRequest], migrationcenter.AggregateAssetsValuesResponse]:
         r"""Return a callable for the aggregate assets values method over gRPC.
 
         Aggregates the requested fields based on provided
@@ -562,9 +518,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["aggregate_assets_values"]
 
     @property
-    def create_import_job(
-        self,
-    ) -> Callable[[migrationcenter.CreateImportJobRequest], operations_pb2.Operation]:
+    def create_import_job(self) -> Callable[[migrationcenter.CreateImportJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the create import job method over gRPC.
 
         Creates an import job.
@@ -588,11 +542,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_import_job"]
 
     @property
-    def list_import_jobs(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListImportJobsRequest], migrationcenter.ListImportJobsResponse
-    ]:
+    def list_import_jobs(self) -> Callable[[migrationcenter.ListImportJobsRequest], migrationcenter.ListImportJobsResponse]:
         r"""Return a callable for the list import jobs method over gRPC.
 
         Lists all import jobs.
@@ -616,9 +566,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_import_jobs"]
 
     @property
-    def get_import_job(
-        self,
-    ) -> Callable[[migrationcenter.GetImportJobRequest], migrationcenter.ImportJob]:
+    def get_import_job(self) -> Callable[[migrationcenter.GetImportJobRequest], migrationcenter.ImportJob]:
         r"""Return a callable for the get import job method over gRPC.
 
         Gets the details of an import job.
@@ -642,9 +590,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_import_job"]
 
     @property
-    def delete_import_job(
-        self,
-    ) -> Callable[[migrationcenter.DeleteImportJobRequest], operations_pb2.Operation]:
+    def delete_import_job(self) -> Callable[[migrationcenter.DeleteImportJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete import job method over gRPC.
 
         Deletes an import job.
@@ -668,9 +614,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_import_job"]
 
     @property
-    def update_import_job(
-        self,
-    ) -> Callable[[migrationcenter.UpdateImportJobRequest], operations_pb2.Operation]:
+    def update_import_job(self) -> Callable[[migrationcenter.UpdateImportJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the update import job method over gRPC.
 
         Updates an import job.
@@ -694,9 +638,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["update_import_job"]
 
     @property
-    def validate_import_job(
-        self,
-    ) -> Callable[[migrationcenter.ValidateImportJobRequest], operations_pb2.Operation]:
+    def validate_import_job(self) -> Callable[[migrationcenter.ValidateImportJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the validate import job method over gRPC.
 
         Validates an import job.
@@ -720,9 +662,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["validate_import_job"]
 
     @property
-    def run_import_job(
-        self,
-    ) -> Callable[[migrationcenter.RunImportJobRequest], operations_pb2.Operation]:
+    def run_import_job(self) -> Callable[[migrationcenter.RunImportJobRequest], operations_pb2.Operation]:
         r"""Return a callable for the run import job method over gRPC.
 
         Runs an import job.
@@ -746,11 +686,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["run_import_job"]
 
     @property
-    def get_import_data_file(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetImportDataFileRequest], migrationcenter.ImportDataFile
-    ]:
+    def get_import_data_file(self) -> Callable[[migrationcenter.GetImportDataFileRequest], migrationcenter.ImportDataFile]:
         r"""Return a callable for the get import data file method over gRPC.
 
         Gets an import data file.
@@ -774,12 +710,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_import_data_file"]
 
     @property
-    def list_import_data_files(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListImportDataFilesRequest],
-        migrationcenter.ListImportDataFilesResponse,
-    ]:
+    def list_import_data_files(self) -> Callable[[migrationcenter.ListImportDataFilesRequest], migrationcenter.ListImportDataFilesResponse]:
         r"""Return a callable for the list import data files method over gRPC.
 
         List import data files.
@@ -803,11 +734,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_import_data_files"]
 
     @property
-    def create_import_data_file(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateImportDataFileRequest], operations_pb2.Operation
-    ]:
+    def create_import_data_file(self) -> Callable[[migrationcenter.CreateImportDataFileRequest], operations_pb2.Operation]:
         r"""Return a callable for the create import data file method over gRPC.
 
         Creates an import data file.
@@ -831,11 +758,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_import_data_file"]
 
     @property
-    def delete_import_data_file(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteImportDataFileRequest], operations_pb2.Operation
-    ]:
+    def delete_import_data_file(self) -> Callable[[migrationcenter.DeleteImportDataFileRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete import data file method over gRPC.
 
         Delete an import data file.
@@ -859,11 +782,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_import_data_file"]
 
     @property
-    def list_groups(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListGroupsRequest], migrationcenter.ListGroupsResponse
-    ]:
+    def list_groups(self) -> Callable[[migrationcenter.ListGroupsRequest], migrationcenter.ListGroupsResponse]:
         r"""Return a callable for the list groups method over gRPC.
 
         Lists all groups in a given project and location.
@@ -887,9 +806,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_groups"]
 
     @property
-    def get_group(
-        self,
-    ) -> Callable[[migrationcenter.GetGroupRequest], migrationcenter.Group]:
+    def get_group(self) -> Callable[[migrationcenter.GetGroupRequest], migrationcenter.Group]:
         r"""Return a callable for the get group method over gRPC.
 
         Gets the details of a group.
@@ -913,9 +830,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_group"]
 
     @property
-    def create_group(
-        self,
-    ) -> Callable[[migrationcenter.CreateGroupRequest], operations_pb2.Operation]:
+    def create_group(self) -> Callable[[migrationcenter.CreateGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the create group method over gRPC.
 
         Creates a new group in a given project and location.
@@ -939,9 +854,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_group"]
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[[migrationcenter.UpdateGroupRequest], operations_pb2.Operation]:
+    def update_group(self) -> Callable[[migrationcenter.UpdateGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the update group method over gRPC.
 
         Updates the parameters of a group.
@@ -965,9 +878,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["update_group"]
 
     @property
-    def delete_group(
-        self,
-    ) -> Callable[[migrationcenter.DeleteGroupRequest], operations_pb2.Operation]:
+    def delete_group(self) -> Callable[[migrationcenter.DeleteGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete group method over gRPC.
 
         Deletes a group.
@@ -991,9 +902,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_group"]
 
     @property
-    def add_assets_to_group(
-        self,
-    ) -> Callable[[migrationcenter.AddAssetsToGroupRequest], operations_pb2.Operation]:
+    def add_assets_to_group(self) -> Callable[[migrationcenter.AddAssetsToGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the add assets to group method over gRPC.
 
         Adds assets to a group.
@@ -1017,11 +926,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["add_assets_to_group"]
 
     @property
-    def remove_assets_from_group(
-        self,
-    ) -> Callable[
-        [migrationcenter.RemoveAssetsFromGroupRequest], operations_pb2.Operation
-    ]:
+    def remove_assets_from_group(self) -> Callable[[migrationcenter.RemoveAssetsFromGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the remove assets from group method over gRPC.
 
         Removes assets from a group.
@@ -1045,12 +950,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["remove_assets_from_group"]
 
     @property
-    def list_error_frames(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListErrorFramesRequest],
-        migrationcenter.ListErrorFramesResponse,
-    ]:
+    def list_error_frames(self) -> Callable[[migrationcenter.ListErrorFramesRequest], migrationcenter.ListErrorFramesResponse]:
         r"""Return a callable for the list error frames method over gRPC.
 
         Lists all error frames in a given source and
@@ -1075,9 +975,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_error_frames"]
 
     @property
-    def get_error_frame(
-        self,
-    ) -> Callable[[migrationcenter.GetErrorFrameRequest], migrationcenter.ErrorFrame]:
+    def get_error_frame(self) -> Callable[[migrationcenter.GetErrorFrameRequest], migrationcenter.ErrorFrame]:
         r"""Return a callable for the get error frame method over gRPC.
 
         Gets the details of an error frame.
@@ -1101,11 +999,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_error_frame"]
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListSourcesRequest], migrationcenter.ListSourcesResponse
-    ]:
+    def list_sources(self) -> Callable[[migrationcenter.ListSourcesRequest], migrationcenter.ListSourcesResponse]:
         r"""Return a callable for the list sources method over gRPC.
 
         Lists all the sources in a given project and
@@ -1130,9 +1024,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_sources"]
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[migrationcenter.GetSourceRequest], migrationcenter.Source]:
+    def get_source(self) -> Callable[[migrationcenter.GetSourceRequest], migrationcenter.Source]:
         r"""Return a callable for the get source method over gRPC.
 
         Gets the details of a source.
@@ -1156,9 +1048,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_source"]
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[[migrationcenter.CreateSourceRequest], operations_pb2.Operation]:
+    def create_source(self) -> Callable[[migrationcenter.CreateSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create source method over gRPC.
 
         Creates a new source in a given project and location.
@@ -1182,9 +1072,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_source"]
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[[migrationcenter.UpdateSourceRequest], operations_pb2.Operation]:
+    def update_source(self) -> Callable[[migrationcenter.UpdateSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the update source method over gRPC.
 
         Updates the parameters of a source.
@@ -1208,9 +1096,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["update_source"]
 
     @property
-    def delete_source(
-        self,
-    ) -> Callable[[migrationcenter.DeleteSourceRequest], operations_pb2.Operation]:
+    def delete_source(self) -> Callable[[migrationcenter.DeleteSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete source method over gRPC.
 
         Deletes a source.
@@ -1234,12 +1120,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_source"]
 
     @property
-    def list_preference_sets(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListPreferenceSetsRequest],
-        migrationcenter.ListPreferenceSetsResponse,
-    ]:
+    def list_preference_sets(self) -> Callable[[migrationcenter.ListPreferenceSetsRequest], migrationcenter.ListPreferenceSetsResponse]:
         r"""Return a callable for the list preference sets method over gRPC.
 
         Lists all the preference sets in a given project and
@@ -1264,11 +1145,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_preference_sets"]
 
     @property
-    def get_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetPreferenceSetRequest], migrationcenter.PreferenceSet
-    ]:
+    def get_preference_set(self) -> Callable[[migrationcenter.GetPreferenceSetRequest], migrationcenter.PreferenceSet]:
         r"""Return a callable for the get preference set method over gRPC.
 
         Gets the details of a preference set.
@@ -1292,11 +1169,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_preference_set"]
 
     @property
-    def create_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreatePreferenceSetRequest], operations_pb2.Operation
-    ]:
+    def create_preference_set(self) -> Callable[[migrationcenter.CreatePreferenceSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the create preference set method over gRPC.
 
         Creates a new preference set in a given project and
@@ -1321,11 +1194,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_preference_set"]
 
     @property
-    def update_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.UpdatePreferenceSetRequest], operations_pb2.Operation
-    ]:
+    def update_preference_set(self) -> Callable[[migrationcenter.UpdatePreferenceSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the update preference set method over gRPC.
 
         Updates the parameters of a preference set.
@@ -1349,11 +1218,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["update_preference_set"]
 
     @property
-    def delete_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeletePreferenceSetRequest], operations_pb2.Operation
-    ]:
+    def delete_preference_set(self) -> Callable[[migrationcenter.DeletePreferenceSetRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete preference set method over gRPC.
 
         Deletes a preference set.
@@ -1377,9 +1242,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_preference_set"]
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[[migrationcenter.GetSettingsRequest], migrationcenter.Settings]:
+    def get_settings(self) -> Callable[[migrationcenter.GetSettingsRequest], migrationcenter.Settings]:
         r"""Return a callable for the get settings method over gRPC.
 
         Gets the details of regional settings.
@@ -1403,9 +1266,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_settings"]
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[[migrationcenter.UpdateSettingsRequest], operations_pb2.Operation]:
+    def update_settings(self) -> Callable[[migrationcenter.UpdateSettingsRequest], operations_pb2.Operation]:
         r"""Return a callable for the update settings method over gRPC.
 
         Updates the regional-level project settings.
@@ -1429,11 +1290,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["update_settings"]
 
     @property
-    def create_report_config(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateReportConfigRequest], operations_pb2.Operation
-    ]:
+    def create_report_config(self) -> Callable[[migrationcenter.CreateReportConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create report config method over gRPC.
 
         Creates a report configuration.
@@ -1457,11 +1314,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_report_config"]
 
     @property
-    def get_report_config(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetReportConfigRequest], migrationcenter.ReportConfig
-    ]:
+    def get_report_config(self) -> Callable[[migrationcenter.GetReportConfigRequest], migrationcenter.ReportConfig]:
         r"""Return a callable for the get report config method over gRPC.
 
         Gets details of a single ReportConfig.
@@ -1485,12 +1338,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_report_config"]
 
     @property
-    def list_report_configs(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListReportConfigsRequest],
-        migrationcenter.ListReportConfigsResponse,
-    ]:
+    def list_report_configs(self) -> Callable[[migrationcenter.ListReportConfigsRequest], migrationcenter.ListReportConfigsResponse]:
         r"""Return a callable for the list report configs method over gRPC.
 
         Lists ReportConfigs in a given project and location.
@@ -1514,11 +1362,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_report_configs"]
 
     @property
-    def delete_report_config(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteReportConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_report_config(self) -> Callable[[migrationcenter.DeleteReportConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete report config method over gRPC.
 
         Deletes a ReportConfig.
@@ -1542,9 +1386,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["delete_report_config"]
 
     @property
-    def create_report(
-        self,
-    ) -> Callable[[migrationcenter.CreateReportRequest], operations_pb2.Operation]:
+    def create_report(self) -> Callable[[migrationcenter.CreateReportRequest], operations_pb2.Operation]:
         r"""Return a callable for the create report method over gRPC.
 
         Creates a report.
@@ -1568,9 +1410,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["create_report"]
 
     @property
-    def get_report(
-        self,
-    ) -> Callable[[migrationcenter.GetReportRequest], migrationcenter.Report]:
+    def get_report(self) -> Callable[[migrationcenter.GetReportRequest], migrationcenter.Report]:
         r"""Return a callable for the get report method over gRPC.
 
         Gets details of a single Report.
@@ -1594,11 +1434,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["get_report"]
 
     @property
-    def list_reports(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListReportsRequest], migrationcenter.ListReportsResponse
-    ]:
+    def list_reports(self) -> Callable[[migrationcenter.ListReportsRequest], migrationcenter.ListReportsResponse]:
         r"""Return a callable for the list reports method over gRPC.
 
         Lists Reports in a given ReportConfig.
@@ -1622,9 +1458,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
         return self._stubs["list_reports"]
 
     @property
-    def delete_report(
-        self,
-    ) -> Callable[[migrationcenter.DeleteReportRequest], operations_pb2.Operation]:
+    def delete_report(self) -> Callable[[migrationcenter.DeleteReportRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete report method over gRPC.
 
         Deletes a Report.
@@ -1704,9 +1538,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1723,9 +1555,7 @@ class MigrationCenterGrpcTransport(MigrationCenterTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

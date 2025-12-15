@@ -37,9 +37,7 @@ from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.bare_metal_solution_v2.types import nfs_share as gcb_nfs_share
-from google.cloud.bare_metal_solution_v2.types import (
-    volume_snapshot as gcb_volume_snapshot,
-)
+from google.cloud.bare_metal_solution_v2.types import volume_snapshot as gcb_volume_snapshot
 from google.cloud.bare_metal_solution_v2.types import instance
 from google.cloud.bare_metal_solution_v2.types import instance as gcb_instance
 from google.cloud.bare_metal_solution_v2.types import lun
@@ -66,13 +64,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -82,10 +76,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -104,11 +95,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -295,18 +282,14 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -342,9 +325,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -367,19 +348,13 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [instance.ListInstancesRequest], Awaitable[instance.ListInstancesResponse]
-    ]:
+    def list_instances(self) -> Callable[[instance.ListInstancesRequest], Awaitable[instance.ListInstancesResponse]]:
         r"""Return a callable for the list instances method over gRPC.
 
         List servers in a given project and location.
@@ -403,9 +378,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_instances"]
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[instance.GetInstanceRequest], Awaitable[instance.Instance]]:
+    def get_instance(self) -> Callable[[instance.GetInstanceRequest], Awaitable[instance.Instance]]:
         r"""Return a callable for the get instance method over gRPC.
 
         Get details about a single server.
@@ -429,11 +402,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_instance"]
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [gcb_instance.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_instance(self) -> Callable[[gcb_instance.UpdateInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update instance method over gRPC.
 
         Update details of a single server.
@@ -457,9 +426,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["update_instance"]
 
     @property
-    def rename_instance(
-        self,
-    ) -> Callable[[instance.RenameInstanceRequest], Awaitable[instance.Instance]]:
+    def rename_instance(self) -> Callable[[instance.RenameInstanceRequest], Awaitable[instance.Instance]]:
         r"""Return a callable for the rename instance method over gRPC.
 
         RenameInstance sets a new name for an instance.
@@ -485,9 +452,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["rename_instance"]
 
     @property
-    def reset_instance(
-        self,
-    ) -> Callable[[instance.ResetInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def reset_instance(self) -> Callable[[instance.ResetInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the reset instance method over gRPC.
 
         Perform an ungraceful, hard reset on a server.
@@ -513,9 +478,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["reset_instance"]
 
     @property
-    def start_instance(
-        self,
-    ) -> Callable[[instance.StartInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def start_instance(self) -> Callable[[instance.StartInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start instance method over gRPC.
 
         Starts a server that was shutdown.
@@ -539,9 +502,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["start_instance"]
 
     @property
-    def stop_instance(
-        self,
-    ) -> Callable[[instance.StopInstanceRequest], Awaitable[operations_pb2.Operation]]:
+    def stop_instance(self) -> Callable[[instance.StopInstanceRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the stop instance method over gRPC.
 
         Stop a running server.
@@ -565,12 +526,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["stop_instance"]
 
     @property
-    def enable_interactive_serial_console(
-        self,
-    ) -> Callable[
-        [instance.EnableInteractiveSerialConsoleRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def enable_interactive_serial_console(self) -> Callable[[instance.EnableInteractiveSerialConsoleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the enable interactive serial
         console method over gRPC.
 
@@ -588,9 +544,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_interactive_serial_console" not in self._stubs:
-            self._stubs[
-                "enable_interactive_serial_console"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["enable_interactive_serial_console"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/EnableInteractiveSerialConsole",
                 request_serializer=instance.EnableInteractiveSerialConsoleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -598,12 +552,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["enable_interactive_serial_console"]
 
     @property
-    def disable_interactive_serial_console(
-        self,
-    ) -> Callable[
-        [instance.DisableInteractiveSerialConsoleRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def disable_interactive_serial_console(self) -> Callable[[instance.DisableInteractiveSerialConsoleRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the disable interactive serial
         console method over gRPC.
 
@@ -621,9 +570,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_interactive_serial_console" not in self._stubs:
-            self._stubs[
-                "disable_interactive_serial_console"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["disable_interactive_serial_console"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/DisableInteractiveSerialConsole",
                 request_serializer=instance.DisableInteractiveSerialConsoleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -631,9 +578,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["disable_interactive_serial_console"]
 
     @property
-    def detach_lun(
-        self,
-    ) -> Callable[[gcb_instance.DetachLunRequest], Awaitable[operations_pb2.Operation]]:
+    def detach_lun(self) -> Callable[[gcb_instance.DetachLunRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the detach lun method over gRPC.
 
         Detach LUN from Instance.
@@ -657,9 +602,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["detach_lun"]
 
     @property
-    def list_ssh_keys(
-        self,
-    ) -> Callable[[ssh_key.ListSSHKeysRequest], Awaitable[ssh_key.ListSSHKeysResponse]]:
+    def list_ssh_keys(self) -> Callable[[ssh_key.ListSSHKeysRequest], Awaitable[ssh_key.ListSSHKeysResponse]]:
         r"""Return a callable for the list ssh keys method over gRPC.
 
         Lists the public SSH keys registered for the
@@ -685,9 +628,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_ssh_keys"]
 
     @property
-    def create_ssh_key(
-        self,
-    ) -> Callable[[gcb_ssh_key.CreateSSHKeyRequest], Awaitable[gcb_ssh_key.SSHKey]]:
+    def create_ssh_key(self) -> Callable[[gcb_ssh_key.CreateSSHKeyRequest], Awaitable[gcb_ssh_key.SSHKey]]:
         r"""Return a callable for the create ssh key method over gRPC.
 
         Register a public SSH key in the specified project
@@ -712,9 +653,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["create_ssh_key"]
 
     @property
-    def delete_ssh_key(
-        self,
-    ) -> Callable[[ssh_key.DeleteSSHKeyRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_ssh_key(self) -> Callable[[ssh_key.DeleteSSHKeyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete ssh key method over gRPC.
 
         Deletes a public SSH key registered in the specified
@@ -739,9 +678,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["delete_ssh_key"]
 
     @property
-    def list_volumes(
-        self,
-    ) -> Callable[[volume.ListVolumesRequest], Awaitable[volume.ListVolumesResponse]]:
+    def list_volumes(self) -> Callable[[volume.ListVolumesRequest], Awaitable[volume.ListVolumesResponse]]:
         r"""Return a callable for the list volumes method over gRPC.
 
         List storage volumes in a given project and location.
@@ -765,9 +702,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_volumes"]
 
     @property
-    def get_volume(
-        self,
-    ) -> Callable[[volume.GetVolumeRequest], Awaitable[volume.Volume]]:
+    def get_volume(self) -> Callable[[volume.GetVolumeRequest], Awaitable[volume.Volume]]:
         r"""Return a callable for the get volume method over gRPC.
 
         Get details of a single storage volume.
@@ -791,11 +726,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_volume"]
 
     @property
-    def update_volume(
-        self,
-    ) -> Callable[
-        [gcb_volume.UpdateVolumeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_volume(self) -> Callable[[gcb_volume.UpdateVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update volume method over gRPC.
 
         Update details of a single storage volume.
@@ -819,9 +750,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["update_volume"]
 
     @property
-    def rename_volume(
-        self,
-    ) -> Callable[[volume.RenameVolumeRequest], Awaitable[volume.Volume]]:
+    def rename_volume(self) -> Callable[[volume.RenameVolumeRequest], Awaitable[volume.Volume]]:
         r"""Return a callable for the rename volume method over gRPC.
 
         RenameVolume sets a new name for a volume.
@@ -847,9 +776,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["rename_volume"]
 
     @property
-    def evict_volume(
-        self,
-    ) -> Callable[[volume.EvictVolumeRequest], Awaitable[operations_pb2.Operation]]:
+    def evict_volume(self) -> Callable[[volume.EvictVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the evict volume method over gRPC.
 
         Skips volume's cooloff and deletes it now.
@@ -874,11 +801,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["evict_volume"]
 
     @property
-    def resize_volume(
-        self,
-    ) -> Callable[
-        [gcb_volume.ResizeVolumeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def resize_volume(self) -> Callable[[gcb_volume.ResizeVolumeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the resize volume method over gRPC.
 
         Emergency Volume resize.
@@ -902,11 +825,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["resize_volume"]
 
     @property
-    def list_networks(
-        self,
-    ) -> Callable[
-        [network.ListNetworksRequest], Awaitable[network.ListNetworksResponse]
-    ]:
+    def list_networks(self) -> Callable[[network.ListNetworksRequest], Awaitable[network.ListNetworksResponse]]:
         r"""Return a callable for the list networks method over gRPC.
 
         List network in a given project and location.
@@ -930,11 +849,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_networks"]
 
     @property
-    def list_network_usage(
-        self,
-    ) -> Callable[
-        [network.ListNetworkUsageRequest], Awaitable[network.ListNetworkUsageResponse]
-    ]:
+    def list_network_usage(self) -> Callable[[network.ListNetworkUsageRequest], Awaitable[network.ListNetworkUsageResponse]]:
         r"""Return a callable for the list network usage method over gRPC.
 
         List all Networks (and used IPs for each Network) in
@@ -960,9 +875,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_network_usage"]
 
     @property
-    def get_network(
-        self,
-    ) -> Callable[[network.GetNetworkRequest], Awaitable[network.Network]]:
+    def get_network(self) -> Callable[[network.GetNetworkRequest], Awaitable[network.Network]]:
         r"""Return a callable for the get network method over gRPC.
 
         Get details of a single network.
@@ -986,11 +899,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_network"]
 
     @property
-    def update_network(
-        self,
-    ) -> Callable[
-        [gcb_network.UpdateNetworkRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_network(self) -> Callable[[gcb_network.UpdateNetworkRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update network method over gRPC.
 
         Update details of a single network.
@@ -1014,12 +923,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["update_network"]
 
     @property
-    def create_volume_snapshot(
-        self,
-    ) -> Callable[
-        [gcb_volume_snapshot.CreateVolumeSnapshotRequest],
-        Awaitable[gcb_volume_snapshot.VolumeSnapshot],
-    ]:
+    def create_volume_snapshot(self) -> Callable[[gcb_volume_snapshot.CreateVolumeSnapshotRequest], Awaitable[gcb_volume_snapshot.VolumeSnapshot]]:
         r"""Return a callable for the create volume snapshot method over gRPC.
 
         Takes a snapshot of a boot volume. Returns INVALID_ARGUMENT if
@@ -1044,12 +948,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["create_volume_snapshot"]
 
     @property
-    def restore_volume_snapshot(
-        self,
-    ) -> Callable[
-        [gcb_volume_snapshot.RestoreVolumeSnapshotRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def restore_volume_snapshot(self) -> Callable[[gcb_volume_snapshot.RestoreVolumeSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the restore volume snapshot method over gRPC.
 
         Uses the specified snapshot to restore its parent volume.
@@ -1074,11 +973,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["restore_volume_snapshot"]
 
     @property
-    def delete_volume_snapshot(
-        self,
-    ) -> Callable[
-        [volume_snapshot.DeleteVolumeSnapshotRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_volume_snapshot(self) -> Callable[[volume_snapshot.DeleteVolumeSnapshotRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete volume snapshot method over gRPC.
 
         Deletes a volume snapshot. Returns INVALID_ARGUMENT if called
@@ -1103,12 +998,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["delete_volume_snapshot"]
 
     @property
-    def get_volume_snapshot(
-        self,
-    ) -> Callable[
-        [volume_snapshot.GetVolumeSnapshotRequest],
-        Awaitable[volume_snapshot.VolumeSnapshot],
-    ]:
+    def get_volume_snapshot(self) -> Callable[[volume_snapshot.GetVolumeSnapshotRequest], Awaitable[volume_snapshot.VolumeSnapshot]]:
         r"""Return a callable for the get volume snapshot method over gRPC.
 
         Returns the specified snapshot resource. Returns
@@ -1133,12 +1023,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_volume_snapshot"]
 
     @property
-    def list_volume_snapshots(
-        self,
-    ) -> Callable[
-        [volume_snapshot.ListVolumeSnapshotsRequest],
-        Awaitable[volume_snapshot.ListVolumeSnapshotsResponse],
-    ]:
+    def list_volume_snapshots(self) -> Callable[[volume_snapshot.ListVolumeSnapshotsRequest], Awaitable[volume_snapshot.ListVolumeSnapshotsResponse]]:
         r"""Return a callable for the list volume snapshots method over gRPC.
 
         Retrieves the list of snapshots for the specified
@@ -1189,9 +1074,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_lun"]
 
     @property
-    def list_luns(
-        self,
-    ) -> Callable[[lun.ListLunsRequest], Awaitable[lun.ListLunsResponse]]:
+    def list_luns(self) -> Callable[[lun.ListLunsRequest], Awaitable[lun.ListLunsResponse]]:
         r"""Return a callable for the list luns method over gRPC.
 
         List storage volume luns for given storage volume.
@@ -1215,9 +1098,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_luns"]
 
     @property
-    def evict_lun(
-        self,
-    ) -> Callable[[lun.EvictLunRequest], Awaitable[operations_pb2.Operation]]:
+    def evict_lun(self) -> Callable[[lun.EvictLunRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the evict lun method over gRPC.
 
         Skips lun's cooloff and deletes it now.
@@ -1242,9 +1123,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["evict_lun"]
 
     @property
-    def get_nfs_share(
-        self,
-    ) -> Callable[[nfs_share.GetNfsShareRequest], Awaitable[nfs_share.NfsShare]]:
+    def get_nfs_share(self) -> Callable[[nfs_share.GetNfsShareRequest], Awaitable[nfs_share.NfsShare]]:
         r"""Return a callable for the get nfs share method over gRPC.
 
         Get details of a single NFS share.
@@ -1268,11 +1147,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_nfs_share"]
 
     @property
-    def list_nfs_shares(
-        self,
-    ) -> Callable[
-        [nfs_share.ListNfsSharesRequest], Awaitable[nfs_share.ListNfsSharesResponse]
-    ]:
+    def list_nfs_shares(self) -> Callable[[nfs_share.ListNfsSharesRequest], Awaitable[nfs_share.ListNfsSharesResponse]]:
         r"""Return a callable for the list nfs shares method over gRPC.
 
         List NFS shares.
@@ -1296,11 +1171,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["list_nfs_shares"]
 
     @property
-    def update_nfs_share(
-        self,
-    ) -> Callable[
-        [gcb_nfs_share.UpdateNfsShareRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_nfs_share(self) -> Callable[[gcb_nfs_share.UpdateNfsShareRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update nfs share method over gRPC.
 
         Update details of a single NFS share.
@@ -1324,11 +1195,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["update_nfs_share"]
 
     @property
-    def create_nfs_share(
-        self,
-    ) -> Callable[
-        [gcb_nfs_share.CreateNfsShareRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_nfs_share(self) -> Callable[[gcb_nfs_share.CreateNfsShareRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create nfs share method over gRPC.
 
         Create an NFS share.
@@ -1352,9 +1219,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["create_nfs_share"]
 
     @property
-    def rename_nfs_share(
-        self,
-    ) -> Callable[[nfs_share.RenameNfsShareRequest], Awaitable[nfs_share.NfsShare]]:
+    def rename_nfs_share(self) -> Callable[[nfs_share.RenameNfsShareRequest], Awaitable[nfs_share.NfsShare]]:
         r"""Return a callable for the rename nfs share method over gRPC.
 
         RenameNfsShare sets a new name for an nfsshare.
@@ -1380,11 +1245,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["rename_nfs_share"]
 
     @property
-    def delete_nfs_share(
-        self,
-    ) -> Callable[
-        [nfs_share.DeleteNfsShareRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_nfs_share(self) -> Callable[[nfs_share.DeleteNfsShareRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete nfs share method over gRPC.
 
         Delete an NFS share. The underlying volume is
@@ -1411,10 +1272,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     @property
     def list_provisioning_quotas(
         self,
-    ) -> Callable[
-        [provisioning.ListProvisioningQuotasRequest],
-        Awaitable[provisioning.ListProvisioningQuotasResponse],
-    ]:
+    ) -> Callable[[provisioning.ListProvisioningQuotasRequest], Awaitable[provisioning.ListProvisioningQuotasResponse]]:
         r"""Return a callable for the list provisioning quotas method over gRPC.
 
         List the budget details to provision resources on a
@@ -1441,10 +1299,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     @property
     def submit_provisioning_config(
         self,
-    ) -> Callable[
-        [provisioning.SubmitProvisioningConfigRequest],
-        Awaitable[provisioning.SubmitProvisioningConfigResponse],
-    ]:
+    ) -> Callable[[provisioning.SubmitProvisioningConfigRequest], Awaitable[provisioning.SubmitProvisioningConfigResponse]]:
         r"""Return a callable for the submit provisioning config method over gRPC.
 
         Submit a provisiong configuration for a given
@@ -1461,9 +1316,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "submit_provisioning_config" not in self._stubs:
-            self._stubs[
-                "submit_provisioning_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["submit_provisioning_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/SubmitProvisioningConfig",
                 request_serializer=provisioning.SubmitProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.SubmitProvisioningConfigResponse.deserialize,
@@ -1471,12 +1324,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["submit_provisioning_config"]
 
     @property
-    def get_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.GetProvisioningConfigRequest],
-        Awaitable[provisioning.ProvisioningConfig],
-    ]:
+    def get_provisioning_config(self) -> Callable[[provisioning.GetProvisioningConfigRequest], Awaitable[provisioning.ProvisioningConfig]]:
         r"""Return a callable for the get provisioning config method over gRPC.
 
         Get ProvisioningConfig by name.
@@ -1500,12 +1348,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["get_provisioning_config"]
 
     @property
-    def create_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.CreateProvisioningConfigRequest],
-        Awaitable[provisioning.ProvisioningConfig],
-    ]:
+    def create_provisioning_config(self) -> Callable[[provisioning.CreateProvisioningConfigRequest], Awaitable[provisioning.ProvisioningConfig]]:
         r"""Return a callable for the create provisioning config method over gRPC.
 
         Create new ProvisioningConfig.
@@ -1521,9 +1364,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_provisioning_config" not in self._stubs:
-            self._stubs[
-                "create_provisioning_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_provisioning_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/CreateProvisioningConfig",
                 request_serializer=provisioning.CreateProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.ProvisioningConfig.deserialize,
@@ -1531,12 +1372,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["create_provisioning_config"]
 
     @property
-    def update_provisioning_config(
-        self,
-    ) -> Callable[
-        [provisioning.UpdateProvisioningConfigRequest],
-        Awaitable[provisioning.ProvisioningConfig],
-    ]:
+    def update_provisioning_config(self) -> Callable[[provisioning.UpdateProvisioningConfigRequest], Awaitable[provisioning.ProvisioningConfig]]:
         r"""Return a callable for the update provisioning config method over gRPC.
 
         Update existing ProvisioningConfig.
@@ -1552,9 +1388,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_provisioning_config" not in self._stubs:
-            self._stubs[
-                "update_provisioning_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_provisioning_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.baremetalsolution.v2.BareMetalSolution/UpdateProvisioningConfig",
                 request_serializer=provisioning.UpdateProvisioningConfigRequest.serialize,
                 response_deserializer=provisioning.ProvisioningConfig.deserialize,
@@ -1562,9 +1396,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["update_provisioning_config"]
 
     @property
-    def rename_network(
-        self,
-    ) -> Callable[[network.RenameNetworkRequest], Awaitable[network.Network]]:
+    def rename_network(self) -> Callable[[network.RenameNetworkRequest], Awaitable[network.Network]]:
         r"""Return a callable for the rename network method over gRPC.
 
         RenameNetwork sets a new name for a network.
@@ -1590,11 +1422,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
         return self._stubs["rename_network"]
 
     @property
-    def list_os_images(
-        self,
-    ) -> Callable[
-        [osimage.ListOSImagesRequest], Awaitable[osimage.ListOSImagesResponse]
-    ]:
+    def list_os_images(self) -> Callable[[osimage.ListOSImagesRequest], Awaitable[osimage.ListOSImagesResponse]]:
         r"""Return a callable for the list os images method over gRPC.
 
         Retrieves the list of OS images which are currently
@@ -1868,9 +1696,7 @@ class BareMetalSolutionGrpcAsyncIOTransport(BareMetalSolutionTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -34,11 +34,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    document_service,
-    import_config,
-    purge_config,
-)
+from google.cloud.discoveryengine_v1.types import document_service, import_config, purge_config
 from google.cloud.discoveryengine_v1.types import document
 from google.cloud.discoveryengine_v1.types import document as gcd_document
 
@@ -55,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -71,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -93,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -278,18 +263,14 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -325,9 +306,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -350,17 +329,13 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_document(
-        self,
-    ) -> Callable[[document_service.GetDocumentRequest], Awaitable[document.Document]]:
+    def get_document(self) -> Callable[[document_service.GetDocumentRequest], Awaitable[document.Document]]:
         r"""Return a callable for the get document method over gRPC.
 
         Gets a [Document][google.cloud.discoveryengine.v1.Document].
@@ -384,12 +359,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["get_document"]
 
     @property
-    def list_documents(
-        self,
-    ) -> Callable[
-        [document_service.ListDocumentsRequest],
-        Awaitable[document_service.ListDocumentsResponse],
-    ]:
+    def list_documents(self) -> Callable[[document_service.ListDocumentsRequest], Awaitable[document_service.ListDocumentsResponse]]:
         r"""Return a callable for the list documents method over gRPC.
 
         Gets a list of
@@ -414,11 +384,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["list_documents"]
 
     @property
-    def create_document(
-        self,
-    ) -> Callable[
-        [document_service.CreateDocumentRequest], Awaitable[gcd_document.Document]
-    ]:
+    def create_document(self) -> Callable[[document_service.CreateDocumentRequest], Awaitable[gcd_document.Document]]:
         r"""Return a callable for the create document method over gRPC.
 
         Creates a [Document][google.cloud.discoveryengine.v1.Document].
@@ -442,11 +408,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["create_document"]
 
     @property
-    def update_document(
-        self,
-    ) -> Callable[
-        [document_service.UpdateDocumentRequest], Awaitable[gcd_document.Document]
-    ]:
+    def update_document(self) -> Callable[[document_service.UpdateDocumentRequest], Awaitable[gcd_document.Document]]:
         r"""Return a callable for the update document method over gRPC.
 
         Updates a [Document][google.cloud.discoveryengine.v1.Document].
@@ -470,9 +432,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["update_document"]
 
     @property
-    def delete_document(
-        self,
-    ) -> Callable[[document_service.DeleteDocumentRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_document(self) -> Callable[[document_service.DeleteDocumentRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete document method over gRPC.
 
         Deletes a [Document][google.cloud.discoveryengine.v1.Document].
@@ -496,11 +456,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["delete_document"]
 
     @property
-    def import_documents(
-        self,
-    ) -> Callable[
-        [import_config.ImportDocumentsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_documents(self) -> Callable[[import_config.ImportDocumentsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import documents method over gRPC.
 
         Bulk import of multiple
@@ -530,11 +486,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         return self._stubs["import_documents"]
 
     @property
-    def purge_documents(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeDocumentsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def purge_documents(self) -> Callable[[purge_config.PurgeDocumentsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the purge documents method over gRPC.
 
         Permanently deletes all selected
@@ -578,10 +530,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
     @property
     def batch_get_documents_metadata(
         self,
-    ) -> Callable[
-        [document_service.BatchGetDocumentsMetadataRequest],
-        Awaitable[document_service.BatchGetDocumentsMetadataResponse],
-    ]:
+    ) -> Callable[[document_service.BatchGetDocumentsMetadataRequest], Awaitable[document_service.BatchGetDocumentsMetadataResponse]]:
         r"""Return a callable for the batch get documents metadata method over gRPC.
 
         Gets index freshness metadata for
@@ -599,9 +548,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_get_documents_metadata" not in self._stubs:
-            self._stubs[
-                "batch_get_documents_metadata"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_get_documents_metadata"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1.DocumentService/BatchGetDocumentsMetadata",
                 request_serializer=document_service.BatchGetDocumentsMetadataRequest.serialize,
                 response_deserializer=document_service.BatchGetDocumentsMetadataResponse.deserialize,
@@ -726,9 +673,7 @@ class DocumentServiceGrpcAsyncIOTransport(DocumentServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -20,19 +20,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -79,9 +67,7 @@ class RegionInstanceGroupManagersClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[RegionInstanceGroupManagersTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[RegionInstanceGroupManagersTransport]]
     _transport_registry["rest"] = RegionInstanceGroupManagersRestTransport
 
     def get_transport_class(
@@ -106,9 +92,7 @@ class RegionInstanceGroupManagersClientMeta(type):
         return next(iter(cls._transport_registry.values()))
 
 
-class RegionInstanceGroupManagersClient(
-    metaclass=RegionInstanceGroupManagersClientMeta
-):
+class RegionInstanceGroupManagersClient(metaclass=RegionInstanceGroupManagersClientMeta):
     """The RegionInstanceGroupManagers API."""
 
     @staticmethod
@@ -125,9 +109,7 @@ class RegionInstanceGroupManagersClient(
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -135,20 +117,39 @@ class RegionInstanceGroupManagersClient(
             return api_endpoint
 
         if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
+            return api_endpoint.replace("sandbox.googleapis.com", "mtls.sandbox.googleapis.com")
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "compute.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "compute.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
+
+    @staticmethod
+    def _use_client_cert_effective():
+        """Returns whether client certificate should be used for mTLS if the
+        google-auth version supports should_use_client_cert automatic mTLS enablement.
+
+        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
+
+        Returns:
+            bool: whether client certificate should be used for mTLS
+        Raises:
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        """
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+            return mtls.should_use_client_cert()
+        else:  # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be" " either `true` or `false`")
+            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -275,9 +276,7 @@ class RegionInstanceGroupManagersClient(
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -309,26 +308,17 @@ class RegionInstanceGroupManagersClient(
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.", DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_client_cert = RegionInstanceGroupManagersClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -337,9 +327,7 @@ class RegionInstanceGroupManagersClient(
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -360,20 +348,12 @@ class RegionInstanceGroupManagersClient(
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = RegionInstanceGroupManagersClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -395,9 +375,7 @@ class RegionInstanceGroupManagersClient(
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -413,27 +391,17 @@ class RegionInstanceGroupManagersClient(
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = RegionInstanceGroupManagersClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = RegionInstanceGroupManagersClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = (
-                RegionInstanceGroupManagersClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=universe_domain
-                )
-            )
+            api_endpoint = RegionInstanceGroupManagersClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -468,19 +436,13 @@ class RegionInstanceGroupManagersClient(
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
+    def _add_cred_info_for_auth_errors(self, error: core_exceptions.GoogleAPICallError) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -517,13 +479,7 @@ class RegionInstanceGroupManagersClient(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                RegionInstanceGroupManagersTransport,
-                Callable[..., RegionInstanceGroupManagersTransport],
-            ]
-        ] = None,
+        transport: Optional[Union[str, RegionInstanceGroupManagersTransport, Callable[..., RegionInstanceGroupManagersTransport]]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -584,25 +540,15 @@ class RegionInstanceGroupManagersClient(
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = RegionInstanceGroupManagersClient._read_environment_variables()
-        self._client_cert_source = (
-            RegionInstanceGroupManagersClient._get_client_cert_source(
-                self._client_options.client_cert_source, self._use_client_cert
-            )
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = RegionInstanceGroupManagersClient._read_environment_variables()
+        self._client_cert_source = RegionInstanceGroupManagersClient._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = RegionInstanceGroupManagersClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
+        self._universe_domain = RegionInstanceGroupManagersClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -614,9 +560,7 @@ class RegionInstanceGroupManagersClient(
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -625,47 +569,26 @@ class RegionInstanceGroupManagersClient(
         if transport_provided:
             # transport is a RegionInstanceGroupManagersTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, " "provide its credentials directly.")
             if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
+                raise ValueError("When providing a transport instance, provide its scopes " "directly.")
             self._transport = cast(RegionInstanceGroupManagersTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or RegionInstanceGroupManagersClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or RegionInstanceGroupManagersClient._get_api_endpoint(
+            self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint
         )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[RegionInstanceGroupManagersTransport],
-                Callable[..., RegionInstanceGroupManagersTransport],
-            ] = (
+            transport_init: Union[Type[RegionInstanceGroupManagersTransport], Callable[..., RegionInstanceGroupManagersTransport]] = (
                 RegionInstanceGroupManagersClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
-                else cast(
-                    Callable[..., RegionInstanceGroupManagersTransport], transport
-                )
+                else cast(Callable[..., RegionInstanceGroupManagersTransport], transport)
             )
             # initialize with the provided callable or the passed in class
             self._transport = transport_init(
@@ -681,20 +604,14 @@ class RegionInstanceGroupManagersClient(
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.compute_v1.RegionInstanceGroupManagersClient`.",
                     extra={
                         "serviceName": "google.cloud.compute.v1.RegionInstanceGroupManagers",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
@@ -705,9 +622,7 @@ class RegionInstanceGroupManagersClient(
 
     def abandon_instances_unary(
         self,
-        request: Optional[
-            Union[compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -808,26 +723,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_abandon_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_abandon_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.AbandonInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.AbandonInstancesRegionInstanceGroupManagerRequest):
             request = compute.AbandonInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -837,10 +740,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_abandon_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_abandon_instances_request_resource is not None:
                 request.region_instance_group_managers_abandon_instances_request_resource = (
                     region_instance_group_managers_abandon_instances_request_resource
                 )
@@ -877,9 +777,7 @@ class RegionInstanceGroupManagersClient(
 
     def abandon_instances(
         self,
-        request: Optional[
-            Union[compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -980,26 +878,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_abandon_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_abandon_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.AbandonInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.AbandonInstancesRegionInstanceGroupManagerRequest):
             request = compute.AbandonInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1009,10 +895,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_abandon_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_abandon_instances_request_resource is not None:
                 request.region_instance_group_managers_abandon_instances_request_resource = (
                     region_instance_group_managers_abandon_instances_request_resource
                 )
@@ -1074,18 +957,12 @@ class RegionInstanceGroupManagersClient(
 
     def apply_updates_to_instances_unary(
         self,
-        request: Optional[
-            Union[
-                compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_apply_updates_request_resource: Optional[
-            compute.RegionInstanceGroupManagersApplyUpdatesRequest
-        ] = None,
+        region_instance_group_managers_apply_updates_request_resource: Optional[compute.RegionInstanceGroupManagersApplyUpdatesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1167,29 +1044,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_apply_updates_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_apply_updates_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest
-        ):
-            request = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest):
+            request = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -1198,19 +1061,12 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_apply_updates_request_resource
-                is not None
-            ):
-                request.region_instance_group_managers_apply_updates_request_resource = (
-                    region_instance_group_managers_apply_updates_request_resource
-                )
+            if region_instance_group_managers_apply_updates_request_resource is not None:
+                request.region_instance_group_managers_apply_updates_request_resource = region_instance_group_managers_apply_updates_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.apply_updates_to_instances
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.apply_updates_to_instances]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1240,18 +1096,12 @@ class RegionInstanceGroupManagersClient(
 
     def apply_updates_to_instances(
         self,
-        request: Optional[
-            Union[
-                compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_apply_updates_request_resource: Optional[
-            compute.RegionInstanceGroupManagersApplyUpdatesRequest
-        ] = None,
+        region_instance_group_managers_apply_updates_request_resource: Optional[compute.RegionInstanceGroupManagersApplyUpdatesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1333,29 +1183,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_apply_updates_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_apply_updates_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest
-        ):
-            request = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest):
+            request = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -1364,19 +1200,12 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_apply_updates_request_resource
-                is not None
-            ):
-                request.region_instance_group_managers_apply_updates_request_resource = (
-                    region_instance_group_managers_apply_updates_request_resource
-                )
+            if region_instance_group_managers_apply_updates_request_resource is not None:
+                request.region_instance_group_managers_apply_updates_request_resource = region_instance_group_managers_apply_updates_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.apply_updates_to_instances
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.apply_updates_to_instances]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1431,16 +1260,12 @@ class RegionInstanceGroupManagersClient(
 
     def create_instances_unary(
         self,
-        request: Optional[
-            Union[compute.CreateInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.CreateInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_create_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersCreateInstancesRequest
-        ] = None,
+        region_instance_group_managers_create_instances_request_resource: Optional[compute.RegionInstanceGroupManagersCreateInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1529,26 +1354,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_create_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_create_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.CreateInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.CreateInstancesRegionInstanceGroupManagerRequest):
             request = compute.CreateInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1558,10 +1371,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_create_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_create_instances_request_resource is not None:
                 request.region_instance_group_managers_create_instances_request_resource = (
                     region_instance_group_managers_create_instances_request_resource
                 )
@@ -1598,16 +1408,12 @@ class RegionInstanceGroupManagersClient(
 
     def create_instances(
         self,
-        request: Optional[
-            Union[compute.CreateInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.CreateInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_create_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersCreateInstancesRequest
-        ] = None,
+        region_instance_group_managers_create_instances_request_resource: Optional[compute.RegionInstanceGroupManagersCreateInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1696,26 +1502,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_create_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_create_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.CreateInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.CreateInstancesRegionInstanceGroupManagerRequest):
             request = compute.CreateInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1725,10 +1519,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_create_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_create_instances_request_resource is not None:
                 request.region_instance_group_managers_create_instances_request_resource = (
                     region_instance_group_managers_create_instances_request_resource
                 )
@@ -1790,9 +1581,7 @@ class RegionInstanceGroupManagersClient(
 
     def delete_unary(
         self,
-        request: Optional[
-            Union[compute.DeleteRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -1874,14 +1663,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1928,9 +1712,7 @@ class RegionInstanceGroupManagersClient(
 
     def delete(
         self,
-        request: Optional[
-            Union[compute.DeleteRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -2012,14 +1794,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2091,16 +1868,12 @@ class RegionInstanceGroupManagersClient(
 
     def delete_instances_unary(
         self,
-        request: Optional[
-            Union[compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_delete_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersDeleteInstancesRequest
-        ] = None,
+        region_instance_group_managers_delete_instances_request_resource: Optional[compute.RegionInstanceGroupManagersDeleteInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2193,26 +1966,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_delete_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_delete_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.DeleteInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.DeleteInstancesRegionInstanceGroupManagerRequest):
             request = compute.DeleteInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -2222,10 +1983,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_delete_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_delete_instances_request_resource is not None:
                 request.region_instance_group_managers_delete_instances_request_resource = (
                     region_instance_group_managers_delete_instances_request_resource
                 )
@@ -2262,16 +2020,12 @@ class RegionInstanceGroupManagersClient(
 
     def delete_instances(
         self,
-        request: Optional[
-            Union[compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_delete_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersDeleteInstancesRequest
-        ] = None,
+        region_instance_group_managers_delete_instances_request_resource: Optional[compute.RegionInstanceGroupManagersDeleteInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2364,26 +2118,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_delete_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_delete_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.DeleteInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.DeleteInstancesRegionInstanceGroupManagerRequest):
             request = compute.DeleteInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -2393,10 +2135,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_delete_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_delete_instances_request_resource is not None:
                 request.region_instance_group_managers_delete_instances_request_resource = (
                     region_instance_group_managers_delete_instances_request_resource
                 )
@@ -2458,18 +2197,12 @@ class RegionInstanceGroupManagersClient(
 
     def delete_per_instance_configs_unary(
         self,
-        request: Optional[
-            Union[
-                compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_manager_delete_instance_config_req_resource: Optional[
-            compute.RegionInstanceGroupManagerDeleteInstanceConfigReq
-        ] = None,
+        region_instance_group_manager_delete_instance_config_req_resource: Optional[compute.RegionInstanceGroupManagerDeleteInstanceConfigReq] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2551,29 +2284,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_manager_delete_instance_config_req_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_manager_delete_instance_config_req_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest
-        ):
-            request = compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest):
+            request = compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -2582,19 +2301,14 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_manager_delete_instance_config_req_resource
-                is not None
-            ):
+            if region_instance_group_manager_delete_instance_config_req_resource is not None:
                 request.region_instance_group_manager_delete_instance_config_req_resource = (
                     region_instance_group_manager_delete_instance_config_req_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2624,18 +2338,12 @@ class RegionInstanceGroupManagersClient(
 
     def delete_per_instance_configs(
         self,
-        request: Optional[
-            Union[
-                compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_manager_delete_instance_config_req_resource: Optional[
-            compute.RegionInstanceGroupManagerDeleteInstanceConfigReq
-        ] = None,
+        region_instance_group_manager_delete_instance_config_req_resource: Optional[compute.RegionInstanceGroupManagerDeleteInstanceConfigReq] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -2717,29 +2425,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_manager_delete_instance_config_req_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_manager_delete_instance_config_req_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest
-        ):
-            request = compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest):
+            request = compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -2748,19 +2442,14 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_manager_delete_instance_config_req_resource
-                is not None
-            ):
+            if region_instance_group_manager_delete_instance_config_req_resource is not None:
                 request.region_instance_group_manager_delete_instance_config_req_resource = (
                     region_instance_group_manager_delete_instance_config_req_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2815,9 +2504,7 @@ class RegionInstanceGroupManagersClient(
 
     def get(
         self,
-        request: Optional[
-            Union[compute.GetRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.GetRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -2906,14 +2593,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2960,9 +2642,7 @@ class RegionInstanceGroupManagersClient(
 
     def insert_unary(
         self,
-        request: Optional[
-            Union[compute.InsertRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.InsertRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3049,14 +2729,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3069,9 +2744,7 @@ class RegionInstanceGroupManagersClient(
             if region is not None:
                 request.region = region
             if instance_group_manager_resource is not None:
-                request.instance_group_manager_resource = (
-                    instance_group_manager_resource
-                )
+                request.instance_group_manager_resource = instance_group_manager_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -3104,9 +2777,7 @@ class RegionInstanceGroupManagersClient(
 
     def insert(
         self,
-        request: Optional[
-            Union[compute.InsertRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.InsertRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3193,14 +2864,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager_resource]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3213,9 +2879,7 @@ class RegionInstanceGroupManagersClient(
             if region is not None:
                 request.region = region
             if instance_group_manager_resource is not None:
-                request.instance_group_manager_resource = (
-                    instance_group_manager_resource
-                )
+                request.instance_group_manager_resource = instance_group_manager_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -3273,9 +2937,7 @@ class RegionInstanceGroupManagersClient(
 
     def list(
         self,
-        request: Optional[
-            Union[compute.ListRegionInstanceGroupManagersRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ListRegionInstanceGroupManagersRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3352,14 +3014,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3414,9 +3071,7 @@ class RegionInstanceGroupManagersClient(
 
     def list_errors(
         self,
-        request: Optional[
-            Union[compute.ListErrorsRegionInstanceGroupManagersRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ListErrorsRegionInstanceGroupManagersRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3503,20 +3158,13 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ListErrorsRegionInstanceGroupManagersRequest
-        ):
+        if not isinstance(request, compute.ListErrorsRegionInstanceGroupManagersRequest):
             request = compute.ListErrorsRegionInstanceGroupManagersRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -3570,9 +3218,7 @@ class RegionInstanceGroupManagersClient(
 
     def list_managed_instances(
         self,
-        request: Optional[
-            Union[compute.ListManagedInstancesRegionInstanceGroupManagersRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ListManagedInstancesRegionInstanceGroupManagersRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3660,23 +3306,14 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ListManagedInstancesRegionInstanceGroupManagersRequest
-        ):
-            request = compute.ListManagedInstancesRegionInstanceGroupManagersRequest(
-                request
-            )
+        if not isinstance(request, compute.ListManagedInstancesRegionInstanceGroupManagersRequest):
+            request = compute.ListManagedInstancesRegionInstanceGroupManagersRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -3729,11 +3366,7 @@ class RegionInstanceGroupManagersClient(
 
     def list_per_instance_configs(
         self,
-        request: Optional[
-            Union[
-                compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3818,23 +3451,14 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest
-        ):
-            request = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest(
-                request
-            )
+        if not isinstance(request, compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest):
+            request = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -3846,9 +3470,7 @@ class RegionInstanceGroupManagersClient(
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -3889,9 +3511,7 @@ class RegionInstanceGroupManagersClient(
 
     def patch_unary(
         self,
-        request: Optional[
-            Union[compute.PatchRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.PatchRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -3990,20 +3610,10 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            instance_group_manager_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, instance_group_manager_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4018,9 +3628,7 @@ class RegionInstanceGroupManagersClient(
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
             if instance_group_manager_resource is not None:
-                request.instance_group_manager_resource = (
-                    instance_group_manager_resource
-                )
+                request.instance_group_manager_resource = instance_group_manager_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4054,9 +3662,7 @@ class RegionInstanceGroupManagersClient(
 
     def patch(
         self,
-        request: Optional[
-            Union[compute.PatchRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.PatchRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -4155,20 +3761,10 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            instance_group_manager_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, instance_group_manager_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4183,9 +3779,7 @@ class RegionInstanceGroupManagersClient(
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
             if instance_group_manager_resource is not None:
-                request.instance_group_manager_resource = (
-                    instance_group_manager_resource
-                )
+                request.instance_group_manager_resource = instance_group_manager_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4244,18 +3838,12 @@ class RegionInstanceGroupManagersClient(
 
     def patch_per_instance_configs_unary(
         self,
-        request: Optional[
-            Union[
-                compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_manager_patch_instance_config_req_resource: Optional[
-            compute.RegionInstanceGroupManagerPatchInstanceConfigReq
-        ] = None,
+        region_instance_group_manager_patch_instance_config_req_resource: Optional[compute.RegionInstanceGroupManagerPatchInstanceConfigReq] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4339,29 +3927,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_manager_patch_instance_config_req_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_manager_patch_instance_config_req_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest
-        ):
-            request = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest):
+            request = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -4370,19 +3944,14 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_manager_patch_instance_config_req_resource
-                is not None
-            ):
+            if region_instance_group_manager_patch_instance_config_req_resource is not None:
                 request.region_instance_group_manager_patch_instance_config_req_resource = (
                     region_instance_group_manager_patch_instance_config_req_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.patch_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.patch_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4412,18 +3981,12 @@ class RegionInstanceGroupManagersClient(
 
     def patch_per_instance_configs(
         self,
-        request: Optional[
-            Union[
-                compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_manager_patch_instance_config_req_resource: Optional[
-            compute.RegionInstanceGroupManagerPatchInstanceConfigReq
-        ] = None,
+        region_instance_group_manager_patch_instance_config_req_resource: Optional[compute.RegionInstanceGroupManagerPatchInstanceConfigReq] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4507,29 +4070,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_manager_patch_instance_config_req_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_manager_patch_instance_config_req_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest
-        ):
-            request = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest):
+            request = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -4538,19 +4087,14 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_manager_patch_instance_config_req_resource
-                is not None
-            ):
+            if region_instance_group_manager_patch_instance_config_req_resource is not None:
                 request.region_instance_group_manager_patch_instance_config_req_resource = (
                     region_instance_group_manager_patch_instance_config_req_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.patch_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.patch_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -4605,16 +4149,12 @@ class RegionInstanceGroupManagersClient(
 
     def recreate_instances_unary(
         self,
-        request: Optional[
-            Union[compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_recreate_request_resource: Optional[
-            compute.RegionInstanceGroupManagersRecreateRequest
-        ] = None,
+        region_instance_group_managers_recreate_request_resource: Optional[compute.RegionInstanceGroupManagersRecreateRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4706,29 +4246,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_recreate_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_recreate_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.RecreateInstancesRegionInstanceGroupManagerRequest
-        ):
-            request = compute.RecreateInstancesRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.RecreateInstancesRegionInstanceGroupManagerRequest):
+            request = compute.RecreateInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -4738,9 +4264,7 @@ class RegionInstanceGroupManagersClient(
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
             if region_instance_group_managers_recreate_request_resource is not None:
-                request.region_instance_group_managers_recreate_request_resource = (
-                    region_instance_group_managers_recreate_request_resource
-                )
+                request.region_instance_group_managers_recreate_request_resource = region_instance_group_managers_recreate_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4774,16 +4298,12 @@ class RegionInstanceGroupManagersClient(
 
     def recreate_instances(
         self,
-        request: Optional[
-            Union[compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_recreate_request_resource: Optional[
-            compute.RegionInstanceGroupManagersRecreateRequest
-        ] = None,
+        region_instance_group_managers_recreate_request_resource: Optional[compute.RegionInstanceGroupManagersRecreateRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4875,29 +4395,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_recreate_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_recreate_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.RecreateInstancesRegionInstanceGroupManagerRequest
-        ):
-            request = compute.RecreateInstancesRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.RecreateInstancesRegionInstanceGroupManagerRequest):
+            request = compute.RecreateInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -4907,9 +4413,7 @@ class RegionInstanceGroupManagersClient(
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
             if region_instance_group_managers_recreate_request_resource is not None:
-                request.region_instance_group_managers_recreate_request_resource = (
-                    region_instance_group_managers_recreate_request_resource
-                )
+                request.region_instance_group_managers_recreate_request_resource = region_instance_group_managers_recreate_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -4968,9 +4472,7 @@ class RegionInstanceGroupManagersClient(
 
     def resize_unary(
         self,
-        request: Optional[
-            Union[compute.ResizeRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ResizeRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -5070,14 +4572,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager, size]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5126,9 +4623,7 @@ class RegionInstanceGroupManagersClient(
 
     def resize(
         self,
-        request: Optional[
-            Union[compute.ResizeRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ResizeRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -5228,14 +4723,9 @@ class RegionInstanceGroupManagersClient(
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [project, region, instance_group_manager, size]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5309,16 +4799,12 @@ class RegionInstanceGroupManagersClient(
 
     def resume_instances_unary(
         self,
-        request: Optional[
-            Union[compute.ResumeInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ResumeInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_resume_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersResumeInstancesRequest
-        ] = None,
+        region_instance_group_managers_resume_instances_request_resource: Optional[compute.RegionInstanceGroupManagersResumeInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -5413,26 +4899,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_resume_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_resume_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ResumeInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.ResumeInstancesRegionInstanceGroupManagerRequest):
             request = compute.ResumeInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -5442,10 +4916,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_resume_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_resume_instances_request_resource is not None:
                 request.region_instance_group_managers_resume_instances_request_resource = (
                     region_instance_group_managers_resume_instances_request_resource
                 )
@@ -5482,16 +4953,12 @@ class RegionInstanceGroupManagersClient(
 
     def resume_instances(
         self,
-        request: Optional[
-            Union[compute.ResumeInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.ResumeInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_resume_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersResumeInstancesRequest
-        ] = None,
+        region_instance_group_managers_resume_instances_request_resource: Optional[compute.RegionInstanceGroupManagersResumeInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -5586,26 +5053,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_resume_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_resume_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.ResumeInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.ResumeInstancesRegionInstanceGroupManagerRequest):
             request = compute.ResumeInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -5615,10 +5070,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_resume_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_resume_instances_request_resource is not None:
                 request.region_instance_group_managers_resume_instances_request_resource = (
                     region_instance_group_managers_resume_instances_request_resource
                 )
@@ -5680,16 +5132,12 @@ class RegionInstanceGroupManagersClient(
 
     def set_instance_template_unary(
         self,
-        request: Optional[
-            Union[compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_set_template_request_resource: Optional[
-            compute.RegionInstanceGroupManagersSetTemplateRequest
-        ] = None,
+        region_instance_group_managers_set_template_request_resource: Optional[compute.RegionInstanceGroupManagersSetTemplateRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -5772,29 +5220,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_set_template_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_set_template_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SetInstanceTemplateRegionInstanceGroupManagerRequest
-        ):
-            request = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.SetInstanceTemplateRegionInstanceGroupManagerRequest):
+            request = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -5804,9 +5238,7 @@ class RegionInstanceGroupManagersClient(
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
             if region_instance_group_managers_set_template_request_resource is not None:
-                request.region_instance_group_managers_set_template_request_resource = (
-                    region_instance_group_managers_set_template_request_resource
-                )
+                request.region_instance_group_managers_set_template_request_resource = region_instance_group_managers_set_template_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -5840,16 +5272,12 @@ class RegionInstanceGroupManagersClient(
 
     def set_instance_template(
         self,
-        request: Optional[
-            Union[compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_set_template_request_resource: Optional[
-            compute.RegionInstanceGroupManagersSetTemplateRequest
-        ] = None,
+        region_instance_group_managers_set_template_request_resource: Optional[compute.RegionInstanceGroupManagersSetTemplateRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -5932,29 +5360,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_set_template_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_set_template_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SetInstanceTemplateRegionInstanceGroupManagerRequest
-        ):
-            request = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.SetInstanceTemplateRegionInstanceGroupManagerRequest):
+            request = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -5964,9 +5378,7 @@ class RegionInstanceGroupManagersClient(
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
             if region_instance_group_managers_set_template_request_resource is not None:
-                request.region_instance_group_managers_set_template_request_resource = (
-                    region_instance_group_managers_set_template_request_resource
-                )
+                request.region_instance_group_managers_set_template_request_resource = region_instance_group_managers_set_template_request_resource
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -6025,16 +5437,12 @@ class RegionInstanceGroupManagersClient(
 
     def set_target_pools_unary(
         self,
-        request: Optional[
-            Union[compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_set_target_pools_request_resource: Optional[
-            compute.RegionInstanceGroupManagersSetTargetPoolsRequest
-        ] = None,
+        region_instance_group_managers_set_target_pools_request_resource: Optional[compute.RegionInstanceGroupManagersSetTargetPoolsRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6115,26 +5523,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_set_target_pools_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_set_target_pools_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SetTargetPoolsRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.SetTargetPoolsRegionInstanceGroupManagerRequest):
             request = compute.SetTargetPoolsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -6144,10 +5540,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_set_target_pools_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_set_target_pools_request_resource is not None:
                 request.region_instance_group_managers_set_target_pools_request_resource = (
                     region_instance_group_managers_set_target_pools_request_resource
                 )
@@ -6184,16 +5577,12 @@ class RegionInstanceGroupManagersClient(
 
     def set_target_pools(
         self,
-        request: Optional[
-            Union[compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_set_target_pools_request_resource: Optional[
-            compute.RegionInstanceGroupManagersSetTargetPoolsRequest
-        ] = None,
+        region_instance_group_managers_set_target_pools_request_resource: Optional[compute.RegionInstanceGroupManagersSetTargetPoolsRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6274,26 +5663,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_set_target_pools_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_set_target_pools_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SetTargetPoolsRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.SetTargetPoolsRegionInstanceGroupManagerRequest):
             request = compute.SetTargetPoolsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -6303,10 +5680,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_set_target_pools_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_set_target_pools_request_resource is not None:
                 request.region_instance_group_managers_set_target_pools_request_resource = (
                     region_instance_group_managers_set_target_pools_request_resource
                 )
@@ -6368,16 +5742,12 @@ class RegionInstanceGroupManagersClient(
 
     def start_instances_unary(
         self,
-        request: Optional[
-            Union[compute.StartInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.StartInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_start_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersStartInstancesRequest
-        ] = None,
+        region_instance_group_managers_start_instances_request_resource: Optional[compute.RegionInstanceGroupManagersStartInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6472,26 +5842,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_start_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_start_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.StartInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.StartInstancesRegionInstanceGroupManagerRequest):
             request = compute.StartInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -6501,10 +5859,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_start_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_start_instances_request_resource is not None:
                 request.region_instance_group_managers_start_instances_request_resource = (
                     region_instance_group_managers_start_instances_request_resource
                 )
@@ -6541,16 +5896,12 @@ class RegionInstanceGroupManagersClient(
 
     def start_instances(
         self,
-        request: Optional[
-            Union[compute.StartInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.StartInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_start_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersStartInstancesRequest
-        ] = None,
+        region_instance_group_managers_start_instances_request_resource: Optional[compute.RegionInstanceGroupManagersStartInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6645,26 +5996,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_start_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_start_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.StartInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.StartInstancesRegionInstanceGroupManagerRequest):
             request = compute.StartInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -6674,10 +6013,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_start_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_start_instances_request_resource is not None:
                 request.region_instance_group_managers_start_instances_request_resource = (
                     region_instance_group_managers_start_instances_request_resource
                 )
@@ -6739,16 +6075,12 @@ class RegionInstanceGroupManagersClient(
 
     def stop_instances_unary(
         self,
-        request: Optional[
-            Union[compute.StopInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.StopInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_stop_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersStopInstancesRequest
-        ] = None,
+        region_instance_group_managers_stop_instances_request_resource: Optional[compute.RegionInstanceGroupManagersStopInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -6852,26 +6184,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_stop_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_stop_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.StopInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.StopInstancesRegionInstanceGroupManagerRequest):
             request = compute.StopInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -6881,10 +6201,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_stop_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_stop_instances_request_resource is not None:
                 request.region_instance_group_managers_stop_instances_request_resource = (
                     region_instance_group_managers_stop_instances_request_resource
                 )
@@ -6921,16 +6238,12 @@ class RegionInstanceGroupManagersClient(
 
     def stop_instances(
         self,
-        request: Optional[
-            Union[compute.StopInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.StopInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_managers_stop_instances_request_resource: Optional[
-            compute.RegionInstanceGroupManagersStopInstancesRequest
-        ] = None,
+        region_instance_group_managers_stop_instances_request_resource: Optional[compute.RegionInstanceGroupManagersStopInstancesRequest] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -7034,26 +6347,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_stop_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_stop_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.StopInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.StopInstancesRegionInstanceGroupManagerRequest):
             request = compute.StopInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -7063,10 +6364,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_stop_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_stop_instances_request_resource is not None:
                 request.region_instance_group_managers_stop_instances_request_resource = (
                     region_instance_group_managers_stop_instances_request_resource
                 )
@@ -7128,9 +6426,7 @@ class RegionInstanceGroupManagersClient(
 
     def suspend_instances_unary(
         self,
-        request: Optional[
-            Union[compute.SuspendInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SuspendInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -7241,26 +6537,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_suspend_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_suspend_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SuspendInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.SuspendInstancesRegionInstanceGroupManagerRequest):
             request = compute.SuspendInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -7270,10 +6554,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_suspend_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_suspend_instances_request_resource is not None:
                 request.region_instance_group_managers_suspend_instances_request_resource = (
                     region_instance_group_managers_suspend_instances_request_resource
                 )
@@ -7310,9 +6591,7 @@ class RegionInstanceGroupManagersClient(
 
     def suspend_instances(
         self,
-        request: Optional[
-            Union[compute.SuspendInstancesRegionInstanceGroupManagerRequest, dict]
-        ] = None,
+        request: Optional[Union[compute.SuspendInstancesRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
@@ -7423,26 +6702,14 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_managers_suspend_instances_request_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_managers_suspend_instances_request_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.SuspendInstancesRegionInstanceGroupManagerRequest
-        ):
+        if not isinstance(request, compute.SuspendInstancesRegionInstanceGroupManagerRequest):
             request = compute.SuspendInstancesRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -7452,10 +6719,7 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_managers_suspend_instances_request_resource
-                is not None
-            ):
+            if region_instance_group_managers_suspend_instances_request_resource is not None:
                 request.region_instance_group_managers_suspend_instances_request_resource = (
                     region_instance_group_managers_suspend_instances_request_resource
                 )
@@ -7517,18 +6781,12 @@ class RegionInstanceGroupManagersClient(
 
     def update_per_instance_configs_unary(
         self,
-        request: Optional[
-            Union[
-                compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_manager_update_instance_config_req_resource: Optional[
-            compute.RegionInstanceGroupManagerUpdateInstanceConfigReq
-        ] = None,
+        region_instance_group_manager_update_instance_config_req_resource: Optional[compute.RegionInstanceGroupManagerUpdateInstanceConfigReq] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -7612,29 +6870,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_manager_update_instance_config_req_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_manager_update_instance_config_req_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest
-        ):
-            request = compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest):
+            request = compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -7643,19 +6887,14 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_manager_update_instance_config_req_resource
-                is not None
-            ):
+            if region_instance_group_manager_update_instance_config_req_resource is not None:
                 request.region_instance_group_manager_update_instance_config_req_resource = (
                     region_instance_group_manager_update_instance_config_req_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7685,18 +6924,12 @@ class RegionInstanceGroupManagersClient(
 
     def update_per_instance_configs(
         self,
-        request: Optional[
-            Union[
-                compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict]] = None,
         *,
         project: Optional[str] = None,
         region: Optional[str] = None,
         instance_group_manager: Optional[str] = None,
-        region_instance_group_manager_update_instance_config_req_resource: Optional[
-            compute.RegionInstanceGroupManagerUpdateInstanceConfigReq
-        ] = None,
+        region_instance_group_manager_update_instance_config_req_resource: Optional[compute.RegionInstanceGroupManagerUpdateInstanceConfigReq] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -7780,29 +7013,15 @@ class RegionInstanceGroupManagersClient(
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            project,
-            region,
-            instance_group_manager,
-            region_instance_group_manager_update_instance_config_req_resource,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [project, region, instance_group_manager, region_instance_group_manager_update_instance_config_req_resource]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest
-        ):
-            request = compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(
-                request
-            )
+        if not isinstance(request, compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest):
+            request = compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if project is not None:
@@ -7811,19 +7030,14 @@ class RegionInstanceGroupManagersClient(
                 request.region = region
             if instance_group_manager is not None:
                 request.instance_group_manager = instance_group_manager
-            if (
-                region_instance_group_manager_update_instance_config_req_resource
-                is not None
-            ):
+            if region_instance_group_manager_update_instance_config_req_resource is not None:
                 request.region_instance_group_manager_update_instance_config_req_resource = (
                     region_instance_group_manager_update_instance_config_req_resource
                 )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_per_instance_configs
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_per_instance_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -7890,9 +7104,7 @@ class RegionInstanceGroupManagersClient(
         self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

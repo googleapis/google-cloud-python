@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.recaptchaenterprise_v1 import gapic_version as package_version
 from google.cloud.recaptchaenterprise_v1.types import recaptchaenterprise
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -258,12 +248,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     @property
     def create_assessment(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateAssessmentRequest],
-        Union[
-            recaptchaenterprise.Assessment, Awaitable[recaptchaenterprise.Assessment]
-        ],
-    ]:
+    ) -> Callable[[recaptchaenterprise.CreateAssessmentRequest], Union[recaptchaenterprise.Assessment, Awaitable[recaptchaenterprise.Assessment]]]:
         raise NotImplementedError()
 
     @property
@@ -271,31 +256,19 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.AnnotateAssessmentRequest],
-        Union[
-            recaptchaenterprise.AnnotateAssessmentResponse,
-            Awaitable[recaptchaenterprise.AnnotateAssessmentResponse],
-        ],
+        Union[recaptchaenterprise.AnnotateAssessmentResponse, Awaitable[recaptchaenterprise.AnnotateAssessmentResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateKeyRequest],
-        Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]],
-    ]:
+    def create_key(self) -> Callable[[recaptchaenterprise.CreateKeyRequest], Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]]]:
         raise NotImplementedError()
 
     @property
     def list_keys(
         self,
     ) -> Callable[
-        [recaptchaenterprise.ListKeysRequest],
-        Union[
-            recaptchaenterprise.ListKeysResponse,
-            Awaitable[recaptchaenterprise.ListKeysResponse],
-        ],
+        [recaptchaenterprise.ListKeysRequest], Union[recaptchaenterprise.ListKeysResponse, Awaitable[recaptchaenterprise.ListKeysResponse]]
     ]:
         raise NotImplementedError()
 
@@ -304,47 +277,24 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.RetrieveLegacySecretKeyRequest],
-        Union[
-            recaptchaenterprise.RetrieveLegacySecretKeyResponse,
-            Awaitable[recaptchaenterprise.RetrieveLegacySecretKeyResponse],
-        ],
+        Union[recaptchaenterprise.RetrieveLegacySecretKeyResponse, Awaitable[recaptchaenterprise.RetrieveLegacySecretKeyResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.GetKeyRequest],
-        Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]],
-    ]:
+    def get_key(self) -> Callable[[recaptchaenterprise.GetKeyRequest], Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]]]:
         raise NotImplementedError()
 
     @property
-    def update_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.UpdateKeyRequest],
-        Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]],
-    ]:
+    def update_key(self) -> Callable[[recaptchaenterprise.UpdateKeyRequest], Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]]]:
         raise NotImplementedError()
 
     @property
-    def delete_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.DeleteKeyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_key(self) -> Callable[[recaptchaenterprise.DeleteKeyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def migrate_key(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.MigrateKeyRequest],
-        Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]],
-    ]:
+    def migrate_key(self) -> Callable[[recaptchaenterprise.MigrateKeyRequest], Union[recaptchaenterprise.Key, Awaitable[recaptchaenterprise.Key]]]:
         raise NotImplementedError()
 
     @property
@@ -352,10 +302,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.AddIpOverrideRequest],
-        Union[
-            recaptchaenterprise.AddIpOverrideResponse,
-            Awaitable[recaptchaenterprise.AddIpOverrideResponse],
-        ],
+        Union[recaptchaenterprise.AddIpOverrideResponse, Awaitable[recaptchaenterprise.AddIpOverrideResponse]],
     ]:
         raise NotImplementedError()
 
@@ -364,10 +311,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.RemoveIpOverrideRequest],
-        Union[
-            recaptchaenterprise.RemoveIpOverrideResponse,
-            Awaitable[recaptchaenterprise.RemoveIpOverrideResponse],
-        ],
+        Union[recaptchaenterprise.RemoveIpOverrideResponse, Awaitable[recaptchaenterprise.RemoveIpOverrideResponse]],
     ]:
         raise NotImplementedError()
 
@@ -376,31 +320,21 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.ListIpOverridesRequest],
-        Union[
-            recaptchaenterprise.ListIpOverridesResponse,
-            Awaitable[recaptchaenterprise.ListIpOverridesResponse],
-        ],
+        Union[recaptchaenterprise.ListIpOverridesResponse, Awaitable[recaptchaenterprise.ListIpOverridesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_metrics(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.GetMetricsRequest],
-        Union[recaptchaenterprise.Metrics, Awaitable[recaptchaenterprise.Metrics]],
-    ]:
+    ) -> Callable[[recaptchaenterprise.GetMetricsRequest], Union[recaptchaenterprise.Metrics, Awaitable[recaptchaenterprise.Metrics]]]:
         raise NotImplementedError()
 
     @property
     def create_firewall_policy(
         self,
     ) -> Callable[
-        [recaptchaenterprise.CreateFirewallPolicyRequest],
-        Union[
-            recaptchaenterprise.FirewallPolicy,
-            Awaitable[recaptchaenterprise.FirewallPolicy],
-        ],
+        [recaptchaenterprise.CreateFirewallPolicyRequest], Union[recaptchaenterprise.FirewallPolicy, Awaitable[recaptchaenterprise.FirewallPolicy]]
     ]:
         raise NotImplementedError()
 
@@ -409,10 +343,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.ListFirewallPoliciesRequest],
-        Union[
-            recaptchaenterprise.ListFirewallPoliciesResponse,
-            Awaitable[recaptchaenterprise.ListFirewallPoliciesResponse],
-        ],
+        Union[recaptchaenterprise.ListFirewallPoliciesResponse, Awaitable[recaptchaenterprise.ListFirewallPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -420,11 +351,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     def get_firewall_policy(
         self,
     ) -> Callable[
-        [recaptchaenterprise.GetFirewallPolicyRequest],
-        Union[
-            recaptchaenterprise.FirewallPolicy,
-            Awaitable[recaptchaenterprise.FirewallPolicy],
-        ],
+        [recaptchaenterprise.GetFirewallPolicyRequest], Union[recaptchaenterprise.FirewallPolicy, Awaitable[recaptchaenterprise.FirewallPolicy]]
     ]:
         raise NotImplementedError()
 
@@ -432,21 +359,14 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     def update_firewall_policy(
         self,
     ) -> Callable[
-        [recaptchaenterprise.UpdateFirewallPolicyRequest],
-        Union[
-            recaptchaenterprise.FirewallPolicy,
-            Awaitable[recaptchaenterprise.FirewallPolicy],
-        ],
+        [recaptchaenterprise.UpdateFirewallPolicyRequest], Union[recaptchaenterprise.FirewallPolicy, Awaitable[recaptchaenterprise.FirewallPolicy]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_firewall_policy(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.DeleteFirewallPolicyRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[recaptchaenterprise.DeleteFirewallPolicyRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -454,10 +374,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.ReorderFirewallPoliciesRequest],
-        Union[
-            recaptchaenterprise.ReorderFirewallPoliciesResponse,
-            Awaitable[recaptchaenterprise.ReorderFirewallPoliciesResponse],
-        ],
+        Union[recaptchaenterprise.ReorderFirewallPoliciesResponse, Awaitable[recaptchaenterprise.ReorderFirewallPoliciesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -466,10 +383,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [recaptchaenterprise.ListRelatedAccountGroupsRequest],
-        Union[
-            recaptchaenterprise.ListRelatedAccountGroupsResponse,
-            Awaitable[recaptchaenterprise.ListRelatedAccountGroupsResponse],
-        ],
+        Union[recaptchaenterprise.ListRelatedAccountGroupsResponse, Awaitable[recaptchaenterprise.ListRelatedAccountGroupsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -479,8 +393,7 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     ) -> Callable[
         [recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest],
         Union[
-            recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse,
-            Awaitable[recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse],
+            recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse, Awaitable[recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse]
         ],
     ]:
         raise NotImplementedError()

@@ -19,9 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.cloud.retail_v2alpha.types import (
-    merchant_center_account_link as gcr_merchant_center_account_link,
-)
+from google.cloud.retail_v2alpha.types import merchant_center_account_link as gcr_merchant_center_account_link
 
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2alpha",
@@ -62,9 +60,7 @@ class ListMerchantCenterAccountLinksResponse(proto.Message):
             The links.
     """
 
-    merchant_center_account_links: MutableSequence[
-        gcr_merchant_center_account_link.MerchantCenterAccountLink
-    ] = proto.RepeatedField(
+    merchant_center_account_links: MutableSequence[gcr_merchant_center_account_link.MerchantCenterAccountLink] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcr_merchant_center_account_link.MerchantCenterAccountLink,

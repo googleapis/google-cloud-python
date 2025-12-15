@@ -49,9 +49,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +78,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -225,18 +216,14 @@ class HubServiceGrpcTransport(HubServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -270,9 +257,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -339,9 +324,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -396,9 +379,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["get_hub"]
 
     @property
-    def create_hub(
-        self,
-    ) -> Callable[[gcn_hub.CreateHubRequest], operations_pb2.Operation]:
+    def create_hub(self) -> Callable[[gcn_hub.CreateHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the create hub method over gRPC.
 
         Creates a new Network Connectivity Center hub in the
@@ -423,9 +404,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["create_hub"]
 
     @property
-    def update_hub(
-        self,
-    ) -> Callable[[gcn_hub.UpdateHubRequest], operations_pb2.Operation]:
+    def update_hub(self) -> Callable[[gcn_hub.UpdateHubRequest], operations_pb2.Operation]:
         r"""Return a callable for the update hub method over gRPC.
 
         Updates the description and/or labels of a Network
@@ -474,9 +453,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["delete_hub"]
 
     @property
-    def list_hub_spokes(
-        self,
-    ) -> Callable[[hub.ListHubSpokesRequest], hub.ListHubSpokesResponse]:
+    def list_hub_spokes(self) -> Callable[[hub.ListHubSpokesRequest], hub.ListHubSpokesResponse]:
         r"""Return a callable for the list hub spokes method over gRPC.
 
         Lists the Network Connectivity Center spokes
@@ -503,9 +480,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["list_hub_spokes"]
 
     @property
-    def query_hub_status(
-        self,
-    ) -> Callable[[hub.QueryHubStatusRequest], hub.QueryHubStatusResponse]:
+    def query_hub_status(self) -> Callable[[hub.QueryHubStatusRequest], hub.QueryHubStatusResponse]:
         r"""Return a callable for the query hub status method over gRPC.
 
         Query the Private Service Connect propagation status
@@ -580,9 +555,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["get_spoke"]
 
     @property
-    def create_spoke(
-        self,
-    ) -> Callable[[hub.CreateSpokeRequest], operations_pb2.Operation]:
+    def create_spoke(self) -> Callable[[hub.CreateSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the create spoke method over gRPC.
 
         Creates a Network Connectivity Center spoke.
@@ -606,9 +579,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["create_spoke"]
 
     @property
-    def update_spoke(
-        self,
-    ) -> Callable[[hub.UpdateSpokeRequest], operations_pb2.Operation]:
+    def update_spoke(self) -> Callable[[hub.UpdateSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the update spoke method over gRPC.
 
         Updates the parameters of a Network Connectivity
@@ -633,9 +604,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["update_spoke"]
 
     @property
-    def reject_hub_spoke(
-        self,
-    ) -> Callable[[hub.RejectHubSpokeRequest], operations_pb2.Operation]:
+    def reject_hub_spoke(self) -> Callable[[hub.RejectHubSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the reject hub spoke method over gRPC.
 
         Rejects a Network Connectivity Center spoke from being attached
@@ -662,9 +631,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["reject_hub_spoke"]
 
     @property
-    def accept_hub_spoke(
-        self,
-    ) -> Callable[[hub.AcceptHubSpokeRequest], operations_pb2.Operation]:
+    def accept_hub_spoke(self) -> Callable[[hub.AcceptHubSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the accept hub spoke method over gRPC.
 
         Accepts a proposal to attach a Network Connectivity
@@ -689,9 +656,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["accept_hub_spoke"]
 
     @property
-    def accept_spoke_update(
-        self,
-    ) -> Callable[[hub.AcceptSpokeUpdateRequest], operations_pb2.Operation]:
+    def accept_spoke_update(self) -> Callable[[hub.AcceptSpokeUpdateRequest], operations_pb2.Operation]:
         r"""Return a callable for the accept spoke update method over gRPC.
 
         Accepts a proposal to update a Network Connectivity
@@ -716,9 +681,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["accept_spoke_update"]
 
     @property
-    def reject_spoke_update(
-        self,
-    ) -> Callable[[hub.RejectSpokeUpdateRequest], operations_pb2.Operation]:
+    def reject_spoke_update(self) -> Callable[[hub.RejectSpokeUpdateRequest], operations_pb2.Operation]:
         r"""Return a callable for the reject spoke update method over gRPC.
 
         Rejects a proposal to update a Network Connectivity
@@ -743,9 +706,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["reject_spoke_update"]
 
     @property
-    def delete_spoke(
-        self,
-    ) -> Callable[[hub.DeleteSpokeRequest], operations_pb2.Operation]:
+    def delete_spoke(self) -> Callable[[hub.DeleteSpokeRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete spoke method over gRPC.
 
         Deletes a Network Connectivity Center spoke.
@@ -842,9 +803,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["list_routes"]
 
     @property
-    def list_route_tables(
-        self,
-    ) -> Callable[[hub.ListRouteTablesRequest], hub.ListRouteTablesResponse]:
+    def list_route_tables(self) -> Callable[[hub.ListRouteTablesRequest], hub.ListRouteTablesResponse]:
         r"""Return a callable for the list route tables method over gRPC.
 
         Lists route tables in a given hub.
@@ -917,9 +876,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
         return self._stubs["list_groups"]
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[[hub.UpdateGroupRequest], operations_pb2.Operation]:
+    def update_group(self) -> Callable[[hub.UpdateGroupRequest], operations_pb2.Operation]:
         r"""Return a callable for the update group method over gRPC.
 
         Updates the parameters of a Network Connectivity
@@ -1000,9 +957,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1019,9 +974,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1106,10 +1059,7 @@ class HubServiceGrpcTransport(HubServiceTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

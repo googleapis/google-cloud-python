@@ -28,9 +28,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.shopping.merchant_accounts_v1beta.types import (
-    account_tax as gsma_account_tax,
-)
+from google.shopping.merchant_accounts_v1beta.types import account_tax as gsma_account_tax
 from google.shopping.merchant_accounts_v1beta.types import account_tax
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -106,12 +104,8 @@ class AccountTaxServiceRestInterceptor:
     """
 
     def pre_get_account_tax(
-        self,
-        request: account_tax.GetAccountTaxRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        account_tax.GetAccountTaxRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: account_tax.GetAccountTaxRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[account_tax.GetAccountTaxRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account_tax
 
         Override in a subclass to manipulate the request or metadata
@@ -119,9 +113,7 @@ class AccountTaxServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_account_tax(
-        self, response: account_tax.AccountTax
-    ) -> account_tax.AccountTax:
+    def post_get_account_tax(self, response: account_tax.AccountTax) -> account_tax.AccountTax:
         """Post-rpc interceptor for get_account_tax
 
         DEPRECATED. Please use the `post_get_account_tax_with_metadata`
@@ -135,9 +127,7 @@ class AccountTaxServiceRestInterceptor:
         return response
 
     def post_get_account_tax_with_metadata(
-        self,
-        response: account_tax.AccountTax,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: account_tax.AccountTax, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[account_tax.AccountTax, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_account_tax
 
@@ -154,12 +144,8 @@ class AccountTaxServiceRestInterceptor:
         return response, metadata
 
     def pre_list_account_tax(
-        self,
-        request: account_tax.ListAccountTaxRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        account_tax.ListAccountTaxRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: account_tax.ListAccountTaxRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[account_tax.ListAccountTaxRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_account_tax
 
         Override in a subclass to manipulate the request or metadata
@@ -167,9 +153,7 @@ class AccountTaxServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_account_tax(
-        self, response: account_tax.ListAccountTaxResponse
-    ) -> account_tax.ListAccountTaxResponse:
+    def post_list_account_tax(self, response: account_tax.ListAccountTaxResponse) -> account_tax.ListAccountTaxResponse:
         """Post-rpc interceptor for list_account_tax
 
         DEPRECATED. Please use the `post_list_account_tax_with_metadata`
@@ -183,12 +167,8 @@ class AccountTaxServiceRestInterceptor:
         return response
 
     def post_list_account_tax_with_metadata(
-        self,
-        response: account_tax.ListAccountTaxResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        account_tax.ListAccountTaxResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: account_tax.ListAccountTaxResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[account_tax.ListAccountTaxResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_account_tax
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -204,13 +184,8 @@ class AccountTaxServiceRestInterceptor:
         return response, metadata
 
     def pre_update_account_tax(
-        self,
-        request: gsma_account_tax.UpdateAccountTaxRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsma_account_tax.UpdateAccountTaxRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gsma_account_tax.UpdateAccountTaxRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsma_account_tax.UpdateAccountTaxRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_account_tax
 
         Override in a subclass to manipulate the request or metadata
@@ -218,9 +193,7 @@ class AccountTaxServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_account_tax(
-        self, response: gsma_account_tax.AccountTax
-    ) -> gsma_account_tax.AccountTax:
+    def post_update_account_tax(self, response: gsma_account_tax.AccountTax) -> gsma_account_tax.AccountTax:
         """Post-rpc interceptor for update_account_tax
 
         DEPRECATED. Please use the `post_update_account_tax_with_metadata`
@@ -234,9 +207,7 @@ class AccountTaxServiceRestInterceptor:
         return response
 
     def post_update_account_tax_with_metadata(
-        self,
-        response: gsma_account_tax.AccountTax,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gsma_account_tax.AccountTax, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gsma_account_tax.AccountTax, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_account_tax
 
@@ -336,31 +307,18 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AccountTaxServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetAccountTax(
-        _BaseAccountTaxServiceRestTransport._BaseGetAccountTax,
-        AccountTaxServiceRestStub,
-    ):
+    class _GetAccountTax(_BaseAccountTaxServiceRestTransport._BaseGetAccountTax, AccountTaxServiceRestStub):
         def __hash__(self):
             return hash("AccountTaxServiceRestTransport.GetAccountTax")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -402,26 +360,16 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_http_options()
-            )
+            http_options = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_http_options()
 
             request, metadata = self._interceptor.pre_get_account_tax(request, metadata)
-            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountTaxServiceRestTransport._BaseGetAccountTax._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -445,12 +393,7 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             # Send the request
             response = AccountTaxServiceRestTransport._GetAccountTax._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -466,12 +409,8 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             resp = self._interceptor.post_get_account_tax(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_account_tax_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_account_tax_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = account_tax.AccountTax.to_json(response)
                 except:
@@ -492,23 +431,12 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
                 )
             return resp
 
-    class _ListAccountTax(
-        _BaseAccountTaxServiceRestTransport._BaseListAccountTax,
-        AccountTaxServiceRestStub,
-    ):
+    class _ListAccountTax(_BaseAccountTaxServiceRestTransport._BaseListAccountTax, AccountTaxServiceRestStub):
         def __hash__(self):
             return hash("AccountTaxServiceRestTransport.ListAccountTax")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -555,28 +483,16 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_http_options()
-            )
+            http_options = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_account_tax(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_account_tax(request, metadata)
+            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountTaxServiceRestTransport._BaseListAccountTax._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -600,12 +516,7 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             # Send the request
             response = AccountTaxServiceRestTransport._ListAccountTax._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -621,16 +532,10 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             resp = self._interceptor.post_list_account_tax(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_account_tax_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_account_tax_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = account_tax.ListAccountTaxResponse.to_json(
-                        response
-                    )
+                    response_payload = account_tax.ListAccountTaxResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -649,23 +554,12 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAccountTax(
-        _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax,
-        AccountTaxServiceRestStub,
-    ):
+    class _UpdateAccountTax(_BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax, AccountTaxServiceRestStub):
         def __hash__(self):
             return hash("AccountTaxServiceRestTransport.UpdateAccountTax")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -708,32 +602,18 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_http_options()
-            )
+            http_options = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_account_tax(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_account_tax(request, metadata)
+            transcoded_request = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_transcoded_request(http_options, request)
 
-            body = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountTaxServiceRestTransport._BaseUpdateAccountTax._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -757,13 +637,7 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             # Send the request
             response = AccountTaxServiceRestTransport._UpdateAccountTax._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -779,12 +653,8 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
 
             resp = self._interceptor.post_update_account_tax(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_account_tax_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_account_tax_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gsma_account_tax.AccountTax.to_json(response)
                 except:
@@ -806,29 +676,19 @@ class AccountTaxServiceRestTransport(_BaseAccountTaxServiceRestTransport):
             return resp
 
     @property
-    def get_account_tax(
-        self,
-    ) -> Callable[[account_tax.GetAccountTaxRequest], account_tax.AccountTax]:
+    def get_account_tax(self) -> Callable[[account_tax.GetAccountTaxRequest], account_tax.AccountTax]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccountTax(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_account_tax(
-        self,
-    ) -> Callable[
-        [account_tax.ListAccountTaxRequest], account_tax.ListAccountTaxResponse
-    ]:
+    def list_account_tax(self) -> Callable[[account_tax.ListAccountTaxRequest], account_tax.ListAccountTaxResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccountTax(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_account_tax(
-        self,
-    ) -> Callable[
-        [gsma_account_tax.UpdateAccountTaxRequest], gsma_account_tax.AccountTax
-    ]:
+    def update_account_tax(self) -> Callable[[gsma_account_tax.UpdateAccountTaxRequest], gsma_account_tax.AccountTax]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAccountTax(self._session, self._host, self._interceptor)  # type: ignore

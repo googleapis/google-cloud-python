@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,20 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.apphub_v1.types import (
-    apphub_service,
-    application,
-    service,
-    service_project_attachment,
-    workload,
-)
+from google.cloud.apphub_v1.types import apphub_service, application, service, service_project_attachment, workload
 
 
 class ListServiceProjectAttachmentsPager:
@@ -107,12 +89,7 @@ class ListServiceProjectAttachmentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[service_project_attachment.ServiceProjectAttachment]:
@@ -143,9 +120,7 @@ class ListServiceProjectAttachmentsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[apphub_service.ListServiceProjectAttachmentsResponse]
-        ],
+        method: Callable[..., Awaitable[apphub_service.ListServiceProjectAttachmentsResponse]],
         request: apphub_service.ListServiceProjectAttachmentsRequest,
         response: apphub_service.ListServiceProjectAttachmentsResponse,
         *,
@@ -181,23 +156,14 @@ class ListServiceProjectAttachmentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[apphub_service.ListServiceProjectAttachmentsResponse]:
+    async def pages(self) -> AsyncIterator[apphub_service.ListServiceProjectAttachmentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[service_project_attachment.ServiceProjectAttachment]:
+    def __aiter__(self) -> AsyncIterator[service_project_attachment.ServiceProjectAttachment]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.service_project_attachments:
@@ -269,12 +235,7 @@ class ListDiscoveredServicesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[service.DiscoveredService]:
@@ -341,18 +302,11 @@ class ListDiscoveredServicesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[apphub_service.ListDiscoveredServicesResponse]:
+    async def pages(self) -> AsyncIterator[apphub_service.ListDiscoveredServicesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[service.DiscoveredService]:
@@ -427,12 +381,7 @@ class ListServicesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[service.Service]:
@@ -503,12 +452,7 @@ class ListServicesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[service.Service]:
@@ -583,12 +527,7 @@ class ListDiscoveredWorkloadsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[workload.DiscoveredWorkload]:
@@ -619,9 +558,7 @@ class ListDiscoveredWorkloadsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[apphub_service.ListDiscoveredWorkloadsResponse]
-        ],
+        method: Callable[..., Awaitable[apphub_service.ListDiscoveredWorkloadsResponse]],
         request: apphub_service.ListDiscoveredWorkloadsRequest,
         response: apphub_service.ListDiscoveredWorkloadsResponse,
         *,
@@ -657,18 +594,11 @@ class ListDiscoveredWorkloadsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[apphub_service.ListDiscoveredWorkloadsResponse]:
+    async def pages(self) -> AsyncIterator[apphub_service.ListDiscoveredWorkloadsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[workload.DiscoveredWorkload]:
@@ -743,12 +673,7 @@ class ListWorkloadsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[workload.Workload]:
@@ -819,12 +744,7 @@ class ListWorkloadsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[workload.Workload]:
@@ -899,12 +819,7 @@ class ListApplicationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[application.Application]:
@@ -975,12 +890,7 @@ class ListApplicationsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[application.Application]:

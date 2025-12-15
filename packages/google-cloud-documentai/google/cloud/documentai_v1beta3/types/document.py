@@ -499,9 +499,7 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Document.Page.DetectedLanguage",
@@ -533,9 +531,7 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Document.Page.DetectedLanguage",
@@ -568,9 +564,7 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Document.Page.DetectedLanguage",
@@ -754,9 +748,7 @@ class Document(proto.Message):
                 number=2,
                 message="Document.Page.Token.DetectedBreak",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="Document.Page.DetectedLanguage",
@@ -790,9 +782,7 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Document.Page.DetectedLanguage",
@@ -824,9 +814,7 @@ class Document(proto.Message):
                 proto.STRING,
                 number=2,
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="Document.Page.DetectedLanguage",
@@ -859,9 +847,7 @@ class Document(proto.Message):
                         Cells that make up this row.
                 """
 
-                cells: MutableSequence[
-                    "Document.Page.Table.TableCell"
-                ] = proto.RepeatedField(
+                cells: MutableSequence["Document.Page.Table.TableCell"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="Document.Page.Table.TableCell",
@@ -897,9 +883,7 @@ class Document(proto.Message):
                     proto.INT32,
                     number=3,
                 )
-                detected_languages: MutableSequence[
-                    "Document.Page.DetectedLanguage"
-                ] = proto.RepeatedField(
+                detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=4,
                     message="Document.Page.DetectedLanguage",
@@ -910,23 +894,17 @@ class Document(proto.Message):
                 number=1,
                 message="Document.Page.Layout",
             )
-            header_rows: MutableSequence[
-                "Document.Page.Table.TableRow"
-            ] = proto.RepeatedField(
+            header_rows: MutableSequence["Document.Page.Table.TableRow"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Document.Page.Table.TableRow",
             )
-            body_rows: MutableSequence[
-                "Document.Page.Table.TableRow"
-            ] = proto.RepeatedField(
+            body_rows: MutableSequence["Document.Page.Table.TableRow"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="Document.Page.Table.TableRow",
             )
-            detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Document.Page.DetectedLanguage",
@@ -989,16 +967,12 @@ class Document(proto.Message):
                 number=2,
                 message="Document.Page.Layout",
             )
-            name_detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            name_detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="Document.Page.DetectedLanguage",
             )
-            value_detected_languages: MutableSequence[
-                "Document.Page.DetectedLanguage"
-            ] = proto.RepeatedField(
+            value_detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="Document.Page.DetectedLanguage",
@@ -1110,9 +1084,7 @@ class Document(proto.Message):
                 proto.FLOAT,
                 number=1,
             )
-            detected_defects: MutableSequence[
-                "Document.Page.ImageQualityScores.DetectedDefect"
-            ] = proto.RepeatedField(
+            detected_defects: MutableSequence["Document.Page.ImageQualityScores.DetectedDefect"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="Document.Page.ImageQualityScores.DetectedDefect",
@@ -1142,9 +1114,7 @@ class Document(proto.Message):
             number=3,
             message="Document.Page.Layout",
         )
-        detected_languages: MutableSequence[
-            "Document.Page.DetectedLanguage"
-        ] = proto.RepeatedField(
+        detected_languages: MutableSequence["Document.Page.DetectedLanguage"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="Document.Page.DetectedLanguage",
@@ -1169,9 +1139,7 @@ class Document(proto.Message):
             number=8,
             message="Document.Page.Token",
         )
-        visual_elements: MutableSequence[
-            "Document.Page.VisualElement"
-        ] = proto.RepeatedField(
+        visual_elements: MutableSequence["Document.Page.VisualElement"] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message="Document.Page.VisualElement",
@@ -1191,9 +1159,7 @@ class Document(proto.Message):
             number=12,
             message="Document.Page.Symbol",
         )
-        detected_barcodes: MutableSequence[
-            "Document.Page.DetectedBarcode"
-        ] = proto.RepeatedField(
+        detected_barcodes: MutableSequence["Document.Page.DetectedBarcode"] = proto.RepeatedField(
             proto.MESSAGE,
             number=15,
             message="Document.Page.DetectedBarcode",
@@ -1515,9 +1481,7 @@ class Document(proto.Message):
                 number=2,
             )
 
-        text_segments: MutableSequence[
-            "Document.TextAnchor.TextSegment"
-        ] = proto.RepeatedField(
+        text_segments: MutableSequence["Document.TextAnchor.TextSegment"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Document.TextAnchor.TextSegment",
@@ -1985,9 +1949,7 @@ class Document(proto.Message):
                     proto.STRING,
                     number=2,
                 )
-                blocks: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock"
-                ] = proto.RepeatedField(
+                blocks: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=3,
                     message="Document.DocumentLayout.DocumentLayoutBlock",
@@ -2012,16 +1974,12 @@ class Document(proto.Message):
                         Annotation of the table block.
                 """
 
-                header_rows: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow"
-                ] = proto.RepeatedField(
+                header_rows: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow",
                 )
-                body_rows: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow"
-                ] = proto.RepeatedField(
+                body_rows: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=2,
                     message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableRow",
@@ -2044,9 +2002,7 @@ class Document(proto.Message):
                         A table row is a list of table cells.
                 """
 
-                cells: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutTableCell"
-                ] = proto.RepeatedField(
+                cells: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock.LayoutTableCell"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="Document.DocumentLayout.DocumentLayoutBlock.LayoutTableCell",
@@ -2066,9 +2022,7 @@ class Document(proto.Message):
                         How many columns this cell spans.
                 """
 
-                blocks: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock"
-                ] = proto.RepeatedField(
+                blocks: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="Document.DocumentLayout.DocumentLayoutBlock",
@@ -2093,9 +2047,7 @@ class Document(proto.Message):
                         ``ordered`` and ``unordered``.
                 """
 
-                list_entries: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock.LayoutListEntry"
-                ] = proto.RepeatedField(
+                list_entries: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock.LayoutListEntry"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="Document.DocumentLayout.DocumentLayoutBlock.LayoutListEntry",
@@ -2115,9 +2067,7 @@ class Document(proto.Message):
                         nested blocks.
                 """
 
-                blocks: MutableSequence[
-                    "Document.DocumentLayout.DocumentLayoutBlock"
-                ] = proto.RepeatedField(
+                blocks: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=1,
                     message="Document.DocumentLayout.DocumentLayoutBlock",
@@ -2230,9 +2180,7 @@ class Document(proto.Message):
                 message=geometry.BoundingPoly,
             )
 
-        blocks: MutableSequence[
-            "Document.DocumentLayout.DocumentLayoutBlock"
-        ] = proto.RepeatedField(
+        blocks: MutableSequence["Document.DocumentLayout.DocumentLayoutBlock"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Document.DocumentLayout.DocumentLayoutBlock",
@@ -2414,21 +2362,17 @@ class Document(proto.Message):
                         This field is a member of `oneof`_ ``field_type``.
                 """
 
-                image_chunk_field: "Document.ChunkedDocument.Chunk.ImageChunkField" = (
-                    proto.Field(
-                        proto.MESSAGE,
-                        number=1,
-                        oneof="field_type",
-                        message="Document.ChunkedDocument.Chunk.ImageChunkField",
-                    )
+                image_chunk_field: "Document.ChunkedDocument.Chunk.ImageChunkField" = proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    oneof="field_type",
+                    message="Document.ChunkedDocument.Chunk.ImageChunkField",
                 )
-                table_chunk_field: "Document.ChunkedDocument.Chunk.TableChunkField" = (
-                    proto.Field(
-                        proto.MESSAGE,
-                        number=2,
-                        oneof="field_type",
-                        message="Document.ChunkedDocument.Chunk.TableChunkField",
-                    )
+                table_chunk_field: "Document.ChunkedDocument.Chunk.TableChunkField" = proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    oneof="field_type",
+                    message="Document.ChunkedDocument.Chunk.TableChunkField",
                 )
 
             chunk_id: str = proto.Field(
@@ -2448,23 +2392,17 @@ class Document(proto.Message):
                 number=4,
                 message="Document.ChunkedDocument.Chunk.ChunkPageSpan",
             )
-            page_headers: MutableSequence[
-                "Document.ChunkedDocument.Chunk.ChunkPageHeader"
-            ] = proto.RepeatedField(
+            page_headers: MutableSequence["Document.ChunkedDocument.Chunk.ChunkPageHeader"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="Document.ChunkedDocument.Chunk.ChunkPageHeader",
             )
-            page_footers: MutableSequence[
-                "Document.ChunkedDocument.Chunk.ChunkPageFooter"
-            ] = proto.RepeatedField(
+            page_footers: MutableSequence["Document.ChunkedDocument.Chunk.ChunkPageFooter"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=6,
                 message="Document.ChunkedDocument.Chunk.ChunkPageFooter",
             )
-            chunk_fields: MutableSequence[
-                "Document.ChunkedDocument.Chunk.ChunkField"
-            ] = proto.RepeatedField(
+            chunk_fields: MutableSequence["Document.ChunkedDocument.Chunk.ChunkField"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=7,
                 message="Document.ChunkedDocument.Chunk.ChunkField",
@@ -2573,9 +2511,7 @@ class Document(proto.Message):
                 number=4,
             )
 
-        validation_results: MutableSequence[
-            "Document.EntityValidationOutput.ValidationResult"
-        ] = proto.RepeatedField(
+        validation_results: MutableSequence["Document.EntityValidationOutput.ValidationResult"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Document.EntityValidationOutput.ValidationResult",

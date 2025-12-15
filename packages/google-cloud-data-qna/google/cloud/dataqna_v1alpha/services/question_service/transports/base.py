@@ -32,9 +32,7 @@ from google.cloud.dataqna_v1alpha.types import question as gcd_question
 from google.cloud.dataqna_v1alpha.types import question_service
 from google.cloud.dataqna_v1alpha.types import user_feedback
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class QuestionServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -174,50 +164,27 @@ class QuestionServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_question(
-        self,
-    ) -> Callable[
-        [question_service.GetQuestionRequest],
-        Union[question.Question, Awaitable[question.Question]],
-    ]:
+    def get_question(self) -> Callable[[question_service.GetQuestionRequest], Union[question.Question, Awaitable[question.Question]]]:
         raise NotImplementedError()
 
     @property
-    def create_question(
-        self,
-    ) -> Callable[
-        [question_service.CreateQuestionRequest],
-        Union[gcd_question.Question, Awaitable[gcd_question.Question]],
-    ]:
+    def create_question(self) -> Callable[[question_service.CreateQuestionRequest], Union[gcd_question.Question, Awaitable[gcd_question.Question]]]:
         raise NotImplementedError()
 
     @property
-    def execute_question(
-        self,
-    ) -> Callable[
-        [question_service.ExecuteQuestionRequest],
-        Union[question.Question, Awaitable[question.Question]],
-    ]:
+    def execute_question(self) -> Callable[[question_service.ExecuteQuestionRequest], Union[question.Question, Awaitable[question.Question]]]:
         raise NotImplementedError()
 
     @property
     def get_user_feedback(
         self,
-    ) -> Callable[
-        [question_service.GetUserFeedbackRequest],
-        Union[user_feedback.UserFeedback, Awaitable[user_feedback.UserFeedback]],
-    ]:
+    ) -> Callable[[question_service.GetUserFeedbackRequest], Union[user_feedback.UserFeedback, Awaitable[user_feedback.UserFeedback]]]:
         raise NotImplementedError()
 
     @property
     def update_user_feedback(
         self,
-    ) -> Callable[
-        [question_service.UpdateUserFeedbackRequest],
-        Union[
-            gcd_user_feedback.UserFeedback, Awaitable[gcd_user_feedback.UserFeedback]
-        ],
-    ]:
+    ) -> Callable[[question_service.UpdateUserFeedbackRequest], Union[gcd_user_feedback.UserFeedback, Awaitable[gcd_user_feedback.UserFeedback]]]:
         raise NotImplementedError()
 
     @property

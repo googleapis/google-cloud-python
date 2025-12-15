@@ -19,19 +19,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -80,27 +68,11 @@ from google.cloud.oracledatabase_v1.types import (
     db_node,
     db_server,
 )
-from google.cloud.oracledatabase_v1.types import (
-    db_system_initial_storage_size,
-    db_system_shape,
-    db_version,
-    entitlement,
-    exadata_infra,
-)
-from google.cloud.oracledatabase_v1.types import (
-    oracledatabase,
-    pluggable_database,
-    vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database as gco_autonomous_database,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exadb_vm_cluster as gco_exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exascale_db_storage_vault as gco_exascale_db_storage_vault,
-)
+from google.cloud.oracledatabase_v1.types import db_system_initial_storage_size, db_system_shape, db_version, entitlement, exadata_infra
+from google.cloud.oracledatabase_v1.types import oracledatabase, pluggable_database, vm_cluster
+from google.cloud.oracledatabase_v1.types import autonomous_database as gco_autonomous_database
+from google.cloud.oracledatabase_v1.types import exadb_vm_cluster as gco_exadb_vm_cluster
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault as gco_exascale_db_storage_vault
 from google.cloud.oracledatabase_v1.types import autonomous_database
 from google.cloud.oracledatabase_v1.types import db_system
 from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
@@ -126,9 +98,7 @@ class OracleDatabaseClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[OracleDatabaseTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[OracleDatabaseTransport]]
     _transport_registry["grpc"] = OracleDatabaseGrpcTransport
     _transport_registry["grpc_asyncio"] = OracleDatabaseGrpcAsyncIOTransport
     _transport_registry["rest"] = OracleDatabaseRestTransport
@@ -172,9 +142,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -182,20 +150,39 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             return api_endpoint
 
         if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
+            return api_endpoint.replace("sandbox.googleapis.com", "mtls.sandbox.googleapis.com")
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "oracledatabase.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "oracledatabase.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
+
+    @staticmethod
+    def _use_client_cert_effective():
+        """Returns whether client certificate should be used for mTLS if the
+        google-auth version supports should_use_client_cert automatic mTLS enablement.
+
+        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
+
+        Returns:
+            bool: whether client certificate should be used for mTLS
+        Raises:
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        """
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+            return mtls.should_use_client_cert()
+        else:  # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be" " either `true` or `false`")
+            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -260,10 +247,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_autonomous_database_path(path: str) -> Dict[str, str]:
         """Parses a autonomous_database path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/autonomousDatabases/(?P<autonomous_database>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/autonomousDatabases/(?P<autonomous_database>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -282,10 +266,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_autonomous_database_backup_path(path: str) -> Dict[str, str]:
         """Parses a autonomous_database_backup path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/autonomousDatabaseBackups/(?P<autonomous_database_backup>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/autonomousDatabaseBackups/(?P<autonomous_database_backup>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -326,10 +307,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_autonomous_db_version_path(path: str) -> Dict[str, str]:
         """Parses a autonomous_db_version path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/autonomousDbVersions/(?P<autonomous_db_version>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/autonomousDbVersions/(?P<autonomous_db_version>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -349,8 +327,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     def parse_cloud_exadata_infrastructure_path(path: str) -> Dict[str, str]:
         """Parses a cloud_exadata_infrastructure path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cloudExadataInfrastructures/(?P<cloud_exadata_infrastructure>.+?)$",
-            path,
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cloudExadataInfrastructures/(?P<cloud_exadata_infrastructure>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -370,10 +347,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_cloud_vm_cluster_path(path: str) -> Dict[str, str]:
         """Parses a cloud_vm_cluster path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cloudVmClusters/(?P<cloud_vm_cluster>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cloudVmClusters/(?P<cloud_vm_cluster>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -394,10 +368,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_crypto_key_path(path: str) -> Dict[str, str]:
         """Parses a crypto_key path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/keyRings/(?P<key_ring>.+?)/cryptoKeys/(?P<crypto_key>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -416,10 +387,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_database_path(path: str) -> Dict[str, str]:
         """Parses a database path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/databases/(?P<database>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/databases/(?P<database>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -438,10 +406,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_database_character_set_path(path: str) -> Dict[str, str]:
         """Parses a database_character_set path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/databaseCharacterSets/(?P<database_character_set>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/databaseCharacterSets/(?P<database_character_set>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -463,8 +428,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     def parse_db_node_path(path: str) -> Dict[str, str]:
         """Parses a db_node path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cloudVmClusters/(?P<cloud_vm_cluster>.+?)/dbNodes/(?P<db_node>.+?)$",
-            path,
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/cloudVmClusters/(?P<cloud_vm_cluster>.+?)/dbNodes/(?P<db_node>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -508,10 +472,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_db_system_path(path: str) -> Dict[str, str]:
         """Parses a db_system path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystems/(?P<db_system>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystems/(?P<db_system>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -531,8 +492,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     def parse_db_system_initial_storage_size_path(path: str) -> Dict[str, str]:
         """Parses a db_system_initial_storage_size path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystemInitialStorageSizes/(?P<db_system_initial_storage_size>.+?)$",
-            path,
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystemInitialStorageSizes/(?P<db_system_initial_storage_size>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -552,10 +512,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_db_system_shape_path(path: str) -> Dict[str, str]:
         """Parses a db_system_shape path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystemShapes/(?P<db_system_shape>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbSystemShapes/(?P<db_system_shape>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -574,10 +531,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_db_version_path(path: str) -> Dict[str, str]:
         """Parses a db_version path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbVersions/(?P<db_version>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dbVersions/(?P<db_version>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -587,21 +541,16 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         entitlement: str,
     ) -> str:
         """Returns a fully-qualified entitlement string."""
-        return (
-            "projects/{project}/locations/{location}/entitlements/{entitlement}".format(
-                project=project,
-                location=location,
-                entitlement=entitlement,
-            )
+        return "projects/{project}/locations/{location}/entitlements/{entitlement}".format(
+            project=project,
+            location=location,
+            entitlement=entitlement,
         )
 
     @staticmethod
     def parse_entitlement_path(path: str) -> Dict[str, str]:
         """Parses a entitlement path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entitlements/(?P<entitlement>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/entitlements/(?P<entitlement>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -620,10 +569,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_exadb_vm_cluster_path(path: str) -> Dict[str, str]:
         """Parses a exadb_vm_cluster path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/exadbVmClusters/(?P<exadb_vm_cluster>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/exadbVmClusters/(?P<exadb_vm_cluster>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -642,10 +588,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_exascale_db_storage_vault_path(path: str) -> Dict[str, str]:
         """Parses a exascale_db_storage_vault path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/exascaleDbStorageVaults/(?P<exascale_db_storage_vault>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/exascaleDbStorageVaults/(?P<exascale_db_storage_vault>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -664,10 +607,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_gi_version_path(path: str) -> Dict[str, str]:
         """Parses a gi_version path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/giVersions/(?P<gi_version>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/giVersions/(?P<gi_version>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -689,8 +629,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     def parse_minor_version_path(path: str) -> Dict[str, str]:
         """Parses a minor_version path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/giVersions/(?P<gi_version>.+?)/minorVersions/(?P<minor_version>.+?)$",
-            path,
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/giVersions/(?P<gi_version>.+?)/minorVersions/(?P<minor_version>.+?)$", path
         )
         return m.groupdict() if m else {}
 
@@ -708,9 +647,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_network_path(path: str) -> Dict[str, str]:
         """Parses a network path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/global/networks/(?P<network>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -720,21 +657,16 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         odb_network: str,
     ) -> str:
         """Returns a fully-qualified odb_network string."""
-        return (
-            "projects/{project}/locations/{location}/odbNetworks/{odb_network}".format(
-                project=project,
-                location=location,
-                odb_network=odb_network,
-            )
+        return "projects/{project}/locations/{location}/odbNetworks/{odb_network}".format(
+            project=project,
+            location=location,
+            odb_network=odb_network,
         )
 
     @staticmethod
     def parse_odb_network_path(path: str) -> Dict[str, str]:
         """Parses a odb_network path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/odbNetworks/(?P<odb_network>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/odbNetworks/(?P<odb_network>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -755,10 +687,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_odb_subnet_path(path: str) -> Dict[str, str]:
         """Parses a odb_subnet path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/odbNetworks/(?P<odb_network>.+?)/odbSubnets/(?P<odb_subnet>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/odbNetworks/(?P<odb_network>.+?)/odbSubnets/(?P<odb_subnet>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -777,10 +706,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
     @staticmethod
     def parse_pluggable_database_path(path: str) -> Dict[str, str]:
         """Parses a pluggable_database path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/pluggableDatabases/(?P<pluggable_database>.+?)$",
-            path,
-        )
+        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/pluggableDatabases/(?P<pluggable_database>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -861,9 +787,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -895,26 +819,17 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.", DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_client_cert = OracleDatabaseClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -923,9 +838,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -946,20 +859,12 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = OracleDatabaseClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -981,9 +886,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -999,25 +902,17 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = OracleDatabaseClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = OracleDatabaseClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = OracleDatabaseClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=universe_domain
-            )
+            api_endpoint = OracleDatabaseClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -1052,19 +947,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
+    def _add_cred_info_for_auth_errors(self, error: core_exceptions.GoogleAPICallError) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -1101,9 +990,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, OracleDatabaseTransport, Callable[..., OracleDatabaseTransport]]
-        ] = None,
+        transport: Optional[Union[str, OracleDatabaseTransport, Callable[..., OracleDatabaseTransport]]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -1161,23 +1048,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = OracleDatabaseClient._read_environment_variables()
-        self._client_cert_source = OracleDatabaseClient._get_client_cert_source(
-            self._client_options.client_cert_source, self._use_client_cert
-        )
-        self._universe_domain = OracleDatabaseClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = OracleDatabaseClient._read_environment_variables()
+        self._client_cert_source = OracleDatabaseClient._get_client_cert_source(self._client_options.client_cert_source, self._use_client_cert)
+        self._universe_domain = OracleDatabaseClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -1189,9 +1066,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -1200,41 +1075,23 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         if transport_provided:
             # transport is a OracleDatabaseTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, " "provide its credentials directly.")
             if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
+                raise ValueError("When providing a transport instance, provide its scopes " "directly.")
             self._transport = cast(OracleDatabaseTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or OracleDatabaseClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or OracleDatabaseClient._get_api_endpoint(
+            self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint
         )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[OracleDatabaseTransport], Callable[..., OracleDatabaseTransport]
-            ] = (
+            transport_init: Union[Type[OracleDatabaseTransport], Callable[..., OracleDatabaseTransport]] = (
                 OracleDatabaseClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., OracleDatabaseTransport], transport)
@@ -1253,20 +1110,14 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.cloud.oracledatabase_v1.OracleDatabaseClient`.",
                     extra={
                         "serviceName": "google.cloud.oracledatabase.v1.OracleDatabase",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
@@ -1277,9 +1128,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_cloud_exadata_infrastructures(
         self,
-        request: Optional[
-            Union[oracledatabase.ListCloudExadataInfrastructuresRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListCloudExadataInfrastructuresRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1348,20 +1197,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, oracledatabase.ListCloudExadataInfrastructuresRequest
-        ):
+        if not isinstance(request, oracledatabase.ListCloudExadataInfrastructuresRequest):
             request = oracledatabase.ListCloudExadataInfrastructuresRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1370,15 +1212,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_cloud_exadata_infrastructures
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_cloud_exadata_infrastructures]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1407,9 +1245,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def get_cloud_exadata_infrastructure(
         self,
-        request: Optional[
-            Union[oracledatabase.GetCloudExadataInfrastructureRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.GetCloudExadataInfrastructureRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1474,14 +1310,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1494,15 +1325,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_cloud_exadata_infrastructure
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_cloud_exadata_infrastructure]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1520,14 +1347,10 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def create_cloud_exadata_infrastructure(
         self,
-        request: Optional[
-            Union[oracledatabase.CreateCloudExadataInfrastructureRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.CreateCloudExadataInfrastructureRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        cloud_exadata_infrastructure: Optional[
-            exadata_infra.CloudExadataInfrastructure
-        ] = None,
+        cloud_exadata_infrastructure: Optional[exadata_infra.CloudExadataInfrastructure] = None,
         cloud_exadata_infrastructure_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1615,25 +1438,14 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            cloud_exadata_infrastructure,
-            cloud_exadata_infrastructure_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, cloud_exadata_infrastructure, cloud_exadata_infrastructure_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, oracledatabase.CreateCloudExadataInfrastructureRequest
-        ):
+        if not isinstance(request, oracledatabase.CreateCloudExadataInfrastructureRequest):
             request = oracledatabase.CreateCloudExadataInfrastructureRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1642,21 +1454,15 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             if cloud_exadata_infrastructure is not None:
                 request.cloud_exadata_infrastructure = cloud_exadata_infrastructure
             if cloud_exadata_infrastructure_id is not None:
-                request.cloud_exadata_infrastructure_id = (
-                    cloud_exadata_infrastructure_id
-                )
+                request.cloud_exadata_infrastructure_id = cloud_exadata_infrastructure_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_cloud_exadata_infrastructure
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_cloud_exadata_infrastructure]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1682,9 +1488,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def delete_cloud_exadata_infrastructure(
         self,
-        request: Optional[
-            Union[oracledatabase.DeleteCloudExadataInfrastructureRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.DeleteCloudExadataInfrastructureRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1762,20 +1566,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, oracledatabase.DeleteCloudExadataInfrastructureRequest
-        ):
+        if not isinstance(request, oracledatabase.DeleteCloudExadataInfrastructureRequest):
             request = oracledatabase.DeleteCloudExadataInfrastructureRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1784,15 +1581,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_cloud_exadata_infrastructure
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_cloud_exadata_infrastructure]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1818,9 +1611,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_cloud_vm_clusters(
         self,
-        request: Optional[
-            Union[oracledatabase.ListCloudVmClustersRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListCloudVmClustersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1888,14 +1679,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1912,9 +1698,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2008,14 +1792,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2032,9 +1811,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2052,9 +1829,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def create_cloud_vm_cluster(
         self,
-        request: Optional[
-            Union[oracledatabase.CreateCloudVmClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.CreateCloudVmClusterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         cloud_vm_cluster: Optional[vm_cluster.CloudVmCluster] = None,
@@ -2147,14 +1922,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, cloud_vm_cluster, cloud_vm_cluster_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2175,9 +1945,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2203,9 +1971,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def delete_cloud_vm_cluster(
         self,
-        request: Optional[
-            Union[oracledatabase.DeleteCloudVmClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.DeleteCloudVmClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2283,14 +2049,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2307,9 +2068,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2402,14 +2161,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2426,9 +2180,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2525,14 +2277,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2549,9 +2296,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2648,14 +2393,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2672,9 +2412,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2772,14 +2510,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2796,9 +2529,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -2895,14 +2626,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2919,9 +2645,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3019,14 +2743,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3043,9 +2762,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3074,9 +2791,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_autonomous_databases(
         self,
-        request: Optional[
-            Union[oracledatabase.ListAutonomousDatabasesRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListAutonomousDatabasesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3145,14 +2860,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3165,15 +2875,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_autonomous_databases
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_autonomous_databases]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3202,9 +2908,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def get_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.GetAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.GetAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3269,14 +2973,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3293,9 +2992,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3313,14 +3010,10 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def create_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.CreateAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.CreateAutonomousDatabaseRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        autonomous_database: Optional[
-            gco_autonomous_database.AutonomousDatabase
-        ] = None,
+        autonomous_database: Optional[gco_autonomous_database.AutonomousDatabase] = None,
         autonomous_database_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3408,14 +3101,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, autonomous_database, autonomous_database_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3432,15 +3120,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3466,13 +3150,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def update_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.UpdateAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.UpdateAutonomousDatabaseRequest, dict]] = None,
         *,
-        autonomous_database: Optional[
-            gco_autonomous_database.AutonomousDatabase
-        ] = None,
+        autonomous_database: Optional[gco_autonomous_database.AutonomousDatabase] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3549,14 +3229,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [autonomous_database, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3571,17 +3246,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("autonomous_database.name", request.autonomous_database.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("autonomous_database.name", request.autonomous_database.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3607,9 +3276,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def delete_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.DeleteAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.DeleteAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3687,14 +3354,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3707,15 +3369,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3741,9 +3399,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def restore_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.RestoreAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.RestoreAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         restore_time: Optional[timestamp_pb2.Timestamp] = None,
@@ -3821,14 +3477,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, restore_time]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3843,15 +3494,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.restore_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.restore_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -3877,9 +3524,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def generate_autonomous_database_wallet(
         self,
-        request: Optional[
-            Union[oracledatabase.GenerateAutonomousDatabaseWalletRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.GenerateAutonomousDatabaseWalletRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         type_: Optional[autonomous_database.GenerateType] = None,
@@ -3971,20 +3616,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, type_, is_regional, password]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, oracledatabase.GenerateAutonomousDatabaseWalletRequest
-        ):
+        if not isinstance(request, oracledatabase.GenerateAutonomousDatabaseWalletRequest):
             request = oracledatabase.GenerateAutonomousDatabaseWalletRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -3999,15 +3637,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.generate_autonomous_database_wallet
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.generate_autonomous_database_wallet]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4025,9 +3659,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_autonomous_db_versions(
         self,
-        request: Optional[
-            Union[oracledatabase.ListAutonomousDbVersionsRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListAutonomousDbVersionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4096,14 +3728,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4116,15 +3743,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_autonomous_db_versions
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_autonomous_db_versions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4153,9 +3776,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_autonomous_database_character_sets(
         self,
-        request: Optional[
-            Union[oracledatabase.ListAutonomousDatabaseCharacterSetsRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListAutonomousDatabaseCharacterSetsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4224,20 +3845,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, oracledatabase.ListAutonomousDatabaseCharacterSetsRequest
-        ):
+        if not isinstance(request, oracledatabase.ListAutonomousDatabaseCharacterSetsRequest):
             request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -4246,15 +3860,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_autonomous_database_character_sets
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_autonomous_database_character_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4283,9 +3893,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_autonomous_database_backups(
         self,
-        request: Optional[
-            Union[oracledatabase.ListAutonomousDatabaseBackupsRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListAutonomousDatabaseBackupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4354,14 +3962,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4374,15 +3977,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_autonomous_database_backups
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_autonomous_database_backups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4411,9 +4010,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def stop_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.StopAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.StopAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4483,14 +4080,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4507,9 +4099,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4535,9 +4125,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def start_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.StartAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.StartAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4607,14 +4195,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4627,15 +4210,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.start_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.start_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4661,9 +4240,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def restart_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.RestartAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.RestartAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4733,14 +4310,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4753,15 +4325,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.restart_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.restart_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4787,9 +4355,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def switchover_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.SwitchoverAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.SwitchoverAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         peer_autonomous_database: Optional[str] = None,
@@ -4870,14 +4436,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, peer_autonomous_database]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4892,15 +4453,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.switchover_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.switchover_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -4926,9 +4483,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def failover_autonomous_database(
         self,
-        request: Optional[
-            Union[oracledatabase.FailoverAutonomousDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.FailoverAutonomousDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         peer_autonomous_database: Optional[str] = None,
@@ -5009,14 +4564,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, peer_autonomous_database]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5031,15 +4581,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.failover_autonomous_database
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.failover_autonomous_database]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5133,14 +4679,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5157,9 +4698,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5250,14 +4789,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5274,9 +4808,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5390,14 +4922,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, odb_network, odb_network_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5418,9 +4945,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5524,14 +5049,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5548,9 +5068,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5643,14 +5161,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5667,9 +5180,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5760,14 +5271,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5784,9 +5290,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -5900,14 +5404,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, odb_subnet, odb_subnet_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5928,9 +5427,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6034,14 +5531,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6058,9 +5550,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6086,9 +5576,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_exadb_vm_clusters(
         self,
-        request: Optional[
-            Union[oracledatabase.ListExadbVmClustersRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.ListExadbVmClustersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6156,14 +5644,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6180,9 +5663,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6277,14 +5758,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6301,9 +5777,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6321,9 +5795,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def create_exadb_vm_cluster(
         self,
-        request: Optional[
-            Union[oracledatabase.CreateExadbVmClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.CreateExadbVmClusterRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         exadb_vm_cluster: Optional[gco_exadb_vm_cluster.ExadbVmCluster] = None,
@@ -6426,14 +5898,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, exadb_vm_cluster, exadb_vm_cluster_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6454,9 +5921,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6482,9 +5947,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def delete_exadb_vm_cluster(
         self,
-        request: Optional[
-            Union[oracledatabase.DeleteExadbVmClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.DeleteExadbVmClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6562,14 +6025,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6586,9 +6044,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6614,9 +6070,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def update_exadb_vm_cluster(
         self,
-        request: Optional[
-            Union[oracledatabase.UpdateExadbVmClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.UpdateExadbVmClusterRequest, dict]] = None,
         *,
         exadb_vm_cluster: Optional[gco_exadb_vm_cluster.ExadbVmCluster] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -6714,14 +6168,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [exadb_vm_cluster, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6740,11 +6189,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("exadb_vm_cluster.name", request.exadb_vm_cluster.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("exadb_vm_cluster.name", request.exadb_vm_cluster.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6770,9 +6215,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def remove_virtual_machine_exadb_vm_cluster(
         self,
-        request: Optional[
-            Union[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest, dict]
-        ] = None,
+        request: Optional[Union[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         hostnames: Optional[MutableSequence[str]] = None,
@@ -6854,20 +6297,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, hostnames]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, oracledatabase.RemoveVirtualMachineExadbVmClusterRequest
-        ):
+        if not isinstance(request, oracledatabase.RemoveVirtualMachineExadbVmClusterRequest):
             request = oracledatabase.RemoveVirtualMachineExadbVmClusterRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -6878,15 +6314,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.remove_virtual_machine_exadb_vm_cluster
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.remove_virtual_machine_exadb_vm_cluster]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -6912,9 +6344,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_exascale_db_storage_vaults(
         self,
-        request: Optional[
-            Union[exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest, dict]
-        ] = None,
+        request: Optional[Union[exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6983,23 +6413,14 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest
-        ):
-            request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(
-                request
-            )
+        if not isinstance(request, exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest):
+            request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -7007,15 +6428,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_exascale_db_storage_vaults
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_exascale_db_storage_vaults]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7044,9 +6461,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def get_exascale_db_storage_vault(
         self,
-        request: Optional[
-            Union[exascale_db_storage_vault.GetExascaleDbStorageVaultRequest, dict]
-        ] = None,
+        request: Optional[Union[exascale_db_storage_vault.GetExascaleDbStorageVaultRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7111,23 +6526,14 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, exascale_db_storage_vault.GetExascaleDbStorageVaultRequest
-        ):
-            request = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(
-                request
-            )
+        if not isinstance(request, exascale_db_storage_vault.GetExascaleDbStorageVaultRequest):
+            request = exascale_db_storage_vault.GetExascaleDbStorageVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -7135,15 +6541,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.get_exascale_db_storage_vault
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.get_exascale_db_storage_vault]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7161,16 +6563,10 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def create_exascale_db_storage_vault(
         self,
-        request: Optional[
-            Union[
-                gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest, dict
-            ]
-        ] = None,
+        request: Optional[Union[gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        exascale_db_storage_vault: Optional[
-            gco_exascale_db_storage_vault.ExascaleDbStorageVault
-        ] = None,
+        exascale_db_storage_vault: Optional[gco_exascale_db_storage_vault.ExascaleDbStorageVault] = None,
         exascale_db_storage_vault_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -7260,28 +6656,15 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            exascale_db_storage_vault,
-            exascale_db_storage_vault_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, exascale_db_storage_vault, exascale_db_storage_vault_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest
-        ):
-            request = gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(
-                request
-            )
+        if not isinstance(request, gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest):
+            request = gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -7293,15 +6676,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_exascale_db_storage_vault
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_exascale_db_storage_vault]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7327,9 +6706,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def delete_exascale_db_storage_vault(
         self,
-        request: Optional[
-            Union[exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest, dict]
-        ] = None,
+        request: Optional[Union[exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7408,23 +6785,14 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest
-        ):
-            request = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(
-                request
-            )
+        if not isinstance(request, exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest):
+            request = exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if name is not None:
@@ -7432,15 +6800,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.delete_exascale_db_storage_vault
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.delete_exascale_db_storage_vault]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7466,12 +6830,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_db_system_initial_storage_sizes(
         self,
-        request: Optional[
-            Union[
-                db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7540,26 +6899,14 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
-        ):
-            request = (
-                db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(
-                    request
-                )
-            )
+        if not isinstance(request, db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest):
+            request = db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -7567,15 +6914,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_db_system_initial_storage_sizes
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_db_system_initial_storage_sizes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7672,14 +7015,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7696,9 +7034,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7791,14 +7127,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7815,9 +7146,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7835,9 +7164,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_pluggable_databases(
         self,
-        request: Optional[
-            Union[pluggable_database.ListPluggableDatabasesRequest, dict]
-        ] = None,
+        request: Optional[Union[pluggable_database.ListPluggableDatabasesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7906,14 +7233,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7930,9 +7252,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -7961,9 +7281,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def get_pluggable_database(
         self,
-        request: Optional[
-            Union[pluggable_database.GetPluggableDatabaseRequest, dict]
-        ] = None,
+        request: Optional[Union[pluggable_database.GetPluggableDatabaseRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8027,14 +7345,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8051,9 +7364,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8139,14 +7450,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8163,9 +7469,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8259,14 +7563,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8283,9 +7582,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8397,14 +7694,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, db_system, db_system_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8425,9 +7717,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8531,14 +7821,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8555,9 +7840,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8650,14 +7933,9 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8674,9 +7952,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8705,9 +7981,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
     def list_database_character_sets(
         self,
-        request: Optional[
-            Union[database_character_set.ListDatabaseCharacterSetsRequest, dict]
-        ] = None,
+        request: Optional[Union[database_character_set.ListDatabaseCharacterSetsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8776,20 +8050,13 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, database_character_set.ListDatabaseCharacterSetsRequest
-        ):
+        if not isinstance(request, database_character_set.ListDatabaseCharacterSetsRequest):
             request = database_character_set.ListDatabaseCharacterSetsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -8798,15 +8065,11 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_database_character_sets
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_database_character_sets]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8883,9 +8146,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -8942,9 +8203,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -9005,9 +8264,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -9060,9 +8317,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -9112,9 +8367,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -9171,9 +8424,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -9194,9 +8445,7 @@ class OracleDatabaseClient(metaclass=OracleDatabaseClientMeta):
             raise e
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

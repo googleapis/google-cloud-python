@@ -1141,9 +1141,7 @@ class InputField(proto.Message):
                 message="InputField",
             )
 
-        options: MutableSequence[
-            "InputField.ChoiceInput.ChoiceInputOption"
-        ] = proto.RepeatedField(
+        options: MutableSequence["InputField.ChoiceInput.ChoiceInputOption"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="InputField.ChoiceInput.ChoiceInputOption",

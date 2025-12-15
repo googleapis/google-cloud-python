@@ -14,13 +14,7 @@
 # limitations under the License.
 #
 from .checker import TroubleshootIamPolicyRequest, TroubleshootIamPolicyResponse
-from .explanations import (
-    AccessState,
-    AccessTuple,
-    BindingExplanation,
-    ExplainedPolicy,
-    HeuristicRelevance,
-)
+from .explanations import AccessState, AccessTuple, BindingExplanation, ExplainedPolicy, HeuristicRelevance
 
 __all__ = (
     "TroubleshootIamPolicyRequest",

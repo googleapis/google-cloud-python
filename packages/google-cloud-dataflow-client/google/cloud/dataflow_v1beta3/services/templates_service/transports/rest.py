@@ -103,12 +103,8 @@ class TemplatesServiceRestInterceptor:
     """
 
     def pre_create_job_from_template(
-        self,
-        request: templates.CreateJobFromTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        templates.CreateJobFromTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: templates.CreateJobFromTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[templates.CreateJobFromTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_job_from_template
 
         Override in a subclass to manipulate the request or metadata
@@ -147,9 +143,7 @@ class TemplatesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_template(
-        self,
-        request: templates.GetTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: templates.GetTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[templates.GetTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_template
 
@@ -158,9 +152,7 @@ class TemplatesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_template(
-        self, response: templates.GetTemplateResponse
-    ) -> templates.GetTemplateResponse:
+    def post_get_template(self, response: templates.GetTemplateResponse) -> templates.GetTemplateResponse:
         """Post-rpc interceptor for get_template
 
         DEPRECATED. Please use the `post_get_template_with_metadata`
@@ -174,9 +166,7 @@ class TemplatesServiceRestInterceptor:
         return response
 
     def post_get_template_with_metadata(
-        self,
-        response: templates.GetTemplateResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: templates.GetTemplateResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[templates.GetTemplateResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_template
 
@@ -193,12 +183,8 @@ class TemplatesServiceRestInterceptor:
         return response, metadata
 
     def pre_launch_template(
-        self,
-        request: templates.LaunchTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        templates.LaunchTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: templates.LaunchTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[templates.LaunchTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for launch_template
 
         Override in a subclass to manipulate the request or metadata
@@ -206,9 +192,7 @@ class TemplatesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_launch_template(
-        self, response: templates.LaunchTemplateResponse
-    ) -> templates.LaunchTemplateResponse:
+    def post_launch_template(self, response: templates.LaunchTemplateResponse) -> templates.LaunchTemplateResponse:
         """Post-rpc interceptor for launch_template
 
         DEPRECATED. Please use the `post_launch_template_with_metadata`
@@ -222,12 +206,8 @@ class TemplatesServiceRestInterceptor:
         return response
 
     def post_launch_template_with_metadata(
-        self,
-        response: templates.LaunchTemplateResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        templates.LaunchTemplateResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: templates.LaunchTemplateResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[templates.LaunchTemplateResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for launch_template
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -323,31 +303,18 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TemplatesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateJobFromTemplate(
-        _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate,
-        TemplatesServiceRestStub,
-    ):
+    class _CreateJobFromTemplate(_BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate, TemplatesServiceRestStub):
         def __hash__(self):
             return hash("TemplatesServiceRestTransport.CreateJobFromTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -392,32 +359,18 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_http_options()
-            )
+            http_options = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_job_from_template(
-                request, metadata
-            )
-            transcoded_request = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_job_from_template(request, metadata)
+            transcoded_request = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTemplatesServiceRestTransport._BaseCreateJobFromTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -440,16 +393,8 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                TemplatesServiceRestTransport._CreateJobFromTemplate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = TemplatesServiceRestTransport._CreateJobFromTemplate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -465,12 +410,8 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             resp = self._interceptor.post_create_job_from_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_job_from_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_job_from_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = jobs.Job.to_json(response)
                 except:
@@ -491,22 +432,12 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
                 )
             return resp
 
-    class _GetTemplate(
-        _BaseTemplatesServiceRestTransport._BaseGetTemplate, TemplatesServiceRestStub
-    ):
+    class _GetTemplate(_BaseTemplatesServiceRestTransport._BaseGetTemplate, TemplatesServiceRestStub):
         def __hash__(self):
             return hash("TemplatesServiceRestTransport.GetTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -548,26 +479,16 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTemplatesServiceRestTransport._BaseGetTemplate._get_http_options()
-            )
+            http_options = _BaseTemplatesServiceRestTransport._BaseGetTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_get_template(request, metadata)
-            transcoded_request = _BaseTemplatesServiceRestTransport._BaseGetTemplate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTemplatesServiceRestTransport._BaseGetTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTemplatesServiceRestTransport._BaseGetTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTemplatesServiceRestTransport._BaseGetTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -591,12 +512,7 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             # Send the request
             response = TemplatesServiceRestTransport._GetTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -612,12 +528,8 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             resp = self._interceptor.post_get_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = templates.GetTemplateResponse.to_json(response)
                 except:
@@ -638,22 +550,12 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
                 )
             return resp
 
-    class _LaunchTemplate(
-        _BaseTemplatesServiceRestTransport._BaseLaunchTemplate, TemplatesServiceRestStub
-    ):
+    class _LaunchTemplate(_BaseTemplatesServiceRestTransport._BaseLaunchTemplate, TemplatesServiceRestStub):
         def __hash__(self):
             return hash("TemplatesServiceRestTransport.LaunchTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -695,30 +597,18 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_http_options()
-            )
+            http_options = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_http_options()
 
             request, metadata = self._interceptor.pre_launch_template(request, metadata)
-            transcoded_request = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTemplatesServiceRestTransport._BaseLaunchTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -742,13 +632,7 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             # Send the request
             response = TemplatesServiceRestTransport._LaunchTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -764,16 +648,10 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
 
             resp = self._interceptor.post_launch_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_launch_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_launch_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = templates.LaunchTemplateResponse.to_json(
-                        response
-                    )
+                    response_payload = templates.LaunchTemplateResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -793,25 +671,19 @@ class TemplatesServiceRestTransport(_BaseTemplatesServiceRestTransport):
             return resp
 
     @property
-    def create_job_from_template(
-        self,
-    ) -> Callable[[templates.CreateJobFromTemplateRequest], jobs.Job]:
+    def create_job_from_template(self) -> Callable[[templates.CreateJobFromTemplateRequest], jobs.Job]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateJobFromTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_template(
-        self,
-    ) -> Callable[[templates.GetTemplateRequest], templates.GetTemplateResponse]:
+    def get_template(self) -> Callable[[templates.GetTemplateRequest], templates.GetTemplateResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def launch_template(
-        self,
-    ) -> Callable[[templates.LaunchTemplateRequest], templates.LaunchTemplateResponse]:
+    def launch_template(self) -> Callable[[templates.LaunchTemplateRequest], templates.LaunchTemplateResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LaunchTemplate(self._session, self._host, self._interceptor)  # type: ignore

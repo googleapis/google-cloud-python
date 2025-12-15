@@ -36,12 +36,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.translate_v3.types import (
-    adaptive_mt,
-    automl_translation,
-    common,
-    translation_service,
-)
+from google.cloud.translate_v3.types import adaptive_mt, automl_translation, common, translation_service
 
 from .base import DEFAULT_CLIENT_INFO, TranslationServiceTransport
 from .grpc import TranslationServiceGrpcTransport
@@ -56,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -72,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -94,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -277,18 +261,14 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -324,9 +304,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -349,20 +327,13 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def translate_text(
-        self,
-    ) -> Callable[
-        [translation_service.TranslateTextRequest],
-        Awaitable[translation_service.TranslateTextResponse],
-    ]:
+    def translate_text(self) -> Callable[[translation_service.TranslateTextRequest], Awaitable[translation_service.TranslateTextResponse]]:
         r"""Return a callable for the translate text method over gRPC.
 
         Translates input text and returns translated text.
@@ -386,12 +357,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["translate_text"]
 
     @property
-    def romanize_text(
-        self,
-    ) -> Callable[
-        [translation_service.RomanizeTextRequest],
-        Awaitable[translation_service.RomanizeTextResponse],
-    ]:
+    def romanize_text(self) -> Callable[[translation_service.RomanizeTextRequest], Awaitable[translation_service.RomanizeTextResponse]]:
         r"""Return a callable for the romanize text method over gRPC.
 
         Romanize input text written in non-Latin scripts to
@@ -416,12 +382,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["romanize_text"]
 
     @property
-    def detect_language(
-        self,
-    ) -> Callable[
-        [translation_service.DetectLanguageRequest],
-        Awaitable[translation_service.DetectLanguageResponse],
-    ]:
+    def detect_language(self) -> Callable[[translation_service.DetectLanguageRequest], Awaitable[translation_service.DetectLanguageResponse]]:
         r"""Return a callable for the detect language method over gRPC.
 
         Detects the language of text within a request.
@@ -447,10 +408,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def get_supported_languages(
         self,
-    ) -> Callable[
-        [translation_service.GetSupportedLanguagesRequest],
-        Awaitable[translation_service.SupportedLanguages],
-    ]:
+    ) -> Callable[[translation_service.GetSupportedLanguagesRequest], Awaitable[translation_service.SupportedLanguages]]:
         r"""Return a callable for the get supported languages method over gRPC.
 
         Returns a list of supported languages for
@@ -477,10 +435,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def translate_document(
         self,
-    ) -> Callable[
-        [translation_service.TranslateDocumentRequest],
-        Awaitable[translation_service.TranslateDocumentResponse],
-    ]:
+    ) -> Callable[[translation_service.TranslateDocumentRequest], Awaitable[translation_service.TranslateDocumentResponse]]:
         r"""Return a callable for the translate document method over gRPC.
 
         Translates documents in synchronous mode.
@@ -504,12 +459,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["translate_document"]
 
     @property
-    def batch_translate_text(
-        self,
-    ) -> Callable[
-        [translation_service.BatchTranslateTextRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def batch_translate_text(self) -> Callable[[translation_service.BatchTranslateTextRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch translate text method over gRPC.
 
         Translates a large volume of text in asynchronous
@@ -542,12 +492,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["batch_translate_text"]
 
     @property
-    def batch_translate_document(
-        self,
-    ) -> Callable[
-        [translation_service.BatchTranslateDocumentRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def batch_translate_document(self) -> Callable[[translation_service.BatchTranslateDocumentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch translate document method over gRPC.
 
         Translates a large volume of document in asynchronous
@@ -580,11 +525,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["batch_translate_document"]
 
     @property
-    def create_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.CreateGlossaryRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_glossary(self) -> Callable[[translation_service.CreateGlossaryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create glossary method over gRPC.
 
         Creates a glossary and returns the long-running operation.
@@ -609,11 +550,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["create_glossary"]
 
     @property
-    def update_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.UpdateGlossaryRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_glossary(self) -> Callable[[translation_service.UpdateGlossaryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update glossary method over gRPC.
 
         Updates a glossary. A LRO is used since the update
@@ -638,12 +575,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["update_glossary"]
 
     @property
-    def list_glossaries(
-        self,
-    ) -> Callable[
-        [translation_service.ListGlossariesRequest],
-        Awaitable[translation_service.ListGlossariesResponse],
-    ]:
+    def list_glossaries(self) -> Callable[[translation_service.ListGlossariesRequest], Awaitable[translation_service.ListGlossariesResponse]]:
         r"""Return a callable for the list glossaries method over gRPC.
 
         Lists glossaries in a project. Returns NOT_FOUND, if the project
@@ -668,12 +600,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_glossaries"]
 
     @property
-    def get_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.GetGlossaryRequest],
-        Awaitable[translation_service.Glossary],
-    ]:
+    def get_glossary(self) -> Callable[[translation_service.GetGlossaryRequest], Awaitable[translation_service.Glossary]]:
         r"""Return a callable for the get glossary method over gRPC.
 
         Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
@@ -698,11 +625,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["get_glossary"]
 
     @property
-    def delete_glossary(
-        self,
-    ) -> Callable[
-        [translation_service.DeleteGlossaryRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_glossary(self) -> Callable[[translation_service.DeleteGlossaryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete glossary method over gRPC.
 
         Deletes a glossary, or cancels glossary construction if the
@@ -728,11 +651,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["delete_glossary"]
 
     @property
-    def get_glossary_entry(
-        self,
-    ) -> Callable[
-        [translation_service.GetGlossaryEntryRequest], Awaitable[common.GlossaryEntry]
-    ]:
+    def get_glossary_entry(self) -> Callable[[translation_service.GetGlossaryEntryRequest], Awaitable[common.GlossaryEntry]]:
         r"""Return a callable for the get glossary entry method over gRPC.
 
         Gets a single glossary entry by the given id.
@@ -758,10 +677,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def list_glossary_entries(
         self,
-    ) -> Callable[
-        [translation_service.ListGlossaryEntriesRequest],
-        Awaitable[translation_service.ListGlossaryEntriesResponse],
-    ]:
+    ) -> Callable[[translation_service.ListGlossaryEntriesRequest], Awaitable[translation_service.ListGlossaryEntriesResponse]]:
         r"""Return a callable for the list glossary entries method over gRPC.
 
         List the entries for the glossary.
@@ -785,12 +701,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_glossary_entries"]
 
     @property
-    def create_glossary_entry(
-        self,
-    ) -> Callable[
-        [translation_service.CreateGlossaryEntryRequest],
-        Awaitable[common.GlossaryEntry],
-    ]:
+    def create_glossary_entry(self) -> Callable[[translation_service.CreateGlossaryEntryRequest], Awaitable[common.GlossaryEntry]]:
         r"""Return a callable for the create glossary entry method over gRPC.
 
         Creates a glossary entry.
@@ -814,12 +725,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["create_glossary_entry"]
 
     @property
-    def update_glossary_entry(
-        self,
-    ) -> Callable[
-        [translation_service.UpdateGlossaryEntryRequest],
-        Awaitable[common.GlossaryEntry],
-    ]:
+    def update_glossary_entry(self) -> Callable[[translation_service.UpdateGlossaryEntryRequest], Awaitable[common.GlossaryEntry]]:
         r"""Return a callable for the update glossary entry method over gRPC.
 
         Updates a glossary entry.
@@ -843,11 +749,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["update_glossary_entry"]
 
     @property
-    def delete_glossary_entry(
-        self,
-    ) -> Callable[
-        [translation_service.DeleteGlossaryEntryRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_glossary_entry(self) -> Callable[[translation_service.DeleteGlossaryEntryRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete glossary entry method over gRPC.
 
         Deletes a single entry from the glossary
@@ -871,11 +773,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["delete_glossary_entry"]
 
     @property
-    def create_dataset(
-        self,
-    ) -> Callable[
-        [automl_translation.CreateDatasetRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_dataset(self) -> Callable[[automl_translation.CreateDatasetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create dataset method over gRPC.
 
         Creates a Dataset.
@@ -899,11 +797,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["create_dataset"]
 
     @property
-    def get_dataset(
-        self,
-    ) -> Callable[
-        [automl_translation.GetDatasetRequest], Awaitable[automl_translation.Dataset]
-    ]:
+    def get_dataset(self) -> Callable[[automl_translation.GetDatasetRequest], Awaitable[automl_translation.Dataset]]:
         r"""Return a callable for the get dataset method over gRPC.
 
         Gets a Dataset.
@@ -927,12 +821,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["get_dataset"]
 
     @property
-    def list_datasets(
-        self,
-    ) -> Callable[
-        [automl_translation.ListDatasetsRequest],
-        Awaitable[automl_translation.ListDatasetsResponse],
-    ]:
+    def list_datasets(self) -> Callable[[automl_translation.ListDatasetsRequest], Awaitable[automl_translation.ListDatasetsResponse]]:
         r"""Return a callable for the list datasets method over gRPC.
 
         Lists datasets.
@@ -956,11 +845,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_datasets"]
 
     @property
-    def delete_dataset(
-        self,
-    ) -> Callable[
-        [automl_translation.DeleteDatasetRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_dataset(self) -> Callable[[automl_translation.DeleteDatasetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete dataset method over gRPC.
 
         Deletes a dataset and all of its contents.
@@ -984,12 +869,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["delete_dataset"]
 
     @property
-    def create_adaptive_mt_dataset(
-        self,
-    ) -> Callable[
-        [adaptive_mt.CreateAdaptiveMtDatasetRequest],
-        Awaitable[adaptive_mt.AdaptiveMtDataset],
-    ]:
+    def create_adaptive_mt_dataset(self) -> Callable[[adaptive_mt.CreateAdaptiveMtDatasetRequest], Awaitable[adaptive_mt.AdaptiveMtDataset]]:
         r"""Return a callable for the create adaptive mt dataset method over gRPC.
 
         Creates an Adaptive MT dataset.
@@ -1005,9 +885,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_adaptive_mt_dataset" not in self._stubs:
-            self._stubs[
-                "create_adaptive_mt_dataset"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_adaptive_mt_dataset"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/CreateAdaptiveMtDataset",
                 request_serializer=adaptive_mt.CreateAdaptiveMtDatasetRequest.serialize,
                 response_deserializer=adaptive_mt.AdaptiveMtDataset.deserialize,
@@ -1015,11 +893,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["create_adaptive_mt_dataset"]
 
     @property
-    def delete_adaptive_mt_dataset(
-        self,
-    ) -> Callable[
-        [adaptive_mt.DeleteAdaptiveMtDatasetRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_adaptive_mt_dataset(self) -> Callable[[adaptive_mt.DeleteAdaptiveMtDatasetRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete adaptive mt dataset method over gRPC.
 
         Deletes an Adaptive MT dataset, including all its
@@ -1036,9 +910,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_adaptive_mt_dataset" not in self._stubs:
-            self._stubs[
-                "delete_adaptive_mt_dataset"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_adaptive_mt_dataset"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/DeleteAdaptiveMtDataset",
                 request_serializer=adaptive_mt.DeleteAdaptiveMtDatasetRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1046,12 +918,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["delete_adaptive_mt_dataset"]
 
     @property
-    def get_adaptive_mt_dataset(
-        self,
-    ) -> Callable[
-        [adaptive_mt.GetAdaptiveMtDatasetRequest],
-        Awaitable[adaptive_mt.AdaptiveMtDataset],
-    ]:
+    def get_adaptive_mt_dataset(self) -> Callable[[adaptive_mt.GetAdaptiveMtDatasetRequest], Awaitable[adaptive_mt.AdaptiveMtDataset]]:
         r"""Return a callable for the get adaptive mt dataset method over gRPC.
 
         Gets the Adaptive MT dataset.
@@ -1077,10 +944,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def list_adaptive_mt_datasets(
         self,
-    ) -> Callable[
-        [adaptive_mt.ListAdaptiveMtDatasetsRequest],
-        Awaitable[adaptive_mt.ListAdaptiveMtDatasetsResponse],
-    ]:
+    ) -> Callable[[adaptive_mt.ListAdaptiveMtDatasetsRequest], Awaitable[adaptive_mt.ListAdaptiveMtDatasetsResponse]]:
         r"""Return a callable for the list adaptive mt datasets method over gRPC.
 
         Lists all Adaptive MT datasets for which the caller
@@ -1105,12 +969,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_adaptive_mt_datasets"]
 
     @property
-    def adaptive_mt_translate(
-        self,
-    ) -> Callable[
-        [adaptive_mt.AdaptiveMtTranslateRequest],
-        Awaitable[adaptive_mt.AdaptiveMtTranslateResponse],
-    ]:
+    def adaptive_mt_translate(self) -> Callable[[adaptive_mt.AdaptiveMtTranslateRequest], Awaitable[adaptive_mt.AdaptiveMtTranslateResponse]]:
         r"""Return a callable for the adaptive mt translate method over gRPC.
 
         Translate text using Adaptive MT.
@@ -1134,11 +993,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["adaptive_mt_translate"]
 
     @property
-    def get_adaptive_mt_file(
-        self,
-    ) -> Callable[
-        [adaptive_mt.GetAdaptiveMtFileRequest], Awaitable[adaptive_mt.AdaptiveMtFile]
-    ]:
+    def get_adaptive_mt_file(self) -> Callable[[adaptive_mt.GetAdaptiveMtFileRequest], Awaitable[adaptive_mt.AdaptiveMtFile]]:
         r"""Return a callable for the get adaptive mt file method over gRPC.
 
         Gets and AdaptiveMtFile
@@ -1162,11 +1017,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["get_adaptive_mt_file"]
 
     @property
-    def delete_adaptive_mt_file(
-        self,
-    ) -> Callable[
-        [adaptive_mt.DeleteAdaptiveMtFileRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_adaptive_mt_file(self) -> Callable[[adaptive_mt.DeleteAdaptiveMtFileRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete adaptive mt file method over gRPC.
 
         Deletes an AdaptiveMtFile along with its sentences.
@@ -1190,12 +1041,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["delete_adaptive_mt_file"]
 
     @property
-    def import_adaptive_mt_file(
-        self,
-    ) -> Callable[
-        [adaptive_mt.ImportAdaptiveMtFileRequest],
-        Awaitable[adaptive_mt.ImportAdaptiveMtFileResponse],
-    ]:
+    def import_adaptive_mt_file(self) -> Callable[[adaptive_mt.ImportAdaptiveMtFileRequest], Awaitable[adaptive_mt.ImportAdaptiveMtFileResponse]]:
         r"""Return a callable for the import adaptive mt file method over gRPC.
 
         Imports an AdaptiveMtFile and adds all of its
@@ -1220,12 +1066,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["import_adaptive_mt_file"]
 
     @property
-    def list_adaptive_mt_files(
-        self,
-    ) -> Callable[
-        [adaptive_mt.ListAdaptiveMtFilesRequest],
-        Awaitable[adaptive_mt.ListAdaptiveMtFilesResponse],
-    ]:
+    def list_adaptive_mt_files(self) -> Callable[[adaptive_mt.ListAdaptiveMtFilesRequest], Awaitable[adaptive_mt.ListAdaptiveMtFilesResponse]]:
         r"""Return a callable for the list adaptive mt files method over gRPC.
 
         Lists all AdaptiveMtFiles associated to an
@@ -1252,10 +1093,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def list_adaptive_mt_sentences(
         self,
-    ) -> Callable[
-        [adaptive_mt.ListAdaptiveMtSentencesRequest],
-        Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse],
-    ]:
+    ) -> Callable[[adaptive_mt.ListAdaptiveMtSentencesRequest], Awaitable[adaptive_mt.ListAdaptiveMtSentencesResponse]]:
         r"""Return a callable for the list adaptive mt sentences method over gRPC.
 
         Lists all AdaptiveMtSentences under a given
@@ -1272,9 +1110,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_adaptive_mt_sentences" not in self._stubs:
-            self._stubs[
-                "list_adaptive_mt_sentences"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_adaptive_mt_sentences"] = self._logged_channel.unary_unary(
                 "/google.cloud.translation.v3.TranslationService/ListAdaptiveMtSentences",
                 request_serializer=adaptive_mt.ListAdaptiveMtSentencesRequest.serialize,
                 response_deserializer=adaptive_mt.ListAdaptiveMtSentencesResponse.deserialize,
@@ -1282,11 +1118,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_adaptive_mt_sentences"]
 
     @property
-    def import_data(
-        self,
-    ) -> Callable[
-        [automl_translation.ImportDataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_data(self) -> Callable[[automl_translation.ImportDataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import data method over gRPC.
 
         Import sentence pairs into translation Dataset.
@@ -1310,11 +1142,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["import_data"]
 
     @property
-    def export_data(
-        self,
-    ) -> Callable[
-        [automl_translation.ExportDataRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def export_data(self) -> Callable[[automl_translation.ExportDataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export data method over gRPC.
 
         Exports dataset's data to the provided output
@@ -1339,12 +1167,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["export_data"]
 
     @property
-    def list_examples(
-        self,
-    ) -> Callable[
-        [automl_translation.ListExamplesRequest],
-        Awaitable[automl_translation.ListExamplesResponse],
-    ]:
+    def list_examples(self) -> Callable[[automl_translation.ListExamplesRequest], Awaitable[automl_translation.ListExamplesResponse]]:
         r"""Return a callable for the list examples method over gRPC.
 
         Lists sentence pairs in the dataset.
@@ -1368,11 +1191,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_examples"]
 
     @property
-    def create_model(
-        self,
-    ) -> Callable[
-        [automl_translation.CreateModelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_model(self) -> Callable[[automl_translation.CreateModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create model method over gRPC.
 
         Creates a Model.
@@ -1396,12 +1215,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["create_model"]
 
     @property
-    def list_models(
-        self,
-    ) -> Callable[
-        [automl_translation.ListModelsRequest],
-        Awaitable[automl_translation.ListModelsResponse],
-    ]:
+    def list_models(self) -> Callable[[automl_translation.ListModelsRequest], Awaitable[automl_translation.ListModelsResponse]]:
         r"""Return a callable for the list models method over gRPC.
 
         Lists models.
@@ -1425,11 +1239,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["list_models"]
 
     @property
-    def get_model(
-        self,
-    ) -> Callable[
-        [automl_translation.GetModelRequest], Awaitable[automl_translation.Model]
-    ]:
+    def get_model(self) -> Callable[[automl_translation.GetModelRequest], Awaitable[automl_translation.Model]]:
         r"""Return a callable for the get model method over gRPC.
 
         Gets a model.
@@ -1453,11 +1263,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
         return self._stubs["get_model"]
 
     @property
-    def delete_model(
-        self,
-    ) -> Callable[
-        [automl_translation.DeleteModelRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_model(self) -> Callable[[automl_translation.DeleteModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete model method over gRPC.
 
         Deletes a model.
@@ -1833,9 +1639,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1852,9 +1656,7 @@ class TranslationServiceGrpcAsyncIOTransport(TranslationServiceTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

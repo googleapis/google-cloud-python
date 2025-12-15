@@ -33,9 +33,7 @@ from google.cloud.discoveryengine_v1beta.types import conversational_search_serv
 from google.cloud.discoveryengine_v1beta.types import session
 from google.cloud.discoveryengine_v1beta.types import session as gcd_session
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class SessionServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -192,37 +182,21 @@ class SessionServiceTransport(abc.ABC):
     @property
     def create_session(
         self,
-    ) -> Callable[
-        [conversational_search_service.CreateSessionRequest],
-        Union[gcd_session.Session, Awaitable[gcd_session.Session]],
-    ]:
+    ) -> Callable[[conversational_search_service.CreateSessionRequest], Union[gcd_session.Session, Awaitable[gcd_session.Session]]]:
         raise NotImplementedError()
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteSessionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_session(self) -> Callable[[conversational_search_service.DeleteSessionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_session(
         self,
-    ) -> Callable[
-        [conversational_search_service.UpdateSessionRequest],
-        Union[gcd_session.Session, Awaitable[gcd_session.Session]],
-    ]:
+    ) -> Callable[[conversational_search_service.UpdateSessionRequest], Union[gcd_session.Session, Awaitable[gcd_session.Session]]]:
         raise NotImplementedError()
 
     @property
-    def get_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.GetSessionRequest],
-        Union[session.Session, Awaitable[session.Session]],
-    ]:
+    def get_session(self) -> Callable[[conversational_search_service.GetSessionRequest], Union[session.Session, Awaitable[session.Session]]]:
         raise NotImplementedError()
 
     @property
@@ -230,10 +204,7 @@ class SessionServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [conversational_search_service.ListSessionsRequest],
-        Union[
-            conversational_search_service.ListSessionsResponse,
-            Awaitable[conversational_search_service.ListSessionsResponse],
-        ],
+        Union[conversational_search_service.ListSessionsResponse, Awaitable[conversational_search_service.ListSessionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -242,20 +213,14 @@ class SessionServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

@@ -100,9 +100,7 @@ class InputConfig(proto.Message):
         LOCAL_BUSINESS = 6
         PERSON = 7
 
-    bigquery_input_configs: MutableSequence[
-        "BigQueryInputConfig"
-    ] = proto.RepeatedField(
+    bigquery_input_configs: MutableSequence["BigQueryInputConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="BigQueryInputConfig",
@@ -386,9 +384,7 @@ class ListEntityReconciliationJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entity_reconciliation_jobs: MutableSequence[
-        "EntityReconciliationJob"
-    ] = proto.RepeatedField(
+    entity_reconciliation_jobs: MutableSequence["EntityReconciliationJob"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="EntityReconciliationJob",

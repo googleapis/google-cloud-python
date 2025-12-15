@@ -45,9 +45,7 @@ def sample_fetch_backup_plan_associations_for_resource_type():
     )
 
     # Make the request
-    page_result = client.fetch_backup_plan_associations_for_resource_type(
-        request=request
-    )
+    page_result = client.fetch_backup_plan_associations_for_resource_type(request=request)
 
     # Handle the response
     for response in page_result:

@@ -51,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -89,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +261,14 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +304,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -344,17 +327,13 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[[warehouse.CreateAssetRequest], Awaitable[warehouse.Asset]]:
+    def create_asset(self) -> Callable[[warehouse.CreateAssetRequest], Awaitable[warehouse.Asset]]:
         r"""Return a callable for the create asset method over gRPC.
 
         Creates an asset inside corpus.
@@ -378,9 +357,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_asset"]
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[[warehouse.UpdateAssetRequest], Awaitable[warehouse.Asset]]:
+    def update_asset(self) -> Callable[[warehouse.UpdateAssetRequest], Awaitable[warehouse.Asset]]:
         r"""Return a callable for the update asset method over gRPC.
 
         Updates an asset inside corpus.
@@ -404,9 +381,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_asset"]
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[[warehouse.GetAssetRequest], Awaitable[warehouse.Asset]]:
+    def get_asset(self) -> Callable[[warehouse.GetAssetRequest], Awaitable[warehouse.Asset]]:
         r"""Return a callable for the get asset method over gRPC.
 
         Reads an asset inside corpus.
@@ -430,11 +405,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_asset"]
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [warehouse.ListAssetsRequest], Awaitable[warehouse.ListAssetsResponse]
-    ]:
+    def list_assets(self) -> Callable[[warehouse.ListAssetsRequest], Awaitable[warehouse.ListAssetsResponse]]:
         r"""Return a callable for the list assets method over gRPC.
 
         Lists an list of assets inside corpus.
@@ -458,9 +429,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_assets"]
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[warehouse.DeleteAssetRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_asset(self) -> Callable[[warehouse.DeleteAssetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete asset method over gRPC.
 
         Deletes asset inside corpus.
@@ -484,9 +453,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_asset"]
 
     @property
-    def upload_asset(
-        self,
-    ) -> Callable[[warehouse.UploadAssetRequest], Awaitable[operations_pb2.Operation]]:
+    def upload_asset(self) -> Callable[[warehouse.UploadAssetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the upload asset method over gRPC.
 
         Upload asset by specifing the asset Cloud Storage
@@ -522,12 +489,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["upload_asset"]
 
     @property
-    def generate_retrieval_url(
-        self,
-    ) -> Callable[
-        [warehouse.GenerateRetrievalUrlRequest],
-        Awaitable[warehouse.GenerateRetrievalUrlResponse],
-    ]:
+    def generate_retrieval_url(self) -> Callable[[warehouse.GenerateRetrievalUrlRequest], Awaitable[warehouse.GenerateRetrievalUrlResponse]]:
         r"""Return a callable for the generate retrieval url method over gRPC.
 
         Generates a signed url for downloading the asset.
@@ -554,9 +516,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["generate_retrieval_url"]
 
     @property
-    def analyze_asset(
-        self,
-    ) -> Callable[[warehouse.AnalyzeAssetRequest], Awaitable[operations_pb2.Operation]]:
+    def analyze_asset(self) -> Callable[[warehouse.AnalyzeAssetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the analyze asset method over gRPC.
 
         Analyze asset to power search capability.
@@ -580,9 +540,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["analyze_asset"]
 
     @property
-    def index_asset(
-        self,
-    ) -> Callable[[warehouse.IndexAssetRequest], Awaitable[operations_pb2.Operation]]:
+    def index_asset(self) -> Callable[[warehouse.IndexAssetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the index asset method over gRPC.
 
         Index one asset for search. Supported corpus type:
@@ -607,11 +565,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["index_asset"]
 
     @property
-    def remove_index_asset(
-        self,
-    ) -> Callable[
-        [warehouse.RemoveIndexAssetRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def remove_index_asset(self) -> Callable[[warehouse.RemoveIndexAssetRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the remove index asset method over gRPC.
 
         Remove one asset's index data for search. Supported corpus type:
@@ -636,12 +590,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["remove_index_asset"]
 
     @property
-    def view_indexed_assets(
-        self,
-    ) -> Callable[
-        [warehouse.ViewIndexedAssetsRequest],
-        Awaitable[warehouse.ViewIndexedAssetsResponse],
-    ]:
+    def view_indexed_assets(self) -> Callable[[warehouse.ViewIndexedAssetsRequest], Awaitable[warehouse.ViewIndexedAssetsResponse]]:
         r"""Return a callable for the view indexed assets method over gRPC.
 
         Lists assets inside an index.
@@ -665,9 +614,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["view_indexed_assets"]
 
     @property
-    def create_index(
-        self,
-    ) -> Callable[[warehouse.CreateIndexRequest], Awaitable[operations_pb2.Operation]]:
+    def create_index(self) -> Callable[[warehouse.CreateIndexRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create index method over gRPC.
 
         Creates an Index under the corpus.
@@ -691,9 +638,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_index"]
 
     @property
-    def update_index(
-        self,
-    ) -> Callable[[warehouse.UpdateIndexRequest], Awaitable[operations_pb2.Operation]]:
+    def update_index(self) -> Callable[[warehouse.UpdateIndexRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update index method over gRPC.
 
         Updates an Index under the corpus. Users can perform a
@@ -719,9 +664,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_index"]
 
     @property
-    def get_index(
-        self,
-    ) -> Callable[[warehouse.GetIndexRequest], Awaitable[warehouse.Index]]:
+    def get_index(self) -> Callable[[warehouse.GetIndexRequest], Awaitable[warehouse.Index]]:
         r"""Return a callable for the get index method over gRPC.
 
         Gets the details of a single Index under a Corpus.
@@ -745,11 +688,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_index"]
 
     @property
-    def list_indexes(
-        self,
-    ) -> Callable[
-        [warehouse.ListIndexesRequest], Awaitable[warehouse.ListIndexesResponse]
-    ]:
+    def list_indexes(self) -> Callable[[warehouse.ListIndexesRequest], Awaitable[warehouse.ListIndexesResponse]]:
         r"""Return a callable for the list indexes method over gRPC.
 
         List all Indexes in a given Corpus.
@@ -773,9 +712,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_indexes"]
 
     @property
-    def delete_index(
-        self,
-    ) -> Callable[[warehouse.DeleteIndexRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_index(self) -> Callable[[warehouse.DeleteIndexRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete index method over gRPC.
 
         Delete a single Index. In order to delete an index,
@@ -801,9 +738,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_index"]
 
     @property
-    def create_corpus(
-        self,
-    ) -> Callable[[warehouse.CreateCorpusRequest], Awaitable[operations_pb2.Operation]]:
+    def create_corpus(self) -> Callable[[warehouse.CreateCorpusRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create corpus method over gRPC.
 
         Creates a corpus inside a project.
@@ -827,9 +762,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_corpus"]
 
     @property
-    def get_corpus(
-        self,
-    ) -> Callable[[warehouse.GetCorpusRequest], Awaitable[warehouse.Corpus]]:
+    def get_corpus(self) -> Callable[[warehouse.GetCorpusRequest], Awaitable[warehouse.Corpus]]:
         r"""Return a callable for the get corpus method over gRPC.
 
         Gets corpus details inside a project.
@@ -853,9 +786,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_corpus"]
 
     @property
-    def update_corpus(
-        self,
-    ) -> Callable[[warehouse.UpdateCorpusRequest], Awaitable[warehouse.Corpus]]:
+    def update_corpus(self) -> Callable[[warehouse.UpdateCorpusRequest], Awaitable[warehouse.Corpus]]:
         r"""Return a callable for the update corpus method over gRPC.
 
         Updates a corpus in a project.
@@ -879,11 +810,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_corpus"]
 
     @property
-    def list_corpora(
-        self,
-    ) -> Callable[
-        [warehouse.ListCorporaRequest], Awaitable[warehouse.ListCorporaResponse]
-    ]:
+    def list_corpora(self) -> Callable[[warehouse.ListCorporaRequest], Awaitable[warehouse.ListCorporaResponse]]:
         r"""Return a callable for the list corpora method over gRPC.
 
         Lists all corpora in a project.
@@ -907,9 +834,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_corpora"]
 
     @property
-    def delete_corpus(
-        self,
-    ) -> Callable[[warehouse.DeleteCorpusRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_corpus(self) -> Callable[[warehouse.DeleteCorpusRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete corpus method over gRPC.
 
         Deletes a corpus only if its empty.
@@ -934,11 +859,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_corpus"]
 
     @property
-    def analyze_corpus(
-        self,
-    ) -> Callable[
-        [warehouse.AnalyzeCorpusRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def analyze_corpus(self) -> Callable[[warehouse.AnalyzeCorpusRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the analyze corpus method over gRPC.
 
         Analyzes a corpus.
@@ -962,9 +883,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["analyze_corpus"]
 
     @property
-    def create_data_schema(
-        self,
-    ) -> Callable[[warehouse.CreateDataSchemaRequest], Awaitable[warehouse.DataSchema]]:
+    def create_data_schema(self) -> Callable[[warehouse.CreateDataSchemaRequest], Awaitable[warehouse.DataSchema]]:
         r"""Return a callable for the create data schema method over gRPC.
 
         Creates data schema inside corpus.
@@ -988,9 +907,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_data_schema"]
 
     @property
-    def update_data_schema(
-        self,
-    ) -> Callable[[warehouse.UpdateDataSchemaRequest], Awaitable[warehouse.DataSchema]]:
+    def update_data_schema(self) -> Callable[[warehouse.UpdateDataSchemaRequest], Awaitable[warehouse.DataSchema]]:
         r"""Return a callable for the update data schema method over gRPC.
 
         Updates data schema inside corpus.
@@ -1014,9 +931,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_data_schema"]
 
     @property
-    def get_data_schema(
-        self,
-    ) -> Callable[[warehouse.GetDataSchemaRequest], Awaitable[warehouse.DataSchema]]:
+    def get_data_schema(self) -> Callable[[warehouse.GetDataSchemaRequest], Awaitable[warehouse.DataSchema]]:
         r"""Return a callable for the get data schema method over gRPC.
 
         Gets data schema inside corpus.
@@ -1040,9 +955,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_data_schema"]
 
     @property
-    def delete_data_schema(
-        self,
-    ) -> Callable[[warehouse.DeleteDataSchemaRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_data_schema(self) -> Callable[[warehouse.DeleteDataSchemaRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete data schema method over gRPC.
 
         Deletes data schema inside corpus.
@@ -1066,11 +979,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_data_schema"]
 
     @property
-    def list_data_schemas(
-        self,
-    ) -> Callable[
-        [warehouse.ListDataSchemasRequest], Awaitable[warehouse.ListDataSchemasResponse]
-    ]:
+    def list_data_schemas(self) -> Callable[[warehouse.ListDataSchemasRequest], Awaitable[warehouse.ListDataSchemasResponse]]:
         r"""Return a callable for the list data schemas method over gRPC.
 
         Lists a list of data schemas inside corpus.
@@ -1094,9 +1003,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_data_schemas"]
 
     @property
-    def create_annotation(
-        self,
-    ) -> Callable[[warehouse.CreateAnnotationRequest], Awaitable[warehouse.Annotation]]:
+    def create_annotation(self) -> Callable[[warehouse.CreateAnnotationRequest], Awaitable[warehouse.Annotation]]:
         r"""Return a callable for the create annotation method over gRPC.
 
         Creates annotation inside asset.
@@ -1120,9 +1027,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_annotation"]
 
     @property
-    def get_annotation(
-        self,
-    ) -> Callable[[warehouse.GetAnnotationRequest], Awaitable[warehouse.Annotation]]:
+    def get_annotation(self) -> Callable[[warehouse.GetAnnotationRequest], Awaitable[warehouse.Annotation]]:
         r"""Return a callable for the get annotation method over gRPC.
 
         Reads annotation inside asset.
@@ -1146,11 +1051,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_annotation"]
 
     @property
-    def list_annotations(
-        self,
-    ) -> Callable[
-        [warehouse.ListAnnotationsRequest], Awaitable[warehouse.ListAnnotationsResponse]
-    ]:
+    def list_annotations(self) -> Callable[[warehouse.ListAnnotationsRequest], Awaitable[warehouse.ListAnnotationsResponse]]:
         r"""Return a callable for the list annotations method over gRPC.
 
         Lists a list of annotations inside asset.
@@ -1174,9 +1075,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_annotations"]
 
     @property
-    def update_annotation(
-        self,
-    ) -> Callable[[warehouse.UpdateAnnotationRequest], Awaitable[warehouse.Annotation]]:
+    def update_annotation(self) -> Callable[[warehouse.UpdateAnnotationRequest], Awaitable[warehouse.Annotation]]:
         r"""Return a callable for the update annotation method over gRPC.
 
         Updates annotation inside asset.
@@ -1200,9 +1099,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_annotation"]
 
     @property
-    def delete_annotation(
-        self,
-    ) -> Callable[[warehouse.DeleteAnnotationRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_annotation(self) -> Callable[[warehouse.DeleteAnnotationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete annotation method over gRPC.
 
         Deletes annotation inside asset.
@@ -1226,11 +1123,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_annotation"]
 
     @property
-    def ingest_asset(
-        self,
-    ) -> Callable[
-        [warehouse.IngestAssetRequest], Awaitable[warehouse.IngestAssetResponse]
-    ]:
+    def ingest_asset(self) -> Callable[[warehouse.IngestAssetRequest], Awaitable[warehouse.IngestAssetResponse]]:
         r"""Return a callable for the ingest asset method over gRPC.
 
         Ingests data for the asset. It is not allowed to
@@ -1258,9 +1151,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["ingest_asset"]
 
     @property
-    def clip_asset(
-        self,
-    ) -> Callable[[warehouse.ClipAssetRequest], Awaitable[warehouse.ClipAssetResponse]]:
+    def clip_asset(self) -> Callable[[warehouse.ClipAssetRequest], Awaitable[warehouse.ClipAssetResponse]]:
         r"""Return a callable for the clip asset method over gRPC.
 
         Supported by STREAM_VIDEO corpus type. Generates clips for
@@ -1289,11 +1180,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["clip_asset"]
 
     @property
-    def generate_hls_uri(
-        self,
-    ) -> Callable[
-        [warehouse.GenerateHlsUriRequest], Awaitable[warehouse.GenerateHlsUriResponse]
-    ]:
+    def generate_hls_uri(self) -> Callable[[warehouse.GenerateHlsUriRequest], Awaitable[warehouse.GenerateHlsUriResponse]]:
         r"""Return a callable for the generate hls uri method over gRPC.
 
         Generates a uri for an HLS manifest. The api takes in
@@ -1319,9 +1206,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["generate_hls_uri"]
 
     @property
-    def import_assets(
-        self,
-    ) -> Callable[[warehouse.ImportAssetsRequest], Awaitable[operations_pb2.Operation]]:
+    def import_assets(self) -> Callable[[warehouse.ImportAssetsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import assets method over gRPC.
 
         Imports assets (images plus annotations) from a meta
@@ -1348,11 +1233,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["import_assets"]
 
     @property
-    def create_search_config(
-        self,
-    ) -> Callable[
-        [warehouse.CreateSearchConfigRequest], Awaitable[warehouse.SearchConfig]
-    ]:
+    def create_search_config(self) -> Callable[[warehouse.CreateSearchConfigRequest], Awaitable[warehouse.SearchConfig]]:
         r"""Return a callable for the create search config method over gRPC.
 
         Creates a search configuration inside a corpus.
@@ -1391,11 +1272,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_search_config"]
 
     @property
-    def update_search_config(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateSearchConfigRequest], Awaitable[warehouse.SearchConfig]
-    ]:
+    def update_search_config(self) -> Callable[[warehouse.UpdateSearchConfigRequest], Awaitable[warehouse.SearchConfig]]:
         r"""Return a callable for the update search config method over gRPC.
 
         Updates a search configuration inside a corpus.
@@ -1433,11 +1310,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_search_config"]
 
     @property
-    def get_search_config(
-        self,
-    ) -> Callable[
-        [warehouse.GetSearchConfigRequest], Awaitable[warehouse.SearchConfig]
-    ]:
+    def get_search_config(self) -> Callable[[warehouse.GetSearchConfigRequest], Awaitable[warehouse.SearchConfig]]:
         r"""Return a callable for the get search config method over gRPC.
 
         Gets a search configuration inside a corpus.
@@ -1461,9 +1334,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_search_config"]
 
     @property
-    def delete_search_config(
-        self,
-    ) -> Callable[[warehouse.DeleteSearchConfigRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_search_config(self) -> Callable[[warehouse.DeleteSearchConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete search config method over gRPC.
 
         Deletes a search configuration inside a corpus.
@@ -1490,12 +1361,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_search_config"]
 
     @property
-    def list_search_configs(
-        self,
-    ) -> Callable[
-        [warehouse.ListSearchConfigsRequest],
-        Awaitable[warehouse.ListSearchConfigsResponse],
-    ]:
+    def list_search_configs(self) -> Callable[[warehouse.ListSearchConfigsRequest], Awaitable[warehouse.ListSearchConfigsResponse]]:
         r"""Return a callable for the list search configs method over gRPC.
 
         Lists all search configurations inside a corpus.
@@ -1519,11 +1385,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_search_configs"]
 
     @property
-    def create_search_hypernym(
-        self,
-    ) -> Callable[
-        [warehouse.CreateSearchHypernymRequest], Awaitable[warehouse.SearchHypernym]
-    ]:
+    def create_search_hypernym(self) -> Callable[[warehouse.CreateSearchHypernymRequest], Awaitable[warehouse.SearchHypernym]]:
         r"""Return a callable for the create search hypernym method over gRPC.
 
         Creates a SearchHypernym inside a corpus.
@@ -1547,11 +1409,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_search_hypernym"]
 
     @property
-    def update_search_hypernym(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateSearchHypernymRequest], Awaitable[warehouse.SearchHypernym]
-    ]:
+    def update_search_hypernym(self) -> Callable[[warehouse.UpdateSearchHypernymRequest], Awaitable[warehouse.SearchHypernym]]:
         r"""Return a callable for the update search hypernym method over gRPC.
 
         Updates a SearchHypernym inside a corpus.
@@ -1575,11 +1433,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_search_hypernym"]
 
     @property
-    def get_search_hypernym(
-        self,
-    ) -> Callable[
-        [warehouse.GetSearchHypernymRequest], Awaitable[warehouse.SearchHypernym]
-    ]:
+    def get_search_hypernym(self) -> Callable[[warehouse.GetSearchHypernymRequest], Awaitable[warehouse.SearchHypernym]]:
         r"""Return a callable for the get search hypernym method over gRPC.
 
         Gets a SearchHypernym inside a corpus.
@@ -1603,9 +1457,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_search_hypernym"]
 
     @property
-    def delete_search_hypernym(
-        self,
-    ) -> Callable[[warehouse.DeleteSearchHypernymRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_search_hypernym(self) -> Callable[[warehouse.DeleteSearchHypernymRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete search hypernym method over gRPC.
 
         Deletes a SearchHypernym inside a corpus.
@@ -1629,12 +1481,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_search_hypernym"]
 
     @property
-    def list_search_hypernyms(
-        self,
-    ) -> Callable[
-        [warehouse.ListSearchHypernymsRequest],
-        Awaitable[warehouse.ListSearchHypernymsResponse],
-    ]:
+    def list_search_hypernyms(self) -> Callable[[warehouse.ListSearchHypernymsRequest], Awaitable[warehouse.ListSearchHypernymsResponse]]:
         r"""Return a callable for the list search hypernyms method over gRPC.
 
         Lists SearchHypernyms inside a corpus.
@@ -1658,11 +1505,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_search_hypernyms"]
 
     @property
-    def search_assets(
-        self,
-    ) -> Callable[
-        [warehouse.SearchAssetsRequest], Awaitable[warehouse.SearchAssetsResponse]
-    ]:
+    def search_assets(self) -> Callable[[warehouse.SearchAssetsRequest], Awaitable[warehouse.SearchAssetsResponse]]:
         r"""Return a callable for the search assets method over gRPC.
 
         Search media asset.
@@ -1686,12 +1529,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["search_assets"]
 
     @property
-    def search_index_endpoint(
-        self,
-    ) -> Callable[
-        [warehouse.SearchIndexEndpointRequest],
-        Awaitable[warehouse.SearchIndexEndpointResponse],
-    ]:
+    def search_index_endpoint(self) -> Callable[[warehouse.SearchIndexEndpointRequest], Awaitable[warehouse.SearchIndexEndpointResponse]]:
         r"""Return a callable for the search index endpoint method over gRPC.
 
         Search a deployed index endpoint (IMAGE corpus type
@@ -1716,11 +1554,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["search_index_endpoint"]
 
     @property
-    def create_index_endpoint(
-        self,
-    ) -> Callable[
-        [warehouse.CreateIndexEndpointRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_index_endpoint(self) -> Callable[[warehouse.CreateIndexEndpointRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create index endpoint method over gRPC.
 
         Creates an IndexEndpoint.
@@ -1744,11 +1578,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_index_endpoint"]
 
     @property
-    def get_index_endpoint(
-        self,
-    ) -> Callable[
-        [warehouse.GetIndexEndpointRequest], Awaitable[warehouse.IndexEndpoint]
-    ]:
+    def get_index_endpoint(self) -> Callable[[warehouse.GetIndexEndpointRequest], Awaitable[warehouse.IndexEndpoint]]:
         r"""Return a callable for the get index endpoint method over gRPC.
 
         Gets an IndexEndpoint.
@@ -1772,12 +1602,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_index_endpoint"]
 
     @property
-    def list_index_endpoints(
-        self,
-    ) -> Callable[
-        [warehouse.ListIndexEndpointsRequest],
-        Awaitable[warehouse.ListIndexEndpointsResponse],
-    ]:
+    def list_index_endpoints(self) -> Callable[[warehouse.ListIndexEndpointsRequest], Awaitable[warehouse.ListIndexEndpointsResponse]]:
         r"""Return a callable for the list index endpoints method over gRPC.
 
         Lists all IndexEndpoints in a project.
@@ -1801,11 +1626,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_index_endpoints"]
 
     @property
-    def update_index_endpoint(
-        self,
-    ) -> Callable[
-        [warehouse.UpdateIndexEndpointRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_index_endpoint(self) -> Callable[[warehouse.UpdateIndexEndpointRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update index endpoint method over gRPC.
 
         Updates an IndexEndpoint.
@@ -1829,11 +1650,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_index_endpoint"]
 
     @property
-    def delete_index_endpoint(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteIndexEndpointRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_index_endpoint(self) -> Callable[[warehouse.DeleteIndexEndpointRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete index endpoint method over gRPC.
 
         Deletes an IndexEndpoint.
@@ -1857,9 +1674,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_index_endpoint"]
 
     @property
-    def deploy_index(
-        self,
-    ) -> Callable[[warehouse.DeployIndexRequest], Awaitable[operations_pb2.Operation]]:
+    def deploy_index(self) -> Callable[[warehouse.DeployIndexRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the deploy index method over gRPC.
 
         Deploys an Index to IndexEndpoint.
@@ -1883,11 +1698,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["deploy_index"]
 
     @property
-    def undeploy_index(
-        self,
-    ) -> Callable[
-        [warehouse.UndeployIndexRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def undeploy_index(self) -> Callable[[warehouse.UndeployIndexRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the undeploy index method over gRPC.
 
         Undeploys an Index from IndexEndpoint.
@@ -1911,11 +1722,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["undeploy_index"]
 
     @property
-    def create_collection(
-        self,
-    ) -> Callable[
-        [warehouse.CreateCollectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_collection(self) -> Callable[[warehouse.CreateCollectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create collection method over gRPC.
 
         Creates a collection.
@@ -1939,11 +1746,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["create_collection"]
 
     @property
-    def delete_collection(
-        self,
-    ) -> Callable[
-        [warehouse.DeleteCollectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_collection(self) -> Callable[[warehouse.DeleteCollectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete collection method over gRPC.
 
         Deletes a collection.
@@ -1967,9 +1770,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["delete_collection"]
 
     @property
-    def get_collection(
-        self,
-    ) -> Callable[[warehouse.GetCollectionRequest], Awaitable[warehouse.Collection]]:
+    def get_collection(self) -> Callable[[warehouse.GetCollectionRequest], Awaitable[warehouse.Collection]]:
         r"""Return a callable for the get collection method over gRPC.
 
         Gets a collection.
@@ -1993,9 +1794,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["get_collection"]
 
     @property
-    def update_collection(
-        self,
-    ) -> Callable[[warehouse.UpdateCollectionRequest], Awaitable[warehouse.Collection]]:
+    def update_collection(self) -> Callable[[warehouse.UpdateCollectionRequest], Awaitable[warehouse.Collection]]:
         r"""Return a callable for the update collection method over gRPC.
 
         Updates a collection.
@@ -2019,11 +1818,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["update_collection"]
 
     @property
-    def list_collections(
-        self,
-    ) -> Callable[
-        [warehouse.ListCollectionsRequest], Awaitable[warehouse.ListCollectionsResponse]
-    ]:
+    def list_collections(self) -> Callable[[warehouse.ListCollectionsRequest], Awaitable[warehouse.ListCollectionsResponse]]:
         r"""Return a callable for the list collections method over gRPC.
 
         Lists collections inside a corpus.
@@ -2047,12 +1842,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["list_collections"]
 
     @property
-    def add_collection_item(
-        self,
-    ) -> Callable[
-        [warehouse.AddCollectionItemRequest],
-        Awaitable[warehouse.AddCollectionItemResponse],
-    ]:
+    def add_collection_item(self) -> Callable[[warehouse.AddCollectionItemRequest], Awaitable[warehouse.AddCollectionItemResponse]]:
         r"""Return a callable for the add collection item method over gRPC.
 
         Adds an item into a Collection.
@@ -2076,12 +1866,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["add_collection_item"]
 
     @property
-    def remove_collection_item(
-        self,
-    ) -> Callable[
-        [warehouse.RemoveCollectionItemRequest],
-        Awaitable[warehouse.RemoveCollectionItemResponse],
-    ]:
+    def remove_collection_item(self) -> Callable[[warehouse.RemoveCollectionItemRequest], Awaitable[warehouse.RemoveCollectionItemResponse]]:
         r"""Return a callable for the remove collection item method over gRPC.
 
         Removes an item from a collection.
@@ -2105,12 +1890,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
         return self._stubs["remove_collection_item"]
 
     @property
-    def view_collection_items(
-        self,
-    ) -> Callable[
-        [warehouse.ViewCollectionItemsRequest],
-        Awaitable[warehouse.ViewCollectionItemsResponse],
-    ]:
+    def view_collection_items(self) -> Callable[[warehouse.ViewCollectionItemsRequest], Awaitable[warehouse.ViewCollectionItemsResponse]]:
         r"""Return a callable for the view collection items method over gRPC.
 
         View items inside a collection.
@@ -2584,9 +2364,7 @@ class WarehouseGrpcAsyncIOTransport(WarehouseTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

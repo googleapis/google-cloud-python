@@ -115,9 +115,7 @@ class AccountIssue(proto.Message):
             optional=True,
             enum=types.ReportingContext.ReportingContextEnum,
         )
-        impacts: MutableSequence[
-            "AccountIssue.ImpactedDestination.Impact"
-        ] = proto.RepeatedField(
+        impacts: MutableSequence["AccountIssue.ImpactedDestination.Impact"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="AccountIssue.ImpactedDestination.Impact",

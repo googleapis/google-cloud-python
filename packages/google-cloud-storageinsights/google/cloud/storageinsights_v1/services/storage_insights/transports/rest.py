@@ -190,13 +190,8 @@ class StorageInsightsRestInterceptor:
     """
 
     def pre_create_dataset_config(
-        self,
-        request: storageinsights.CreateDatasetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.CreateDatasetConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.CreateDatasetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.CreateDatasetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dataset_config
 
         Override in a subclass to manipulate the request or metadata
@@ -204,9 +199,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_dataset_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_dataset_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_dataset_config
 
         DEPRECATED. Please use the `post_create_dataset_config_with_metadata`
@@ -220,9 +213,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_create_dataset_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_dataset_config
 
@@ -239,13 +230,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_report_config(
-        self,
-        request: storageinsights.CreateReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.CreateReportConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.CreateReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.CreateReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -253,9 +239,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_report_config(
-        self, response: storageinsights.ReportConfig
-    ) -> storageinsights.ReportConfig:
+    def post_create_report_config(self, response: storageinsights.ReportConfig) -> storageinsights.ReportConfig:
         """Post-rpc interceptor for create_report_config
 
         DEPRECATED. Please use the `post_create_report_config_with_metadata`
@@ -269,9 +253,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_create_report_config_with_metadata(
-        self,
-        response: storageinsights.ReportConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: storageinsights.ReportConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[storageinsights.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_report_config
 
@@ -288,13 +270,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_delete_dataset_config(
-        self,
-        request: storageinsights.DeleteDatasetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.DeleteDatasetConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.DeleteDatasetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.DeleteDatasetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dataset_config
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +279,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_dataset_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_dataset_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_dataset_config
 
         DEPRECATED. Please use the `post_delete_dataset_config_with_metadata`
@@ -318,9 +293,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_delete_dataset_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_dataset_config
 
@@ -337,13 +310,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_delete_report_config(
-        self,
-        request: storageinsights.DeleteReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.DeleteReportConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.DeleteReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.DeleteReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -352,12 +320,8 @@ class StorageInsightsRestInterceptor:
         return request, metadata
 
     def pre_get_dataset_config(
-        self,
-        request: storageinsights.GetDatasetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.GetDatasetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storageinsights.GetDatasetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.GetDatasetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dataset_config
 
         Override in a subclass to manipulate the request or metadata
@@ -365,9 +329,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_dataset_config(
-        self, response: storageinsights.DatasetConfig
-    ) -> storageinsights.DatasetConfig:
+    def post_get_dataset_config(self, response: storageinsights.DatasetConfig) -> storageinsights.DatasetConfig:
         """Post-rpc interceptor for get_dataset_config
 
         DEPRECATED. Please use the `post_get_dataset_config_with_metadata`
@@ -381,9 +343,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_get_dataset_config_with_metadata(
-        self,
-        response: storageinsights.DatasetConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: storageinsights.DatasetConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[storageinsights.DatasetConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dataset_config
 
@@ -400,12 +360,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_report_config(
-        self,
-        request: storageinsights.GetReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.GetReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storageinsights.GetReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.GetReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -413,9 +369,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report_config(
-        self, response: storageinsights.ReportConfig
-    ) -> storageinsights.ReportConfig:
+    def post_get_report_config(self, response: storageinsights.ReportConfig) -> storageinsights.ReportConfig:
         """Post-rpc interceptor for get_report_config
 
         DEPRECATED. Please use the `post_get_report_config_with_metadata`
@@ -429,9 +383,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_get_report_config_with_metadata(
-        self,
-        response: storageinsights.ReportConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: storageinsights.ReportConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[storageinsights.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report_config
 
@@ -448,12 +400,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_report_detail(
-        self,
-        request: storageinsights.GetReportDetailRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.GetReportDetailRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storageinsights.GetReportDetailRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.GetReportDetailRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_report_detail
 
         Override in a subclass to manipulate the request or metadata
@@ -461,9 +409,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report_detail(
-        self, response: storageinsights.ReportDetail
-    ) -> storageinsights.ReportDetail:
+    def post_get_report_detail(self, response: storageinsights.ReportDetail) -> storageinsights.ReportDetail:
         """Post-rpc interceptor for get_report_detail
 
         DEPRECATED. Please use the `post_get_report_detail_with_metadata`
@@ -477,9 +423,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_get_report_detail_with_metadata(
-        self,
-        response: storageinsights.ReportDetail,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: storageinsights.ReportDetail, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[storageinsights.ReportDetail, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report_detail
 
@@ -496,12 +440,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_link_dataset(
-        self,
-        request: storageinsights.LinkDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.LinkDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storageinsights.LinkDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.LinkDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for link_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -509,9 +449,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_link_dataset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_link_dataset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for link_dataset
 
         DEPRECATED. Please use the `post_link_dataset_with_metadata`
@@ -525,9 +463,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_link_dataset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for link_dataset
 
@@ -544,13 +480,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_dataset_configs(
-        self,
-        request: storageinsights.ListDatasetConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.ListDatasetConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.ListDatasetConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.ListDatasetConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_dataset_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -558,9 +489,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_dataset_configs(
-        self, response: storageinsights.ListDatasetConfigsResponse
-    ) -> storageinsights.ListDatasetConfigsResponse:
+    def post_list_dataset_configs(self, response: storageinsights.ListDatasetConfigsResponse) -> storageinsights.ListDatasetConfigsResponse:
         """Post-rpc interceptor for list_dataset_configs
 
         DEPRECATED. Please use the `post_list_dataset_configs_with_metadata`
@@ -574,13 +503,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_list_dataset_configs_with_metadata(
-        self,
-        response: storageinsights.ListDatasetConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.ListDatasetConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: storageinsights.ListDatasetConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.ListDatasetConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_dataset_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -596,13 +520,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_report_configs(
-        self,
-        request: storageinsights.ListReportConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.ListReportConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.ListReportConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.ListReportConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_report_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -610,9 +529,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_report_configs(
-        self, response: storageinsights.ListReportConfigsResponse
-    ) -> storageinsights.ListReportConfigsResponse:
+    def post_list_report_configs(self, response: storageinsights.ListReportConfigsResponse) -> storageinsights.ListReportConfigsResponse:
         """Post-rpc interceptor for list_report_configs
 
         DEPRECATED. Please use the `post_list_report_configs_with_metadata`
@@ -626,13 +543,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_list_report_configs_with_metadata(
-        self,
-        response: storageinsights.ListReportConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.ListReportConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: storageinsights.ListReportConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.ListReportConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_report_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -648,13 +560,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_report_details(
-        self,
-        request: storageinsights.ListReportDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.ListReportDetailsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.ListReportDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.ListReportDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_report_details
 
         Override in a subclass to manipulate the request or metadata
@@ -662,9 +569,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_report_details(
-        self, response: storageinsights.ListReportDetailsResponse
-    ) -> storageinsights.ListReportDetailsResponse:
+    def post_list_report_details(self, response: storageinsights.ListReportDetailsResponse) -> storageinsights.ListReportDetailsResponse:
         """Post-rpc interceptor for list_report_details
 
         DEPRECATED. Please use the `post_list_report_details_with_metadata`
@@ -678,13 +583,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_list_report_details_with_metadata(
-        self,
-        response: storageinsights.ListReportDetailsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.ListReportDetailsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: storageinsights.ListReportDetailsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.ListReportDetailsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_report_details
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -700,12 +600,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_unlink_dataset(
-        self,
-        request: storageinsights.UnlinkDatasetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.UnlinkDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: storageinsights.UnlinkDatasetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.UnlinkDatasetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for unlink_dataset
 
         Override in a subclass to manipulate the request or metadata
@@ -713,9 +609,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_unlink_dataset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_unlink_dataset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for unlink_dataset
 
         DEPRECATED. Please use the `post_unlink_dataset_with_metadata`
@@ -729,9 +623,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_unlink_dataset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for unlink_dataset
 
@@ -748,13 +640,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_dataset_config(
-        self,
-        request: storageinsights.UpdateDatasetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.UpdateDatasetConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.UpdateDatasetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.UpdateDatasetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dataset_config
 
         Override in a subclass to manipulate the request or metadata
@@ -762,9 +649,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dataset_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_dataset_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_dataset_config
 
         DEPRECATED. Please use the `post_update_dataset_config_with_metadata`
@@ -778,9 +663,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_update_dataset_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dataset_config
 
@@ -797,13 +680,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_report_config(
-        self,
-        request: storageinsights.UpdateReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        storageinsights.UpdateReportConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: storageinsights.UpdateReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[storageinsights.UpdateReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -811,9 +689,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_report_config(
-        self, response: storageinsights.ReportConfig
-    ) -> storageinsights.ReportConfig:
+    def post_update_report_config(self, response: storageinsights.ReportConfig) -> storageinsights.ReportConfig:
         """Post-rpc interceptor for update_report_config
 
         DEPRECATED. Please use the `post_update_report_config_with_metadata`
@@ -827,9 +703,7 @@ class StorageInsightsRestInterceptor:
         return response
 
     def post_update_report_config_with_metadata(
-        self,
-        response: storageinsights.ReportConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: storageinsights.ReportConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[storageinsights.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_report_config
 
@@ -846,12 +720,8 @@ class StorageInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -859,9 +729,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -871,12 +739,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -884,9 +748,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -896,12 +758,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -919,12 +777,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -942,12 +796,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -955,9 +805,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -967,12 +815,8 @@ class StorageInsightsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -980,9 +824,7 @@ class StorageInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1071,9 +913,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1126,30 +966,17 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateDatasetConfig(
-        _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig,
-        StorageInsightsRestStub,
-    ):
+    class _CreateDatasetConfig(_BaseStorageInsightsRestTransport._BaseCreateDatasetConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.CreateDatasetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1193,32 +1020,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_dataset_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_dataset_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseCreateDatasetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1242,13 +1055,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._CreateDatasetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1262,12 +1069,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_create_dataset_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dataset_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dataset_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1288,23 +1091,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _CreateReportConfig(
-        _BaseStorageInsightsRestTransport._BaseCreateReportConfig,
-        StorageInsightsRestStub,
-    ):
+    class _CreateReportConfig(_BaseStorageInsightsRestTransport._BaseCreateReportConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.CreateReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1350,32 +1142,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_report_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseCreateReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1399,13 +1177,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._CreateReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1421,12 +1193,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_create_report_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_report_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_report_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = storageinsights.ReportConfig.to_json(response)
                 except:
@@ -1447,23 +1215,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _DeleteDatasetConfig(
-        _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig,
-        StorageInsightsRestStub,
-    ):
+    class _DeleteDatasetConfig(_BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.DeleteDatasetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1506,28 +1263,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_dataset_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_dataset_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseDeleteDatasetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1551,12 +1296,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._DeleteDatasetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1570,12 +1310,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_delete_dataset_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_dataset_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_dataset_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1596,23 +1332,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _DeleteReportConfig(
-        _BaseStorageInsightsRestTransport._BaseDeleteReportConfig,
-        StorageInsightsRestStub,
-    ):
+    class _DeleteReportConfig(_BaseStorageInsightsRestTransport._BaseDeleteReportConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.DeleteReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1647,28 +1372,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_report_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseDeleteReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1692,12 +1405,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._DeleteReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1705,22 +1413,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDatasetConfig(
-        _BaseStorageInsightsRestTransport._BaseGetDatasetConfig, StorageInsightsRestStub
-    ):
+    class _GetDatasetConfig(_BaseStorageInsightsRestTransport._BaseGetDatasetConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.GetDatasetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1763,28 +1461,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_dataset_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_dataset_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseGetDatasetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1808,12 +1494,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._GetDatasetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1829,12 +1510,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_get_dataset_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dataset_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dataset_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = storageinsights.DatasetConfig.to_json(response)
                 except:
@@ -1855,22 +1532,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _GetReportConfig(
-        _BaseStorageInsightsRestTransport._BaseGetReportConfig, StorageInsightsRestStub
-    ):
+    class _GetReportConfig(_BaseStorageInsightsRestTransport._BaseGetReportConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.GetReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1915,28 +1582,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_report_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseGetReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1960,12 +1615,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._GetReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1981,12 +1631,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_get_report_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_report_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_report_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = storageinsights.ReportConfig.to_json(response)
                 except:
@@ -2007,22 +1653,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _GetReportDetail(
-        _BaseStorageInsightsRestTransport._BaseGetReportDetail, StorageInsightsRestStub
-    ):
+    class _GetReportDetail(_BaseStorageInsightsRestTransport._BaseGetReportDetail, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.GetReportDetail")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2065,28 +1701,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_report_detail(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_report_detail(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseGetReportDetail._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2110,12 +1734,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._GetReportDetail._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2131,12 +1750,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_get_report_detail(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_report_detail_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_report_detail_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = storageinsights.ReportDetail.to_json(response)
                 except:
@@ -2157,22 +1772,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _LinkDataset(
-        _BaseStorageInsightsRestTransport._BaseLinkDataset, StorageInsightsRestStub
-    ):
+    class _LinkDataset(_BaseStorageInsightsRestTransport._BaseLinkDataset, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.LinkDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2216,30 +1821,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseLinkDataset._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_link_dataset(request, metadata)
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseLinkDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2263,13 +1856,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._LinkDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2283,12 +1870,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_link_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_link_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_link_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2309,23 +1892,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _ListDatasetConfigs(
-        _BaseStorageInsightsRestTransport._BaseListDatasetConfigs,
-        StorageInsightsRestStub,
-    ):
+    class _ListDatasetConfigs(_BaseStorageInsightsRestTransport._BaseListDatasetConfigs, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.ListDatasetConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2367,28 +1939,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_dataset_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_dataset_configs(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseListDatasetConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2412,12 +1972,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._ListDatasetConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2433,16 +1988,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_list_dataset_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_dataset_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_dataset_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        storageinsights.ListDatasetConfigsResponse.to_json(response)
-                    )
+                    response_payload = storageinsights.ListDatasetConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2461,23 +2010,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _ListReportConfigs(
-        _BaseStorageInsightsRestTransport._BaseListReportConfigs,
-        StorageInsightsRestStub,
-    ):
+    class _ListReportConfigs(_BaseStorageInsightsRestTransport._BaseListReportConfigs, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.ListReportConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2519,28 +2057,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_report_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_report_configs(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseListReportConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2564,12 +2090,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._ListReportConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2585,16 +2106,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_list_report_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_report_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_report_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        storageinsights.ListReportConfigsResponse.to_json(response)
-                    )
+                    response_payload = storageinsights.ListReportConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2613,23 +2128,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _ListReportDetails(
-        _BaseStorageInsightsRestTransport._BaseListReportDetails,
-        StorageInsightsRestStub,
-    ):
+    class _ListReportDetails(_BaseStorageInsightsRestTransport._BaseListReportDetails, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.ListReportDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2671,28 +2175,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseListReportDetails._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseListReportDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_report_details(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseListReportDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_report_details(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseListReportDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseListReportDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseListReportDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2716,12 +2208,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._ListReportDetails._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2737,16 +2224,10 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_list_report_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_report_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_report_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        storageinsights.ListReportDetailsResponse.to_json(response)
-                    )
+                    response_payload = storageinsights.ListReportDetailsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2765,22 +2246,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _UnlinkDataset(
-        _BaseStorageInsightsRestTransport._BaseUnlinkDataset, StorageInsightsRestStub
-    ):
+    class _UnlinkDataset(_BaseStorageInsightsRestTransport._BaseUnlinkDataset, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.UnlinkDataset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2824,30 +2295,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_http_options()
 
             request, metadata = self._interceptor.pre_unlink_dataset(request, metadata)
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseUnlinkDataset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2871,13 +2330,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._UnlinkDataset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2891,12 +2344,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_unlink_dataset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_unlink_dataset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_unlink_dataset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2917,23 +2366,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _UpdateDatasetConfig(
-        _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig,
-        StorageInsightsRestStub,
-    ):
+    class _UpdateDatasetConfig(_BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.UpdateDatasetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2977,32 +2415,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_dataset_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_dataset_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseUpdateDatasetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3026,13 +2450,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._UpdateDatasetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3046,12 +2464,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_update_dataset_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dataset_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dataset_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3072,23 +2486,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 )
             return resp
 
-    class _UpdateReportConfig(
-        _BaseStorageInsightsRestTransport._BaseUpdateReportConfig,
-        StorageInsightsRestStub,
-    ):
+    class _UpdateReportConfig(_BaseStorageInsightsRestTransport._BaseUpdateReportConfig, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.UpdateReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3134,32 +2537,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_report_config(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseUpdateReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3183,13 +2572,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._UpdateReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3205,12 +2588,8 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             resp = self._interceptor.post_update_report_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_report_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_report_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = storageinsights.ReportConfig.to_json(response)
                 except:
@@ -3232,138 +2611,85 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             return resp
 
     @property
-    def create_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.CreateDatasetConfigRequest], operations_pb2.Operation
-    ]:
+    def create_dataset_config(self) -> Callable[[storageinsights.CreateDatasetConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.CreateReportConfigRequest], storageinsights.ReportConfig
-    ]:
+    def create_report_config(self) -> Callable[[storageinsights.CreateReportConfigRequest], storageinsights.ReportConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.DeleteDatasetConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_dataset_config(self) -> Callable[[storageinsights.DeleteDatasetConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_report_config(
-        self,
-    ) -> Callable[[storageinsights.DeleteReportConfigRequest], empty_pb2.Empty]:
+    def delete_report_config(self) -> Callable[[storageinsights.DeleteReportConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.GetDatasetConfigRequest], storageinsights.DatasetConfig
-    ]:
+    def get_dataset_config(self) -> Callable[[storageinsights.GetDatasetConfigRequest], storageinsights.DatasetConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.GetReportConfigRequest], storageinsights.ReportConfig
-    ]:
+    def get_report_config(self) -> Callable[[storageinsights.GetReportConfigRequest], storageinsights.ReportConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_report_detail(
-        self,
-    ) -> Callable[
-        [storageinsights.GetReportDetailRequest], storageinsights.ReportDetail
-    ]:
+    def get_report_detail(self) -> Callable[[storageinsights.GetReportDetailRequest], storageinsights.ReportDetail]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReportDetail(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def link_dataset(
-        self,
-    ) -> Callable[[storageinsights.LinkDatasetRequest], operations_pb2.Operation]:
+    def link_dataset(self) -> Callable[[storageinsights.LinkDatasetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LinkDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_dataset_configs(
-        self,
-    ) -> Callable[
-        [storageinsights.ListDatasetConfigsRequest],
-        storageinsights.ListDatasetConfigsResponse,
-    ]:
+    def list_dataset_configs(self) -> Callable[[storageinsights.ListDatasetConfigsRequest], storageinsights.ListDatasetConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatasetConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_report_configs(
-        self,
-    ) -> Callable[
-        [storageinsights.ListReportConfigsRequest],
-        storageinsights.ListReportConfigsResponse,
-    ]:
+    def list_report_configs(self) -> Callable[[storageinsights.ListReportConfigsRequest], storageinsights.ListReportConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReportConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_report_details(
-        self,
-    ) -> Callable[
-        [storageinsights.ListReportDetailsRequest],
-        storageinsights.ListReportDetailsResponse,
-    ]:
+    def list_report_details(self) -> Callable[[storageinsights.ListReportDetailsRequest], storageinsights.ListReportDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReportDetails(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def unlink_dataset(
-        self,
-    ) -> Callable[[storageinsights.UnlinkDatasetRequest], operations_pb2.Operation]:
+    def unlink_dataset(self) -> Callable[[storageinsights.UnlinkDatasetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UnlinkDataset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_dataset_config(
-        self,
-    ) -> Callable[
-        [storageinsights.UpdateDatasetConfigRequest], operations_pb2.Operation
-    ]:
+    def update_dataset_config(self) -> Callable[[storageinsights.UpdateDatasetConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDatasetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_report_config(
-        self,
-    ) -> Callable[
-        [storageinsights.UpdateReportConfigRequest], storageinsights.ReportConfig
-    ]:
+    def update_report_config(self) -> Callable[[storageinsights.UpdateReportConfigRequest], storageinsights.ReportConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateReportConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -3372,22 +2698,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseStorageInsightsRestTransport._BaseGetLocation, StorageInsightsRestStub
-    ):
+    class _GetLocation(_BaseStorageInsightsRestTransport._BaseGetLocation, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3425,26 +2741,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3468,12 +2774,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3485,9 +2786,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3512,22 +2811,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseStorageInsightsRestTransport._BaseListLocations, StorageInsightsRestStub
-    ):
+    class _ListLocations(_BaseStorageInsightsRestTransport._BaseListLocations, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3565,26 +2854,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3608,12 +2887,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3625,9 +2899,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3652,22 +2924,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseStorageInsightsRestTransport._BaseCancelOperation, StorageInsightsRestStub
-    ):
+    class _CancelOperation(_BaseStorageInsightsRestTransport._BaseCancelOperation, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3703,32 +2965,18 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3752,13 +3000,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3772,22 +3014,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseStorageInsightsRestTransport._BaseDeleteOperation, StorageInsightsRestStub
-    ):
+    class _DeleteOperation(_BaseStorageInsightsRestTransport._BaseDeleteOperation, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3822,28 +3054,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3867,12 +3087,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3886,22 +3101,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseStorageInsightsRestTransport._BaseGetOperation, StorageInsightsRestStub
-    ):
+    class _GetOperation(_BaseStorageInsightsRestTransport._BaseGetOperation, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3939,26 +3144,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3982,12 +3177,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3999,9 +3189,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4026,22 +3214,12 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseStorageInsightsRestTransport._BaseListOperations, StorageInsightsRestStub
-    ):
+    class _ListOperations(_BaseStorageInsightsRestTransport._BaseListOperations, StorageInsightsRestStub):
         def __hash__(self):
             return hash("StorageInsightsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4079,26 +3257,16 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseStorageInsightsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseStorageInsightsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseStorageInsightsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStorageInsightsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStorageInsightsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStorageInsightsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4122,12 +3290,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
 
             # Send the request
             response = StorageInsightsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4139,9 +3302,7 @@ class StorageInsightsRestTransport(_BaseStorageInsightsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

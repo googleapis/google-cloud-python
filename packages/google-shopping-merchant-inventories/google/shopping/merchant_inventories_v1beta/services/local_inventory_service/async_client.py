@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -47,9 +36,7 @@ except AttributeError:  # pragma: NO COVER
 from google.shopping.type.types import types
 from google.type import interval_pb2  # type: ignore
 
-from google.shopping.merchant_inventories_v1beta.services.local_inventory_service import (
-    pagers,
-)
+from google.shopping.merchant_inventories_v1beta.services.local_inventory_service import pagers
 from google.shopping.merchant_inventories_v1beta.types import localinventory
 
 from .client import LocalInventoryServiceClient
@@ -78,38 +65,18 @@ class LocalInventoryServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = LocalInventoryServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = LocalInventoryServiceClient._DEFAULT_UNIVERSE
 
-    local_inventory_path = staticmethod(
-        LocalInventoryServiceClient.local_inventory_path
-    )
-    parse_local_inventory_path = staticmethod(
-        LocalInventoryServiceClient.parse_local_inventory_path
-    )
-    common_billing_account_path = staticmethod(
-        LocalInventoryServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        LocalInventoryServiceClient.parse_common_billing_account_path
-    )
+    local_inventory_path = staticmethod(LocalInventoryServiceClient.local_inventory_path)
+    parse_local_inventory_path = staticmethod(LocalInventoryServiceClient.parse_local_inventory_path)
+    common_billing_account_path = staticmethod(LocalInventoryServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(LocalInventoryServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(LocalInventoryServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        LocalInventoryServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        LocalInventoryServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        LocalInventoryServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(LocalInventoryServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(LocalInventoryServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(LocalInventoryServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(LocalInventoryServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        LocalInventoryServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        LocalInventoryServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        LocalInventoryServiceClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(LocalInventoryServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(LocalInventoryServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(LocalInventoryServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -145,9 +112,7 @@ class LocalInventoryServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -214,13 +179,7 @@ class LocalInventoryServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                LocalInventoryServiceTransport,
-                Callable[..., LocalInventoryServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, LocalInventoryServiceTransport, Callable[..., LocalInventoryServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -280,20 +239,14 @@ class LocalInventoryServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.shopping.merchant.inventories_v1beta.LocalInventoryServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.shopping.merchant.inventories.v1beta.LocalInventoryService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -304,9 +257,7 @@ class LocalInventoryServiceAsyncClient:
 
     async def list_local_inventories(
         self,
-        request: Optional[
-            Union[localinventory.ListLocalInventoriesRequest, dict]
-        ] = None,
+        request: Optional[Union[localinventory.ListLocalInventoriesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -379,14 +330,9 @@ class LocalInventoryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -400,15 +346,11 @@ class LocalInventoryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_local_inventories
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_local_inventories]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -437,9 +379,7 @@ class LocalInventoryServiceAsyncClient:
 
     async def insert_local_inventory(
         self,
-        request: Optional[
-            Union[localinventory.InsertLocalInventoryRequest, dict]
-        ] = None,
+        request: Optional[Union[localinventory.InsertLocalInventoryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -515,15 +455,11 @@ class LocalInventoryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.insert_local_inventory
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.insert_local_inventory]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -541,9 +477,7 @@ class LocalInventoryServiceAsyncClient:
 
     async def delete_local_inventory(
         self,
-        request: Optional[
-            Union[localinventory.DeleteLocalInventoryRequest, dict]
-        ] = None,
+        request: Optional[Union[localinventory.DeleteLocalInventoryRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -602,14 +536,9 @@ class LocalInventoryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -623,15 +552,11 @@ class LocalInventoryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_local_inventory
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_local_inventory]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -651,9 +576,7 @@ class LocalInventoryServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

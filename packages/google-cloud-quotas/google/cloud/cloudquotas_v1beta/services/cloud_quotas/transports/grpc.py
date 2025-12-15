@@ -44,9 +44,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -56,10 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -78,11 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -225,18 +216,14 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -270,9 +257,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -331,11 +316,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
         return self._grpc_channel
 
     @property
-    def list_quota_infos(
-        self,
-    ) -> Callable[
-        [cloudquotas.ListQuotaInfosRequest], cloudquotas.ListQuotaInfosResponse
-    ]:
+    def list_quota_infos(self) -> Callable[[cloudquotas.ListQuotaInfosRequest], cloudquotas.ListQuotaInfosResponse]:
         r"""Return a callable for the list quota infos method over gRPC.
 
         Lists QuotaInfos of all quotas for a given project,
@@ -360,9 +341,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
         return self._stubs["list_quota_infos"]
 
     @property
-    def get_quota_info(
-        self,
-    ) -> Callable[[cloudquotas.GetQuotaInfoRequest], resources.QuotaInfo]:
+    def get_quota_info(self) -> Callable[[cloudquotas.GetQuotaInfoRequest], resources.QuotaInfo]:
         r"""Return a callable for the get quota info method over gRPC.
 
         Retrieve the QuotaInfo of a quota for a project,
@@ -387,12 +366,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
         return self._stubs["get_quota_info"]
 
     @property
-    def list_quota_preferences(
-        self,
-    ) -> Callable[
-        [cloudquotas.ListQuotaPreferencesRequest],
-        cloudquotas.ListQuotaPreferencesResponse,
-    ]:
+    def list_quota_preferences(self) -> Callable[[cloudquotas.ListQuotaPreferencesRequest], cloudquotas.ListQuotaPreferencesResponse]:
         r"""Return a callable for the list quota preferences method over gRPC.
 
         Lists QuotaPreferences in a given project, folder or
@@ -417,9 +391,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
         return self._stubs["list_quota_preferences"]
 
     @property
-    def get_quota_preference(
-        self,
-    ) -> Callable[[cloudquotas.GetQuotaPreferenceRequest], resources.QuotaPreference]:
+    def get_quota_preference(self) -> Callable[[cloudquotas.GetQuotaPreferenceRequest], resources.QuotaPreference]:
         r"""Return a callable for the get quota preference method over gRPC.
 
         Gets details of a single QuotaPreference.
@@ -443,11 +415,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
         return self._stubs["get_quota_preference"]
 
     @property
-    def create_quota_preference(
-        self,
-    ) -> Callable[
-        [cloudquotas.CreateQuotaPreferenceRequest], resources.QuotaPreference
-    ]:
+    def create_quota_preference(self) -> Callable[[cloudquotas.CreateQuotaPreferenceRequest], resources.QuotaPreference]:
         r"""Return a callable for the create quota preference method over gRPC.
 
         Creates a new QuotaPreference that declares the
@@ -472,11 +440,7 @@ class CloudQuotasGrpcTransport(CloudQuotasTransport):
         return self._stubs["create_quota_preference"]
 
     @property
-    def update_quota_preference(
-        self,
-    ) -> Callable[
-        [cloudquotas.UpdateQuotaPreferenceRequest], resources.QuotaPreference
-    ]:
+    def update_quota_preference(self) -> Callable[[cloudquotas.UpdateQuotaPreferenceRequest], resources.QuotaPreference]:
         r"""Return a callable for the update quota preference method over gRPC.
 
         Updates the parameters of a single QuotaPreference.

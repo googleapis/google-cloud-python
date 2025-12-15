@@ -96,9 +96,7 @@ class TextToSpeechRestInterceptor:
     """
 
     def pre_list_voices(
-        self,
-        request: cloud_tts.ListVoicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tts.ListVoicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tts.ListVoicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_voices
 
@@ -107,9 +105,7 @@ class TextToSpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_voices(
-        self, response: cloud_tts.ListVoicesResponse
-    ) -> cloud_tts.ListVoicesResponse:
+    def post_list_voices(self, response: cloud_tts.ListVoicesResponse) -> cloud_tts.ListVoicesResponse:
         """Post-rpc interceptor for list_voices
 
         DEPRECATED. Please use the `post_list_voices_with_metadata`
@@ -123,9 +119,7 @@ class TextToSpeechRestInterceptor:
         return response
 
     def post_list_voices_with_metadata(
-        self,
-        response: cloud_tts.ListVoicesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_tts.ListVoicesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tts.ListVoicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_voices
 
@@ -142,12 +136,8 @@ class TextToSpeechRestInterceptor:
         return response, metadata
 
     def pre_synthesize_speech(
-        self,
-        request: cloud_tts.SynthesizeSpeechRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tts.SynthesizeSpeechRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tts.SynthesizeSpeechRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tts.SynthesizeSpeechRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for synthesize_speech
 
         Override in a subclass to manipulate the request or metadata
@@ -155,9 +145,7 @@ class TextToSpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_synthesize_speech(
-        self, response: cloud_tts.SynthesizeSpeechResponse
-    ) -> cloud_tts.SynthesizeSpeechResponse:
+    def post_synthesize_speech(self, response: cloud_tts.SynthesizeSpeechResponse) -> cloud_tts.SynthesizeSpeechResponse:
         """Post-rpc interceptor for synthesize_speech
 
         DEPRECATED. Please use the `post_synthesize_speech_with_metadata`
@@ -171,12 +159,8 @@ class TextToSpeechRestInterceptor:
         return response
 
     def post_synthesize_speech_with_metadata(
-        self,
-        response: cloud_tts.SynthesizeSpeechResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tts.SynthesizeSpeechResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_tts.SynthesizeSpeechResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tts.SynthesizeSpeechResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for synthesize_speech
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -192,12 +176,8 @@ class TextToSpeechRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -205,9 +185,7 @@ class TextToSpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -217,12 +195,8 @@ class TextToSpeechRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -230,9 +204,7 @@ class TextToSpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -325,30 +297,18 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TextToSpeechRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListVoices(
-        _BaseTextToSpeechRestTransport._BaseListVoices, TextToSpeechRestStub
-    ):
+    class _ListVoices(_BaseTextToSpeechRestTransport._BaseListVoices, TextToSpeechRestStub):
         def __hash__(self):
             return hash("TextToSpeechRestTransport.ListVoices")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -390,30 +350,16 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseTextToSpeechRestTransport._BaseListVoices._get_http_options()
-            )
+            http_options = _BaseTextToSpeechRestTransport._BaseListVoices._get_http_options()
 
             request, metadata = self._interceptor.pre_list_voices(request, metadata)
-            transcoded_request = (
-                _BaseTextToSpeechRestTransport._BaseListVoices._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTextToSpeechRestTransport._BaseListVoices._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTextToSpeechRestTransport._BaseListVoices._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTextToSpeechRestTransport._BaseListVoices._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -437,12 +383,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             # Send the request
             response = TextToSpeechRestTransport._ListVoices._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -458,12 +399,8 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             resp = self._interceptor.post_list_voices(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_voices_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_voices_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tts.ListVoicesResponse.to_json(response)
                 except:
@@ -484,9 +421,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
                 )
             return resp
 
-    class _StreamingSynthesize(
-        _BaseTextToSpeechRestTransport._BaseStreamingSynthesize, TextToSpeechRestStub
-    ):
+    class _StreamingSynthesize(_BaseTextToSpeechRestTransport._BaseStreamingSynthesize, TextToSpeechRestStub):
         def __hash__(self):
             return hash("TextToSpeechRestTransport.StreamingSynthesize")
 
@@ -498,26 +433,14 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method StreamingSynthesize is not available over REST transport"
-            )
+            raise NotImplementedError("Method StreamingSynthesize is not available over REST transport")
 
-    class _SynthesizeSpeech(
-        _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech, TextToSpeechRestStub
-    ):
+    class _SynthesizeSpeech(_BaseTextToSpeechRestTransport._BaseSynthesizeSpeech, TextToSpeechRestStub):
         def __hash__(self):
             return hash("TextToSpeechRestTransport.SynthesizeSpeech")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -560,32 +483,18 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_http_options()
-            )
+            http_options = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_http_options()
 
-            request, metadata = self._interceptor.pre_synthesize_speech(
-                request, metadata
-            )
-            transcoded_request = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_synthesize_speech(request, metadata)
+            transcoded_request = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_transcoded_request(http_options, request)
 
-            body = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTextToSpeechRestTransport._BaseSynthesizeSpeech._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -609,13 +518,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             # Send the request
             response = TextToSpeechRestTransport._SynthesizeSpeech._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -631,16 +534,10 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             resp = self._interceptor.post_synthesize_speech(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_synthesize_speech_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_synthesize_speech_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_tts.SynthesizeSpeechResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_tts.SynthesizeSpeechResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -660,29 +557,19 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
             return resp
 
     @property
-    def list_voices(
-        self,
-    ) -> Callable[[cloud_tts.ListVoicesRequest], cloud_tts.ListVoicesResponse]:
+    def list_voices(self) -> Callable[[cloud_tts.ListVoicesRequest], cloud_tts.ListVoicesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVoices(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def streaming_synthesize(
-        self,
-    ) -> Callable[
-        [cloud_tts.StreamingSynthesizeRequest], cloud_tts.StreamingSynthesizeResponse
-    ]:
+    def streaming_synthesize(self) -> Callable[[cloud_tts.StreamingSynthesizeRequest], cloud_tts.StreamingSynthesizeResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StreamingSynthesize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def synthesize_speech(
-        self,
-    ) -> Callable[
-        [cloud_tts.SynthesizeSpeechRequest], cloud_tts.SynthesizeSpeechResponse
-    ]:
+    def synthesize_speech(self) -> Callable[[cloud_tts.SynthesizeSpeechRequest], cloud_tts.SynthesizeSpeechResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SynthesizeSpeech(self._session, self._host, self._interceptor)  # type: ignore
@@ -691,22 +578,12 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTextToSpeechRestTransport._BaseGetOperation, TextToSpeechRestStub
-    ):
+    class _GetOperation(_BaseTextToSpeechRestTransport._BaseGetOperation, TextToSpeechRestStub):
         def __hash__(self):
             return hash("TextToSpeechRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -744,28 +621,16 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTextToSpeechRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTextToSpeechRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseTextToSpeechRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTextToSpeechRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTextToSpeechRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTextToSpeechRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -789,12 +654,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             # Send the request
             response = TextToSpeechRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -806,9 +666,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -833,22 +691,12 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseTextToSpeechRestTransport._BaseListOperations, TextToSpeechRestStub
-    ):
+    class _ListOperations(_BaseTextToSpeechRestTransport._BaseListOperations, TextToSpeechRestStub):
         def __hash__(self):
             return hash("TextToSpeechRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -886,26 +734,16 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseTextToSpeechRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseTextToSpeechRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseTextToSpeechRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTextToSpeechRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTextToSpeechRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTextToSpeechRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -929,12 +767,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
 
             # Send the request
             response = TextToSpeechRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -946,9 +779,7 @@ class TextToSpeechRestTransport(_BaseTextToSpeechRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

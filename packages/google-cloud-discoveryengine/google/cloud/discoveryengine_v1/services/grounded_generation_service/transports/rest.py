@@ -97,13 +97,8 @@ class GroundedGenerationServiceRestInterceptor:
     """
 
     def pre_check_grounding(
-        self,
-        request: grounded_generation_service.CheckGroundingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        grounded_generation_service.CheckGroundingRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: grounded_generation_service.CheckGroundingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[grounded_generation_service.CheckGroundingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for check_grounding
 
         Override in a subclass to manipulate the request or metadata
@@ -127,13 +122,8 @@ class GroundedGenerationServiceRestInterceptor:
         return response
 
     def post_check_grounding_with_metadata(
-        self,
-        response: grounded_generation_service.CheckGroundingResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        grounded_generation_service.CheckGroundingResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: grounded_generation_service.CheckGroundingResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[grounded_generation_service.CheckGroundingResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for check_grounding
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -149,13 +139,8 @@ class GroundedGenerationServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_grounded_content(
-        self,
-        request: grounded_generation_service.GenerateGroundedContentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        grounded_generation_service.GenerateGroundedContentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: grounded_generation_service.GenerateGroundedContentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[grounded_generation_service.GenerateGroundedContentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_grounded_content
 
         Override in a subclass to manipulate the request or metadata
@@ -179,13 +164,8 @@ class GroundedGenerationServiceRestInterceptor:
         return response
 
     def post_generate_grounded_content_with_metadata(
-        self,
-        response: grounded_generation_service.GenerateGroundedContentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        grounded_generation_service.GenerateGroundedContentResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: grounded_generation_service.GenerateGroundedContentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[grounded_generation_service.GenerateGroundedContentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_grounded_content
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -201,12 +181,8 @@ class GroundedGenerationServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -224,12 +200,8 @@ class GroundedGenerationServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -237,9 +209,7 @@ class GroundedGenerationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -249,12 +219,8 @@ class GroundedGenerationServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -262,9 +228,7 @@ class GroundedGenerationServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -281,9 +245,7 @@ class GroundedGenerationServiceRestStub:
     _interceptor: GroundedGenerationServiceRestInterceptor
 
 
-class GroundedGenerationServiceRestTransport(
-    _BaseGroundedGenerationServiceRestTransport
-):
+class GroundedGenerationServiceRestTransport(_BaseGroundedGenerationServiceRestTransport):
     """REST backend synchronous transport for GroundedGenerationService.
 
     Service for grounded generation.
@@ -355,31 +317,18 @@ class GroundedGenerationServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GroundedGenerationServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CheckGrounding(
-        _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding,
-        GroundedGenerationServiceRestStub,
-    ):
+    class _CheckGrounding(_BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding, GroundedGenerationServiceRestStub):
         def __hash__(self):
             return hash("GroundedGenerationServiceRestTransport.CheckGrounding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -424,30 +373,18 @@ class GroundedGenerationServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_http_options()
 
             request, metadata = self._interceptor.pre_check_grounding(request, metadata)
-            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_transcoded_request(http_options, request)
 
-            body = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGroundedGenerationServiceRestTransport._BaseCheckGrounding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -470,16 +407,8 @@ class GroundedGenerationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                GroundedGenerationServiceRestTransport._CheckGrounding._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GroundedGenerationServiceRestTransport._CheckGrounding._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -495,18 +424,10 @@ class GroundedGenerationServiceRestTransport(
 
             resp = self._interceptor.post_check_grounding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_check_grounding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_check_grounding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        grounded_generation_service.CheckGroundingResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = grounded_generation_service.CheckGroundingResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -525,25 +446,12 @@ class GroundedGenerationServiceRestTransport(
                 )
             return resp
 
-    class _GenerateGroundedContent(
-        _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent,
-        GroundedGenerationServiceRestStub,
-    ):
+    class _GenerateGroundedContent(_BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent, GroundedGenerationServiceRestStub):
         def __hash__(self):
-            return hash(
-                "GroundedGenerationServiceRestTransport.GenerateGroundedContent"
-            )
+            return hash("GroundedGenerationServiceRestTransport.GenerateGroundedContent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -584,32 +492,20 @@ class GroundedGenerationServiceRestTransport(
                     Response for the ``GenerateGroundedContent`` method.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_grounded_content(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_generate_grounded_content(request, metadata)
             transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGroundedGenerationServiceRestTransport._BaseGenerateGroundedContent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -633,13 +529,7 @@ class GroundedGenerationServiceRestTransport(
 
             # Send the request
             response = GroundedGenerationServiceRestTransport._GenerateGroundedContent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -649,24 +539,16 @@ class GroundedGenerationServiceRestTransport(
 
             # Return the response
             resp = grounded_generation_service.GenerateGroundedContentResponse()
-            pb_resp = grounded_generation_service.GenerateGroundedContentResponse.pb(
-                resp
-            )
+            pb_resp = grounded_generation_service.GenerateGroundedContentResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_generate_grounded_content(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_grounded_content_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_grounded_content_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = grounded_generation_service.GenerateGroundedContentResponse.to_json(
-                        response
-                    )
+                    response_payload = grounded_generation_service.GenerateGroundedContentResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -686,13 +568,10 @@ class GroundedGenerationServiceRestTransport(
             return resp
 
     class _StreamGenerateGroundedContent(
-        _BaseGroundedGenerationServiceRestTransport._BaseStreamGenerateGroundedContent,
-        GroundedGenerationServiceRestStub,
+        _BaseGroundedGenerationServiceRestTransport._BaseStreamGenerateGroundedContent, GroundedGenerationServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "GroundedGenerationServiceRestTransport.StreamGenerateGroundedContent"
-            )
+            return hash("GroundedGenerationServiceRestTransport.StreamGenerateGroundedContent")
 
         def __call__(
             self,
@@ -702,17 +581,10 @@ class GroundedGenerationServiceRestTransport(
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method StreamGenerateGroundedContent is not available over REST transport"
-            )
+            raise NotImplementedError("Method StreamGenerateGroundedContent is not available over REST transport")
 
     @property
-    def check_grounding(
-        self,
-    ) -> Callable[
-        [grounded_generation_service.CheckGroundingRequest],
-        grounded_generation_service.CheckGroundingResponse,
-    ]:
+    def check_grounding(self) -> Callable[[grounded_generation_service.CheckGroundingRequest], grounded_generation_service.CheckGroundingResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CheckGrounding(self._session, self._host, self._interceptor)  # type: ignore
@@ -720,10 +592,7 @@ class GroundedGenerationServiceRestTransport(
     @property
     def generate_grounded_content(
         self,
-    ) -> Callable[
-        [grounded_generation_service.GenerateGroundedContentRequest],
-        grounded_generation_service.GenerateGroundedContentResponse,
-    ]:
+    ) -> Callable[[grounded_generation_service.GenerateGroundedContentRequest], grounded_generation_service.GenerateGroundedContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateGroundedContent(self._session, self._host, self._interceptor)  # type: ignore
@@ -731,10 +600,7 @@ class GroundedGenerationServiceRestTransport(
     @property
     def stream_generate_grounded_content(
         self,
-    ) -> Callable[
-        [grounded_generation_service.GenerateGroundedContentRequest],
-        grounded_generation_service.GenerateGroundedContentResponse,
-    ]:
+    ) -> Callable[[grounded_generation_service.GenerateGroundedContentRequest], grounded_generation_service.GenerateGroundedContentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StreamGenerateGroundedContent(self._session, self._host, self._interceptor)  # type: ignore
@@ -743,23 +609,12 @@ class GroundedGenerationServiceRestTransport(
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation,
-        GroundedGenerationServiceRestStub,
-    ):
+    class _CancelOperation(_BaseGroundedGenerationServiceRestTransport._BaseCancelOperation, GroundedGenerationServiceRestStub):
         def __hash__(self):
             return hash("GroundedGenerationServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -795,32 +650,18 @@ class GroundedGenerationServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGroundedGenerationServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -843,16 +684,8 @@ class GroundedGenerationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                GroundedGenerationServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = GroundedGenerationServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -866,23 +699,12 @@ class GroundedGenerationServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseGroundedGenerationServiceRestTransport._BaseGetOperation,
-        GroundedGenerationServiceRestStub,
-    ):
+    class _GetOperation(_BaseGroundedGenerationServiceRestTransport._BaseGetOperation, GroundedGenerationServiceRestStub):
         def __hash__(self):
             return hash("GroundedGenerationServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -920,26 +742,16 @@ class GroundedGenerationServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGroundedGenerationServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -962,15 +774,8 @@ class GroundedGenerationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                GroundedGenerationServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GroundedGenerationServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -982,9 +787,7 @@ class GroundedGenerationServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1009,23 +812,12 @@ class GroundedGenerationServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseGroundedGenerationServiceRestTransport._BaseListOperations,
-        GroundedGenerationServiceRestStub,
-    ):
+    class _ListOperations(_BaseGroundedGenerationServiceRestTransport._BaseListOperations, GroundedGenerationServiceRestStub):
         def __hash__(self):
             return hash("GroundedGenerationServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1063,26 +855,16 @@ class GroundedGenerationServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGroundedGenerationServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1105,15 +887,8 @@ class GroundedGenerationServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                GroundedGenerationServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = GroundedGenerationServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1125,9 +900,7 @@ class GroundedGenerationServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

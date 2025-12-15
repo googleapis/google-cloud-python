@@ -228,9 +228,7 @@ class MaintenanceSummary(proto.Message):
             proto.STRING,
             number=1,
         )
-        aggregates: MutableSequence[
-            "MaintenanceSummary.Aggregate"
-        ] = proto.RepeatedField(
+        aggregates: MutableSequence["MaintenanceSummary.Aggregate"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="MaintenanceSummary.Aggregate",

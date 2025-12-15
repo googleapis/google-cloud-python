@@ -43,13 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation  # type: ignore
@@ -59,11 +53,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 
-from google.cloud.compute_v1.services.target_ssl_proxies import (
-    TargetSslProxiesClient,
-    pagers,
-    transports,
-)
+from google.cloud.compute_v1.services.target_ssl_proxies import TargetSslProxiesClient, pagers, transports
 from google.cloud.compute_v1.types import compute
 
 CRED_INFO_JSON = {
@@ -96,22 +86,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -122,90 +104,135 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert TargetSslProxiesClient._get_default_mtls_endpoint(None) is None
-    assert (
-        TargetSslProxiesClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        TargetSslProxiesClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        TargetSslProxiesClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        TargetSslProxiesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        TargetSslProxiesClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert TargetSslProxiesClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert TargetSslProxiesClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert TargetSslProxiesClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert TargetSslProxiesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert TargetSslProxiesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
     assert TargetSslProxiesClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert TargetSslProxiesClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert TargetSslProxiesClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert TargetSslProxiesClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert TargetSslProxiesClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            TargetSslProxiesClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                TargetSslProxiesClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert TargetSslProxiesClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert TargetSslProxiesClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert TargetSslProxiesClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert TargetSslProxiesClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert TargetSslProxiesClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert TargetSslProxiesClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert TargetSslProxiesClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             TargetSslProxiesClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert TargetSslProxiesClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert TargetSslProxiesClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert TargetSslProxiesClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert TargetSslProxiesClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert TargetSslProxiesClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                TargetSslProxiesClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert TargetSslProxiesClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert TargetSslProxiesClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -213,114 +240,50 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert TargetSslProxiesClient._get_client_cert_source(None, False) is None
-    assert (
-        TargetSslProxiesClient._get_client_cert_source(mock_provided_cert_source, False)
-        is None
-    )
-    assert (
-        TargetSslProxiesClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert TargetSslProxiesClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert TargetSslProxiesClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                TargetSslProxiesClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                TargetSslProxiesClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert TargetSslProxiesClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert TargetSslProxiesClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    TargetSslProxiesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TargetSslProxiesClient),
-)
+@mock.patch.object(TargetSslProxiesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(TargetSslProxiesClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = TargetSslProxiesClient._DEFAULT_UNIVERSE
-    default_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert TargetSslProxiesClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        TargetSslProxiesClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        TargetSslProxiesClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        TargetSslProxiesClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
         == TargetSslProxiesClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert TargetSslProxiesClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert TargetSslProxiesClient._get_api_endpoint(None, None, default_universe, "always") == TargetSslProxiesClient.DEFAULT_MTLS_ENDPOINT
     assert (
-        TargetSslProxiesClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        TargetSslProxiesClient._get_api_endpoint(None, None, default_universe, "always")
+        TargetSslProxiesClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == TargetSslProxiesClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        TargetSslProxiesClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == TargetSslProxiesClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        TargetSslProxiesClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        TargetSslProxiesClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert TargetSslProxiesClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert TargetSslProxiesClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        TargetSslProxiesClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        TargetSslProxiesClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        TargetSslProxiesClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        TargetSslProxiesClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        TargetSslProxiesClient._get_universe_domain(None, None)
-        == TargetSslProxiesClient._DEFAULT_UNIVERSE
-    )
+    assert TargetSslProxiesClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert TargetSslProxiesClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert TargetSslProxiesClient._get_universe_domain(None, None) == TargetSslProxiesClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         TargetSslProxiesClient._get_universe_domain("", None)
@@ -376,13 +339,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (TargetSslProxiesClient, "rest"),
     ],
 )
-def test_target_ssl_proxies_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_target_ssl_proxies_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -390,9 +349,7 @@ def test_target_ssl_proxies_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://compute.googleapis.com"
+            "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
         )
 
 
@@ -402,19 +359,13 @@ def test_target_ssl_proxies_client_from_service_account_info(
         (transports.TargetSslProxiesRestTransport, "rest"),
     ],
 )
-def test_target_ssl_proxies_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_target_ssl_proxies_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -426,30 +377,20 @@ def test_target_ssl_proxies_client_service_account_always_use_jwt(
         (TargetSslProxiesClient, "rest"),
     ],
 )
-def test_target_ssl_proxies_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_target_ssl_proxies_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://compute.googleapis.com"
+            "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
         )
 
 
@@ -470,14 +411,8 @@ def test_target_ssl_proxies_client_get_transport_class():
         (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    TargetSslProxiesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TargetSslProxiesClient),
-)
-def test_target_ssl_proxies_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(TargetSslProxiesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(TargetSslProxiesClient))
+def test_target_ssl_proxies_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(TargetSslProxiesClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -515,9 +450,7 @@ def test_target_ssl_proxies_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -549,21 +482,7 @@ def test_target_ssl_proxies_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -573,9 +492,7 @@ def test_target_ssl_proxies_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -584,18 +501,14 @@ def test_target_ssl_proxies_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -608,49 +521,27 @@ def test_target_ssl_proxies_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            TargetSslProxiesClient,
-            transports.TargetSslProxiesRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            TargetSslProxiesClient,
-            transports.TargetSslProxiesRestTransport,
-            "rest",
-            "false",
-        ),
+        (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest", "true"),
+        (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    TargetSslProxiesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TargetSslProxiesClient),
-)
+@mock.patch.object(TargetSslProxiesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(TargetSslProxiesClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_target_ssl_proxies_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_target_ssl_proxies_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -669,22 +560,12 @@ def test_target_ssl_proxies_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -705,22 +586,15 @@ def test_target_ssl_proxies_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -731,23 +605,15 @@ def test_target_ssl_proxies_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [TargetSslProxiesClient])
-@mock.patch.object(
-    TargetSslProxiesClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(TargetSslProxiesClient),
-)
+@mock.patch.object(TargetSslProxiesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(TargetSslProxiesClient))
 def test_target_ssl_proxies_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -755,14 +621,106 @@ def test_target_ssl_proxies_client_get_mtls_endpoint_and_cert_source(client_clas
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -778,28 +736,16 @@ def test_target_ssl_proxies_client_get_mtls_endpoint_and_cert_source(client_clas
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -809,55 +755,25 @@ def test_target_ssl_proxies_client_get_mtls_endpoint_and_cert_source(client_clas
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [TargetSslProxiesClient])
-@mock.patch.object(
-    TargetSslProxiesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(TargetSslProxiesClient),
-)
+@mock.patch.object(TargetSslProxiesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(TargetSslProxiesClient))
 def test_target_ssl_proxies_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = TargetSslProxiesClient._DEFAULT_UNIVERSE
-    default_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = TargetSslProxiesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -880,19 +796,11 @@ def test_target_ssl_proxies_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -900,9 +808,7 @@ def test_target_ssl_proxies_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -912,9 +818,7 @@ def test_target_ssl_proxies_client_client_api_endpoint(client_class):
         (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest"),
     ],
 )
-def test_target_ssl_proxies_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_target_ssl_proxies_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -925,9 +829,7 @@ def test_target_ssl_proxies_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -940,17 +842,10 @@ def test_target_ssl_proxies_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            TargetSslProxiesClient,
-            transports.TargetSslProxiesRestTransport,
-            "rest",
-            None,
-        ),
+        (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest", None),
     ],
 )
-def test_target_ssl_proxies_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_target_ssl_proxies_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -960,9 +855,7 @@ def test_target_ssl_proxies_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -990,9 +883,7 @@ def test_delete_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete] = mock_rpc
 
         request = {}
@@ -1020,15 +911,11 @@ def test_delete_rest_required_fields(request_type=compute.DeleteTargetSslProxyRe
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1036,9 +923,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteTargetSslProxyRe
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1092,9 +977,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteTargetSslProxyRe
 
 
 def test_delete_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1145,11 +1028,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}" % client.transport._host, args[1])
 
 
 def test_delete_rest_flattened_error(transport: str = "rest"):
@@ -1186,9 +1065,7 @@ def test_delete_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete] = mock_rpc
 
         request = {}
@@ -1208,9 +1085,7 @@ def test_delete_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_unary_rest_required_fields(
-    request_type=compute.DeleteTargetSslProxyRequest,
-):
+def test_delete_unary_rest_required_fields(request_type=compute.DeleteTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -1218,15 +1093,11 @@ def test_delete_unary_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1234,9 +1105,7 @@ def test_delete_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1290,9 +1159,7 @@ def test_delete_unary_rest_required_fields(
 
 
 def test_delete_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1343,11 +1210,7 @@ def test_delete_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}" % client.transport._host, args[1])
 
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
@@ -1384,9 +1247,7 @@ def test_get_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get] = mock_rpc
 
         request = {}
@@ -1410,15 +1271,11 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1426,9 +1283,7 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1480,9 +1335,7 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
 
 
 def test_get_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1533,11 +1386,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}" % client.transport._host, args[1])
 
 
 def test_get_rest_flattened_error(transport: str = "rest"):
@@ -1574,9 +1423,7 @@ def test_insert_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.insert] = mock_rpc
 
         request = {}
@@ -1603,24 +1450,18 @@ def test_insert_rest_required_fields(request_type=compute.InsertTargetSslProxyRe
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1673,9 +1514,7 @@ def test_insert_rest_required_fields(request_type=compute.InsertTargetSslProxyRe
 
 
 def test_insert_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1706,9 +1545,7 @@ def test_insert_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
-            target_ssl_proxy_resource=compute.TargetSslProxy(
-                certificate_map="certificate_map_value"
-            ),
+            target_ssl_proxy_resource=compute.TargetSslProxy(certificate_map="certificate_map_value"),
         )
         mock_args.update(sample_request)
 
@@ -1728,11 +1565,7 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/targetSslProxies" % client.transport._host, args[1])
 
 
 def test_insert_rest_flattened_error(transport: str = "rest"):
@@ -1747,9 +1580,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
         client.insert(
             compute.InsertTargetSslProxyRequest(),
             project="project_value",
-            target_ssl_proxy_resource=compute.TargetSslProxy(
-                certificate_map="certificate_map_value"
-            ),
+            target_ssl_proxy_resource=compute.TargetSslProxy(certificate_map="certificate_map_value"),
         )
 
 
@@ -1771,9 +1602,7 @@ def test_insert_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.insert] = mock_rpc
 
         request = {}
@@ -1793,33 +1622,25 @@ def test_insert_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_insert_unary_rest_required_fields(
-    request_type=compute.InsertTargetSslProxyRequest,
-):
+def test_insert_unary_rest_required_fields(request_type=compute.InsertTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1872,9 +1693,7 @@ def test_insert_unary_rest_required_fields(
 
 
 def test_insert_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1905,9 +1724,7 @@ def test_insert_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             project="project_value",
-            target_ssl_proxy_resource=compute.TargetSslProxy(
-                certificate_map="certificate_map_value"
-            ),
+            target_ssl_proxy_resource=compute.TargetSslProxy(certificate_map="certificate_map_value"),
         )
         mock_args.update(sample_request)
 
@@ -1927,11 +1744,7 @@ def test_insert_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/targetSslProxies" % client.transport._host, args[1])
 
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
@@ -1946,9 +1759,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
         client.insert_unary(
             compute.InsertTargetSslProxyRequest(),
             project="project_value",
-            target_ssl_proxy_resource=compute.TargetSslProxy(
-                certificate_map="certificate_map_value"
-            ),
+            target_ssl_proxy_resource=compute.TargetSslProxy(certificate_map="certificate_map_value"),
         )
 
 
@@ -1970,9 +1781,7 @@ def test_list_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list] = mock_rpc
 
         request = {}
@@ -1995,24 +1804,18 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
     request_init["project"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["project"] = "project_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2072,9 +1875,7 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
 
 
 def test_list_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2127,11 +1928,7 @@ def test_list_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/v1/projects/{project}/global/targetSslProxies" % client.transport._host, args[1])
 
 
 def test_list_rest_flattened_error(transport: str = "rest"):
@@ -2224,18 +2021,12 @@ def test_set_backend_service_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.set_backend_service in client._transport._wrapped_methods
-        )
+        assert client._transport.set_backend_service in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_backend_service
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_backend_service] = mock_rpc
 
         request = {}
         client.set_backend_service(request)
@@ -2254,9 +2045,7 @@ def test_set_backend_service_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_backend_service_rest_required_fields(
-    request_type=compute.SetBackendServiceTargetSslProxyRequest,
-):
+def test_set_backend_service_rest_required_fields(request_type=compute.SetBackendServiceTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -2264,15 +2053,13 @@ def test_set_backend_service_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_backend_service._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_backend_service._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2280,9 +2067,9 @@ def test_set_backend_service_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_backend_service._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_backend_service._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -2337,9 +2124,7 @@ def test_set_backend_service_rest_required_fields(
 
 
 def test_set_backend_service_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_backend_service._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2372,9 +2157,7 @@ def test_set_backend_service_rest_flattened():
         mock_args = dict(
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(
-                service="service_value"
-            ),
+            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(service="service_value"),
         )
         mock_args.update(sample_request)
 
@@ -2395,9 +2178,7 @@ def test_set_backend_service_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setBackendService"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setBackendService" % client.transport._host, args[1]
         )
 
 
@@ -2414,9 +2195,7 @@ def test_set_backend_service_rest_flattened_error(transport: str = "rest"):
             compute.SetBackendServiceTargetSslProxyRequest(),
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(
-                service="service_value"
-            ),
+            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(service="service_value"),
         )
 
 
@@ -2434,18 +2213,12 @@ def test_set_backend_service_unary_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.set_backend_service in client._transport._wrapped_methods
-        )
+        assert client._transport.set_backend_service in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_backend_service
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_backend_service] = mock_rpc
 
         request = {}
         client.set_backend_service_unary(request)
@@ -2464,9 +2237,7 @@ def test_set_backend_service_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_backend_service_unary_rest_required_fields(
-    request_type=compute.SetBackendServiceTargetSslProxyRequest,
-):
+def test_set_backend_service_unary_rest_required_fields(request_type=compute.SetBackendServiceTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -2474,15 +2245,13 @@ def test_set_backend_service_unary_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_backend_service._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_backend_service._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2490,9 +2259,9 @@ def test_set_backend_service_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_backend_service._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_backend_service._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -2547,9 +2316,7 @@ def test_set_backend_service_unary_rest_required_fields(
 
 
 def test_set_backend_service_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_backend_service._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2582,9 +2349,7 @@ def test_set_backend_service_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(
-                service="service_value"
-            ),
+            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(service="service_value"),
         )
         mock_args.update(sample_request)
 
@@ -2605,9 +2370,7 @@ def test_set_backend_service_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setBackendService"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setBackendService" % client.transport._host, args[1]
         )
 
 
@@ -2624,9 +2387,7 @@ def test_set_backend_service_unary_rest_flattened_error(transport: str = "rest")
             compute.SetBackendServiceTargetSslProxyRequest(),
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(
-                service="service_value"
-            ),
+            target_ssl_proxies_set_backend_service_request_resource=compute.TargetSslProxiesSetBackendServiceRequest(service="service_value"),
         )
 
 
@@ -2644,18 +2405,12 @@ def test_set_certificate_map_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.set_certificate_map in client._transport._wrapped_methods
-        )
+        assert client._transport.set_certificate_map in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_certificate_map
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_certificate_map] = mock_rpc
 
         request = {}
         client.set_certificate_map(request)
@@ -2674,9 +2429,7 @@ def test_set_certificate_map_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_certificate_map_rest_required_fields(
-    request_type=compute.SetCertificateMapTargetSslProxyRequest,
-):
+def test_set_certificate_map_rest_required_fields(request_type=compute.SetCertificateMapTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -2684,15 +2437,13 @@ def test_set_certificate_map_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_certificate_map._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2700,9 +2451,9 @@ def test_set_certificate_map_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_certificate_map._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -2757,9 +2508,7 @@ def test_set_certificate_map_rest_required_fields(
 
 
 def test_set_certificate_map_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_certificate_map._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2815,9 +2564,7 @@ def test_set_certificate_map_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setCertificateMap"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setCertificateMap" % client.transport._host, args[1]
         )
 
 
@@ -2854,18 +2601,12 @@ def test_set_certificate_map_unary_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.set_certificate_map in client._transport._wrapped_methods
-        )
+        assert client._transport.set_certificate_map in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_certificate_map
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_certificate_map] = mock_rpc
 
         request = {}
         client.set_certificate_map_unary(request)
@@ -2884,9 +2625,7 @@ def test_set_certificate_map_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_certificate_map_unary_rest_required_fields(
-    request_type=compute.SetCertificateMapTargetSslProxyRequest,
-):
+def test_set_certificate_map_unary_rest_required_fields(request_type=compute.SetCertificateMapTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -2894,15 +2633,13 @@ def test_set_certificate_map_unary_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_certificate_map._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2910,9 +2647,9 @@ def test_set_certificate_map_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_certificate_map._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_certificate_map._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -2967,9 +2704,7 @@ def test_set_certificate_map_unary_rest_required_fields(
 
 
 def test_set_certificate_map_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_certificate_map._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3025,9 +2760,7 @@ def test_set_certificate_map_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setCertificateMap"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setCertificateMap" % client.transport._host, args[1]
         )
 
 
@@ -3068,12 +2801,8 @@ def test_set_proxy_header_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_proxy_header
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_proxy_header] = mock_rpc
 
         request = {}
         client.set_proxy_header(request)
@@ -3092,9 +2821,7 @@ def test_set_proxy_header_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_proxy_header_rest_required_fields(
-    request_type=compute.SetProxyHeaderTargetSslProxyRequest,
-):
+def test_set_proxy_header_rest_required_fields(request_type=compute.SetProxyHeaderTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -3102,15 +2829,11 @@ def test_set_proxy_header_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_proxy_header._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_proxy_header._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3118,9 +2841,7 @@ def test_set_proxy_header_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_proxy_header._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_proxy_header._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -3175,9 +2896,7 @@ def test_set_proxy_header_rest_required_fields(
 
 
 def test_set_proxy_header_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_proxy_header._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3210,9 +2929,7 @@ def test_set_proxy_header_rest_flattened():
         mock_args = dict(
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(
-                proxy_header="proxy_header_value"
-            ),
+            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(proxy_header="proxy_header_value"),
         )
         mock_args.update(sample_request)
 
@@ -3233,9 +2950,7 @@ def test_set_proxy_header_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setProxyHeader"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setProxyHeader" % client.transport._host, args[1]
         )
 
 
@@ -3252,9 +2967,7 @@ def test_set_proxy_header_rest_flattened_error(transport: str = "rest"):
             compute.SetProxyHeaderTargetSslProxyRequest(),
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(
-                proxy_header="proxy_header_value"
-            ),
+            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(proxy_header="proxy_header_value"),
         )
 
 
@@ -3276,12 +2989,8 @@ def test_set_proxy_header_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_proxy_header
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_proxy_header] = mock_rpc
 
         request = {}
         client.set_proxy_header_unary(request)
@@ -3300,9 +3009,7 @@ def test_set_proxy_header_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_proxy_header_unary_rest_required_fields(
-    request_type=compute.SetProxyHeaderTargetSslProxyRequest,
-):
+def test_set_proxy_header_unary_rest_required_fields(request_type=compute.SetProxyHeaderTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -3310,15 +3017,11 @@ def test_set_proxy_header_unary_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_proxy_header._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_proxy_header._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3326,9 +3029,7 @@ def test_set_proxy_header_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_proxy_header._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_proxy_header._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -3383,9 +3084,7 @@ def test_set_proxy_header_unary_rest_required_fields(
 
 
 def test_set_proxy_header_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_proxy_header._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3418,9 +3117,7 @@ def test_set_proxy_header_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(
-                proxy_header="proxy_header_value"
-            ),
+            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(proxy_header="proxy_header_value"),
         )
         mock_args.update(sample_request)
 
@@ -3441,9 +3138,7 @@ def test_set_proxy_header_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setProxyHeader"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setProxyHeader" % client.transport._host, args[1]
         )
 
 
@@ -3460,9 +3155,7 @@ def test_set_proxy_header_unary_rest_flattened_error(transport: str = "rest"):
             compute.SetProxyHeaderTargetSslProxyRequest(),
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(
-                proxy_header="proxy_header_value"
-            ),
+            target_ssl_proxies_set_proxy_header_request_resource=compute.TargetSslProxiesSetProxyHeaderRequest(proxy_header="proxy_header_value"),
         )
 
 
@@ -3480,18 +3173,12 @@ def test_set_ssl_certificates_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.set_ssl_certificates in client._transport._wrapped_methods
-        )
+        assert client._transport.set_ssl_certificates in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_ssl_certificates
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_ssl_certificates] = mock_rpc
 
         request = {}
         client.set_ssl_certificates(request)
@@ -3510,9 +3197,7 @@ def test_set_ssl_certificates_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_ssl_certificates_rest_required_fields(
-    request_type=compute.SetSslCertificatesTargetSslProxyRequest,
-):
+def test_set_ssl_certificates_rest_required_fields(request_type=compute.SetSslCertificatesTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -3520,15 +3205,13 @@ def test_set_ssl_certificates_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_certificates._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_certificates._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3536,9 +3219,9 @@ def test_set_ssl_certificates_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_certificates._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_certificates._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -3593,9 +3276,7 @@ def test_set_ssl_certificates_rest_required_fields(
 
 
 def test_set_ssl_certificates_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_ssl_certificates._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3651,9 +3332,7 @@ def test_set_ssl_certificates_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslCertificates"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslCertificates" % client.transport._host, args[1]
         )
 
 
@@ -3690,18 +3369,12 @@ def test_set_ssl_certificates_unary_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.set_ssl_certificates in client._transport._wrapped_methods
-        )
+        assert client._transport.set_ssl_certificates in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.set_ssl_certificates
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.set_ssl_certificates] = mock_rpc
 
         request = {}
         client.set_ssl_certificates_unary(request)
@@ -3720,9 +3393,7 @@ def test_set_ssl_certificates_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_ssl_certificates_unary_rest_required_fields(
-    request_type=compute.SetSslCertificatesTargetSslProxyRequest,
-):
+def test_set_ssl_certificates_unary_rest_required_fields(request_type=compute.SetSslCertificatesTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -3730,15 +3401,13 @@ def test_set_ssl_certificates_unary_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_certificates._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_certificates._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3746,9 +3415,9 @@ def test_set_ssl_certificates_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_certificates._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_certificates._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -3803,9 +3472,7 @@ def test_set_ssl_certificates_unary_rest_required_fields(
 
 
 def test_set_ssl_certificates_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_ssl_certificates._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3861,9 +3528,7 @@ def test_set_ssl_certificates_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslCertificates"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslCertificates" % client.transport._host, args[1]
         )
 
 
@@ -3904,9 +3569,7 @@ def test_set_ssl_policy_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_ssl_policy] = mock_rpc
 
         request = {}
@@ -3926,9 +3589,7 @@ def test_set_ssl_policy_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_ssl_policy_rest_required_fields(
-    request_type=compute.SetSslPolicyTargetSslProxyRequest,
-):
+def test_set_ssl_policy_rest_required_fields(request_type=compute.SetSslPolicyTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -3936,15 +3597,11 @@ def test_set_ssl_policy_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3952,9 +3609,7 @@ def test_set_ssl_policy_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -4009,9 +3664,7 @@ def test_set_ssl_policy_rest_required_fields(
 
 
 def test_set_ssl_policy_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_ssl_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4044,9 +3697,7 @@ def test_set_ssl_policy_rest_flattened():
         mock_args = dict(
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            ssl_policy_reference_resource=compute.SslPolicyReference(
-                ssl_policy="ssl_policy_value"
-            ),
+            ssl_policy_reference_resource=compute.SslPolicyReference(ssl_policy="ssl_policy_value"),
         )
         mock_args.update(sample_request)
 
@@ -4067,9 +3718,7 @@ def test_set_ssl_policy_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslPolicy"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslPolicy" % client.transport._host, args[1]
         )
 
 
@@ -4086,9 +3735,7 @@ def test_set_ssl_policy_rest_flattened_error(transport: str = "rest"):
             compute.SetSslPolicyTargetSslProxyRequest(),
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            ssl_policy_reference_resource=compute.SslPolicyReference(
-                ssl_policy="ssl_policy_value"
-            ),
+            ssl_policy_reference_resource=compute.SslPolicyReference(ssl_policy="ssl_policy_value"),
         )
 
 
@@ -4110,9 +3757,7 @@ def test_set_ssl_policy_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.set_ssl_policy] = mock_rpc
 
         request = {}
@@ -4132,9 +3777,7 @@ def test_set_ssl_policy_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_set_ssl_policy_unary_rest_required_fields(
-    request_type=compute.SetSslPolicyTargetSslProxyRequest,
-):
+def test_set_ssl_policy_unary_rest_required_fields(request_type=compute.SetSslPolicyTargetSslProxyRequest):
     transport_class = transports.TargetSslProxiesRestTransport
 
     request_init = {}
@@ -4142,15 +3785,11 @@ def test_set_ssl_policy_unary_rest_required_fields(
     request_init["target_ssl_proxy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_policy._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -4158,9 +3797,7 @@ def test_set_ssl_policy_unary_rest_required_fields(
     jsonified_request["project"] = "project_value"
     jsonified_request["targetSslProxy"] = "target_ssl_proxy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).set_ssl_policy._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).set_ssl_policy._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -4215,9 +3852,7 @@ def test_set_ssl_policy_unary_rest_required_fields(
 
 
 def test_set_ssl_policy_unary_rest_unset_required_fields():
-    transport = transports.TargetSslProxiesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.TargetSslProxiesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.set_ssl_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4250,9 +3885,7 @@ def test_set_ssl_policy_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            ssl_policy_reference_resource=compute.SslPolicyReference(
-                ssl_policy="ssl_policy_value"
-            ),
+            ssl_policy_reference_resource=compute.SslPolicyReference(ssl_policy="ssl_policy_value"),
         )
         mock_args.update(sample_request)
 
@@ -4273,9 +3906,7 @@ def test_set_ssl_policy_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslPolicy"
-            % client.transport._host,
-            args[1],
+            "%s/compute/v1/projects/{project}/global/targetSslProxies/{target_ssl_proxy}/setSslPolicy" % client.transport._host, args[1]
         )
 
 
@@ -4292,9 +3923,7 @@ def test_set_ssl_policy_unary_rest_flattened_error(transport: str = "rest"):
             compute.SetSslPolicyTargetSslProxyRequest(),
             project="project_value",
             target_ssl_proxy="target_ssl_proxy_value",
-            ssl_policy_reference_resource=compute.SslPolicyReference(
-                ssl_policy="ssl_policy_value"
-            ),
+            ssl_policy_reference_resource=compute.SslPolicyReference(ssl_policy="ssl_policy_value"),
         )
 
 
@@ -4335,9 +3964,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TargetSslProxiesClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = TargetSslProxiesClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.TargetSslProxiesRestTransport(
@@ -4374,24 +4001,18 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_rest():
-    transport = TargetSslProxiesClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = TargetSslProxiesClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_delete_rest_bad_request(request_type=compute.DeleteTargetSslProxyRequest):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4411,9 +4032,7 @@ def test_delete_rest_bad_request(request_type=compute.DeleteTargetSslProxyReques
     ],
 )
 def test_delete_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
@@ -4489,19 +4108,13 @@ def test_delete_rest_call_success(request_type):
 def test_delete_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_delete") as post, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "post_delete_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_delete"
@@ -4509,9 +4122,7 @@ def test_delete_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.DeleteTargetSslProxyRequest.pb(
-            compute.DeleteTargetSslProxyRequest()
-        )
+        pb_message = compute.DeleteTargetSslProxyRequest.pb(compute.DeleteTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -4548,17 +4159,13 @@ def test_delete_rest_interceptors(null_interceptor):
 
 
 def test_get_rest_bad_request(request_type=compute.GetTargetSslProxyRequest):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4578,9 +4185,7 @@ def test_get_rest_bad_request(request_type=compute.GetTargetSslProxyRequest):
     ],
 )
 def test_get_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
@@ -4634,19 +4239,13 @@ def test_get_rest_call_success(request_type):
 def test_get_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_get") as post, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "post_get_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_get"
@@ -4654,9 +4253,7 @@ def test_get_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.GetTargetSslProxyRequest.pb(
-            compute.GetTargetSslProxyRequest()
-        )
+        pb_message = compute.GetTargetSslProxyRequest.pb(compute.GetTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -4693,17 +4290,13 @@ def test_get_rest_interceptors(null_interceptor):
 
 
 def test_insert_rest_bad_request(request_type=compute.InsertTargetSslProxyRequest):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4723,9 +4316,7 @@ def test_insert_rest_bad_request(request_type=compute.InsertTargetSslProxyReques
     ],
 )
 def test_insert_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
@@ -4747,9 +4338,7 @@ def test_insert_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertTargetSslProxyRequest.meta.fields[
-        "target_ssl_proxy_resource"
-    ]
+    test_field = compute.InsertTargetSslProxyRequest.meta.fields["target_ssl_proxy_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -4768,18 +4357,14 @@ def test_insert_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_ssl_proxy_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["target_ssl_proxy_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -4793,13 +4378,7 @@ def test_insert_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -4809,9 +4388,7 @@ def test_insert_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["target_ssl_proxy_resource"][field])
-                ):
+                for i in range(0, len(request_init["target_ssl_proxy_resource"][field])):
                     del request_init["target_ssl_proxy_resource"][field][i][subfield]
             else:
                 del request_init["target_ssl_proxy_resource"][field][subfield]
@@ -4887,19 +4464,13 @@ def test_insert_rest_call_success(request_type):
 def test_insert_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_insert") as post, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "post_insert_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_insert"
@@ -4907,9 +4478,7 @@ def test_insert_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.InsertTargetSslProxyRequest.pb(
-            compute.InsertTargetSslProxyRequest()
-        )
+        pb_message = compute.InsertTargetSslProxyRequest.pb(compute.InsertTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -4946,17 +4515,13 @@ def test_insert_rest_interceptors(null_interceptor):
 
 
 def test_list_rest_bad_request(request_type=compute.ListTargetSslProxiesRequest):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -4976,9 +4541,7 @@ def test_list_rest_bad_request(request_type=compute.ListTargetSslProxiesRequest)
     ],
 )
 def test_list_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1"}
@@ -5018,19 +4581,13 @@ def test_list_rest_call_success(request_type):
 def test_list_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_list") as post, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "post_list_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_list"
@@ -5038,9 +4595,7 @@ def test_list_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.ListTargetSslProxiesRequest.pb(
-            compute.ListTargetSslProxiesRequest()
-        )
+        pb_message = compute.ListTargetSslProxiesRequest.pb(compute.ListTargetSslProxiesRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -5076,20 +4631,14 @@ def test_list_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_set_backend_service_rest_bad_request(
-    request_type=compute.SetBackendServiceTargetSslProxyRequest,
-):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_set_backend_service_rest_bad_request(request_type=compute.SetBackendServiceTargetSslProxyRequest):
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5109,23 +4658,17 @@ def test_set_backend_service_rest_bad_request(
     ],
 )
 def test_set_backend_service_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request_init["target_ssl_proxies_set_backend_service_request_resource"] = {
-        "service": "service_value"
-    }
+    request_init["target_ssl_proxies_set_backend_service_request_resource"] = {"service": "service_value"}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetBackendServiceTargetSslProxyRequest.meta.fields[
-        "target_ssl_proxies_set_backend_service_request_resource"
-    ]
+    test_field = compute.SetBackendServiceTargetSslProxyRequest.meta.fields["target_ssl_proxies_set_backend_service_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5144,18 +4687,14 @@ def test_set_backend_service_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_ssl_proxies_set_backend_service_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["target_ssl_proxies_set_backend_service_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5169,13 +4708,7 @@ def test_set_backend_service_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5185,21 +4718,10 @@ def test_set_backend_service_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0,
-                    len(
-                        request_init[
-                            "target_ssl_proxies_set_backend_service_request_resource"
-                        ][field]
-                    ),
-                ):
-                    del request_init[
-                        "target_ssl_proxies_set_backend_service_request_resource"
-                    ][field][i][subfield]
+                for i in range(0, len(request_init["target_ssl_proxies_set_backend_service_request_resource"][field])):
+                    del request_init["target_ssl_proxies_set_backend_service_request_resource"][field][i][subfield]
             else:
-                del request_init[
-                    "target_ssl_proxies_set_backend_service_request_resource"
-                ][field][subfield]
+                del request_init["target_ssl_proxies_set_backend_service_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5272,30 +4794,21 @@ def test_set_backend_service_rest_call_success(request_type):
 def test_set_backend_service_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_set_backend_service"
-    ) as post, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor,
-        "post_set_backend_service_with_metadata",
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_set_backend_service") as post, mock.patch.object(
+        transports.TargetSslProxiesRestInterceptor, "post_set_backend_service_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_set_backend_service"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.SetBackendServiceTargetSslProxyRequest.pb(
-            compute.SetBackendServiceTargetSslProxyRequest()
-        )
+        pb_message = compute.SetBackendServiceTargetSslProxyRequest.pb(compute.SetBackendServiceTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -5331,20 +4844,14 @@ def test_set_backend_service_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_set_certificate_map_rest_bad_request(
-    request_type=compute.SetCertificateMapTargetSslProxyRequest,
-):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_set_certificate_map_rest_bad_request(request_type=compute.SetCertificateMapTargetSslProxyRequest):
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5364,23 +4871,17 @@ def test_set_certificate_map_rest_bad_request(
     ],
 )
 def test_set_certificate_map_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request_init["target_ssl_proxies_set_certificate_map_request_resource"] = {
-        "certificate_map": "certificate_map_value"
-    }
+    request_init["target_ssl_proxies_set_certificate_map_request_resource"] = {"certificate_map": "certificate_map_value"}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetCertificateMapTargetSslProxyRequest.meta.fields[
-        "target_ssl_proxies_set_certificate_map_request_resource"
-    ]
+    test_field = compute.SetCertificateMapTargetSslProxyRequest.meta.fields["target_ssl_proxies_set_certificate_map_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5399,18 +4900,14 @@ def test_set_certificate_map_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_ssl_proxies_set_certificate_map_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["target_ssl_proxies_set_certificate_map_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5424,13 +4921,7 @@ def test_set_certificate_map_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5440,21 +4931,10 @@ def test_set_certificate_map_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0,
-                    len(
-                        request_init[
-                            "target_ssl_proxies_set_certificate_map_request_resource"
-                        ][field]
-                    ),
-                ):
-                    del request_init[
-                        "target_ssl_proxies_set_certificate_map_request_resource"
-                    ][field][i][subfield]
+                for i in range(0, len(request_init["target_ssl_proxies_set_certificate_map_request_resource"][field])):
+                    del request_init["target_ssl_proxies_set_certificate_map_request_resource"][field][i][subfield]
             else:
-                del request_init[
-                    "target_ssl_proxies_set_certificate_map_request_resource"
-                ][field][subfield]
+                del request_init["target_ssl_proxies_set_certificate_map_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5527,30 +5007,21 @@ def test_set_certificate_map_rest_call_success(request_type):
 def test_set_certificate_map_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_set_certificate_map"
-    ) as post, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor,
-        "post_set_certificate_map_with_metadata",
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_set_certificate_map") as post, mock.patch.object(
+        transports.TargetSslProxiesRestInterceptor, "post_set_certificate_map_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_set_certificate_map"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.SetCertificateMapTargetSslProxyRequest.pb(
-            compute.SetCertificateMapTargetSslProxyRequest()
-        )
+        pb_message = compute.SetCertificateMapTargetSslProxyRequest.pb(compute.SetCertificateMapTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -5586,20 +5057,14 @@ def test_set_certificate_map_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_set_proxy_header_rest_bad_request(
-    request_type=compute.SetProxyHeaderTargetSslProxyRequest,
-):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_set_proxy_header_rest_bad_request(request_type=compute.SetProxyHeaderTargetSslProxyRequest):
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5619,23 +5084,17 @@ def test_set_proxy_header_rest_bad_request(
     ],
 )
 def test_set_proxy_header_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
-    request_init["target_ssl_proxies_set_proxy_header_request_resource"] = {
-        "proxy_header": "proxy_header_value"
-    }
+    request_init["target_ssl_proxies_set_proxy_header_request_resource"] = {"proxy_header": "proxy_header_value"}
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetProxyHeaderTargetSslProxyRequest.meta.fields[
-        "target_ssl_proxies_set_proxy_header_request_resource"
-    ]
+    test_field = compute.SetProxyHeaderTargetSslProxyRequest.meta.fields["target_ssl_proxies_set_proxy_header_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5654,18 +5113,14 @@ def test_set_proxy_header_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_ssl_proxies_set_proxy_header_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["target_ssl_proxies_set_proxy_header_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5679,13 +5134,7 @@ def test_set_proxy_header_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5695,21 +5144,10 @@ def test_set_proxy_header_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0,
-                    len(
-                        request_init[
-                            "target_ssl_proxies_set_proxy_header_request_resource"
-                        ][field]
-                    ),
-                ):
-                    del request_init[
-                        "target_ssl_proxies_set_proxy_header_request_resource"
-                    ][field][i][subfield]
+                for i in range(0, len(request_init["target_ssl_proxies_set_proxy_header_request_resource"][field])):
+                    del request_init["target_ssl_proxies_set_proxy_header_request_resource"][field][i][subfield]
             else:
-                del request_init[
-                    "target_ssl_proxies_set_proxy_header_request_resource"
-                ][field][subfield]
+                del request_init["target_ssl_proxies_set_proxy_header_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -5782,30 +5220,21 @@ def test_set_proxy_header_rest_call_success(request_type):
 def test_set_proxy_header_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_set_proxy_header"
-    ) as post, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor,
-        "post_set_proxy_header_with_metadata",
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_set_proxy_header") as post, mock.patch.object(
+        transports.TargetSslProxiesRestInterceptor, "post_set_proxy_header_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_set_proxy_header"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.SetProxyHeaderTargetSslProxyRequest.pb(
-            compute.SetProxyHeaderTargetSslProxyRequest()
-        )
+        pb_message = compute.SetProxyHeaderTargetSslProxyRequest.pb(compute.SetProxyHeaderTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -5841,20 +5270,14 @@ def test_set_proxy_header_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_set_ssl_certificates_rest_bad_request(
-    request_type=compute.SetSslCertificatesTargetSslProxyRequest,
-):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_set_ssl_certificates_rest_bad_request(request_type=compute.SetSslCertificatesTargetSslProxyRequest):
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5874,9 +5297,7 @@ def test_set_ssl_certificates_rest_bad_request(
     ],
 )
 def test_set_ssl_certificates_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
@@ -5888,9 +5309,7 @@ def test_set_ssl_certificates_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetSslCertificatesTargetSslProxyRequest.meta.fields[
-        "target_ssl_proxies_set_ssl_certificates_request_resource"
-    ]
+    test_field = compute.SetSslCertificatesTargetSslProxyRequest.meta.fields["target_ssl_proxies_set_ssl_certificates_request_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5909,18 +5328,14 @@ def test_set_ssl_certificates_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "target_ssl_proxies_set_ssl_certificates_request_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["target_ssl_proxies_set_ssl_certificates_request_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5934,13 +5349,7 @@ def test_set_ssl_certificates_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5950,21 +5359,10 @@ def test_set_ssl_certificates_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0,
-                    len(
-                        request_init[
-                            "target_ssl_proxies_set_ssl_certificates_request_resource"
-                        ][field]
-                    ),
-                ):
-                    del request_init[
-                        "target_ssl_proxies_set_ssl_certificates_request_resource"
-                    ][field][i][subfield]
+                for i in range(0, len(request_init["target_ssl_proxies_set_ssl_certificates_request_resource"][field])):
+                    del request_init["target_ssl_proxies_set_ssl_certificates_request_resource"][field][i][subfield]
             else:
-                del request_init[
-                    "target_ssl_proxies_set_ssl_certificates_request_resource"
-                ][field][subfield]
+                del request_init["target_ssl_proxies_set_ssl_certificates_request_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6037,30 +5435,21 @@ def test_set_ssl_certificates_rest_call_success(request_type):
 def test_set_ssl_certificates_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_set_ssl_certificates"
-    ) as post, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor,
-        "post_set_ssl_certificates_with_metadata",
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_set_ssl_certificates") as post, mock.patch.object(
+        transports.TargetSslProxiesRestInterceptor, "post_set_ssl_certificates_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_set_ssl_certificates"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.SetSslCertificatesTargetSslProxyRequest.pb(
-            compute.SetSslCertificatesTargetSslProxyRequest()
-        )
+        pb_message = compute.SetSslCertificatesTargetSslProxyRequest.pb(compute.SetSslCertificatesTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6096,20 +5485,14 @@ def test_set_ssl_certificates_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_set_ssl_policy_rest_bad_request(
-    request_type=compute.SetSslPolicyTargetSslProxyRequest,
-):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_set_ssl_policy_rest_bad_request(request_type=compute.SetSslPolicyTargetSslProxyRequest):
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6129,9 +5512,7 @@ def test_set_ssl_policy_rest_bad_request(
     ],
 )
 def test_set_ssl_policy_rest_call_success(request_type):
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "target_ssl_proxy": "sample2"}
@@ -6141,9 +5522,7 @@ def test_set_ssl_policy_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.SetSslPolicyTargetSslProxyRequest.meta.fields[
-        "ssl_policy_reference_resource"
-    ]
+    test_field = compute.SetSslPolicyTargetSslProxyRequest.meta.fields["ssl_policy_reference_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6162,18 +5541,14 @@ def test_set_ssl_policy_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "ssl_policy_reference_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["ssl_policy_reference_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -6187,13 +5562,7 @@ def test_set_ssl_policy_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -6203,12 +5572,8 @@ def test_set_ssl_policy_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["ssl_policy_reference_resource"][field])
-                ):
-                    del request_init["ssl_policy_reference_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["ssl_policy_reference_resource"][field])):
+                    del request_init["ssl_policy_reference_resource"][field][i][subfield]
             else:
                 del request_init["ssl_policy_reference_resource"][field][subfield]
     request = request_type(**request_init)
@@ -6283,19 +5648,13 @@ def test_set_ssl_policy_rest_call_success(request_type):
 def test_set_ssl_policy_rest_interceptors(null_interceptor):
     transport = transports.TargetSslProxiesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.TargetSslProxiesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.TargetSslProxiesRestInterceptor(),
     )
     client = TargetSslProxiesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.TargetSslProxiesRestInterceptor, "post_set_ssl_policy"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.TargetSslProxiesRestInterceptor, "post_set_ssl_policy") as post, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "post_set_ssl_policy_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.TargetSslProxiesRestInterceptor, "pre_set_ssl_policy"
@@ -6303,9 +5662,7 @@ def test_set_ssl_policy_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.SetSslPolicyTargetSslProxyRequest.pb(
-            compute.SetSslPolicyTargetSslProxyRequest()
-        )
+        pb_message = compute.SetSslPolicyTargetSslProxyRequest.pb(compute.SetSslPolicyTargetSslProxyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6342,9 +5699,7 @@ def test_set_ssl_policy_rest_interceptors(null_interceptor):
 
 
 def test_initialize_client_w_rest():
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -6437,9 +5792,7 @@ def test_set_backend_service_unary_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.set_backend_service), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_backend_service), "__call__") as call:
         client.set_backend_service_unary(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6459,9 +5812,7 @@ def test_set_certificate_map_unary_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.set_certificate_map), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_certificate_map), "__call__") as call:
         client.set_certificate_map_unary(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6501,9 +5852,7 @@ def test_set_ssl_certificates_unary_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.set_ssl_certificates), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.set_ssl_certificates), "__call__") as call:
         client.set_ssl_certificates_unary(request=None)
 
         # Establish that the underlying stub method was called.
@@ -6537,17 +5886,12 @@ def test_set_ssl_policy_unary_empty_call_rest():
 def test_target_ssl_proxies_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.TargetSslProxiesTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.TargetSslProxiesTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_target_ssl_proxies_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.compute_v1.services.target_ssl_proxies.transports.TargetSslProxiesTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.compute_v1.services.target_ssl_proxies.transports.TargetSslProxiesTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.TargetSslProxiesTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -6584,9 +5928,7 @@ def test_target_ssl_proxies_base_transport():
 
 def test_target_ssl_proxies_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.compute_v1.services.target_ssl_proxies.transports.TargetSslProxiesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -6634,12 +5976,8 @@ def test_target_ssl_proxies_auth_adc():
 
 def test_target_ssl_proxies_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.TargetSslProxiesRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.TargetSslProxiesRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -6652,15 +5990,11 @@ def test_target_ssl_proxies_http_transport_client_cert_source_for_mtls():
 def test_target_ssl_proxies_host_no_port(transport_name):
     client = TargetSslProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="compute.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="compute.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "compute.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://compute.googleapis.com"
+        "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
     )
 
 
@@ -6673,15 +6007,11 @@ def test_target_ssl_proxies_host_no_port(transport_name):
 def test_target_ssl_proxies_host_with_port(transport_name):
     client = TargetSslProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="compute.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="compute.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "compute.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://compute.googleapis.com:8000"
+        "compute.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com:8000"
     )
 
 
@@ -6837,18 +6167,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.TargetSslProxiesTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.TargetSslProxiesTransport, "_prep_wrapped_messages") as prep:
         client = TargetSslProxiesClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.TargetSslProxiesTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.TargetSslProxiesTransport, "_prep_wrapped_messages") as prep:
         transport_class = TargetSslProxiesClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -6858,12 +6184,8 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_rest():
-    client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -6874,9 +6196,7 @@ def test_client_ctx():
         "rest",
     ]
     for transport in transports:
-        client = TargetSslProxiesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = TargetSslProxiesClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -6892,9 +6212,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -6905,9 +6223,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -217,18 +208,14 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -262,9 +249,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -323,11 +308,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._grpc_channel
 
     @property
-    def create_assessment(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateAssessmentRequest], recaptchaenterprise.Assessment
-    ]:
+    def create_assessment(self) -> Callable[[recaptchaenterprise.CreateAssessmentRequest], recaptchaenterprise.Assessment]:
         r"""Return a callable for the create assessment method over gRPC.
 
         Creates an Assessment of the likelihood an event is
@@ -352,12 +333,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["create_assessment"]
 
     @property
-    def annotate_assessment(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.AnnotateAssessmentRequest],
-        recaptchaenterprise.AnnotateAssessmentResponse,
-    ]:
+    def annotate_assessment(self) -> Callable[[recaptchaenterprise.AnnotateAssessmentRequest], recaptchaenterprise.AnnotateAssessmentResponse]:
         r"""Return a callable for the annotate assessment method over gRPC.
 
         Annotates a previously created Assessment to provide
@@ -383,9 +359,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["annotate_assessment"]
 
     @property
-    def create_key(
-        self,
-    ) -> Callable[[recaptchaenterprise.CreateKeyRequest], recaptchaenterprise.Key]:
+    def create_key(self) -> Callable[[recaptchaenterprise.CreateKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the create key method over gRPC.
 
         Creates a new reCAPTCHA Enterprise key.
@@ -409,11 +383,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["create_key"]
 
     @property
-    def list_keys(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.ListKeysRequest], recaptchaenterprise.ListKeysResponse
-    ]:
+    def list_keys(self) -> Callable[[recaptchaenterprise.ListKeysRequest], recaptchaenterprise.ListKeysResponse]:
         r"""Return a callable for the list keys method over gRPC.
 
         Returns the list of all keys that belong to a
@@ -440,10 +410,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
     @property
     def retrieve_legacy_secret_key(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.RetrieveLegacySecretKeyRequest],
-        recaptchaenterprise.RetrieveLegacySecretKeyResponse,
-    ]:
+    ) -> Callable[[recaptchaenterprise.RetrieveLegacySecretKeyRequest], recaptchaenterprise.RetrieveLegacySecretKeyResponse]:
         r"""Return a callable for the retrieve legacy secret key method over gRPC.
 
         Returns the secret key related to the specified
@@ -461,9 +428,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "retrieve_legacy_secret_key" not in self._stubs:
-            self._stubs[
-                "retrieve_legacy_secret_key"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["retrieve_legacy_secret_key"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/RetrieveLegacySecretKey",
                 request_serializer=recaptchaenterprise.RetrieveLegacySecretKeyRequest.serialize,
                 response_deserializer=recaptchaenterprise.RetrieveLegacySecretKeyResponse.deserialize,
@@ -471,9 +436,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["retrieve_legacy_secret_key"]
 
     @property
-    def get_key(
-        self,
-    ) -> Callable[[recaptchaenterprise.GetKeyRequest], recaptchaenterprise.Key]:
+    def get_key(self) -> Callable[[recaptchaenterprise.GetKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the get key method over gRPC.
 
         Returns the specified key.
@@ -497,9 +460,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["get_key"]
 
     @property
-    def update_key(
-        self,
-    ) -> Callable[[recaptchaenterprise.UpdateKeyRequest], recaptchaenterprise.Key]:
+    def update_key(self) -> Callable[[recaptchaenterprise.UpdateKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the update key method over gRPC.
 
         Updates the specified key.
@@ -523,9 +484,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["update_key"]
 
     @property
-    def delete_key(
-        self,
-    ) -> Callable[[recaptchaenterprise.DeleteKeyRequest], empty_pb2.Empty]:
+    def delete_key(self) -> Callable[[recaptchaenterprise.DeleteKeyRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete key method over gRPC.
 
         Deletes the specified key.
@@ -549,9 +508,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["delete_key"]
 
     @property
-    def migrate_key(
-        self,
-    ) -> Callable[[recaptchaenterprise.MigrateKeyRequest], recaptchaenterprise.Key]:
+    def migrate_key(self) -> Callable[[recaptchaenterprise.MigrateKeyRequest], recaptchaenterprise.Key]:
         r"""Return a callable for the migrate key method over gRPC.
 
         Migrates an existing key from reCAPTCHA to reCAPTCHA
@@ -581,12 +538,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["migrate_key"]
 
     @property
-    def add_ip_override(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.AddIpOverrideRequest],
-        recaptchaenterprise.AddIpOverrideResponse,
-    ]:
+    def add_ip_override(self) -> Callable[[recaptchaenterprise.AddIpOverrideRequest], recaptchaenterprise.AddIpOverrideResponse]:
         r"""Return a callable for the add ip override method over gRPC.
 
         Adds an IP override to a key. The following restrictions hold:
@@ -614,12 +566,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["add_ip_override"]
 
     @property
-    def remove_ip_override(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.RemoveIpOverrideRequest],
-        recaptchaenterprise.RemoveIpOverrideResponse,
-    ]:
+    def remove_ip_override(self) -> Callable[[recaptchaenterprise.RemoveIpOverrideRequest], recaptchaenterprise.RemoveIpOverrideResponse]:
         r"""Return a callable for the remove ip override method over gRPC.
 
         Removes an IP override from a key. The following restrictions
@@ -650,12 +597,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["remove_ip_override"]
 
     @property
-    def list_ip_overrides(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.ListIpOverridesRequest],
-        recaptchaenterprise.ListIpOverridesResponse,
-    ]:
+    def list_ip_overrides(self) -> Callable[[recaptchaenterprise.ListIpOverridesRequest], recaptchaenterprise.ListIpOverridesResponse]:
         r"""Return a callable for the list ip overrides method over gRPC.
 
         Lists all IP overrides for a key.
@@ -679,9 +621,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["list_ip_overrides"]
 
     @property
-    def get_metrics(
-        self,
-    ) -> Callable[[recaptchaenterprise.GetMetricsRequest], recaptchaenterprise.Metrics]:
+    def get_metrics(self) -> Callable[[recaptchaenterprise.GetMetricsRequest], recaptchaenterprise.Metrics]:
         r"""Return a callable for the get metrics method over gRPC.
 
         Get some aggregated metrics for a Key. This data can
@@ -706,12 +646,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["get_metrics"]
 
     @property
-    def create_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.CreateFirewallPolicyRequest],
-        recaptchaenterprise.FirewallPolicy,
-    ]:
+    def create_firewall_policy(self) -> Callable[[recaptchaenterprise.CreateFirewallPolicyRequest], recaptchaenterprise.FirewallPolicy]:
         r"""Return a callable for the create firewall policy method over gRPC.
 
         Creates a new FirewallPolicy, specifying conditions
@@ -737,12 +672,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["create_firewall_policy"]
 
     @property
-    def list_firewall_policies(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.ListFirewallPoliciesRequest],
-        recaptchaenterprise.ListFirewallPoliciesResponse,
-    ]:
+    def list_firewall_policies(self) -> Callable[[recaptchaenterprise.ListFirewallPoliciesRequest], recaptchaenterprise.ListFirewallPoliciesResponse]:
         r"""Return a callable for the list firewall policies method over gRPC.
 
         Returns the list of all firewall policies that belong
@@ -767,12 +697,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["list_firewall_policies"]
 
     @property
-    def get_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.GetFirewallPolicyRequest],
-        recaptchaenterprise.FirewallPolicy,
-    ]:
+    def get_firewall_policy(self) -> Callable[[recaptchaenterprise.GetFirewallPolicyRequest], recaptchaenterprise.FirewallPolicy]:
         r"""Return a callable for the get firewall policy method over gRPC.
 
         Returns the specified firewall policy.
@@ -796,12 +721,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["get_firewall_policy"]
 
     @property
-    def update_firewall_policy(
-        self,
-    ) -> Callable[
-        [recaptchaenterprise.UpdateFirewallPolicyRequest],
-        recaptchaenterprise.FirewallPolicy,
-    ]:
+    def update_firewall_policy(self) -> Callable[[recaptchaenterprise.UpdateFirewallPolicyRequest], recaptchaenterprise.FirewallPolicy]:
         r"""Return a callable for the update firewall policy method over gRPC.
 
         Updates the specified firewall policy.
@@ -825,9 +745,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["update_firewall_policy"]
 
     @property
-    def delete_firewall_policy(
-        self,
-    ) -> Callable[[recaptchaenterprise.DeleteFirewallPolicyRequest], empty_pb2.Empty]:
+    def delete_firewall_policy(self) -> Callable[[recaptchaenterprise.DeleteFirewallPolicyRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete firewall policy method over gRPC.
 
         Deletes the specified firewall policy.
@@ -853,10 +771,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
     @property
     def reorder_firewall_policies(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.ReorderFirewallPoliciesRequest],
-        recaptchaenterprise.ReorderFirewallPoliciesResponse,
-    ]:
+    ) -> Callable[[recaptchaenterprise.ReorderFirewallPoliciesRequest], recaptchaenterprise.ReorderFirewallPoliciesResponse]:
         r"""Return a callable for the reorder firewall policies method over gRPC.
 
         Reorders all firewall policies.
@@ -882,10 +797,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
     @property
     def list_related_account_groups(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.ListRelatedAccountGroupsRequest],
-        recaptchaenterprise.ListRelatedAccountGroupsResponse,
-    ]:
+    ) -> Callable[[recaptchaenterprise.ListRelatedAccountGroupsRequest], recaptchaenterprise.ListRelatedAccountGroupsResponse]:
         r"""Return a callable for the list related account groups method over gRPC.
 
         List groups of related accounts.
@@ -901,9 +813,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_groups" not in self._stubs:
-            self._stubs[
-                "list_related_account_groups"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_related_account_groups"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroups",
                 request_serializer=recaptchaenterprise.ListRelatedAccountGroupsRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListRelatedAccountGroupsResponse.deserialize,
@@ -913,10 +823,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
     @property
     def list_related_account_group_memberships(
         self,
-    ) -> Callable[
-        [recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest],
-        recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse,
-    ]:
+    ) -> Callable[[recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest], recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse]:
         r"""Return a callable for the list related account group
         memberships method over gRPC.
 
@@ -933,9 +840,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_related_account_group_memberships" not in self._stubs:
-            self._stubs[
-                "list_related_account_group_memberships"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_related_account_group_memberships"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ListRelatedAccountGroupMemberships",
                 request_serializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsRequest.serialize,
                 response_deserializer=recaptchaenterprise.ListRelatedAccountGroupMembershipsResponse.deserialize,
@@ -946,8 +851,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
     def search_related_account_group_memberships(
         self,
     ) -> Callable[
-        [recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest],
-        recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse,
+        [recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest], recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse
     ]:
         r"""Return a callable for the search related account group
         memberships method over gRPC.
@@ -965,9 +869,7 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "search_related_account_group_memberships" not in self._stubs:
-            self._stubs[
-                "search_related_account_group_memberships"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["search_related_account_group_memberships"] = self._logged_channel.unary_unary(
                 "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/SearchRelatedAccountGroupMemberships",
                 request_serializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsRequest.serialize,
                 response_deserializer=recaptchaenterprise.SearchRelatedAccountGroupMembershipsResponse.deserialize,

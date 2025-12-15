@@ -21,9 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datalabeling_v1beta1.types import (
-    human_annotation_config as gcd_human_annotation_config,
-)
+from google.cloud.datalabeling_v1beta1.types import human_annotation_config as gcd_human_annotation_config
 from google.cloud.datalabeling_v1beta1.types import dataset, evaluation
 
 __protobuf__ = proto.module(
@@ -358,13 +356,11 @@ class EvaluationJobConfig(proto.Message):
         oneof="human_annotation_request_config",
         message=gcd_human_annotation_config.BoundingPolyConfig,
     )
-    text_classification_config: gcd_human_annotation_config.TextClassificationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=8,
-            oneof="human_annotation_request_config",
-            message=gcd_human_annotation_config.TextClassificationConfig,
-        )
+    text_classification_config: gcd_human_annotation_config.TextClassificationConfig = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="human_annotation_request_config",
+        message=gcd_human_annotation_config.TextClassificationConfig,
     )
     input_config: dataset.InputConfig = proto.Field(
         proto.MESSAGE,
@@ -376,12 +372,10 @@ class EvaluationJobConfig(proto.Message):
         number=2,
         message=evaluation.EvaluationConfig,
     )
-    human_annotation_config: gcd_human_annotation_config.HumanAnnotationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=gcd_human_annotation_config.HumanAnnotationConfig,
-        )
+    human_annotation_config: gcd_human_annotation_config.HumanAnnotationConfig = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_human_annotation_config.HumanAnnotationConfig,
     )
     bigquery_import_keys: MutableMapping[str, str] = proto.MapField(
         proto.STRING,

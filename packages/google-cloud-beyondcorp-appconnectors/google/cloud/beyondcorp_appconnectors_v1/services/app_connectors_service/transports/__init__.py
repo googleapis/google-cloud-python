@@ -22,9 +22,7 @@ from .grpc_asyncio import AppConnectorsServiceGrpcAsyncIOTransport
 from .rest import AppConnectorsServiceRestInterceptor, AppConnectorsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[AppConnectorsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[AppConnectorsServiceTransport]]
 _transport_registry["grpc"] = AppConnectorsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = AppConnectorsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = AppConnectorsServiceRestTransport

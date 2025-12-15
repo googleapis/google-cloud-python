@@ -47,9 +47,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +57,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +76,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -110,9 +101,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         return response
 
 
-class RuntimeProjectAttachmentServiceGrpcTransport(
-    RuntimeProjectAttachmentServiceTransport
-):
+class RuntimeProjectAttachmentServiceGrpcTransport(RuntimeProjectAttachmentServiceTransport):
     """gRPC backend transport for RuntimeProjectAttachmentService.
 
     This service is used for managing the runtime project
@@ -222,18 +211,14 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +252,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -331,8 +314,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
     def create_runtime_project_attachment(
         self,
     ) -> Callable[
-        [runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest],
-        runtime_project_attachment_service.RuntimeProjectAttachment,
+        [runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest], runtime_project_attachment_service.RuntimeProjectAttachment
     ]:
         r"""Return a callable for the create runtime project
         attachment method over gRPC.
@@ -350,9 +332,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "create_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_runtime_project_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/CreateRuntimeProjectAttachment",
                 request_serializer=runtime_project_attachment_service.CreateRuntimeProjectAttachmentRequest.serialize,
                 response_deserializer=runtime_project_attachment_service.RuntimeProjectAttachment.deserialize,
@@ -363,8 +343,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
     def get_runtime_project_attachment(
         self,
     ) -> Callable[
-        [runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest],
-        runtime_project_attachment_service.RuntimeProjectAttachment,
+        [runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest], runtime_project_attachment_service.RuntimeProjectAttachment
     ]:
         r"""Return a callable for the get runtime project attachment method over gRPC.
 
@@ -381,9 +360,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "get_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_runtime_project_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/GetRuntimeProjectAttachment",
                 request_serializer=runtime_project_attachment_service.GetRuntimeProjectAttachmentRequest.serialize,
                 response_deserializer=runtime_project_attachment_service.RuntimeProjectAttachment.deserialize,
@@ -413,9 +390,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_runtime_project_attachments" not in self._stubs:
-            self._stubs[
-                "list_runtime_project_attachments"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_runtime_project_attachments"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/ListRuntimeProjectAttachments",
                 request_serializer=runtime_project_attachment_service.ListRuntimeProjectAttachmentsRequest.serialize,
                 response_deserializer=runtime_project_attachment_service.ListRuntimeProjectAttachmentsResponse.deserialize,
@@ -425,10 +400,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
     @property
     def delete_runtime_project_attachment(
         self,
-    ) -> Callable[
-        [runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete runtime project
         attachment method over gRPC.
 
@@ -447,9 +419,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "delete_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_runtime_project_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/DeleteRuntimeProjectAttachment",
                 request_serializer=runtime_project_attachment_service.DeleteRuntimeProjectAttachmentRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -480,9 +450,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "lookup_runtime_project_attachment" not in self._stubs:
-            self._stubs[
-                "lookup_runtime_project_attachment"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["lookup_runtime_project_attachment"] = self._logged_channel.unary_unary(
                 "/google.cloud.apihub.v1.RuntimeProjectAttachmentService/LookupRuntimeProjectAttachment",
                 request_serializer=runtime_project_attachment_service.LookupRuntimeProjectAttachmentRequest.serialize,
                 response_deserializer=runtime_project_attachment_service.LookupRuntimeProjectAttachmentResponse.deserialize,
@@ -546,9 +514,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -565,9 +531,7 @@ class RuntimeProjectAttachmentServiceGrpcTransport(
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

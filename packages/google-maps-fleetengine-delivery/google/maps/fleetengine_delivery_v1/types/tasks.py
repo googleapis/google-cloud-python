@@ -239,9 +239,7 @@ class Task(proto.Message):
                 clients are ignored.
         """
 
-        remaining_vehicle_journey_segments: MutableSequence[
-            delivery_vehicles.VehicleJourneySegment
-        ] = proto.RepeatedField(
+        remaining_vehicle_journey_segments: MutableSequence[delivery_vehicles.VehicleJourneySegment] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=delivery_vehicles.VehicleJourneySegment,
@@ -417,13 +415,11 @@ class TaskTrackingViewConfig(proto.Message):
             number=1,
             oneof="visibility_option",
         )
-        duration_until_estimated_arrival_time_threshold: duration_pb2.Duration = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="visibility_option",
-                message=duration_pb2.Duration,
-            )
+        duration_until_estimated_arrival_time_threshold: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="visibility_option",
+            message=duration_pb2.Duration,
         )
         remaining_driving_distance_meters_threshold: int = proto.Field(
             proto.INT32,

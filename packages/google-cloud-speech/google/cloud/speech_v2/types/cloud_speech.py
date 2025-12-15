@@ -2236,9 +2236,7 @@ class BatchRecognizeMetadata(proto.Message):
             transcription metadata for that file.
     """
 
-    transcription_metadata: MutableMapping[
-        str, "BatchRecognizeTranscriptionMetadata"
-    ] = proto.MapField(
+    transcription_metadata: MutableMapping[str, "BatchRecognizeTranscriptionMetadata"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,

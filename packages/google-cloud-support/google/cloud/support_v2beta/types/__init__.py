@@ -15,11 +15,7 @@
 #
 from .actor import Actor
 from .attachment import Attachment
-from .attachment_service import (
-    GetAttachmentRequest,
-    ListAttachmentsRequest,
-    ListAttachmentsResponse,
-)
+from .attachment_service import GetAttachmentRequest, ListAttachmentsRequest, ListAttachmentsResponse
 from .case import Case, CaseClassification, Product, ProductLine
 from .case_service import (
     CloseCaseRequest,
@@ -35,12 +31,7 @@ from .case_service import (
     UpdateCaseRequest,
 )
 from .comment import Comment
-from .comment_service import (
-    CreateCommentRequest,
-    GetCommentRequest,
-    ListCommentsRequest,
-    ListCommentsResponse,
-)
+from .comment_service import CreateCommentRequest, GetCommentRequest, ListCommentsRequest, ListCommentsResponse
 from .content import TextContent
 from .email_message import EmailMessage
 from .escalation import Escalation

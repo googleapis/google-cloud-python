@@ -25,14 +25,8 @@ from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import audio_config, data_store_connection, flow
-from google.cloud.dialogflowcx_v3.types import (
-    page,
-    response_message,
-    session_entity_type,
-)
-from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
+from google.cloud.dialogflowcx_v3.types import page, response_message, session_entity_type
+from google.cloud.dialogflowcx_v3.types import advanced_settings as gcdc_advanced_settings
 from google.cloud.dialogflowcx_v3.types import intent as gcdc_intent
 
 __protobuf__ = proto.module(
@@ -497,16 +491,12 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=5,
     )
-    speech_partial_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    speech_partial_results_end_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=duration_pb2.Duration,
     )
-    speech_final_results_end_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    speech_final_results_end_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=duration_pb2.Duration,
@@ -527,16 +517,12 @@ class CloudConversationDebuggingInfo(proto.Message):
         proto.BOOL,
         number=11,
     )
-    dtmf_partial_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    dtmf_partial_results_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=12,
         message=duration_pb2.Duration,
     )
-    dtmf_final_results_times: MutableSequence[
-        duration_pb2.Duration
-    ] = proto.RepeatedField(
+    dtmf_final_results_times: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
         message=duration_pb2.Duration,
@@ -773,9 +759,7 @@ class StreamingRecognitionResult(proto.Message):
         proto.FLOAT,
         number=6,
     )
-    speech_word_info: MutableSequence[
-        audio_config.SpeechWordInfo
-    ] = proto.RepeatedField(
+    speech_word_info: MutableSequence[audio_config.SpeechWordInfo] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=audio_config.SpeechWordInfo,
@@ -950,9 +934,7 @@ class QueryParameters(proto.Message):
         number=2,
         message=latlng_pb2.LatLng,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=session_entity_type.SessionEntityType,
@@ -1213,9 +1195,7 @@ class BoostSpec(proto.Message):
                 number=3,
                 enum="BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
             )
-            control_points: MutableSequence[
-                "BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
-            ] = proto.RepeatedField(
+            control_points: MutableSequence["BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
@@ -1229,12 +1209,10 @@ class BoostSpec(proto.Message):
             proto.FLOAT,
             number=2,
         )
-        boost_control_spec: "BoostSpec.ConditionBoostSpec.BoostControlSpec" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="BoostSpec.ConditionBoostSpec.BoostControlSpec",
-            )
+        boost_control_spec: "BoostSpec.ConditionBoostSpec.BoostControlSpec" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="BoostSpec.ConditionBoostSpec.BoostControlSpec",
         )
 
     condition_boost_specs: MutableSequence[ConditionBoostSpec] = proto.RepeatedField(
@@ -1586,9 +1564,7 @@ class QueryResult(proto.Message):
         number=3,
         message=struct_pb2.Struct,
     )
-    response_messages: MutableSequence[
-        response_message.ResponseMessage
-    ] = proto.RepeatedField(
+    response_messages: MutableSequence[response_message.ResponseMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=response_message.ResponseMessage,
@@ -1663,12 +1639,10 @@ class QueryResult(proto.Message):
         proto.BOOL,
         number=32,
     )
-    data_store_connection_signals: data_store_connection.DataStoreConnectionSignals = (
-        proto.Field(
-            proto.MESSAGE,
-            number=35,
-            message=data_store_connection.DataStoreConnectionSignals,
-        )
+    data_store_connection_signals: data_store_connection.DataStoreConnectionSignals = proto.Field(
+        proto.MESSAGE,
+        number=35,
+        message=data_store_connection.DataStoreConnectionSignals,
     )
 
 

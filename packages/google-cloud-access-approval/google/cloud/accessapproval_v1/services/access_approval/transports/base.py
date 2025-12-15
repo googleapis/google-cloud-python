@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.accessapproval_v1 import gapic_version as package_version
 from google.cloud.accessapproval_v1.types import accessapproval
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class AccessApprovalTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -222,54 +212,33 @@ class AccessApprovalTransport(abc.ABC):
         self,
     ) -> Callable[
         [accessapproval.ListApprovalRequestsMessage],
-        Union[
-            accessapproval.ListApprovalRequestsResponse,
-            Awaitable[accessapproval.ListApprovalRequestsResponse],
-        ],
+        Union[accessapproval.ListApprovalRequestsResponse, Awaitable[accessapproval.ListApprovalRequestsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_approval_request(
         self,
-    ) -> Callable[
-        [accessapproval.GetApprovalRequestMessage],
-        Union[
-            accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]
-        ],
-    ]:
+    ) -> Callable[[accessapproval.GetApprovalRequestMessage], Union[accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]]]:
         raise NotImplementedError()
 
     @property
     def approve_approval_request(
         self,
-    ) -> Callable[
-        [accessapproval.ApproveApprovalRequestMessage],
-        Union[
-            accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]
-        ],
-    ]:
+    ) -> Callable[[accessapproval.ApproveApprovalRequestMessage], Union[accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]]]:
         raise NotImplementedError()
 
     @property
     def dismiss_approval_request(
         self,
-    ) -> Callable[
-        [accessapproval.DismissApprovalRequestMessage],
-        Union[
-            accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]
-        ],
-    ]:
+    ) -> Callable[[accessapproval.DismissApprovalRequestMessage], Union[accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]]]:
         raise NotImplementedError()
 
     @property
     def invalidate_approval_request(
         self,
     ) -> Callable[
-        [accessapproval.InvalidateApprovalRequestMessage],
-        Union[
-            accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]
-        ],
+        [accessapproval.InvalidateApprovalRequestMessage], Union[accessapproval.ApprovalRequest, Awaitable[accessapproval.ApprovalRequest]]
     ]:
         raise NotImplementedError()
 
@@ -278,10 +247,7 @@ class AccessApprovalTransport(abc.ABC):
         self,
     ) -> Callable[
         [accessapproval.GetAccessApprovalSettingsMessage],
-        Union[
-            accessapproval.AccessApprovalSettings,
-            Awaitable[accessapproval.AccessApprovalSettings],
-        ],
+        Union[accessapproval.AccessApprovalSettings, Awaitable[accessapproval.AccessApprovalSettings]],
     ]:
         raise NotImplementedError()
 
@@ -290,20 +256,14 @@ class AccessApprovalTransport(abc.ABC):
         self,
     ) -> Callable[
         [accessapproval.UpdateAccessApprovalSettingsMessage],
-        Union[
-            accessapproval.AccessApprovalSettings,
-            Awaitable[accessapproval.AccessApprovalSettings],
-        ],
+        Union[accessapproval.AccessApprovalSettings, Awaitable[accessapproval.AccessApprovalSettings]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_access_approval_settings(
         self,
-    ) -> Callable[
-        [accessapproval.DeleteAccessApprovalSettingsMessage],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[accessapproval.DeleteAccessApprovalSettingsMessage], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -311,10 +271,7 @@ class AccessApprovalTransport(abc.ABC):
         self,
     ) -> Callable[
         [accessapproval.GetAccessApprovalServiceAccountMessage],
-        Union[
-            accessapproval.AccessApprovalServiceAccount,
-            Awaitable[accessapproval.AccessApprovalServiceAccount],
-        ],
+        Union[accessapproval.AccessApprovalServiceAccount, Awaitable[accessapproval.AccessApprovalServiceAccount]],
     ]:
         raise NotImplementedError()
 

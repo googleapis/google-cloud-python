@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -269,18 +258,14 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -316,9 +301,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -341,19 +324,13 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_environment(
-        self,
-    ) -> Callable[
-        [environments.CreateEnvironmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_environment(self) -> Callable[[environments.CreateEnvironmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create environment method over gRPC.
 
         Create a new environment.
@@ -377,11 +354,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["create_environment"]
 
     @property
-    def get_environment(
-        self,
-    ) -> Callable[
-        [environments.GetEnvironmentRequest], Awaitable[environments.Environment]
-    ]:
+    def get_environment(self) -> Callable[[environments.GetEnvironmentRequest], Awaitable[environments.Environment]]:
         r"""Return a callable for the get environment method over gRPC.
 
         Get an existing environment.
@@ -405,12 +378,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["get_environment"]
 
     @property
-    def list_environments(
-        self,
-    ) -> Callable[
-        [environments.ListEnvironmentsRequest],
-        Awaitable[environments.ListEnvironmentsResponse],
-    ]:
+    def list_environments(self) -> Callable[[environments.ListEnvironmentsRequest], Awaitable[environments.ListEnvironmentsResponse]]:
         r"""Return a callable for the list environments method over gRPC.
 
         List environments.
@@ -434,11 +402,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["list_environments"]
 
     @property
-    def update_environment(
-        self,
-    ) -> Callable[
-        [environments.UpdateEnvironmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_environment(self) -> Callable[[environments.UpdateEnvironmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update environment method over gRPC.
 
         Update an environment.
@@ -462,11 +426,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["update_environment"]
 
     @property
-    def delete_environment(
-        self,
-    ) -> Callable[
-        [environments.DeleteEnvironmentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_environment(self) -> Callable[[environments.DeleteEnvironmentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete environment method over gRPC.
 
         Delete an environment.
@@ -490,11 +450,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["delete_environment"]
 
     @property
-    def restart_web_server(
-        self,
-    ) -> Callable[
-        [environments.RestartWebServerRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def restart_web_server(self) -> Callable[[environments.RestartWebServerRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the restart web server method over gRPC.
 
         Restart Airflow web server.
@@ -518,11 +474,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["restart_web_server"]
 
     @property
-    def check_upgrade(
-        self,
-    ) -> Callable[
-        [environments.CheckUpgradeRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def check_upgrade(self) -> Callable[[environments.CheckUpgradeRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the check upgrade method over gRPC.
 
         Check if an upgrade operation on the environment will
@@ -549,12 +501,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["check_upgrade"]
 
     @property
-    def execute_airflow_command(
-        self,
-    ) -> Callable[
-        [environments.ExecuteAirflowCommandRequest],
-        Awaitable[environments.ExecuteAirflowCommandResponse],
-    ]:
+    def execute_airflow_command(self) -> Callable[[environments.ExecuteAirflowCommandRequest], Awaitable[environments.ExecuteAirflowCommandResponse]]:
         r"""Return a callable for the execute airflow command method over gRPC.
 
         Executes Airflow CLI command.
@@ -578,12 +525,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["execute_airflow_command"]
 
     @property
-    def stop_airflow_command(
-        self,
-    ) -> Callable[
-        [environments.StopAirflowCommandRequest],
-        Awaitable[environments.StopAirflowCommandResponse],
-    ]:
+    def stop_airflow_command(self) -> Callable[[environments.StopAirflowCommandRequest], Awaitable[environments.StopAirflowCommandResponse]]:
         r"""Return a callable for the stop airflow command method over gRPC.
 
         Stops Airflow CLI command execution.
@@ -607,12 +549,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["stop_airflow_command"]
 
     @property
-    def poll_airflow_command(
-        self,
-    ) -> Callable[
-        [environments.PollAirflowCommandRequest],
-        Awaitable[environments.PollAirflowCommandResponse],
-    ]:
+    def poll_airflow_command(self) -> Callable[[environments.PollAirflowCommandRequest], Awaitable[environments.PollAirflowCommandResponse]]:
         r"""Return a callable for the poll airflow command method over gRPC.
 
         Polls Airflow CLI command execution and fetches logs.
@@ -636,12 +573,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["poll_airflow_command"]
 
     @property
-    def list_workloads(
-        self,
-    ) -> Callable[
-        [environments.ListWorkloadsRequest],
-        Awaitable[environments.ListWorkloadsResponse],
-    ]:
+    def list_workloads(self) -> Callable[[environments.ListWorkloadsRequest], Awaitable[environments.ListWorkloadsResponse]]:
         r"""Return a callable for the list workloads method over gRPC.
 
         Lists workloads in a Cloud Composer environment. Workload is a
@@ -669,12 +601,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["list_workloads"]
 
     @property
-    def create_user_workloads_secret(
-        self,
-    ) -> Callable[
-        [environments.CreateUserWorkloadsSecretRequest],
-        Awaitable[environments.UserWorkloadsSecret],
-    ]:
+    def create_user_workloads_secret(self) -> Callable[[environments.CreateUserWorkloadsSecretRequest], Awaitable[environments.UserWorkloadsSecret]]:
         r"""Return a callable for the create user workloads secret method over gRPC.
 
         Creates a user workloads Secret.
@@ -693,9 +620,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_user_workloads_secret" not in self._stubs:
-            self._stubs[
-                "create_user_workloads_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_user_workloads_secret"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/CreateUserWorkloadsSecret",
                 request_serializer=environments.CreateUserWorkloadsSecretRequest.serialize,
                 response_deserializer=environments.UserWorkloadsSecret.deserialize,
@@ -703,12 +628,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["create_user_workloads_secret"]
 
     @property
-    def get_user_workloads_secret(
-        self,
-    ) -> Callable[
-        [environments.GetUserWorkloadsSecretRequest],
-        Awaitable[environments.UserWorkloadsSecret],
-    ]:
+    def get_user_workloads_secret(self) -> Callable[[environments.GetUserWorkloadsSecretRequest], Awaitable[environments.UserWorkloadsSecret]]:
         r"""Return a callable for the get user workloads secret method over gRPC.
 
         Gets an existing user workloads Secret. Values of the "data"
@@ -738,10 +658,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def list_user_workloads_secrets(
         self,
-    ) -> Callable[
-        [environments.ListUserWorkloadsSecretsRequest],
-        Awaitable[environments.ListUserWorkloadsSecretsResponse],
-    ]:
+    ) -> Callable[[environments.ListUserWorkloadsSecretsRequest], Awaitable[environments.ListUserWorkloadsSecretsResponse]]:
         r"""Return a callable for the list user workloads secrets method over gRPC.
 
         Lists user workloads Secrets.
@@ -760,9 +677,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_user_workloads_secrets" not in self._stubs:
-            self._stubs[
-                "list_user_workloads_secrets"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_user_workloads_secrets"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ListUserWorkloadsSecrets",
                 request_serializer=environments.ListUserWorkloadsSecretsRequest.serialize,
                 response_deserializer=environments.ListUserWorkloadsSecretsResponse.deserialize,
@@ -770,12 +685,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["list_user_workloads_secrets"]
 
     @property
-    def update_user_workloads_secret(
-        self,
-    ) -> Callable[
-        [environments.UpdateUserWorkloadsSecretRequest],
-        Awaitable[environments.UserWorkloadsSecret],
-    ]:
+    def update_user_workloads_secret(self) -> Callable[[environments.UpdateUserWorkloadsSecretRequest], Awaitable[environments.UserWorkloadsSecret]]:
         r"""Return a callable for the update user workloads secret method over gRPC.
 
         Updates a user workloads Secret.
@@ -794,9 +704,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_user_workloads_secret" not in self._stubs:
-            self._stubs[
-                "update_user_workloads_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_user_workloads_secret"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/UpdateUserWorkloadsSecret",
                 request_serializer=environments.UpdateUserWorkloadsSecretRequest.serialize,
                 response_deserializer=environments.UserWorkloadsSecret.deserialize,
@@ -804,11 +712,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["update_user_workloads_secret"]
 
     @property
-    def delete_user_workloads_secret(
-        self,
-    ) -> Callable[
-        [environments.DeleteUserWorkloadsSecretRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_user_workloads_secret(self) -> Callable[[environments.DeleteUserWorkloadsSecretRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete user workloads secret method over gRPC.
 
         Deletes a user workloads Secret.
@@ -827,9 +731,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_user_workloads_secret" not in self._stubs:
-            self._stubs[
-                "delete_user_workloads_secret"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_user_workloads_secret"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/DeleteUserWorkloadsSecret",
                 request_serializer=environments.DeleteUserWorkloadsSecretRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -839,10 +741,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def create_user_workloads_config_map(
         self,
-    ) -> Callable[
-        [environments.CreateUserWorkloadsConfigMapRequest],
-        Awaitable[environments.UserWorkloadsConfigMap],
-    ]:
+    ) -> Callable[[environments.CreateUserWorkloadsConfigMapRequest], Awaitable[environments.UserWorkloadsConfigMap]]:
         r"""Return a callable for the create user workloads config
         map method over gRPC.
 
@@ -862,9 +761,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_user_workloads_config_map" not in self._stubs:
-            self._stubs[
-                "create_user_workloads_config_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_user_workloads_config_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/CreateUserWorkloadsConfigMap",
                 request_serializer=environments.CreateUserWorkloadsConfigMapRequest.serialize,
                 response_deserializer=environments.UserWorkloadsConfigMap.deserialize,
@@ -874,10 +771,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def get_user_workloads_config_map(
         self,
-    ) -> Callable[
-        [environments.GetUserWorkloadsConfigMapRequest],
-        Awaitable[environments.UserWorkloadsConfigMap],
-    ]:
+    ) -> Callable[[environments.GetUserWorkloadsConfigMapRequest], Awaitable[environments.UserWorkloadsConfigMap]]:
         r"""Return a callable for the get user workloads config map method over gRPC.
 
         Gets an existing user workloads ConfigMap.
@@ -896,9 +790,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_user_workloads_config_map" not in self._stubs:
-            self._stubs[
-                "get_user_workloads_config_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_user_workloads_config_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/GetUserWorkloadsConfigMap",
                 request_serializer=environments.GetUserWorkloadsConfigMapRequest.serialize,
                 response_deserializer=environments.UserWorkloadsConfigMap.deserialize,
@@ -908,10 +800,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def list_user_workloads_config_maps(
         self,
-    ) -> Callable[
-        [environments.ListUserWorkloadsConfigMapsRequest],
-        Awaitable[environments.ListUserWorkloadsConfigMapsResponse],
-    ]:
+    ) -> Callable[[environments.ListUserWorkloadsConfigMapsRequest], Awaitable[environments.ListUserWorkloadsConfigMapsResponse]]:
         r"""Return a callable for the list user workloads config
         maps method over gRPC.
 
@@ -931,9 +820,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_user_workloads_config_maps" not in self._stubs:
-            self._stubs[
-                "list_user_workloads_config_maps"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_user_workloads_config_maps"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ListUserWorkloadsConfigMaps",
                 request_serializer=environments.ListUserWorkloadsConfigMapsRequest.serialize,
                 response_deserializer=environments.ListUserWorkloadsConfigMapsResponse.deserialize,
@@ -943,10 +830,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def update_user_workloads_config_map(
         self,
-    ) -> Callable[
-        [environments.UpdateUserWorkloadsConfigMapRequest],
-        Awaitable[environments.UserWorkloadsConfigMap],
-    ]:
+    ) -> Callable[[environments.UpdateUserWorkloadsConfigMapRequest], Awaitable[environments.UserWorkloadsConfigMap]]:
         r"""Return a callable for the update user workloads config
         map method over gRPC.
 
@@ -966,9 +850,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_user_workloads_config_map" not in self._stubs:
-            self._stubs[
-                "update_user_workloads_config_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_user_workloads_config_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/UpdateUserWorkloadsConfigMap",
                 request_serializer=environments.UpdateUserWorkloadsConfigMapRequest.serialize,
                 response_deserializer=environments.UserWorkloadsConfigMap.deserialize,
@@ -976,11 +858,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["update_user_workloads_config_map"]
 
     @property
-    def delete_user_workloads_config_map(
-        self,
-    ) -> Callable[
-        [environments.DeleteUserWorkloadsConfigMapRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_user_workloads_config_map(self) -> Callable[[environments.DeleteUserWorkloadsConfigMapRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete user workloads config
         map method over gRPC.
 
@@ -1000,9 +878,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_user_workloads_config_map" not in self._stubs:
-            self._stubs[
-                "delete_user_workloads_config_map"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_user_workloads_config_map"] = self._logged_channel.unary_unary(
                 "/google.cloud.orchestration.airflow.service.v1beta1.Environments/DeleteUserWorkloadsConfigMap",
                 request_serializer=environments.DeleteUserWorkloadsConfigMapRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1010,11 +886,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["delete_user_workloads_config_map"]
 
     @property
-    def save_snapshot(
-        self,
-    ) -> Callable[
-        [environments.SaveSnapshotRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def save_snapshot(self) -> Callable[[environments.SaveSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the save snapshot method over gRPC.
 
         Creates a snapshots of a Cloud Composer environment.
@@ -1042,11 +914,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["save_snapshot"]
 
     @property
-    def load_snapshot(
-        self,
-    ) -> Callable[
-        [environments.LoadSnapshotRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def load_snapshot(self) -> Callable[[environments.LoadSnapshotRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the load snapshot method over gRPC.
 
         Loads a snapshot of a Cloud Composer environment.
@@ -1074,11 +942,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
         return self._stubs["load_snapshot"]
 
     @property
-    def database_failover(
-        self,
-    ) -> Callable[
-        [environments.DatabaseFailoverRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def database_failover(self) -> Callable[[environments.DatabaseFailoverRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the database failover method over gRPC.
 
         Triggers database failover (only for highly resilient
@@ -1105,10 +969,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def fetch_database_properties(
         self,
-    ) -> Callable[
-        [environments.FetchDatabasePropertiesRequest],
-        Awaitable[environments.FetchDatabasePropertiesResponse],
-    ]:
+    ) -> Callable[[environments.FetchDatabasePropertiesRequest], Awaitable[environments.FetchDatabasePropertiesResponse]]:
         r"""Return a callable for the fetch database properties method over gRPC.
 
         Fetches database properties.
@@ -1325,9 +1186,7 @@ class EnvironmentsGrpcAsyncIOTransport(EnvironmentsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

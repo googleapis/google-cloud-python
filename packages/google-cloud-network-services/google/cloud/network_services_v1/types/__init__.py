@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import (
-    EndpointMatcher,
-    EnvoyHeaders,
-    OperationMetadata,
-    TrafficPortSelector,
-)
+from .common import EndpointMatcher, EnvoyHeaders, OperationMetadata, TrafficPortSelector
 from .dep import (
     AuthzExtension,
     CreateAuthzExtensionRequest,
@@ -105,15 +100,7 @@ from .http_route import (
     ListHttpRoutesResponse,
     UpdateHttpRouteRequest,
 )
-from .mesh import (
-    CreateMeshRequest,
-    DeleteMeshRequest,
-    GetMeshRequest,
-    ListMeshesRequest,
-    ListMeshesResponse,
-    Mesh,
-    UpdateMeshRequest,
-)
+from .mesh import CreateMeshRequest, DeleteMeshRequest, GetMeshRequest, ListMeshesRequest, ListMeshesResponse, Mesh, UpdateMeshRequest
 from .route_view import (
     GatewayRouteView,
     GetGatewayRouteViewRequest,

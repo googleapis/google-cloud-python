@@ -22,9 +22,7 @@ from .grpc_asyncio import CssProductsServiceGrpcAsyncIOTransport
 from .rest import CssProductsServiceRestInterceptor, CssProductsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CssProductsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CssProductsServiceTransport]]
 _transport_registry["grpc"] = CssProductsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CssProductsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = CssProductsServiceRestTransport

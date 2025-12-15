@@ -559,9 +559,7 @@ class CertificateAuthority(proto.Message):
         proto.STRING,
         number=9,
     )
-    ca_certificate_descriptions: MutableSequence[
-        "CertificateDescription"
-    ] = proto.RepeatedField(
+    ca_certificate_descriptions: MutableSequence["CertificateDescription"] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message="CertificateDescription",
@@ -925,13 +923,11 @@ class CaPool(proto.Message):
                 oneof="key_type",
                 message="CaPool.IssuancePolicy.AllowedKeyType.RsaKeyType",
             )
-            elliptic_curve: "CaPool.IssuancePolicy.AllowedKeyType.EcKeyType" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    oneof="key_type",
-                    message="CaPool.IssuancePolicy.AllowedKeyType.EcKeyType",
-                )
+            elliptic_curve: "CaPool.IssuancePolicy.AllowedKeyType.EcKeyType" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="key_type",
+                message="CaPool.IssuancePolicy.AllowedKeyType.EcKeyType",
             )
 
         class IssuanceModes(proto.Message):
@@ -962,9 +958,7 @@ class CaPool(proto.Message):
                 number=2,
             )
 
-        allowed_key_types: MutableSequence[
-            "CaPool.IssuancePolicy.AllowedKeyType"
-        ] = proto.RepeatedField(
+        allowed_key_types: MutableSequence["CaPool.IssuancePolicy.AllowedKeyType"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="CaPool.IssuancePolicy.AllowedKeyType",

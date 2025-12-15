@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.workflows_v1 import gapic_version as package_version
 from google.cloud.workflows_v1.types import workflows
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class WorkflowsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -209,59 +199,30 @@ class WorkflowsTransport(abc.ABC):
     @property
     def list_workflows(
         self,
-    ) -> Callable[
-        [workflows.ListWorkflowsRequest],
-        Union[
-            workflows.ListWorkflowsResponse, Awaitable[workflows.ListWorkflowsResponse]
-        ],
-    ]:
+    ) -> Callable[[workflows.ListWorkflowsRequest], Union[workflows.ListWorkflowsResponse, Awaitable[workflows.ListWorkflowsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_workflow(
-        self,
-    ) -> Callable[
-        [workflows.GetWorkflowRequest],
-        Union[workflows.Workflow, Awaitable[workflows.Workflow]],
-    ]:
+    def get_workflow(self) -> Callable[[workflows.GetWorkflowRequest], Union[workflows.Workflow, Awaitable[workflows.Workflow]]]:
         raise NotImplementedError()
 
     @property
-    def create_workflow(
-        self,
-    ) -> Callable[
-        [workflows.CreateWorkflowRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_workflow(self) -> Callable[[workflows.CreateWorkflowRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_workflow(
-        self,
-    ) -> Callable[
-        [workflows.DeleteWorkflowRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_workflow(self) -> Callable[[workflows.DeleteWorkflowRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_workflow(
-        self,
-    ) -> Callable[
-        [workflows.UpdateWorkflowRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_workflow(self) -> Callable[[workflows.UpdateWorkflowRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_workflow_revisions(
         self,
     ) -> Callable[
-        [workflows.ListWorkflowRevisionsRequest],
-        Union[
-            workflows.ListWorkflowRevisionsResponse,
-            Awaitable[workflows.ListWorkflowRevisionsResponse],
-        ],
+        [workflows.ListWorkflowRevisionsRequest], Union[workflows.ListWorkflowRevisionsResponse, Awaitable[workflows.ListWorkflowRevisionsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -270,20 +231,14 @@ class WorkflowsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -295,22 +250,13 @@ class WorkflowsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

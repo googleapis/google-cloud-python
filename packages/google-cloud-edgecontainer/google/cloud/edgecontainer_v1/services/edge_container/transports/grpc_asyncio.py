@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -270,18 +259,14 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -317,9 +302,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -342,19 +325,13 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_clusters(
-        self,
-    ) -> Callable[
-        [service.ListClustersRequest], Awaitable[service.ListClustersResponse]
-    ]:
+    def list_clusters(self) -> Callable[[service.ListClustersRequest], Awaitable[service.ListClustersResponse]]:
         r"""Return a callable for the list clusters method over gRPC.
 
         Lists Clusters in a given project and location.
@@ -378,9 +355,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["list_clusters"]
 
     @property
-    def get_cluster(
-        self,
-    ) -> Callable[[service.GetClusterRequest], Awaitable[resources.Cluster]]:
+    def get_cluster(self) -> Callable[[service.GetClusterRequest], Awaitable[resources.Cluster]]:
         r"""Return a callable for the get cluster method over gRPC.
 
         Gets details of a single Cluster.
@@ -404,9 +379,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["get_cluster"]
 
     @property
-    def create_cluster(
-        self,
-    ) -> Callable[[service.CreateClusterRequest], Awaitable[operations_pb2.Operation]]:
+    def create_cluster(self) -> Callable[[service.CreateClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create cluster method over gRPC.
 
         Creates a new Cluster in a given project and
@@ -431,9 +404,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["create_cluster"]
 
     @property
-    def update_cluster(
-        self,
-    ) -> Callable[[service.UpdateClusterRequest], Awaitable[operations_pb2.Operation]]:
+    def update_cluster(self) -> Callable[[service.UpdateClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update cluster method over gRPC.
 
         Updates the parameters of a single Cluster.
@@ -457,9 +428,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["update_cluster"]
 
     @property
-    def upgrade_cluster(
-        self,
-    ) -> Callable[[service.UpgradeClusterRequest], Awaitable[operations_pb2.Operation]]:
+    def upgrade_cluster(self) -> Callable[[service.UpgradeClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the upgrade cluster method over gRPC.
 
         Upgrades a single cluster.
@@ -483,9 +452,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["upgrade_cluster"]
 
     @property
-    def delete_cluster(
-        self,
-    ) -> Callable[[service.DeleteClusterRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_cluster(self) -> Callable[[service.DeleteClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete cluster method over gRPC.
 
         Deletes a single Cluster.
@@ -509,12 +476,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["delete_cluster"]
 
     @property
-    def generate_access_token(
-        self,
-    ) -> Callable[
-        [service.GenerateAccessTokenRequest],
-        Awaitable[service.GenerateAccessTokenResponse],
-    ]:
+    def generate_access_token(self) -> Callable[[service.GenerateAccessTokenRequest], Awaitable[service.GenerateAccessTokenResponse]]:
         r"""Return a callable for the generate access token method over gRPC.
 
         Generates an access token for a Cluster.
@@ -540,10 +502,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
     @property
     def generate_offline_credential(
         self,
-    ) -> Callable[
-        [service.GenerateOfflineCredentialRequest],
-        Awaitable[service.GenerateOfflineCredentialResponse],
-    ]:
+    ) -> Callable[[service.GenerateOfflineCredentialRequest], Awaitable[service.GenerateOfflineCredentialResponse]]:
         r"""Return a callable for the generate offline credential method over gRPC.
 
         Generates an offline credential for a Cluster.
@@ -559,9 +518,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_offline_credential" not in self._stubs:
-            self._stubs[
-                "generate_offline_credential"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_offline_credential"] = self._logged_channel.unary_unary(
                 "/google.cloud.edgecontainer.v1.EdgeContainer/GenerateOfflineCredential",
                 request_serializer=service.GenerateOfflineCredentialRequest.serialize,
                 response_deserializer=service.GenerateOfflineCredentialResponse.deserialize,
@@ -569,11 +526,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["generate_offline_credential"]
 
     @property
-    def list_node_pools(
-        self,
-    ) -> Callable[
-        [service.ListNodePoolsRequest], Awaitable[service.ListNodePoolsResponse]
-    ]:
+    def list_node_pools(self) -> Callable[[service.ListNodePoolsRequest], Awaitable[service.ListNodePoolsResponse]]:
         r"""Return a callable for the list node pools method over gRPC.
 
         Lists NodePools in a given project and location.
@@ -597,9 +550,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["list_node_pools"]
 
     @property
-    def get_node_pool(
-        self,
-    ) -> Callable[[service.GetNodePoolRequest], Awaitable[resources.NodePool]]:
+    def get_node_pool(self) -> Callable[[service.GetNodePoolRequest], Awaitable[resources.NodePool]]:
         r"""Return a callable for the get node pool method over gRPC.
 
         Gets details of a single NodePool.
@@ -623,9 +574,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["get_node_pool"]
 
     @property
-    def create_node_pool(
-        self,
-    ) -> Callable[[service.CreateNodePoolRequest], Awaitable[operations_pb2.Operation]]:
+    def create_node_pool(self) -> Callable[[service.CreateNodePoolRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create node pool method over gRPC.
 
         Creates a new NodePool in a given project and
@@ -650,9 +599,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["create_node_pool"]
 
     @property
-    def update_node_pool(
-        self,
-    ) -> Callable[[service.UpdateNodePoolRequest], Awaitable[operations_pb2.Operation]]:
+    def update_node_pool(self) -> Callable[[service.UpdateNodePoolRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update node pool method over gRPC.
 
         Updates the parameters of a single NodePool.
@@ -676,9 +623,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["update_node_pool"]
 
     @property
-    def delete_node_pool(
-        self,
-    ) -> Callable[[service.DeleteNodePoolRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_node_pool(self) -> Callable[[service.DeleteNodePoolRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete node pool method over gRPC.
 
         Deletes a single NodePool.
@@ -702,11 +647,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["delete_node_pool"]
 
     @property
-    def list_machines(
-        self,
-    ) -> Callable[
-        [service.ListMachinesRequest], Awaitable[service.ListMachinesResponse]
-    ]:
+    def list_machines(self) -> Callable[[service.ListMachinesRequest], Awaitable[service.ListMachinesResponse]]:
         r"""Return a callable for the list machines method over gRPC.
 
         Lists Machines in a given project and location.
@@ -730,9 +671,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["list_machines"]
 
     @property
-    def get_machine(
-        self,
-    ) -> Callable[[service.GetMachineRequest], Awaitable[resources.Machine]]:
+    def get_machine(self) -> Callable[[service.GetMachineRequest], Awaitable[resources.Machine]]:
         r"""Return a callable for the get machine method over gRPC.
 
         Gets details of a single Machine.
@@ -756,12 +695,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["get_machine"]
 
     @property
-    def list_vpn_connections(
-        self,
-    ) -> Callable[
-        [service.ListVpnConnectionsRequest],
-        Awaitable[service.ListVpnConnectionsResponse],
-    ]:
+    def list_vpn_connections(self) -> Callable[[service.ListVpnConnectionsRequest], Awaitable[service.ListVpnConnectionsResponse]]:
         r"""Return a callable for the list vpn connections method over gRPC.
 
         Lists VPN connections in a given project and
@@ -786,11 +720,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["list_vpn_connections"]
 
     @property
-    def get_vpn_connection(
-        self,
-    ) -> Callable[
-        [service.GetVpnConnectionRequest], Awaitable[resources.VpnConnection]
-    ]:
+    def get_vpn_connection(self) -> Callable[[service.GetVpnConnectionRequest], Awaitable[resources.VpnConnection]]:
         r"""Return a callable for the get vpn connection method over gRPC.
 
         Gets details of a single VPN connection.
@@ -814,11 +744,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["get_vpn_connection"]
 
     @property
-    def create_vpn_connection(
-        self,
-    ) -> Callable[
-        [service.CreateVpnConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_vpn_connection(self) -> Callable[[service.CreateVpnConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create vpn connection method over gRPC.
 
         Creates a new VPN connection in a given project and
@@ -843,11 +769,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["create_vpn_connection"]
 
     @property
-    def delete_vpn_connection(
-        self,
-    ) -> Callable[
-        [service.DeleteVpnConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_vpn_connection(self) -> Callable[[service.DeleteVpnConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete vpn connection method over gRPC.
 
         Deletes a single VPN connection.
@@ -871,9 +793,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
         return self._stubs["delete_vpn_connection"]
 
     @property
-    def get_server_config(
-        self,
-    ) -> Callable[[service.GetServerConfigRequest], Awaitable[resources.ServerConfig]]:
+    def get_server_config(self) -> Callable[[service.GetServerConfigRequest], Awaitable[resources.ServerConfig]]:
         r"""Return a callable for the get server config method over gRPC.
 
         Gets the server config.
@@ -1196,9 +1116,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1215,9 +1133,7 @@ class EdgeContainerGrpcAsyncIOTransport(EdgeContainerTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

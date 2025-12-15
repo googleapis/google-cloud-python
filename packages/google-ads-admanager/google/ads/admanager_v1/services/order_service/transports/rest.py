@@ -96,9 +96,7 @@ class OrderServiceRestInterceptor:
     """
 
     def pre_get_order(
-        self,
-        request: order_service.GetOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: order_service.GetOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[order_service.GetOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_order
 
@@ -121,9 +119,7 @@ class OrderServiceRestInterceptor:
         return response
 
     def post_get_order_with_metadata(
-        self,
-        response: order_messages.Order,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: order_messages.Order, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[order_messages.Order, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_order
 
@@ -140,12 +136,8 @@ class OrderServiceRestInterceptor:
         return response, metadata
 
     def pre_list_orders(
-        self,
-        request: order_service.ListOrdersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        order_service.ListOrdersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: order_service.ListOrdersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[order_service.ListOrdersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_orders
 
         Override in a subclass to manipulate the request or metadata
@@ -153,9 +145,7 @@ class OrderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_orders(
-        self, response: order_service.ListOrdersResponse
-    ) -> order_service.ListOrdersResponse:
+    def post_list_orders(self, response: order_service.ListOrdersResponse) -> order_service.ListOrdersResponse:
         """Post-rpc interceptor for list_orders
 
         DEPRECATED. Please use the `post_list_orders_with_metadata`
@@ -169,12 +159,8 @@ class OrderServiceRestInterceptor:
         return response
 
     def post_list_orders_with_metadata(
-        self,
-        response: order_service.ListOrdersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        order_service.ListOrdersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: order_service.ListOrdersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[order_service.ListOrdersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_orders
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -190,12 +176,8 @@ class OrderServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -203,9 +185,7 @@ class OrderServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -294,9 +274,7 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OrderServiceRestInterceptor()
@@ -307,15 +285,7 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
             return hash("OrderServiceRestTransport.GetOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -354,30 +324,16 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
                     The ``Order`` resource.
             """
 
-            http_options = (
-                _BaseOrderServiceRestTransport._BaseGetOrder._get_http_options()
-            )
+            http_options = _BaseOrderServiceRestTransport._BaseGetOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_get_order(request, metadata)
-            transcoded_request = (
-                _BaseOrderServiceRestTransport._BaseGetOrder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrderServiceRestTransport._BaseGetOrder._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrderServiceRestTransport._BaseGetOrder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrderServiceRestTransport._BaseGetOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -401,12 +357,7 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
 
             # Send the request
             response = OrderServiceRestTransport._GetOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -422,12 +373,8 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
 
             resp = self._interceptor.post_get_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = order_messages.Order.to_json(response)
                 except:
@@ -448,22 +395,12 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
                 )
             return resp
 
-    class _ListOrders(
-        _BaseOrderServiceRestTransport._BaseListOrders, OrderServiceRestStub
-    ):
+    class _ListOrders(_BaseOrderServiceRestTransport._BaseListOrders, OrderServiceRestStub):
         def __hash__(self):
             return hash("OrderServiceRestTransport.ListOrders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -504,30 +441,16 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOrderServiceRestTransport._BaseListOrders._get_http_options()
-            )
+            http_options = _BaseOrderServiceRestTransport._BaseListOrders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_orders(request, metadata)
-            transcoded_request = (
-                _BaseOrderServiceRestTransport._BaseListOrders._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseOrderServiceRestTransport._BaseListOrders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrderServiceRestTransport._BaseListOrders._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrderServiceRestTransport._BaseListOrders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -551,12 +474,7 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
 
             # Send the request
             response = OrderServiceRestTransport._ListOrders._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -572,16 +490,10 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
 
             resp = self._interceptor.post_list_orders(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_orders_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_orders_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = order_service.ListOrdersResponse.to_json(
-                        response
-                    )
+                    response_payload = order_service.ListOrdersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -601,17 +513,13 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
             return resp
 
     @property
-    def get_order(
-        self,
-    ) -> Callable[[order_service.GetOrderRequest], order_messages.Order]:
+    def get_order(self) -> Callable[[order_service.GetOrderRequest], order_messages.Order]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_orders(
-        self,
-    ) -> Callable[[order_service.ListOrdersRequest], order_service.ListOrdersResponse]:
+    def list_orders(self) -> Callable[[order_service.ListOrdersRequest], order_service.ListOrdersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrders(self._session, self._host, self._interceptor)  # type: ignore
@@ -620,22 +528,12 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOrderServiceRestTransport._BaseGetOperation, OrderServiceRestStub
-    ):
+    class _GetOperation(_BaseOrderServiceRestTransport._BaseGetOperation, OrderServiceRestStub):
         def __hash__(self):
             return hash("OrderServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -673,28 +571,16 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOrderServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOrderServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOrderServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOrderServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseOrderServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseOrderServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -718,12 +604,7 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
 
             # Send the request
             response = OrderServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -735,9 +616,7 @@ class OrderServiceRestTransport(_BaseOrderServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

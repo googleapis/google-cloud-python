@@ -16,20 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    AsyncIterable,
-    Awaitable,
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import AsyncIterable, Awaitable, Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -51,14 +38,8 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1.services.conversational_search_service import (
-    pagers,
-)
-from google.cloud.discoveryengine_v1.types import (
-    conversational_search_service,
-    safety,
-    search_service,
-)
+from google.cloud.discoveryengine_v1.services.conversational_search_service import pagers
+from google.cloud.discoveryengine_v1.types import conversational_search_service, safety, search_service
 from google.cloud.discoveryengine_v1.types import conversation as gcd_conversation
 from google.cloud.discoveryengine_v1.types import answer
 from google.cloud.discoveryengine_v1.types import conversation
@@ -88,77 +69,35 @@ class ConversationalSearchServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = ConversationalSearchServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = ConversationalSearchServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        ConversationalSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = ConversationalSearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ConversationalSearchServiceClient._DEFAULT_UNIVERSE
 
     answer_path = staticmethod(ConversationalSearchServiceClient.answer_path)
-    parse_answer_path = staticmethod(
-        ConversationalSearchServiceClient.parse_answer_path
-    )
-    assist_answer_path = staticmethod(
-        ConversationalSearchServiceClient.assist_answer_path
-    )
-    parse_assist_answer_path = staticmethod(
-        ConversationalSearchServiceClient.parse_assist_answer_path
-    )
+    parse_answer_path = staticmethod(ConversationalSearchServiceClient.parse_answer_path)
+    assist_answer_path = staticmethod(ConversationalSearchServiceClient.assist_answer_path)
+    parse_assist_answer_path = staticmethod(ConversationalSearchServiceClient.parse_assist_answer_path)
     chunk_path = staticmethod(ConversationalSearchServiceClient.chunk_path)
     parse_chunk_path = staticmethod(ConversationalSearchServiceClient.parse_chunk_path)
-    conversation_path = staticmethod(
-        ConversationalSearchServiceClient.conversation_path
-    )
-    parse_conversation_path = staticmethod(
-        ConversationalSearchServiceClient.parse_conversation_path
-    )
+    conversation_path = staticmethod(ConversationalSearchServiceClient.conversation_path)
+    parse_conversation_path = staticmethod(ConversationalSearchServiceClient.parse_conversation_path)
     data_store_path = staticmethod(ConversationalSearchServiceClient.data_store_path)
-    parse_data_store_path = staticmethod(
-        ConversationalSearchServiceClient.parse_data_store_path
-    )
+    parse_data_store_path = staticmethod(ConversationalSearchServiceClient.parse_data_store_path)
     document_path = staticmethod(ConversationalSearchServiceClient.document_path)
-    parse_document_path = staticmethod(
-        ConversationalSearchServiceClient.parse_document_path
-    )
-    serving_config_path = staticmethod(
-        ConversationalSearchServiceClient.serving_config_path
-    )
-    parse_serving_config_path = staticmethod(
-        ConversationalSearchServiceClient.parse_serving_config_path
-    )
+    parse_document_path = staticmethod(ConversationalSearchServiceClient.parse_document_path)
+    serving_config_path = staticmethod(ConversationalSearchServiceClient.serving_config_path)
+    parse_serving_config_path = staticmethod(ConversationalSearchServiceClient.parse_serving_config_path)
     session_path = staticmethod(ConversationalSearchServiceClient.session_path)
-    parse_session_path = staticmethod(
-        ConversationalSearchServiceClient.parse_session_path
-    )
-    common_billing_account_path = staticmethod(
-        ConversationalSearchServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ConversationalSearchServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        ConversationalSearchServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        ConversationalSearchServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ConversationalSearchServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ConversationalSearchServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        ConversationalSearchServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        ConversationalSearchServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        ConversationalSearchServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        ConversationalSearchServiceClient.parse_common_location_path
-    )
+    parse_session_path = staticmethod(ConversationalSearchServiceClient.parse_session_path)
+    common_billing_account_path = staticmethod(ConversationalSearchServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ConversationalSearchServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(ConversationalSearchServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(ConversationalSearchServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ConversationalSearchServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ConversationalSearchServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(ConversationalSearchServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(ConversationalSearchServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(ConversationalSearchServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(ConversationalSearchServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -194,9 +133,7 @@ class ConversationalSearchServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -263,13 +200,7 @@ class ConversationalSearchServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ConversationalSearchServiceTransport,
-                Callable[..., ConversationalSearchServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ConversationalSearchServiceTransport, Callable[..., ConversationalSearchServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -329,20 +260,14 @@ class ConversationalSearchServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.discoveryengine_v1.ConversationalSearchServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.discoveryengine.v1.ConversationalSearchService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -353,9 +278,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def converse_conversation(
         self,
-        request: Optional[
-            Union[conversational_search_service.ConverseConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.ConverseConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         query: Optional[conversation.TextInput] = None,
@@ -433,20 +356,13 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name, query]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversational_search_service.ConverseConversationRequest
-        ):
+        if not isinstance(request, conversational_search_service.ConverseConversationRequest):
             request = conversational_search_service.ConverseConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -458,15 +374,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.converse_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.converse_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -484,9 +396,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def create_conversation(
         self,
-        request: Optional[
-            Union[conversational_search_service.CreateConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.CreateConversationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         conversation: Optional[gcd_conversation.Conversation] = None,
@@ -561,20 +471,13 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, conversation]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversational_search_service.CreateConversationRequest
-        ):
+        if not isinstance(request, conversational_search_service.CreateConversationRequest):
             request = conversational_search_service.CreateConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -586,15 +489,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -612,9 +511,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def delete_conversation(
         self,
-        request: Optional[
-            Union[conversational_search_service.DeleteConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.DeleteConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -674,20 +571,13 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversational_search_service.DeleteConversationRequest
-        ):
+        if not isinstance(request, conversational_search_service.DeleteConversationRequest):
             request = conversational_search_service.DeleteConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -697,15 +587,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -720,9 +606,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def update_conversation(
         self,
-        request: Optional[
-            Union[conversational_search_service.UpdateConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.UpdateConversationRequest, dict]] = None,
         *,
         conversation: Optional[gcd_conversation.Conversation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -801,20 +685,13 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [conversation, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversational_search_service.UpdateConversationRequest
-        ):
+        if not isinstance(request, conversational_search_service.UpdateConversationRequest):
             request = conversational_search_service.UpdateConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -826,17 +703,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation.name", request.conversation.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("conversation.name", request.conversation.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -854,9 +725,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def get_conversation(
         self,
-        request: Optional[
-            Union[conversational_search_service.GetConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.GetConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -920,20 +789,13 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversational_search_service.GetConversationRequest
-        ):
+        if not isinstance(request, conversational_search_service.GetConversationRequest):
             request = conversational_search_service.GetConversationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -943,15 +805,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -969,9 +827,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def list_conversations(
         self,
-        request: Optional[
-            Union[conversational_search_service.ListConversationsRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.ListConversationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1039,20 +895,13 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, conversational_search_service.ListConversationsRequest
-        ):
+        if not isinstance(request, conversational_search_service.ListConversationsRequest):
             request = conversational_search_service.ListConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1062,15 +911,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_conversations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_conversations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1099,9 +944,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def answer_query(
         self,
-        request: Optional[
-            Union[conversational_search_service.AnswerQueryRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.AnswerQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1167,17 +1010,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.answer_query
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.answer_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("serving_config", request.serving_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("serving_config", request.serving_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1195,9 +1032,7 @@ class ConversationalSearchServiceAsyncClient:
 
     def stream_answer_query(
         self,
-        request: Optional[
-            Union[conversational_search_service.AnswerQueryRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.AnswerQueryRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1270,17 +1105,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.stream_answer_query
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.stream_answer_query]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("serving_config", request.serving_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("serving_config", request.serving_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1298,9 +1127,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def get_answer(
         self,
-        request: Optional[
-            Union[conversational_search_service.GetAnswerRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.GetAnswerRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1362,14 +1189,9 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1383,15 +1205,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_answer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_answer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1409,9 +1227,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def create_session(
         self,
-        request: Optional[
-            Union[conversational_search_service.CreateSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.CreateSessionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         session: Optional[gcd_session.Session] = None,
@@ -1482,14 +1298,9 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, session]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1505,15 +1316,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1531,9 +1338,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def delete_session(
         self,
-        request: Optional[
-            Union[conversational_search_service.DeleteSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.DeleteSessionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1591,14 +1396,9 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1612,15 +1412,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1635,9 +1431,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def update_session(
         self,
-        request: Optional[
-            Union[conversational_search_service.UpdateSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.UpdateSessionRequest, dict]] = None,
         *,
         session: Optional[gcd_session.Session] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1713,14 +1507,9 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [session, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1736,17 +1525,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("session.name", request.session.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("session.name", request.session.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1764,9 +1547,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def get_session(
         self,
-        request: Optional[
-            Union[conversational_search_service.GetSessionRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.GetSessionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1828,14 +1609,9 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1849,15 +1625,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_session
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_session]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1875,9 +1647,7 @@ class ConversationalSearchServiceAsyncClient:
 
     async def list_sessions(
         self,
-        request: Optional[
-            Union[conversational_search_service.ListSessionsRequest, dict]
-        ] = None,
+        request: Optional[Union[conversational_search_service.ListSessionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1945,14 +1715,9 @@ class ConversationalSearchServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1966,15 +1731,11 @@ class ConversationalSearchServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_sessions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sessions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2038,9 +1799,7 @@ class ConversationalSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2093,9 +1852,7 @@ class ConversationalSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2151,9 +1908,7 @@ class ConversationalSearchServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2173,9 +1928,7 @@ class ConversationalSearchServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

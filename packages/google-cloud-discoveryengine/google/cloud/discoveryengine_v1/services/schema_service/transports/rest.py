@@ -121,12 +121,8 @@ class SchemaServiceRestInterceptor:
     """
 
     def pre_create_schema(
-        self,
-        request: schema_service.CreateSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_service.CreateSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_service.CreateSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_service.CreateSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -134,9 +130,7 @@ class SchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_schema(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_schema(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_schema
 
         DEPRECATED. Please use the `post_create_schema_with_metadata`
@@ -150,9 +144,7 @@ class SchemaServiceRestInterceptor:
         return response
 
     def post_create_schema_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_schema
 
@@ -169,12 +161,8 @@ class SchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_schema(
-        self,
-        request: schema_service.DeleteSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_service.DeleteSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_service.DeleteSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_service.DeleteSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -182,9 +170,7 @@ class SchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_schema(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_schema(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_schema
 
         DEPRECATED. Please use the `post_delete_schema_with_metadata`
@@ -198,9 +184,7 @@ class SchemaServiceRestInterceptor:
         return response
 
     def post_delete_schema_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_schema
 
@@ -217,12 +201,8 @@ class SchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_get_schema(
-        self,
-        request: schema_service.GetSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_service.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_service.GetSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_service.GetSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -261,12 +241,8 @@ class SchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_list_schemas(
-        self,
-        request: schema_service.ListSchemasRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_service.ListSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_service.ListSchemasRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_service.ListSchemasRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_schemas
 
         Override in a subclass to manipulate the request or metadata
@@ -274,9 +250,7 @@ class SchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_schemas(
-        self, response: schema_service.ListSchemasResponse
-    ) -> schema_service.ListSchemasResponse:
+    def post_list_schemas(self, response: schema_service.ListSchemasResponse) -> schema_service.ListSchemasResponse:
         """Post-rpc interceptor for list_schemas
 
         DEPRECATED. Please use the `post_list_schemas_with_metadata`
@@ -290,12 +264,8 @@ class SchemaServiceRestInterceptor:
         return response
 
     def post_list_schemas_with_metadata(
-        self,
-        response: schema_service.ListSchemasResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_service.ListSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: schema_service.ListSchemasResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_service.ListSchemasResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_schemas
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -311,12 +281,8 @@ class SchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_update_schema(
-        self,
-        request: schema_service.UpdateSchemaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        schema_service.UpdateSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: schema_service.UpdateSchemaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[schema_service.UpdateSchemaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_schema
 
         Override in a subclass to manipulate the request or metadata
@@ -324,9 +290,7 @@ class SchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_schema(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_schema(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_schema
 
         DEPRECATED. Please use the `post_update_schema_with_metadata`
@@ -340,9 +304,7 @@ class SchemaServiceRestInterceptor:
         return response
 
     def post_update_schema_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_schema
 
@@ -359,12 +321,8 @@ class SchemaServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -382,12 +340,8 @@ class SchemaServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -395,9 +349,7 @@ class SchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -407,12 +359,8 @@ class SchemaServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -420,9 +368,7 @@ class SchemaServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -512,9 +458,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -696,29 +640,17 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateSchema(
-        _BaseSchemaServiceRestTransport._BaseCreateSchema, SchemaServiceRestStub
-    ):
+    class _CreateSchema(_BaseSchemaServiceRestTransport._BaseCreateSchema, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.CreateSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -763,30 +695,18 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseCreateSchema._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_create_schema(request, metadata)
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_transcoded_request(http_options, request)
 
-            body = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseCreateSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -810,13 +730,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._CreateSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -830,12 +744,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             resp = self._interceptor.post_create_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -856,22 +766,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 )
             return resp
 
-    class _DeleteSchema(
-        _BaseSchemaServiceRestTransport._BaseDeleteSchema, SchemaServiceRestStub
-    ):
+    class _DeleteSchema(_BaseSchemaServiceRestTransport._BaseDeleteSchema, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.DeleteSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -915,26 +815,16 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_schema(request, metadata)
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseDeleteSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -958,12 +848,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._DeleteSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -977,12 +862,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             resp = self._interceptor.post_delete_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1003,22 +884,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 )
             return resp
 
-    class _GetSchema(
-        _BaseSchemaServiceRestTransport._BaseGetSchema, SchemaServiceRestStub
-    ):
+    class _GetSchema(_BaseSchemaServiceRestTransport._BaseGetSchema, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.GetSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1061,30 +932,16 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseGetSchema._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseGetSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_get_schema(request, metadata)
-            transcoded_request = (
-                _BaseSchemaServiceRestTransport._BaseGetSchema._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseGetSchema._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSchemaServiceRestTransport._BaseGetSchema._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseGetSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1108,12 +965,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._GetSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1129,12 +981,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             resp = self._interceptor.post_get_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = schema.Schema.to_json(response)
                 except:
@@ -1155,22 +1003,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 )
             return resp
 
-    class _ListSchemas(
-        _BaseSchemaServiceRestTransport._BaseListSchemas, SchemaServiceRestStub
-    ):
+    class _ListSchemas(_BaseSchemaServiceRestTransport._BaseListSchemas, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.ListSchemas")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1214,28 +1052,16 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseListSchemas._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseListSchemas._get_http_options()
 
             request, metadata = self._interceptor.pre_list_schemas(request, metadata)
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseListSchemas._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseListSchemas._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSchemaServiceRestTransport._BaseListSchemas._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseListSchemas._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1259,12 +1085,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._ListSchemas._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1280,16 +1101,10 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             resp = self._interceptor.post_list_schemas(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_schemas_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_schemas_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = schema_service.ListSchemasResponse.to_json(
-                        response
-                    )
+                    response_payload = schema_service.ListSchemasResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1308,22 +1123,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSchema(
-        _BaseSchemaServiceRestTransport._BaseUpdateSchema, SchemaServiceRestStub
-    ):
+    class _UpdateSchema(_BaseSchemaServiceRestTransport._BaseUpdateSchema, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.UpdateSchema")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1368,30 +1173,18 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_http_options()
 
             request, metadata = self._interceptor.pre_update_schema(request, metadata)
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_transcoded_request(http_options, request)
 
-            body = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseUpdateSchema._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1415,13 +1208,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._UpdateSchema._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1435,12 +1222,8 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             resp = self._interceptor.post_update_schema(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_schema_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_schema_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1462,17 +1245,13 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             return resp
 
     @property
-    def create_schema(
-        self,
-    ) -> Callable[[schema_service.CreateSchemaRequest], operations_pb2.Operation]:
+    def create_schema(self) -> Callable[[schema_service.CreateSchemaRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_schema(
-        self,
-    ) -> Callable[[schema_service.DeleteSchemaRequest], operations_pb2.Operation]:
+    def delete_schema(self) -> Callable[[schema_service.DeleteSchemaRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSchema(self._session, self._host, self._interceptor)  # type: ignore
@@ -1484,19 +1263,13 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
         return self._GetSchema(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_schemas(
-        self,
-    ) -> Callable[
-        [schema_service.ListSchemasRequest], schema_service.ListSchemasResponse
-    ]:
+    def list_schemas(self) -> Callable[[schema_service.ListSchemasRequest], schema_service.ListSchemasResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSchemas(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_schema(
-        self,
-    ) -> Callable[[schema_service.UpdateSchemaRequest], operations_pb2.Operation]:
+    def update_schema(self) -> Callable[[schema_service.UpdateSchemaRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSchema(self._session, self._host, self._interceptor)  # type: ignore
@@ -1505,22 +1278,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSchemaServiceRestTransport._BaseCancelOperation, SchemaServiceRestStub
-    ):
+    class _CancelOperation(_BaseSchemaServiceRestTransport._BaseCancelOperation, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1556,32 +1319,18 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1605,13 +1354,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1625,22 +1368,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSchemaServiceRestTransport._BaseGetOperation, SchemaServiceRestStub
-    ):
+    class _GetOperation(_BaseSchemaServiceRestTransport._BaseGetOperation, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1678,26 +1411,16 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSchemaServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1721,12 +1444,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1738,9 +1456,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1765,22 +1481,12 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSchemaServiceRestTransport._BaseListOperations, SchemaServiceRestStub
-    ):
+    class _ListOperations(_BaseSchemaServiceRestTransport._BaseListOperations, SchemaServiceRestStub):
         def __hash__(self):
             return hash("SchemaServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1818,26 +1524,16 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSchemaServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSchemaServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSchemaServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSchemaServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSchemaServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSchemaServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1861,12 +1557,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
 
             # Send the request
             response = SchemaServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1878,9 +1569,7 @@ class SchemaServiceRestTransport(_BaseSchemaServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

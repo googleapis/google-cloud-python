@@ -30,9 +30,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.developerconnect_v1.types import (
-    insights_config as gcd_insights_config,
-)
+from google.cloud.developerconnect_v1.types import insights_config as gcd_insights_config
 from google.cloud.developerconnect_v1.types import insights_config
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -124,13 +122,8 @@ class InsightsConfigServiceRestInterceptor:
     """
 
     def pre_create_insights_config(
-        self,
-        request: gcd_insights_config.CreateInsightsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_insights_config.CreateInsightsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcd_insights_config.CreateInsightsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_insights_config.CreateInsightsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_insights_config
 
         Override in a subclass to manipulate the request or metadata
@@ -138,9 +131,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_insights_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_insights_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_insights_config
 
         DEPRECATED. Please use the `post_create_insights_config_with_metadata`
@@ -154,9 +145,7 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def post_create_insights_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_insights_config
 
@@ -173,13 +162,8 @@ class InsightsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_insights_config(
-        self,
-        request: insights_config.DeleteInsightsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        insights_config.DeleteInsightsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: insights_config.DeleteInsightsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[insights_config.DeleteInsightsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_insights_config
 
         Override in a subclass to manipulate the request or metadata
@@ -187,9 +171,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_insights_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_insights_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_insights_config
 
         DEPRECATED. Please use the `post_delete_insights_config_with_metadata`
@@ -203,9 +185,7 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def post_delete_insights_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_insights_config
 
@@ -222,13 +202,8 @@ class InsightsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_get_insights_config(
-        self,
-        request: insights_config.GetInsightsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        insights_config.GetInsightsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: insights_config.GetInsightsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[insights_config.GetInsightsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_insights_config
 
         Override in a subclass to manipulate the request or metadata
@@ -236,9 +211,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_insights_config(
-        self, response: insights_config.InsightsConfig
-    ) -> insights_config.InsightsConfig:
+    def post_get_insights_config(self, response: insights_config.InsightsConfig) -> insights_config.InsightsConfig:
         """Post-rpc interceptor for get_insights_config
 
         DEPRECATED. Please use the `post_get_insights_config_with_metadata`
@@ -252,9 +225,7 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def post_get_insights_config_with_metadata(
-        self,
-        response: insights_config.InsightsConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: insights_config.InsightsConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[insights_config.InsightsConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_insights_config
 
@@ -271,13 +242,8 @@ class InsightsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_list_insights_configs(
-        self,
-        request: insights_config.ListInsightsConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        insights_config.ListInsightsConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: insights_config.ListInsightsConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[insights_config.ListInsightsConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_insights_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -285,9 +251,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_insights_configs(
-        self, response: insights_config.ListInsightsConfigsResponse
-    ) -> insights_config.ListInsightsConfigsResponse:
+    def post_list_insights_configs(self, response: insights_config.ListInsightsConfigsResponse) -> insights_config.ListInsightsConfigsResponse:
         """Post-rpc interceptor for list_insights_configs
 
         DEPRECATED. Please use the `post_list_insights_configs_with_metadata`
@@ -301,13 +265,8 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def post_list_insights_configs_with_metadata(
-        self,
-        response: insights_config.ListInsightsConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        insights_config.ListInsightsConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: insights_config.ListInsightsConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[insights_config.ListInsightsConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_insights_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -323,13 +282,8 @@ class InsightsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_update_insights_config(
-        self,
-        request: insights_config.UpdateInsightsConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        insights_config.UpdateInsightsConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: insights_config.UpdateInsightsConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[insights_config.UpdateInsightsConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_insights_config
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +291,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_insights_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_insights_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_insights_config
 
         DEPRECATED. Please use the `post_update_insights_config_with_metadata`
@@ -353,9 +305,7 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def post_update_insights_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_insights_config
 
@@ -372,12 +322,8 @@ class InsightsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -385,9 +331,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -397,12 +341,8 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -410,9 +350,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -422,12 +360,8 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -445,12 +379,8 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -468,12 +398,8 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -481,9 +407,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -493,12 +417,8 @@ class InsightsConfigServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -506,9 +426,7 @@ class InsightsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -606,9 +524,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -661,30 +577,17 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateInsightsConfig(
-        _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig,
-        InsightsConfigServiceRestStub,
-    ):
+    class _CreateInsightsConfig(_BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.CreateInsightsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -728,32 +631,18 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_insights_config(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_insights_config(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseCreateInsightsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -776,16 +665,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._CreateInsightsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InsightsConfigServiceRestTransport._CreateInsightsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -799,12 +680,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             resp = self._interceptor.post_create_insights_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_insights_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_insights_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -825,23 +702,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
             return resp
 
-    class _DeleteInsightsConfig(
-        _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig,
-        InsightsConfigServiceRestStub,
-    ):
+    class _DeleteInsightsConfig(_BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.DeleteInsightsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -884,28 +750,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_insights_config(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_insights_config(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseDeleteInsightsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -928,15 +782,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._DeleteInsightsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InsightsConfigServiceRestTransport._DeleteInsightsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -950,12 +797,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             resp = self._interceptor.post_delete_insights_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_insights_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_insights_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -976,23 +819,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
             return resp
 
-    class _GetInsightsConfig(
-        _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig,
-        InsightsConfigServiceRestStub,
-    ):
+    class _GetInsightsConfig(_BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.GetInsightsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1040,28 +872,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_insights_config(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_insights_config(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetInsightsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1084,15 +904,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._GetInsightsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InsightsConfigServiceRestTransport._GetInsightsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1108,12 +921,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             resp = self._interceptor.post_get_insights_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_insights_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_insights_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = insights_config.InsightsConfig.to_json(response)
                 except:
@@ -1134,23 +943,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
             return resp
 
-    class _ListInsightsConfigs(
-        _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs,
-        InsightsConfigServiceRestStub,
-    ):
+    class _ListInsightsConfigs(_BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.ListInsightsConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1192,28 +990,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_insights_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_insights_configs(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseListInsightsConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1236,15 +1022,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._ListInsightsConfigs._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InsightsConfigServiceRestTransport._ListInsightsConfigs._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1260,16 +1039,10 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             resp = self._interceptor.post_list_insights_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_insights_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_insights_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        insights_config.ListInsightsConfigsResponse.to_json(response)
-                    )
+                    response_payload = insights_config.ListInsightsConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1288,23 +1061,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
             return resp
 
-    class _UpdateInsightsConfig(
-        _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig,
-        InsightsConfigServiceRestStub,
-    ):
+    class _UpdateInsightsConfig(_BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.UpdateInsightsConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1348,32 +1110,18 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_insights_config(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_insights_config(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseUpdateInsightsConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1396,16 +1144,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._UpdateInsightsConfig._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InsightsConfigServiceRestTransport._UpdateInsightsConfig._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1419,12 +1159,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             resp = self._interceptor.post_update_insights_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_insights_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_insights_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1446,52 +1182,31 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
             return resp
 
     @property
-    def create_insights_config(
-        self,
-    ) -> Callable[
-        [gcd_insights_config.CreateInsightsConfigRequest], operations_pb2.Operation
-    ]:
+    def create_insights_config(self) -> Callable[[gcd_insights_config.CreateInsightsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInsightsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_insights_config(
-        self,
-    ) -> Callable[
-        [insights_config.DeleteInsightsConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_insights_config(self) -> Callable[[insights_config.DeleteInsightsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInsightsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_insights_config(
-        self,
-    ) -> Callable[
-        [insights_config.GetInsightsConfigRequest], insights_config.InsightsConfig
-    ]:
+    def get_insights_config(self) -> Callable[[insights_config.GetInsightsConfigRequest], insights_config.InsightsConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInsightsConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_insights_configs(
-        self,
-    ) -> Callable[
-        [insights_config.ListInsightsConfigsRequest],
-        insights_config.ListInsightsConfigsResponse,
-    ]:
+    def list_insights_configs(self) -> Callable[[insights_config.ListInsightsConfigsRequest], insights_config.ListInsightsConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInsightsConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_insights_config(
-        self,
-    ) -> Callable[
-        [insights_config.UpdateInsightsConfigRequest], operations_pb2.Operation
-    ]:
+    def update_insights_config(self) -> Callable[[insights_config.UpdateInsightsConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInsightsConfig(self._session, self._host, self._interceptor)  # type: ignore
@@ -1500,23 +1215,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseInsightsConfigServiceRestTransport._BaseGetLocation,
-        InsightsConfigServiceRestStub,
-    ):
+    class _GetLocation(_BaseInsightsConfigServiceRestTransport._BaseGetLocation, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1554,26 +1258,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1597,12 +1291,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             # Send the request
             response = InsightsConfigServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1614,9 +1303,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1641,23 +1328,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseInsightsConfigServiceRestTransport._BaseListLocations,
-        InsightsConfigServiceRestStub,
-    ):
+    class _ListLocations(_BaseInsightsConfigServiceRestTransport._BaseListLocations, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1695,26 +1371,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1738,12 +1404,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             # Send the request
             response = InsightsConfigServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1755,9 +1416,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1782,23 +1441,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseInsightsConfigServiceRestTransport._BaseCancelOperation,
-        InsightsConfigServiceRestStub,
-    ):
+    class _CancelOperation(_BaseInsightsConfigServiceRestTransport._BaseCancelOperation, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1834,32 +1482,18 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1882,16 +1516,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = InsightsConfigServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1905,23 +1531,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation,
-        InsightsConfigServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseInsightsConfigServiceRestTransport._BaseDeleteOperation, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1956,28 +1571,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2000,15 +1603,8 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                InsightsConfigServiceRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = InsightsConfigServiceRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2022,23 +1618,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseInsightsConfigServiceRestTransport._BaseGetOperation,
-        InsightsConfigServiceRestStub,
-    ):
+    class _GetOperation(_BaseInsightsConfigServiceRestTransport._BaseGetOperation, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2076,26 +1661,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2119,12 +1694,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             # Send the request
             response = InsightsConfigServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2136,9 +1706,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2163,23 +1731,12 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseInsightsConfigServiceRestTransport._BaseListOperations,
-        InsightsConfigServiceRestStub,
-    ):
+    class _ListOperations(_BaseInsightsConfigServiceRestTransport._BaseListOperations, InsightsConfigServiceRestStub):
         def __hash__(self):
             return hash("InsightsConfigServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2217,26 +1774,16 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInsightsConfigServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2260,12 +1807,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
 
             # Send the request
             response = InsightsConfigServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2277,9 +1819,7 @@ class InsightsConfigServiceRestTransport(_BaseInsightsConfigServiceRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

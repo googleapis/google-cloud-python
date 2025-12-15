@@ -320,12 +320,10 @@ class ServingConfig(proto.Message):
                 data store.
         """
 
-        content_search_spec: search_service.SearchRequest.ContentSearchSpec = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message=search_service.SearchRequest.ContentSearchSpec,
-            )
+        content_search_spec: search_service.SearchRequest.ContentSearchSpec = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=search_service.SearchRequest.ContentSearchSpec,
         )
 
     media_config: MediaConfig = proto.Field(
@@ -412,12 +410,10 @@ class ServingConfig(proto.Message):
         proto.STRING,
         number=19,
     )
-    personalization_spec: search_service.SearchRequest.PersonalizationSpec = (
-        proto.Field(
-            proto.MESSAGE,
-            number=25,
-            message=search_service.SearchRequest.PersonalizationSpec,
-        )
+    personalization_spec: search_service.SearchRequest.PersonalizationSpec = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        message=search_service.SearchRequest.PersonalizationSpec,
     )
 
 

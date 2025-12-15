@@ -18,18 +18,10 @@ from google.cloud.developerconnect import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.developerconnect_v1.services.developer_connect.async_client import (
-    DeveloperConnectAsyncClient,
-)
-from google.cloud.developerconnect_v1.services.developer_connect.client import (
-    DeveloperConnectClient,
-)
-from google.cloud.developerconnect_v1.services.insights_config_service.async_client import (
-    InsightsConfigServiceAsyncClient,
-)
-from google.cloud.developerconnect_v1.services.insights_config_service.client import (
-    InsightsConfigServiceClient,
-)
+from google.cloud.developerconnect_v1.services.developer_connect.async_client import DeveloperConnectAsyncClient
+from google.cloud.developerconnect_v1.services.developer_connect.client import DeveloperConnectClient
+from google.cloud.developerconnect_v1.services.insights_config_service.async_client import InsightsConfigServiceAsyncClient
+from google.cloud.developerconnect_v1.services.insights_config_service.client import InsightsConfigServiceClient
 from google.cloud.developerconnect_v1.types.developer_connect import (
     AccountConnector,
     BitbucketCloudConfig,

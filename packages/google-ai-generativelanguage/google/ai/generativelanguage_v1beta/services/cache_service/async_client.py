@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -50,9 +39,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.ai.generativelanguage_v1beta.services.cache_service import pagers
-from google.ai.generativelanguage_v1beta.types import (
-    cached_content as gag_cached_content,
-)
+from google.ai.generativelanguage_v1beta.types import cached_content as gag_cached_content
 from google.ai.generativelanguage_v1beta.types import cache_service
 from google.ai.generativelanguage_v1beta.types import cached_content
 from google.ai.generativelanguage_v1beta.types import content
@@ -89,31 +76,19 @@ class CacheServiceAsyncClient:
     _DEFAULT_UNIVERSE = CacheServiceClient._DEFAULT_UNIVERSE
 
     cached_content_path = staticmethod(CacheServiceClient.cached_content_path)
-    parse_cached_content_path = staticmethod(
-        CacheServiceClient.parse_cached_content_path
-    )
+    parse_cached_content_path = staticmethod(CacheServiceClient.parse_cached_content_path)
     model_path = staticmethod(CacheServiceClient.model_path)
     parse_model_path = staticmethod(CacheServiceClient.parse_model_path)
-    common_billing_account_path = staticmethod(
-        CacheServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CacheServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(CacheServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CacheServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(CacheServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(CacheServiceClient.parse_common_folder_path)
     common_organization_path = staticmethod(CacheServiceClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        CacheServiceClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(CacheServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(CacheServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        CacheServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(CacheServiceClient.parse_common_project_path)
     common_location_path = staticmethod(CacheServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        CacheServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(CacheServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -149,9 +124,7 @@ class CacheServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -218,9 +191,7 @@ class CacheServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, CacheServiceTransport, Callable[..., CacheServiceTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, CacheServiceTransport, Callable[..., CacheServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -280,20 +251,14 @@ class CacheServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.ai.generativelanguage_v1beta.CacheServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.ai.generativelanguage.v1beta.CacheService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -366,9 +331,7 @@ class CacheServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_cached_contents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_cached_contents]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -463,14 +426,9 @@ class CacheServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [cached_content]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -484,9 +442,7 @@ class CacheServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_cached_content
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_cached_content]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -571,14 +527,9 @@ class CacheServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -592,15 +543,11 @@ class CacheServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_cached_content
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_cached_content]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -691,14 +638,9 @@ class CacheServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [cached_content, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -714,17 +656,11 @@ class CacheServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_cached_content
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_cached_content]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("cached_content.name", request.cached_content.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("cached_content.name", request.cached_content.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -796,14 +732,9 @@ class CacheServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -817,15 +748,11 @@ class CacheServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_cached_content
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_cached_content]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -875,9 +802,7 @@ class CacheServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -930,9 +855,7 @@ class CacheServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -989,9 +912,7 @@ class CacheServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1044,9 +965,7 @@ class CacheServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1066,9 +985,7 @@ class CacheServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

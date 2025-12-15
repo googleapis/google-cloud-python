@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.network_security_v1alpha1 import gapic_version as package_version
 from google.cloud.network_security_v1alpha1.types import mirroring
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class MirroringTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -303,50 +293,32 @@ class MirroringTransport(abc.ABC):
         self,
     ) -> Callable[
         [mirroring.ListMirroringEndpointGroupsRequest],
-        Union[
-            mirroring.ListMirroringEndpointGroupsResponse,
-            Awaitable[mirroring.ListMirroringEndpointGroupsResponse],
-        ],
+        Union[mirroring.ListMirroringEndpointGroupsResponse, Awaitable[mirroring.ListMirroringEndpointGroupsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_mirroring_endpoint_group(
         self,
-    ) -> Callable[
-        [mirroring.GetMirroringEndpointGroupRequest],
-        Union[
-            mirroring.MirroringEndpointGroup,
-            Awaitable[mirroring.MirroringEndpointGroup],
-        ],
-    ]:
+    ) -> Callable[[mirroring.GetMirroringEndpointGroupRequest], Union[mirroring.MirroringEndpointGroup, Awaitable[mirroring.MirroringEndpointGroup]]]:
         raise NotImplementedError()
 
     @property
     def create_mirroring_endpoint_group(
         self,
-    ) -> Callable[
-        [mirroring.CreateMirroringEndpointGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.CreateMirroringEndpointGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_mirroring_endpoint_group(
         self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringEndpointGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.UpdateMirroringEndpointGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_mirroring_endpoint_group(
         self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringEndpointGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.DeleteMirroringEndpointGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -354,10 +326,7 @@ class MirroringTransport(abc.ABC):
         self,
     ) -> Callable[
         [mirroring.ListMirroringEndpointGroupAssociationsRequest],
-        Union[
-            mirroring.ListMirroringEndpointGroupAssociationsResponse,
-            Awaitable[mirroring.ListMirroringEndpointGroupAssociationsResponse],
-        ],
+        Union[mirroring.ListMirroringEndpointGroupAssociationsResponse, Awaitable[mirroring.ListMirroringEndpointGroupAssociationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -366,38 +335,26 @@ class MirroringTransport(abc.ABC):
         self,
     ) -> Callable[
         [mirroring.GetMirroringEndpointGroupAssociationRequest],
-        Union[
-            mirroring.MirroringEndpointGroupAssociation,
-            Awaitable[mirroring.MirroringEndpointGroupAssociation],
-        ],
+        Union[mirroring.MirroringEndpointGroupAssociation, Awaitable[mirroring.MirroringEndpointGroupAssociation]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.CreateMirroringEndpointGroupAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.CreateMirroringEndpointGroupAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringEndpointGroupAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.UpdateMirroringEndpointGroupAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_mirroring_endpoint_group_association(
         self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringEndpointGroupAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.DeleteMirroringEndpointGroupAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -405,10 +362,7 @@ class MirroringTransport(abc.ABC):
         self,
     ) -> Callable[
         [mirroring.ListMirroringDeploymentGroupsRequest],
-        Union[
-            mirroring.ListMirroringDeploymentGroupsResponse,
-            Awaitable[mirroring.ListMirroringDeploymentGroupsResponse],
-        ],
+        Union[mirroring.ListMirroringDeploymentGroupsResponse, Awaitable[mirroring.ListMirroringDeploymentGroupsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -416,39 +370,26 @@ class MirroringTransport(abc.ABC):
     def get_mirroring_deployment_group(
         self,
     ) -> Callable[
-        [mirroring.GetMirroringDeploymentGroupRequest],
-        Union[
-            mirroring.MirroringDeploymentGroup,
-            Awaitable[mirroring.MirroringDeploymentGroup],
-        ],
+        [mirroring.GetMirroringDeploymentGroupRequest], Union[mirroring.MirroringDeploymentGroup, Awaitable[mirroring.MirroringDeploymentGroup]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_mirroring_deployment_group(
         self,
-    ) -> Callable[
-        [mirroring.CreateMirroringDeploymentGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.CreateMirroringDeploymentGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_mirroring_deployment_group(
         self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringDeploymentGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.UpdateMirroringDeploymentGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_mirroring_deployment_group(
         self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringDeploymentGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.DeleteMirroringDeploymentGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -456,47 +397,32 @@ class MirroringTransport(abc.ABC):
         self,
     ) -> Callable[
         [mirroring.ListMirroringDeploymentsRequest],
-        Union[
-            mirroring.ListMirroringDeploymentsResponse,
-            Awaitable[mirroring.ListMirroringDeploymentsResponse],
-        ],
+        Union[mirroring.ListMirroringDeploymentsResponse, Awaitable[mirroring.ListMirroringDeploymentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_mirroring_deployment(
         self,
-    ) -> Callable[
-        [mirroring.GetMirroringDeploymentRequest],
-        Union[mirroring.MirroringDeployment, Awaitable[mirroring.MirroringDeployment]],
-    ]:
+    ) -> Callable[[mirroring.GetMirroringDeploymentRequest], Union[mirroring.MirroringDeployment, Awaitable[mirroring.MirroringDeployment]]]:
         raise NotImplementedError()
 
     @property
     def create_mirroring_deployment(
         self,
-    ) -> Callable[
-        [mirroring.CreateMirroringDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.CreateMirroringDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_mirroring_deployment(
         self,
-    ) -> Callable[
-        [mirroring.UpdateMirroringDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.UpdateMirroringDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_mirroring_deployment(
         self,
-    ) -> Callable[
-        [mirroring.DeleteMirroringDeploymentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[mirroring.DeleteMirroringDeploymentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -504,20 +430,14 @@ class MirroringTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -535,19 +455,13 @@ class MirroringTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -565,22 +479,13 @@ class MirroringTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

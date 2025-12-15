@@ -281,12 +281,8 @@ class ConfigDeliveryRestInterceptor:
     """
 
     def pre_abort_rollout(
-        self,
-        request: config_delivery.AbortRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.AbortRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.AbortRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.AbortRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for abort_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +290,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_abort_rollout(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_abort_rollout(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for abort_rollout
 
         DEPRECATED. Please use the `post_abort_rollout_with_metadata`
@@ -310,9 +304,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_abort_rollout_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for abort_rollout
 
@@ -329,13 +321,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_create_fleet_package(
-        self,
-        request: config_delivery.CreateFleetPackageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.CreateFleetPackageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.CreateFleetPackageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.CreateFleetPackageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_fleet_package
 
         Override in a subclass to manipulate the request or metadata
@@ -343,9 +330,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_create_fleet_package(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_fleet_package(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_fleet_package
 
         DEPRECATED. Please use the `post_create_fleet_package_with_metadata`
@@ -359,9 +344,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_create_fleet_package_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_fleet_package
 
@@ -378,12 +361,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_create_release(
-        self,
-        request: config_delivery.CreateReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.CreateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.CreateReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.CreateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_release
 
         Override in a subclass to manipulate the request or metadata
@@ -391,9 +370,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_create_release(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_release(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_release
 
         DEPRECATED. Please use the `post_create_release_with_metadata`
@@ -407,9 +384,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_create_release_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_release
 
@@ -426,13 +401,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_create_resource_bundle(
-        self,
-        request: config_delivery.CreateResourceBundleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.CreateResourceBundleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.CreateResourceBundleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.CreateResourceBundleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_resource_bundle
 
         Override in a subclass to manipulate the request or metadata
@@ -440,9 +410,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_create_resource_bundle(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_resource_bundle(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_resource_bundle
 
         DEPRECATED. Please use the `post_create_resource_bundle_with_metadata`
@@ -456,9 +424,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_create_resource_bundle_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_resource_bundle
 
@@ -475,12 +441,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_create_variant(
-        self,
-        request: config_delivery.CreateVariantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.CreateVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.CreateVariantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.CreateVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_variant
 
         Override in a subclass to manipulate the request or metadata
@@ -488,9 +450,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_create_variant(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_variant(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_variant
 
         DEPRECATED. Please use the `post_create_variant_with_metadata`
@@ -504,9 +464,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_create_variant_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_variant
 
@@ -523,13 +481,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_delete_fleet_package(
-        self,
-        request: config_delivery.DeleteFleetPackageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.DeleteFleetPackageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.DeleteFleetPackageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.DeleteFleetPackageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_fleet_package
 
         Override in a subclass to manipulate the request or metadata
@@ -537,9 +490,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_fleet_package(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_fleet_package(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_fleet_package
 
         DEPRECATED. Please use the `post_delete_fleet_package_with_metadata`
@@ -553,9 +504,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_delete_fleet_package_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_fleet_package
 
@@ -572,12 +521,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_delete_release(
-        self,
-        request: config_delivery.DeleteReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.DeleteReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.DeleteReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.DeleteReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_release
 
         Override in a subclass to manipulate the request or metadata
@@ -585,9 +530,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_release(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_release(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_release
 
         DEPRECATED. Please use the `post_delete_release_with_metadata`
@@ -601,9 +544,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_delete_release_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_release
 
@@ -620,13 +561,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_delete_resource_bundle(
-        self,
-        request: config_delivery.DeleteResourceBundleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.DeleteResourceBundleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.DeleteResourceBundleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.DeleteResourceBundleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_resource_bundle
 
         Override in a subclass to manipulate the request or metadata
@@ -634,9 +570,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_resource_bundle(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_resource_bundle(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_resource_bundle
 
         DEPRECATED. Please use the `post_delete_resource_bundle_with_metadata`
@@ -650,9 +584,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_delete_resource_bundle_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_resource_bundle
 
@@ -669,12 +601,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_delete_variant(
-        self,
-        request: config_delivery.DeleteVariantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.DeleteVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.DeleteVariantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.DeleteVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_variant
 
         Override in a subclass to manipulate the request or metadata
@@ -682,9 +610,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_variant(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_variant(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_variant
 
         DEPRECATED. Please use the `post_delete_variant_with_metadata`
@@ -698,9 +624,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_delete_variant_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_variant
 
@@ -717,12 +641,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_get_fleet_package(
-        self,
-        request: config_delivery.GetFleetPackageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.GetFleetPackageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.GetFleetPackageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.GetFleetPackageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_fleet_package
 
         Override in a subclass to manipulate the request or metadata
@@ -730,9 +650,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_fleet_package(
-        self, response: config_delivery.FleetPackage
-    ) -> config_delivery.FleetPackage:
+    def post_get_fleet_package(self, response: config_delivery.FleetPackage) -> config_delivery.FleetPackage:
         """Post-rpc interceptor for get_fleet_package
 
         DEPRECATED. Please use the `post_get_fleet_package_with_metadata`
@@ -746,9 +664,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_get_fleet_package_with_metadata(
-        self,
-        response: config_delivery.FleetPackage,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: config_delivery.FleetPackage, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[config_delivery.FleetPackage, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_fleet_package
 
@@ -765,12 +681,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_get_release(
-        self,
-        request: config_delivery.GetReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.GetReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.GetReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.GetReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_release
 
         Override in a subclass to manipulate the request or metadata
@@ -778,9 +690,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_release(
-        self, response: config_delivery.Release
-    ) -> config_delivery.Release:
+    def post_get_release(self, response: config_delivery.Release) -> config_delivery.Release:
         """Post-rpc interceptor for get_release
 
         DEPRECATED. Please use the `post_get_release_with_metadata`
@@ -794,9 +704,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_get_release_with_metadata(
-        self,
-        response: config_delivery.Release,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: config_delivery.Release, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[config_delivery.Release, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_release
 
@@ -813,13 +721,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_get_resource_bundle(
-        self,
-        request: config_delivery.GetResourceBundleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.GetResourceBundleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.GetResourceBundleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.GetResourceBundleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_resource_bundle
 
         Override in a subclass to manipulate the request or metadata
@@ -827,9 +730,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_resource_bundle(
-        self, response: config_delivery.ResourceBundle
-    ) -> config_delivery.ResourceBundle:
+    def post_get_resource_bundle(self, response: config_delivery.ResourceBundle) -> config_delivery.ResourceBundle:
         """Post-rpc interceptor for get_resource_bundle
 
         DEPRECATED. Please use the `post_get_resource_bundle_with_metadata`
@@ -843,9 +744,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_get_resource_bundle_with_metadata(
-        self,
-        response: config_delivery.ResourceBundle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: config_delivery.ResourceBundle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[config_delivery.ResourceBundle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_resource_bundle
 
@@ -862,12 +761,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_get_rollout(
-        self,
-        request: config_delivery.GetRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.GetRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.GetRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.GetRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -875,9 +770,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_rollout(
-        self, response: config_delivery.Rollout
-    ) -> config_delivery.Rollout:
+    def post_get_rollout(self, response: config_delivery.Rollout) -> config_delivery.Rollout:
         """Post-rpc interceptor for get_rollout
 
         DEPRECATED. Please use the `post_get_rollout_with_metadata`
@@ -891,9 +784,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_get_rollout_with_metadata(
-        self,
-        response: config_delivery.Rollout,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: config_delivery.Rollout, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[config_delivery.Rollout, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_rollout
 
@@ -910,12 +801,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_get_variant(
-        self,
-        request: config_delivery.GetVariantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.GetVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.GetVariantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.GetVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_variant
 
         Override in a subclass to manipulate the request or metadata
@@ -923,9 +810,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_variant(
-        self, response: config_delivery.Variant
-    ) -> config_delivery.Variant:
+    def post_get_variant(self, response: config_delivery.Variant) -> config_delivery.Variant:
         """Post-rpc interceptor for get_variant
 
         DEPRECATED. Please use the `post_get_variant_with_metadata`
@@ -939,9 +824,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_get_variant_with_metadata(
-        self,
-        response: config_delivery.Variant,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: config_delivery.Variant, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[config_delivery.Variant, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_variant
 
@@ -958,13 +841,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_list_fleet_packages(
-        self,
-        request: config_delivery.ListFleetPackagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListFleetPackagesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.ListFleetPackagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListFleetPackagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_fleet_packages
 
         Override in a subclass to manipulate the request or metadata
@@ -972,9 +850,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_fleet_packages(
-        self, response: config_delivery.ListFleetPackagesResponse
-    ) -> config_delivery.ListFleetPackagesResponse:
+    def post_list_fleet_packages(self, response: config_delivery.ListFleetPackagesResponse) -> config_delivery.ListFleetPackagesResponse:
         """Post-rpc interceptor for list_fleet_packages
 
         DEPRECATED. Please use the `post_list_fleet_packages_with_metadata`
@@ -988,13 +864,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_list_fleet_packages_with_metadata(
-        self,
-        response: config_delivery.ListFleetPackagesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListFleetPackagesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: config_delivery.ListFleetPackagesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListFleetPackagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_fleet_packages
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1010,12 +881,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_list_releases(
-        self,
-        request: config_delivery.ListReleasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.ListReleasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListReleasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_releases
 
         Override in a subclass to manipulate the request or metadata
@@ -1023,9 +890,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_releases(
-        self, response: config_delivery.ListReleasesResponse
-    ) -> config_delivery.ListReleasesResponse:
+    def post_list_releases(self, response: config_delivery.ListReleasesResponse) -> config_delivery.ListReleasesResponse:
         """Post-rpc interceptor for list_releases
 
         DEPRECATED. Please use the `post_list_releases_with_metadata`
@@ -1039,12 +904,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_list_releases_with_metadata(
-        self,
-        response: config_delivery.ListReleasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListReleasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: config_delivery.ListReleasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListReleasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_releases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1060,13 +921,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_list_resource_bundles(
-        self,
-        request: config_delivery.ListResourceBundlesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListResourceBundlesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.ListResourceBundlesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListResourceBundlesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_resource_bundles
 
         Override in a subclass to manipulate the request or metadata
@@ -1074,9 +930,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_resource_bundles(
-        self, response: config_delivery.ListResourceBundlesResponse
-    ) -> config_delivery.ListResourceBundlesResponse:
+    def post_list_resource_bundles(self, response: config_delivery.ListResourceBundlesResponse) -> config_delivery.ListResourceBundlesResponse:
         """Post-rpc interceptor for list_resource_bundles
 
         DEPRECATED. Please use the `post_list_resource_bundles_with_metadata`
@@ -1090,13 +944,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_list_resource_bundles_with_metadata(
-        self,
-        response: config_delivery.ListResourceBundlesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListResourceBundlesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: config_delivery.ListResourceBundlesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListResourceBundlesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_resource_bundles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1112,12 +961,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_list_rollouts(
-        self,
-        request: config_delivery.ListRolloutsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.ListRolloutsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListRolloutsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_rollouts
 
         Override in a subclass to manipulate the request or metadata
@@ -1125,9 +970,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_rollouts(
-        self, response: config_delivery.ListRolloutsResponse
-    ) -> config_delivery.ListRolloutsResponse:
+    def post_list_rollouts(self, response: config_delivery.ListRolloutsResponse) -> config_delivery.ListRolloutsResponse:
         """Post-rpc interceptor for list_rollouts
 
         DEPRECATED. Please use the `post_list_rollouts_with_metadata`
@@ -1141,12 +984,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_list_rollouts_with_metadata(
-        self,
-        response: config_delivery.ListRolloutsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: config_delivery.ListRolloutsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListRolloutsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_rollouts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1162,12 +1001,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_list_variants(
-        self,
-        request: config_delivery.ListVariantsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListVariantsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.ListVariantsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListVariantsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_variants
 
         Override in a subclass to manipulate the request or metadata
@@ -1175,9 +1010,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_variants(
-        self, response: config_delivery.ListVariantsResponse
-    ) -> config_delivery.ListVariantsResponse:
+    def post_list_variants(self, response: config_delivery.ListVariantsResponse) -> config_delivery.ListVariantsResponse:
         """Post-rpc interceptor for list_variants
 
         DEPRECATED. Please use the `post_list_variants_with_metadata`
@@ -1191,12 +1024,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_list_variants_with_metadata(
-        self,
-        response: config_delivery.ListVariantsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ListVariantsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: config_delivery.ListVariantsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ListVariantsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_variants
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1212,12 +1041,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_resume_rollout(
-        self,
-        request: config_delivery.ResumeRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.ResumeRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.ResumeRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.ResumeRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -1225,9 +1050,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_resume_rollout(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_resume_rollout(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for resume_rollout
 
         DEPRECATED. Please use the `post_resume_rollout_with_metadata`
@@ -1241,9 +1064,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_resume_rollout_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_rollout
 
@@ -1260,12 +1081,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_suspend_rollout(
-        self,
-        request: config_delivery.SuspendRolloutRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.SuspendRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.SuspendRolloutRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.SuspendRolloutRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suspend_rollout
 
         Override in a subclass to manipulate the request or metadata
@@ -1273,9 +1090,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_suspend_rollout(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_suspend_rollout(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for suspend_rollout
 
         DEPRECATED. Please use the `post_suspend_rollout_with_metadata`
@@ -1289,9 +1104,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_suspend_rollout_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suspend_rollout
 
@@ -1308,13 +1121,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_update_fleet_package(
-        self,
-        request: config_delivery.UpdateFleetPackageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.UpdateFleetPackageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.UpdateFleetPackageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.UpdateFleetPackageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_fleet_package
 
         Override in a subclass to manipulate the request or metadata
@@ -1322,9 +1130,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_update_fleet_package(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_fleet_package(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_fleet_package
 
         DEPRECATED. Please use the `post_update_fleet_package_with_metadata`
@@ -1338,9 +1144,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_update_fleet_package_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_fleet_package
 
@@ -1357,12 +1161,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_update_release(
-        self,
-        request: config_delivery.UpdateReleaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.UpdateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.UpdateReleaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.UpdateReleaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_release
 
         Override in a subclass to manipulate the request or metadata
@@ -1370,9 +1170,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_update_release(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_release(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_release
 
         DEPRECATED. Please use the `post_update_release_with_metadata`
@@ -1386,9 +1184,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_update_release_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_release
 
@@ -1405,13 +1201,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_update_resource_bundle(
-        self,
-        request: config_delivery.UpdateResourceBundleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.UpdateResourceBundleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: config_delivery.UpdateResourceBundleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.UpdateResourceBundleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_resource_bundle
 
         Override in a subclass to manipulate the request or metadata
@@ -1419,9 +1210,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_update_resource_bundle(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_resource_bundle(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_resource_bundle
 
         DEPRECATED. Please use the `post_update_resource_bundle_with_metadata`
@@ -1435,9 +1224,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_update_resource_bundle_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_resource_bundle
 
@@ -1454,12 +1241,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_update_variant(
-        self,
-        request: config_delivery.UpdateVariantRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        config_delivery.UpdateVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: config_delivery.UpdateVariantRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[config_delivery.UpdateVariantRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_variant
 
         Override in a subclass to manipulate the request or metadata
@@ -1467,9 +1250,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_update_variant(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_variant(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_variant
 
         DEPRECATED. Please use the `post_update_variant_with_metadata`
@@ -1483,9 +1264,7 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def post_update_variant_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_variant
 
@@ -1502,12 +1281,8 @@ class ConfigDeliveryRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1515,9 +1290,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1527,12 +1300,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1540,9 +1309,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1552,12 +1319,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1575,12 +1338,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1598,12 +1357,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1611,9 +1366,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1623,12 +1376,8 @@ class ConfigDeliveryRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1636,9 +1385,7 @@ class ConfigDeliveryRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1728,9 +1475,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1783,29 +1528,17 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AbortRollout(
-        _BaseConfigDeliveryRestTransport._BaseAbortRollout, ConfigDeliveryRestStub
-    ):
+    class _AbortRollout(_BaseConfigDeliveryRestTransport._BaseAbortRollout, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.AbortRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1848,30 +1581,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_abort_rollout(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseAbortRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1895,13 +1616,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._AbortRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1915,12 +1630,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_abort_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_abort_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_abort_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1941,22 +1652,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _CreateFleetPackage(
-        _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage, ConfigDeliveryRestStub
-    ):
+    class _CreateFleetPackage(_BaseConfigDeliveryRestTransport._BaseCreateFleetPackage, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.CreateFleetPackage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1999,32 +1700,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_fleet_package(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_fleet_package(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseCreateFleetPackage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2048,13 +1735,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._CreateFleetPackage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2068,12 +1749,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_create_fleet_package(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_fleet_package_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_fleet_package_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2094,22 +1771,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _CreateRelease(
-        _BaseConfigDeliveryRestTransport._BaseCreateRelease, ConfigDeliveryRestStub
-    ):
+    class _CreateRelease(_BaseConfigDeliveryRestTransport._BaseCreateRelease, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.CreateRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2152,30 +1819,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_create_release(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseCreateRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2199,13 +1854,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._CreateRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2219,12 +1868,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_create_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2245,23 +1890,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _CreateResourceBundle(
-        _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle,
-        ConfigDeliveryRestStub,
-    ):
+    class _CreateResourceBundle(_BaseConfigDeliveryRestTransport._BaseCreateResourceBundle, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.CreateResourceBundle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2305,32 +1939,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_resource_bundle(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_resource_bundle(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseCreateResourceBundle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2354,13 +1974,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._CreateResourceBundle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2374,12 +1988,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_create_resource_bundle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_resource_bundle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_resource_bundle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2400,22 +2010,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _CreateVariant(
-        _BaseConfigDeliveryRestTransport._BaseCreateVariant, ConfigDeliveryRestStub
-    ):
+    class _CreateVariant(_BaseConfigDeliveryRestTransport._BaseCreateVariant, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.CreateVariant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2458,30 +2058,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_http_options()
 
             request, metadata = self._interceptor.pre_create_variant(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseCreateVariant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2505,13 +2093,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._CreateVariant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2525,12 +2107,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_create_variant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_variant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_variant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2551,22 +2129,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _DeleteFleetPackage(
-        _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage, ConfigDeliveryRestStub
-    ):
+    class _DeleteFleetPackage(_BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.DeleteFleetPackage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2608,28 +2176,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_fleet_package(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_fleet_package(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteFleetPackage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2653,12 +2209,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._DeleteFleetPackage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2672,12 +2223,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_delete_fleet_package(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_fleet_package_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_fleet_package_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2698,22 +2245,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _DeleteRelease(
-        _BaseConfigDeliveryRestTransport._BaseDeleteRelease, ConfigDeliveryRestStub
-    ):
+    class _DeleteRelease(_BaseConfigDeliveryRestTransport._BaseDeleteRelease, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.DeleteRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2755,26 +2292,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseDeleteRelease._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseDeleteRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_release(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteRelease._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2798,12 +2325,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._DeleteRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2817,12 +2339,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_delete_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2843,23 +2361,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _DeleteResourceBundle(
-        _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle,
-        ConfigDeliveryRestStub,
-    ):
+    class _DeleteResourceBundle(_BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.DeleteResourceBundle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2901,28 +2408,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_resource_bundle(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_resource_bundle(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteResourceBundle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2946,12 +2441,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._DeleteResourceBundle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2965,12 +2455,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_delete_resource_bundle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_resource_bundle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_resource_bundle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2991,22 +2477,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _DeleteVariant(
-        _BaseConfigDeliveryRestTransport._BaseDeleteVariant, ConfigDeliveryRestStub
-    ):
+    class _DeleteVariant(_BaseConfigDeliveryRestTransport._BaseDeleteVariant, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.DeleteVariant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3048,26 +2524,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseDeleteVariant._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseDeleteVariant._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_variant(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteVariant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteVariant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteVariant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteVariant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3091,12 +2557,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._DeleteVariant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3110,12 +2571,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_delete_variant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_variant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_variant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3136,22 +2593,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _GetFleetPackage(
-        _BaseConfigDeliveryRestTransport._BaseGetFleetPackage, ConfigDeliveryRestStub
-    ):
+    class _GetFleetPackage(_BaseConfigDeliveryRestTransport._BaseGetFleetPackage, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetFleetPackage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3195,28 +2642,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetFleetPackage._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetFleetPackage._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_fleet_package(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetFleetPackage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_fleet_package(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetFleetPackage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseGetFleetPackage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetFleetPackage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3240,12 +2675,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetFleetPackage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3261,12 +2691,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_get_fleet_package(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_fleet_package_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_fleet_package_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = config_delivery.FleetPackage.to_json(response)
                 except:
@@ -3287,22 +2713,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _GetRelease(
-        _BaseConfigDeliveryRestTransport._BaseGetRelease, ConfigDeliveryRestStub
-    ):
+    class _GetRelease(_BaseConfigDeliveryRestTransport._BaseGetRelease, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3343,28 +2759,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetRelease._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_get_release(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetRelease._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseConfigDeliveryRestTransport._BaseGetRelease._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3388,12 +2792,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3409,12 +2808,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_get_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = config_delivery.Release.to_json(response)
                 except:
@@ -3435,22 +2830,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _GetResourceBundle(
-        _BaseConfigDeliveryRestTransport._BaseGetResourceBundle, ConfigDeliveryRestStub
-    ):
+    class _GetResourceBundle(_BaseConfigDeliveryRestTransport._BaseGetResourceBundle, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetResourceBundle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3491,28 +2876,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetResourceBundle._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetResourceBundle._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_resource_bundle(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetResourceBundle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_resource_bundle(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetResourceBundle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseGetResourceBundle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetResourceBundle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3536,12 +2909,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetResourceBundle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3557,12 +2925,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_get_resource_bundle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_resource_bundle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_resource_bundle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = config_delivery.ResourceBundle.to_json(response)
                 except:
@@ -3583,22 +2947,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _GetRollout(
-        _BaseConfigDeliveryRestTransport._BaseGetRollout, ConfigDeliveryRestStub
-    ):
+    class _GetRollout(_BaseConfigDeliveryRestTransport._BaseGetRollout, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3643,28 +2997,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetRollout._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rollout(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetRollout._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseConfigDeliveryRestTransport._BaseGetRollout._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3688,12 +3030,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3709,12 +3046,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_get_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = config_delivery.Rollout.to_json(response)
                 except:
@@ -3735,22 +3068,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _GetVariant(
-        _BaseConfigDeliveryRestTransport._BaseGetVariant, ConfigDeliveryRestStub
-    ):
+    class _GetVariant(_BaseConfigDeliveryRestTransport._BaseGetVariant, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetVariant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3791,28 +3114,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetVariant._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetVariant._get_http_options()
 
             request, metadata = self._interceptor.pre_get_variant(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetVariant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetVariant._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseConfigDeliveryRestTransport._BaseGetVariant._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetVariant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3836,12 +3147,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetVariant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3857,12 +3163,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_get_variant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_variant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_variant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = config_delivery.Variant.to_json(response)
                 except:
@@ -3883,22 +3185,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _ListFleetPackages(
-        _BaseConfigDeliveryRestTransport._BaseListFleetPackages, ConfigDeliveryRestStub
-    ):
+    class _ListFleetPackages(_BaseConfigDeliveryRestTransport._BaseListFleetPackages, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListFleetPackages")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3940,28 +3232,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListFleetPackages._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListFleetPackages._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_fleet_packages(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListFleetPackages._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_fleet_packages(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListFleetPackages._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListFleetPackages._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListFleetPackages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3985,12 +3265,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListFleetPackages._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4006,16 +3281,10 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_list_fleet_packages(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_fleet_packages_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_fleet_packages_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        config_delivery.ListFleetPackagesResponse.to_json(response)
-                    )
+                    response_payload = config_delivery.ListFleetPackagesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4034,22 +3303,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _ListReleases(
-        _BaseConfigDeliveryRestTransport._BaseListReleases, ConfigDeliveryRestStub
-    ):
+    class _ListReleases(_BaseConfigDeliveryRestTransport._BaseListReleases, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListReleases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4091,26 +3350,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListReleases._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListReleases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_releases(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListReleases._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListReleases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListReleases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListReleases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4134,12 +3383,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListReleases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4155,16 +3399,10 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_list_releases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_releases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_releases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = config_delivery.ListReleasesResponse.to_json(
-                        response
-                    )
+                    response_payload = config_delivery.ListReleasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4183,23 +3421,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _ListResourceBundles(
-        _BaseConfigDeliveryRestTransport._BaseListResourceBundles,
-        ConfigDeliveryRestStub,
-    ):
+    class _ListResourceBundles(_BaseConfigDeliveryRestTransport._BaseListResourceBundles, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListResourceBundles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4241,28 +3468,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListResourceBundles._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListResourceBundles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_resource_bundles(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListResourceBundles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_resource_bundles(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListResourceBundles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListResourceBundles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListResourceBundles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4286,12 +3501,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListResourceBundles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4307,16 +3517,10 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_list_resource_bundles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_resource_bundles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_resource_bundles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        config_delivery.ListResourceBundlesResponse.to_json(response)
-                    )
+                    response_payload = config_delivery.ListResourceBundlesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4335,22 +3539,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _ListRollouts(
-        _BaseConfigDeliveryRestTransport._BaseListRollouts, ConfigDeliveryRestStub
-    ):
+    class _ListRollouts(_BaseConfigDeliveryRestTransport._BaseListRollouts, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListRollouts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4392,26 +3586,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListRollouts._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListRollouts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_rollouts(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListRollouts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListRollouts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListRollouts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListRollouts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4435,12 +3619,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListRollouts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4456,16 +3635,10 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_list_rollouts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_rollouts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_rollouts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = config_delivery.ListRolloutsResponse.to_json(
-                        response
-                    )
+                    response_payload = config_delivery.ListRolloutsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4484,22 +3657,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _ListVariants(
-        _BaseConfigDeliveryRestTransport._BaseListVariants, ConfigDeliveryRestStub
-    ):
+    class _ListVariants(_BaseConfigDeliveryRestTransport._BaseListVariants, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListVariants")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4541,26 +3704,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListVariants._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListVariants._get_http_options()
 
             request, metadata = self._interceptor.pre_list_variants(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListVariants._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListVariants._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListVariants._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListVariants._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4584,12 +3737,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListVariants._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4605,16 +3753,10 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_list_variants(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_variants_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_variants_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = config_delivery.ListVariantsResponse.to_json(
-                        response
-                    )
+                    response_payload = config_delivery.ListVariantsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4633,22 +3775,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _ResumeRollout(
-        _BaseConfigDeliveryRestTransport._BaseResumeRollout, ConfigDeliveryRestStub
-    ):
+    class _ResumeRollout(_BaseConfigDeliveryRestTransport._BaseResumeRollout, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ResumeRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4691,30 +3823,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_rollout(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseResumeRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4738,13 +3858,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ResumeRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4758,12 +3872,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_resume_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4784,22 +3894,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _SuspendRollout(
-        _BaseConfigDeliveryRestTransport._BaseSuspendRollout, ConfigDeliveryRestStub
-    ):
+    class _SuspendRollout(_BaseConfigDeliveryRestTransport._BaseSuspendRollout, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.SuspendRollout")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4842,30 +3942,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_http_options()
 
             request, metadata = self._interceptor.pre_suspend_rollout(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseSuspendRollout._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4889,13 +3977,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._SuspendRollout._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4909,12 +3991,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_suspend_rollout(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suspend_rollout_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suspend_rollout_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4935,22 +4013,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _UpdateFleetPackage(
-        _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage, ConfigDeliveryRestStub
-    ):
+    class _UpdateFleetPackage(_BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.UpdateFleetPackage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4993,32 +4061,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_fleet_package(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_fleet_package(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateFleetPackage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5042,13 +4096,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._UpdateFleetPackage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5062,12 +4110,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_update_fleet_package(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_fleet_package_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_fleet_package_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5088,22 +4132,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _UpdateRelease(
-        _BaseConfigDeliveryRestTransport._BaseUpdateRelease, ConfigDeliveryRestStub
-    ):
+    class _UpdateRelease(_BaseConfigDeliveryRestTransport._BaseUpdateRelease, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.UpdateRelease")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5146,30 +4180,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_http_options()
 
             request, metadata = self._interceptor.pre_update_release(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateRelease._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5193,13 +4215,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._UpdateRelease._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5213,12 +4229,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_update_release(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_release_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_release_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5239,23 +4251,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _UpdateResourceBundle(
-        _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle,
-        ConfigDeliveryRestStub,
-    ):
+    class _UpdateResourceBundle(_BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.UpdateResourceBundle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5298,32 +4299,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_resource_bundle(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_resource_bundle(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateResourceBundle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5347,13 +4334,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._UpdateResourceBundle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5367,12 +4348,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_update_resource_bundle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_resource_bundle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_resource_bundle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5393,22 +4370,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 )
             return resp
 
-    class _UpdateVariant(
-        _BaseConfigDeliveryRestTransport._BaseUpdateVariant, ConfigDeliveryRestStub
-    ):
+    class _UpdateVariant(_BaseConfigDeliveryRestTransport._BaseUpdateVariant, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.UpdateVariant")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5451,30 +4418,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_http_options()
 
             request, metadata = self._interceptor.pre_update_variant(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseUpdateVariant._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5498,13 +4453,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._UpdateVariant._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5518,12 +4467,8 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             resp = self._interceptor.post_update_variant(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_variant_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_variant_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5545,229 +4490,151 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
             return resp
 
     @property
-    def abort_rollout(
-        self,
-    ) -> Callable[[config_delivery.AbortRolloutRequest], operations_pb2.Operation]:
+    def abort_rollout(self) -> Callable[[config_delivery.AbortRolloutRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AbortRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.CreateFleetPackageRequest], operations_pb2.Operation
-    ]:
+    def create_fleet_package(self) -> Callable[[config_delivery.CreateFleetPackageRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFleetPackage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_release(
-        self,
-    ) -> Callable[[config_delivery.CreateReleaseRequest], operations_pb2.Operation]:
+    def create_release(self) -> Callable[[config_delivery.CreateReleaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.CreateResourceBundleRequest], operations_pb2.Operation
-    ]:
+    def create_resource_bundle(self) -> Callable[[config_delivery.CreateResourceBundleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateResourceBundle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_variant(
-        self,
-    ) -> Callable[[config_delivery.CreateVariantRequest], operations_pb2.Operation]:
+    def create_variant(self) -> Callable[[config_delivery.CreateVariantRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateVariant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.DeleteFleetPackageRequest], operations_pb2.Operation
-    ]:
+    def delete_fleet_package(self) -> Callable[[config_delivery.DeleteFleetPackageRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFleetPackage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_release(
-        self,
-    ) -> Callable[[config_delivery.DeleteReleaseRequest], operations_pb2.Operation]:
+    def delete_release(self) -> Callable[[config_delivery.DeleteReleaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.DeleteResourceBundleRequest], operations_pb2.Operation
-    ]:
+    def delete_resource_bundle(self) -> Callable[[config_delivery.DeleteResourceBundleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteResourceBundle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_variant(
-        self,
-    ) -> Callable[[config_delivery.DeleteVariantRequest], operations_pb2.Operation]:
+    def delete_variant(self) -> Callable[[config_delivery.DeleteVariantRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteVariant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.GetFleetPackageRequest], config_delivery.FleetPackage
-    ]:
+    def get_fleet_package(self) -> Callable[[config_delivery.GetFleetPackageRequest], config_delivery.FleetPackage]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFleetPackage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_release(
-        self,
-    ) -> Callable[[config_delivery.GetReleaseRequest], config_delivery.Release]:
+    def get_release(self) -> Callable[[config_delivery.GetReleaseRequest], config_delivery.Release]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.GetResourceBundleRequest], config_delivery.ResourceBundle
-    ]:
+    def get_resource_bundle(self) -> Callable[[config_delivery.GetResourceBundleRequest], config_delivery.ResourceBundle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetResourceBundle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_rollout(
-        self,
-    ) -> Callable[[config_delivery.GetRolloutRequest], config_delivery.Rollout]:
+    def get_rollout(self) -> Callable[[config_delivery.GetRolloutRequest], config_delivery.Rollout]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_variant(
-        self,
-    ) -> Callable[[config_delivery.GetVariantRequest], config_delivery.Variant]:
+    def get_variant(self) -> Callable[[config_delivery.GetVariantRequest], config_delivery.Variant]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetVariant(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_fleet_packages(
-        self,
-    ) -> Callable[
-        [config_delivery.ListFleetPackagesRequest],
-        config_delivery.ListFleetPackagesResponse,
-    ]:
+    def list_fleet_packages(self) -> Callable[[config_delivery.ListFleetPackagesRequest], config_delivery.ListFleetPackagesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFleetPackages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_releases(
-        self,
-    ) -> Callable[
-        [config_delivery.ListReleasesRequest], config_delivery.ListReleasesResponse
-    ]:
+    def list_releases(self) -> Callable[[config_delivery.ListReleasesRequest], config_delivery.ListReleasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReleases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_resource_bundles(
-        self,
-    ) -> Callable[
-        [config_delivery.ListResourceBundlesRequest],
-        config_delivery.ListResourceBundlesResponse,
-    ]:
+    def list_resource_bundles(self) -> Callable[[config_delivery.ListResourceBundlesRequest], config_delivery.ListResourceBundlesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListResourceBundles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_rollouts(
-        self,
-    ) -> Callable[
-        [config_delivery.ListRolloutsRequest], config_delivery.ListRolloutsResponse
-    ]:
+    def list_rollouts(self) -> Callable[[config_delivery.ListRolloutsRequest], config_delivery.ListRolloutsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRollouts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_variants(
-        self,
-    ) -> Callable[
-        [config_delivery.ListVariantsRequest], config_delivery.ListVariantsResponse
-    ]:
+    def list_variants(self) -> Callable[[config_delivery.ListVariantsRequest], config_delivery.ListVariantsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListVariants(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_rollout(
-        self,
-    ) -> Callable[[config_delivery.ResumeRolloutRequest], operations_pb2.Operation]:
+    def resume_rollout(self) -> Callable[[config_delivery.ResumeRolloutRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def suspend_rollout(
-        self,
-    ) -> Callable[[config_delivery.SuspendRolloutRequest], operations_pb2.Operation]:
+    def suspend_rollout(self) -> Callable[[config_delivery.SuspendRolloutRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuspendRollout(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_fleet_package(
-        self,
-    ) -> Callable[
-        [config_delivery.UpdateFleetPackageRequest], operations_pb2.Operation
-    ]:
+    def update_fleet_package(self) -> Callable[[config_delivery.UpdateFleetPackageRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFleetPackage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_release(
-        self,
-    ) -> Callable[[config_delivery.UpdateReleaseRequest], operations_pb2.Operation]:
+    def update_release(self) -> Callable[[config_delivery.UpdateReleaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRelease(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_resource_bundle(
-        self,
-    ) -> Callable[
-        [config_delivery.UpdateResourceBundleRequest], operations_pb2.Operation
-    ]:
+    def update_resource_bundle(self) -> Callable[[config_delivery.UpdateResourceBundleRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateResourceBundle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_variant(
-        self,
-    ) -> Callable[[config_delivery.UpdateVariantRequest], operations_pb2.Operation]:
+    def update_variant(self) -> Callable[[config_delivery.UpdateVariantRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateVariant(self._session, self._host, self._interceptor)  # type: ignore
@@ -5776,22 +4643,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseConfigDeliveryRestTransport._BaseGetLocation, ConfigDeliveryRestStub
-    ):
+    class _GetLocation(_BaseConfigDeliveryRestTransport._BaseGetLocation, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5829,26 +4686,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5872,12 +4719,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5889,9 +4731,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5916,22 +4756,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseConfigDeliveryRestTransport._BaseListLocations, ConfigDeliveryRestStub
-    ):
+    class _ListLocations(_BaseConfigDeliveryRestTransport._BaseListLocations, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5969,26 +4799,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6012,12 +4832,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6029,9 +4844,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6056,22 +4869,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseConfigDeliveryRestTransport._BaseCancelOperation, ConfigDeliveryRestStub
-    ):
+    class _CancelOperation(_BaseConfigDeliveryRestTransport._BaseCancelOperation, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6107,32 +4910,18 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6156,13 +4945,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6176,22 +4959,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseConfigDeliveryRestTransport._BaseDeleteOperation, ConfigDeliveryRestStub
-    ):
+    class _DeleteOperation(_BaseConfigDeliveryRestTransport._BaseDeleteOperation, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6226,28 +4999,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6271,12 +5032,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6290,22 +5046,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseConfigDeliveryRestTransport._BaseGetOperation, ConfigDeliveryRestStub
-    ):
+    class _GetOperation(_BaseConfigDeliveryRestTransport._BaseGetOperation, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6343,26 +5089,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6386,12 +5122,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6403,9 +5134,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6430,22 +5159,12 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseConfigDeliveryRestTransport._BaseListOperations, ConfigDeliveryRestStub
-    ):
+    class _ListOperations(_BaseConfigDeliveryRestTransport._BaseListOperations, ConfigDeliveryRestStub):
         def __hash__(self):
             return hash("ConfigDeliveryRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6483,26 +5202,16 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseConfigDeliveryRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseConfigDeliveryRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfigDeliveryRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfigDeliveryRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfigDeliveryRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6526,12 +5235,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
 
             # Send the request
             response = ConfigDeliveryRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6543,9 +5247,7 @@ class ConfigDeliveryRestTransport(_BaseConfigDeliveryRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -207,9 +207,7 @@ class CloudTasksRestInterceptor:
     """
 
     def pre_create_queue(
-        self,
-        request: cloudtasks.CreateQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.CreateQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.CreateQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_queue
 
@@ -232,9 +230,7 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_create_queue_with_metadata(
-        self,
-        response: gct_queue.Queue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gct_queue.Queue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gct_queue.Queue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_queue
 
@@ -251,9 +247,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_create_task(
-        self,
-        request: cloudtasks.CreateTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.CreateTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.CreateTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_task
 
@@ -293,9 +287,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_delete_queue(
-        self,
-        request: cloudtasks.DeleteQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.DeleteQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.DeleteQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_queue
 
@@ -305,9 +297,7 @@ class CloudTasksRestInterceptor:
         return request, metadata
 
     def pre_delete_task(
-        self,
-        request: cloudtasks.DeleteTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.DeleteTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.DeleteTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_task
 
@@ -317,12 +307,8 @@ class CloudTasksRestInterceptor:
         return request, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -344,9 +330,7 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -363,9 +347,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_get_queue(
-        self,
-        request: cloudtasks.GetQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.GetQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.GetQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_queue
 
@@ -405,9 +387,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_get_task(
-        self,
-        request: cloudtasks.GetTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.GetTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.GetTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_task
 
@@ -447,9 +427,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_list_queues(
-        self,
-        request: cloudtasks.ListQueuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.ListQueuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.ListQueuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_queues
 
@@ -458,9 +436,7 @@ class CloudTasksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_queues(
-        self, response: cloudtasks.ListQueuesResponse
-    ) -> cloudtasks.ListQueuesResponse:
+    def post_list_queues(self, response: cloudtasks.ListQueuesResponse) -> cloudtasks.ListQueuesResponse:
         """Post-rpc interceptor for list_queues
 
         DEPRECATED. Please use the `post_list_queues_with_metadata`
@@ -474,9 +450,7 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_list_queues_with_metadata(
-        self,
-        response: cloudtasks.ListQueuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudtasks.ListQueuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.ListQueuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_queues
 
@@ -493,9 +467,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_list_tasks(
-        self,
-        request: cloudtasks.ListTasksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.ListTasksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.ListTasksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tasks
 
@@ -504,9 +476,7 @@ class CloudTasksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tasks(
-        self, response: cloudtasks.ListTasksResponse
-    ) -> cloudtasks.ListTasksResponse:
+    def post_list_tasks(self, response: cloudtasks.ListTasksResponse) -> cloudtasks.ListTasksResponse:
         """Post-rpc interceptor for list_tasks
 
         DEPRECATED. Please use the `post_list_tasks_with_metadata`
@@ -520,9 +490,7 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_list_tasks_with_metadata(
-        self,
-        response: cloudtasks.ListTasksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudtasks.ListTasksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.ListTasksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tasks
 
@@ -539,9 +507,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_pause_queue(
-        self,
-        request: cloudtasks.PauseQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.PauseQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.PauseQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_queue
 
@@ -581,9 +547,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_purge_queue(
-        self,
-        request: cloudtasks.PurgeQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.PurgeQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.PurgeQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_queue
 
@@ -623,9 +587,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_resume_queue(
-        self,
-        request: cloudtasks.ResumeQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.ResumeQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.ResumeQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_queue
 
@@ -665,9 +627,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_run_task(
-        self,
-        request: cloudtasks.RunTaskRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.RunTaskRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.RunTaskRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_task
 
@@ -707,12 +667,8 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -734,9 +690,7 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -753,13 +707,8 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -767,9 +716,7 @@ class CloudTasksRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -783,13 +730,8 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -805,9 +747,7 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_update_queue(
-        self,
-        request: cloudtasks.UpdateQueueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudtasks.UpdateQueueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudtasks.UpdateQueueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_queue
 
@@ -830,9 +770,7 @@ class CloudTasksRestInterceptor:
         return response
 
     def post_update_queue_with_metadata(
-        self,
-        response: gct_queue.Queue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gct_queue.Queue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gct_queue.Queue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_queue
 
@@ -849,12 +787,8 @@ class CloudTasksRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -862,9 +796,7 @@ class CloudTasksRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -874,12 +806,8 @@ class CloudTasksRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -887,9 +815,7 @@ class CloudTasksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -979,30 +905,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CloudTasksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateQueue(
-        _BaseCloudTasksRestTransport._BaseCreateQueue, CloudTasksRestStub
-    ):
+    class _CreateQueue(_BaseCloudTasksRestTransport._BaseCreateQueue, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.CreateQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1049,34 +963,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseCreateQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseCreateQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_create_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseCreateQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseCreateQueue._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BaseCreateQueue._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BaseCreateQueue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseCreateQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseCreateQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1100,13 +998,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._CreateQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1122,12 +1014,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_create_queue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_queue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_queue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_queue.Queue.to_json(response)
                 except:
@@ -1153,15 +1041,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.CreateTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1202,34 +1082,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                     A unit of scheduled work.
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseCreateTask._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseCreateTask._get_http_options()
 
             request, metadata = self._interceptor.pre_create_task(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseCreateTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseCreateTask._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BaseCreateTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BaseCreateTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseCreateTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseCreateTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1253,13 +1117,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._CreateTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1275,12 +1133,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_create_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_task.Task.to_json(response)
                 except:
@@ -1301,22 +1155,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
             return resp
 
-    class _DeleteQueue(
-        _BaseCloudTasksRestTransport._BaseDeleteQueue, CloudTasksRestStub
-    ):
+    class _DeleteQueue(_BaseCloudTasksRestTransport._BaseDeleteQueue, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.DeleteQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1352,30 +1196,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseDeleteQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseDeleteQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseDeleteQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseDeleteQueue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseDeleteQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseDeleteQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1399,12 +1229,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._DeleteQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1417,15 +1242,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.DeleteTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1461,30 +1278,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseDeleteTask._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseDeleteTask._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_task(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseDeleteTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseDeleteTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseDeleteTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseDeleteTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1508,12 +1311,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._DeleteTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1521,22 +1319,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetIamPolicy(
-        _BaseCloudTasksRestTransport._BaseGetIamPolicy, CloudTasksRestStub
-    ):
+    class _GetIamPolicy(_BaseCloudTasksRestTransport._BaseGetIamPolicy, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1651,36 +1439,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1704,13 +1474,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1726,12 +1490,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1757,15 +1517,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.GetQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1811,30 +1563,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseGetQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseGetQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_get_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseGetQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseGetQueue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseGetQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseGetQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1857,14 +1595,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
 
             # Send the request
-            response = CloudTasksRestTransport._GetQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CloudTasksRestTransport._GetQueue._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1879,12 +1610,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_get_queue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_queue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_queue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = queue.Queue.to_json(response)
                 except:
@@ -1910,15 +1637,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.GetTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1961,25 +1680,13 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             http_options = _BaseCloudTasksRestTransport._BaseGetTask._get_http_options()
 
             request, metadata = self._interceptor.pre_get_task(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseGetTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseGetTask._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseGetTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseGetTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2002,14 +1709,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
 
             # Send the request
-            response = CloudTasksRestTransport._GetTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CloudTasksRestTransport._GetTask._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2024,12 +1724,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_get_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = task.Task.to_json(response)
                 except:
@@ -2055,15 +1751,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.ListQueues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2105,30 +1793,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseListQueues._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseListQueues._get_http_options()
 
             request, metadata = self._interceptor.pre_list_queues(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseListQueues._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseListQueues._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseListQueues._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseListQueues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2152,12 +1826,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._ListQueues._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2173,12 +1842,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_list_queues(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_queues_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_queues_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudtasks.ListQueuesResponse.to_json(response)
                 except:
@@ -2204,15 +1869,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.ListTasks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2254,30 +1911,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseListTasks._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseListTasks._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tasks(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseListTasks._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseListTasks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseListTasks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseListTasks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2301,12 +1944,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._ListTasks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2322,12 +1960,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_list_tasks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tasks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tasks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudtasks.ListTasksResponse.to_json(response)
                 except:
@@ -2353,15 +1987,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.PauseQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2408,34 +2034,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BasePauseQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BasePauseQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BasePauseQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BasePauseQueue._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BasePauseQueue._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BasePauseQueue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BasePauseQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BasePauseQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2459,13 +2069,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._PauseQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2481,12 +2085,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_pause_queue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pause_queue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pause_queue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = queue.Queue.to_json(response)
                 except:
@@ -2512,15 +2112,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.PurgeQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2567,34 +2159,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BasePurgeQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BasePurgeQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_purge_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BasePurgeQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BasePurgeQueue._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BasePurgeQueue._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BasePurgeQueue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BasePurgeQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BasePurgeQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2618,13 +2194,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._PurgeQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2640,12 +2210,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_purge_queue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_purge_queue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_queue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = queue.Queue.to_json(response)
                 except:
@@ -2666,22 +2232,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
             return resp
 
-    class _ResumeQueue(
-        _BaseCloudTasksRestTransport._BaseResumeQueue, CloudTasksRestStub
-    ):
+    class _ResumeQueue(_BaseCloudTasksRestTransport._BaseResumeQueue, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.ResumeQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2728,34 +2284,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseResumeQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseResumeQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_resume_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseResumeQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseResumeQueue._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BaseResumeQueue._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BaseResumeQueue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseResumeQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseResumeQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2779,13 +2319,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._ResumeQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2801,12 +2335,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_resume_queue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_queue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_queue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = queue.Queue.to_json(response)
                 except:
@@ -2832,15 +2362,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return hash("CloudTasksRestTransport.RunTask")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2884,29 +2406,15 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             http_options = _BaseCloudTasksRestTransport._BaseRunTask._get_http_options()
 
             request, metadata = self._interceptor.pre_run_task(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseRunTask._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseRunTask._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BaseRunTask._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BaseRunTask._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseRunTask._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseRunTask._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2930,13 +2438,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._RunTask._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2952,12 +2454,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_run_task(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_task_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_task_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = task.Task.to_json(response)
                 except:
@@ -2978,22 +2476,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseCloudTasksRestTransport._BaseSetIamPolicy, CloudTasksRestStub
-    ):
+    class _SetIamPolicy(_BaseCloudTasksRestTransport._BaseSetIamPolicy, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3108,36 +2596,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3161,13 +2631,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3183,12 +2647,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3209,22 +2669,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseCloudTasksRestTransport._BaseTestIamPermissions, CloudTasksRestStub
-    ):
+    class _TestIamPermissions(_BaseCloudTasksRestTransport._BaseTestIamPermissions, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3264,32 +2714,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3313,13 +2749,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3335,12 +2765,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3361,22 +2787,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 )
             return resp
 
-    class _UpdateQueue(
-        _BaseCloudTasksRestTransport._BaseUpdateQueue, CloudTasksRestStub
-    ):
+    class _UpdateQueue(_BaseCloudTasksRestTransport._BaseUpdateQueue, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.UpdateQueue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3423,34 +2839,18 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseUpdateQueue._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseUpdateQueue._get_http_options()
 
             request, metadata = self._interceptor.pre_update_queue(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseUpdateQueue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseUpdateQueue._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudTasksRestTransport._BaseUpdateQueue._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudTasksRestTransport._BaseUpdateQueue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseUpdateQueue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseUpdateQueue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3474,13 +2874,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._UpdateQueue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3496,12 +2890,8 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             resp = self._interceptor.post_update_queue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_queue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_queue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gct_queue.Queue.to_json(response)
                 except:
@@ -3523,9 +2913,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             return resp
 
     @property
-    def create_queue(
-        self,
-    ) -> Callable[[cloudtasks.CreateQueueRequest], gct_queue.Queue]:
+    def create_queue(self) -> Callable[[cloudtasks.CreateQueueRequest], gct_queue.Queue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQueue(self._session, self._host, self._interceptor)  # type: ignore
@@ -3537,9 +2925,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
         return self._CreateTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_queue(
-        self,
-    ) -> Callable[[cloudtasks.DeleteQueueRequest], empty_pb2.Empty]:
+    def delete_queue(self) -> Callable[[cloudtasks.DeleteQueueRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteQueue(self._session, self._host, self._interceptor)  # type: ignore
@@ -3551,9 +2937,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
         return self._DeleteTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -3571,17 +2955,13 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
         return self._GetTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_queues(
-        self,
-    ) -> Callable[[cloudtasks.ListQueuesRequest], cloudtasks.ListQueuesResponse]:
+    def list_queues(self) -> Callable[[cloudtasks.ListQueuesRequest], cloudtasks.ListQueuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQueues(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tasks(
-        self,
-    ) -> Callable[[cloudtasks.ListTasksRequest], cloudtasks.ListTasksResponse]:
+    def list_tasks(self) -> Callable[[cloudtasks.ListTasksRequest], cloudtasks.ListTasksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTasks(self._session, self._host, self._interceptor)  # type: ignore
@@ -3611,28 +2991,19 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
         return self._RunTask(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_queue(
-        self,
-    ) -> Callable[[cloudtasks.UpdateQueueRequest], gct_queue.Queue]:
+    def update_queue(self) -> Callable[[cloudtasks.UpdateQueueRequest], gct_queue.Queue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateQueue(self._session, self._host, self._interceptor)  # type: ignore
@@ -3641,22 +3012,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCloudTasksRestTransport._BaseGetLocation, CloudTasksRestStub
-    ):
+    class _GetLocation(_BaseCloudTasksRestTransport._BaseGetLocation, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3694,30 +3055,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3741,12 +3088,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3758,9 +3100,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3785,22 +3125,12 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCloudTasksRestTransport._BaseListLocations, CloudTasksRestStub
-    ):
+    class _ListLocations(_BaseCloudTasksRestTransport._BaseListLocations, CloudTasksRestStub):
         def __hash__(self):
             return hash("CloudTasksRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3838,30 +3168,16 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudTasksRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudTasksRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseCloudTasksRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudTasksRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudTasksRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudTasksRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3885,12 +3201,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
 
             # Send the request
             response = CloudTasksRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3902,9 +3213,7 @@ class CloudTasksRestTransport(_BaseCloudTasksRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

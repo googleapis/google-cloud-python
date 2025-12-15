@@ -112,12 +112,8 @@ class TagBindingsRestInterceptor:
     """
 
     def pre_create_tag_binding(
-        self,
-        request: tag_bindings.CreateTagBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_bindings.CreateTagBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_bindings.CreateTagBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_bindings.CreateTagBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tag_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -125,9 +121,7 @@ class TagBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_tag_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_tag_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_tag_binding
 
         DEPRECATED. Please use the `post_create_tag_binding_with_metadata`
@@ -141,9 +135,7 @@ class TagBindingsRestInterceptor:
         return response
 
     def post_create_tag_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tag_binding
 
@@ -160,12 +152,8 @@ class TagBindingsRestInterceptor:
         return response, metadata
 
     def pre_delete_tag_binding(
-        self,
-        request: tag_bindings.DeleteTagBindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_bindings.DeleteTagBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_bindings.DeleteTagBindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_bindings.DeleteTagBindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tag_binding
 
         Override in a subclass to manipulate the request or metadata
@@ -173,9 +161,7 @@ class TagBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_tag_binding(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_tag_binding(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_tag_binding
 
         DEPRECATED. Please use the `post_delete_tag_binding_with_metadata`
@@ -189,9 +175,7 @@ class TagBindingsRestInterceptor:
         return response
 
     def post_delete_tag_binding_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_tag_binding
 
@@ -208,12 +192,8 @@ class TagBindingsRestInterceptor:
         return response, metadata
 
     def pre_list_effective_tags(
-        self,
-        request: tag_bindings.ListEffectiveTagsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_bindings.ListEffectiveTagsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_bindings.ListEffectiveTagsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_bindings.ListEffectiveTagsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_effective_tags
 
         Override in a subclass to manipulate the request or metadata
@@ -221,9 +201,7 @@ class TagBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_effective_tags(
-        self, response: tag_bindings.ListEffectiveTagsResponse
-    ) -> tag_bindings.ListEffectiveTagsResponse:
+    def post_list_effective_tags(self, response: tag_bindings.ListEffectiveTagsResponse) -> tag_bindings.ListEffectiveTagsResponse:
         """Post-rpc interceptor for list_effective_tags
 
         DEPRECATED. Please use the `post_list_effective_tags_with_metadata`
@@ -237,12 +215,8 @@ class TagBindingsRestInterceptor:
         return response
 
     def post_list_effective_tags_with_metadata(
-        self,
-        response: tag_bindings.ListEffectiveTagsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_bindings.ListEffectiveTagsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: tag_bindings.ListEffectiveTagsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_bindings.ListEffectiveTagsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_effective_tags
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -258,12 +232,8 @@ class TagBindingsRestInterceptor:
         return response, metadata
 
     def pre_list_tag_bindings(
-        self,
-        request: tag_bindings.ListTagBindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_bindings.ListTagBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_bindings.ListTagBindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_bindings.ListTagBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tag_bindings
 
         Override in a subclass to manipulate the request or metadata
@@ -271,9 +241,7 @@ class TagBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tag_bindings(
-        self, response: tag_bindings.ListTagBindingsResponse
-    ) -> tag_bindings.ListTagBindingsResponse:
+    def post_list_tag_bindings(self, response: tag_bindings.ListTagBindingsResponse) -> tag_bindings.ListTagBindingsResponse:
         """Post-rpc interceptor for list_tag_bindings
 
         DEPRECATED. Please use the `post_list_tag_bindings_with_metadata`
@@ -287,12 +255,8 @@ class TagBindingsRestInterceptor:
         return response
 
     def post_list_tag_bindings_with_metadata(
-        self,
-        response: tag_bindings.ListTagBindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_bindings.ListTagBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: tag_bindings.ListTagBindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_bindings.ListTagBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tag_bindings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -308,12 +272,8 @@ class TagBindingsRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -321,9 +281,7 @@ class TagBindingsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -414,9 +372,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -450,29 +406,17 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateTagBinding(
-        _BaseTagBindingsRestTransport._BaseCreateTagBinding, TagBindingsRestStub
-    ):
+    class _CreateTagBinding(_BaseTagBindingsRestTransport._BaseCreateTagBinding, TagBindingsRestStub):
         def __hash__(self):
             return hash("TagBindingsRestTransport.CreateTagBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -516,32 +460,18 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_http_options()
-            )
+            http_options = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_tag_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_tag_binding(request, metadata)
+            transcoded_request = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_transcoded_request(http_options, request)
 
-            body = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTagBindingsRestTransport._BaseCreateTagBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -565,13 +495,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             # Send the request
             response = TagBindingsRestTransport._CreateTagBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -585,12 +509,8 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             resp = self._interceptor.post_create_tag_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tag_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tag_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -611,22 +531,12 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 )
             return resp
 
-    class _DeleteTagBinding(
-        _BaseTagBindingsRestTransport._BaseDeleteTagBinding, TagBindingsRestStub
-    ):
+    class _DeleteTagBinding(_BaseTagBindingsRestTransport._BaseDeleteTagBinding, TagBindingsRestStub):
         def __hash__(self):
             return hash("TagBindingsRestTransport.DeleteTagBinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -669,28 +579,16 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_http_options()
-            )
+            http_options = _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_tag_binding(
-                request, metadata
-            )
-            transcoded_request = _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_tag_binding(request, metadata)
+            transcoded_request = _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTagBindingsRestTransport._BaseDeleteTagBinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -714,12 +612,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             # Send the request
             response = TagBindingsRestTransport._DeleteTagBinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -733,12 +626,8 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             resp = self._interceptor.post_delete_tag_binding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_tag_binding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_tag_binding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -759,22 +648,12 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 )
             return resp
 
-    class _ListEffectiveTags(
-        _BaseTagBindingsRestTransport._BaseListEffectiveTags, TagBindingsRestStub
-    ):
+    class _ListEffectiveTags(_BaseTagBindingsRestTransport._BaseListEffectiveTags, TagBindingsRestStub):
         def __hash__(self):
             return hash("TagBindingsRestTransport.ListEffectiveTags")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -814,28 +693,16 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                     The response of ListEffectiveTags.
             """
 
-            http_options = (
-                _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_http_options()
-            )
+            http_options = _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_effective_tags(
-                request, metadata
-            )
-            transcoded_request = _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_effective_tags(request, metadata)
+            transcoded_request = _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTagBindingsRestTransport._BaseListEffectiveTags._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -859,12 +726,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             # Send the request
             response = TagBindingsRestTransport._ListEffectiveTags._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -880,16 +742,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             resp = self._interceptor.post_list_effective_tags(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_effective_tags_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_effective_tags_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = tag_bindings.ListEffectiveTagsResponse.to_json(
-                        response
-                    )
+                    response_payload = tag_bindings.ListEffectiveTagsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -908,22 +764,12 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 )
             return resp
 
-    class _ListTagBindings(
-        _BaseTagBindingsRestTransport._BaseListTagBindings, TagBindingsRestStub
-    ):
+    class _ListTagBindings(_BaseTagBindingsRestTransport._BaseListTagBindings, TagBindingsRestStub):
         def __hash__(self):
             return hash("TagBindingsRestTransport.ListTagBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -963,28 +809,16 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                     The ListTagBindings response.
             """
 
-            http_options = (
-                _BaseTagBindingsRestTransport._BaseListTagBindings._get_http_options()
-            )
+            http_options = _BaseTagBindingsRestTransport._BaseListTagBindings._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_tag_bindings(
-                request, metadata
-            )
-            transcoded_request = _BaseTagBindingsRestTransport._BaseListTagBindings._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_tag_bindings(request, metadata)
+            transcoded_request = _BaseTagBindingsRestTransport._BaseListTagBindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTagBindingsRestTransport._BaseListTagBindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTagBindingsRestTransport._BaseListTagBindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1008,12 +842,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             # Send the request
             response = TagBindingsRestTransport._ListTagBindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1029,16 +858,10 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             resp = self._interceptor.post_list_tag_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tag_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tag_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = tag_bindings.ListTagBindingsResponse.to_json(
-                        response
-                    )
+                    response_payload = tag_bindings.ListTagBindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1058,37 +881,25 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             return resp
 
     @property
-    def create_tag_binding(
-        self,
-    ) -> Callable[[tag_bindings.CreateTagBindingRequest], operations_pb2.Operation]:
+    def create_tag_binding(self) -> Callable[[tag_bindings.CreateTagBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTagBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_tag_binding(
-        self,
-    ) -> Callable[[tag_bindings.DeleteTagBindingRequest], operations_pb2.Operation]:
+    def delete_tag_binding(self) -> Callable[[tag_bindings.DeleteTagBindingRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTagBinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_effective_tags(
-        self,
-    ) -> Callable[
-        [tag_bindings.ListEffectiveTagsRequest], tag_bindings.ListEffectiveTagsResponse
-    ]:
+    def list_effective_tags(self) -> Callable[[tag_bindings.ListEffectiveTagsRequest], tag_bindings.ListEffectiveTagsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEffectiveTags(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tag_bindings(
-        self,
-    ) -> Callable[
-        [tag_bindings.ListTagBindingsRequest], tag_bindings.ListTagBindingsResponse
-    ]:
+    def list_tag_bindings(self) -> Callable[[tag_bindings.ListTagBindingsRequest], tag_bindings.ListTagBindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTagBindings(self._session, self._host, self._interceptor)  # type: ignore
@@ -1097,22 +908,12 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTagBindingsRestTransport._BaseGetOperation, TagBindingsRestStub
-    ):
+    class _GetOperation(_BaseTagBindingsRestTransport._BaseGetOperation, TagBindingsRestStub):
         def __hash__(self):
             return hash("TagBindingsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1150,30 +951,16 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTagBindingsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTagBindingsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseTagBindingsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTagBindingsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagBindingsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagBindingsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1197,12 +984,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
 
             # Send the request
             response = TagBindingsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1214,9 +996,7 @@ class TagBindingsRestTransport(_BaseTagBindingsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -18,24 +18,12 @@ from google.cloud.network_security import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.network_security_v1.services.address_group_service.async_client import (
-    AddressGroupServiceAsyncClient,
-)
-from google.cloud.network_security_v1.services.address_group_service.client import (
-    AddressGroupServiceClient,
-)
-from google.cloud.network_security_v1.services.network_security.async_client import (
-    NetworkSecurityAsyncClient,
-)
-from google.cloud.network_security_v1.services.network_security.client import (
-    NetworkSecurityClient,
-)
-from google.cloud.network_security_v1.services.organization_address_group_service.async_client import (
-    OrganizationAddressGroupServiceAsyncClient,
-)
-from google.cloud.network_security_v1.services.organization_address_group_service.client import (
-    OrganizationAddressGroupServiceClient,
-)
+from google.cloud.network_security_v1.services.address_group_service.async_client import AddressGroupServiceAsyncClient
+from google.cloud.network_security_v1.services.address_group_service.client import AddressGroupServiceClient
+from google.cloud.network_security_v1.services.network_security.async_client import NetworkSecurityAsyncClient
+from google.cloud.network_security_v1.services.network_security.client import NetworkSecurityClient
+from google.cloud.network_security_v1.services.organization_address_group_service.async_client import OrganizationAddressGroupServiceAsyncClient
+from google.cloud.network_security_v1.services.organization_address_group_service.client import OrganizationAddressGroupServiceClient
 from google.cloud.network_security_v1.types.address_group import (
     AddAddressGroupItemsRequest,
     AddressGroup,
@@ -78,12 +66,7 @@ from google.cloud.network_security_v1.types.server_tls_policy import (
     ServerTlsPolicy,
     UpdateServerTlsPolicyRequest,
 )
-from google.cloud.network_security_v1.types.tls import (
-    CertificateProvider,
-    CertificateProviderInstance,
-    GrpcEndpoint,
-    ValidationCA,
-)
+from google.cloud.network_security_v1.types.tls import CertificateProvider, CertificateProviderInstance, GrpcEndpoint, ValidationCA
 
 __all__ = (
     "AddressGroupServiceClient",

@@ -13,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .gmail_addon_manifest import (
-    ComposeTrigger,
-    ContextualTrigger,
-    GmailAddOnManifest,
-    UnconditionalTrigger,
-    UniversalAction,
-)
+from .gmail_addon_manifest import ComposeTrigger, ContextualTrigger, GmailAddOnManifest, UnconditionalTrigger, UniversalAction
 
 __all__ = (
     "ComposeTrigger",

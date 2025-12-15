@@ -116,13 +116,8 @@ class AuthorizedCertificatesRestInterceptor:
     """
 
     def pre_create_authorized_certificate(
-        self,
-        request: appengine.CreateAuthorizedCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.CreateAuthorizedCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: appengine.CreateAuthorizedCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.CreateAuthorizedCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_authorized_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -130,9 +125,7 @@ class AuthorizedCertificatesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_authorized_certificate(
-        self, response: certificate.AuthorizedCertificate
-    ) -> certificate.AuthorizedCertificate:
+    def post_create_authorized_certificate(self, response: certificate.AuthorizedCertificate) -> certificate.AuthorizedCertificate:
         """Post-rpc interceptor for create_authorized_certificate
 
         DEPRECATED. Please use the `post_create_authorized_certificate_with_metadata`
@@ -146,12 +139,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response
 
     def post_create_authorized_certificate_with_metadata(
-        self,
-        response: certificate.AuthorizedCertificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        certificate.AuthorizedCertificate, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: certificate.AuthorizedCertificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[certificate.AuthorizedCertificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_authorized_certificate
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -167,13 +156,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response, metadata
 
     def pre_delete_authorized_certificate(
-        self,
-        request: appengine.DeleteAuthorizedCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.DeleteAuthorizedCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: appengine.DeleteAuthorizedCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.DeleteAuthorizedCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_authorized_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -182,13 +166,8 @@ class AuthorizedCertificatesRestInterceptor:
         return request, metadata
 
     def pre_get_authorized_certificate(
-        self,
-        request: appengine.GetAuthorizedCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.GetAuthorizedCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: appengine.GetAuthorizedCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.GetAuthorizedCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_authorized_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -196,9 +175,7 @@ class AuthorizedCertificatesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_authorized_certificate(
-        self, response: certificate.AuthorizedCertificate
-    ) -> certificate.AuthorizedCertificate:
+    def post_get_authorized_certificate(self, response: certificate.AuthorizedCertificate) -> certificate.AuthorizedCertificate:
         """Post-rpc interceptor for get_authorized_certificate
 
         DEPRECATED. Please use the `post_get_authorized_certificate_with_metadata`
@@ -212,12 +189,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response
 
     def post_get_authorized_certificate_with_metadata(
-        self,
-        response: certificate.AuthorizedCertificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        certificate.AuthorizedCertificate, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: certificate.AuthorizedCertificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[certificate.AuthorizedCertificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_authorized_certificate
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -233,13 +206,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response, metadata
 
     def pre_list_authorized_certificates(
-        self,
-        request: appengine.ListAuthorizedCertificatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.ListAuthorizedCertificatesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: appengine.ListAuthorizedCertificatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.ListAuthorizedCertificatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_authorized_certificates
 
         Override in a subclass to manipulate the request or metadata
@@ -263,13 +231,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response
 
     def post_list_authorized_certificates_with_metadata(
-        self,
-        response: appengine.ListAuthorizedCertificatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.ListAuthorizedCertificatesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: appengine.ListAuthorizedCertificatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.ListAuthorizedCertificatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_authorized_certificates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -285,13 +248,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response, metadata
 
     def pre_update_authorized_certificate(
-        self,
-        request: appengine.UpdateAuthorizedCertificateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        appengine.UpdateAuthorizedCertificateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: appengine.UpdateAuthorizedCertificateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[appengine.UpdateAuthorizedCertificateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_authorized_certificate
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +257,7 @@ class AuthorizedCertificatesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_authorized_certificate(
-        self, response: certificate.AuthorizedCertificate
-    ) -> certificate.AuthorizedCertificate:
+    def post_update_authorized_certificate(self, response: certificate.AuthorizedCertificate) -> certificate.AuthorizedCertificate:
         """Post-rpc interceptor for update_authorized_certificate
 
         DEPRECATED. Please use the `post_update_authorized_certificate_with_metadata`
@@ -315,12 +271,8 @@ class AuthorizedCertificatesRestInterceptor:
         return response
 
     def post_update_authorized_certificate_with_metadata(
-        self,
-        response: certificate.AuthorizedCertificate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        certificate.AuthorizedCertificate, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: certificate.AuthorizedCertificate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[certificate.AuthorizedCertificate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_authorized_certificate
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -417,33 +369,18 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AuthorizedCertificatesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAuthorizedCertificate(
-        _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate,
-        AuthorizedCertificatesRestStub,
-    ):
+    class _CreateAuthorizedCertificate(_BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate, AuthorizedCertificatesRestStub):
         def __hash__(self):
-            return hash(
-                "AuthorizedCertificatesRestTransport.CreateAuthorizedCertificate"
-            )
+            return hash("AuthorizedCertificatesRestTransport.CreateAuthorizedCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -490,32 +427,20 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_authorized_certificate(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_authorized_certificate(request, metadata)
             transcoded_request = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAuthorizedCertificatesRestTransport._BaseCreateAuthorizedCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -539,13 +464,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             # Send the request
             response = AuthorizedCertificatesRestTransport._CreateAuthorizedCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -561,19 +480,10 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             resp = self._interceptor.post_create_authorized_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_authorized_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_authorized_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = certificate.AuthorizedCertificate.to_json(
-                        response
-                    )
+                    response_payload = certificate.AuthorizedCertificate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -592,25 +502,12 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
                 )
             return resp
 
-    class _DeleteAuthorizedCertificate(
-        _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate,
-        AuthorizedCertificatesRestStub,
-    ):
+    class _DeleteAuthorizedCertificate(_BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate, AuthorizedCertificatesRestStub):
         def __hash__(self):
-            return hash(
-                "AuthorizedCertificatesRestTransport.DeleteAuthorizedCertificate"
-            )
+            return hash("AuthorizedCertificatesRestTransport.DeleteAuthorizedCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -647,28 +544,18 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_authorized_certificate(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_authorized_certificate(request, metadata)
             transcoded_request = _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAuthorizedCertificatesRestTransport._BaseDeleteAuthorizedCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -692,12 +579,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             # Send the request
             response = AuthorizedCertificatesRestTransport._DeleteAuthorizedCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -705,23 +587,12 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAuthorizedCertificate(
-        _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate,
-        AuthorizedCertificatesRestStub,
-    ):
+    class _GetAuthorizedCertificate(_BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate, AuthorizedCertificatesRestStub):
         def __hash__(self):
             return hash("AuthorizedCertificatesRestTransport.GetAuthorizedCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -767,28 +638,16 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_authorized_certificate(
-                request, metadata
-            )
-            transcoded_request = _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_authorized_certificate(request, metadata)
+            transcoded_request = _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAuthorizedCertificatesRestTransport._BaseGetAuthorizedCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -812,12 +671,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             # Send the request
             response = AuthorizedCertificatesRestTransport._GetAuthorizedCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -833,16 +687,10 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             resp = self._interceptor.post_get_authorized_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_authorized_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_authorized_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = certificate.AuthorizedCertificate.to_json(
-                        response
-                    )
+                    response_payload = certificate.AuthorizedCertificate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -861,25 +709,12 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
                 )
             return resp
 
-    class _ListAuthorizedCertificates(
-        _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates,
-        AuthorizedCertificatesRestStub,
-    ):
+    class _ListAuthorizedCertificates(_BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates, AuthorizedCertificatesRestStub):
         def __hash__(self):
-            return hash(
-                "AuthorizedCertificatesRestTransport.ListAuthorizedCertificates"
-            )
+            return hash("AuthorizedCertificatesRestTransport.ListAuthorizedCertificates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -922,28 +757,18 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_authorized_certificates(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_authorized_certificates(request, metadata)
             transcoded_request = _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAuthorizedCertificatesRestTransport._BaseListAuthorizedCertificates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -967,12 +792,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             # Send the request
             response = AuthorizedCertificatesRestTransport._ListAuthorizedCertificates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -988,16 +808,10 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             resp = self._interceptor.post_list_authorized_certificates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_authorized_certificates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_authorized_certificates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        appengine.ListAuthorizedCertificatesResponse.to_json(response)
-                    )
+                    response_payload = appengine.ListAuthorizedCertificatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1016,25 +830,12 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
                 )
             return resp
 
-    class _UpdateAuthorizedCertificate(
-        _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate,
-        AuthorizedCertificatesRestStub,
-    ):
+    class _UpdateAuthorizedCertificate(_BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate, AuthorizedCertificatesRestStub):
         def __hash__(self):
-            return hash(
-                "AuthorizedCertificatesRestTransport.UpdateAuthorizedCertificate"
-            )
+            return hash("AuthorizedCertificatesRestTransport.UpdateAuthorizedCertificate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1081,32 +882,20 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             """
 
-            http_options = (
-                _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_http_options()
-            )
+            http_options = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_authorized_certificate(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_authorized_certificate(request, metadata)
             transcoded_request = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAuthorizedCertificatesRestTransport._BaseUpdateAuthorizedCertificate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1130,13 +919,7 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             # Send the request
             response = AuthorizedCertificatesRestTransport._UpdateAuthorizedCertificate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1152,19 +935,10 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
 
             resp = self._interceptor.post_update_authorized_certificate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_authorized_certificate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_authorized_certificate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = certificate.AuthorizedCertificate.to_json(
-                        response
-                    )
+                    response_payload = certificate.AuthorizedCertificate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1184,52 +958,31 @@ class AuthorizedCertificatesRestTransport(_BaseAuthorizedCertificatesRestTranspo
             return resp
 
     @property
-    def create_authorized_certificate(
-        self,
-    ) -> Callable[
-        [appengine.CreateAuthorizedCertificateRequest],
-        certificate.AuthorizedCertificate,
-    ]:
+    def create_authorized_certificate(self) -> Callable[[appengine.CreateAuthorizedCertificateRequest], certificate.AuthorizedCertificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_authorized_certificate(
-        self,
-    ) -> Callable[[appengine.DeleteAuthorizedCertificateRequest], empty_pb2.Empty]:
+    def delete_authorized_certificate(self) -> Callable[[appengine.DeleteAuthorizedCertificateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_authorized_certificate(
-        self,
-    ) -> Callable[
-        [appengine.GetAuthorizedCertificateRequest], certificate.AuthorizedCertificate
-    ]:
+    def get_authorized_certificate(self) -> Callable[[appengine.GetAuthorizedCertificateRequest], certificate.AuthorizedCertificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_authorized_certificates(
-        self,
-    ) -> Callable[
-        [appengine.ListAuthorizedCertificatesRequest],
-        appengine.ListAuthorizedCertificatesResponse,
-    ]:
+    def list_authorized_certificates(self) -> Callable[[appengine.ListAuthorizedCertificatesRequest], appengine.ListAuthorizedCertificatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAuthorizedCertificates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_authorized_certificate(
-        self,
-    ) -> Callable[
-        [appengine.UpdateAuthorizedCertificateRequest],
-        certificate.AuthorizedCertificate,
-    ]:
+    def update_authorized_certificate(self) -> Callable[[appengine.UpdateAuthorizedCertificateRequest], certificate.AuthorizedCertificate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAuthorizedCertificate(self._session, self._host, self._interceptor)  # type: ignore

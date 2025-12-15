@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    device_category_messages,
-    device_category_service,
-)
+from google.ads.admanager_v1.types import device_category_messages, device_category_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDeviceCategoryServiceRestTransport
@@ -99,13 +96,8 @@ class DeviceCategoryServiceRestInterceptor:
     """
 
     def pre_get_device_category(
-        self,
-        request: device_category_service.GetDeviceCategoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_category_service.GetDeviceCategoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: device_category_service.GetDeviceCategoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_category_service.GetDeviceCategoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_device_category
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class DeviceCategoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_device_category(
-        self, response: device_category_messages.DeviceCategory
-    ) -> device_category_messages.DeviceCategory:
+    def post_get_device_category(self, response: device_category_messages.DeviceCategory) -> device_category_messages.DeviceCategory:
         """Post-rpc interceptor for get_device_category
 
         DEPRECATED. Please use the `post_get_device_category_with_metadata`
@@ -129,12 +119,8 @@ class DeviceCategoryServiceRestInterceptor:
         return response
 
     def post_get_device_category_with_metadata(
-        self,
-        response: device_category_messages.DeviceCategory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_category_messages.DeviceCategory, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: device_category_messages.DeviceCategory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_category_messages.DeviceCategory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_device_category
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -150,13 +136,8 @@ class DeviceCategoryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_device_categories(
-        self,
-        request: device_category_service.ListDeviceCategoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_category_service.ListDeviceCategoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: device_category_service.ListDeviceCategoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_category_service.ListDeviceCategoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_device_categories
 
         Override in a subclass to manipulate the request or metadata
@@ -180,13 +161,8 @@ class DeviceCategoryServiceRestInterceptor:
         return response
 
     def post_list_device_categories_with_metadata(
-        self,
-        response: device_category_service.ListDeviceCategoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_category_service.ListDeviceCategoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: device_category_service.ListDeviceCategoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_category_service.ListDeviceCategoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_device_categories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -202,12 +178,8 @@ class DeviceCategoryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +187,7 @@ class DeviceCategoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -306,31 +276,18 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DeviceCategoryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetDeviceCategory(
-        _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory,
-        DeviceCategoryServiceRestStub,
-    ):
+    class _GetDeviceCategory(_BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory, DeviceCategoryServiceRestStub):
         def __hash__(self):
             return hash("DeviceCategoryServiceRestTransport.GetDeviceCategory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -371,28 +328,16 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory._get_http_options()
-            )
+            http_options = _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_device_category(
-                request, metadata
-            )
-            transcoded_request = _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_device_category(request, metadata)
+            transcoded_request = _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeviceCategoryServiceRestTransport._BaseGetDeviceCategory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -415,15 +360,8 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DeviceCategoryServiceRestTransport._GetDeviceCategory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeviceCategoryServiceRestTransport._GetDeviceCategory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -439,16 +377,10 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
 
             resp = self._interceptor.post_get_device_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_device_category_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_device_category_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = device_category_messages.DeviceCategory.to_json(
-                        response
-                    )
+                    response_payload = device_category_messages.DeviceCategory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -467,23 +399,12 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
                 )
             return resp
 
-    class _ListDeviceCategories(
-        _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories,
-        DeviceCategoryServiceRestStub,
-    ):
+    class _ListDeviceCategories(_BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories, DeviceCategoryServiceRestStub):
         def __hash__(self):
             return hash("DeviceCategoryServiceRestTransport.ListDeviceCategories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -524,28 +445,16 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories._get_http_options()
-            )
+            http_options = _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_device_categories(
-                request, metadata
-            )
-            transcoded_request = _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_device_categories(request, metadata)
+            transcoded_request = _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeviceCategoryServiceRestTransport._BaseListDeviceCategories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -568,15 +477,8 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                DeviceCategoryServiceRestTransport._ListDeviceCategories._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeviceCategoryServiceRestTransport._ListDeviceCategories._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -592,18 +494,10 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
 
             resp = self._interceptor.post_list_device_categories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_device_categories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_device_categories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        device_category_service.ListDeviceCategoriesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = device_category_service.ListDeviceCategoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -623,12 +517,7 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
             return resp
 
     @property
-    def get_device_category(
-        self,
-    ) -> Callable[
-        [device_category_service.GetDeviceCategoryRequest],
-        device_category_messages.DeviceCategory,
-    ]:
+    def get_device_category(self) -> Callable[[device_category_service.GetDeviceCategoryRequest], device_category_messages.DeviceCategory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeviceCategory(self._session, self._host, self._interceptor)  # type: ignore
@@ -636,10 +525,7 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
     @property
     def list_device_categories(
         self,
-    ) -> Callable[
-        [device_category_service.ListDeviceCategoriesRequest],
-        device_category_service.ListDeviceCategoriesResponse,
-    ]:
+    ) -> Callable[[device_category_service.ListDeviceCategoriesRequest], device_category_service.ListDeviceCategoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeviceCategories(self._session, self._host, self._interceptor)  # type: ignore
@@ -648,23 +534,12 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDeviceCategoryServiceRestTransport._BaseGetOperation,
-        DeviceCategoryServiceRestStub,
-    ):
+    class _GetOperation(_BaseDeviceCategoryServiceRestTransport._BaseGetOperation, DeviceCategoryServiceRestStub):
         def __hash__(self):
             return hash("DeviceCategoryServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -702,26 +577,16 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDeviceCategoryServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDeviceCategoryServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDeviceCategoryServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeviceCategoryServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeviceCategoryServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeviceCategoryServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -745,12 +610,7 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
 
             # Send the request
             response = DeviceCategoryServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -762,9 +622,7 @@ class DeviceCategoryServiceRestTransport(_BaseDeviceCategoryServiceRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

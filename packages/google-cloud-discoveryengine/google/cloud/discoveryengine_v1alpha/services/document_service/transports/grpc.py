@@ -31,11 +31,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    document_service,
-    import_config,
-    purge_config,
-)
+from google.cloud.discoveryengine_v1alpha.types import document_service, import_config, purge_config
 from google.cloud.discoveryengine_v1alpha.types import document
 from google.cloud.discoveryengine_v1alpha.types import document as gcd_document
 
@@ -53,9 +49,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -65,10 +59,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -87,11 +78,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -228,18 +215,14 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -273,9 +256,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -342,17 +323,13 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_document(
-        self,
-    ) -> Callable[[document_service.GetDocumentRequest], document.Document]:
+    def get_document(self) -> Callable[[document_service.GetDocumentRequest], document.Document]:
         r"""Return a callable for the get document method over gRPC.
 
         Gets a
@@ -377,11 +354,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["get_document"]
 
     @property
-    def list_documents(
-        self,
-    ) -> Callable[
-        [document_service.ListDocumentsRequest], document_service.ListDocumentsResponse
-    ]:
+    def list_documents(self) -> Callable[[document_service.ListDocumentsRequest], document_service.ListDocumentsResponse]:
         r"""Return a callable for the list documents method over gRPC.
 
         Gets a list of
@@ -406,9 +379,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["list_documents"]
 
     @property
-    def create_document(
-        self,
-    ) -> Callable[[document_service.CreateDocumentRequest], gcd_document.Document]:
+    def create_document(self) -> Callable[[document_service.CreateDocumentRequest], gcd_document.Document]:
         r"""Return a callable for the create document method over gRPC.
 
         Creates a
@@ -433,9 +404,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["create_document"]
 
     @property
-    def update_document(
-        self,
-    ) -> Callable[[document_service.UpdateDocumentRequest], gcd_document.Document]:
+    def update_document(self) -> Callable[[document_service.UpdateDocumentRequest], gcd_document.Document]:
         r"""Return a callable for the update document method over gRPC.
 
         Updates a
@@ -460,9 +429,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["update_document"]
 
     @property
-    def delete_document(
-        self,
-    ) -> Callable[[document_service.DeleteDocumentRequest], empty_pb2.Empty]:
+    def delete_document(self) -> Callable[[document_service.DeleteDocumentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete document method over gRPC.
 
         Deletes a
@@ -487,9 +454,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["delete_document"]
 
     @property
-    def import_documents(
-        self,
-    ) -> Callable[[import_config.ImportDocumentsRequest], operations_pb2.Operation]:
+    def import_documents(self) -> Callable[[import_config.ImportDocumentsRequest], operations_pb2.Operation]:
         r"""Return a callable for the import documents method over gRPC.
 
         Bulk import of multiple
@@ -520,9 +485,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["import_documents"]
 
     @property
-    def purge_documents(
-        self,
-    ) -> Callable[[purge_config.PurgeDocumentsRequest], operations_pb2.Operation]:
+    def purge_documents(self) -> Callable[[purge_config.PurgeDocumentsRequest], operations_pb2.Operation]:
         r"""Return a callable for the purge documents method over gRPC.
 
         Permanently deletes all selected
@@ -564,11 +527,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         return self._stubs["purge_documents"]
 
     @property
-    def get_processed_document(
-        self,
-    ) -> Callable[
-        [document_service.GetProcessedDocumentRequest], document.ProcessedDocument
-    ]:
+    def get_processed_document(self) -> Callable[[document_service.GetProcessedDocumentRequest], document.ProcessedDocument]:
         r"""Return a callable for the get processed document method over gRPC.
 
         Gets the parsed layout information for a
@@ -595,10 +554,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     @property
     def batch_get_documents_metadata(
         self,
-    ) -> Callable[
-        [document_service.BatchGetDocumentsMetadataRequest],
-        document_service.BatchGetDocumentsMetadataResponse,
-    ]:
+    ) -> Callable[[document_service.BatchGetDocumentsMetadataRequest], document_service.BatchGetDocumentsMetadataResponse]:
         r"""Return a callable for the batch get documents metadata method over gRPC.
 
         Gets index freshness metadata for
@@ -616,9 +572,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_get_documents_metadata" not in self._stubs:
-            self._stubs[
-                "batch_get_documents_metadata"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_get_documents_metadata"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1alpha.DocumentService/BatchGetDocumentsMetadata",
                 request_serializer=document_service.BatchGetDocumentsMetadataRequest.serialize,
                 response_deserializer=document_service.BatchGetDocumentsMetadataResponse.deserialize,
@@ -665,9 +619,7 @@ class DocumentServiceGrpcTransport(DocumentServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

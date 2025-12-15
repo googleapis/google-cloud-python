@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.bigquery_datatransfer_v1 import gapic_version as package_version
 from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class DataTransferServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -337,60 +327,37 @@ class DataTransferServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_data_source(
-        self,
-    ) -> Callable[
-        [datatransfer.GetDataSourceRequest],
-        Union[datatransfer.DataSource, Awaitable[datatransfer.DataSource]],
-    ]:
+    def get_data_source(self) -> Callable[[datatransfer.GetDataSourceRequest], Union[datatransfer.DataSource, Awaitable[datatransfer.DataSource]]]:
         raise NotImplementedError()
 
     @property
     def list_data_sources(
         self,
     ) -> Callable[
-        [datatransfer.ListDataSourcesRequest],
-        Union[
-            datatransfer.ListDataSourcesResponse,
-            Awaitable[datatransfer.ListDataSourcesResponse],
-        ],
+        [datatransfer.ListDataSourcesRequest], Union[datatransfer.ListDataSourcesResponse, Awaitable[datatransfer.ListDataSourcesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def create_transfer_config(
         self,
-    ) -> Callable[
-        [datatransfer.CreateTransferConfigRequest],
-        Union[transfer.TransferConfig, Awaitable[transfer.TransferConfig]],
-    ]:
+    ) -> Callable[[datatransfer.CreateTransferConfigRequest], Union[transfer.TransferConfig, Awaitable[transfer.TransferConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_transfer_config(
         self,
-    ) -> Callable[
-        [datatransfer.UpdateTransferConfigRequest],
-        Union[transfer.TransferConfig, Awaitable[transfer.TransferConfig]],
-    ]:
+    ) -> Callable[[datatransfer.UpdateTransferConfigRequest], Union[transfer.TransferConfig, Awaitable[transfer.TransferConfig]]]:
         raise NotImplementedError()
 
     @property
-    def delete_transfer_config(
-        self,
-    ) -> Callable[
-        [datatransfer.DeleteTransferConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_transfer_config(self) -> Callable[[datatransfer.DeleteTransferConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_transfer_config(
         self,
-    ) -> Callable[
-        [datatransfer.GetTransferConfigRequest],
-        Union[transfer.TransferConfig, Awaitable[transfer.TransferConfig]],
-    ]:
+    ) -> Callable[[datatransfer.GetTransferConfigRequest], Union[transfer.TransferConfig, Awaitable[transfer.TransferConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -398,10 +365,7 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [datatransfer.ListTransferConfigsRequest],
-        Union[
-            datatransfer.ListTransferConfigsResponse,
-            Awaitable[datatransfer.ListTransferConfigsResponse],
-        ],
+        Union[datatransfer.ListTransferConfigsResponse, Awaitable[datatransfer.ListTransferConfigsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -410,10 +374,7 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [datatransfer.ScheduleTransferRunsRequest],
-        Union[
-            datatransfer.ScheduleTransferRunsResponse,
-            Awaitable[datatransfer.ScheduleTransferRunsResponse],
-        ],
+        Union[datatransfer.ScheduleTransferRunsResponse, Awaitable[datatransfer.ScheduleTransferRunsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -422,40 +383,23 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [datatransfer.StartManualTransferRunsRequest],
-        Union[
-            datatransfer.StartManualTransferRunsResponse,
-            Awaitable[datatransfer.StartManualTransferRunsResponse],
-        ],
+        Union[datatransfer.StartManualTransferRunsResponse, Awaitable[datatransfer.StartManualTransferRunsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_transfer_run(
-        self,
-    ) -> Callable[
-        [datatransfer.GetTransferRunRequest],
-        Union[transfer.TransferRun, Awaitable[transfer.TransferRun]],
-    ]:
+    def get_transfer_run(self) -> Callable[[datatransfer.GetTransferRunRequest], Union[transfer.TransferRun, Awaitable[transfer.TransferRun]]]:
         raise NotImplementedError()
 
     @property
-    def delete_transfer_run(
-        self,
-    ) -> Callable[
-        [datatransfer.DeleteTransferRunRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_transfer_run(self) -> Callable[[datatransfer.DeleteTransferRunRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_transfer_runs(
         self,
     ) -> Callable[
-        [datatransfer.ListTransferRunsRequest],
-        Union[
-            datatransfer.ListTransferRunsResponse,
-            Awaitable[datatransfer.ListTransferRunsResponse],
-        ],
+        [datatransfer.ListTransferRunsRequest], Union[datatransfer.ListTransferRunsResponse, Awaitable[datatransfer.ListTransferRunsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -463,11 +407,7 @@ class DataTransferServiceTransport(abc.ABC):
     def list_transfer_logs(
         self,
     ) -> Callable[
-        [datatransfer.ListTransferLogsRequest],
-        Union[
-            datatransfer.ListTransferLogsResponse,
-            Awaitable[datatransfer.ListTransferLogsResponse],
-        ],
+        [datatransfer.ListTransferLogsRequest], Union[datatransfer.ListTransferLogsResponse, Awaitable[datatransfer.ListTransferLogsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -475,51 +415,28 @@ class DataTransferServiceTransport(abc.ABC):
     def check_valid_creds(
         self,
     ) -> Callable[
-        [datatransfer.CheckValidCredsRequest],
-        Union[
-            datatransfer.CheckValidCredsResponse,
-            Awaitable[datatransfer.CheckValidCredsResponse],
-        ],
+        [datatransfer.CheckValidCredsRequest], Union[datatransfer.CheckValidCredsResponse, Awaitable[datatransfer.CheckValidCredsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def enroll_data_sources(
-        self,
-    ) -> Callable[
-        [datatransfer.EnrollDataSourcesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def enroll_data_sources(self) -> Callable[[datatransfer.EnrollDataSourcesRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def unenroll_data_sources(
-        self,
-    ) -> Callable[
-        [datatransfer.UnenrollDataSourcesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def unenroll_data_sources(self) -> Callable[[datatransfer.UnenrollDataSourcesRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

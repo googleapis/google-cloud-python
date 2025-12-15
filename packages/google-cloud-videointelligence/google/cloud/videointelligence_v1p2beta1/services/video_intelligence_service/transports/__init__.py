@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import VideoIntelligenceServiceTransport
 from .grpc import VideoIntelligenceServiceGrpcTransport
 from .grpc_asyncio import VideoIntelligenceServiceGrpcAsyncIOTransport
-from .rest import (
-    VideoIntelligenceServiceRestInterceptor,
-    VideoIntelligenceServiceRestTransport,
-)
+from .rest import VideoIntelligenceServiceRestInterceptor, VideoIntelligenceServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[VideoIntelligenceServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[VideoIntelligenceServiceTransport]]
 _transport_registry["grpc"] = VideoIntelligenceServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = VideoIntelligenceServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = VideoIntelligenceServiceRestTransport

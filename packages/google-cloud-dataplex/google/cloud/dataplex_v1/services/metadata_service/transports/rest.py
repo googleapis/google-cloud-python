@@ -148,9 +148,7 @@ class MetadataServiceRestInterceptor:
     """
 
     def pre_create_entity(
-        self,
-        request: metadata_.CreateEntityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metadata_.CreateEntityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.CreateEntityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entity
 
@@ -173,9 +171,7 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_create_entity_with_metadata(
-        self,
-        response: metadata_.Entity,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metadata_.Entity, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.Entity, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entity
 
@@ -192,12 +188,8 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_create_partition(
-        self,
-        request: metadata_.CreatePartitionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metadata_.CreatePartitionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metadata_.CreatePartitionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metadata_.CreatePartitionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_partition
 
         Override in a subclass to manipulate the request or metadata
@@ -205,9 +197,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_partition(
-        self, response: metadata_.Partition
-    ) -> metadata_.Partition:
+    def post_create_partition(self, response: metadata_.Partition) -> metadata_.Partition:
         """Post-rpc interceptor for create_partition
 
         DEPRECATED. Please use the `post_create_partition_with_metadata`
@@ -221,9 +211,7 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_create_partition_with_metadata(
-        self,
-        response: metadata_.Partition,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metadata_.Partition, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.Partition, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_partition
 
@@ -240,9 +228,7 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_entity(
-        self,
-        request: metadata_.DeleteEntityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metadata_.DeleteEntityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.DeleteEntityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entity
 
@@ -252,12 +238,8 @@ class MetadataServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_partition(
-        self,
-        request: metadata_.DeletePartitionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metadata_.DeletePartitionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metadata_.DeletePartitionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metadata_.DeletePartitionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_partition
 
         Override in a subclass to manipulate the request or metadata
@@ -266,9 +248,7 @@ class MetadataServiceRestInterceptor:
         return request, metadata
 
     def pre_get_entity(
-        self,
-        request: metadata_.GetEntityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metadata_.GetEntityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.GetEntityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entity
 
@@ -291,9 +271,7 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_get_entity_with_metadata(
-        self,
-        response: metadata_.Entity,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metadata_.Entity, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.Entity, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entity
 
@@ -310,9 +288,7 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_get_partition(
-        self,
-        request: metadata_.GetPartitionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metadata_.GetPartitionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.GetPartitionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_partition
 
@@ -335,9 +311,7 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_get_partition_with_metadata(
-        self,
-        response: metadata_.Partition,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metadata_.Partition, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.Partition, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_partition
 
@@ -354,9 +328,7 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_list_entities(
-        self,
-        request: metadata_.ListEntitiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metadata_.ListEntitiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.ListEntitiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entities
 
@@ -365,9 +337,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_entities(
-        self, response: metadata_.ListEntitiesResponse
-    ) -> metadata_.ListEntitiesResponse:
+    def post_list_entities(self, response: metadata_.ListEntitiesResponse) -> metadata_.ListEntitiesResponse:
         """Post-rpc interceptor for list_entities
 
         DEPRECATED. Please use the `post_list_entities_with_metadata`
@@ -381,9 +351,7 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_list_entities_with_metadata(
-        self,
-        response: metadata_.ListEntitiesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metadata_.ListEntitiesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.ListEntitiesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entities
 
@@ -400,12 +368,8 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_list_partitions(
-        self,
-        request: metadata_.ListPartitionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metadata_.ListPartitionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metadata_.ListPartitionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metadata_.ListPartitionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_partitions
 
         Override in a subclass to manipulate the request or metadata
@@ -413,9 +377,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_partitions(
-        self, response: metadata_.ListPartitionsResponse
-    ) -> metadata_.ListPartitionsResponse:
+    def post_list_partitions(self, response: metadata_.ListPartitionsResponse) -> metadata_.ListPartitionsResponse:
         """Post-rpc interceptor for list_partitions
 
         DEPRECATED. Please use the `post_list_partitions_with_metadata`
@@ -429,12 +391,8 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_list_partitions_with_metadata(
-        self,
-        response: metadata_.ListPartitionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metadata_.ListPartitionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: metadata_.ListPartitionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metadata_.ListPartitionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_partitions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -450,9 +408,7 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_update_entity(
-        self,
-        request: metadata_.UpdateEntityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metadata_.UpdateEntityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.UpdateEntityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_entity
 
@@ -475,9 +431,7 @@ class MetadataServiceRestInterceptor:
         return response
 
     def post_update_entity_with_metadata(
-        self,
-        response: metadata_.Entity,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metadata_.Entity, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metadata_.Entity, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_entity
 
@@ -494,12 +448,8 @@ class MetadataServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -507,9 +457,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -519,12 +467,8 @@ class MetadataServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -532,9 +476,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -544,12 +486,8 @@ class MetadataServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -567,12 +505,8 @@ class MetadataServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -590,12 +524,8 @@ class MetadataServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -603,9 +533,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -615,12 +543,8 @@ class MetadataServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -628,9 +552,7 @@ class MetadataServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -720,30 +642,18 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MetadataServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateEntity(
-        _BaseMetadataServiceRestTransport._BaseCreateEntity, MetadataServiceRestStub
-    ):
+    class _CreateEntity(_BaseMetadataServiceRestTransport._BaseCreateEntity, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.CreateEntity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -785,30 +695,18 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseCreateEntity._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entity(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_transcoded_request(http_options, request)
 
-            body = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseCreateEntity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -832,13 +730,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._CreateEntity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -854,12 +746,8 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_create_entity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_entity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metadata_.Entity.to_json(response)
                 except:
@@ -880,22 +768,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 )
             return resp
 
-    class _CreatePartition(
-        _BaseMetadataServiceRestTransport._BaseCreatePartition, MetadataServiceRestStub
-    ):
+    class _CreatePartition(_BaseMetadataServiceRestTransport._BaseCreatePartition, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.CreatePartition")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -937,32 +815,18 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseCreatePartition._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_partition(
-                request, metadata
-            )
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_partition(request, metadata)
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_transcoded_request(http_options, request)
 
-            body = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseCreatePartition._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -986,13 +850,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._CreatePartition._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1008,12 +866,8 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_create_partition(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_partition_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_partition_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metadata_.Partition.to_json(response)
                 except:
@@ -1034,22 +888,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEntity(
-        _BaseMetadataServiceRestTransport._BaseDeleteEntity, MetadataServiceRestStub
-    ):
+    class _DeleteEntity(_BaseMetadataServiceRestTransport._BaseDeleteEntity, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.DeleteEntity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1084,26 +928,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseDeleteEntity._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseDeleteEntity._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_entity(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseDeleteEntity._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseDeleteEntity._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseDeleteEntity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseDeleteEntity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1127,12 +961,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._DeleteEntity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1140,22 +969,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeletePartition(
-        _BaseMetadataServiceRestTransport._BaseDeletePartition, MetadataServiceRestStub
-    ):
+    class _DeletePartition(_BaseMetadataServiceRestTransport._BaseDeletePartition, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.DeletePartition")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1190,28 +1009,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseDeletePartition._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseDeletePartition._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_partition(
-                request, metadata
-            )
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseDeletePartition._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_partition(request, metadata)
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseDeletePartition._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseDeletePartition._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseDeletePartition._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1235,12 +1042,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._DeletePartition._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1248,22 +1050,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetEntity(
-        _BaseMetadataServiceRestTransport._BaseGetEntity, MetadataServiceRestStub
-    ):
+    class _GetEntity(_BaseMetadataServiceRestTransport._BaseGetEntity, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.GetEntity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1304,28 +1096,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseGetEntity._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseGetEntity._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entity(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetEntity._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetEntity._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMetadataServiceRestTransport._BaseGetEntity._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseGetEntity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1349,12 +1129,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._GetEntity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1370,12 +1145,8 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_get_entity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metadata_.Entity.to_json(response)
                 except:
@@ -1396,22 +1167,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 )
             return resp
 
-    class _GetPartition(
-        _BaseMetadataServiceRestTransport._BaseGetPartition, MetadataServiceRestStub
-    ):
+    class _GetPartition(_BaseMetadataServiceRestTransport._BaseGetPartition, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.GetPartition")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1452,26 +1213,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseGetPartition._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseGetPartition._get_http_options()
 
             request, metadata = self._interceptor.pre_get_partition(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetPartition._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetPartition._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseGetPartition._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseGetPartition._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1495,12 +1246,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._GetPartition._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1516,12 +1262,8 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_get_partition(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_partition_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_partition_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metadata_.Partition.to_json(response)
                 except:
@@ -1542,22 +1284,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 )
             return resp
 
-    class _ListEntities(
-        _BaseMetadataServiceRestTransport._BaseListEntities, MetadataServiceRestStub
-    ):
+    class _ListEntities(_BaseMetadataServiceRestTransport._BaseListEntities, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.ListEntities")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1596,26 +1328,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                     List metadata entities response.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseListEntities._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseListEntities._get_http_options()
 
             request, metadata = self._interceptor.pre_list_entities(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseListEntities._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseListEntities._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseListEntities._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseListEntities._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1639,12 +1361,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._ListEntities._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1660,12 +1377,8 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_list_entities(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entities_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entities_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metadata_.ListEntitiesResponse.to_json(response)
                 except:
@@ -1686,22 +1399,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 )
             return resp
 
-    class _ListPartitions(
-        _BaseMetadataServiceRestTransport._BaseListPartitions, MetadataServiceRestStub
-    ):
+    class _ListPartitions(_BaseMetadataServiceRestTransport._BaseListPartitions, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.ListPartitions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1740,26 +1443,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                     List metadata partitions response.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseListPartitions._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseListPartitions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_partitions(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseListPartitions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseListPartitions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseListPartitions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseListPartitions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1783,12 +1476,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._ListPartitions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1804,16 +1492,10 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_list_partitions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_partitions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_partitions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = metadata_.ListPartitionsResponse.to_json(
-                        response
-                    )
+                    response_payload = metadata_.ListPartitionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1832,22 +1514,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEntity(
-        _BaseMetadataServiceRestTransport._BaseUpdateEntity, MetadataServiceRestStub
-    ):
+    class _UpdateEntity(_BaseMetadataServiceRestTransport._BaseUpdateEntity, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.UpdateEntity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1895,30 +1567,18 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_http_options()
 
             request, metadata = self._interceptor.pre_update_entity(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_transcoded_request(http_options, request)
 
-            body = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseUpdateEntity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1942,13 +1602,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._UpdateEntity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1964,12 +1618,8 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             resp = self._interceptor.post_update_entity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_entity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_entity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metadata_.Entity.to_json(response)
                 except:
@@ -1991,33 +1641,25 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             return resp
 
     @property
-    def create_entity(
-        self,
-    ) -> Callable[[metadata_.CreateEntityRequest], metadata_.Entity]:
+    def create_entity(self) -> Callable[[metadata_.CreateEntityRequest], metadata_.Entity]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_partition(
-        self,
-    ) -> Callable[[metadata_.CreatePartitionRequest], metadata_.Partition]:
+    def create_partition(self) -> Callable[[metadata_.CreatePartitionRequest], metadata_.Partition]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePartition(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_entity(
-        self,
-    ) -> Callable[[metadata_.DeleteEntityRequest], empty_pb2.Empty]:
+    def delete_entity(self) -> Callable[[metadata_.DeleteEntityRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEntity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_partition(
-        self,
-    ) -> Callable[[metadata_.DeletePartitionRequest], empty_pb2.Empty]:
+    def delete_partition(self) -> Callable[[metadata_.DeletePartitionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePartition(self._session, self._host, self._interceptor)  # type: ignore
@@ -2029,33 +1671,25 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
         return self._GetEntity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_partition(
-        self,
-    ) -> Callable[[metadata_.GetPartitionRequest], metadata_.Partition]:
+    def get_partition(self) -> Callable[[metadata_.GetPartitionRequest], metadata_.Partition]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPartition(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_entities(
-        self,
-    ) -> Callable[[metadata_.ListEntitiesRequest], metadata_.ListEntitiesResponse]:
+    def list_entities(self) -> Callable[[metadata_.ListEntitiesRequest], metadata_.ListEntitiesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntities(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_partitions(
-        self,
-    ) -> Callable[[metadata_.ListPartitionsRequest], metadata_.ListPartitionsResponse]:
+    def list_partitions(self) -> Callable[[metadata_.ListPartitionsRequest], metadata_.ListPartitionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPartitions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_entity(
-        self,
-    ) -> Callable[[metadata_.UpdateEntityRequest], metadata_.Entity]:
+    def update_entity(self) -> Callable[[metadata_.UpdateEntityRequest], metadata_.Entity]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntity(self._session, self._host, self._interceptor)  # type: ignore
@@ -2064,22 +1698,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseMetadataServiceRestTransport._BaseGetLocation, MetadataServiceRestStub
-    ):
+    class _GetLocation(_BaseMetadataServiceRestTransport._BaseGetLocation, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2117,26 +1741,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2160,12 +1774,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2177,9 +1786,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2204,22 +1811,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseMetadataServiceRestTransport._BaseListLocations, MetadataServiceRestStub
-    ):
+    class _ListLocations(_BaseMetadataServiceRestTransport._BaseListLocations, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2257,26 +1854,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2300,12 +1887,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2317,9 +1899,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2344,22 +1924,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseMetadataServiceRestTransport._BaseCancelOperation, MetadataServiceRestStub
-    ):
+    class _CancelOperation(_BaseMetadataServiceRestTransport._BaseCancelOperation, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2395,32 +1965,18 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2444,13 +2000,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2464,22 +2014,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseMetadataServiceRestTransport._BaseDeleteOperation, MetadataServiceRestStub
-    ):
+    class _DeleteOperation(_BaseMetadataServiceRestTransport._BaseDeleteOperation, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2514,28 +2054,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2559,12 +2087,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2578,22 +2101,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMetadataServiceRestTransport._BaseGetOperation, MetadataServiceRestStub
-    ):
+    class _GetOperation(_BaseMetadataServiceRestTransport._BaseGetOperation, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2631,26 +2144,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2674,12 +2177,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2691,9 +2189,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2718,22 +2214,12 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseMetadataServiceRestTransport._BaseListOperations, MetadataServiceRestStub
-    ):
+    class _ListOperations(_BaseMetadataServiceRestTransport._BaseListOperations, MetadataServiceRestStub):
         def __hash__(self):
             return hash("MetadataServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2771,26 +2257,16 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMetadataServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMetadataServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseMetadataServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetadataServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetadataServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetadataServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2814,12 +2290,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
 
             # Send the request
             response = MetadataServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2831,9 +2302,7 @@ class MetadataServiceRestTransport(_BaseMetadataServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

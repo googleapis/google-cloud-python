@@ -119,13 +119,8 @@ class PlacesRestInterceptor:
     """
 
     def pre_autocomplete_places(
-        self,
-        request: places_service.AutocompletePlacesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.AutocompletePlacesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: places_service.AutocompletePlacesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.AutocompletePlacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for autocomplete_places
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class PlacesRestInterceptor:
         """
         return request, metadata
 
-    def post_autocomplete_places(
-        self, response: places_service.AutocompletePlacesResponse
-    ) -> places_service.AutocompletePlacesResponse:
+    def post_autocomplete_places(self, response: places_service.AutocompletePlacesResponse) -> places_service.AutocompletePlacesResponse:
         """Post-rpc interceptor for autocomplete_places
 
         DEPRECATED. Please use the `post_autocomplete_places_with_metadata`
@@ -149,13 +142,8 @@ class PlacesRestInterceptor:
         return response
 
     def post_autocomplete_places_with_metadata(
-        self,
-        response: places_service.AutocompletePlacesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.AutocompletePlacesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: places_service.AutocompletePlacesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.AutocompletePlacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for autocomplete_places
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -171,12 +159,8 @@ class PlacesRestInterceptor:
         return response, metadata
 
     def pre_get_photo_media(
-        self,
-        request: places_service.GetPhotoMediaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.GetPhotoMediaRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: places_service.GetPhotoMediaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.GetPhotoMediaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_photo_media
 
         Override in a subclass to manipulate the request or metadata
@@ -184,9 +168,7 @@ class PlacesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_photo_media(
-        self, response: places_service.PhotoMedia
-    ) -> places_service.PhotoMedia:
+    def post_get_photo_media(self, response: places_service.PhotoMedia) -> places_service.PhotoMedia:
         """Post-rpc interceptor for get_photo_media
 
         DEPRECATED. Please use the `post_get_photo_media_with_metadata`
@@ -200,9 +182,7 @@ class PlacesRestInterceptor:
         return response
 
     def post_get_photo_media_with_metadata(
-        self,
-        response: places_service.PhotoMedia,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: places_service.PhotoMedia, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[places_service.PhotoMedia, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_photo_media
 
@@ -219,9 +199,7 @@ class PlacesRestInterceptor:
         return response, metadata
 
     def pre_get_place(
-        self,
-        request: places_service.GetPlaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: places_service.GetPlaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[places_service.GetPlaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_place
 
@@ -261,12 +239,8 @@ class PlacesRestInterceptor:
         return response, metadata
 
     def pre_search_nearby(
-        self,
-        request: places_service.SearchNearbyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.SearchNearbyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: places_service.SearchNearbyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.SearchNearbyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_nearby
 
         Override in a subclass to manipulate the request or metadata
@@ -274,9 +248,7 @@ class PlacesRestInterceptor:
         """
         return request, metadata
 
-    def post_search_nearby(
-        self, response: places_service.SearchNearbyResponse
-    ) -> places_service.SearchNearbyResponse:
+    def post_search_nearby(self, response: places_service.SearchNearbyResponse) -> places_service.SearchNearbyResponse:
         """Post-rpc interceptor for search_nearby
 
         DEPRECATED. Please use the `post_search_nearby_with_metadata`
@@ -290,12 +262,8 @@ class PlacesRestInterceptor:
         return response
 
     def post_search_nearby_with_metadata(
-        self,
-        response: places_service.SearchNearbyResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.SearchNearbyResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: places_service.SearchNearbyResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.SearchNearbyResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_nearby
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -311,12 +279,8 @@ class PlacesRestInterceptor:
         return response, metadata
 
     def pre_search_text(
-        self,
-        request: places_service.SearchTextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.SearchTextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: places_service.SearchTextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.SearchTextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_text
 
         Override in a subclass to manipulate the request or metadata
@@ -324,9 +288,7 @@ class PlacesRestInterceptor:
         """
         return request, metadata
 
-    def post_search_text(
-        self, response: places_service.SearchTextResponse
-    ) -> places_service.SearchTextResponse:
+    def post_search_text(self, response: places_service.SearchTextResponse) -> places_service.SearchTextResponse:
         """Post-rpc interceptor for search_text
 
         DEPRECATED. Please use the `post_search_text_with_metadata`
@@ -340,12 +302,8 @@ class PlacesRestInterceptor:
         return response
 
     def post_search_text_with_metadata(
-        self,
-        response: places_service.SearchTextResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        places_service.SearchTextResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: places_service.SearchTextResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[places_service.SearchTextResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_text
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -444,30 +402,18 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PlacesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AutocompletePlaces(
-        _BasePlacesRestTransport._BaseAutocompletePlaces, PlacesRestStub
-    ):
+    class _AutocompletePlaces(_BasePlacesRestTransport._BaseAutocompletePlaces, PlacesRestStub):
         def __hash__(self):
             return hash("PlacesRestTransport.AutocompletePlaces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -509,36 +455,18 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             """
 
-            http_options = (
-                _BasePlacesRestTransport._BaseAutocompletePlaces._get_http_options()
-            )
+            http_options = _BasePlacesRestTransport._BaseAutocompletePlaces._get_http_options()
 
-            request, metadata = self._interceptor.pre_autocomplete_places(
-                request, metadata
-            )
-            transcoded_request = _BasePlacesRestTransport._BaseAutocompletePlaces._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_autocomplete_places(request, metadata)
+            transcoded_request = _BasePlacesRestTransport._BaseAutocompletePlaces._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePlacesRestTransport._BaseAutocompletePlaces._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePlacesRestTransport._BaseAutocompletePlaces._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlacesRestTransport._BaseAutocompletePlaces._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlacesRestTransport._BaseAutocompletePlaces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -562,13 +490,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             # Send the request
             response = PlacesRestTransport._AutocompletePlaces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -584,16 +506,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             resp = self._interceptor.post_autocomplete_places(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_autocomplete_places_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_autocomplete_places_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        places_service.AutocompletePlacesResponse.to_json(response)
-                    )
+                    response_payload = places_service.AutocompletePlacesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -617,15 +533,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             return hash("PlacesRestTransport.GetPhotoMedia")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -665,30 +573,16 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     A photo media from Places API.
             """
 
-            http_options = (
-                _BasePlacesRestTransport._BaseGetPhotoMedia._get_http_options()
-            )
+            http_options = _BasePlacesRestTransport._BaseGetPhotoMedia._get_http_options()
 
             request, metadata = self._interceptor.pre_get_photo_media(request, metadata)
-            transcoded_request = (
-                _BasePlacesRestTransport._BaseGetPhotoMedia._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlacesRestTransport._BaseGetPhotoMedia._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlacesRestTransport._BaseGetPhotoMedia._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlacesRestTransport._BaseGetPhotoMedia._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -712,12 +606,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             # Send the request
             response = PlacesRestTransport._GetPhotoMedia._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -733,12 +622,8 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             resp = self._interceptor.post_get_photo_media(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_photo_media_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_photo_media_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = places_service.PhotoMedia.to_json(response)
                 except:
@@ -764,15 +649,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             return hash("PlacesRestTransport.GetPlace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -817,25 +694,13 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             http_options = _BasePlacesRestTransport._BaseGetPlace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_place(request, metadata)
-            transcoded_request = (
-                _BasePlacesRestTransport._BaseGetPlace._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlacesRestTransport._BaseGetPlace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlacesRestTransport._BaseGetPlace._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlacesRestTransport._BaseGetPlace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -858,14 +723,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                 )
 
             # Send the request
-            response = PlacesRestTransport._GetPlace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = PlacesRestTransport._GetPlace._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -880,12 +738,8 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             resp = self._interceptor.post_get_place(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_place_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_place_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = place.Place.to_json(response)
                 except:
@@ -911,15 +765,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             return hash("PlacesRestTransport.SearchNearby")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -959,34 +805,18 @@ class PlacesRestTransport(_BasePlacesRestTransport):
                     Response proto for Search Nearby.
             """
 
-            http_options = (
-                _BasePlacesRestTransport._BaseSearchNearby._get_http_options()
-            )
+            http_options = _BasePlacesRestTransport._BaseSearchNearby._get_http_options()
 
             request, metadata = self._interceptor.pre_search_nearby(request, metadata)
-            transcoded_request = (
-                _BasePlacesRestTransport._BaseSearchNearby._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlacesRestTransport._BaseSearchNearby._get_transcoded_request(http_options, request)
 
-            body = _BasePlacesRestTransport._BaseSearchNearby._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacesRestTransport._BaseSearchNearby._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlacesRestTransport._BaseSearchNearby._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlacesRestTransport._BaseSearchNearby._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1010,13 +840,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             # Send the request
             response = PlacesRestTransport._SearchNearby._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1032,16 +856,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             resp = self._interceptor.post_search_nearby(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_nearby_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_nearby_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = places_service.SearchNearbyResponse.to_json(
-                        response
-                    )
+                    response_payload = places_service.SearchNearbyResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1065,15 +883,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             return hash("PlacesRestTransport.SearchText")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1116,29 +926,15 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             http_options = _BasePlacesRestTransport._BaseSearchText._get_http_options()
 
             request, metadata = self._interceptor.pre_search_text(request, metadata)
-            transcoded_request = (
-                _BasePlacesRestTransport._BaseSearchText._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BasePlacesRestTransport._BaseSearchText._get_transcoded_request(http_options, request)
 
-            body = _BasePlacesRestTransport._BaseSearchText._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacesRestTransport._BaseSearchText._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePlacesRestTransport._BaseSearchText._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePlacesRestTransport._BaseSearchText._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1162,13 +958,7 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             # Send the request
             response = PlacesRestTransport._SearchText._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1184,16 +974,10 @@ class PlacesRestTransport(_BasePlacesRestTransport):
 
             resp = self._interceptor.post_search_text(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_text_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_text_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = places_service.SearchTextResponse.to_json(
-                        response
-                    )
+                    response_payload = places_service.SearchTextResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1213,20 +997,13 @@ class PlacesRestTransport(_BasePlacesRestTransport):
             return resp
 
     @property
-    def autocomplete_places(
-        self,
-    ) -> Callable[
-        [places_service.AutocompletePlacesRequest],
-        places_service.AutocompletePlacesResponse,
-    ]:
+    def autocomplete_places(self) -> Callable[[places_service.AutocompletePlacesRequest], places_service.AutocompletePlacesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AutocompletePlaces(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_photo_media(
-        self,
-    ) -> Callable[[places_service.GetPhotoMediaRequest], places_service.PhotoMedia]:
+    def get_photo_media(self) -> Callable[[places_service.GetPhotoMediaRequest], places_service.PhotoMedia]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPhotoMedia(self._session, self._host, self._interceptor)  # type: ignore
@@ -1238,21 +1015,13 @@ class PlacesRestTransport(_BasePlacesRestTransport):
         return self._GetPlace(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_nearby(
-        self,
-    ) -> Callable[
-        [places_service.SearchNearbyRequest], places_service.SearchNearbyResponse
-    ]:
+    def search_nearby(self) -> Callable[[places_service.SearchNearbyRequest], places_service.SearchNearbyResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchNearby(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_text(
-        self,
-    ) -> Callable[
-        [places_service.SearchTextRequest], places_service.SearchTextResponse
-    ]:
+    def search_text(self) -> Callable[[places_service.SearchTextRequest], places_service.SearchTextResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchText(self._session, self._host, self._interceptor)  # type: ignore

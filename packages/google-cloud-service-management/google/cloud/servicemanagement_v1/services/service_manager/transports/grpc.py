@@ -48,9 +48,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +58,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +77,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +213,14 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +254,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,19 +321,13 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_services(
-        self,
-    ) -> Callable[
-        [servicemanager.ListServicesRequest], servicemanager.ListServicesResponse
-    ]:
+    def list_services(self) -> Callable[[servicemanager.ListServicesRequest], servicemanager.ListServicesResponse]:
         r"""Return a callable for the list services method over gRPC.
 
         Lists managed services.
@@ -376,9 +355,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["list_services"]
 
     @property
-    def get_service(
-        self,
-    ) -> Callable[[servicemanager.GetServiceRequest], resources.ManagedService]:
+    def get_service(self) -> Callable[[servicemanager.GetServiceRequest], resources.ManagedService]:
         r"""Return a callable for the get service method over gRPC.
 
         Gets a managed service. Authentication is required
@@ -403,9 +380,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["get_service"]
 
     @property
-    def create_service(
-        self,
-    ) -> Callable[[servicemanager.CreateServiceRequest], operations_pb2.Operation]:
+    def create_service(self) -> Callable[[servicemanager.CreateServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the create service method over gRPC.
 
         Creates a new managed service.
@@ -440,9 +415,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["create_service"]
 
     @property
-    def delete_service(
-        self,
-    ) -> Callable[[servicemanager.DeleteServiceRequest], operations_pb2.Operation]:
+    def delete_service(self) -> Callable[[servicemanager.DeleteServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete service method over gRPC.
 
         Deletes a managed service. This method will change the service
@@ -473,9 +446,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["delete_service"]
 
     @property
-    def undelete_service(
-        self,
-    ) -> Callable[[servicemanager.UndeleteServiceRequest], operations_pb2.Operation]:
+    def undelete_service(self) -> Callable[[servicemanager.UndeleteServiceRequest], operations_pb2.Operation]:
         r"""Return a callable for the undelete service method over gRPC.
 
         Revives a previously deleted managed service. The
@@ -505,12 +476,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["undelete_service"]
 
     @property
-    def list_service_configs(
-        self,
-    ) -> Callable[
-        [servicemanager.ListServiceConfigsRequest],
-        servicemanager.ListServiceConfigsResponse,
-    ]:
+    def list_service_configs(self) -> Callable[[servicemanager.ListServiceConfigsRequest], servicemanager.ListServiceConfigsResponse]:
         r"""Return a callable for the list service configs method over gRPC.
 
         Lists the history of the service configuration for a
@@ -535,9 +501,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["list_service_configs"]
 
     @property
-    def get_service_config(
-        self,
-    ) -> Callable[[servicemanager.GetServiceConfigRequest], service_pb2.Service]:
+    def get_service_config(self) -> Callable[[servicemanager.GetServiceConfigRequest], service_pb2.Service]:
         r"""Return a callable for the get service config method over gRPC.
 
         Gets a service configuration (version) for a managed
@@ -562,9 +526,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["get_service_config"]
 
     @property
-    def create_service_config(
-        self,
-    ) -> Callable[[servicemanager.CreateServiceConfigRequest], service_pb2.Service]:
+    def create_service_config(self) -> Callable[[servicemanager.CreateServiceConfigRequest], service_pb2.Service]:
         r"""Return a callable for the create service config method over gRPC.
 
         Creates a new service configuration (version) for a managed
@@ -596,9 +558,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["create_service_config"]
 
     @property
-    def submit_config_source(
-        self,
-    ) -> Callable[[servicemanager.SubmitConfigSourceRequest], operations_pb2.Operation]:
+    def submit_config_source(self) -> Callable[[servicemanager.SubmitConfigSourceRequest], operations_pb2.Operation]:
         r"""Return a callable for the submit config source method over gRPC.
 
         Creates a new service configuration (version) for a managed
@@ -634,12 +594,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["submit_config_source"]
 
     @property
-    def list_service_rollouts(
-        self,
-    ) -> Callable[
-        [servicemanager.ListServiceRolloutsRequest],
-        servicemanager.ListServiceRolloutsResponse,
-    ]:
+    def list_service_rollouts(self) -> Callable[[servicemanager.ListServiceRolloutsRequest], servicemanager.ListServiceRolloutsResponse]:
         r"""Return a callable for the list service rollouts method over gRPC.
 
         Lists the history of the service configuration
@@ -665,9 +620,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["list_service_rollouts"]
 
     @property
-    def get_service_rollout(
-        self,
-    ) -> Callable[[servicemanager.GetServiceRolloutRequest], resources.Rollout]:
+    def get_service_rollout(self) -> Callable[[servicemanager.GetServiceRolloutRequest], resources.Rollout]:
         r"""Return a callable for the get service rollout method over gRPC.
 
         Gets a service configuration
@@ -692,11 +645,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["get_service_rollout"]
 
     @property
-    def create_service_rollout(
-        self,
-    ) -> Callable[
-        [servicemanager.CreateServiceRolloutRequest], operations_pb2.Operation
-    ]:
+    def create_service_rollout(self) -> Callable[[servicemanager.CreateServiceRolloutRequest], operations_pb2.Operation]:
         r"""Return a callable for the create service rollout method over gRPC.
 
         Creates a new service configuration rollout. Based on
@@ -736,12 +685,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
         return self._stubs["create_service_rollout"]
 
     @property
-    def generate_config_report(
-        self,
-    ) -> Callable[
-        [servicemanager.GenerateConfigReportRequest],
-        servicemanager.GenerateConfigReportResponse,
-    ]:
+    def generate_config_report(self) -> Callable[[servicemanager.GenerateConfigReportRequest], servicemanager.GenerateConfigReportResponse]:
         r"""Return a callable for the generate config report method over gRPC.
 
         Generates and returns a report (errors, warnings and changes
@@ -781,9 +725,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -851,10 +793,7 @@ class ServiceManagerGrpcTransport(ServiceManagerTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

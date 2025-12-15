@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.monitoring_v3 import gapic_version as package_version
 from google.cloud.monitoring_v3.types import uptime, uptime_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class UptimeCheckServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -221,47 +211,32 @@ class UptimeCheckServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [uptime_service.ListUptimeCheckConfigsRequest],
-        Union[
-            uptime_service.ListUptimeCheckConfigsResponse,
-            Awaitable[uptime_service.ListUptimeCheckConfigsResponse],
-        ],
+        Union[uptime_service.ListUptimeCheckConfigsResponse, Awaitable[uptime_service.ListUptimeCheckConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_uptime_check_config(
         self,
-    ) -> Callable[
-        [uptime_service.GetUptimeCheckConfigRequest],
-        Union[uptime.UptimeCheckConfig, Awaitable[uptime.UptimeCheckConfig]],
-    ]:
+    ) -> Callable[[uptime_service.GetUptimeCheckConfigRequest], Union[uptime.UptimeCheckConfig, Awaitable[uptime.UptimeCheckConfig]]]:
         raise NotImplementedError()
 
     @property
     def create_uptime_check_config(
         self,
-    ) -> Callable[
-        [uptime_service.CreateUptimeCheckConfigRequest],
-        Union[uptime.UptimeCheckConfig, Awaitable[uptime.UptimeCheckConfig]],
-    ]:
+    ) -> Callable[[uptime_service.CreateUptimeCheckConfigRequest], Union[uptime.UptimeCheckConfig, Awaitable[uptime.UptimeCheckConfig]]]:
         raise NotImplementedError()
 
     @property
     def update_uptime_check_config(
         self,
-    ) -> Callable[
-        [uptime_service.UpdateUptimeCheckConfigRequest],
-        Union[uptime.UptimeCheckConfig, Awaitable[uptime.UptimeCheckConfig]],
-    ]:
+    ) -> Callable[[uptime_service.UpdateUptimeCheckConfigRequest], Union[uptime.UptimeCheckConfig, Awaitable[uptime.UptimeCheckConfig]]]:
         raise NotImplementedError()
 
     @property
     def delete_uptime_check_config(
         self,
-    ) -> Callable[
-        [uptime_service.DeleteUptimeCheckConfigRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[uptime_service.DeleteUptimeCheckConfigRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -269,10 +244,7 @@ class UptimeCheckServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [uptime_service.ListUptimeCheckIpsRequest],
-        Union[
-            uptime_service.ListUptimeCheckIpsResponse,
-            Awaitable[uptime_service.ListUptimeCheckIpsResponse],
-        ],
+        Union[uptime_service.ListUptimeCheckIpsResponse, Awaitable[uptime_service.ListUptimeCheckIpsResponse]],
     ]:
         raise NotImplementedError()
 

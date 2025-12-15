@@ -29,9 +29,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.types import (
-    online_return_policy as gsma_online_return_policy,
-)
+from google.shopping.merchant_accounts_v1beta.types import online_return_policy as gsma_online_return_policy
 from google.shopping.merchant_accounts_v1beta.types import online_return_policy
 
 from .base import DEFAULT_CLIENT_INFO, OnlineReturnPolicyServiceTransport
@@ -48,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -60,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -82,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -226,18 +215,14 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -271,9 +256,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -332,12 +315,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         return self._grpc_channel
 
     @property
-    def get_online_return_policy(
-        self,
-    ) -> Callable[
-        [online_return_policy.GetOnlineReturnPolicyRequest],
-        online_return_policy.OnlineReturnPolicy,
-    ]:
+    def get_online_return_policy(self) -> Callable[[online_return_policy.GetOnlineReturnPolicyRequest], online_return_policy.OnlineReturnPolicy]:
         r"""Return a callable for the get online return policy method over gRPC.
 
         Gets an existing return policy for a given merchant.
@@ -363,10 +341,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     @property
     def list_online_return_policies(
         self,
-    ) -> Callable[
-        [online_return_policy.ListOnlineReturnPoliciesRequest],
-        online_return_policy.ListOnlineReturnPoliciesResponse,
-    ]:
+    ) -> Callable[[online_return_policy.ListOnlineReturnPoliciesRequest], online_return_policy.ListOnlineReturnPoliciesResponse]:
         r"""Return a callable for the list online return policies method over gRPC.
 
         Lists all existing return policies for a given
@@ -383,9 +358,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_online_return_policies" not in self._stubs:
-            self._stubs[
-                "list_online_return_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_online_return_policies"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/ListOnlineReturnPolicies",
                 request_serializer=online_return_policy.ListOnlineReturnPoliciesRequest.serialize,
                 response_deserializer=online_return_policy.ListOnlineReturnPoliciesResponse.deserialize,
@@ -395,10 +368,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     @property
     def create_online_return_policy(
         self,
-    ) -> Callable[
-        [gsma_online_return_policy.CreateOnlineReturnPolicyRequest],
-        gsma_online_return_policy.OnlineReturnPolicy,
-    ]:
+    ) -> Callable[[gsma_online_return_policy.CreateOnlineReturnPolicyRequest], gsma_online_return_policy.OnlineReturnPolicy]:
         r"""Return a callable for the create online return policy method over gRPC.
 
         Creates a new return policy for a given merchant.
@@ -414,9 +384,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_online_return_policy" not in self._stubs:
-            self._stubs[
-                "create_online_return_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_online_return_policy"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/CreateOnlineReturnPolicy",
                 request_serializer=gsma_online_return_policy.CreateOnlineReturnPolicyRequest.serialize,
                 response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
@@ -426,10 +394,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
     @property
     def update_online_return_policy(
         self,
-    ) -> Callable[
-        [gsma_online_return_policy.UpdateOnlineReturnPolicyRequest],
-        gsma_online_return_policy.OnlineReturnPolicy,
-    ]:
+    ) -> Callable[[gsma_online_return_policy.UpdateOnlineReturnPolicyRequest], gsma_online_return_policy.OnlineReturnPolicy]:
         r"""Return a callable for the update online return policy method over gRPC.
 
         Updates an existing return policy for a given
@@ -446,9 +411,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_online_return_policy" not in self._stubs:
-            self._stubs[
-                "update_online_return_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_online_return_policy"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/UpdateOnlineReturnPolicy",
                 request_serializer=gsma_online_return_policy.UpdateOnlineReturnPolicyRequest.serialize,
                 response_deserializer=gsma_online_return_policy.OnlineReturnPolicy.deserialize,
@@ -456,11 +419,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         return self._stubs["update_online_return_policy"]
 
     @property
-    def delete_online_return_policy(
-        self,
-    ) -> Callable[
-        [online_return_policy.DeleteOnlineReturnPolicyRequest], empty_pb2.Empty
-    ]:
+    def delete_online_return_policy(self) -> Callable[[online_return_policy.DeleteOnlineReturnPolicyRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete online return policy method over gRPC.
 
         Deletes an existing return policy.
@@ -476,9 +435,7 @@ class OnlineReturnPolicyServiceGrpcTransport(OnlineReturnPolicyServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_online_return_policy" not in self._stubs:
-            self._stubs[
-                "delete_online_return_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_online_return_policy"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.accounts.v1beta.OnlineReturnPolicyService/DeleteOnlineReturnPolicy",
                 request_serializer=online_return_policy.DeleteOnlineReturnPolicyRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,

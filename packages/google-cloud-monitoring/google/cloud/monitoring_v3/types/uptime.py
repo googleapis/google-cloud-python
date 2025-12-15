@@ -720,9 +720,7 @@ class UptimeCheckConfig(proto.Message):
             proto.BYTES,
             number=10,
         )
-        accepted_response_status_codes: MutableSequence[
-            "UptimeCheckConfig.HttpCheck.ResponseStatusCode"
-        ] = proto.RepeatedField(
+        accepted_response_status_codes: MutableSequence["UptimeCheckConfig.HttpCheck.ResponseStatusCode"] = proto.RepeatedField(
             proto.MESSAGE,
             number=11,
             message="UptimeCheckConfig.HttpCheck.ResponseStatusCode",
@@ -885,13 +883,11 @@ class UptimeCheckConfig(proto.Message):
             number=2,
             enum="UptimeCheckConfig.ContentMatcher.ContentMatcherOption",
         )
-        json_path_matcher: "UptimeCheckConfig.ContentMatcher.JsonPathMatcher" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                oneof="additional_matcher_info",
-                message="UptimeCheckConfig.ContentMatcher.JsonPathMatcher",
-            )
+        json_path_matcher: "UptimeCheckConfig.ContentMatcher.JsonPathMatcher" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            oneof="additional_matcher_info",
+            message="UptimeCheckConfig.ContentMatcher.JsonPathMatcher",
         )
 
     name: str = proto.Field(

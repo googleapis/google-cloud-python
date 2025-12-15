@@ -350,9 +350,7 @@ class TrustConfig(proto.Message):
             number=1,
         )
 
-    cas_configs: MutableSequence[
-        CertificateAuthorityServiceConfig
-    ] = proto.RepeatedField(
+    cas_configs: MutableSequence[CertificateAuthorityServiceConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=CertificateAuthorityServiceConfig,

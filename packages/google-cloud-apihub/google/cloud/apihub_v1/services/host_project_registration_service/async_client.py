@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -52,10 +41,7 @@ from google.cloud.apihub_v1.services.host_project_registration_service import pa
 from google.cloud.apihub_v1.types import host_project_registration_service
 
 from .client import HostProjectRegistrationServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    HostProjectRegistrationServiceTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, HostProjectRegistrationServiceTransport
 from .transports.grpc_asyncio import HostProjectRegistrationServiceGrpcAsyncIOTransport
 
 try:
@@ -79,47 +65,21 @@ class HostProjectRegistrationServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = HostProjectRegistrationServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = HostProjectRegistrationServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        HostProjectRegistrationServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = HostProjectRegistrationServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = HostProjectRegistrationServiceClient._DEFAULT_UNIVERSE
 
-    host_project_registration_path = staticmethod(
-        HostProjectRegistrationServiceClient.host_project_registration_path
-    )
-    parse_host_project_registration_path = staticmethod(
-        HostProjectRegistrationServiceClient.parse_host_project_registration_path
-    )
-    common_billing_account_path = staticmethod(
-        HostProjectRegistrationServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        HostProjectRegistrationServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        HostProjectRegistrationServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        HostProjectRegistrationServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        HostProjectRegistrationServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        HostProjectRegistrationServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        HostProjectRegistrationServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        HostProjectRegistrationServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        HostProjectRegistrationServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        HostProjectRegistrationServiceClient.parse_common_location_path
-    )
+    host_project_registration_path = staticmethod(HostProjectRegistrationServiceClient.host_project_registration_path)
+    parse_host_project_registration_path = staticmethod(HostProjectRegistrationServiceClient.parse_host_project_registration_path)
+    common_billing_account_path = staticmethod(HostProjectRegistrationServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(HostProjectRegistrationServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(HostProjectRegistrationServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(HostProjectRegistrationServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(HostProjectRegistrationServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(HostProjectRegistrationServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(HostProjectRegistrationServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(HostProjectRegistrationServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(HostProjectRegistrationServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(HostProjectRegistrationServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -155,9 +115,7 @@ class HostProjectRegistrationServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -225,11 +183,7 @@ class HostProjectRegistrationServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                HostProjectRegistrationServiceTransport,
-                Callable[..., HostProjectRegistrationServiceTransport],
-            ]
+            Union[str, HostProjectRegistrationServiceTransport, Callable[..., HostProjectRegistrationServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -290,20 +244,14 @@ class HostProjectRegistrationServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.apihub_v1.HostProjectRegistrationServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.apihub.v1.HostProjectRegistrationService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -314,17 +262,10 @@ class HostProjectRegistrationServiceAsyncClient:
 
     async def create_host_project_registration(
         self,
-        request: Optional[
-            Union[
-                host_project_registration_service.CreateHostProjectRegistrationRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[host_project_registration_service.CreateHostProjectRegistrationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        host_project_registration: Optional[
-            host_project_registration_service.HostProjectRegistration
-        ] = None,
+        host_project_registration: Optional[host_project_registration_service.HostProjectRegistration] = None,
         host_project_registration_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -422,31 +363,15 @@ class HostProjectRegistrationServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            host_project_registration,
-            host_project_registration_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, host_project_registration, host_project_registration_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            host_project_registration_service.CreateHostProjectRegistrationRequest,
-        ):
-            request = (
-                host_project_registration_service.CreateHostProjectRegistrationRequest(
-                    request
-                )
-            )
+        if not isinstance(request, host_project_registration_service.CreateHostProjectRegistrationRequest):
+            request = host_project_registration_service.CreateHostProjectRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -459,15 +384,11 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_host_project_registration
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_host_project_registration]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -485,12 +406,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
     async def get_host_project_registration(
         self,
-        request: Optional[
-            Union[
-                host_project_registration_service.GetHostProjectRegistrationRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[host_project_registration_service.GetHostProjectRegistrationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -563,25 +479,14 @@ class HostProjectRegistrationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, host_project_registration_service.GetHostProjectRegistrationRequest
-        ):
-            request = (
-                host_project_registration_service.GetHostProjectRegistrationRequest(
-                    request
-                )
-            )
+        if not isinstance(request, host_project_registration_service.GetHostProjectRegistrationRequest):
+            request = host_project_registration_service.GetHostProjectRegistrationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -590,15 +495,11 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_host_project_registration
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_host_project_registration]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -616,12 +517,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
     async def list_host_project_registrations(
         self,
-        request: Optional[
-            Union[
-                host_project_registration_service.ListHostProjectRegistrationsRequest,
-                dict,
-            ]
-        ] = None,
+        request: Optional[Union[host_project_registration_service.ListHostProjectRegistrationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -691,26 +587,14 @@ class HostProjectRegistrationServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request,
-            host_project_registration_service.ListHostProjectRegistrationsRequest,
-        ):
-            request = (
-                host_project_registration_service.ListHostProjectRegistrationsRequest(
-                    request
-                )
-            )
+        if not isinstance(request, host_project_registration_service.ListHostProjectRegistrationsRequest):
+            request = host_project_registration_service.ListHostProjectRegistrationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -719,15 +603,11 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_host_project_registrations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_host_project_registrations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -791,9 +671,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -846,9 +724,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -905,9 +781,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -960,9 +834,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1012,9 +884,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1067,9 +937,7 @@ class HostProjectRegistrationServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1092,9 +960,7 @@ class HostProjectRegistrationServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

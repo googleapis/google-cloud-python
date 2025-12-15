@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -125,12 +113,7 @@ class ListCloudExadataInfrastructuresPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[exadata_infra.CloudExadataInfrastructure]:
@@ -161,9 +144,7 @@ class ListCloudExadataInfrastructuresAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[oracledatabase.ListCloudExadataInfrastructuresResponse]
-        ],
+        method: Callable[..., Awaitable[oracledatabase.ListCloudExadataInfrastructuresResponse]],
         request: oracledatabase.ListCloudExadataInfrastructuresRequest,
         response: oracledatabase.ListCloudExadataInfrastructuresResponse,
         *,
@@ -199,18 +180,11 @@ class ListCloudExadataInfrastructuresAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[oracledatabase.ListCloudExadataInfrastructuresResponse]:
+    async def pages(self) -> AsyncIterator[oracledatabase.ListCloudExadataInfrastructuresResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[exadata_infra.CloudExadataInfrastructure]:
@@ -285,12 +259,7 @@ class ListCloudVmClustersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[vm_cluster.CloudVmCluster]:
@@ -361,12 +330,7 @@ class ListCloudVmClustersAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[vm_cluster.CloudVmCluster]:
@@ -441,12 +405,7 @@ class ListEntitlementsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[entitlement.Entitlement]:
@@ -517,12 +476,7 @@ class ListEntitlementsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[entitlement.Entitlement]:
@@ -597,12 +551,7 @@ class ListDbServersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[db_server.DbServer]:
@@ -673,12 +622,7 @@ class ListDbServersAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[db_server.DbServer]:
@@ -753,12 +697,7 @@ class ListDbNodesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[db_node.DbNode]:
@@ -829,12 +768,7 @@ class ListDbNodesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[db_node.DbNode]:
@@ -909,12 +843,7 @@ class ListGiVersionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[gi_version.GiVersion]:
@@ -985,12 +914,7 @@ class ListGiVersionsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[gi_version.GiVersion]:
@@ -1065,12 +989,7 @@ class ListMinorVersionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[minor_version.MinorVersion]:
@@ -1141,12 +1060,7 @@ class ListMinorVersionsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[minor_version.MinorVersion]:
@@ -1221,12 +1135,7 @@ class ListDbSystemShapesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[db_system_shape.DbSystemShape]:
@@ -1297,12 +1206,7 @@ class ListDbSystemShapesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[db_system_shape.DbSystemShape]:
@@ -1377,12 +1281,7 @@ class ListAutonomousDatabasesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[autonomous_database.AutonomousDatabase]:
@@ -1413,9 +1312,7 @@ class ListAutonomousDatabasesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[oracledatabase.ListAutonomousDatabasesResponse]
-        ],
+        method: Callable[..., Awaitable[oracledatabase.ListAutonomousDatabasesResponse]],
         request: oracledatabase.ListAutonomousDatabasesRequest,
         response: oracledatabase.ListAutonomousDatabasesResponse,
         *,
@@ -1451,18 +1348,11 @@ class ListAutonomousDatabasesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[oracledatabase.ListAutonomousDatabasesResponse]:
+    async def pages(self) -> AsyncIterator[oracledatabase.ListAutonomousDatabasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[autonomous_database.AutonomousDatabase]:
@@ -1537,12 +1427,7 @@ class ListAutonomousDbVersionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[autonomous_db_version.AutonomousDbVersion]:
@@ -1573,9 +1458,7 @@ class ListAutonomousDbVersionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[oracledatabase.ListAutonomousDbVersionsResponse]
-        ],
+        method: Callable[..., Awaitable[oracledatabase.ListAutonomousDbVersionsResponse]],
         request: oracledatabase.ListAutonomousDbVersionsRequest,
         response: oracledatabase.ListAutonomousDbVersionsResponse,
         *,
@@ -1611,18 +1494,11 @@ class ListAutonomousDbVersionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[oracledatabase.ListAutonomousDbVersionsResponse]:
+    async def pages(self) -> AsyncIterator[oracledatabase.ListAutonomousDbVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[autonomous_db_version.AutonomousDbVersion]:
@@ -1657,9 +1533,7 @@ class ListAutonomousDatabaseCharacterSetsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., oracledatabase.ListAutonomousDatabaseCharacterSetsResponse
-        ],
+        method: Callable[..., oracledatabase.ListAutonomousDatabaseCharacterSetsResponse],
         request: oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
         response: oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
         *,
@@ -1685,9 +1559,7 @@ class ListAutonomousDatabaseCharacterSetsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(
-            request
-        )
+        self._request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1697,23 +1569,14 @@ class ListAutonomousDatabaseCharacterSetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]:
+    def pages(self) -> Iterator[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[autonomous_database_character_set.AutonomousDatabaseCharacterSet]:
+    def __iter__(self) -> Iterator[autonomous_database_character_set.AutonomousDatabaseCharacterSet]:
         for page in self.pages:
             yield from page.autonomous_database_character_sets
 
@@ -1741,9 +1604,7 @@ class ListAutonomousDatabaseCharacterSetsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]
-        ],
+        method: Callable[..., Awaitable[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]],
         request: oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
         response: oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
         *,
@@ -1769,9 +1630,7 @@ class ListAutonomousDatabaseCharacterSetsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(
-            request
-        )
+        self._request = oracledatabase.ListAutonomousDatabaseCharacterSetsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1781,25 +1640,14 @@ class ListAutonomousDatabaseCharacterSetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]:
+    async def pages(self) -> AsyncIterator[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[
-        autonomous_database_character_set.AutonomousDatabaseCharacterSet
-    ]:
+    def __aiter__(self) -> AsyncIterator[autonomous_database_character_set.AutonomousDatabaseCharacterSet]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.autonomous_database_character_sets:
@@ -1871,12 +1719,7 @@ class ListAutonomousDatabaseBackupsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[autonomous_db_backup.AutonomousDatabaseBackup]:
@@ -1907,9 +1750,7 @@ class ListAutonomousDatabaseBackupsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[oracledatabase.ListAutonomousDatabaseBackupsResponse]
-        ],
+        method: Callable[..., Awaitable[oracledatabase.ListAutonomousDatabaseBackupsResponse]],
         request: oracledatabase.ListAutonomousDatabaseBackupsRequest,
         response: oracledatabase.ListAutonomousDatabaseBackupsResponse,
         *,
@@ -1945,18 +1786,11 @@ class ListAutonomousDatabaseBackupsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[oracledatabase.ListAutonomousDatabaseBackupsResponse]:
+    async def pages(self) -> AsyncIterator[oracledatabase.ListAutonomousDatabaseBackupsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[autonomous_db_backup.AutonomousDatabaseBackup]:
@@ -2031,12 +1865,7 @@ class ListOdbNetworksPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[odb_network.OdbNetwork]:
@@ -2107,12 +1936,7 @@ class ListOdbNetworksAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[odb_network.OdbNetwork]:
@@ -2187,12 +2011,7 @@ class ListOdbSubnetsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[odb_subnet.OdbSubnet]:
@@ -2263,12 +2082,7 @@ class ListOdbSubnetsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[odb_subnet.OdbSubnet]:
@@ -2343,12 +2157,7 @@ class ListExadbVmClustersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[exadb_vm_cluster.ExadbVmCluster]:
@@ -2419,12 +2228,7 @@ class ListExadbVmClustersAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[exadb_vm_cluster.ExadbVmCluster]:
@@ -2459,9 +2263,7 @@ class ListExascaleDbStorageVaultsPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse
-        ],
+        method: Callable[..., exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse],
         request: exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest,
         response: exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
         *,
@@ -2487,9 +2289,7 @@ class ListExascaleDbStorageVaultsPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(
-            request
-        )
+        self._request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2499,18 +2299,11 @@ class ListExascaleDbStorageVaultsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]:
+    def pages(self) -> Iterator[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[exascale_db_storage_vault.ExascaleDbStorageVault]:
@@ -2541,10 +2334,7 @@ class ListExascaleDbStorageVaultsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse],
-        ],
+        method: Callable[..., Awaitable[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]],
         request: exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest,
         response: exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
         *,
@@ -2570,9 +2360,7 @@ class ListExascaleDbStorageVaultsAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(
-            request
-        )
+        self._request = exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2582,23 +2370,14 @@ class ListExascaleDbStorageVaultsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]:
+    async def pages(self) -> AsyncIterator[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[exascale_db_storage_vault.ExascaleDbStorageVault]:
+    def __aiter__(self) -> AsyncIterator[exascale_db_storage_vault.ExascaleDbStorageVault]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.exascale_db_storage_vaults:
@@ -2630,9 +2409,7 @@ class ListDbSystemInitialStorageSizesPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
-        ],
+        method: Callable[..., db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse],
         request: db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
         response: db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse,
         *,
@@ -2658,11 +2435,7 @@ class ListDbSystemInitialStorageSizesPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(
-                request
-            )
-        )
+        self._request = db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2672,25 +2445,14 @@ class ListDbSystemInitialStorageSizesPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
-    ]:
+    def pages(self) -> Iterator[db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __iter__(
-        self,
-    ) -> Iterator[db_system_initial_storage_size.DbSystemInitialStorageSize]:
+    def __iter__(self) -> Iterator[db_system_initial_storage_size.DbSystemInitialStorageSize]:
         for page in self.pages:
             yield from page.db_system_initial_storage_sizes
 
@@ -2718,12 +2480,7 @@ class ListDbSystemInitialStorageSizesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse]],
         request: db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
         response: db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse,
         *,
@@ -2749,11 +2506,7 @@ class ListDbSystemInitialStorageSizesAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(
-                request
-            )
-        )
+        self._request = db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -2763,25 +2516,14 @@ class ListDbSystemInitialStorageSizesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
-    ]:
+    async def pages(self) -> AsyncIterator[db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
-    def __aiter__(
-        self,
-    ) -> AsyncIterator[db_system_initial_storage_size.DbSystemInitialStorageSize]:
+    def __aiter__(self) -> AsyncIterator[db_system_initial_storage_size.DbSystemInitialStorageSize]:
         async def async_generator():
             async for page in self.pages:
                 for response in page.db_system_initial_storage_sizes:
@@ -2853,12 +2595,7 @@ class ListDatabasesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[database.Database]:
@@ -2929,12 +2666,7 @@ class ListDatabasesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[database.Database]:
@@ -3009,12 +2741,7 @@ class ListPluggableDatabasesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[pluggable_database.PluggableDatabase]:
@@ -3045,9 +2772,7 @@ class ListPluggableDatabasesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[pluggable_database.ListPluggableDatabasesResponse]
-        ],
+        method: Callable[..., Awaitable[pluggable_database.ListPluggableDatabasesResponse]],
         request: pluggable_database.ListPluggableDatabasesRequest,
         response: pluggable_database.ListPluggableDatabasesResponse,
         *,
@@ -3083,18 +2808,11 @@ class ListPluggableDatabasesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[pluggable_database.ListPluggableDatabasesResponse]:
+    async def pages(self) -> AsyncIterator[pluggable_database.ListPluggableDatabasesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[pluggable_database.PluggableDatabase]:
@@ -3169,12 +2887,7 @@ class ListDbSystemsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[db_system.DbSystem]:
@@ -3245,12 +2958,7 @@ class ListDbSystemsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[db_system.DbSystem]:
@@ -3325,12 +3033,7 @@ class ListDbVersionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[db_version.DbVersion]:
@@ -3401,12 +3104,7 @@ class ListDbVersionsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[db_version.DbVersion]:
@@ -3477,18 +3175,11 @@ class ListDatabaseCharacterSetsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[database_character_set.ListDatabaseCharacterSetsResponse]:
+    def pages(self) -> Iterator[database_character_set.ListDatabaseCharacterSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[database_character_set.DatabaseCharacterSet]:
@@ -3519,9 +3210,7 @@ class ListDatabaseCharacterSetsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[database_character_set.ListDatabaseCharacterSetsResponse]
-        ],
+        method: Callable[..., Awaitable[database_character_set.ListDatabaseCharacterSetsResponse]],
         request: database_character_set.ListDatabaseCharacterSetsRequest,
         response: database_character_set.ListDatabaseCharacterSetsResponse,
         *,
@@ -3557,18 +3246,11 @@ class ListDatabaseCharacterSetsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[database_character_set.ListDatabaseCharacterSetsResponse]:
+    async def pages(self) -> AsyncIterator[database_character_set.ListDatabaseCharacterSetsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[database_character_set.DatabaseCharacterSet]:

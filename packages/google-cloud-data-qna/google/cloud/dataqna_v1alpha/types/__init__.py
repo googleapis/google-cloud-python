@@ -14,13 +14,7 @@
 # limitations under the License.
 #
 from .annotated_string import AnnotatedString
-from .auto_suggestion_service import (
-    Suggestion,
-    SuggestionInfo,
-    SuggestionType,
-    SuggestQueriesRequest,
-    SuggestQueriesResponse,
-)
+from .auto_suggestion_service import Suggestion, SuggestionInfo, SuggestionType, SuggestQueriesRequest, SuggestQueriesResponse
 from .question import (
     BigQueryJob,
     DataQuery,
@@ -33,13 +27,7 @@ from .question import (
     InterpretError,
     Question,
 )
-from .question_service import (
-    CreateQuestionRequest,
-    ExecuteQuestionRequest,
-    GetQuestionRequest,
-    GetUserFeedbackRequest,
-    UpdateUserFeedbackRequest,
-)
+from .question_service import CreateQuestionRequest, ExecuteQuestionRequest, GetQuestionRequest, GetUserFeedbackRequest, UpdateUserFeedbackRequest
 from .user_feedback import UserFeedback
 
 __all__ = (

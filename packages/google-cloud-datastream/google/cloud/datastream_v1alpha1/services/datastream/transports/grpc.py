@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class DatastreamGrpcTransport(DatastreamTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -332,20 +317,13 @@ class DatastreamGrpcTransport(DatastreamTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_connection_profiles(
-        self,
-    ) -> Callable[
-        [datastream.ListConnectionProfilesRequest],
-        datastream.ListConnectionProfilesResponse,
-    ]:
+    def list_connection_profiles(self) -> Callable[[datastream.ListConnectionProfilesRequest], datastream.ListConnectionProfilesResponse]:
         r"""Return a callable for the list connection profiles method over gRPC.
 
         Use this method to list connection profiles created
@@ -370,11 +348,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["list_connection_profiles"]
 
     @property
-    def get_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.GetConnectionProfileRequest], datastream_resources.ConnectionProfile
-    ]:
+    def get_connection_profile(self) -> Callable[[datastream.GetConnectionProfileRequest], datastream_resources.ConnectionProfile]:
         r"""Return a callable for the get connection profile method over gRPC.
 
         Use this method to get details about a connection
@@ -399,11 +373,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["get_connection_profile"]
 
     @property
-    def create_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.CreateConnectionProfileRequest], operations_pb2.Operation
-    ]:
+    def create_connection_profile(self) -> Callable[[datastream.CreateConnectionProfileRequest], operations_pb2.Operation]:
         r"""Return a callable for the create connection profile method over gRPC.
 
         Use this method to create a connection profile in a
@@ -428,11 +398,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["create_connection_profile"]
 
     @property
-    def update_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.UpdateConnectionProfileRequest], operations_pb2.Operation
-    ]:
+    def update_connection_profile(self) -> Callable[[datastream.UpdateConnectionProfileRequest], operations_pb2.Operation]:
         r"""Return a callable for the update connection profile method over gRPC.
 
         Use this method to update the parameters of a
@@ -457,11 +423,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["update_connection_profile"]
 
     @property
-    def delete_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.DeleteConnectionProfileRequest], operations_pb2.Operation
-    ]:
+    def delete_connection_profile(self) -> Callable[[datastream.DeleteConnectionProfileRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete connection profile method over gRPC.
 
         Use this method to delete a connection profile..
@@ -485,12 +447,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["delete_connection_profile"]
 
     @property
-    def discover_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.DiscoverConnectionProfileRequest],
-        datastream.DiscoverConnectionProfileResponse,
-    ]:
+    def discover_connection_profile(self) -> Callable[[datastream.DiscoverConnectionProfileRequest], datastream.DiscoverConnectionProfileResponse]:
         r"""Return a callable for the discover connection profile method over gRPC.
 
         Use this method to discover a connection profile.
@@ -510,9 +467,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "discover_connection_profile" not in self._stubs:
-            self._stubs[
-                "discover_connection_profile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["discover_connection_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.datastream.v1alpha1.Datastream/DiscoverConnectionProfile",
                 request_serializer=datastream.DiscoverConnectionProfileRequest.serialize,
                 response_deserializer=datastream.DiscoverConnectionProfileResponse.deserialize,
@@ -520,9 +475,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["discover_connection_profile"]
 
     @property
-    def list_streams(
-        self,
-    ) -> Callable[[datastream.ListStreamsRequest], datastream.ListStreamsResponse]:
+    def list_streams(self) -> Callable[[datastream.ListStreamsRequest], datastream.ListStreamsResponse]:
         r"""Return a callable for the list streams method over gRPC.
 
         Use this method to list streams in a project and
@@ -547,9 +500,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["list_streams"]
 
     @property
-    def get_stream(
-        self,
-    ) -> Callable[[datastream.GetStreamRequest], datastream_resources.Stream]:
+    def get_stream(self) -> Callable[[datastream.GetStreamRequest], datastream_resources.Stream]:
         r"""Return a callable for the get stream method over gRPC.
 
         Use this method to get details about a stream.
@@ -573,9 +524,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["get_stream"]
 
     @property
-    def create_stream(
-        self,
-    ) -> Callable[[datastream.CreateStreamRequest], operations_pb2.Operation]:
+    def create_stream(self) -> Callable[[datastream.CreateStreamRequest], operations_pb2.Operation]:
         r"""Return a callable for the create stream method over gRPC.
 
         Use this method to create a stream.
@@ -599,9 +548,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["create_stream"]
 
     @property
-    def update_stream(
-        self,
-    ) -> Callable[[datastream.UpdateStreamRequest], operations_pb2.Operation]:
+    def update_stream(self) -> Callable[[datastream.UpdateStreamRequest], operations_pb2.Operation]:
         r"""Return a callable for the update stream method over gRPC.
 
         Use this method to update the configuration of a
@@ -626,9 +573,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["update_stream"]
 
     @property
-    def delete_stream(
-        self,
-    ) -> Callable[[datastream.DeleteStreamRequest], operations_pb2.Operation]:
+    def delete_stream(self) -> Callable[[datastream.DeleteStreamRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete stream method over gRPC.
 
         Use this method to delete a stream.
@@ -652,9 +597,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["delete_stream"]
 
     @property
-    def fetch_errors(
-        self,
-    ) -> Callable[[datastream.FetchErrorsRequest], operations_pb2.Operation]:
+    def fetch_errors(self) -> Callable[[datastream.FetchErrorsRequest], operations_pb2.Operation]:
         r"""Return a callable for the fetch errors method over gRPC.
 
         Use this method to fetch any errors associated with a
@@ -679,11 +622,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["fetch_errors"]
 
     @property
-    def fetch_static_ips(
-        self,
-    ) -> Callable[
-        [datastream.FetchStaticIpsRequest], datastream.FetchStaticIpsResponse
-    ]:
+    def fetch_static_ips(self) -> Callable[[datastream.FetchStaticIpsRequest], datastream.FetchStaticIpsResponse]:
         r"""Return a callable for the fetch static ips method over gRPC.
 
         The FetchStaticIps API call exposes the static ips
@@ -710,11 +649,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["fetch_static_ips"]
 
     @property
-    def create_private_connection(
-        self,
-    ) -> Callable[
-        [datastream.CreatePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def create_private_connection(self) -> Callable[[datastream.CreatePrivateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create private connection method over gRPC.
 
         Use this method to create a private connectivity
@@ -739,11 +674,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["create_private_connection"]
 
     @property
-    def get_private_connection(
-        self,
-    ) -> Callable[
-        [datastream.GetPrivateConnectionRequest], datastream_resources.PrivateConnection
-    ]:
+    def get_private_connection(self) -> Callable[[datastream.GetPrivateConnectionRequest], datastream_resources.PrivateConnection]:
         r"""Return a callable for the get private connection method over gRPC.
 
         Use this method to get details about a private
@@ -768,12 +699,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["get_private_connection"]
 
     @property
-    def list_private_connections(
-        self,
-    ) -> Callable[
-        [datastream.ListPrivateConnectionsRequest],
-        datastream.ListPrivateConnectionsResponse,
-    ]:
+    def list_private_connections(self) -> Callable[[datastream.ListPrivateConnectionsRequest], datastream.ListPrivateConnectionsResponse]:
         r"""Return a callable for the list private connections method over gRPC.
 
         Use this method to list private connectivity
@@ -798,11 +724,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["list_private_connections"]
 
     @property
-    def delete_private_connection(
-        self,
-    ) -> Callable[
-        [datastream.DeletePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def delete_private_connection(self) -> Callable[[datastream.DeletePrivateConnectionRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete private connection method over gRPC.
 
         Use this method to delete a private connectivity
@@ -827,9 +749,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["delete_private_connection"]
 
     @property
-    def create_route(
-        self,
-    ) -> Callable[[datastream.CreateRouteRequest], operations_pb2.Operation]:
+    def create_route(self) -> Callable[[datastream.CreateRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create route method over gRPC.
 
         Use this method to create a route for a private
@@ -854,9 +774,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["create_route"]
 
     @property
-    def get_route(
-        self,
-    ) -> Callable[[datastream.GetRouteRequest], datastream_resources.Route]:
+    def get_route(self) -> Callable[[datastream.GetRouteRequest], datastream_resources.Route]:
         r"""Return a callable for the get route method over gRPC.
 
         Use this method to get details about a route.
@@ -880,9 +798,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["get_route"]
 
     @property
-    def list_routes(
-        self,
-    ) -> Callable[[datastream.ListRoutesRequest], datastream.ListRoutesResponse]:
+    def list_routes(self) -> Callable[[datastream.ListRoutesRequest], datastream.ListRoutesResponse]:
         r"""Return a callable for the list routes method over gRPC.
 
         Use this method to list routes created for a private
@@ -907,9 +823,7 @@ class DatastreamGrpcTransport(DatastreamTransport):
         return self._stubs["list_routes"]
 
     @property
-    def delete_route(
-        self,
-    ) -> Callable[[datastream.DeleteRouteRequest], operations_pb2.Operation]:
+    def delete_route(self) -> Callable[[datastream.DeleteRouteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete route method over gRPC.
 
         Use this method to delete a route.

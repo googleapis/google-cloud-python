@@ -18,25 +18,15 @@ from google.cloud.talent import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.talent_v4.services.company_service.async_client import (
-    CompanyServiceAsyncClient,
-)
+from google.cloud.talent_v4.services.company_service.async_client import CompanyServiceAsyncClient
 from google.cloud.talent_v4.services.company_service.client import CompanyServiceClient
-from google.cloud.talent_v4.services.completion.async_client import (
-    CompletionAsyncClient,
-)
+from google.cloud.talent_v4.services.completion.async_client import CompletionAsyncClient
 from google.cloud.talent_v4.services.completion.client import CompletionClient
-from google.cloud.talent_v4.services.event_service.async_client import (
-    EventServiceAsyncClient,
-)
+from google.cloud.talent_v4.services.event_service.async_client import EventServiceAsyncClient
 from google.cloud.talent_v4.services.event_service.client import EventServiceClient
-from google.cloud.talent_v4.services.job_service.async_client import (
-    JobServiceAsyncClient,
-)
+from google.cloud.talent_v4.services.job_service.async_client import JobServiceAsyncClient
 from google.cloud.talent_v4.services.job_service.client import JobServiceClient
-from google.cloud.talent_v4.services.tenant_service.async_client import (
-    TenantServiceAsyncClient,
-)
+from google.cloud.talent_v4.services.tenant_service.async_client import TenantServiceAsyncClient
 from google.cloud.talent_v4.services.tenant_service.client import TenantServiceClient
 from google.cloud.talent_v4.types.common import (
     BatchOperationMetadata,
@@ -68,18 +58,10 @@ from google.cloud.talent_v4.types.company_service import (
     ListCompaniesResponse,
     UpdateCompanyRequest,
 )
-from google.cloud.talent_v4.types.completion_service import (
-    CompleteQueryRequest,
-    CompleteQueryResponse,
-)
+from google.cloud.talent_v4.types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from google.cloud.talent_v4.types.event import ClientEvent, JobEvent
 from google.cloud.talent_v4.types.event_service import CreateClientEventRequest
-from google.cloud.talent_v4.types.filters import (
-    CommuteFilter,
-    CompensationFilter,
-    JobQuery,
-    LocationFilter,
-)
+from google.cloud.talent_v4.types.filters import CommuteFilter, CompensationFilter, JobQuery, LocationFilter
 from google.cloud.talent_v4.types.histogram import HistogramQuery, HistogramQueryResult
 from google.cloud.talent_v4.types.job import Job
 from google.cloud.talent_v4.types.job_service import (

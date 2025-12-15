@@ -33,9 +33,7 @@ from google.cloud.retail_v2.types import model
 from google.cloud.retail_v2.types import model as gcr_model
 from google.cloud.retail_v2.types import model_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class ModelServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -205,75 +195,37 @@ class ModelServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_model(
-        self,
-    ) -> Callable[
-        [model_service.CreateModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_model(self) -> Callable[[model_service.CreateModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_model(
-        self,
-    ) -> Callable[
-        [model_service.GetModelRequest], Union[model.Model, Awaitable[model.Model]]
-    ]:
+    def get_model(self) -> Callable[[model_service.GetModelRequest], Union[model.Model, Awaitable[model.Model]]]:
         raise NotImplementedError()
 
     @property
-    def pause_model(
-        self,
-    ) -> Callable[
-        [model_service.PauseModelRequest], Union[model.Model, Awaitable[model.Model]]
-    ]:
+    def pause_model(self) -> Callable[[model_service.PauseModelRequest], Union[model.Model, Awaitable[model.Model]]]:
         raise NotImplementedError()
 
     @property
-    def resume_model(
-        self,
-    ) -> Callable[
-        [model_service.ResumeModelRequest], Union[model.Model, Awaitable[model.Model]]
-    ]:
+    def resume_model(self) -> Callable[[model_service.ResumeModelRequest], Union[model.Model, Awaitable[model.Model]]]:
         raise NotImplementedError()
 
     @property
-    def delete_model(
-        self,
-    ) -> Callable[
-        [model_service.DeleteModelRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_model(self) -> Callable[[model_service.DeleteModelRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_models(
         self,
-    ) -> Callable[
-        [model_service.ListModelsRequest],
-        Union[
-            model_service.ListModelsResponse,
-            Awaitable[model_service.ListModelsResponse],
-        ],
-    ]:
+    ) -> Callable[[model_service.ListModelsRequest], Union[model_service.ListModelsResponse, Awaitable[model_service.ListModelsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_model(
-        self,
-    ) -> Callable[
-        [model_service.UpdateModelRequest],
-        Union[gcr_model.Model, Awaitable[gcr_model.Model]],
-    ]:
+    def update_model(self) -> Callable[[model_service.UpdateModelRequest], Union[gcr_model.Model, Awaitable[gcr_model.Model]]]:
         raise NotImplementedError()
 
     @property
-    def tune_model(
-        self,
-    ) -> Callable[
-        [model_service.TuneModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def tune_model(self) -> Callable[[model_service.TuneModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -281,20 +233,14 @@ class ModelServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

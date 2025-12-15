@@ -162,12 +162,10 @@ class ServerTlsPolicy(proto.Message):
             ALLOW_INVALID_OR_MISSING_CLIENT_CERT = 1
             REJECT_INVALID = 2
 
-        client_validation_mode: "ServerTlsPolicy.MTLSPolicy.ClientValidationMode" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="ServerTlsPolicy.MTLSPolicy.ClientValidationMode",
-            )
+        client_validation_mode: "ServerTlsPolicy.MTLSPolicy.ClientValidationMode" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ServerTlsPolicy.MTLSPolicy.ClientValidationMode",
         )
         client_validation_ca: MutableSequence[tls.ValidationCA] = proto.RepeatedField(
             proto.MESSAGE,

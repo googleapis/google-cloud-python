@@ -20,89 +20,41 @@ __version__ = package_version.__version__
 
 from google.cloud.dialogflow_v2.services.agents.async_client import AgentsAsyncClient
 from google.cloud.dialogflow_v2.services.agents.client import AgentsClient
-from google.cloud.dialogflow_v2.services.answer_records.async_client import (
-    AnswerRecordsAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.answer_records.client import (
-    AnswerRecordsClient,
-)
-from google.cloud.dialogflow_v2.services.contexts.async_client import (
-    ContextsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.answer_records.async_client import AnswerRecordsAsyncClient
+from google.cloud.dialogflow_v2.services.answer_records.client import AnswerRecordsClient
+from google.cloud.dialogflow_v2.services.contexts.async_client import ContextsAsyncClient
 from google.cloud.dialogflow_v2.services.contexts.client import ContextsClient
-from google.cloud.dialogflow_v2.services.conversation_datasets.async_client import (
-    ConversationDatasetsAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.conversation_datasets.client import (
-    ConversationDatasetsClient,
-)
-from google.cloud.dialogflow_v2.services.conversation_models.async_client import (
-    ConversationModelsAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.conversation_models.client import (
-    ConversationModelsClient,
-)
-from google.cloud.dialogflow_v2.services.conversation_profiles.async_client import (
-    ConversationProfilesAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.conversation_profiles.client import (
-    ConversationProfilesClient,
-)
-from google.cloud.dialogflow_v2.services.conversations.async_client import (
-    ConversationsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.conversation_datasets.async_client import ConversationDatasetsAsyncClient
+from google.cloud.dialogflow_v2.services.conversation_datasets.client import ConversationDatasetsClient
+from google.cloud.dialogflow_v2.services.conversation_models.async_client import ConversationModelsAsyncClient
+from google.cloud.dialogflow_v2.services.conversation_models.client import ConversationModelsClient
+from google.cloud.dialogflow_v2.services.conversation_profiles.async_client import ConversationProfilesAsyncClient
+from google.cloud.dialogflow_v2.services.conversation_profiles.client import ConversationProfilesClient
+from google.cloud.dialogflow_v2.services.conversations.async_client import ConversationsAsyncClient
 from google.cloud.dialogflow_v2.services.conversations.client import ConversationsClient
-from google.cloud.dialogflow_v2.services.documents.async_client import (
-    DocumentsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.documents.async_client import DocumentsAsyncClient
 from google.cloud.dialogflow_v2.services.documents.client import DocumentsClient
-from google.cloud.dialogflow_v2.services.encryption_spec_service.async_client import (
-    EncryptionSpecServiceAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.encryption_spec_service.client import (
-    EncryptionSpecServiceClient,
-)
-from google.cloud.dialogflow_v2.services.entity_types.async_client import (
-    EntityTypesAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.encryption_spec_service.async_client import EncryptionSpecServiceAsyncClient
+from google.cloud.dialogflow_v2.services.encryption_spec_service.client import EncryptionSpecServiceClient
+from google.cloud.dialogflow_v2.services.entity_types.async_client import EntityTypesAsyncClient
 from google.cloud.dialogflow_v2.services.entity_types.client import EntityTypesClient
-from google.cloud.dialogflow_v2.services.environments.async_client import (
-    EnvironmentsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.environments.async_client import EnvironmentsAsyncClient
 from google.cloud.dialogflow_v2.services.environments.client import EnvironmentsClient
-from google.cloud.dialogflow_v2.services.fulfillments.async_client import (
-    FulfillmentsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.fulfillments.async_client import FulfillmentsAsyncClient
 from google.cloud.dialogflow_v2.services.fulfillments.client import FulfillmentsClient
-from google.cloud.dialogflow_v2.services.generators.async_client import (
-    GeneratorsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.generators.async_client import GeneratorsAsyncClient
 from google.cloud.dialogflow_v2.services.generators.client import GeneratorsClient
 from google.cloud.dialogflow_v2.services.intents.async_client import IntentsAsyncClient
 from google.cloud.dialogflow_v2.services.intents.client import IntentsClient
-from google.cloud.dialogflow_v2.services.knowledge_bases.async_client import (
-    KnowledgeBasesAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.knowledge_bases.client import (
-    KnowledgeBasesClient,
-)
-from google.cloud.dialogflow_v2.services.participants.async_client import (
-    ParticipantsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.knowledge_bases.async_client import KnowledgeBasesAsyncClient
+from google.cloud.dialogflow_v2.services.knowledge_bases.client import KnowledgeBasesClient
+from google.cloud.dialogflow_v2.services.participants.async_client import ParticipantsAsyncClient
 from google.cloud.dialogflow_v2.services.participants.client import ParticipantsClient
-from google.cloud.dialogflow_v2.services.session_entity_types.async_client import (
-    SessionEntityTypesAsyncClient,
-)
-from google.cloud.dialogflow_v2.services.session_entity_types.client import (
-    SessionEntityTypesClient,
-)
-from google.cloud.dialogflow_v2.services.sessions.async_client import (
-    SessionsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.session_entity_types.async_client import SessionEntityTypesAsyncClient
+from google.cloud.dialogflow_v2.services.session_entity_types.client import SessionEntityTypesClient
+from google.cloud.dialogflow_v2.services.sessions.async_client import SessionsAsyncClient
 from google.cloud.dialogflow_v2.services.sessions.client import SessionsClient
-from google.cloud.dialogflow_v2.services.versions.async_client import (
-    VersionsAsyncClient,
-)
+from google.cloud.dialogflow_v2.services.versions.async_client import VersionsAsyncClient
 from google.cloud.dialogflow_v2.services.versions.client import VersionsClient
 from google.cloud.dialogflow_v2.types.agent import (
     Agent,
@@ -286,11 +238,7 @@ from google.cloud.dialogflow_v2.types.environment import (
     TextToSpeechSettings,
     UpdateEnvironmentRequest,
 )
-from google.cloud.dialogflow_v2.types.fulfillment import (
-    Fulfillment,
-    GetFulfillmentRequest,
-    UpdateFulfillmentRequest,
-)
+from google.cloud.dialogflow_v2.types.fulfillment import Fulfillment, GetFulfillmentRequest, UpdateFulfillmentRequest
 from google.cloud.dialogflow_v2.types.gcs import GcsDestination, GcsSources
 from google.cloud.dialogflow_v2.types.generator import (
     ConversationContext,
@@ -313,9 +261,7 @@ from google.cloud.dialogflow_v2.types.generator import (
     TriggerEvent,
     UpdateGeneratorRequest,
 )
-from google.cloud.dialogflow_v2.types.human_agent_assistant_event import (
-    HumanAgentAssistantEvent,
-)
+from google.cloud.dialogflow_v2.types.human_agent_assistant_event import HumanAgentAssistantEvent
 from google.cloud.dialogflow_v2.types.intent import (
     BatchDeleteIntentsRequest,
     BatchUpdateIntentsRequest,
@@ -402,10 +348,7 @@ from google.cloud.dialogflow_v2.types.session_entity_type import (
     SessionEntityType,
     UpdateSessionEntityTypeRequest,
 )
-from google.cloud.dialogflow_v2.types.validation_result import (
-    ValidationError,
-    ValidationResult,
-)
+from google.cloud.dialogflow_v2.types.validation_result import ValidationError, ValidationResult
 from google.cloud.dialogflow_v2.types.version import (
     CreateVersionRequest,
     DeleteVersionRequest,
@@ -415,11 +358,7 @@ from google.cloud.dialogflow_v2.types.version import (
     UpdateVersionRequest,
     Version,
 )
-from google.cloud.dialogflow_v2.types.webhook import (
-    OriginalDetectIntentRequest,
-    WebhookRequest,
-    WebhookResponse,
-)
+from google.cloud.dialogflow_v2.types.webhook import OriginalDetectIntentRequest, WebhookRequest, WebhookResponse
 
 __all__ = (
     "AgentsClient",

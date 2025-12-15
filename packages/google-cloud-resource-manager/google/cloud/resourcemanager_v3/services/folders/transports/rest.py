@@ -170,9 +170,7 @@ class FoldersRestInterceptor:
     """
 
     def pre_create_folder(
-        self,
-        request: folders.CreateFolderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.CreateFolderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.CreateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_folder
 
@@ -181,9 +179,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_create_folder(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_folder(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_folder
 
         DEPRECATED. Please use the `post_create_folder_with_metadata`
@@ -197,9 +193,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_create_folder_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_folder
 
@@ -216,9 +210,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_delete_folder(
-        self,
-        request: folders.DeleteFolderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.DeleteFolderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.DeleteFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_folder
 
@@ -227,9 +219,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_folder(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_folder(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_folder
 
         DEPRECATED. Please use the `post_delete_folder_with_metadata`
@@ -243,9 +233,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_delete_folder_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_folder
 
@@ -262,9 +250,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_get_folder(
-        self,
-        request: folders.GetFolderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.GetFolderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.GetFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_folder
 
@@ -287,9 +273,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_get_folder_with_metadata(
-        self,
-        response: folders.Folder,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: folders.Folder, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.Folder, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_folder
 
@@ -306,12 +290,8 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -333,9 +313,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -352,9 +330,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_list_folders(
-        self,
-        request: folders.ListFoldersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.ListFoldersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.ListFoldersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_folders
 
@@ -363,9 +339,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_list_folders(
-        self, response: folders.ListFoldersResponse
-    ) -> folders.ListFoldersResponse:
+    def post_list_folders(self, response: folders.ListFoldersResponse) -> folders.ListFoldersResponse:
         """Post-rpc interceptor for list_folders
 
         DEPRECATED. Please use the `post_list_folders_with_metadata`
@@ -379,9 +353,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_list_folders_with_metadata(
-        self,
-        response: folders.ListFoldersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: folders.ListFoldersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.ListFoldersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_folders
 
@@ -398,9 +370,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_move_folder(
-        self,
-        request: folders.MoveFolderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.MoveFolderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.MoveFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move_folder
 
@@ -409,9 +379,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_move_folder(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_move_folder(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for move_folder
 
         DEPRECATED. Please use the `post_move_folder_with_metadata`
@@ -425,9 +393,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_move_folder_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move_folder
 
@@ -444,9 +410,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_search_folders(
-        self,
-        request: folders.SearchFoldersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.SearchFoldersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.SearchFoldersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_folders
 
@@ -455,9 +419,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_search_folders(
-        self, response: folders.SearchFoldersResponse
-    ) -> folders.SearchFoldersResponse:
+    def post_search_folders(self, response: folders.SearchFoldersResponse) -> folders.SearchFoldersResponse:
         """Post-rpc interceptor for search_folders
 
         DEPRECATED. Please use the `post_search_folders_with_metadata`
@@ -471,9 +433,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_search_folders_with_metadata(
-        self,
-        response: folders.SearchFoldersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: folders.SearchFoldersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.SearchFoldersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_folders
 
@@ -490,12 +450,8 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -517,9 +473,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -536,13 +490,8 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -550,9 +499,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -566,13 +513,8 @@ class FoldersRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -588,9 +530,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_undelete_folder(
-        self,
-        request: folders.UndeleteFolderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.UndeleteFolderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.UndeleteFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_folder
 
@@ -599,9 +539,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_folder(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_folder(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_folder
 
         DEPRECATED. Please use the `post_undelete_folder_with_metadata`
@@ -615,9 +553,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_undelete_folder_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_folder
 
@@ -634,9 +570,7 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_update_folder(
-        self,
-        request: folders.UpdateFolderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: folders.UpdateFolderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[folders.UpdateFolderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_folder
 
@@ -645,9 +579,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_update_folder(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_folder(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_folder
 
         DEPRECATED. Please use the `post_update_folder_with_metadata`
@@ -661,9 +593,7 @@ class FoldersRestInterceptor:
         return response
 
     def post_update_folder_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_folder
 
@@ -680,12 +610,8 @@ class FoldersRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -693,9 +619,7 @@ class FoldersRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -787,9 +711,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -823,9 +745,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -835,15 +755,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.CreateFolder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -886,34 +798,18 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseCreateFolder._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseCreateFolder._get_http_options()
 
             request, metadata = self._interceptor.pre_create_folder(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseCreateFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseCreateFolder._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseCreateFolder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseCreateFolder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseCreateFolder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseCreateFolder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -937,13 +833,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._CreateFolder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -957,12 +847,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_create_folder(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_folder_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_folder_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -988,15 +874,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.DeleteFolder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1038,30 +916,16 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseDeleteFolder._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseDeleteFolder._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_folder(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseDeleteFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseDeleteFolder._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseDeleteFolder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseDeleteFolder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1085,12 +949,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._DeleteFolder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1104,12 +963,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_delete_folder(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_folder_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_folder_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1135,15 +990,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.GetFolder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1188,25 +1035,13 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = _BaseFoldersRestTransport._BaseGetFolder._get_http_options()
 
             request, metadata = self._interceptor.pre_get_folder(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseGetFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseGetFolder._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseGetFolder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseGetFolder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1229,14 +1064,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 )
 
             # Send the request
-            response = FoldersRestTransport._GetFolder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FoldersRestTransport._GetFolder._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1251,12 +1079,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_get_folder(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_folder_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_folder_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = folders.Folder.to_json(response)
                 except:
@@ -1282,15 +1106,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1405,34 +1221,18 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1456,13 +1256,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1478,12 +1272,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1509,15 +1299,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.ListFolders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1556,30 +1338,16 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     The ListFolders response message.
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseListFolders._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseListFolders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_folders(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseListFolders._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseListFolders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseListFolders._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseListFolders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1602,14 +1370,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 )
 
             # Send the request
-            response = FoldersRestTransport._ListFolders._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = FoldersRestTransport._ListFolders._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1624,12 +1385,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_list_folders(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_folders_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_folders_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = folders.ListFoldersResponse.to_json(response)
                 except:
@@ -1655,15 +1412,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.MoveFolder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1709,29 +1458,15 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             http_options = _BaseFoldersRestTransport._BaseMoveFolder._get_http_options()
 
             request, metadata = self._interceptor.pre_move_folder(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseMoveFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseMoveFolder._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseMoveFolder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseMoveFolder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseMoveFolder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseMoveFolder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1755,13 +1490,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._MoveFolder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1775,12 +1504,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_move_folder(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_move_folder_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_move_folder_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1806,15 +1531,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.SearchFolders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1856,30 +1573,16 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseSearchFolders._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseSearchFolders._get_http_options()
 
             request, metadata = self._interceptor.pre_search_folders(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseSearchFolders._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseSearchFolders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseSearchFolders._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseSearchFolders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1903,12 +1606,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._SearchFolders._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1924,12 +1622,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_search_folders(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_folders_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_folders_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = folders.SearchFoldersResponse.to_json(response)
                 except:
@@ -1955,15 +1649,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2078,34 +1764,18 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2129,13 +1799,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2151,12 +1815,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2177,22 +1837,12 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseFoldersRestTransport._BaseTestIamPermissions, FoldersRestStub
-    ):
+    class _TestIamPermissions(_BaseFoldersRestTransport._BaseTestIamPermissions, FoldersRestStub):
         def __hash__(self):
             return hash("FoldersRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2232,32 +1882,18 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseFoldersRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseFoldersRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFoldersRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFoldersRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2281,13 +1917,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2303,12 +1933,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2329,22 +1955,12 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 )
             return resp
 
-    class _UndeleteFolder(
-        _BaseFoldersRestTransport._BaseUndeleteFolder, FoldersRestStub
-    ):
+    class _UndeleteFolder(_BaseFoldersRestTransport._BaseUndeleteFolder, FoldersRestStub):
         def __hash__(self):
             return hash("FoldersRestTransport.UndeleteFolder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2387,34 +2003,18 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseUndeleteFolder._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseUndeleteFolder._get_http_options()
 
             request, metadata = self._interceptor.pre_undelete_folder(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseUndeleteFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseUndeleteFolder._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseUndeleteFolder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseUndeleteFolder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseUndeleteFolder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseUndeleteFolder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2438,13 +2038,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._UndeleteFolder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2458,12 +2052,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_undelete_folder(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_folder_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_folder_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2489,15 +2079,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.UpdateFolder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2547,34 +2129,18 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseUpdateFolder._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseUpdateFolder._get_http_options()
 
             request, metadata = self._interceptor.pre_update_folder(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseUpdateFolder._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseUpdateFolder._get_transcoded_request(http_options, request)
 
-            body = _BaseFoldersRestTransport._BaseUpdateFolder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFoldersRestTransport._BaseUpdateFolder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseUpdateFolder._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseUpdateFolder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2598,13 +2164,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._UpdateFolder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2618,12 +2178,8 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             resp = self._interceptor.post_update_folder(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_folder_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_folder_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2645,17 +2201,13 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return resp
 
     @property
-    def create_folder(
-        self,
-    ) -> Callable[[folders.CreateFolderRequest], operations_pb2.Operation]:
+    def create_folder(self) -> Callable[[folders.CreateFolderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_folder(
-        self,
-    ) -> Callable[[folders.DeleteFolderRequest], operations_pb2.Operation]:
+    def delete_folder(self) -> Callable[[folders.DeleteFolderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFolder(self._session, self._host, self._interceptor)  # type: ignore
@@ -2667,68 +2219,49 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
         return self._GetFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_folders(
-        self,
-    ) -> Callable[[folders.ListFoldersRequest], folders.ListFoldersResponse]:
+    def list_folders(self) -> Callable[[folders.ListFoldersRequest], folders.ListFoldersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFolders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def move_folder(
-        self,
-    ) -> Callable[[folders.MoveFolderRequest], operations_pb2.Operation]:
+    def move_folder(self) -> Callable[[folders.MoveFolderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MoveFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_folders(
-        self,
-    ) -> Callable[[folders.SearchFoldersRequest], folders.SearchFoldersResponse]:
+    def search_folders(self) -> Callable[[folders.SearchFoldersRequest], folders.SearchFoldersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchFolders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_folder(
-        self,
-    ) -> Callable[[folders.UndeleteFolderRequest], operations_pb2.Operation]:
+    def undelete_folder(self) -> Callable[[folders.UndeleteFolderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteFolder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_folder(
-        self,
-    ) -> Callable[[folders.UpdateFolderRequest], operations_pb2.Operation]:
+    def update_folder(self) -> Callable[[folders.UpdateFolderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFolder(self._session, self._host, self._interceptor)  # type: ignore
@@ -2742,15 +2275,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             return hash("FoldersRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2788,30 +2313,16 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseFoldersRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseFoldersRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseFoldersRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFoldersRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFoldersRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFoldersRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2835,12 +2346,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
 
             # Send the request
             response = FoldersRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2852,9 +2358,7 @@ class FoldersRestTransport(_BaseFoldersRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

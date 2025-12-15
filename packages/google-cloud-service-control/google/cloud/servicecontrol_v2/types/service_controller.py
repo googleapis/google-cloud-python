@@ -197,9 +197,7 @@ class ReportRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    operations: MutableSequence[
-        attribute_context_pb2.AttributeContext
-    ] = proto.RepeatedField(
+    operations: MutableSequence[attribute_context_pb2.AttributeContext] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=attribute_context_pb2.AttributeContext,

@@ -236,9 +236,7 @@ class CheckoutSettings(proto.Message):
         optional=True,
         message="UriSettings",
     )
-    eligible_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
+    eligible_destinations: MutableSequence[types.Destination.DestinationEnum] = proto.RepeatedField(
         proto.ENUM,
         number=8,
         enum=types.Destination.DestinationEnum,

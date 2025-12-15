@@ -18,12 +18,8 @@ from google.cloud.functions import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.functions_v1.services.cloud_functions_service.async_client import (
-    CloudFunctionsServiceAsyncClient,
-)
-from google.cloud.functions_v1.services.cloud_functions_service.client import (
-    CloudFunctionsServiceClient,
-)
+from google.cloud.functions_v1.services.cloud_functions_service.async_client import CloudFunctionsServiceAsyncClient
+from google.cloud.functions_v1.services.cloud_functions_service.client import CloudFunctionsServiceClient
 from google.cloud.functions_v1.types.functions import (
     CallFunctionRequest,
     CallFunctionResponse,
@@ -46,10 +42,7 @@ from google.cloud.functions_v1.types.functions import (
     SourceRepository,
     UpdateFunctionRequest,
 )
-from google.cloud.functions_v1.types.operations import (
-    OperationMetadataV1,
-    OperationType,
-)
+from google.cloud.functions_v1.types.operations import OperationMetadataV1, OperationType
 
 __all__ = (
     "CloudFunctionsServiceClient",

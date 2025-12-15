@@ -416,9 +416,7 @@ class LogicalInterface(proto.Message):
             number=5,
         )
 
-    logical_network_interfaces: MutableSequence[
-        LogicalNetworkInterface
-    ] = proto.RepeatedField(
+    logical_network_interfaces: MutableSequence[LogicalNetworkInterface] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=LogicalNetworkInterface,

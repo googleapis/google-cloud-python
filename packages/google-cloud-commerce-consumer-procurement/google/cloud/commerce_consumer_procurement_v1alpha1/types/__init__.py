@@ -24,13 +24,7 @@ from .order import (
     Parameter,
     Subscription,
 )
-from .procurement_service import (
-    GetOrderRequest,
-    ListOrdersRequest,
-    ListOrdersResponse,
-    PlaceOrderMetadata,
-    PlaceOrderRequest,
-)
+from .procurement_service import GetOrderRequest, ListOrdersRequest, ListOrdersResponse, PlaceOrderMetadata, PlaceOrderRequest
 
 __all__ = (
     "LineItem",

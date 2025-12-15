@@ -14,15 +14,7 @@
 # limitations under the License.
 #
 from .continuous_validation_logging import ContinuousValidationEvent
-from .resources import (
-    AdmissionRule,
-    AdmissionWhitelistPattern,
-    Attestor,
-    AttestorPublicKey,
-    PkixPublicKey,
-    Policy,
-    UserOwnedDrydockNote,
-)
+from .resources import AdmissionRule, AdmissionWhitelistPattern, Attestor, AttestorPublicKey, PkixPublicKey, Policy, UserOwnedDrydockNote
 from .service import (
     CreateAttestorRequest,
     DeleteAttestorRequest,

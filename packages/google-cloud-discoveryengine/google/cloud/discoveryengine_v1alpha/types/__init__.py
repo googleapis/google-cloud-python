@@ -46,13 +46,7 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
-from .conversation import (
-    Conversation,
-    ConversationContext,
-    ConversationMessage,
-    Reply,
-    TextInput,
-)
+from .conversation import Conversation, ConversationContext, ConversationMessage, Reply, TextInput
 from .conversational_search_service import (
     AnswerQueryRequest,
     AnswerQueryResponse,
@@ -115,11 +109,7 @@ from .engine_service import (
     TuneEngineResponse,
     UpdateEngineRequest,
 )
-from .estimate_billing_service import (
-    EstimateDataSizeMetadata,
-    EstimateDataSizeRequest,
-    EstimateDataSizeResponse,
-)
+from .estimate_billing_service import EstimateDataSizeMetadata, EstimateDataSizeRequest, EstimateDataSizeResponse
 from .evaluation import Evaluation, QualityMetrics
 from .evaluation_service import (
     CreateEvaluationMetadata,
@@ -130,11 +120,7 @@ from .evaluation_service import (
     ListEvaluationsRequest,
     ListEvaluationsResponse,
 )
-from .grounded_generation_service import (
-    CheckGroundingRequest,
-    CheckGroundingResponse,
-    CheckGroundingSpec,
-)
+from .grounded_generation_service import CheckGroundingRequest, CheckGroundingResponse, CheckGroundingSpec
 from .grounding import FactChunk, GroundingFact
 from .import_config import (
     AlloyDbSource,
@@ -164,12 +150,7 @@ from .import_config import (
     SpannerSource,
 )
 from .project import Project
-from .project_service import (
-    GetProjectRequest,
-    ProvisionProjectMetadata,
-    ProvisionProjectRequest,
-    ReportConsentChangeRequest,
-)
+from .project_service import GetProjectRequest, ProvisionProjectMetadata, ProvisionProjectRequest, ReportConsentChangeRequest
 from .purge_config import (
     PurgeCompletionSuggestionsMetadata,
     PurgeCompletionSuggestionsRequest,
@@ -226,22 +207,8 @@ from .search_tuning_service import (
     TrainCustomModelResponse,
 )
 from .serving_config import ServingConfig
-from .serving_config_service import (
-    GetServingConfigRequest,
-    ListServingConfigsRequest,
-    ListServingConfigsResponse,
-    UpdateServingConfigRequest,
-)
-from .session import (
-    FileCharacteristics,
-    FileMetadata,
-    FileSource,
-    FileView,
-    ImageCharacteristics,
-    Query,
-    Session,
-    VideoCharacteristics,
-)
+from .serving_config_service import GetServingConfigRequest, ListServingConfigsRequest, ListServingConfigsResponse, UpdateServingConfigRequest
+from .session import FileCharacteristics, FileMetadata, FileSource, FileView, ImageCharacteristics, Query, Session, VideoCharacteristics
 from .session_service import ListFilesRequest, ListFilesResponse
 from .site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
@@ -278,16 +245,7 @@ from .site_search_engine_service import (
     UpdateTargetSiteMetadata,
     UpdateTargetSiteRequest,
 )
-from .user_event import (
-    CompletionInfo,
-    DocumentInfo,
-    MediaInfo,
-    PageInfo,
-    PanelInfo,
-    SearchInfo,
-    TransactionInfo,
-    UserEvent,
-)
+from .user_event import CompletionInfo, DocumentInfo, MediaInfo, PageInfo, PanelInfo, SearchInfo, TransactionInfo, UserEvent
 from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (

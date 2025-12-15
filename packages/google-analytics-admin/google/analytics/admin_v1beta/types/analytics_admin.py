@@ -296,16 +296,12 @@ class RunAccessReportResponse(proto.Message):
             with account-level requests.
     """
 
-    dimension_headers: MutableSequence[
-        access_report.AccessDimensionHeader
-    ] = proto.RepeatedField(
+    dimension_headers: MutableSequence[access_report.AccessDimensionHeader] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=access_report.AccessDimensionHeader,
     )
-    metric_headers: MutableSequence[
-        access_report.AccessMetricHeader
-    ] = proto.RepeatedField(
+    metric_headers: MutableSequence[access_report.AccessMetricHeader] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=access_report.AccessMetricHeader,
@@ -1046,9 +1042,7 @@ class SearchChangeHistoryEventsRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    resource_type: MutableSequence[
-        resources.ChangeHistoryResourceType
-    ] = proto.RepeatedField(
+    resource_type: MutableSequence[resources.ChangeHistoryResourceType] = proto.RepeatedField(
         proto.ENUM,
         number=3,
         enum=resources.ChangeHistoryResourceType,
@@ -1098,9 +1092,7 @@ class SearchChangeHistoryEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    change_history_events: MutableSequence[
-        resources.ChangeHistoryEvent
-    ] = proto.RepeatedField(
+    change_history_events: MutableSequence[resources.ChangeHistoryEvent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.ChangeHistoryEvent,
@@ -1246,9 +1238,7 @@ class ListMeasurementProtocolSecretsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    measurement_protocol_secrets: MutableSequence[
-        resources.MeasurementProtocolSecret
-    ] = proto.RepeatedField(
+    measurement_protocol_secrets: MutableSequence[resources.MeasurementProtocolSecret] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.MeasurementProtocolSecret,

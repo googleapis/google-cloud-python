@@ -18,9 +18,7 @@ from google.cloud.deploy import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.deploy_v1.services.cloud_deploy.async_client import (
-    CloudDeployAsyncClient,
-)
+from google.cloud.deploy_v1.services.cloud_deploy.async_client import CloudDeployAsyncClient
 from google.cloud.deploy_v1.services.cloud_deploy.client import CloudDeployClient
 from google.cloud.deploy_v1.types.automation_payload import AutomationEvent
 from google.cloud.deploy_v1.types.automationrun_payload import AutomationRunEvent
@@ -189,33 +187,17 @@ from google.cloud.deploy_v1.types.cloud_deploy import (
     VerifyJobRun,
     WeeklyWindow,
 )
-from google.cloud.deploy_v1.types.customtargettype_notification_payload import (
-    CustomTargetTypeNotificationEvent,
-)
-from google.cloud.deploy_v1.types.deliverypipeline_notification_payload import (
-    DeliveryPipelineNotificationEvent,
-)
-from google.cloud.deploy_v1.types.deploypolicy_evaluation_payload import (
-    DeployPolicyEvaluationEvent,
-)
-from google.cloud.deploy_v1.types.deploypolicy_notification_payload import (
-    DeployPolicyNotificationEvent,
-)
-from google.cloud.deploy_v1.types.jobrun_notification_payload import (
-    JobRunNotificationEvent,
-)
+from google.cloud.deploy_v1.types.customtargettype_notification_payload import CustomTargetTypeNotificationEvent
+from google.cloud.deploy_v1.types.deliverypipeline_notification_payload import DeliveryPipelineNotificationEvent
+from google.cloud.deploy_v1.types.deploypolicy_evaluation_payload import DeployPolicyEvaluationEvent
+from google.cloud.deploy_v1.types.deploypolicy_notification_payload import DeployPolicyNotificationEvent
+from google.cloud.deploy_v1.types.jobrun_notification_payload import JobRunNotificationEvent
 from google.cloud.deploy_v1.types.log_enums import Type
-from google.cloud.deploy_v1.types.release_notification_payload import (
-    ReleaseNotificationEvent,
-)
+from google.cloud.deploy_v1.types.release_notification_payload import ReleaseNotificationEvent
 from google.cloud.deploy_v1.types.release_render_payload import ReleaseRenderEvent
-from google.cloud.deploy_v1.types.rollout_notification_payload import (
-    RolloutNotificationEvent,
-)
+from google.cloud.deploy_v1.types.rollout_notification_payload import RolloutNotificationEvent
 from google.cloud.deploy_v1.types.rollout_update_payload import RolloutUpdateEvent
-from google.cloud.deploy_v1.types.target_notification_payload import (
-    TargetNotificationEvent,
-)
+from google.cloud.deploy_v1.types.target_notification_payload import TargetNotificationEvent
 
 __all__ = (
     "CloudDeployClient",

@@ -43,13 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import extended_operation  # type: ignore
@@ -59,11 +53,7 @@ from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
 from google.oauth2 import service_account
 
-from google.cloud.compute_v1beta.services.organization_security_policies import (
-    OrganizationSecurityPoliciesClient,
-    pagers,
-    transports,
-)
+from google.cloud.compute_v1beta.services.organization_security_policies import OrganizationSecurityPoliciesClient, pagers, transports
 from google.cloud.compute_v1beta.types import compute
 
 CRED_INFO_JSON = {
@@ -96,22 +86,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -122,231 +104,191 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(None) is None
-    assert (
-        OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(
-            sandbox_mtls_endpoint
-        )
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert OrganizationSecurityPoliciesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert OrganizationSecurityPoliciesClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            OrganizationSecurityPoliciesClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                OrganizationSecurityPoliciesClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             OrganizationSecurityPoliciesClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert OrganizationSecurityPoliciesClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                OrganizationSecurityPoliciesClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert OrganizationSecurityPoliciesClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
     mock_provided_cert_source = mock.Mock()
     mock_default_cert_source = mock.Mock()
 
-    assert (
-        OrganizationSecurityPoliciesClient._get_client_cert_source(None, False) is None
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
-        is None
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_client_cert_source(
-            mock_provided_cert_source, True
-        )
-        == mock_provided_cert_source
-    )
+    assert OrganizationSecurityPoliciesClient._get_client_cert_source(None, False) is None
+    assert OrganizationSecurityPoliciesClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert OrganizationSecurityPoliciesClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                OrganizationSecurityPoliciesClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                OrganizationSecurityPoliciesClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert OrganizationSecurityPoliciesClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert OrganizationSecurityPoliciesClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
 @mock.patch.object(
-    OrganizationSecurityPoliciesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(OrganizationSecurityPoliciesClient),
+    OrganizationSecurityPoliciesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(OrganizationSecurityPoliciesClient)
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = OrganizationSecurityPoliciesClient._DEFAULT_UNIVERSE
-    default_endpoint = (
-        OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=default_universe
-        )
-    )
+    default_endpoint = OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = (
-        OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=mock_universe
-        )
-    )
+    mock_endpoint = OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert OrganizationSecurityPoliciesClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
+        OrganizationSecurityPoliciesClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
+        == OrganizationSecurityPoliciesClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert OrganizationSecurityPoliciesClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
     assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        OrganizationSecurityPoliciesClient._get_api_endpoint(None, None, default_universe, "always")
         == OrganizationSecurityPoliciesClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
+        OrganizationSecurityPoliciesClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == OrganizationSecurityPoliciesClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == OrganizationSecurityPoliciesClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
+    assert OrganizationSecurityPoliciesClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert OrganizationSecurityPoliciesClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        OrganizationSecurityPoliciesClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        OrganizationSecurityPoliciesClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        OrganizationSecurityPoliciesClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_universe_domain(
-            None, universe_domain_env
-        )
-        == universe_domain_env
-    )
-    assert (
-        OrganizationSecurityPoliciesClient._get_universe_domain(None, None)
-        == OrganizationSecurityPoliciesClient._DEFAULT_UNIVERSE
-    )
+    assert OrganizationSecurityPoliciesClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert OrganizationSecurityPoliciesClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert OrganizationSecurityPoliciesClient._get_universe_domain(None, None) == OrganizationSecurityPoliciesClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         OrganizationSecurityPoliciesClient._get_universe_domain("", None)
@@ -402,13 +344,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (OrganizationSecurityPoliciesClient, "rest"),
     ],
 )
-def test_organization_security_policies_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_organization_security_policies_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -416,9 +354,7 @@ def test_organization_security_policies_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://compute.googleapis.com"
+            "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
         )
 
 
@@ -428,19 +364,13 @@ def test_organization_security_policies_client_from_service_account_info(
         (transports.OrganizationSecurityPoliciesRestTransport, "rest"),
     ],
 )
-def test_organization_security_policies_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_organization_security_policies_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -452,30 +382,20 @@ def test_organization_security_policies_client_service_account_always_use_jwt(
         (OrganizationSecurityPoliciesClient, "rest"),
     ],
 )
-def test_organization_security_policies_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_organization_security_policies_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://compute.googleapis.com"
+            "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
         )
 
 
@@ -493,33 +413,21 @@ def test_organization_security_policies_client_get_transport_class():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            OrganizationSecurityPoliciesClient,
-            transports.OrganizationSecurityPoliciesRestTransport,
-            "rest",
-        ),
+        (OrganizationSecurityPoliciesClient, transports.OrganizationSecurityPoliciesRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    OrganizationSecurityPoliciesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(OrganizationSecurityPoliciesClient),
+    OrganizationSecurityPoliciesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(OrganizationSecurityPoliciesClient)
 )
-def test_organization_security_policies_client_client_options(
-    client_class, transport_class, transport_name
-):
+def test_organization_security_policies_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(
-        OrganizationSecurityPoliciesClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(OrganizationSecurityPoliciesClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(
-        OrganizationSecurityPoliciesClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(OrganizationSecurityPoliciesClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -549,9 +457,7 @@ def test_organization_security_policies_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -583,21 +489,7 @@ def test_organization_security_policies_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -607,9 +499,7 @@ def test_organization_security_policies_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -618,18 +508,14 @@ def test_organization_security_policies_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -642,49 +528,29 @@ def test_organization_security_policies_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            OrganizationSecurityPoliciesClient,
-            transports.OrganizationSecurityPoliciesRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            OrganizationSecurityPoliciesClient,
-            transports.OrganizationSecurityPoliciesRestTransport,
-            "rest",
-            "false",
-        ),
+        (OrganizationSecurityPoliciesClient, transports.OrganizationSecurityPoliciesRestTransport, "rest", "true"),
+        (OrganizationSecurityPoliciesClient, transports.OrganizationSecurityPoliciesRestTransport, "rest", "false"),
     ],
 )
 @mock.patch.object(
-    OrganizationSecurityPoliciesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(OrganizationSecurityPoliciesClient),
+    OrganizationSecurityPoliciesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(OrganizationSecurityPoliciesClient)
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_organization_security_policies_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_organization_security_policies_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -703,22 +569,12 @@ def test_organization_security_policies_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -739,22 +595,15 @@ def test_organization_security_policies_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -765,25 +614,15 @@ def test_organization_security_policies_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [OrganizationSecurityPoliciesClient])
-@mock.patch.object(
-    OrganizationSecurityPoliciesClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(OrganizationSecurityPoliciesClient),
-)
-def test_organization_security_policies_client_get_mtls_endpoint_and_cert_source(
-    client_class,
-):
+@mock.patch.object(OrganizationSecurityPoliciesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(OrganizationSecurityPoliciesClient))
+def test_organization_security_policies_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -791,14 +630,106 @@ def test_organization_security_policies_client_get_mtls_endpoint_and_cert_source
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -814,28 +745,16 @@ def test_organization_security_policies_client_get_mtls_endpoint_and_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -845,59 +764,27 @@ def test_organization_security_policies_client_get_mtls_endpoint_and_cert_source
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [OrganizationSecurityPoliciesClient])
 @mock.patch.object(
-    OrganizationSecurityPoliciesClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(OrganizationSecurityPoliciesClient),
+    OrganizationSecurityPoliciesClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(OrganizationSecurityPoliciesClient)
 )
 def test_organization_security_policies_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = OrganizationSecurityPoliciesClient._DEFAULT_UNIVERSE
-    default_endpoint = (
-        OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=default_universe
-        )
-    )
+    default_endpoint = OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = (
-        OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-            UNIVERSE_DOMAIN=mock_universe
-        )
-    )
+    mock_endpoint = OrganizationSecurityPoliciesClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -920,19 +807,11 @@ def test_organization_security_policies_client_client_api_endpoint(client_class)
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -940,25 +819,17 @@ def test_organization_security_policies_client_client_api_endpoint(client_class)
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            OrganizationSecurityPoliciesClient,
-            transports.OrganizationSecurityPoliciesRestTransport,
-            "rest",
-        ),
+        (OrganizationSecurityPoliciesClient, transports.OrganizationSecurityPoliciesRestTransport, "rest"),
     ],
 )
-def test_organization_security_policies_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_organization_security_policies_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -969,9 +840,7 @@ def test_organization_security_policies_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -984,17 +853,10 @@ def test_organization_security_policies_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            OrganizationSecurityPoliciesClient,
-            transports.OrganizationSecurityPoliciesRestTransport,
-            "rest",
-            None,
-        ),
+        (OrganizationSecurityPoliciesClient, transports.OrganizationSecurityPoliciesRestTransport, "rest", None),
     ],
 )
-def test_organization_security_policies_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_organization_security_policies_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1004,9 +866,7 @@ def test_organization_security_policies_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1034,9 +894,7 @@ def test_add_association_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.add_association] = mock_rpc
 
         request = {}
@@ -1056,33 +914,25 @@ def test_add_association_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_add_association_rest_required_fields(
-    request_type=compute.AddAssociationOrganizationSecurityPolicyRequest,
-):
+def test_add_association_rest_required_fields(request_type=compute.AddAssociationOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_association._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_association._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -1140,9 +990,7 @@ def test_add_association_rest_required_fields(
 
 
 def test_add_association_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.add_association._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1178,9 +1026,7 @@ def test_add_association_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             security_policy="security_policy_value",
-            security_policy_association_resource=compute.SecurityPolicyAssociation(
-                attachment_id="attachment_id_value"
-            ),
+            security_policy_association_resource=compute.SecurityPolicyAssociation(attachment_id="attachment_id_value"),
         )
         mock_args.update(sample_request)
 
@@ -1201,9 +1047,7 @@ def test_add_association_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/addAssociation"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/addAssociation" % client.transport._host, args[1]
         )
 
 
@@ -1219,9 +1063,7 @@ def test_add_association_rest_flattened_error(transport: str = "rest"):
         client.add_association(
             compute.AddAssociationOrganizationSecurityPolicyRequest(),
             security_policy="security_policy_value",
-            security_policy_association_resource=compute.SecurityPolicyAssociation(
-                attachment_id="attachment_id_value"
-            ),
+            security_policy_association_resource=compute.SecurityPolicyAssociation(attachment_id="attachment_id_value"),
         )
 
 
@@ -1243,9 +1085,7 @@ def test_add_association_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.add_association] = mock_rpc
 
         request = {}
@@ -1265,33 +1105,25 @@ def test_add_association_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_add_association_unary_rest_required_fields(
-    request_type=compute.AddAssociationOrganizationSecurityPolicyRequest,
-):
+def test_add_association_unary_rest_required_fields(request_type=compute.AddAssociationOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_association._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_association._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -1349,9 +1181,7 @@ def test_add_association_unary_rest_required_fields(
 
 
 def test_add_association_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.add_association._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1387,9 +1217,7 @@ def test_add_association_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             security_policy="security_policy_value",
-            security_policy_association_resource=compute.SecurityPolicyAssociation(
-                attachment_id="attachment_id_value"
-            ),
+            security_policy_association_resource=compute.SecurityPolicyAssociation(attachment_id="attachment_id_value"),
         )
         mock_args.update(sample_request)
 
@@ -1410,9 +1238,7 @@ def test_add_association_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/addAssociation"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/addAssociation" % client.transport._host, args[1]
         )
 
 
@@ -1428,9 +1254,7 @@ def test_add_association_unary_rest_flattened_error(transport: str = "rest"):
         client.add_association_unary(
             compute.AddAssociationOrganizationSecurityPolicyRequest(),
             security_policy="security_policy_value",
-            security_policy_association_resource=compute.SecurityPolicyAssociation(
-                attachment_id="attachment_id_value"
-            ),
+            security_policy_association_resource=compute.SecurityPolicyAssociation(attachment_id="attachment_id_value"),
         )
 
 
@@ -1452,9 +1276,7 @@ def test_add_rule_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.add_rule] = mock_rpc
 
         request = {}
@@ -1474,33 +1296,25 @@ def test_add_rule_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_add_rule_rest_required_fields(
-    request_type=compute.AddRuleOrganizationSecurityPolicyRequest,
-):
+def test_add_rule_rest_required_fields(request_type=compute.AddRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1553,9 +1367,7 @@ def test_add_rule_rest_required_fields(
 
 
 def test_add_rule_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.add_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1586,9 +1398,7 @@ def test_add_rule_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
         mock_args.update(sample_request)
 
@@ -1608,11 +1418,7 @@ def test_add_rule_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/addRule"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}/addRule" % client.transport._host, args[1])
 
 
 def test_add_rule_rest_flattened_error(transport: str = "rest"):
@@ -1627,9 +1433,7 @@ def test_add_rule_rest_flattened_error(transport: str = "rest"):
         client.add_rule(
             compute.AddRuleOrganizationSecurityPolicyRequest(),
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
 
 
@@ -1651,9 +1455,7 @@ def test_add_rule_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.add_rule] = mock_rpc
 
         request = {}
@@ -1673,33 +1475,25 @@ def test_add_rule_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_add_rule_unary_rest_required_fields(
-    request_type=compute.AddRuleOrganizationSecurityPolicyRequest,
-):
+def test_add_rule_unary_rest_required_fields(request_type=compute.AddRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).add_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).add_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -1752,9 +1546,7 @@ def test_add_rule_unary_rest_required_fields(
 
 
 def test_add_rule_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.add_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -1785,9 +1577,7 @@ def test_add_rule_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
         mock_args.update(sample_request)
 
@@ -1807,11 +1597,7 @@ def test_add_rule_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/addRule"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}/addRule" % client.transport._host, args[1])
 
 
 def test_add_rule_unary_rest_flattened_error(transport: str = "rest"):
@@ -1826,9 +1612,7 @@ def test_add_rule_unary_rest_flattened_error(transport: str = "rest"):
         client.add_rule_unary(
             compute.AddRuleOrganizationSecurityPolicyRequest(),
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
 
 
@@ -1850,9 +1634,7 @@ def test_copy_rules_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.copy_rules] = mock_rpc
 
         request = {}
@@ -1872,33 +1654,25 @@ def test_copy_rules_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_copy_rules_rest_required_fields(
-    request_type=compute.CopyRulesOrganizationSecurityPolicyRequest,
-):
+def test_copy_rules_rest_required_fields(request_type=compute.CopyRulesOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).copy_rules._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).copy_rules._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).copy_rules._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).copy_rules._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -1955,9 +1729,7 @@ def test_copy_rules_rest_required_fields(
 
 
 def test_copy_rules_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.copy_rules._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2008,9 +1780,7 @@ def test_copy_rules_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/copyRules"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/copyRules" % client.transport._host, args[1]
         )
 
 
@@ -2047,9 +1817,7 @@ def test_copy_rules_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.copy_rules] = mock_rpc
 
         request = {}
@@ -2069,33 +1837,25 @@ def test_copy_rules_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_copy_rules_unary_rest_required_fields(
-    request_type=compute.CopyRulesOrganizationSecurityPolicyRequest,
-):
+def test_copy_rules_unary_rest_required_fields(request_type=compute.CopyRulesOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).copy_rules._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).copy_rules._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).copy_rules._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).copy_rules._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2152,9 +1912,7 @@ def test_copy_rules_unary_rest_required_fields(
 
 
 def test_copy_rules_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.copy_rules._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -2205,9 +1963,7 @@ def test_copy_rules_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/copyRules"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/copyRules" % client.transport._host, args[1]
         )
 
 
@@ -2244,9 +2000,7 @@ def test_delete_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete] = mock_rpc
 
         request = {}
@@ -2266,33 +2020,25 @@ def test_delete_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_rest_required_fields(
-    request_type=compute.DeleteOrganizationSecurityPolicyRequest,
-):
+def test_delete_rest_required_fields(request_type=compute.DeleteOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -2344,9 +2090,7 @@ def test_delete_rest_required_fields(
 
 
 def test_delete_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("securityPolicy",)))
@@ -2388,11 +2132,7 @@ def test_delete_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}" % client.transport._host, args[1])
 
 
 def test_delete_rest_flattened_error(transport: str = "rest"):
@@ -2428,9 +2168,7 @@ def test_delete_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.delete] = mock_rpc
 
         request = {}
@@ -2450,33 +2188,25 @@ def test_delete_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_unary_rest_required_fields(
-    request_type=compute.DeleteOrganizationSecurityPolicyRequest,
-):
+def test_delete_unary_rest_required_fields(request_type=compute.DeleteOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
     jsonified_request.update(unset_fields)
@@ -2528,9 +2258,7 @@ def test_delete_unary_rest_required_fields(
 
 
 def test_delete_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (set(("requestId",)) & set(("securityPolicy",)))
@@ -2572,11 +2300,7 @@ def test_delete_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}" % client.transport._host, args[1])
 
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
@@ -2612,9 +2336,7 @@ def test_get_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get] = mock_rpc
 
         request = {}
@@ -2630,33 +2352,25 @@ def test_get_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_rest_required_fields(
-    request_type=compute.GetOrganizationSecurityPolicyRequest,
-):
+def test_get_rest_required_fields(request_type=compute.GetOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2706,9 +2420,7 @@ def test_get_rest_required_fields(
 
 
 def test_get_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("securityPolicy",)))
@@ -2750,11 +2462,7 @@ def test_get_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}" % client.transport._host, args[1])
 
 
 def test_get_rest_flattened_error(transport: str = "rest"):
@@ -2790,9 +2498,7 @@ def test_get_association_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_association] = mock_rpc
 
         request = {}
@@ -2808,33 +2514,25 @@ def test_get_association_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_association_rest_required_fields(
-    request_type=compute.GetAssociationOrganizationSecurityPolicyRequest,
-):
+def test_get_association_rest_required_fields(request_type=compute.GetAssociationOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_association._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_association._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("name",))
     jsonified_request.update(unset_fields)
@@ -2886,9 +2584,7 @@ def test_get_association_rest_required_fields(
 
 
 def test_get_association_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_association._get_unset_required_fields({})
     assert set(unset_fields) == (set(("name",)) & set(("securityPolicy",)))
@@ -2931,9 +2627,7 @@ def test_get_association_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/getAssociation"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/getAssociation" % client.transport._host, args[1]
         )
 
 
@@ -2970,9 +2664,7 @@ def test_get_rule_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_rule] = mock_rpc
 
         request = {}
@@ -2988,33 +2680,25 @@ def test_get_rule_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_rule_rest_required_fields(
-    request_type=compute.GetRuleOrganizationSecurityPolicyRequest,
-):
+def test_get_rule_rest_required_fields(request_type=compute.GetRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("priority",))
     jsonified_request.update(unset_fields)
@@ -3066,9 +2750,7 @@ def test_get_rule_rest_required_fields(
 
 
 def test_get_rule_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_rule._get_unset_required_fields({})
     assert set(unset_fields) == (set(("priority",)) & set(("securityPolicy",)))
@@ -3110,11 +2792,7 @@ def test_get_rule_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/getRule"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}/getRule" % client.transport._host, args[1])
 
 
 def test_get_rule_rest_flattened_error(transport: str = "rest"):
@@ -3150,9 +2828,7 @@ def test_insert_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.insert] = mock_rpc
 
         request = {}
@@ -3172,30 +2848,22 @@ def test_insert_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_insert_rest_required_fields(
-    request_type=compute.InsertOrganizationSecurityPolicyRequest,
-):
+def test_insert_rest_required_fields(request_type=compute.InsertOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -3251,9 +2919,7 @@ def test_insert_rest_required_fields(
 
 
 def test_insert_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3285,9 +2951,7 @@ def test_insert_rest_flattened():
         mock_args = dict(
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -3309,11 +2973,7 @@ def test_insert_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies" % client.transport._host, args[1])
 
 
 def test_insert_rest_flattened_error(transport: str = "rest"):
@@ -3329,9 +2989,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             compute.InsertOrganizationSecurityPolicyRequest(),
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -3355,9 +3013,7 @@ def test_insert_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.insert] = mock_rpc
 
         request = {}
@@ -3377,30 +3033,22 @@ def test_insert_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_insert_unary_rest_required_fields(
-    request_type=compute.InsertOrganizationSecurityPolicyRequest,
-):
+def test_insert_unary_rest_required_fields(request_type=compute.InsertOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).insert._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -3456,9 +3104,7 @@ def test_insert_unary_rest_required_fields(
 
 
 def test_insert_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3490,9 +3136,7 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -3514,11 +3158,7 @@ def test_insert_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies" % client.transport._host, args[1])
 
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
@@ -3534,9 +3174,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             compute.InsertOrganizationSecurityPolicyRequest(),
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -3560,9 +3198,7 @@ def test_list_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.list] = mock_rpc
 
         request = {}
@@ -3657,12 +3293,8 @@ def test_list_associations_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_associations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_associations] = mock_rpc
 
         request = {}
         client.list_associations(request)
@@ -3691,19 +3323,12 @@ def test_list_preconfigured_expression_sets_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_preconfigured_expression_sets
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_preconfigured_expression_sets in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_preconfigured_expression_sets
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_preconfigured_expression_sets] = mock_rpc
 
         request = {}
         client.list_preconfigured_expression_sets(request)
@@ -3736,9 +3361,7 @@ def test_move_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.move] = mock_rpc
 
         request = {}
@@ -3758,33 +3381,25 @@ def test_move_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_move_rest_required_fields(
-    request_type=compute.MoveOrganizationSecurityPolicyRequest,
-):
+def test_move_rest_required_fields(request_type=compute.MoveOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).move._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).move._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -3841,9 +3456,7 @@ def test_move_rest_required_fields(
 
 
 def test_move_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.move._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -3893,11 +3506,7 @@ def test_move_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/move"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}/move" % client.transport._host, args[1])
 
 
 def test_move_rest_flattened_error(transport: str = "rest"):
@@ -3933,9 +3542,7 @@ def test_move_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.move] = mock_rpc
 
         request = {}
@@ -3955,33 +3562,25 @@ def test_move_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_move_unary_rest_required_fields(
-    request_type=compute.MoveOrganizationSecurityPolicyRequest,
-):
+def test_move_unary_rest_required_fields(request_type=compute.MoveOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).move._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).move._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).move._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4038,9 +3637,7 @@ def test_move_unary_rest_required_fields(
 
 
 def test_move_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.move._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4090,11 +3687,7 @@ def test_move_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/move"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}/move" % client.transport._host, args[1])
 
 
 def test_move_unary_rest_flattened_error(transport: str = "rest"):
@@ -4130,9 +3723,7 @@ def test_patch_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.patch] = mock_rpc
 
         request = {}
@@ -4152,33 +3743,25 @@ def test_patch_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_patch_rest_required_fields(
-    request_type=compute.PatchOrganizationSecurityPolicyRequest,
-):
+def test_patch_rest_required_fields(request_type=compute.PatchOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4236,9 +3819,7 @@ def test_patch_rest_required_fields(
 
 
 def test_patch_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4276,9 +3857,7 @@ def test_patch_rest_flattened():
             security_policy="security_policy_value",
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -4300,11 +3879,7 @@ def test_patch_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}" % client.transport._host, args[1])
 
 
 def test_patch_rest_flattened_error(transport: str = "rest"):
@@ -4321,9 +3896,7 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             security_policy="security_policy_value",
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -4347,9 +3920,7 @@ def test_patch_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.patch] = mock_rpc
 
         request = {}
@@ -4369,33 +3940,25 @@ def test_patch_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_patch_unary_rest_required_fields(
-    request_type=compute.PatchOrganizationSecurityPolicyRequest,
-):
+def test_patch_unary_rest_required_fields(request_type=compute.PatchOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4453,9 +4016,7 @@ def test_patch_unary_rest_required_fields(
 
 
 def test_patch_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4493,9 +4054,7 @@ def test_patch_unary_rest_flattened():
             security_policy="security_policy_value",
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -4517,11 +4076,7 @@ def test_patch_unary_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/compute/beta/locations/global/securityPolicies/{security_policy}" % client.transport._host, args[1])
 
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
@@ -4538,9 +4093,7 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             security_policy="security_policy_value",
             security_policy_resource=compute.SecurityPolicy(
                 adaptive_protection_config=compute.SecurityPolicyAdaptiveProtectionConfig(
-                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(
-                        confidence_threshold=0.2106
-                    )
+                    auto_deploy_config=compute.SecurityPolicyAdaptiveProtectionConfigAutoDeployConfig(confidence_threshold=0.2106)
                 )
             ),
         )
@@ -4564,9 +4117,7 @@ def test_patch_rule_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.patch_rule] = mock_rpc
 
         request = {}
@@ -4586,33 +4137,25 @@ def test_patch_rule_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_patch_rule_rest_required_fields(
-    request_type=compute.PatchRuleOrganizationSecurityPolicyRequest,
-):
+def test_patch_rule_rest_required_fields(request_type=compute.PatchRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4671,9 +4214,7 @@ def test_patch_rule_rest_required_fields(
 
 
 def test_patch_rule_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.patch_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4710,9 +4251,7 @@ def test_patch_rule_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
         mock_args.update(sample_request)
 
@@ -4733,9 +4272,7 @@ def test_patch_rule_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/patchRule"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/patchRule" % client.transport._host, args[1]
         )
 
 
@@ -4751,9 +4288,7 @@ def test_patch_rule_rest_flattened_error(transport: str = "rest"):
         client.patch_rule(
             compute.PatchRuleOrganizationSecurityPolicyRequest(),
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
 
 
@@ -4775,9 +4310,7 @@ def test_patch_rule_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.patch_rule] = mock_rpc
 
         request = {}
@@ -4797,33 +4330,25 @@ def test_patch_rule_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_patch_rule_unary_rest_required_fields(
-    request_type=compute.PatchRuleOrganizationSecurityPolicyRequest,
-):
+def test_patch_rule_unary_rest_required_fields(request_type=compute.PatchRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).patch_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).patch_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -4882,9 +4407,7 @@ def test_patch_rule_unary_rest_required_fields(
 
 
 def test_patch_rule_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.patch_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -4921,9 +4444,7 @@ def test_patch_rule_unary_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
         mock_args.update(sample_request)
 
@@ -4944,9 +4465,7 @@ def test_patch_rule_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/patchRule"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/patchRule" % client.transport._host, args[1]
         )
 
 
@@ -4962,9 +4481,7 @@ def test_patch_rule_unary_rest_flattened_error(transport: str = "rest"):
         client.patch_rule_unary(
             compute.PatchRuleOrganizationSecurityPolicyRequest(),
             security_policy="security_policy_value",
-            security_policy_rule_resource=compute.SecurityPolicyRule(
-                action="action_value"
-            ),
+            security_policy_rule_resource=compute.SecurityPolicyRule(action="action_value"),
         )
 
 
@@ -4982,18 +4499,12 @@ def test_remove_association_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.remove_association in client._transport._wrapped_methods
-        )
+        assert client._transport.remove_association in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.remove_association
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.remove_association] = mock_rpc
 
         request = {}
         client.remove_association(request)
@@ -5012,33 +4523,25 @@ def test_remove_association_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_remove_association_rest_required_fields(
-    request_type=compute.RemoveAssociationOrganizationSecurityPolicyRequest,
-):
+def test_remove_association_rest_required_fields(request_type=compute.RemoveAssociationOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_association._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_association._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -5095,9 +4598,7 @@ def test_remove_association_rest_required_fields(
 
 
 def test_remove_association_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.remove_association._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5148,9 +4649,7 @@ def test_remove_association_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeAssociation"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeAssociation" % client.transport._host, args[1]
         )
 
 
@@ -5183,18 +4682,12 @@ def test_remove_association_unary_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.remove_association in client._transport._wrapped_methods
-        )
+        assert client._transport.remove_association in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.remove_association
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.remove_association] = mock_rpc
 
         request = {}
         client.remove_association_unary(request)
@@ -5213,33 +4706,25 @@ def test_remove_association_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_remove_association_unary_rest_required_fields(
-    request_type=compute.RemoveAssociationOrganizationSecurityPolicyRequest,
-):
+def test_remove_association_unary_rest_required_fields(request_type=compute.RemoveAssociationOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_association._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_association._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_association._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -5296,9 +4781,7 @@ def test_remove_association_unary_rest_required_fields(
 
 
 def test_remove_association_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.remove_association._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5349,9 +4832,7 @@ def test_remove_association_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeAssociation"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeAssociation" % client.transport._host, args[1]
         )
 
 
@@ -5388,9 +4869,7 @@ def test_remove_rule_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.remove_rule] = mock_rpc
 
         request = {}
@@ -5410,33 +4889,25 @@ def test_remove_rule_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_remove_rule_rest_required_fields(
-    request_type=compute.RemoveRuleOrganizationSecurityPolicyRequest,
-):
+def test_remove_rule_rest_required_fields(request_type=compute.RemoveRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -5493,9 +4964,7 @@ def test_remove_rule_rest_required_fields(
 
 
 def test_remove_rule_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.remove_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5546,9 +5015,7 @@ def test_remove_rule_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeRule"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeRule" % client.transport._host, args[1]
         )
 
 
@@ -5585,9 +5052,7 @@ def test_remove_rule_unary_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.remove_rule] = mock_rpc
 
         request = {}
@@ -5607,33 +5072,25 @@ def test_remove_rule_unary_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_remove_rule_unary_rest_required_fields(
-    request_type=compute.RemoveRuleOrganizationSecurityPolicyRequest,
-):
+def test_remove_rule_unary_rest_required_fields(request_type=compute.RemoveRuleOrganizationSecurityPolicyRequest):
     transport_class = transports.OrganizationSecurityPoliciesRestTransport
 
     request_init = {}
     request_init["security_policy"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_rule._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["securityPolicy"] = "security_policy_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).remove_rule._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).remove_rule._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -5690,9 +5147,7 @@ def test_remove_rule_unary_rest_required_fields(
 
 
 def test_remove_rule_unary_rest_unset_required_fields():
-    transport = transports.OrganizationSecurityPoliciesRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.OrganizationSecurityPoliciesRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.remove_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -5743,9 +5198,7 @@ def test_remove_rule_unary_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeRule"
-            % client.transport._host,
-            args[1],
+            "%s/compute/beta/locations/global/securityPolicies/{security_policy}/removeRule" % client.transport._host, args[1]
         )
 
 
@@ -5801,9 +5254,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = OrganizationSecurityPoliciesClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = OrganizationSecurityPoliciesClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.OrganizationSecurityPoliciesRestTransport(
@@ -5840,26 +5291,18 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_rest():
-    transport = OrganizationSecurityPoliciesClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = OrganizationSecurityPoliciesClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
-def test_add_association_rest_bad_request(
-    request_type=compute.AddAssociationOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_add_association_rest_bad_request(request_type=compute.AddAssociationOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -5879,9 +5322,7 @@ def test_add_association_rest_bad_request(
     ],
 )
 def test_add_association_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -5899,9 +5340,7 @@ def test_add_association_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.AddAssociationOrganizationSecurityPolicyRequest.meta.fields[
-        "security_policy_association_resource"
-    ]
+    test_field = compute.AddAssociationOrganizationSecurityPolicyRequest.meta.fields["security_policy_association_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -5920,18 +5359,14 @@ def test_add_association_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "security_policy_association_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["security_policy_association_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -5945,13 +5380,7 @@ def test_add_association_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -5961,16 +5390,10 @@ def test_add_association_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["security_policy_association_resource"][field])
-                ):
-                    del request_init["security_policy_association_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["security_policy_association_resource"][field])):
+                    del request_init["security_policy_association_resource"][field][i][subfield]
             else:
-                del request_init["security_policy_association_resource"][field][
-                    subfield
-                ]
+                del request_init["security_policy_association_resource"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -6043,30 +5466,21 @@ def test_add_association_rest_call_success(request_type):
 def test_add_association_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_add_association"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_add_association_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_add_association") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_add_association_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_add_association"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.AddAssociationOrganizationSecurityPolicyRequest.pb(
-            compute.AddAssociationOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.AddAssociationOrganizationSecurityPolicyRequest.pb(compute.AddAssociationOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6102,20 +5516,14 @@ def test_add_association_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_add_rule_rest_bad_request(
-    request_type=compute.AddRuleOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_add_rule_rest_bad_request(request_type=compute.AddRuleOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6135,9 +5543,7 @@ def test_add_rule_rest_bad_request(
     ],
 )
 def test_add_rule_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -6146,42 +5552,19 @@ def test_add_rule_rest_call_success(request_type):
         "description": "description_value",
         "direction": "direction_value",
         "enable_logging": True,
-        "header_action": {
-            "request_headers_to_adds": [
-                {
-                    "header_name": "header_name_value",
-                    "header_value": "header_value_value",
-                }
-            ]
-        },
+        "header_action": {"request_headers_to_adds": [{"header_name": "header_name_value", "header_value": "header_value_value"}]},
         "kind": "kind_value",
         "match": {
             "config": {
                 "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
-                "layer4_configs": [
-                    {
-                        "ip_protocol": "ip_protocol_value",
-                        "ports": ["ports_value1", "ports_value2"],
-                    }
-                ],
+                "layer4_configs": [{"ip_protocol": "ip_protocol_value", "ports": ["ports_value1", "ports_value2"]}],
                 "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             },
-            "expr": {
-                "description": "description_value",
-                "expression": "expression_value",
-                "location": "location_value",
-                "title": "title_value",
-            },
+            "expr": {"description": "description_value", "expression": "expression_value", "location": "location_value", "title": "title_value"},
             "expr_options": {
                 "recaptcha_options": {
-                    "action_token_site_keys": [
-                        "action_token_site_keys_value1",
-                        "action_token_site_keys_value2",
-                    ],
-                    "session_token_site_keys": [
-                        "session_token_site_keys_value1",
-                        "session_token_site_keys_value2",
-                    ],
+                    "action_token_site_keys": ["action_token_site_keys_value1", "action_token_site_keys_value2"],
+                    "session_token_site_keys": ["session_token_site_keys_value1", "session_token_site_keys_value2"],
                 }
             },
             "versioned_expr": "versioned_expr_value",
@@ -6194,23 +5577,16 @@ def test_add_rule_rest_call_success(request_type):
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_ports": ["src_ports_value1", "src_ports_value2"],
             "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
-            "user_defined_fields": [
-                {"name": "name_value", "values": ["values_value1", "values_value2"]}
-            ],
+            "user_defined_fields": [{"name": "name_value", "values": ["values_value1", "values_value2"]}],
         },
         "preconfigured_waf_config": {
             "exclusions": [
                 {
-                    "request_cookies_to_exclude": [
-                        {"op": "op_value", "val": "val_value"}
-                    ],
+                    "request_cookies_to_exclude": [{"op": "op_value", "val": "val_value"}],
                     "request_headers_to_exclude": {},
                     "request_query_params_to_exclude": {},
                     "request_uris_to_exclude": {},
-                    "target_rule_ids": [
-                        "target_rule_ids_value1",
-                        "target_rule_ids_value2",
-                    ],
+                    "target_rule_ids": ["target_rule_ids_value1", "target_rule_ids_value2"],
                     "target_rule_set": "target_rule_set_value",
                 }
             ]
@@ -6222,37 +5598,24 @@ def test_add_rule_rest_call_success(request_type):
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
-            "enforce_on_key_configs": [
-                {
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "enforce_on_key_type": "enforce_on_key_type_value",
-                }
-            ],
+            "enforce_on_key_configs": [{"enforce_on_key_name": "enforce_on_key_name_value", "enforce_on_key_type": "enforce_on_key_type_value"}],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
-            "exceed_redirect_options": {
-                "target": "target_value",
-                "type_": "type__value",
-            },
+            "exceed_redirect_options": {"target": "target_value", "type_": "type__value"},
             "rate_limit_threshold": {},
         },
         "redirect_options": {},
         "rule_number": 1184,
         "rule_tuple_count": 1737,
         "target_resources": ["target_resources_value1", "target_resources_value2"],
-        "target_service_accounts": [
-            "target_service_accounts_value1",
-            "target_service_accounts_value2",
-        ],
+        "target_service_accounts": ["target_service_accounts_value1", "target_service_accounts_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.AddRuleOrganizationSecurityPolicyRequest.meta.fields[
-        "security_policy_rule_resource"
-    ]
+    test_field = compute.AddRuleOrganizationSecurityPolicyRequest.meta.fields["security_policy_rule_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -6271,18 +5634,14 @@ def test_add_rule_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "security_policy_rule_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["security_policy_rule_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -6296,13 +5655,7 @@ def test_add_rule_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -6312,12 +5665,8 @@ def test_add_rule_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["security_policy_rule_resource"][field])
-                ):
-                    del request_init["security_policy_rule_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["security_policy_rule_resource"][field])):
+                    del request_init["security_policy_rule_resource"][field][i][subfield]
             else:
                 del request_init["security_policy_rule_resource"][field][subfield]
     request = request_type(**request_init)
@@ -6392,30 +5741,21 @@ def test_add_rule_rest_call_success(request_type):
 def test_add_rule_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_add_rule"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_add_rule_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_add_rule") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_add_rule_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_add_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.AddRuleOrganizationSecurityPolicyRequest.pb(
-            compute.AddRuleOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.AddRuleOrganizationSecurityPolicyRequest.pb(compute.AddRuleOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6451,20 +5791,14 @@ def test_add_rule_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_copy_rules_rest_bad_request(
-    request_type=compute.CopyRulesOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_copy_rules_rest_bad_request(request_type=compute.CopyRulesOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6484,9 +5818,7 @@ def test_copy_rules_rest_bad_request(
     ],
 )
 def test_copy_rules_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -6562,30 +5894,21 @@ def test_copy_rules_rest_call_success(request_type):
 def test_copy_rules_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_copy_rules"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_copy_rules_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_copy_rules") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_copy_rules_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_copy_rules"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.CopyRulesOrganizationSecurityPolicyRequest.pb(
-            compute.CopyRulesOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.CopyRulesOrganizationSecurityPolicyRequest.pb(compute.CopyRulesOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6621,20 +5944,14 @@ def test_copy_rules_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_rest_bad_request(
-    request_type=compute.DeleteOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_rest_bad_request(request_type=compute.DeleteOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6654,9 +5971,7 @@ def test_delete_rest_bad_request(
     ],
 )
 def test_delete_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -6732,30 +6047,21 @@ def test_delete_rest_call_success(request_type):
 def test_delete_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_delete"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_delete_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_delete") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_delete_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_delete"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.DeleteOrganizationSecurityPolicyRequest.pb(
-            compute.DeleteOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.DeleteOrganizationSecurityPolicyRequest.pb(compute.DeleteOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6791,20 +6097,14 @@ def test_delete_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_rest_bad_request(
-    request_type=compute.GetOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_rest_bad_request(request_type=compute.GetOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6824,9 +6124,7 @@ def test_get_rest_bad_request(
     ],
 )
 def test_get_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -6888,19 +6186,13 @@ def test_get_rest_call_success(request_type):
 def test_get_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_get"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_get") as post, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_get"
@@ -6908,9 +6200,7 @@ def test_get_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.GetOrganizationSecurityPolicyRequest.pb(
-            compute.GetOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.GetOrganizationSecurityPolicyRequest.pb(compute.GetOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -6946,20 +6236,14 @@ def test_get_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_association_rest_bad_request(
-    request_type=compute.GetAssociationOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_association_rest_bad_request(request_type=compute.GetAssociationOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -6979,9 +6263,7 @@ def test_get_association_rest_bad_request(
     ],
 )
 def test_get_association_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -7027,30 +6309,21 @@ def test_get_association_rest_call_success(request_type):
 def test_get_association_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_association"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_get_association_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_association") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_association_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_get_association"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.GetAssociationOrganizationSecurityPolicyRequest.pb(
-            compute.GetAssociationOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.GetAssociationOrganizationSecurityPolicyRequest.pb(compute.GetAssociationOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7061,9 +6334,7 @@ def test_get_association_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = compute.SecurityPolicyAssociation.to_json(
-            compute.SecurityPolicyAssociation()
-        )
+        return_value = compute.SecurityPolicyAssociation.to_json(compute.SecurityPolicyAssociation())
         req.return_value.content = return_value
 
         request = compute.GetAssociationOrganizationSecurityPolicyRequest()
@@ -7088,20 +6359,14 @@ def test_get_association_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_rule_rest_bad_request(
-    request_type=compute.GetRuleOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_rule_rest_bad_request(request_type=compute.GetRuleOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7121,9 +6386,7 @@ def test_get_rule_rest_bad_request(
     ],
 )
 def test_get_rule_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -7177,30 +6440,21 @@ def test_get_rule_rest_call_success(request_type):
 def test_get_rule_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_rule"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_get_rule_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_rule") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_get_rule_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_get_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.GetRuleOrganizationSecurityPolicyRequest.pb(
-            compute.GetRuleOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.GetRuleOrganizationSecurityPolicyRequest.pb(compute.GetRuleOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7236,20 +6490,14 @@ def test_get_rule_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_insert_rest_bad_request(
-    request_type=compute.InsertOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_insert_rest_bad_request(request_type=compute.InsertOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7269,9 +6517,7 @@ def test_insert_rest_bad_request(
     ],
 )
 def test_insert_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {}
@@ -7296,41 +6542,24 @@ def test_insert_rest_call_success(request_type):
                         "detection_load_threshold": 0.2538,
                         "detection_relative_to_baseline_qps": 0.36010000000000003,
                         "name": "name_value",
-                        "traffic_granularity_configs": [
-                            {
-                                "enable_each_unique_value": True,
-                                "type_": "type__value",
-                                "value": "value_value",
-                            }
-                        ],
+                        "traffic_granularity_configs": [{"enable_each_unique_value": True, "type_": "type__value", "value": "value_value"}],
                     }
                 ],
             },
         },
         "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
+            "json_custom_config": {"content_types": ["content_types_value1", "content_types_value2"]},
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
             "request_body_inspection_size": "request_body_inspection_size_value",
-            "user_ip_request_headers": [
-                "user_ip_request_headers_value1",
-                "user_ip_request_headers_value2",
-            ],
+            "user_ip_request_headers": ["user_ip_request_headers_value1", "user_ip_request_headers_value2"],
         },
         "associations": [
             {
                 "attachment_id": "attachment_id_value",
                 "display_name": "display_name_value",
-                "excluded_folders": [
-                    "excluded_folders_value1",
-                    "excluded_folders_value2",
-                ],
-                "excluded_projects": [
-                    "excluded_projects_value1",
-                    "excluded_projects_value2",
-                ],
+                "excluded_folders": ["excluded_folders_value1", "excluded_folders_value2"],
+                "excluded_projects": ["excluded_projects_value1", "excluded_projects_value2"],
                 "name": "name_value",
                 "security_policy_id": "security_policy_id_value",
                 "short_name": "short_name_value",
@@ -7356,31 +6585,13 @@ def test_insert_rest_call_success(request_type):
                 "description": "description_value",
                 "direction": "direction_value",
                 "enable_logging": True,
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
+                "header_action": {"request_headers_to_adds": [{"header_name": "header_name_value", "header_value": "header_value_value"}]},
                 "kind": "kind_value",
                 "match": {
                     "config": {
-                        "dest_ip_ranges": [
-                            "dest_ip_ranges_value1",
-                            "dest_ip_ranges_value2",
-                        ],
-                        "layer4_configs": [
-                            {
-                                "ip_protocol": "ip_protocol_value",
-                                "ports": ["ports_value1", "ports_value2"],
-                            }
-                        ],
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ],
+                        "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+                        "layer4_configs": [{"ip_protocol": "ip_protocol_value", "ports": ["ports_value1", "ports_value2"]}],
+                        "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     },
                     "expr": {
                         "description": "description_value",
@@ -7390,52 +6601,30 @@ def test_insert_rest_call_success(request_type):
                     },
                     "expr_options": {
                         "recaptcha_options": {
-                            "action_token_site_keys": [
-                                "action_token_site_keys_value1",
-                                "action_token_site_keys_value2",
-                            ],
-                            "session_token_site_keys": [
-                                "session_token_site_keys_value1",
-                                "session_token_site_keys_value2",
-                            ],
+                            "action_token_site_keys": ["action_token_site_keys_value1", "action_token_site_keys_value2"],
+                            "session_token_site_keys": ["session_token_site_keys_value1", "session_token_site_keys_value2"],
                         }
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
-                    "dest_ip_ranges": [
-                        "dest_ip_ranges_value1",
-                        "dest_ip_ranges_value2",
-                    ],
+                    "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
                     "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
                     "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
                     "src_asns": [861, 862],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_ports": ["src_ports_value1", "src_ports_value2"],
-                    "src_region_codes": [
-                        "src_region_codes_value1",
-                        "src_region_codes_value2",
-                    ],
-                    "user_defined_fields": [
-                        {
-                            "name": "name_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
+                    "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+                    "user_defined_fields": [{"name": "name_value", "values": ["values_value1", "values_value2"]}],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
                         {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
+                            "request_cookies_to_exclude": [{"op": "op_value", "val": "val_value"}],
                             "request_headers_to_exclude": {},
                             "request_query_params_to_exclude": {},
                             "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
+                            "target_rule_ids": ["target_rule_ids_value1", "target_rule_ids_value2"],
                             "target_rule_set": "target_rule_set_value",
                         }
                     ]
@@ -7448,54 +6637,32 @@ def test_insert_rest_call_success(request_type):
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
                     "enforce_on_key_configs": [
-                        {
-                            "enforce_on_key_name": "enforce_on_key_name_value",
-                            "enforce_on_key_type": "enforce_on_key_type_value",
-                        }
+                        {"enforce_on_key_name": "enforce_on_key_name_value", "enforce_on_key_type": "enforce_on_key_type_value"}
                     ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
+                    "exceed_redirect_options": {"target": "target_value", "type_": "type__value"},
                     "rate_limit_threshold": {},
                 },
                 "redirect_options": {},
                 "rule_number": 1184,
                 "rule_tuple_count": 1737,
-                "target_resources": [
-                    "target_resources_value1",
-                    "target_resources_value2",
-                ],
-                "target_service_accounts": [
-                    "target_service_accounts_value1",
-                    "target_service_accounts_value2",
-                ],
+                "target_resources": ["target_resources_value1", "target_resources_value2"],
+                "target_service_accounts": ["target_service_accounts_value1", "target_service_accounts_value2"],
             }
         ],
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
         "type_": "type__value",
-        "user_defined_fields": [
-            {
-                "base": "base_value",
-                "mask": "mask_value",
-                "name": "name_value",
-                "offset": 647,
-                "size": 443,
-            }
-        ],
+        "user_defined_fields": [{"base": "base_value", "mask": "mask_value", "name": "name_value", "offset": 647, "size": 443}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.InsertOrganizationSecurityPolicyRequest.meta.fields[
-        "security_policy_resource"
-    ]
+    test_field = compute.InsertOrganizationSecurityPolicyRequest.meta.fields["security_policy_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -7514,18 +6681,14 @@ def test_insert_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "security_policy_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["security_policy_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -7539,13 +6702,7 @@ def test_insert_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -7631,30 +6788,21 @@ def test_insert_rest_call_success(request_type):
 def test_insert_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_insert"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_insert_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_insert") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_insert_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_insert"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.InsertOrganizationSecurityPolicyRequest.pb(
-            compute.InsertOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.InsertOrganizationSecurityPolicyRequest.pb(compute.InsertOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7690,20 +6838,14 @@ def test_insert_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_rest_bad_request(
-    request_type=compute.ListOrganizationSecurityPoliciesRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_rest_bad_request(request_type=compute.ListOrganizationSecurityPoliciesRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7723,9 +6865,7 @@ def test_list_rest_bad_request(
     ],
 )
 def test_list_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {}
@@ -7763,30 +6903,21 @@ def test_list_rest_call_success(request_type):
 def test_list_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_list"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_list_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_list") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_list_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_list"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.ListOrganizationSecurityPoliciesRequest.pb(
-            compute.ListOrganizationSecurityPoliciesRequest()
-        )
+        pb_message = compute.ListOrganizationSecurityPoliciesRequest.pb(compute.ListOrganizationSecurityPoliciesRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7822,20 +6953,14 @@ def test_list_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_associations_rest_bad_request(
-    request_type=compute.ListAssociationsOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_associations_rest_bad_request(request_type=compute.ListAssociationsOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7855,9 +6980,7 @@ def test_list_associations_rest_bad_request(
     ],
 )
 def test_list_associations_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {}
@@ -7875,9 +6998,7 @@ def test_list_associations_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = compute.OrganizationSecurityPoliciesListAssociationsResponse.pb(
-            return_value
-        )
+        return_value = compute.OrganizationSecurityPoliciesListAssociationsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -7885,9 +7006,7 @@ def test_list_associations_rest_call_success(request_type):
         response = client.list_associations(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, compute.OrganizationSecurityPoliciesListAssociationsResponse
-    )
+    assert isinstance(response, compute.OrganizationSecurityPoliciesListAssociationsResponse)
     assert response.kind == "kind_value"
 
 
@@ -7895,30 +7014,21 @@ def test_list_associations_rest_call_success(request_type):
 def test_list_associations_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_list_associations"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_list_associations_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_list_associations") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_list_associations_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_list_associations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.ListAssociationsOrganizationSecurityPolicyRequest.pb(
-            compute.ListAssociationsOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.ListAssociationsOrganizationSecurityPolicyRequest.pb(compute.ListAssociationsOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -7929,10 +7039,8 @@ def test_list_associations_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            compute.OrganizationSecurityPoliciesListAssociationsResponse.to_json(
-                compute.OrganizationSecurityPoliciesListAssociationsResponse()
-            )
+        return_value = compute.OrganizationSecurityPoliciesListAssociationsResponse.to_json(
+            compute.OrganizationSecurityPoliciesListAssociationsResponse()
         )
         req.return_value.content = return_value
 
@@ -7942,13 +7050,8 @@ def test_list_associations_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            compute.OrganizationSecurityPoliciesListAssociationsResponse()
-        )
-        post_with_metadata.return_value = (
-            compute.OrganizationSecurityPoliciesListAssociationsResponse(),
-            metadata,
-        )
+        post.return_value = compute.OrganizationSecurityPoliciesListAssociationsResponse()
+        post_with_metadata.return_value = compute.OrganizationSecurityPoliciesListAssociationsResponse(), metadata
 
         client.list_associations(
             request,
@@ -7963,20 +7066,14 @@ def test_list_associations_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_preconfigured_expression_sets_rest_bad_request(
-    request_type=compute.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_preconfigured_expression_sets_rest_bad_request(request_type=compute.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -7996,9 +7093,7 @@ def test_list_preconfigured_expression_sets_rest_bad_request(
     ],
 )
 def test_list_preconfigured_expression_sets_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {}
@@ -8014,11 +7109,7 @@ def test_list_preconfigured_expression_sets_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = (
-            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.pb(
-                return_value
-            )
-        )
+        return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -8026,34 +7117,25 @@ def test_list_preconfigured_expression_sets_rest_call_success(request_type):
         response = client.list_preconfigured_expression_sets(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse
-    )
+    assert isinstance(response, compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse)
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_preconfigured_expression_sets_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_list_preconfigured_expression_sets",
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_list_preconfigured_expression_sets"
     ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_list_preconfigured_expression_sets_with_metadata",
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_list_preconfigured_expression_sets_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "pre_list_preconfigured_expression_sets",
+        transports.OrganizationSecurityPoliciesRestInterceptor, "pre_list_preconfigured_expression_sets"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
@@ -8071,28 +7153,19 @@ def test_list_preconfigured_expression_sets_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
-                compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
-            )
+        return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
+            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
         )
         req.return_value.content = return_value
 
-        request = (
-            compute.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
-        )
+        request = compute.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
-        )
-        post_with_metadata.return_value = (
-            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse(),
-            metadata,
-        )
+        post.return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
+        post_with_metadata.return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse(), metadata
 
         client.list_preconfigured_expression_sets(
             request,
@@ -8107,20 +7180,14 @@ def test_list_preconfigured_expression_sets_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_move_rest_bad_request(
-    request_type=compute.MoveOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_move_rest_bad_request(request_type=compute.MoveOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8140,9 +7207,7 @@ def test_move_rest_bad_request(
     ],
 )
 def test_move_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -8218,30 +7283,21 @@ def test_move_rest_call_success(request_type):
 def test_move_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_move"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_move_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_move") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_move_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_move"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.MoveOrganizationSecurityPolicyRequest.pb(
-            compute.MoveOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.MoveOrganizationSecurityPolicyRequest.pb(compute.MoveOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -8277,20 +7333,14 @@ def test_move_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_patch_rest_bad_request(
-    request_type=compute.PatchOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_patch_rest_bad_request(request_type=compute.PatchOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8310,9 +7360,7 @@ def test_patch_rest_bad_request(
     ],
 )
 def test_patch_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -8337,41 +7385,24 @@ def test_patch_rest_call_success(request_type):
                         "detection_load_threshold": 0.2538,
                         "detection_relative_to_baseline_qps": 0.36010000000000003,
                         "name": "name_value",
-                        "traffic_granularity_configs": [
-                            {
-                                "enable_each_unique_value": True,
-                                "type_": "type__value",
-                                "value": "value_value",
-                            }
-                        ],
+                        "traffic_granularity_configs": [{"enable_each_unique_value": True, "type_": "type__value", "value": "value_value"}],
                     }
                 ],
             },
         },
         "advanced_options_config": {
-            "json_custom_config": {
-                "content_types": ["content_types_value1", "content_types_value2"]
-            },
+            "json_custom_config": {"content_types": ["content_types_value1", "content_types_value2"]},
             "json_parsing": "json_parsing_value",
             "log_level": "log_level_value",
             "request_body_inspection_size": "request_body_inspection_size_value",
-            "user_ip_request_headers": [
-                "user_ip_request_headers_value1",
-                "user_ip_request_headers_value2",
-            ],
+            "user_ip_request_headers": ["user_ip_request_headers_value1", "user_ip_request_headers_value2"],
         },
         "associations": [
             {
                 "attachment_id": "attachment_id_value",
                 "display_name": "display_name_value",
-                "excluded_folders": [
-                    "excluded_folders_value1",
-                    "excluded_folders_value2",
-                ],
-                "excluded_projects": [
-                    "excluded_projects_value1",
-                    "excluded_projects_value2",
-                ],
+                "excluded_folders": ["excluded_folders_value1", "excluded_folders_value2"],
+                "excluded_projects": ["excluded_projects_value1", "excluded_projects_value2"],
                 "name": "name_value",
                 "security_policy_id": "security_policy_id_value",
                 "short_name": "short_name_value",
@@ -8397,31 +7428,13 @@ def test_patch_rest_call_success(request_type):
                 "description": "description_value",
                 "direction": "direction_value",
                 "enable_logging": True,
-                "header_action": {
-                    "request_headers_to_adds": [
-                        {
-                            "header_name": "header_name_value",
-                            "header_value": "header_value_value",
-                        }
-                    ]
-                },
+                "header_action": {"request_headers_to_adds": [{"header_name": "header_name_value", "header_value": "header_value_value"}]},
                 "kind": "kind_value",
                 "match": {
                     "config": {
-                        "dest_ip_ranges": [
-                            "dest_ip_ranges_value1",
-                            "dest_ip_ranges_value2",
-                        ],
-                        "layer4_configs": [
-                            {
-                                "ip_protocol": "ip_protocol_value",
-                                "ports": ["ports_value1", "ports_value2"],
-                            }
-                        ],
-                        "src_ip_ranges": [
-                            "src_ip_ranges_value1",
-                            "src_ip_ranges_value2",
-                        ],
+                        "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
+                        "layer4_configs": [{"ip_protocol": "ip_protocol_value", "ports": ["ports_value1", "ports_value2"]}],
+                        "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     },
                     "expr": {
                         "description": "description_value",
@@ -8431,52 +7444,30 @@ def test_patch_rest_call_success(request_type):
                     },
                     "expr_options": {
                         "recaptcha_options": {
-                            "action_token_site_keys": [
-                                "action_token_site_keys_value1",
-                                "action_token_site_keys_value2",
-                            ],
-                            "session_token_site_keys": [
-                                "session_token_site_keys_value1",
-                                "session_token_site_keys_value2",
-                            ],
+                            "action_token_site_keys": ["action_token_site_keys_value1", "action_token_site_keys_value2"],
+                            "session_token_site_keys": ["session_token_site_keys_value1", "session_token_site_keys_value2"],
                         }
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
-                    "dest_ip_ranges": [
-                        "dest_ip_ranges_value1",
-                        "dest_ip_ranges_value2",
-                    ],
+                    "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
                     "dest_ports": ["dest_ports_value1", "dest_ports_value2"],
                     "ip_protocols": ["ip_protocols_value1", "ip_protocols_value2"],
                     "src_asns": [861, 862],
                     "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
                     "src_ports": ["src_ports_value1", "src_ports_value2"],
-                    "src_region_codes": [
-                        "src_region_codes_value1",
-                        "src_region_codes_value2",
-                    ],
-                    "user_defined_fields": [
-                        {
-                            "name": "name_value",
-                            "values": ["values_value1", "values_value2"],
-                        }
-                    ],
+                    "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
+                    "user_defined_fields": [{"name": "name_value", "values": ["values_value1", "values_value2"]}],
                 },
                 "preconfigured_waf_config": {
                     "exclusions": [
                         {
-                            "request_cookies_to_exclude": [
-                                {"op": "op_value", "val": "val_value"}
-                            ],
+                            "request_cookies_to_exclude": [{"op": "op_value", "val": "val_value"}],
                             "request_headers_to_exclude": {},
                             "request_query_params_to_exclude": {},
                             "request_uris_to_exclude": {},
-                            "target_rule_ids": [
-                                "target_rule_ids_value1",
-                                "target_rule_ids_value2",
-                            ],
+                            "target_rule_ids": ["target_rule_ids_value1", "target_rule_ids_value2"],
                             "target_rule_set": "target_rule_set_value",
                         }
                     ]
@@ -8489,54 +7480,32 @@ def test_patch_rest_call_success(request_type):
                     "conform_action": "conform_action_value",
                     "enforce_on_key": "enforce_on_key_value",
                     "enforce_on_key_configs": [
-                        {
-                            "enforce_on_key_name": "enforce_on_key_name_value",
-                            "enforce_on_key_type": "enforce_on_key_type_value",
-                        }
+                        {"enforce_on_key_name": "enforce_on_key_name_value", "enforce_on_key_type": "enforce_on_key_type_value"}
                     ],
                     "enforce_on_key_name": "enforce_on_key_name_value",
                     "exceed_action": "exceed_action_value",
-                    "exceed_redirect_options": {
-                        "target": "target_value",
-                        "type_": "type__value",
-                    },
+                    "exceed_redirect_options": {"target": "target_value", "type_": "type__value"},
                     "rate_limit_threshold": {},
                 },
                 "redirect_options": {},
                 "rule_number": 1184,
                 "rule_tuple_count": 1737,
-                "target_resources": [
-                    "target_resources_value1",
-                    "target_resources_value2",
-                ],
-                "target_service_accounts": [
-                    "target_service_accounts_value1",
-                    "target_service_accounts_value2",
-                ],
+                "target_resources": ["target_resources_value1", "target_resources_value2"],
+                "target_service_accounts": ["target_service_accounts_value1", "target_service_accounts_value2"],
             }
         ],
         "self_link": "self_link_value",
         "self_link_with_id": "self_link_with_id_value",
         "short_name": "short_name_value",
         "type_": "type__value",
-        "user_defined_fields": [
-            {
-                "base": "base_value",
-                "mask": "mask_value",
-                "name": "name_value",
-                "offset": 647,
-                "size": 443,
-            }
-        ],
+        "user_defined_fields": [{"base": "base_value", "mask": "mask_value", "name": "name_value", "offset": 647, "size": 443}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.PatchOrganizationSecurityPolicyRequest.meta.fields[
-        "security_policy_resource"
-    ]
+    test_field = compute.PatchOrganizationSecurityPolicyRequest.meta.fields["security_policy_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -8555,18 +7524,14 @@ def test_patch_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "security_policy_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["security_policy_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -8580,13 +7545,7 @@ def test_patch_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -8672,30 +7631,21 @@ def test_patch_rest_call_success(request_type):
 def test_patch_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_patch"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_patch_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_patch") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_patch_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_patch"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.PatchOrganizationSecurityPolicyRequest.pb(
-            compute.PatchOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.PatchOrganizationSecurityPolicyRequest.pb(compute.PatchOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -8731,20 +7681,14 @@ def test_patch_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_patch_rule_rest_bad_request(
-    request_type=compute.PatchRuleOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_patch_rule_rest_bad_request(request_type=compute.PatchRuleOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -8764,9 +7708,7 @@ def test_patch_rule_rest_bad_request(
     ],
 )
 def test_patch_rule_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -8775,42 +7717,19 @@ def test_patch_rule_rest_call_success(request_type):
         "description": "description_value",
         "direction": "direction_value",
         "enable_logging": True,
-        "header_action": {
-            "request_headers_to_adds": [
-                {
-                    "header_name": "header_name_value",
-                    "header_value": "header_value_value",
-                }
-            ]
-        },
+        "header_action": {"request_headers_to_adds": [{"header_name": "header_name_value", "header_value": "header_value_value"}]},
         "kind": "kind_value",
         "match": {
             "config": {
                 "dest_ip_ranges": ["dest_ip_ranges_value1", "dest_ip_ranges_value2"],
-                "layer4_configs": [
-                    {
-                        "ip_protocol": "ip_protocol_value",
-                        "ports": ["ports_value1", "ports_value2"],
-                    }
-                ],
+                "layer4_configs": [{"ip_protocol": "ip_protocol_value", "ports": ["ports_value1", "ports_value2"]}],
                 "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             },
-            "expr": {
-                "description": "description_value",
-                "expression": "expression_value",
-                "location": "location_value",
-                "title": "title_value",
-            },
+            "expr": {"description": "description_value", "expression": "expression_value", "location": "location_value", "title": "title_value"},
             "expr_options": {
                 "recaptcha_options": {
-                    "action_token_site_keys": [
-                        "action_token_site_keys_value1",
-                        "action_token_site_keys_value2",
-                    ],
-                    "session_token_site_keys": [
-                        "session_token_site_keys_value1",
-                        "session_token_site_keys_value2",
-                    ],
+                    "action_token_site_keys": ["action_token_site_keys_value1", "action_token_site_keys_value2"],
+                    "session_token_site_keys": ["session_token_site_keys_value1", "session_token_site_keys_value2"],
                 }
             },
             "versioned_expr": "versioned_expr_value",
@@ -8823,23 +7742,16 @@ def test_patch_rule_rest_call_success(request_type):
             "src_ip_ranges": ["src_ip_ranges_value1", "src_ip_ranges_value2"],
             "src_ports": ["src_ports_value1", "src_ports_value2"],
             "src_region_codes": ["src_region_codes_value1", "src_region_codes_value2"],
-            "user_defined_fields": [
-                {"name": "name_value", "values": ["values_value1", "values_value2"]}
-            ],
+            "user_defined_fields": [{"name": "name_value", "values": ["values_value1", "values_value2"]}],
         },
         "preconfigured_waf_config": {
             "exclusions": [
                 {
-                    "request_cookies_to_exclude": [
-                        {"op": "op_value", "val": "val_value"}
-                    ],
+                    "request_cookies_to_exclude": [{"op": "op_value", "val": "val_value"}],
                     "request_headers_to_exclude": {},
                     "request_query_params_to_exclude": {},
                     "request_uris_to_exclude": {},
-                    "target_rule_ids": [
-                        "target_rule_ids_value1",
-                        "target_rule_ids_value2",
-                    ],
+                    "target_rule_ids": ["target_rule_ids_value1", "target_rule_ids_value2"],
                     "target_rule_set": "target_rule_set_value",
                 }
             ]
@@ -8851,37 +7763,24 @@ def test_patch_rule_rest_call_success(request_type):
             "ban_threshold": {"count": 553, "interval_sec": 1279},
             "conform_action": "conform_action_value",
             "enforce_on_key": "enforce_on_key_value",
-            "enforce_on_key_configs": [
-                {
-                    "enforce_on_key_name": "enforce_on_key_name_value",
-                    "enforce_on_key_type": "enforce_on_key_type_value",
-                }
-            ],
+            "enforce_on_key_configs": [{"enforce_on_key_name": "enforce_on_key_name_value", "enforce_on_key_type": "enforce_on_key_type_value"}],
             "enforce_on_key_name": "enforce_on_key_name_value",
             "exceed_action": "exceed_action_value",
-            "exceed_redirect_options": {
-                "target": "target_value",
-                "type_": "type__value",
-            },
+            "exceed_redirect_options": {"target": "target_value", "type_": "type__value"},
             "rate_limit_threshold": {},
         },
         "redirect_options": {},
         "rule_number": 1184,
         "rule_tuple_count": 1737,
         "target_resources": ["target_resources_value1", "target_resources_value2"],
-        "target_service_accounts": [
-            "target_service_accounts_value1",
-            "target_service_accounts_value2",
-        ],
+        "target_service_accounts": ["target_service_accounts_value1", "target_service_accounts_value2"],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = compute.PatchRuleOrganizationSecurityPolicyRequest.meta.fields[
-        "security_policy_rule_resource"
-    ]
+    test_field = compute.PatchRuleOrganizationSecurityPolicyRequest.meta.fields["security_policy_rule_resource"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -8900,18 +7799,14 @@ def test_patch_rule_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init[
-        "security_policy_rule_resource"
-    ].items():  # pragma: NO COVER
+    for field, value in request_init["security_policy_rule_resource"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -8925,13 +7820,7 @@ def test_patch_rule_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -8941,12 +7830,8 @@ def test_patch_rule_rest_call_success(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(
-                    0, len(request_init["security_policy_rule_resource"][field])
-                ):
-                    del request_init["security_policy_rule_resource"][field][i][
-                        subfield
-                    ]
+                for i in range(0, len(request_init["security_policy_rule_resource"][field])):
+                    del request_init["security_policy_rule_resource"][field][i][subfield]
             else:
                 del request_init["security_policy_rule_resource"][field][subfield]
     request = request_type(**request_init)
@@ -9021,30 +7906,21 @@ def test_patch_rule_rest_call_success(request_type):
 def test_patch_rule_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_patch_rule"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_patch_rule_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_patch_rule") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_patch_rule_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_patch_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.PatchRuleOrganizationSecurityPolicyRequest.pb(
-            compute.PatchRuleOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.PatchRuleOrganizationSecurityPolicyRequest.pb(compute.PatchRuleOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -9080,20 +7956,14 @@ def test_patch_rule_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_remove_association_rest_bad_request(
-    request_type=compute.RemoveAssociationOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_remove_association_rest_bad_request(request_type=compute.RemoveAssociationOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -9113,9 +7983,7 @@ def test_remove_association_rest_bad_request(
     ],
 )
 def test_remove_association_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -9191,31 +8059,21 @@ def test_remove_association_rest_call_success(request_type):
 def test_remove_association_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_remove_association",
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_remove_association_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_remove_association") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_remove_association_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_remove_association"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.RemoveAssociationOrganizationSecurityPolicyRequest.pb(
-            compute.RemoveAssociationOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.RemoveAssociationOrganizationSecurityPolicyRequest.pb(compute.RemoveAssociationOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -9251,20 +8109,14 @@ def test_remove_association_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_remove_rule_rest_bad_request(
-    request_type=compute.RemoveRuleOrganizationSecurityPolicyRequest,
-):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_remove_rule_rest_bad_request(request_type=compute.RemoveRuleOrganizationSecurityPolicyRequest):
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -9284,9 +8136,7 @@ def test_remove_rule_rest_bad_request(
     ],
 )
 def test_remove_rule_rest_call_success(request_type):
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"security_policy": "sample1"}
@@ -9362,30 +8212,21 @@ def test_remove_rule_rest_call_success(request_type):
 def test_remove_rule_rest_interceptors(null_interceptor):
     transport = transports.OrganizationSecurityPoliciesRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.OrganizationSecurityPoliciesRestInterceptor(),
+        interceptor=None if null_interceptor else transports.OrganizationSecurityPoliciesRestInterceptor(),
     )
     client = OrganizationSecurityPoliciesClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor, "post_remove_rule"
-    ) as post, mock.patch.object(
-        transports.OrganizationSecurityPoliciesRestInterceptor,
-        "post_remove_rule_with_metadata",
+    ) as transcode, mock.patch.object(transports.OrganizationSecurityPoliciesRestInterceptor, "post_remove_rule") as post, mock.patch.object(
+        transports.OrganizationSecurityPoliciesRestInterceptor, "post_remove_rule_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.OrganizationSecurityPoliciesRestInterceptor, "pre_remove_rule"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = compute.RemoveRuleOrganizationSecurityPolicyRequest.pb(
-            compute.RemoveRuleOrganizationSecurityPolicyRequest()
-        )
+        pb_message = compute.RemoveRuleOrganizationSecurityPolicyRequest.pb(compute.RemoveRuleOrganizationSecurityPolicyRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -9422,9 +8263,7 @@ def test_remove_rule_rest_interceptors(null_interceptor):
 
 
 def test_initialize_client_w_rest():
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -9617,9 +8456,7 @@ def test_list_associations_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_associations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_associations), "__call__") as call:
         client.list_associations(request=None)
 
         # Establish that the underlying stub method was called.
@@ -9639,17 +8476,13 @@ def test_list_preconfigured_expression_sets_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_preconfigured_expression_sets), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_preconfigured_expression_sets), "__call__") as call:
         client.list_preconfigured_expression_sets(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            compute.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
-        )
+        request_msg = compute.ListPreconfiguredExpressionSetsOrganizationSecurityPoliciesRequest()
 
         assert args[0] == request_msg
 
@@ -9723,9 +8556,7 @@ def test_remove_association_unary_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.remove_association), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.remove_association), "__call__") as call:
         client.remove_association_unary(request=None)
 
         # Establish that the underlying stub method was called.
@@ -9760,8 +8591,7 @@ def test_organization_security_policies_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.OrganizationSecurityPoliciesTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
+            credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json"
         )
 
 
@@ -9813,9 +8643,7 @@ def test_organization_security_policies_base_transport():
 
 def test_organization_security_policies_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.compute_v1beta.services.organization_security_policies.transports.OrganizationSecurityPoliciesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -9863,12 +8691,8 @@ def test_organization_security_policies_auth_adc():
 
 def test_organization_security_policies_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.OrganizationSecurityPoliciesRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.OrganizationSecurityPoliciesRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -9881,15 +8705,11 @@ def test_organization_security_policies_http_transport_client_cert_source_for_mt
 def test_organization_security_policies_host_no_port(transport_name):
     client = OrganizationSecurityPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="compute.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="compute.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "compute.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://compute.googleapis.com"
+        "compute.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com"
     )
 
 
@@ -9902,15 +8722,11 @@ def test_organization_security_policies_host_no_port(transport_name):
 def test_organization_security_policies_host_with_port(transport_name):
     client = OrganizationSecurityPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="compute.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="compute.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "compute.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://compute.googleapis.com:8000"
+        "compute.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://compute.googleapis.com:8000"
     )
 
 
@@ -9920,9 +8736,7 @@ def test_organization_security_policies_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_organization_security_policies_client_transport_session_collision(
-    transport_name,
-):
+def test_organization_security_policies_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
     client1 = OrganizationSecurityPoliciesClient(
@@ -9988,9 +8802,7 @@ def test_common_billing_account_path():
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = OrganizationSecurityPoliciesClient.common_billing_account_path(
-        billing_account
-    )
+    actual = OrganizationSecurityPoliciesClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
@@ -10091,18 +8903,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.OrganizationSecurityPoliciesTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.OrganizationSecurityPoliciesTransport, "_prep_wrapped_messages") as prep:
         client = OrganizationSecurityPoliciesClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.OrganizationSecurityPoliciesTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.OrganizationSecurityPoliciesTransport, "_prep_wrapped_messages") as prep:
         transport_class = OrganizationSecurityPoliciesClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -10112,12 +8920,8 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_rest():
-    client = OrganizationSecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -10128,9 +8932,7 @@ def test_client_ctx():
         "rest",
     ]
     for transport in transports:
-        client = OrganizationSecurityPoliciesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = OrganizationSecurityPoliciesClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -10142,16 +8944,11 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (
-            OrganizationSecurityPoliciesClient,
-            transports.OrganizationSecurityPoliciesRestTransport,
-        ),
+        (OrganizationSecurityPoliciesClient, transports.OrganizationSecurityPoliciesRestTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -10162,9 +8959,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

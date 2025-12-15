@@ -18,12 +18,8 @@ from google.cloud.devtools.cloudbuild import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.devtools.cloudbuild_v1.services.cloud_build.async_client import (
-    CloudBuildAsyncClient,
-)
-from google.cloud.devtools.cloudbuild_v1.services.cloud_build.client import (
-    CloudBuildClient,
-)
+from google.cloud.devtools.cloudbuild_v1.services.cloud_build.async_client import CloudBuildAsyncClient
+from google.cloud.devtools.cloudbuild_v1.services.cloud_build.client import CloudBuildClient
 from google.cloud.devtools.cloudbuild_v1.types.cloudbuild import (
     ApprovalConfig,
     ApprovalResult,

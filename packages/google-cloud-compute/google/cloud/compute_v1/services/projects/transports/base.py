@@ -29,9 +29,7 @@ from google.cloud.compute_v1 import gapic_version as package_version
 from google.cloud.compute_v1.services import global_operations
 from google.cloud.compute_v1.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class ProjectsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -220,130 +210,67 @@ class ProjectsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def disable_xpn_host(
-        self,
-    ) -> Callable[
-        [compute.DisableXpnHostProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def disable_xpn_host(self) -> Callable[[compute.DisableXpnHostProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def disable_xpn_resource(
-        self,
-    ) -> Callable[
-        [compute.DisableXpnResourceProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def disable_xpn_resource(self) -> Callable[[compute.DisableXpnResourceProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def enable_xpn_host(
-        self,
-    ) -> Callable[
-        [compute.EnableXpnHostProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def enable_xpn_host(self) -> Callable[[compute.EnableXpnHostProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def enable_xpn_resource(
-        self,
-    ) -> Callable[
-        [compute.EnableXpnResourceProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def enable_xpn_resource(self) -> Callable[[compute.EnableXpnResourceProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetProjectRequest], Union[compute.Project, Awaitable[compute.Project]]
-    ]:
+    def get(self) -> Callable[[compute.GetProjectRequest], Union[compute.Project, Awaitable[compute.Project]]]:
         raise NotImplementedError()
 
     @property
-    def get_xpn_host(
-        self,
-    ) -> Callable[
-        [compute.GetXpnHostProjectRequest],
-        Union[compute.Project, Awaitable[compute.Project]],
-    ]:
+    def get_xpn_host(self) -> Callable[[compute.GetXpnHostProjectRequest], Union[compute.Project, Awaitable[compute.Project]]]:
         raise NotImplementedError()
 
     @property
     def get_xpn_resources(
         self,
-    ) -> Callable[
-        [compute.GetXpnResourcesProjectsRequest],
-        Union[
-            compute.ProjectsGetXpnResources, Awaitable[compute.ProjectsGetXpnResources]
-        ],
-    ]:
+    ) -> Callable[[compute.GetXpnResourcesProjectsRequest], Union[compute.ProjectsGetXpnResources, Awaitable[compute.ProjectsGetXpnResources]]]:
         raise NotImplementedError()
 
     @property
-    def list_xpn_hosts(
-        self,
-    ) -> Callable[
-        [compute.ListXpnHostsProjectsRequest],
-        Union[compute.XpnHostList, Awaitable[compute.XpnHostList]],
-    ]:
+    def list_xpn_hosts(self) -> Callable[[compute.ListXpnHostsProjectsRequest], Union[compute.XpnHostList, Awaitable[compute.XpnHostList]]]:
         raise NotImplementedError()
 
     @property
-    def move_disk(
-        self,
-    ) -> Callable[
-        [compute.MoveDiskProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def move_disk(self) -> Callable[[compute.MoveDiskProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def move_instance(
-        self,
-    ) -> Callable[
-        [compute.MoveInstanceProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def move_instance(self) -> Callable[[compute.MoveInstanceProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_cloud_armor_tier(
-        self,
-    ) -> Callable[
-        [compute.SetCloudArmorTierProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_cloud_armor_tier(self) -> Callable[[compute.SetCloudArmorTierProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_common_instance_metadata(
         self,
-    ) -> Callable[
-        [compute.SetCommonInstanceMetadataProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetCommonInstanceMetadataProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_default_network_tier(
         self,
-    ) -> Callable[
-        [compute.SetDefaultNetworkTierProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetDefaultNetworkTierProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_usage_export_bucket(
         self,
-    ) -> Callable[
-        [compute.SetUsageExportBucketProjectRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetUsageExportBucketProjectRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

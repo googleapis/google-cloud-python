@@ -32,9 +32,7 @@ import google.protobuf
 from google.cloud.translate_v3beta1 import gapic_version as package_version
 from google.cloud.translate_v3beta1.types import translation_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class TranslationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -291,10 +281,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.TranslateTextRequest],
-        Union[
-            translation_service.TranslateTextResponse,
-            Awaitable[translation_service.TranslateTextResponse],
-        ],
+        Union[translation_service.TranslateTextResponse, Awaitable[translation_service.TranslateTextResponse]],
     ]:
         raise NotImplementedError()
 
@@ -303,10 +290,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.DetectLanguageRequest],
-        Union[
-            translation_service.DetectLanguageResponse,
-            Awaitable[translation_service.DetectLanguageResponse],
-        ],
+        Union[translation_service.DetectLanguageResponse, Awaitable[translation_service.DetectLanguageResponse]],
     ]:
         raise NotImplementedError()
 
@@ -315,10 +299,7 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.GetSupportedLanguagesRequest],
-        Union[
-            translation_service.SupportedLanguages,
-            Awaitable[translation_service.SupportedLanguages],
-        ],
+        Union[translation_service.SupportedLanguages, Awaitable[translation_service.SupportedLanguages]],
     ]:
         raise NotImplementedError()
 
@@ -327,38 +308,26 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.TranslateDocumentRequest],
-        Union[
-            translation_service.TranslateDocumentResponse,
-            Awaitable[translation_service.TranslateDocumentResponse],
-        ],
+        Union[translation_service.TranslateDocumentResponse, Awaitable[translation_service.TranslateDocumentResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def batch_translate_text(
         self,
-    ) -> Callable[
-        [translation_service.BatchTranslateTextRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.BatchTranslateTextRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_translate_document(
         self,
-    ) -> Callable[
-        [translation_service.BatchTranslateDocumentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.BatchTranslateDocumentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_glossary(
         self,
-    ) -> Callable[
-        [translation_service.CreateGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.CreateGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -366,40 +335,27 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [translation_service.ListGlossariesRequest],
-        Union[
-            translation_service.ListGlossariesResponse,
-            Awaitable[translation_service.ListGlossariesResponse],
-        ],
+        Union[translation_service.ListGlossariesResponse, Awaitable[translation_service.ListGlossariesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_glossary(
         self,
-    ) -> Callable[
-        [translation_service.GetGlossaryRequest],
-        Union[translation_service.Glossary, Awaitable[translation_service.Glossary]],
-    ]:
+    ) -> Callable[[translation_service.GetGlossaryRequest], Union[translation_service.Glossary, Awaitable[translation_service.Glossary]]]:
         raise NotImplementedError()
 
     @property
     def delete_glossary(
         self,
-    ) -> Callable[
-        [translation_service.DeleteGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[translation_service.DeleteGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def refine_text(
         self,
     ) -> Callable[
-        [translation_service.RefineTextRequest],
-        Union[
-            translation_service.RefineTextResponse,
-            Awaitable[translation_service.RefineTextResponse],
-        ],
+        [translation_service.RefineTextRequest], Union[translation_service.RefineTextResponse, Awaitable[translation_service.RefineTextResponse]]
     ]:
         raise NotImplementedError()
 
@@ -408,20 +364,14 @@ class TranslationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -439,31 +389,19 @@ class TranslationServiceTransport(abc.ABC):
     @property
     def wait_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.WaitOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.WaitOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

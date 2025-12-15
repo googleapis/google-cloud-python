@@ -100,13 +100,8 @@ class LocalInventoryServiceRestInterceptor:
     """
 
     def pre_delete_local_inventory(
-        self,
-        request: localinventory.DeleteLocalInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        localinventory.DeleteLocalInventoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: localinventory.DeleteLocalInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[localinventory.DeleteLocalInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_local_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -115,13 +110,8 @@ class LocalInventoryServiceRestInterceptor:
         return request, metadata
 
     def pre_insert_local_inventory(
-        self,
-        request: localinventory.InsertLocalInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        localinventory.InsertLocalInventoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: localinventory.InsertLocalInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[localinventory.InsertLocalInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_local_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -129,9 +119,7 @@ class LocalInventoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_local_inventory(
-        self, response: localinventory.LocalInventory
-    ) -> localinventory.LocalInventory:
+    def post_insert_local_inventory(self, response: localinventory.LocalInventory) -> localinventory.LocalInventory:
         """Post-rpc interceptor for insert_local_inventory
 
         DEPRECATED. Please use the `post_insert_local_inventory_with_metadata`
@@ -145,9 +133,7 @@ class LocalInventoryServiceRestInterceptor:
         return response
 
     def post_insert_local_inventory_with_metadata(
-        self,
-        response: localinventory.LocalInventory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: localinventory.LocalInventory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[localinventory.LocalInventory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_local_inventory
 
@@ -164,13 +150,8 @@ class LocalInventoryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_local_inventories(
-        self,
-        request: localinventory.ListLocalInventoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        localinventory.ListLocalInventoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: localinventory.ListLocalInventoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[localinventory.ListLocalInventoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_local_inventories
 
         Override in a subclass to manipulate the request or metadata
@@ -178,9 +159,7 @@ class LocalInventoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_local_inventories(
-        self, response: localinventory.ListLocalInventoriesResponse
-    ) -> localinventory.ListLocalInventoriesResponse:
+    def post_list_local_inventories(self, response: localinventory.ListLocalInventoriesResponse) -> localinventory.ListLocalInventoriesResponse:
         """Post-rpc interceptor for list_local_inventories
 
         DEPRECATED. Please use the `post_list_local_inventories_with_metadata`
@@ -194,13 +173,8 @@ class LocalInventoryServiceRestInterceptor:
         return response
 
     def post_list_local_inventories_with_metadata(
-        self,
-        response: localinventory.ListLocalInventoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        localinventory.ListLocalInventoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: localinventory.ListLocalInventoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[localinventory.ListLocalInventoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_local_inventories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -295,31 +269,18 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or LocalInventoryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteLocalInventory(
-        _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory,
-        LocalInventoryServiceRestStub,
-    ):
+    class _DeleteLocalInventory(_BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory, LocalInventoryServiceRestStub):
         def __hash__(self):
             return hash("LocalInventoryServiceRestTransport.DeleteLocalInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -354,28 +315,16 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory._get_http_options()
-            )
+            http_options = _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_local_inventory(
-                request, metadata
-            )
-            transcoded_request = _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_local_inventory(request, metadata)
+            transcoded_request = _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLocalInventoryServiceRestTransport._BaseDeleteLocalInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -398,15 +347,8 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                LocalInventoryServiceRestTransport._DeleteLocalInventory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = LocalInventoryServiceRestTransport._DeleteLocalInventory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -414,23 +356,12 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _InsertLocalInventory(
-        _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory,
-        LocalInventoryServiceRestStub,
-    ):
+    class _InsertLocalInventory(_BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory, LocalInventoryServiceRestStub):
         def __hash__(self):
             return hash("LocalInventoryServiceRestTransport.InsertLocalInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -477,32 +408,18 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_http_options()
-            )
+            http_options = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_local_inventory(
-                request, metadata
-            )
-            transcoded_request = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_local_inventory(request, metadata)
+            transcoded_request = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_transcoded_request(http_options, request)
 
-            body = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLocalInventoryServiceRestTransport._BaseInsertLocalInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -525,16 +442,8 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                LocalInventoryServiceRestTransport._InsertLocalInventory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = LocalInventoryServiceRestTransport._InsertLocalInventory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -550,12 +459,8 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
 
             resp = self._interceptor.post_insert_local_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_local_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_local_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = localinventory.LocalInventory.to_json(response)
                 except:
@@ -576,23 +481,12 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
                 )
             return resp
 
-    class _ListLocalInventories(
-        _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories,
-        LocalInventoryServiceRestStub,
-    ):
+    class _ListLocalInventories(_BaseLocalInventoryServiceRestTransport._BaseListLocalInventories, LocalInventoryServiceRestStub):
         def __hash__(self):
             return hash("LocalInventoryServiceRestTransport.ListLocalInventories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -633,28 +527,16 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
 
             """
 
-            http_options = (
-                _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories._get_http_options()
-            )
+            http_options = _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_local_inventories(
-                request, metadata
-            )
-            transcoded_request = _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_local_inventories(request, metadata)
+            transcoded_request = _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLocalInventoryServiceRestTransport._BaseListLocalInventories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -677,15 +559,8 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
                 )
 
             # Send the request
-            response = (
-                LocalInventoryServiceRestTransport._ListLocalInventories._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = LocalInventoryServiceRestTransport._ListLocalInventories._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -701,16 +576,10 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
 
             resp = self._interceptor.post_list_local_inventories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_local_inventories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_local_inventories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        localinventory.ListLocalInventoriesResponse.to_json(response)
-                    )
+                    response_payload = localinventory.ListLocalInventoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -730,30 +599,19 @@ class LocalInventoryServiceRestTransport(_BaseLocalInventoryServiceRestTransport
             return resp
 
     @property
-    def delete_local_inventory(
-        self,
-    ) -> Callable[[localinventory.DeleteLocalInventoryRequest], empty_pb2.Empty]:
+    def delete_local_inventory(self) -> Callable[[localinventory.DeleteLocalInventoryRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLocalInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_local_inventory(
-        self,
-    ) -> Callable[
-        [localinventory.InsertLocalInventoryRequest], localinventory.LocalInventory
-    ]:
+    def insert_local_inventory(self) -> Callable[[localinventory.InsertLocalInventoryRequest], localinventory.LocalInventory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertLocalInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_local_inventories(
-        self,
-    ) -> Callable[
-        [localinventory.ListLocalInventoriesRequest],
-        localinventory.ListLocalInventoriesResponse,
-    ]:
+    def list_local_inventories(self) -> Callable[[localinventory.ListLocalInventoriesRequest], localinventory.ListLocalInventoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLocalInventories(self._session, self._host, self._interceptor)  # type: ignore

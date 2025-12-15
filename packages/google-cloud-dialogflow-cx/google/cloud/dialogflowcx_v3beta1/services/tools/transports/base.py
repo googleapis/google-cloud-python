@@ -32,9 +32,7 @@ from google.cloud.dialogflowcx_v3beta1 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3beta1.types import tool
 from google.cloud.dialogflowcx_v3beta1.types import tool as gcdc_tool
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class ToolsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -237,98 +227,51 @@ class ToolsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_tool(
-        self,
-    ) -> Callable[
-        [gcdc_tool.CreateToolRequest], Union[gcdc_tool.Tool, Awaitable[gcdc_tool.Tool]]
-    ]:
+    def create_tool(self) -> Callable[[gcdc_tool.CreateToolRequest], Union[gcdc_tool.Tool, Awaitable[gcdc_tool.Tool]]]:
         raise NotImplementedError()
 
     @property
-    def list_tools(
-        self,
-    ) -> Callable[
-        [tool.ListToolsRequest],
-        Union[tool.ListToolsResponse, Awaitable[tool.ListToolsResponse]],
-    ]:
+    def list_tools(self) -> Callable[[tool.ListToolsRequest], Union[tool.ListToolsResponse, Awaitable[tool.ListToolsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def export_tools(
-        self,
-    ) -> Callable[
-        [tool.ExportToolsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_tools(self) -> Callable[[tool.ExportToolsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_tool(
-        self,
-    ) -> Callable[[tool.GetToolRequest], Union[tool.Tool, Awaitable[tool.Tool]]]:
+    def get_tool(self) -> Callable[[tool.GetToolRequest], Union[tool.Tool, Awaitable[tool.Tool]]]:
         raise NotImplementedError()
 
     @property
-    def update_tool(
-        self,
-    ) -> Callable[
-        [gcdc_tool.UpdateToolRequest], Union[gcdc_tool.Tool, Awaitable[gcdc_tool.Tool]]
-    ]:
+    def update_tool(self) -> Callable[[gcdc_tool.UpdateToolRequest], Union[gcdc_tool.Tool, Awaitable[gcdc_tool.Tool]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tool(
-        self,
-    ) -> Callable[
-        [tool.DeleteToolRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_tool(self) -> Callable[[tool.DeleteToolRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_tool_versions(
         self,
-    ) -> Callable[
-        [tool.ListToolVersionsRequest],
-        Union[tool.ListToolVersionsResponse, Awaitable[tool.ListToolVersionsResponse]],
-    ]:
+    ) -> Callable[[tool.ListToolVersionsRequest], Union[tool.ListToolVersionsResponse, Awaitable[tool.ListToolVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_tool_version(
-        self,
-    ) -> Callable[
-        [tool.CreateToolVersionRequest],
-        Union[tool.ToolVersion, Awaitable[tool.ToolVersion]],
-    ]:
+    def create_tool_version(self) -> Callable[[tool.CreateToolVersionRequest], Union[tool.ToolVersion, Awaitable[tool.ToolVersion]]]:
         raise NotImplementedError()
 
     @property
-    def get_tool_version(
-        self,
-    ) -> Callable[
-        [tool.GetToolVersionRequest],
-        Union[tool.ToolVersion, Awaitable[tool.ToolVersion]],
-    ]:
+    def get_tool_version(self) -> Callable[[tool.GetToolVersionRequest], Union[tool.ToolVersion, Awaitable[tool.ToolVersion]]]:
         raise NotImplementedError()
 
     @property
-    def delete_tool_version(
-        self,
-    ) -> Callable[
-        [tool.DeleteToolVersionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_tool_version(self) -> Callable[[tool.DeleteToolVersionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def restore_tool_version(
         self,
-    ) -> Callable[
-        [tool.RestoreToolVersionRequest],
-        Union[
-            tool.RestoreToolVersionResponse, Awaitable[tool.RestoreToolVersionResponse]
-        ],
-    ]:
+    ) -> Callable[[tool.RestoreToolVersionRequest], Union[tool.RestoreToolVersionResponse, Awaitable[tool.RestoreToolVersionResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -336,20 +279,14 @@ class ToolsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -361,22 +298,13 @@ class ToolsTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

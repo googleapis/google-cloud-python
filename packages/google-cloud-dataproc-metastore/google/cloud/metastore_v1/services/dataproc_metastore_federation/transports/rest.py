@@ -123,13 +123,8 @@ class DataprocMetastoreFederationRestInterceptor:
     """
 
     def pre_create_federation(
-        self,
-        request: metastore_federation.CreateFederationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.CreateFederationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: metastore_federation.CreateFederationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.CreateFederationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_federation
 
         Override in a subclass to manipulate the request or metadata
@@ -137,9 +132,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_federation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_federation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_federation
 
         DEPRECATED. Please use the `post_create_federation_with_metadata`
@@ -153,9 +146,7 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def post_create_federation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_federation
 
@@ -172,13 +163,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response, metadata
 
     def pre_delete_federation(
-        self,
-        request: metastore_federation.DeleteFederationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.DeleteFederationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: metastore_federation.DeleteFederationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.DeleteFederationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_federation
 
         Override in a subclass to manipulate the request or metadata
@@ -186,9 +172,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_federation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_federation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_federation
 
         DEPRECATED. Please use the `post_delete_federation_with_metadata`
@@ -202,9 +186,7 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def post_delete_federation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_federation
 
@@ -221,13 +203,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response, metadata
 
     def pre_get_federation(
-        self,
-        request: metastore_federation.GetFederationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.GetFederationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: metastore_federation.GetFederationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.GetFederationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_federation
 
         Override in a subclass to manipulate the request or metadata
@@ -235,9 +212,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_federation(
-        self, response: metastore_federation.Federation
-    ) -> metastore_federation.Federation:
+    def post_get_federation(self, response: metastore_federation.Federation) -> metastore_federation.Federation:
         """Post-rpc interceptor for get_federation
 
         DEPRECATED. Please use the `post_get_federation_with_metadata`
@@ -251,12 +226,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def post_get_federation_with_metadata(
-        self,
-        response: metastore_federation.Federation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.Federation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: metastore_federation.Federation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.Federation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_federation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -272,13 +243,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response, metadata
 
     def pre_list_federations(
-        self,
-        request: metastore_federation.ListFederationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.ListFederationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: metastore_federation.ListFederationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.ListFederationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_federations
 
         Override in a subclass to manipulate the request or metadata
@@ -286,9 +252,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_federations(
-        self, response: metastore_federation.ListFederationsResponse
-    ) -> metastore_federation.ListFederationsResponse:
+    def post_list_federations(self, response: metastore_federation.ListFederationsResponse) -> metastore_federation.ListFederationsResponse:
         """Post-rpc interceptor for list_federations
 
         DEPRECATED. Please use the `post_list_federations_with_metadata`
@@ -302,13 +266,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def post_list_federations_with_metadata(
-        self,
-        response: metastore_federation.ListFederationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.ListFederationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: metastore_federation.ListFederationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.ListFederationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_federations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -324,13 +283,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response, metadata
 
     def pre_update_federation(
-        self,
-        request: metastore_federation.UpdateFederationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore_federation.UpdateFederationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: metastore_federation.UpdateFederationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore_federation.UpdateFederationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_federation
 
         Override in a subclass to manipulate the request or metadata
@@ -338,9 +292,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_federation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_federation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_federation
 
         DEPRECATED. Please use the `post_update_federation_with_metadata`
@@ -354,9 +306,7 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def post_update_federation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_federation
 
@@ -373,12 +323,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -386,9 +332,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -398,12 +342,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -411,9 +351,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -423,12 +361,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -446,12 +380,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -469,13 +399,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -483,9 +408,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -495,12 +418,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -518,12 +437,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -541,12 +456,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +465,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -566,12 +475,8 @@ class DataprocMetastoreFederationRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -579,9 +484,7 @@ class DataprocMetastoreFederationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -598,9 +501,7 @@ class DataprocMetastoreFederationRestStub:
     _interceptor: DataprocMetastoreFederationRestInterceptor
 
 
-class DataprocMetastoreFederationRestTransport(
-    _BaseDataprocMetastoreFederationRestTransport
-):
+class DataprocMetastoreFederationRestTransport(_BaseDataprocMetastoreFederationRestTransport):
     """REST backend synchronous transport for DataprocMetastoreFederation.
 
     Configures and manages metastore federation services. Dataproc
@@ -686,9 +587,7 @@ class DataprocMetastoreFederationRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -741,30 +640,17 @@ class DataprocMetastoreFederationRestTransport(
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateFederation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _CreateFederation(_BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.CreateFederation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -807,32 +693,18 @@ class DataprocMetastoreFederationRestTransport(
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_federation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_federation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseCreateFederation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -856,13 +728,7 @@ class DataprocMetastoreFederationRestTransport(
 
             # Send the request
             response = DataprocMetastoreFederationRestTransport._CreateFederation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -876,12 +742,8 @@ class DataprocMetastoreFederationRestTransport(
 
             resp = self._interceptor.post_create_federation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_federation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_federation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -902,23 +764,12 @@ class DataprocMetastoreFederationRestTransport(
                 )
             return resp
 
-    class _DeleteFederation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _DeleteFederation(_BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.DeleteFederation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -960,28 +811,16 @@ class DataprocMetastoreFederationRestTransport(
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_federation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_federation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteFederation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1005,12 +844,7 @@ class DataprocMetastoreFederationRestTransport(
 
             # Send the request
             response = DataprocMetastoreFederationRestTransport._DeleteFederation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1024,12 +858,8 @@ class DataprocMetastoreFederationRestTransport(
 
             resp = self._interceptor.post_delete_federation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_federation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_federation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1050,23 +880,12 @@ class DataprocMetastoreFederationRestTransport(
                 )
             return resp
 
-    class _GetFederation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _GetFederation(_BaseDataprocMetastoreFederationRestTransport._BaseGetFederation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.GetFederation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1107,26 +926,16 @@ class DataprocMetastoreFederationRestTransport(
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_federation(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetFederation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1149,15 +958,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._GetFederation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._GetFederation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1173,12 +975,8 @@ class DataprocMetastoreFederationRestTransport(
 
             resp = self._interceptor.post_get_federation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_federation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_federation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore_federation.Federation.to_json(response)
                 except:
@@ -1199,23 +997,12 @@ class DataprocMetastoreFederationRestTransport(
                 )
             return resp
 
-    class _ListFederations(
-        _BaseDataprocMetastoreFederationRestTransport._BaseListFederations,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _ListFederations(_BaseDataprocMetastoreFederationRestTransport._BaseListFederations, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.ListFederations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1254,28 +1041,16 @@ class DataprocMetastoreFederationRestTransport(
                     Response message for ListFederations
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseListFederations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseListFederations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_federations(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseListFederations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_federations(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseListFederations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseListFederations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseListFederations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1298,15 +1073,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._ListFederations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._ListFederations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1322,16 +1090,10 @@ class DataprocMetastoreFederationRestTransport(
 
             resp = self._interceptor.post_list_federations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_federations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_federations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        metastore_federation.ListFederationsResponse.to_json(response)
-                    )
+                    response_payload = metastore_federation.ListFederationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1350,23 +1112,12 @@ class DataprocMetastoreFederationRestTransport(
                 )
             return resp
 
-    class _UpdateFederation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _UpdateFederation(_BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.UpdateFederation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1409,32 +1160,18 @@ class DataprocMetastoreFederationRestTransport(
 
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_federation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_federation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseUpdateFederation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1458,13 +1195,7 @@ class DataprocMetastoreFederationRestTransport(
 
             # Send the request
             response = DataprocMetastoreFederationRestTransport._UpdateFederation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1478,12 +1209,8 @@ class DataprocMetastoreFederationRestTransport(
 
             resp = self._interceptor.post_update_federation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_federation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_federation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1505,52 +1232,31 @@ class DataprocMetastoreFederationRestTransport(
             return resp
 
     @property
-    def create_federation(
-        self,
-    ) -> Callable[
-        [metastore_federation.CreateFederationRequest], operations_pb2.Operation
-    ]:
+    def create_federation(self) -> Callable[[metastore_federation.CreateFederationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFederation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_federation(
-        self,
-    ) -> Callable[
-        [metastore_federation.DeleteFederationRequest], operations_pb2.Operation
-    ]:
+    def delete_federation(self) -> Callable[[metastore_federation.DeleteFederationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFederation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_federation(
-        self,
-    ) -> Callable[
-        [metastore_federation.GetFederationRequest], metastore_federation.Federation
-    ]:
+    def get_federation(self) -> Callable[[metastore_federation.GetFederationRequest], metastore_federation.Federation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFederation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_federations(
-        self,
-    ) -> Callable[
-        [metastore_federation.ListFederationsRequest],
-        metastore_federation.ListFederationsResponse,
-    ]:
+    def list_federations(self) -> Callable[[metastore_federation.ListFederationsRequest], metastore_federation.ListFederationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFederations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_federation(
-        self,
-    ) -> Callable[
-        [metastore_federation.UpdateFederationRequest], operations_pb2.Operation
-    ]:
+    def update_federation(self) -> Callable[[metastore_federation.UpdateFederationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFederation(self._session, self._host, self._interceptor)  # type: ignore
@@ -1559,23 +1265,12 @@ class DataprocMetastoreFederationRestTransport(
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _GetLocation(_BaseDataprocMetastoreFederationRestTransport._BaseGetLocation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1613,26 +1308,16 @@ class DataprocMetastoreFederationRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1655,15 +1340,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._GetLocation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._GetLocation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1675,9 +1353,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1702,23 +1378,12 @@ class DataprocMetastoreFederationRestTransport(
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataprocMetastoreFederationRestTransport._BaseListLocations,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _ListLocations(_BaseDataprocMetastoreFederationRestTransport._BaseListLocations, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1756,26 +1421,16 @@ class DataprocMetastoreFederationRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1798,15 +1453,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1818,9 +1466,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1845,23 +1491,12 @@ class DataprocMetastoreFederationRestTransport(
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _GetIamPolicy(_BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1899,26 +1534,16 @@ class DataprocMetastoreFederationRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1941,15 +1566,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._GetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._GetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1961,9 +1579,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1988,23 +1604,12 @@ class DataprocMetastoreFederationRestTransport(
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _SetIamPolicy(_BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2043,30 +1648,18 @@ class DataprocMetastoreFederationRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2089,16 +1682,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._SetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataprocMetastoreFederationRestTransport._SetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2110,9 +1695,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2137,23 +1720,12 @@ class DataprocMetastoreFederationRestTransport(
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _TestIamPermissions(_BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2192,32 +1764,18 @@ class DataprocMetastoreFederationRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2241,13 +1799,7 @@ class DataprocMetastoreFederationRestTransport(
 
             # Send the request
             response = DataprocMetastoreFederationRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2259,9 +1811,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2286,23 +1836,12 @@ class DataprocMetastoreFederationRestTransport(
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _CancelOperation(_BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2338,32 +1877,18 @@ class DataprocMetastoreFederationRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2386,16 +1911,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataprocMetastoreFederationRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2409,23 +1926,12 @@ class DataprocMetastoreFederationRestTransport(
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _DeleteOperation(_BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2460,28 +1966,16 @@ class DataprocMetastoreFederationRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2504,15 +1998,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2526,23 +2013,12 @@ class DataprocMetastoreFederationRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _GetOperation(_BaseDataprocMetastoreFederationRestTransport._BaseGetOperation, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2580,26 +2056,16 @@ class DataprocMetastoreFederationRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2622,15 +2088,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2642,9 +2101,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2669,23 +2126,12 @@ class DataprocMetastoreFederationRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataprocMetastoreFederationRestTransport._BaseListOperations,
-        DataprocMetastoreFederationRestStub,
-    ):
+    class _ListOperations(_BaseDataprocMetastoreFederationRestTransport._BaseListOperations, DataprocMetastoreFederationRestStub):
         def __hash__(self):
             return hash("DataprocMetastoreFederationRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2723,26 +2169,16 @@ class DataprocMetastoreFederationRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataprocMetastoreFederationRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataprocMetastoreFederationRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataprocMetastoreFederationRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataprocMetastoreFederationRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2765,15 +2201,8 @@ class DataprocMetastoreFederationRestTransport(
                 )
 
             # Send the request
-            response = (
-                DataprocMetastoreFederationRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DataprocMetastoreFederationRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2785,9 +2214,7 @@ class DataprocMetastoreFederationRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

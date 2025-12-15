@@ -87,12 +87,8 @@ class AccountIssueServiceRestInterceptor:
     """
 
     def pre_list_account_issues(
-        self,
-        request: accountissue.ListAccountIssuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountissue.ListAccountIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: accountissue.ListAccountIssuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountissue.ListAccountIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_account_issues
 
         Override in a subclass to manipulate the request or metadata
@@ -100,9 +96,7 @@ class AccountIssueServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_account_issues(
-        self, response: accountissue.ListAccountIssuesResponse
-    ) -> accountissue.ListAccountIssuesResponse:
+    def post_list_account_issues(self, response: accountissue.ListAccountIssuesResponse) -> accountissue.ListAccountIssuesResponse:
         """Post-rpc interceptor for list_account_issues
 
         DEPRECATED. Please use the `post_list_account_issues_with_metadata`
@@ -116,12 +110,8 @@ class AccountIssueServiceRestInterceptor:
         return response
 
     def post_list_account_issues_with_metadata(
-        self,
-        response: accountissue.ListAccountIssuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountissue.ListAccountIssuesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: accountissue.ListAccountIssuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountissue.ListAccountIssuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_account_issues
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -216,31 +206,18 @@ class AccountIssueServiceRestTransport(_BaseAccountIssueServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AccountIssueServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ListAccountIssues(
-        _BaseAccountIssueServiceRestTransport._BaseListAccountIssues,
-        AccountIssueServiceRestStub,
-    ):
+    class _ListAccountIssues(_BaseAccountIssueServiceRestTransport._BaseListAccountIssues, AccountIssueServiceRestStub):
         def __hash__(self):
             return hash("AccountIssueServiceRestTransport.ListAccountIssues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -279,28 +256,16 @@ class AccountIssueServiceRestTransport(_BaseAccountIssueServiceRestTransport):
                     Response message for the ``ListAccountIssues`` method.
             """
 
-            http_options = (
-                _BaseAccountIssueServiceRestTransport._BaseListAccountIssues._get_http_options()
-            )
+            http_options = _BaseAccountIssueServiceRestTransport._BaseListAccountIssues._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_account_issues(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountIssueServiceRestTransport._BaseListAccountIssues._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_account_issues(request, metadata)
+            transcoded_request = _BaseAccountIssueServiceRestTransport._BaseListAccountIssues._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountIssueServiceRestTransport._BaseListAccountIssues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountIssueServiceRestTransport._BaseListAccountIssues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -323,15 +288,8 @@ class AccountIssueServiceRestTransport(_BaseAccountIssueServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                AccountIssueServiceRestTransport._ListAccountIssues._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AccountIssueServiceRestTransport._ListAccountIssues._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -347,16 +305,10 @@ class AccountIssueServiceRestTransport(_BaseAccountIssueServiceRestTransport):
 
             resp = self._interceptor.post_list_account_issues(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_account_issues_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_account_issues_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = accountissue.ListAccountIssuesResponse.to_json(
-                        response
-                    )
+                    response_payload = accountissue.ListAccountIssuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -376,11 +328,7 @@ class AccountIssueServiceRestTransport(_BaseAccountIssueServiceRestTransport):
             return resp
 
     @property
-    def list_account_issues(
-        self,
-    ) -> Callable[
-        [accountissue.ListAccountIssuesRequest], accountissue.ListAccountIssuesResponse
-    ]:
+    def list_account_issues(self) -> Callable[[accountissue.ListAccountIssuesRequest], accountissue.ListAccountIssuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccountIssues(self._session, self._host, self._interceptor)  # type: ignore

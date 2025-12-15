@@ -18,12 +18,8 @@ from google.cloud.beyondcorp_appconnections import gapic_version as package_vers
 __version__ = package_version.__version__
 
 
-from google.cloud.beyondcorp_appconnections_v1.services.app_connections_service.async_client import (
-    AppConnectionsServiceAsyncClient,
-)
-from google.cloud.beyondcorp_appconnections_v1.services.app_connections_service.client import (
-    AppConnectionsServiceClient,
-)
+from google.cloud.beyondcorp_appconnections_v1.services.app_connections_service.async_client import AppConnectionsServiceAsyncClient
+from google.cloud.beyondcorp_appconnections_v1.services.app_connections_service.client import AppConnectionsServiceClient
 from google.cloud.beyondcorp_appconnections_v1.types.app_connections_service import (
     AppConnection,
     AppConnectionOperationMetadata,

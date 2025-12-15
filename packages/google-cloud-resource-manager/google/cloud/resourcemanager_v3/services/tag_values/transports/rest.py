@@ -154,12 +154,8 @@ class TagValuesRestInterceptor:
     """
 
     def pre_create_tag_value(
-        self,
-        request: tag_values.CreateTagValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_values.CreateTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_values.CreateTagValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_values.CreateTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tag_value
 
         Override in a subclass to manipulate the request or metadata
@@ -167,9 +163,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_tag_value(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_tag_value(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_tag_value
 
         DEPRECATED. Please use the `post_create_tag_value_with_metadata`
@@ -183,9 +177,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_create_tag_value_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tag_value
 
@@ -202,12 +194,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_delete_tag_value(
-        self,
-        request: tag_values.DeleteTagValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_values.DeleteTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_values.DeleteTagValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_values.DeleteTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tag_value
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +203,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_tag_value(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_tag_value(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_tag_value
 
         DEPRECATED. Please use the `post_delete_tag_value_with_metadata`
@@ -231,9 +217,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_delete_tag_value_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_tag_value
 
@@ -250,12 +234,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +257,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -296,12 +274,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_get_namespaced_tag_value(
-        self,
-        request: tag_values.GetNamespacedTagValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_values.GetNamespacedTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_values.GetNamespacedTagValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_values.GetNamespacedTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_namespaced_tag_value
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +283,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_namespaced_tag_value(
-        self, response: tag_values.TagValue
-    ) -> tag_values.TagValue:
+    def post_get_namespaced_tag_value(self, response: tag_values.TagValue) -> tag_values.TagValue:
         """Post-rpc interceptor for get_namespaced_tag_value
 
         DEPRECATED. Please use the `post_get_namespaced_tag_value_with_metadata`
@@ -325,9 +297,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_get_namespaced_tag_value_with_metadata(
-        self,
-        response: tag_values.TagValue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tag_values.TagValue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tag_values.TagValue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_namespaced_tag_value
 
@@ -344,9 +314,7 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_get_tag_value(
-        self,
-        request: tag_values.GetTagValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tag_values.GetTagValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tag_values.GetTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tag_value
 
@@ -369,9 +337,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_get_tag_value_with_metadata(
-        self,
-        response: tag_values.TagValue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tag_values.TagValue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tag_values.TagValue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_tag_value
 
@@ -388,12 +354,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_list_tag_values(
-        self,
-        request: tag_values.ListTagValuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_values.ListTagValuesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_values.ListTagValuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_values.ListTagValuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tag_values
 
         Override in a subclass to manipulate the request or metadata
@@ -401,9 +363,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tag_values(
-        self, response: tag_values.ListTagValuesResponse
-    ) -> tag_values.ListTagValuesResponse:
+    def post_list_tag_values(self, response: tag_values.ListTagValuesResponse) -> tag_values.ListTagValuesResponse:
         """Post-rpc interceptor for list_tag_values
 
         DEPRECATED. Please use the `post_list_tag_values_with_metadata`
@@ -417,12 +377,8 @@ class TagValuesRestInterceptor:
         return response
 
     def post_list_tag_values_with_metadata(
-        self,
-        response: tag_values.ListTagValuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_values.ListTagValuesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: tag_values.ListTagValuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_values.ListTagValuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tag_values
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -438,12 +394,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -465,9 +417,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -484,13 +434,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -498,9 +443,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -514,13 +457,8 @@ class TagValuesRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -536,12 +474,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_update_tag_value(
-        self,
-        request: tag_values.UpdateTagValueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tag_values.UpdateTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: tag_values.UpdateTagValueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tag_values.UpdateTagValueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_tag_value
 
         Override in a subclass to manipulate the request or metadata
@@ -549,9 +483,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_tag_value(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_tag_value(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_tag_value
 
         DEPRECATED. Please use the `post_update_tag_value_with_metadata`
@@ -565,9 +497,7 @@ class TagValuesRestInterceptor:
         return response
 
     def post_update_tag_value_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_tag_value
 
@@ -584,12 +514,8 @@ class TagValuesRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -597,9 +523,7 @@ class TagValuesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -688,9 +612,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -724,29 +646,17 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateTagValue(
-        _BaseTagValuesRestTransport._BaseCreateTagValue, TagValuesRestStub
-    ):
+    class _CreateTagValue(_BaseTagValuesRestTransport._BaseCreateTagValue, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.CreateTagValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -790,38 +700,18 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseCreateTagValue._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseCreateTagValue._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_tag_value(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseCreateTagValue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_tag_value(request, metadata)
+            transcoded_request = _BaseTagValuesRestTransport._BaseCreateTagValue._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTagValuesRestTransport._BaseCreateTagValue._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTagValuesRestTransport._BaseCreateTagValue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseCreateTagValue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseCreateTagValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -845,13 +735,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._CreateTagValue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -865,12 +749,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_create_tag_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tag_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tag_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -891,22 +771,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _DeleteTagValue(
-        _BaseTagValuesRestTransport._BaseDeleteTagValue, TagValuesRestStub
-    ):
+    class _DeleteTagValue(_BaseTagValuesRestTransport._BaseDeleteTagValue, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.DeleteTagValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -949,32 +819,16 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseDeleteTagValue._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseDeleteTagValue._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_tag_value(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseDeleteTagValue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_tag_value(request, metadata)
+            transcoded_request = _BaseTagValuesRestTransport._BaseDeleteTagValue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseDeleteTagValue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseDeleteTagValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -998,12 +852,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._DeleteTagValue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1017,12 +866,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_delete_tag_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_tag_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_tag_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1043,22 +888,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseTagValuesRestTransport._BaseGetIamPolicy, TagValuesRestStub
-    ):
+    class _GetIamPolicy(_BaseTagValuesRestTransport._BaseGetIamPolicy, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1173,34 +1008,18 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTagValuesRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseTagValuesRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTagValuesRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1224,13 +1043,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1246,12 +1059,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1272,22 +1081,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _GetNamespacedTagValue(
-        _BaseTagValuesRestTransport._BaseGetNamespacedTagValue, TagValuesRestStub
-    ):
+    class _GetNamespacedTagValue(_BaseTagValuesRestTransport._BaseGetNamespacedTagValue, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.GetNamespacedTagValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1331,28 +1130,16 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseGetNamespacedTagValue._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseGetNamespacedTagValue._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_namespaced_tag_value(
-                request, metadata
-            )
-            transcoded_request = _BaseTagValuesRestTransport._BaseGetNamespacedTagValue._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_namespaced_tag_value(request, metadata)
+            transcoded_request = _BaseTagValuesRestTransport._BaseGetNamespacedTagValue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTagValuesRestTransport._BaseGetNamespacedTagValue._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTagValuesRestTransport._BaseGetNamespacedTagValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1376,12 +1163,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._GetNamespacedTagValue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1397,12 +1179,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_get_namespaced_tag_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_namespaced_tag_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_namespaced_tag_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tag_values.TagValue.to_json(response)
                 except:
@@ -1428,15 +1206,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
             return hash("TagValuesRestTransport.GetTagValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1480,30 +1250,16 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseGetTagValue._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseGetTagValue._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tag_value(request, metadata)
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseGetTagValue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTagValuesRestTransport._BaseGetTagValue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseGetTagValue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseGetTagValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1527,12 +1283,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._GetTagValue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1548,12 +1299,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_get_tag_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_tag_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_tag_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tag_values.TagValue.to_json(response)
                 except:
@@ -1574,22 +1321,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _ListTagValues(
-        _BaseTagValuesRestTransport._BaseListTagValues, TagValuesRestStub
-    ):
+    class _ListTagValues(_BaseTagValuesRestTransport._BaseListTagValues, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.ListTagValues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1631,30 +1368,16 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                     The ListTagValues response.
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseListTagValues._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseListTagValues._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tag_values(request, metadata)
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseListTagValues._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTagValuesRestTransport._BaseListTagValues._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseListTagValues._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseListTagValues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1678,12 +1401,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._ListTagValues._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1699,16 +1417,10 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_list_tag_values(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tag_values_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tag_values_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = tag_values.ListTagValuesResponse.to_json(
-                        response
-                    )
+                    response_payload = tag_values.ListTagValuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1727,22 +1439,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseTagValuesRestTransport._BaseSetIamPolicy, TagValuesRestStub
-    ):
+    class _SetIamPolicy(_BaseTagValuesRestTransport._BaseSetIamPolicy, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1857,34 +1559,18 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTagValuesRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseTagValuesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTagValuesRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1908,13 +1594,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1930,12 +1610,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1956,22 +1632,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseTagValuesRestTransport._BaseTestIamPermissions, TagValuesRestStub
-    ):
+    class _TestIamPermissions(_BaseTagValuesRestTransport._BaseTestIamPermissions, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2011,32 +1677,18 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTagValuesRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2060,13 +1712,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2082,12 +1728,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2108,22 +1750,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 )
             return resp
 
-    class _UpdateTagValue(
-        _BaseTagValuesRestTransport._BaseUpdateTagValue, TagValuesRestStub
-    ):
+    class _UpdateTagValue(_BaseTagValuesRestTransport._BaseUpdateTagValue, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.UpdateTagValue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2167,38 +1799,18 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseUpdateTagValue._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseUpdateTagValue._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_tag_value(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseUpdateTagValue._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_tag_value(request, metadata)
+            transcoded_request = _BaseTagValuesRestTransport._BaseUpdateTagValue._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTagValuesRestTransport._BaseUpdateTagValue._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTagValuesRestTransport._BaseUpdateTagValue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseUpdateTagValue._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseUpdateTagValue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2222,13 +1834,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._UpdateTagValue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2242,12 +1848,8 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             resp = self._interceptor.post_update_tag_value(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_tag_value_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_tag_value_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2269,76 +1871,55 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
             return resp
 
     @property
-    def create_tag_value(
-        self,
-    ) -> Callable[[tag_values.CreateTagValueRequest], operations_pb2.Operation]:
+    def create_tag_value(self) -> Callable[[tag_values.CreateTagValueRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTagValue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_tag_value(
-        self,
-    ) -> Callable[[tag_values.DeleteTagValueRequest], operations_pb2.Operation]:
+    def delete_tag_value(self) -> Callable[[tag_values.DeleteTagValueRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTagValue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_namespaced_tag_value(
-        self,
-    ) -> Callable[[tag_values.GetNamespacedTagValueRequest], tag_values.TagValue]:
+    def get_namespaced_tag_value(self) -> Callable[[tag_values.GetNamespacedTagValueRequest], tag_values.TagValue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNamespacedTagValue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_tag_value(
-        self,
-    ) -> Callable[[tag_values.GetTagValueRequest], tag_values.TagValue]:
+    def get_tag_value(self) -> Callable[[tag_values.GetTagValueRequest], tag_values.TagValue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTagValue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tag_values(
-        self,
-    ) -> Callable[[tag_values.ListTagValuesRequest], tag_values.ListTagValuesResponse]:
+    def list_tag_values(self) -> Callable[[tag_values.ListTagValuesRequest], tag_values.ListTagValuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTagValues(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_tag_value(
-        self,
-    ) -> Callable[[tag_values.UpdateTagValueRequest], operations_pb2.Operation]:
+    def update_tag_value(self) -> Callable[[tag_values.UpdateTagValueRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTagValue(self._session, self._host, self._interceptor)  # type: ignore
@@ -2347,22 +1928,12 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTagValuesRestTransport._BaseGetOperation, TagValuesRestStub
-    ):
+    class _GetOperation(_BaseTagValuesRestTransport._BaseGetOperation, TagValuesRestStub):
         def __hash__(self):
             return hash("TagValuesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2400,30 +1971,16 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTagValuesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTagValuesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseTagValuesRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTagValuesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTagValuesRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTagValuesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2447,12 +2004,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
 
             # Send the request
             response = TagValuesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2464,9 +2016,7 @@ class TagValuesRestTransport(_BaseTagValuesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

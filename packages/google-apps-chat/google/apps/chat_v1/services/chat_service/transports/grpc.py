@@ -29,9 +29,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.apps.chat_v1.types import (
-    space_notification_setting as gc_space_notification_setting,
-)
+from google.apps.chat_v1.types import space_notification_setting as gc_space_notification_setting
 from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import membership
 from google.apps.chat_v1.types import membership as gc_membership
@@ -61,9 +59,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -73,10 +69,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -95,11 +88,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -234,18 +223,14 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -279,9 +264,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -340,9 +323,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_message(
-        self,
-    ) -> Callable[[gc_message.CreateMessageRequest], gc_message.Message]:
+    def create_message(self) -> Callable[[gc_message.CreateMessageRequest], gc_message.Message]:
         r"""Return a callable for the create message method over gRPC.
 
         Creates a message in a Google Chat space. For an example, see
@@ -417,9 +398,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["create_message"]
 
     @property
-    def list_messages(
-        self,
-    ) -> Callable[[message.ListMessagesRequest], message.ListMessagesResponse]:
+    def list_messages(self) -> Callable[[message.ListMessagesRequest], message.ListMessagesResponse]:
         r"""Return a callable for the list messages method over gRPC.
 
         Lists messages in a space that the caller is a member of,
@@ -458,11 +437,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["list_messages"]
 
     @property
-    def list_memberships(
-        self,
-    ) -> Callable[
-        [membership.ListMembershipsRequest], membership.ListMembershipsResponse
-    ]:
+    def list_memberships(self) -> Callable[[membership.ListMembershipsRequest], membership.ListMembershipsResponse]:
         r"""Return a callable for the list memberships method over gRPC.
 
         Lists memberships in a space. For an example, see `List users
@@ -524,9 +499,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["list_memberships"]
 
     @property
-    def get_membership(
-        self,
-    ) -> Callable[[membership.GetMembershipRequest], membership.Membership]:
+    def get_membership(self) -> Callable[[membership.GetMembershipRequest], membership.Membership]:
         r"""Return a callable for the get membership method over gRPC.
 
         Returns details about a membership. For an example, see `Get
@@ -622,9 +595,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["get_message"]
 
     @property
-    def update_message(
-        self,
-    ) -> Callable[[gc_message.UpdateMessageRequest], gc_message.Message]:
+    def update_message(self) -> Callable[[gc_message.UpdateMessageRequest], gc_message.Message]:
         r"""Return a callable for the update message method over gRPC.
 
         Updates a message. There's a difference between the ``patch``
@@ -673,9 +644,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["update_message"]
 
     @property
-    def delete_message(
-        self,
-    ) -> Callable[[message.DeleteMessageRequest], empty_pb2.Empty]:
+    def delete_message(self) -> Callable[[message.DeleteMessageRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete message method over gRPC.
 
         Deletes a message. For an example, see `Delete a
@@ -720,9 +689,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["delete_message"]
 
     @property
-    def get_attachment(
-        self,
-    ) -> Callable[[attachment.GetAttachmentRequest], attachment.Attachment]:
+    def get_attachment(self) -> Callable[[attachment.GetAttachmentRequest], attachment.Attachment]:
         r"""Return a callable for the get attachment method over gRPC.
 
         Gets the metadata of a message attachment. The attachment data
@@ -757,11 +724,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["get_attachment"]
 
     @property
-    def upload_attachment(
-        self,
-    ) -> Callable[
-        [attachment.UploadAttachmentRequest], attachment.UploadAttachmentResponse
-    ]:
+    def upload_attachment(self) -> Callable[[attachment.UploadAttachmentRequest], attachment.UploadAttachmentResponse]:
         r"""Return a callable for the upload attachment method over gRPC.
 
         Uploads an attachment. For an example, see `Upload media as a
@@ -801,9 +764,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["upload_attachment"]
 
     @property
-    def list_spaces(
-        self,
-    ) -> Callable[[space.ListSpacesRequest], space.ListSpacesResponse]:
+    def list_spaces(self) -> Callable[[space.ListSpacesRequest], space.ListSpacesResponse]:
         r"""Return a callable for the list spaces method over gRPC.
 
         Lists spaces the caller is a member of. Group chats and DMs
@@ -851,9 +812,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["list_spaces"]
 
     @property
-    def search_spaces(
-        self,
-    ) -> Callable[[space.SearchSpacesRequest], space.SearchSpacesResponse]:
+    def search_spaces(self) -> Callable[[space.SearchSpacesRequest], space.SearchSpacesResponse]:
         r"""Return a callable for the search spaces method over gRPC.
 
         Returns a list of spaces in a Google Workspace organization
@@ -1223,11 +1182,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["delete_space"]
 
     @property
-    def complete_import_space(
-        self,
-    ) -> Callable[
-        [space.CompleteImportSpaceRequest], space.CompleteImportSpaceResponse
-    ]:
+    def complete_import_space(self) -> Callable[[space.CompleteImportSpaceRequest], space.CompleteImportSpaceResponse]:
         r"""Return a callable for the complete import space method over gRPC.
 
         Completes the `import
@@ -1263,9 +1218,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["complete_import_space"]
 
     @property
-    def find_direct_message(
-        self,
-    ) -> Callable[[space.FindDirectMessageRequest], space.Space]:
+    def find_direct_message(self) -> Callable[[space.FindDirectMessageRequest], space.Space]:
         r"""Return a callable for the find direct message method over gRPC.
 
         Returns the existing direct message with the specified user. If
@@ -1318,9 +1271,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["find_direct_message"]
 
     @property
-    def create_membership(
-        self,
-    ) -> Callable[[gc_membership.CreateMembershipRequest], gc_membership.Membership]:
+    def create_membership(self) -> Callable[[gc_membership.CreateMembershipRequest], gc_membership.Membership]:
         r"""Return a callable for the create membership method over gRPC.
 
         Creates a membership for the calling Chat app, a user, or a
@@ -1392,9 +1343,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["create_membership"]
 
     @property
-    def update_membership(
-        self,
-    ) -> Callable[[gc_membership.UpdateMembershipRequest], gc_membership.Membership]:
+    def update_membership(self) -> Callable[[gc_membership.UpdateMembershipRequest], gc_membership.Membership]:
         r"""Return a callable for the update membership method over gRPC.
 
         Updates a membership. For an example, see `Update a user's
@@ -1445,9 +1394,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["update_membership"]
 
     @property
-    def delete_membership(
-        self,
-    ) -> Callable[[membership.DeleteMembershipRequest], membership.Membership]:
+    def delete_membership(self) -> Callable[[membership.DeleteMembershipRequest], membership.Membership]:
         r"""Return a callable for the delete membership method over gRPC.
 
         Deletes a membership. For an example, see `Remove a user or a
@@ -1509,9 +1456,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["delete_membership"]
 
     @property
-    def create_reaction(
-        self,
-    ) -> Callable[[gc_reaction.CreateReactionRequest], gc_reaction.Reaction]:
+    def create_reaction(self) -> Callable[[gc_reaction.CreateReactionRequest], gc_reaction.Reaction]:
         r"""Return a callable for the create reaction method over gRPC.
 
         Creates a reaction and adds it to a message. For an example, see
@@ -1548,9 +1493,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["create_reaction"]
 
     @property
-    def list_reactions(
-        self,
-    ) -> Callable[[reaction.ListReactionsRequest], reaction.ListReactionsResponse]:
+    def list_reactions(self) -> Callable[[reaction.ListReactionsRequest], reaction.ListReactionsResponse]:
         r"""Return a callable for the list reactions method over gRPC.
 
         Lists reactions to a message. For an example, see `List
@@ -1586,9 +1529,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["list_reactions"]
 
     @property
-    def delete_reaction(
-        self,
-    ) -> Callable[[reaction.DeleteReactionRequest], empty_pb2.Empty]:
+    def delete_reaction(self) -> Callable[[reaction.DeleteReactionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete reaction method over gRPC.
 
         Deletes a reaction to a message. For an example, see `Delete a
@@ -1623,9 +1564,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["delete_reaction"]
 
     @property
-    def create_custom_emoji(
-        self,
-    ) -> Callable[[reaction.CreateCustomEmojiRequest], reaction.CustomEmoji]:
+    def create_custom_emoji(self) -> Callable[[reaction.CreateCustomEmojiRequest], reaction.CustomEmoji]:
         r"""Return a callable for the create custom emoji method over gRPC.
 
         Creates a custom emoji.
@@ -1664,9 +1603,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["create_custom_emoji"]
 
     @property
-    def get_custom_emoji(
-        self,
-    ) -> Callable[[reaction.GetCustomEmojiRequest], reaction.CustomEmoji]:
+    def get_custom_emoji(self) -> Callable[[reaction.GetCustomEmojiRequest], reaction.CustomEmoji]:
         r"""Return a callable for the get custom emoji method over gRPC.
 
         Returns details about a custom emoji.
@@ -1706,11 +1643,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["get_custom_emoji"]
 
     @property
-    def list_custom_emojis(
-        self,
-    ) -> Callable[
-        [reaction.ListCustomEmojisRequest], reaction.ListCustomEmojisResponse
-    ]:
+    def list_custom_emojis(self) -> Callable[[reaction.ListCustomEmojisRequest], reaction.ListCustomEmojisResponse]:
         r"""Return a callable for the list custom emojis method over gRPC.
 
         Lists custom emojis visible to the authenticated user.
@@ -1750,9 +1683,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["list_custom_emojis"]
 
     @property
-    def delete_custom_emoji(
-        self,
-    ) -> Callable[[reaction.DeleteCustomEmojiRequest], empty_pb2.Empty]:
+    def delete_custom_emoji(self) -> Callable[[reaction.DeleteCustomEmojiRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete custom emoji method over gRPC.
 
         Deletes a custom emoji. By default, users can only delete custom
@@ -1796,11 +1727,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["delete_custom_emoji"]
 
     @property
-    def get_space_read_state(
-        self,
-    ) -> Callable[
-        [space_read_state.GetSpaceReadStateRequest], space_read_state.SpaceReadState
-    ]:
+    def get_space_read_state(self) -> Callable[[space_read_state.GetSpaceReadStateRequest], space_read_state.SpaceReadState]:
         r"""Return a callable for the get space read state method over gRPC.
 
         Returns details about a user's read state within a space, used
@@ -1835,12 +1762,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["get_space_read_state"]
 
     @property
-    def update_space_read_state(
-        self,
-    ) -> Callable[
-        [gc_space_read_state.UpdateSpaceReadStateRequest],
-        gc_space_read_state.SpaceReadState,
-    ]:
+    def update_space_read_state(self) -> Callable[[gc_space_read_state.UpdateSpaceReadStateRequest], gc_space_read_state.SpaceReadState]:
         r"""Return a callable for the update space read state method over gRPC.
 
         Updates a user's read state within a space, used to identify
@@ -1874,11 +1796,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["update_space_read_state"]
 
     @property
-    def get_thread_read_state(
-        self,
-    ) -> Callable[
-        [thread_read_state.GetThreadReadStateRequest], thread_read_state.ThreadReadState
-    ]:
+    def get_thread_read_state(self) -> Callable[[thread_read_state.GetThreadReadStateRequest], thread_read_state.ThreadReadState]:
         r"""Return a callable for the get thread read state method over gRPC.
 
         Returns details about a user's read state within a thread, used
@@ -1913,9 +1831,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["get_thread_read_state"]
 
     @property
-    def get_space_event(
-        self,
-    ) -> Callable[[space_event.GetSpaceEventRequest], space_event.SpaceEvent]:
+    def get_space_event(self) -> Callable[[space_event.GetSpaceEventRequest], space_event.SpaceEvent]:
         r"""Return a callable for the get space event method over gRPC.
 
         Returns an event from a Google Chat space. The `event
@@ -1969,11 +1885,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         return self._stubs["get_space_event"]
 
     @property
-    def list_space_events(
-        self,
-    ) -> Callable[
-        [space_event.ListSpaceEventsRequest], space_event.ListSpaceEventsResponse
-    ]:
+    def list_space_events(self) -> Callable[[space_event.ListSpaceEventsRequest], space_event.ListSpaceEventsResponse]:
         r"""Return a callable for the list space events method over gRPC.
 
         Lists events from a Google Chat space. For each event, the
@@ -2027,10 +1939,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
     @property
     def get_space_notification_setting(
         self,
-    ) -> Callable[
-        [space_notification_setting.GetSpaceNotificationSettingRequest],
-        space_notification_setting.SpaceNotificationSetting,
-    ]:
+    ) -> Callable[[space_notification_setting.GetSpaceNotificationSettingRequest], space_notification_setting.SpaceNotificationSetting]:
         r"""Return a callable for the get space notification setting method over gRPC.
 
         Gets the space notification setting. For an example, see `Get
@@ -2055,9 +1964,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_space_notification_setting" not in self._stubs:
-            self._stubs[
-                "get_space_notification_setting"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_space_notification_setting"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/GetSpaceNotificationSetting",
                 request_serializer=space_notification_setting.GetSpaceNotificationSettingRequest.serialize,
                 response_deserializer=space_notification_setting.SpaceNotificationSetting.deserialize,
@@ -2067,10 +1974,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
     @property
     def update_space_notification_setting(
         self,
-    ) -> Callable[
-        [gc_space_notification_setting.UpdateSpaceNotificationSettingRequest],
-        gc_space_notification_setting.SpaceNotificationSetting,
-    ]:
+    ) -> Callable[[gc_space_notification_setting.UpdateSpaceNotificationSettingRequest], gc_space_notification_setting.SpaceNotificationSetting]:
         r"""Return a callable for the update space notification
         setting method over gRPC.
 
@@ -2096,9 +2000,7 @@ class ChatServiceGrpcTransport(ChatServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_space_notification_setting" not in self._stubs:
-            self._stubs[
-                "update_space_notification_setting"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_space_notification_setting"] = self._logged_channel.unary_unary(
                 "/google.chat.v1.ChatService/UpdateSpaceNotificationSetting",
                 request_serializer=gc_space_notification_setting.UpdateSpaceNotificationSettingRequest.serialize,
                 response_deserializer=gc_space_notification_setting.SpaceNotificationSetting.deserialize,

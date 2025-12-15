@@ -103,13 +103,8 @@ class StoragePoolTypesRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListStoragePoolTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListStoragePoolTypesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListStoragePoolTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListStoragePoolTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -117,9 +112,7 @@ class StoragePoolTypesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.StoragePoolTypeAggregatedList
-    ) -> compute.StoragePoolTypeAggregatedList:
+    def post_aggregated_list(self, response: compute.StoragePoolTypeAggregatedList) -> compute.StoragePoolTypeAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -133,12 +126,8 @@ class StoragePoolTypesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.StoragePoolTypeAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.StoragePoolTypeAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.StoragePoolTypeAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.StoragePoolTypeAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -154,12 +143,8 @@ class StoragePoolTypesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetStoragePoolTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetStoragePoolTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetStoragePoolTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetStoragePoolTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +166,7 @@ class StoragePoolTypesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.StoragePoolType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.StoragePoolType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.StoragePoolType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -200,12 +183,8 @@ class StoragePoolTypesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListStoragePoolTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListStoragePoolTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListStoragePoolTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListStoragePoolTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -213,9 +192,7 @@ class StoragePoolTypesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.StoragePoolTypeList
-    ) -> compute.StoragePoolTypeList:
+    def post_list(self, response: compute.StoragePoolTypeList) -> compute.StoragePoolTypeList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -229,9 +206,7 @@ class StoragePoolTypesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.StoragePoolTypeList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.StoragePoolTypeList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.StoragePoolTypeList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -331,30 +306,18 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or StoragePoolTypesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseStoragePoolTypesRestTransport._BaseAggregatedList, StoragePoolTypesRestStub
-    ):
+    class _AggregatedList(_BaseStoragePoolTypesRestTransport._BaseAggregatedList, StoragePoolTypesRestStub):
         def __hash__(self):
             return hash("StoragePoolTypesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -395,26 +358,16 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             """
 
-            http_options = (
-                _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseStoragePoolTypesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -438,12 +391,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             # Send the request
             response = StoragePoolTypesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -459,16 +407,10 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.StoragePoolTypeAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.StoragePoolTypeAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -492,15 +434,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             return hash("StoragePoolTypesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -541,30 +475,16 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             """
 
-            http_options = (
-                _BaseStoragePoolTypesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseStoragePoolTypesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseStoragePoolTypesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseStoragePoolTypesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseStoragePoolTypesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseStoragePoolTypesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -588,12 +508,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             # Send the request
             response = StoragePoolTypesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -610,9 +525,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.StoragePoolType.to_json(response)
                 except:
@@ -638,15 +551,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             return hash("StoragePoolTypesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -689,30 +594,16 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             """
 
-            http_options = (
-                _BaseStoragePoolTypesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseStoragePoolTypesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseStoragePoolTypesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseStoragePoolTypesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseStoragePoolTypesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseStoragePoolTypesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -736,12 +627,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
 
             # Send the request
             response = StoragePoolTypesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -758,9 +644,7 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.StoragePoolTypeList.to_json(response)
                 except:
@@ -782,28 +666,19 @@ class StoragePoolTypesRestTransport(_BaseStoragePoolTypesRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListStoragePoolTypesRequest],
-        compute.StoragePoolTypeAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListStoragePoolTypesRequest], compute.StoragePoolTypeAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetStoragePoolTypeRequest], compute.StoragePoolType]:
+    def get(self) -> Callable[[compute.GetStoragePoolTypeRequest], compute.StoragePoolType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListStoragePoolTypesRequest], compute.StoragePoolTypeList]:
+    def list(self) -> Callable[[compute.ListStoragePoolTypesRequest], compute.StoragePoolTypeList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore

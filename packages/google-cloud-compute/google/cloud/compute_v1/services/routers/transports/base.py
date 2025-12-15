@@ -29,9 +29,7 @@ from google.cloud.compute_v1 import gapic_version as package_version
 from google.cloud.compute_v1.services import region_operations
 from google.cloud.compute_v1.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class RoutersTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -237,164 +227,85 @@ class RoutersTransport(abc.ABC):
     @property
     def aggregated_list(
         self,
-    ) -> Callable[
-        [compute.AggregatedListRoutersRequest],
-        Union[compute.RouterAggregatedList, Awaitable[compute.RouterAggregatedList]],
-    ]:
+    ) -> Callable[[compute.AggregatedListRoutersRequest], Union[compute.RouterAggregatedList, Awaitable[compute.RouterAggregatedList]]]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_route_policy(
-        self,
-    ) -> Callable[
-        [compute.DeleteRoutePolicyRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete_route_policy(self) -> Callable[[compute.DeleteRoutePolicyRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetRouterRequest], Union[compute.Router, Awaitable[compute.Router]]
-    ]:
+    def get(self) -> Callable[[compute.GetRouterRequest], Union[compute.Router, Awaitable[compute.Router]]]:
         raise NotImplementedError()
 
     @property
     def get_nat_ip_info(
         self,
-    ) -> Callable[
-        [compute.GetNatIpInfoRouterRequest],
-        Union[compute.NatIpInfoResponse, Awaitable[compute.NatIpInfoResponse]],
-    ]:
+    ) -> Callable[[compute.GetNatIpInfoRouterRequest], Union[compute.NatIpInfoResponse, Awaitable[compute.NatIpInfoResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_nat_mapping_info(
         self,
-    ) -> Callable[
-        [compute.GetNatMappingInfoRoutersRequest],
-        Union[
-            compute.VmEndpointNatMappingsList,
-            Awaitable[compute.VmEndpointNatMappingsList],
-        ],
-    ]:
+    ) -> Callable[[compute.GetNatMappingInfoRoutersRequest], Union[compute.VmEndpointNatMappingsList, Awaitable[compute.VmEndpointNatMappingsList]]]:
         raise NotImplementedError()
 
     @property
     def get_route_policy(
         self,
     ) -> Callable[
-        [compute.GetRoutePolicyRouterRequest],
-        Union[
-            compute.RoutersGetRoutePolicyResponse,
-            Awaitable[compute.RoutersGetRoutePolicyResponse],
-        ],
+        [compute.GetRoutePolicyRouterRequest], Union[compute.RoutersGetRoutePolicyResponse, Awaitable[compute.RoutersGetRoutePolicyResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_router_status(
         self,
-    ) -> Callable[
-        [compute.GetRouterStatusRouterRequest],
-        Union[compute.RouterStatusResponse, Awaitable[compute.RouterStatusResponse]],
-    ]:
+    ) -> Callable[[compute.GetRouterStatusRouterRequest], Union[compute.RouterStatusResponse, Awaitable[compute.RouterStatusResponse]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRoutersRequest],
-        Union[compute.RouterList, Awaitable[compute.RouterList]],
-    ]:
+    def list(self) -> Callable[[compute.ListRoutersRequest], Union[compute.RouterList, Awaitable[compute.RouterList]]]:
         raise NotImplementedError()
 
     @property
     def list_bgp_routes(
         self,
-    ) -> Callable[
-        [compute.ListBgpRoutesRoutersRequest],
-        Union[compute.RoutersListBgpRoutes, Awaitable[compute.RoutersListBgpRoutes]],
-    ]:
+    ) -> Callable[[compute.ListBgpRoutesRoutersRequest], Union[compute.RoutersListBgpRoutes, Awaitable[compute.RoutersListBgpRoutes]]]:
         raise NotImplementedError()
 
     @property
     def list_route_policies(
         self,
-    ) -> Callable[
-        [compute.ListRoutePoliciesRoutersRequest],
-        Union[
-            compute.RoutersListRoutePolicies,
-            Awaitable[compute.RoutersListRoutePolicies],
-        ],
-    ]:
+    ) -> Callable[[compute.ListRoutePoliciesRoutersRequest], Union[compute.RoutersListRoutePolicies, Awaitable[compute.RoutersListRoutePolicies]]]:
         raise NotImplementedError()
 
     @property
-    def patch(
-        self,
-    ) -> Callable[
-        [compute.PatchRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch(self) -> Callable[[compute.PatchRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def patch_route_policy(
-        self,
-    ) -> Callable[
-        [compute.PatchRoutePolicyRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch_route_policy(self) -> Callable[[compute.PatchRoutePolicyRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def preview(
-        self,
-    ) -> Callable[
-        [compute.PreviewRouterRequest],
-        Union[
-            compute.RoutersPreviewResponse, Awaitable[compute.RoutersPreviewResponse]
-        ],
-    ]:
+    def preview(self) -> Callable[[compute.PreviewRouterRequest], Union[compute.RoutersPreviewResponse, Awaitable[compute.RoutersPreviewResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_route_policy(
-        self,
-    ) -> Callable[
-        [compute.UpdateRoutePolicyRouterRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update_route_policy(self) -> Callable[[compute.UpdateRoutePolicyRouterRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

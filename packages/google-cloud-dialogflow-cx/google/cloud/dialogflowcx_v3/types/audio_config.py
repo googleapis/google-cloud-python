@@ -557,9 +557,7 @@ class TextToSpeechSettings(proto.Message):
               is not specified.
     """
 
-    synthesize_speech_configs: MutableMapping[
-        str, "SynthesizeSpeechConfig"
-    ] = proto.MapField(
+    synthesize_speech_configs: MutableMapping[str, "SynthesizeSpeechConfig"] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=1,

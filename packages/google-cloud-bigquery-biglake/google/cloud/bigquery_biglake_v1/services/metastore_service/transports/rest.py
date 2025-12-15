@@ -199,9 +199,7 @@ class MetastoreServiceRestInterceptor:
     """
 
     def pre_create_catalog(
-        self,
-        request: metastore.CreateCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.CreateCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.CreateCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_catalog
 
@@ -224,9 +222,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_create_catalog_with_metadata(
-        self,
-        response: metastore.Catalog,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Catalog, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_catalog
 
@@ -243,12 +239,8 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_create_database(
-        self,
-        request: metastore.CreateDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.CreateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.CreateDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.CreateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_database
 
         Override in a subclass to manipulate the request or metadata
@@ -270,9 +262,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_create_database_with_metadata(
-        self,
-        response: metastore.Database,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Database, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_database
 
@@ -289,9 +279,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_create_table(
-        self,
-        request: metastore.CreateTableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.CreateTableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.CreateTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_table
 
@@ -314,9 +302,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_create_table_with_metadata(
-        self,
-        response: metastore.Table,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Table, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_table
 
@@ -333,9 +319,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_catalog(
-        self,
-        request: metastore.DeleteCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.DeleteCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.DeleteCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_catalog
 
@@ -358,9 +342,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_delete_catalog_with_metadata(
-        self,
-        response: metastore.Catalog,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Catalog, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_catalog
 
@@ -377,12 +359,8 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_database(
-        self,
-        request: metastore.DeleteDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.DeleteDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.DeleteDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.DeleteDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_database
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +382,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_delete_database_with_metadata(
-        self,
-        response: metastore.Database,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Database, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_database
 
@@ -423,9 +399,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_table(
-        self,
-        request: metastore.DeleteTableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.DeleteTableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.DeleteTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_table
 
@@ -448,9 +422,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_delete_table_with_metadata(
-        self,
-        response: metastore.Table,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Table, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_table
 
@@ -467,9 +439,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_get_catalog(
-        self,
-        request: metastore.GetCatalogRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.GetCatalogRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.GetCatalogRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_catalog
 
@@ -492,9 +462,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_get_catalog_with_metadata(
-        self,
-        response: metastore.Catalog,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Catalog, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Catalog, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_catalog
 
@@ -511,9 +479,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_get_database(
-        self,
-        request: metastore.GetDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.GetDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.GetDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_database
 
@@ -536,9 +502,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_get_database_with_metadata(
-        self,
-        response: metastore.Database,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Database, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_database
 
@@ -555,9 +519,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_get_table(
-        self,
-        request: metastore.GetTableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.GetTableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.GetTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table
 
@@ -580,9 +542,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_get_table_with_metadata(
-        self,
-        response: metastore.Table,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Table, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_table
 
@@ -599,9 +559,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_list_catalogs(
-        self,
-        request: metastore.ListCatalogsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.ListCatalogsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListCatalogsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_catalogs
 
@@ -610,9 +568,7 @@ class MetastoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_catalogs(
-        self, response: metastore.ListCatalogsResponse
-    ) -> metastore.ListCatalogsResponse:
+    def post_list_catalogs(self, response: metastore.ListCatalogsResponse) -> metastore.ListCatalogsResponse:
         """Post-rpc interceptor for list_catalogs
 
         DEPRECATED. Please use the `post_list_catalogs_with_metadata`
@@ -626,9 +582,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_list_catalogs_with_metadata(
-        self,
-        response: metastore.ListCatalogsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.ListCatalogsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListCatalogsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_catalogs
 
@@ -645,9 +599,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_list_databases(
-        self,
-        request: metastore.ListDatabasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.ListDatabasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_databases
 
@@ -656,9 +608,7 @@ class MetastoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_databases(
-        self, response: metastore.ListDatabasesResponse
-    ) -> metastore.ListDatabasesResponse:
+    def post_list_databases(self, response: metastore.ListDatabasesResponse) -> metastore.ListDatabasesResponse:
         """Post-rpc interceptor for list_databases
 
         DEPRECATED. Please use the `post_list_databases_with_metadata`
@@ -672,12 +622,8 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_list_databases_with_metadata(
-        self,
-        response: metastore.ListDatabasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.ListDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: metastore.ListDatabasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.ListDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_databases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -693,9 +639,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_list_tables(
-        self,
-        request: metastore.ListTablesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.ListTablesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListTablesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tables
 
@@ -704,9 +648,7 @@ class MetastoreServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tables(
-        self, response: metastore.ListTablesResponse
-    ) -> metastore.ListTablesResponse:
+    def post_list_tables(self, response: metastore.ListTablesResponse) -> metastore.ListTablesResponse:
         """Post-rpc interceptor for list_tables
 
         DEPRECATED. Please use the `post_list_tables_with_metadata`
@@ -720,9 +662,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_list_tables_with_metadata(
-        self,
-        response: metastore.ListTablesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.ListTablesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.ListTablesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tables
 
@@ -739,9 +679,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_rename_table(
-        self,
-        request: metastore.RenameTableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.RenameTableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.RenameTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for rename_table
 
@@ -764,9 +702,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_rename_table_with_metadata(
-        self,
-        response: metastore.Table,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Table, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for rename_table
 
@@ -783,12 +719,8 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_update_database(
-        self,
-        request: metastore.UpdateDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        metastore.UpdateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: metastore.UpdateDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[metastore.UpdateDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_database
 
         Override in a subclass to manipulate the request or metadata
@@ -810,9 +742,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_update_database_with_metadata(
-        self,
-        response: metastore.Database,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Database, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_database
 
@@ -829,9 +759,7 @@ class MetastoreServiceRestInterceptor:
         return response, metadata
 
     def pre_update_table(
-        self,
-        request: metastore.UpdateTableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: metastore.UpdateTableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.UpdateTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_table
 
@@ -854,9 +782,7 @@ class MetastoreServiceRestInterceptor:
         return response
 
     def post_update_table_with_metadata(
-        self,
-        response: metastore.Table,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: metastore.Table, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[metastore.Table, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_table
 
@@ -962,30 +888,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or MetastoreServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateCatalog(
-        _BaseMetastoreServiceRestTransport._BaseCreateCatalog, MetastoreServiceRestStub
-    ):
+    class _CreateCatalog(_BaseMetastoreServiceRestTransport._BaseCreateCatalog, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.CreateCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1028,30 +942,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_create_catalog(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_transcoded_request(http_options, request)
 
-            body = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseCreateCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1075,13 +977,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._CreateCatalog._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1097,12 +993,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_create_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Catalog.to_json(response)
                 except:
@@ -1123,22 +1015,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _CreateDatabase(
-        _BaseMetastoreServiceRestTransport._BaseCreateDatabase, MetastoreServiceRestStub
-    ):
+    class _CreateDatabase(_BaseMetastoreServiceRestTransport._BaseCreateDatabase, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.CreateDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1179,30 +1061,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_create_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseCreateDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1226,13 +1096,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._CreateDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1248,12 +1112,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_create_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
                 except:
@@ -1274,22 +1134,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _CreateTable(
-        _BaseMetastoreServiceRestTransport._BaseCreateTable, MetastoreServiceRestStub
-    ):
+    class _CreateTable(_BaseMetastoreServiceRestTransport._BaseCreateTable, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.CreateTable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1330,30 +1180,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Represents a table.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseCreateTable._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_http_options()
 
             request, metadata = self._interceptor.pre_create_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_transcoded_request(http_options, request)
 
-            body = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseCreateTable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1377,13 +1215,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._CreateTable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1399,12 +1231,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_create_table(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_table_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_table_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
                 except:
@@ -1425,22 +1253,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _DeleteCatalog(
-        _BaseMetastoreServiceRestTransport._BaseDeleteCatalog, MetastoreServiceRestStub
-    ):
+    class _DeleteCatalog(_BaseMetastoreServiceRestTransport._BaseDeleteCatalog, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.DeleteCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1482,26 +1300,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_catalog(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1525,12 +1333,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._DeleteCatalog._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1546,12 +1349,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_delete_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Catalog.to_json(response)
                 except:
@@ -1572,22 +1371,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDatabase(
-        _BaseMetastoreServiceRestTransport._BaseDeleteDatabase, MetastoreServiceRestStub
-    ):
+    class _DeleteDatabase(_BaseMetastoreServiceRestTransport._BaseDeleteDatabase, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.DeleteDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1627,26 +1416,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1670,12 +1449,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._DeleteDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1691,12 +1465,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_delete_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
                 except:
@@ -1717,22 +1487,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _DeleteTable(
-        _BaseMetastoreServiceRestTransport._BaseDeleteTable, MetastoreServiceRestStub
-    ):
+    class _DeleteTable(_BaseMetastoreServiceRestTransport._BaseDeleteTable, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.DeleteTable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1772,26 +1532,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Represents a table.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseDeleteTable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1815,12 +1565,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._DeleteTable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1836,12 +1581,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_delete_table(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_table_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_table_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
                 except:
@@ -1862,22 +1603,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _GetCatalog(
-        _BaseMetastoreServiceRestTransport._BaseGetCatalog, MetastoreServiceRestStub
-    ):
+    class _GetCatalog(_BaseMetastoreServiceRestTransport._BaseGetCatalog, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.GetCatalog")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1919,26 +1650,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_http_options()
 
             request, metadata = self._interceptor.pre_get_catalog(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseGetCatalog._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1962,12 +1683,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._GetCatalog._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1983,12 +1699,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_get_catalog(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_catalog_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_catalog_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Catalog.to_json(response)
                 except:
@@ -2009,22 +1721,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _GetDatabase(
-        _BaseMetastoreServiceRestTransport._BaseGetDatabase, MetastoreServiceRestStub
-    ):
+    class _GetDatabase(_BaseMetastoreServiceRestTransport._BaseGetDatabase, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.GetDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2064,26 +1766,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_get_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseGetDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2107,12 +1799,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._GetDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2128,12 +1815,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_get_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
                 except:
@@ -2154,22 +1837,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _GetTable(
-        _BaseMetastoreServiceRestTransport._BaseGetTable, MetastoreServiceRestStub
-    ):
+    class _GetTable(_BaseMetastoreServiceRestTransport._BaseGetTable, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.GetTable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2209,28 +1882,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Represents a table.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseGetTable._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseGetTable._get_http_options()
 
             request, metadata = self._interceptor.pre_get_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetTable._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseGetTable._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMetastoreServiceRestTransport._BaseGetTable._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseGetTable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2254,12 +1915,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._GetTable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2275,12 +1931,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_get_table(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_table_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_table_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
                 except:
@@ -2301,22 +1953,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _ListCatalogs(
-        _BaseMetastoreServiceRestTransport._BaseListCatalogs, MetastoreServiceRestStub
-    ):
+    class _ListCatalogs(_BaseMetastoreServiceRestTransport._BaseListCatalogs, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.ListCatalogs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2358,26 +2000,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_catalogs(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseListCatalogs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2401,12 +2033,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._ListCatalogs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2422,12 +2049,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_list_catalogs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_catalogs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_catalogs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListCatalogsResponse.to_json(response)
                 except:
@@ -2448,22 +2071,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _ListDatabases(
-        _BaseMetastoreServiceRestTransport._BaseListDatabases, MetastoreServiceRestStub
-    ):
+    class _ListDatabases(_BaseMetastoreServiceRestTransport._BaseListDatabases, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.ListDatabases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2505,26 +2118,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseListDatabases._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseListDatabases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2548,12 +2151,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._ListDatabases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2569,12 +2167,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_list_databases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_databases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_databases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListDatabasesResponse.to_json(response)
                 except:
@@ -2595,22 +2189,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _ListTables(
-        _BaseMetastoreServiceRestTransport._BaseListTables, MetastoreServiceRestStub
-    ):
+    class _ListTables(_BaseMetastoreServiceRestTransport._BaseListTables, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.ListTables")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2652,26 +2236,16 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseListTables._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseListTables._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tables(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListTables._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseListTables._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseListTables._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseListTables._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2695,12 +2269,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._ListTables._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2716,12 +2285,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_list_tables(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tables_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tables_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.ListTablesResponse.to_json(response)
                 except:
@@ -2742,22 +2307,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _RenameTable(
-        _BaseMetastoreServiceRestTransport._BaseRenameTable, MetastoreServiceRestStub
-    ):
+    class _RenameTable(_BaseMetastoreServiceRestTransport._BaseRenameTable, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.RenameTable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2798,30 +2353,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Represents a table.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseRenameTable._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_http_options()
 
             request, metadata = self._interceptor.pre_rename_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_transcoded_request(http_options, request)
 
-            body = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseRenameTable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2845,13 +2388,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._RenameTable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2867,12 +2404,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_rename_table(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_rename_table_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_rename_table_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
                 except:
@@ -2893,22 +2426,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDatabase(
-        _BaseMetastoreServiceRestTransport._BaseUpdateDatabase, MetastoreServiceRestStub
-    ):
+    class _UpdateDatabase(_BaseMetastoreServiceRestTransport._BaseUpdateDatabase, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.UpdateDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2949,30 +2472,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Database is the container of tables.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_update_database(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseUpdateDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2996,13 +2507,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._UpdateDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3018,12 +2523,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_update_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Database.to_json(response)
                 except:
@@ -3044,22 +2545,12 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                 )
             return resp
 
-    class _UpdateTable(
-        _BaseMetastoreServiceRestTransport._BaseUpdateTable, MetastoreServiceRestStub
-    ):
+    class _UpdateTable(_BaseMetastoreServiceRestTransport._BaseUpdateTable, MetastoreServiceRestStub):
         def __hash__(self):
             return hash("MetastoreServiceRestTransport.UpdateTable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3100,30 +2591,18 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
                     Represents a table.
             """
 
-            http_options = (
-                _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_http_options()
-            )
+            http_options = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_http_options()
 
             request, metadata = self._interceptor.pre_update_table(request, metadata)
-            transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_transcoded_request(http_options, request)
 
-            body = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMetastoreServiceRestTransport._BaseUpdateTable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3147,13 +2626,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             # Send the request
             response = MetastoreServiceRestTransport._UpdateTable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3169,12 +2642,8 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
 
             resp = self._interceptor.post_update_table(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_table_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_table_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = metastore.Table.to_json(response)
                 except:
@@ -3196,17 +2665,13 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
             return resp
 
     @property
-    def create_catalog(
-        self,
-    ) -> Callable[[metastore.CreateCatalogRequest], metastore.Catalog]:
+    def create_catalog(self) -> Callable[[metastore.CreateCatalogRequest], metastore.Catalog]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[[metastore.CreateDatabaseRequest], metastore.Database]:
+    def create_database(self) -> Callable[[metastore.CreateDatabaseRequest], metastore.Database]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDatabase(self._session, self._host, self._interceptor)  # type: ignore
@@ -3218,17 +2683,13 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
         return self._CreateTable(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_catalog(
-        self,
-    ) -> Callable[[metastore.DeleteCatalogRequest], metastore.Catalog]:
+    def delete_catalog(self) -> Callable[[metastore.DeleteCatalogRequest], metastore.Catalog]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_database(
-        self,
-    ) -> Callable[[metastore.DeleteDatabaseRequest], metastore.Database]:
+    def delete_database(self) -> Callable[[metastore.DeleteDatabaseRequest], metastore.Database]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDatabase(self._session, self._host, self._interceptor)  # type: ignore
@@ -3246,9 +2707,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
         return self._GetCatalog(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[[metastore.GetDatabaseRequest], metastore.Database]:
+    def get_database(self) -> Callable[[metastore.GetDatabaseRequest], metastore.Database]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDatabase(self._session, self._host, self._interceptor)  # type: ignore
@@ -3260,25 +2719,19 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
         return self._GetTable(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_catalogs(
-        self,
-    ) -> Callable[[metastore.ListCatalogsRequest], metastore.ListCatalogsResponse]:
+    def list_catalogs(self) -> Callable[[metastore.ListCatalogsRequest], metastore.ListCatalogsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCatalogs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[[metastore.ListDatabasesRequest], metastore.ListDatabasesResponse]:
+    def list_databases(self) -> Callable[[metastore.ListDatabasesRequest], metastore.ListDatabasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatabases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[[metastore.ListTablesRequest], metastore.ListTablesResponse]:
+    def list_tables(self) -> Callable[[metastore.ListTablesRequest], metastore.ListTablesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTables(self._session, self._host, self._interceptor)  # type: ignore
@@ -3290,9 +2743,7 @@ class MetastoreServiceRestTransport(_BaseMetastoreServiceRestTransport):
         return self._RenameTable(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_database(
-        self,
-    ) -> Callable[[metastore.UpdateDatabaseRequest], metastore.Database]:
+    def update_database(self) -> Callable[[metastore.UpdateDatabaseRequest], metastore.Database]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDatabase(self._session, self._host, self._interceptor)  # type: ignore

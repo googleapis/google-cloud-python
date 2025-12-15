@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -117,33 +106,17 @@ class CloudChannelServiceAsyncClient:
     account_path = staticmethod(CloudChannelServiceClient.account_path)
     parse_account_path = staticmethod(CloudChannelServiceClient.parse_account_path)
     billing_account_path = staticmethod(CloudChannelServiceClient.billing_account_path)
-    parse_billing_account_path = staticmethod(
-        CloudChannelServiceClient.parse_billing_account_path
-    )
-    channel_partner_link_path = staticmethod(
-        CloudChannelServiceClient.channel_partner_link_path
-    )
-    parse_channel_partner_link_path = staticmethod(
-        CloudChannelServiceClient.parse_channel_partner_link_path
-    )
-    channel_partner_repricing_config_path = staticmethod(
-        CloudChannelServiceClient.channel_partner_repricing_config_path
-    )
-    parse_channel_partner_repricing_config_path = staticmethod(
-        CloudChannelServiceClient.parse_channel_partner_repricing_config_path
-    )
+    parse_billing_account_path = staticmethod(CloudChannelServiceClient.parse_billing_account_path)
+    channel_partner_link_path = staticmethod(CloudChannelServiceClient.channel_partner_link_path)
+    parse_channel_partner_link_path = staticmethod(CloudChannelServiceClient.parse_channel_partner_link_path)
+    channel_partner_repricing_config_path = staticmethod(CloudChannelServiceClient.channel_partner_repricing_config_path)
+    parse_channel_partner_repricing_config_path = staticmethod(CloudChannelServiceClient.parse_channel_partner_repricing_config_path)
     customer_path = staticmethod(CloudChannelServiceClient.customer_path)
     parse_customer_path = staticmethod(CloudChannelServiceClient.parse_customer_path)
-    customer_repricing_config_path = staticmethod(
-        CloudChannelServiceClient.customer_repricing_config_path
-    )
-    parse_customer_repricing_config_path = staticmethod(
-        CloudChannelServiceClient.parse_customer_repricing_config_path
-    )
+    customer_repricing_config_path = staticmethod(CloudChannelServiceClient.customer_repricing_config_path)
+    parse_customer_repricing_config_path = staticmethod(CloudChannelServiceClient.parse_customer_repricing_config_path)
     entitlement_path = staticmethod(CloudChannelServiceClient.entitlement_path)
-    parse_entitlement_path = staticmethod(
-        CloudChannelServiceClient.parse_entitlement_path
-    )
+    parse_entitlement_path = staticmethod(CloudChannelServiceClient.parse_entitlement_path)
     offer_path = staticmethod(CloudChannelServiceClient.offer_path)
     parse_offer_path = staticmethod(CloudChannelServiceClient.parse_offer_path)
     product_path = staticmethod(CloudChannelServiceClient.product_path)
@@ -152,30 +125,16 @@ class CloudChannelServiceAsyncClient:
     parse_sku_path = staticmethod(CloudChannelServiceClient.parse_sku_path)
     sku_group_path = staticmethod(CloudChannelServiceClient.sku_group_path)
     parse_sku_group_path = staticmethod(CloudChannelServiceClient.parse_sku_group_path)
-    common_billing_account_path = staticmethod(
-        CloudChannelServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CloudChannelServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(CloudChannelServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CloudChannelServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(CloudChannelServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        CloudChannelServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        CloudChannelServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        CloudChannelServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(CloudChannelServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(CloudChannelServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(CloudChannelServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(CloudChannelServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        CloudChannelServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(CloudChannelServiceClient.parse_common_project_path)
     common_location_path = staticmethod(CloudChannelServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        CloudChannelServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(CloudChannelServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -211,9 +170,7 @@ class CloudChannelServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -280,13 +237,7 @@ class CloudChannelServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                CloudChannelServiceTransport,
-                Callable[..., CloudChannelServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, CloudChannelServiceTransport, Callable[..., CloudChannelServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -346,20 +297,14 @@ class CloudChannelServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.channel_v1.CloudChannelServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.channel.v1.CloudChannelService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -445,15 +390,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_customers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_customers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -560,14 +501,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -581,15 +517,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_customer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_customer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -607,9 +539,7 @@ class CloudChannelServiceAsyncClient:
 
     async def check_cloud_identity_accounts_exist(
         self,
-        request: Optional[
-            Union[service.CheckCloudIdentityAccountsExistRequest, dict]
-        ] = None,
+        request: Optional[Union[service.CheckCloudIdentityAccountsExistRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -689,15 +619,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.check_cloud_identity_accounts_exist
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.check_cloud_identity_accounts_exist]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -798,15 +724,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_customer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_customer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -901,17 +823,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_customer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_customer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("customer.name", request.customer.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer.name", request.customer.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -995,14 +911,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1016,15 +927,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_customer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_customer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1122,15 +1029,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_customer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_customer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1241,15 +1144,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.provision_cloud_identity
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.provision_cloud_identity]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1350,15 +1249,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_entitlements
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_entitlements]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1474,15 +1369,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_transferable_skus
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_transferable_skus]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1605,15 +1496,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_transferable_offers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_transferable_offers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1714,15 +1601,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1861,15 +1744,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1987,15 +1866,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.change_parameters
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.change_parameters]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2115,15 +1990,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.change_renewal_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.change_renewal_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2240,15 +2111,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.change_offer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.change_offer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2367,15 +2234,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.start_paid_service
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.start_paid_service]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2491,15 +2354,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.suspend_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.suspend_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2626,15 +2485,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.cancel_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.cancel_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2757,15 +2612,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.activate_entitlement
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.activate_entitlement]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2903,15 +2754,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.transfer_entitlements
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.transfer_entitlements]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2937,9 +2784,7 @@ class CloudChannelServiceAsyncClient:
 
     async def transfer_entitlements_to_google(
         self,
-        request: Optional[
-            Union[service.TransferEntitlementsToGoogleRequest, dict]
-        ] = None,
+        request: Optional[Union[service.TransferEntitlementsToGoogleRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -3052,15 +2897,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.transfer_entitlements_to_google
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.transfer_entitlements_to_google]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3164,15 +3005,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_channel_partner_links
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channel_partner_links]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3277,15 +3114,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_channel_partner_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel_partner_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3393,15 +3226,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_channel_partner_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_partner_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3509,15 +3338,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_channel_partner_link
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_channel_partner_link]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3535,9 +3360,7 @@ class CloudChannelServiceAsyncClient:
 
     async def get_customer_repricing_config(
         self,
-        request: Optional[
-            Union[service.GetCustomerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.GetCustomerRepricingConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3617,14 +3440,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3638,15 +3456,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_customer_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_customer_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3664,9 +3478,7 @@ class CloudChannelServiceAsyncClient:
 
     async def list_customer_repricing_configs(
         self,
-        request: Optional[
-            Union[service.ListCustomerRepricingConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[service.ListCustomerRepricingConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3761,14 +3573,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3782,15 +3589,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_customer_repricing_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_customer_repricing_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3819,9 +3622,7 @@ class CloudChannelServiceAsyncClient:
 
     async def create_customer_repricing_config(
         self,
-        request: Optional[
-            Union[service.CreateCustomerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.CreateCustomerRepricingConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         customer_repricing_config: Optional[repricing.CustomerRepricingConfig] = None,
@@ -3944,14 +3745,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, customer_repricing_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3967,15 +3763,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_customer_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_customer_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3993,9 +3785,7 @@ class CloudChannelServiceAsyncClient:
 
     async def update_customer_repricing_config(
         self,
-        request: Optional[
-            Union[service.UpdateCustomerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.UpdateCustomerRepricingConfigRequest, dict]] = None,
         *,
         customer_repricing_config: Optional[repricing.CustomerRepricingConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4094,14 +3884,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [customer_repricing_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4115,21 +3900,12 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_customer_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_customer_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "customer_repricing_config.name",
-                        request.customer_repricing_config.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("customer_repricing_config.name", request.customer_repricing_config.name),)),
         )
 
         # Validate the universe domain.
@@ -4148,9 +3924,7 @@ class CloudChannelServiceAsyncClient:
 
     async def delete_customer_repricing_config(
         self,
-        request: Optional[
-            Union[service.DeleteCustomerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.DeleteCustomerRepricingConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4223,14 +3997,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4244,15 +4013,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_customer_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_customer_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4267,9 +4032,7 @@ class CloudChannelServiceAsyncClient:
 
     async def get_channel_partner_repricing_config(
         self,
-        request: Optional[
-            Union[service.GetChannelPartnerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.GetChannelPartnerRepricingConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4351,14 +4114,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4372,15 +4130,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_channel_partner_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_channel_partner_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4398,9 +4152,7 @@ class CloudChannelServiceAsyncClient:
 
     async def list_channel_partner_repricing_configs(
         self,
-        request: Optional[
-            Union[service.ListChannelPartnerRepricingConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[service.ListChannelPartnerRepricingConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4495,14 +4247,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4516,15 +4263,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_channel_partner_repricing_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_channel_partner_repricing_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4553,14 +4296,10 @@ class CloudChannelServiceAsyncClient:
 
     async def create_channel_partner_repricing_config(
         self,
-        request: Optional[
-            Union[service.CreateChannelPartnerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.CreateChannelPartnerRepricingConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        channel_partner_repricing_config: Optional[
-            repricing.ChannelPartnerRepricingConfig
-        ] = None,
+        channel_partner_repricing_config: Optional[repricing.ChannelPartnerRepricingConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4683,14 +4422,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, channel_partner_repricing_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4706,15 +4440,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_channel_partner_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_channel_partner_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4732,13 +4462,9 @@ class CloudChannelServiceAsyncClient:
 
     async def update_channel_partner_repricing_config(
         self,
-        request: Optional[
-            Union[service.UpdateChannelPartnerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.UpdateChannelPartnerRepricingConfigRequest, dict]] = None,
         *,
-        channel_partner_repricing_config: Optional[
-            repricing.ChannelPartnerRepricingConfig
-        ] = None,
+        channel_partner_repricing_config: Optional[repricing.ChannelPartnerRepricingConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -4838,14 +4564,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [channel_partner_repricing_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4859,21 +4580,12 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_channel_partner_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_channel_partner_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "channel_partner_repricing_config.name",
-                        request.channel_partner_repricing_config.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("channel_partner_repricing_config.name", request.channel_partner_repricing_config.name),)),
         )
 
         # Validate the universe domain.
@@ -4892,9 +4604,7 @@ class CloudChannelServiceAsyncClient:
 
     async def delete_channel_partner_repricing_config(
         self,
-        request: Optional[
-            Union[service.DeleteChannelPartnerRepricingConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[service.DeleteChannelPartnerRepricingConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4967,14 +4677,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4988,15 +4693,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_channel_partner_repricing_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_channel_partner_repricing_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5099,14 +4800,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5120,15 +4816,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_sku_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sku_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5242,14 +4934,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5263,15 +4950,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_sku_group_billable_skus
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_sku_group_billable_skus]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5374,17 +5057,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.lookup_offer
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.lookup_offer]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("entitlement", request.entitlement),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("entitlement", request.entitlement),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5470,9 +5147,7 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_products
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_products]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5570,15 +5245,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_skus
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_skus]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5675,15 +5346,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_offers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_offers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5790,15 +5457,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_purchasable_skus
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_purchasable_skus]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5910,15 +5573,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_purchasable_offers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_purchasable_offers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5947,9 +5606,7 @@ class CloudChannelServiceAsyncClient:
 
     async def query_eligible_billing_accounts(
         self,
-        request: Optional[
-            Union[service.QueryEligibleBillingAccountsRequest, dict]
-        ] = None,
+        request: Optional[Union[service.QueryEligibleBillingAccountsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -6023,15 +5680,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.query_eligible_billing_accounts
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.query_eligible_billing_accounts]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("customer", request.customer),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6127,15 +5780,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.register_subscriber
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.register_subscriber]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6234,15 +5883,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.unregister_subscriber
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.unregister_subscriber]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6338,15 +5983,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_subscribers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_subscribers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("account", request.account),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6463,14 +6104,9 @@ class CloudChannelServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6484,15 +6120,11 @@ class CloudChannelServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_entitlement_changes
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_entitlement_changes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6556,9 +6188,7 @@ class CloudChannelServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6611,9 +6241,7 @@ class CloudChannelServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6670,9 +6298,7 @@ class CloudChannelServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6725,9 +6351,7 @@ class CloudChannelServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6747,9 +6371,7 @@ class CloudChannelServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

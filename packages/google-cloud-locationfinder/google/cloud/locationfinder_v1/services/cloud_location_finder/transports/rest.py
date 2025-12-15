@@ -104,12 +104,8 @@ class CloudLocationFinderRestInterceptor:
     """
 
     def pre_get_cloud_location(
-        self,
-        request: cloud_location.GetCloudLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_location.GetCloudLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_location.GetCloudLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_location.GetCloudLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cloud_location
 
         Override in a subclass to manipulate the request or metadata
@@ -117,9 +113,7 @@ class CloudLocationFinderRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cloud_location(
-        self, response: cloud_location.CloudLocation
-    ) -> cloud_location.CloudLocation:
+    def post_get_cloud_location(self, response: cloud_location.CloudLocation) -> cloud_location.CloudLocation:
         """Post-rpc interceptor for get_cloud_location
 
         DEPRECATED. Please use the `post_get_cloud_location_with_metadata`
@@ -133,9 +127,7 @@ class CloudLocationFinderRestInterceptor:
         return response
 
     def post_get_cloud_location_with_metadata(
-        self,
-        response: cloud_location.CloudLocation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_location.CloudLocation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_location.CloudLocation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cloud_location
 
@@ -152,13 +144,8 @@ class CloudLocationFinderRestInterceptor:
         return response, metadata
 
     def pre_list_cloud_locations(
-        self,
-        request: cloud_location.ListCloudLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_location.ListCloudLocationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_location.ListCloudLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_location.ListCloudLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cloud_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -166,9 +153,7 @@ class CloudLocationFinderRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cloud_locations(
-        self, response: cloud_location.ListCloudLocationsResponse
-    ) -> cloud_location.ListCloudLocationsResponse:
+    def post_list_cloud_locations(self, response: cloud_location.ListCloudLocationsResponse) -> cloud_location.ListCloudLocationsResponse:
         """Post-rpc interceptor for list_cloud_locations
 
         DEPRECATED. Please use the `post_list_cloud_locations_with_metadata`
@@ -182,13 +167,8 @@ class CloudLocationFinderRestInterceptor:
         return response
 
     def post_list_cloud_locations_with_metadata(
-        self,
-        response: cloud_location.ListCloudLocationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_location.ListCloudLocationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_location.ListCloudLocationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_location.ListCloudLocationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cloud_locations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -204,13 +184,8 @@ class CloudLocationFinderRestInterceptor:
         return response, metadata
 
     def pre_search_cloud_locations(
-        self,
-        request: cloud_location.SearchCloudLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_location.SearchCloudLocationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_location.SearchCloudLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_location.SearchCloudLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_cloud_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -218,9 +193,7 @@ class CloudLocationFinderRestInterceptor:
         """
         return request, metadata
 
-    def post_search_cloud_locations(
-        self, response: cloud_location.SearchCloudLocationsResponse
-    ) -> cloud_location.SearchCloudLocationsResponse:
+    def post_search_cloud_locations(self, response: cloud_location.SearchCloudLocationsResponse) -> cloud_location.SearchCloudLocationsResponse:
         """Post-rpc interceptor for search_cloud_locations
 
         DEPRECATED. Please use the `post_search_cloud_locations_with_metadata`
@@ -234,13 +207,8 @@ class CloudLocationFinderRestInterceptor:
         return response
 
     def post_search_cloud_locations_with_metadata(
-        self,
-        response: cloud_location.SearchCloudLocationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_location.SearchCloudLocationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_location.SearchCloudLocationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_location.SearchCloudLocationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_cloud_locations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -256,12 +224,8 @@ class CloudLocationFinderRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -269,9 +233,7 @@ class CloudLocationFinderRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -281,12 +243,8 @@ class CloudLocationFinderRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -294,9 +252,7 @@ class CloudLocationFinderRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -385,31 +341,18 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CloudLocationFinderRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetCloudLocation(
-        _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation,
-        CloudLocationFinderRestStub,
-    ):
+    class _GetCloudLocation(_BaseCloudLocationFinderRestTransport._BaseGetCloudLocation, CloudLocationFinderRestStub):
         def __hash__(self):
             return hash("CloudLocationFinderRestTransport.GetCloudLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -448,28 +391,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                     Represents resource cloud locations.
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_cloud_location(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_cloud_location(request, metadata)
+            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudLocationFinderRestTransport._BaseGetCloudLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -493,12 +424,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             # Send the request
             response = CloudLocationFinderRestTransport._GetCloudLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -514,12 +440,8 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             resp = self._interceptor.post_get_cloud_location(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cloud_location_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cloud_location_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_location.CloudLocation.to_json(response)
                 except:
@@ -540,23 +462,12 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 )
             return resp
 
-    class _ListCloudLocations(
-        _BaseCloudLocationFinderRestTransport._BaseListCloudLocations,
-        CloudLocationFinderRestStub,
-    ):
+    class _ListCloudLocations(_BaseCloudLocationFinderRestTransport._BaseListCloudLocations, CloudLocationFinderRestStub):
         def __hash__(self):
             return hash("CloudLocationFinderRestTransport.ListCloudLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -598,28 +509,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cloud_locations(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cloud_locations(request, metadata)
+            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudLocationFinderRestTransport._BaseListCloudLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -642,15 +541,8 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 )
 
             # Send the request
-            response = (
-                CloudLocationFinderRestTransport._ListCloudLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudLocationFinderRestTransport._ListCloudLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -666,16 +558,10 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             resp = self._interceptor.post_list_cloud_locations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cloud_locations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cloud_locations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_location.ListCloudLocationsResponse.to_json(response)
-                    )
+                    response_payload = cloud_location.ListCloudLocationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -694,23 +580,12 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 )
             return resp
 
-    class _SearchCloudLocations(
-        _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations,
-        CloudLocationFinderRestStub,
-    ):
+    class _SearchCloudLocations(_BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations, CloudLocationFinderRestStub):
         def __hash__(self):
             return hash("CloudLocationFinderRestTransport.SearchCloudLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -752,28 +627,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_cloud_locations(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_cloud_locations(request, metadata)
+            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudLocationFinderRestTransport._BaseSearchCloudLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -796,15 +659,8 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 )
 
             # Send the request
-            response = (
-                CloudLocationFinderRestTransport._SearchCloudLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudLocationFinderRestTransport._SearchCloudLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -820,16 +676,10 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             resp = self._interceptor.post_search_cloud_locations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_cloud_locations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_cloud_locations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_location.SearchCloudLocationsResponse.to_json(response)
-                    )
+                    response_payload = cloud_location.SearchCloudLocationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -849,33 +699,19 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             return resp
 
     @property
-    def get_cloud_location(
-        self,
-    ) -> Callable[
-        [cloud_location.GetCloudLocationRequest], cloud_location.CloudLocation
-    ]:
+    def get_cloud_location(self) -> Callable[[cloud_location.GetCloudLocationRequest], cloud_location.CloudLocation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCloudLocation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_cloud_locations(
-        self,
-    ) -> Callable[
-        [cloud_location.ListCloudLocationsRequest],
-        cloud_location.ListCloudLocationsResponse,
-    ]:
+    def list_cloud_locations(self) -> Callable[[cloud_location.ListCloudLocationsRequest], cloud_location.ListCloudLocationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCloudLocations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_cloud_locations(
-        self,
-    ) -> Callable[
-        [cloud_location.SearchCloudLocationsRequest],
-        cloud_location.SearchCloudLocationsResponse,
-    ]:
+    def search_cloud_locations(self) -> Callable[[cloud_location.SearchCloudLocationsRequest], cloud_location.SearchCloudLocationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchCloudLocations(self._session, self._host, self._interceptor)  # type: ignore
@@ -884,23 +720,12 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCloudLocationFinderRestTransport._BaseGetLocation,
-        CloudLocationFinderRestStub,
-    ):
+    class _GetLocation(_BaseCloudLocationFinderRestTransport._BaseGetLocation, CloudLocationFinderRestStub):
         def __hash__(self):
             return hash("CloudLocationFinderRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -938,26 +763,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudLocationFinderRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -981,12 +796,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             # Send the request
             response = CloudLocationFinderRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -998,9 +808,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1025,23 +833,12 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCloudLocationFinderRestTransport._BaseListLocations,
-        CloudLocationFinderRestStub,
-    ):
+    class _ListLocations(_BaseCloudLocationFinderRestTransport._BaseListLocations, CloudLocationFinderRestStub):
         def __hash__(self):
             return hash("CloudLocationFinderRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1079,26 +876,16 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudLocationFinderRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudLocationFinderRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1122,12 +909,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
 
             # Send the request
             response = CloudLocationFinderRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1139,9 +921,7 @@ class CloudLocationFinderRestTransport(_BaseCloudLocationFinderRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

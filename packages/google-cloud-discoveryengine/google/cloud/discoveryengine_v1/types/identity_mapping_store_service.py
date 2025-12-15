@@ -21,9 +21,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import (
-    identity_mapping_store as gcd_identity_mapping_store,
-)
+from google.cloud.discoveryengine_v1.types import identity_mapping_store as gcd_identity_mapping_store
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -100,12 +98,10 @@ class CreateIdentityMappingStoreRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    identity_mapping_store: gcd_identity_mapping_store.IdentityMappingStore = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message=gcd_identity_mapping_store.IdentityMappingStore,
-        )
+    identity_mapping_store: gcd_identity_mapping_store.IdentityMappingStore = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcd_identity_mapping_store.IdentityMappingStore,
     )
 
 
@@ -171,9 +167,7 @@ class ImportIdentityMappingsRequest(proto.Message):
                 one time
         """
 
-        identity_mapping_entries: MutableSequence[
-            gcd_identity_mapping_store.IdentityMappingEntry
-        ] = proto.RepeatedField(
+        identity_mapping_entries: MutableSequence[gcd_identity_mapping_store.IdentityMappingEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=gcd_identity_mapping_store.IdentityMappingEntry,
@@ -263,9 +257,7 @@ class PurgeIdentityMappingsRequest(proto.Message):
                 one time
         """
 
-        identity_mapping_entries: MutableSequence[
-            gcd_identity_mapping_store.IdentityMappingEntry
-        ] = proto.RepeatedField(
+        identity_mapping_entries: MutableSequence[gcd_identity_mapping_store.IdentityMappingEntry] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=gcd_identity_mapping_store.IdentityMappingEntry,
@@ -347,9 +339,7 @@ class ListIdentityMappingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_mapping_entries: MutableSequence[
-        gcd_identity_mapping_store.IdentityMappingEntry
-    ] = proto.RepeatedField(
+    identity_mapping_entries: MutableSequence[gcd_identity_mapping_store.IdentityMappingEntry] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_identity_mapping_store.IdentityMappingEntry,
@@ -414,9 +404,7 @@ class ListIdentityMappingStoresResponse(proto.Message):
     def raw_page(self):
         return self
 
-    identity_mapping_stores: MutableSequence[
-        gcd_identity_mapping_store.IdentityMappingStore
-    ] = proto.RepeatedField(
+    identity_mapping_stores: MutableSequence[gcd_identity_mapping_store.IdentityMappingStore] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_identity_mapping_store.IdentityMappingStore,

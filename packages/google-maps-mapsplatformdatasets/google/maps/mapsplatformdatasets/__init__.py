@@ -18,17 +18,9 @@ from google.maps.mapsplatformdatasets import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.async_client import (
-    MapsPlatformDatasetsAsyncClient,
-)
-from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.client import (
-    MapsPlatformDatasetsClient,
-)
-from google.maps.mapsplatformdatasets_v1.types.data_source import (
-    FileFormat,
-    GcsSource,
-    LocalFileSource,
-)
+from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.async_client import MapsPlatformDatasetsAsyncClient
+from google.maps.mapsplatformdatasets_v1.services.maps_platform_datasets.client import MapsPlatformDatasetsClient
+from google.maps.mapsplatformdatasets_v1.types.data_source import FileFormat, GcsSource, LocalFileSource
 from google.maps.mapsplatformdatasets_v1.types.dataset import Dataset, Status, Usage
 from google.maps.mapsplatformdatasets_v1.types.maps_platform_datasets import (
     CreateDatasetRequest,

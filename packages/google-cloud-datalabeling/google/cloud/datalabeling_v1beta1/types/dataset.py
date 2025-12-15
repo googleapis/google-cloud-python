@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datalabeling_v1beta1.types import (
-    human_annotation_config as gcd_human_annotation_config,
-)
+from google.cloud.datalabeling_v1beta1.types import human_annotation_config as gcd_human_annotation_config
 from google.cloud.datalabeling_v1beta1.types import annotation, data_payloads
 
 __protobuf__ = proto.module(
@@ -633,21 +631,17 @@ class AnnotatedDatasetMetadata(proto.Message):
         oneof="annotation_request_config",
         message=gcd_human_annotation_config.VideoClassificationConfig,
     )
-    object_detection_config: gcd_human_annotation_config.ObjectDetectionConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="annotation_request_config",
-            message=gcd_human_annotation_config.ObjectDetectionConfig,
-        )
+    object_detection_config: gcd_human_annotation_config.ObjectDetectionConfig = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="annotation_request_config",
+        message=gcd_human_annotation_config.ObjectDetectionConfig,
     )
-    object_tracking_config: gcd_human_annotation_config.ObjectTrackingConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=8,
-            oneof="annotation_request_config",
-            message=gcd_human_annotation_config.ObjectTrackingConfig,
-        )
+    object_tracking_config: gcd_human_annotation_config.ObjectTrackingConfig = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="annotation_request_config",
+        message=gcd_human_annotation_config.ObjectTrackingConfig,
     )
     event_config: gcd_human_annotation_config.EventConfig = proto.Field(
         proto.MESSAGE,
@@ -655,13 +649,11 @@ class AnnotatedDatasetMetadata(proto.Message):
         oneof="annotation_request_config",
         message=gcd_human_annotation_config.EventConfig,
     )
-    text_classification_config: gcd_human_annotation_config.TextClassificationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=10,
-            oneof="annotation_request_config",
-            message=gcd_human_annotation_config.TextClassificationConfig,
-        )
+    text_classification_config: gcd_human_annotation_config.TextClassificationConfig = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="annotation_request_config",
+        message=gcd_human_annotation_config.TextClassificationConfig,
     )
     text_entity_extraction_config: gcd_human_annotation_config.TextEntityExtractionConfig = proto.Field(
         proto.MESSAGE,
@@ -669,12 +661,10 @@ class AnnotatedDatasetMetadata(proto.Message):
         oneof="annotation_request_config",
         message=gcd_human_annotation_config.TextEntityExtractionConfig,
     )
-    human_annotation_config: gcd_human_annotation_config.HumanAnnotationConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=gcd_human_annotation_config.HumanAnnotationConfig,
-        )
+    human_annotation_config: gcd_human_annotation_config.HumanAnnotationConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_human_annotation_config.HumanAnnotationConfig,
     )
 
 

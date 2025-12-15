@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,17 +326,13 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_project(
-        self,
-    ) -> Callable[[project_service.GetProjectRequest], Awaitable[project.Project]]:
+    def get_project(self) -> Callable[[project_service.GetProjectRequest], Awaitable[project.Project]]:
         r"""Return a callable for the get project method over gRPC.
 
         Gets the project.
@@ -380,9 +359,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         return self._stubs["get_project"]
 
     @property
-    def accept_terms(
-        self,
-    ) -> Callable[[project_service.AcceptTermsRequest], Awaitable[gcr_project.Project]]:
+    def accept_terms(self) -> Callable[[project_service.AcceptTermsRequest], Awaitable[gcr_project.Project]]:
         r"""Return a callable for the accept terms method over gRPC.
 
         Accepts service terms for this project.
@@ -409,11 +386,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         return self._stubs["accept_terms"]
 
     @property
-    def enroll_solution(
-        self,
-    ) -> Callable[
-        [project_service.EnrollSolutionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def enroll_solution(self) -> Callable[[project_service.EnrollSolutionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the enroll solution method over gRPC.
 
         The method enrolls a solution of type [Retail
@@ -447,10 +420,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     @property
     def list_enrolled_solutions(
         self,
-    ) -> Callable[
-        [project_service.ListEnrolledSolutionsRequest],
-        Awaitable[project_service.ListEnrolledSolutionsResponse],
-    ]:
+    ) -> Callable[[project_service.ListEnrolledSolutionsRequest], Awaitable[project_service.ListEnrolledSolutionsResponse]]:
         r"""Return a callable for the list enrolled solutions method over gRPC.
 
         Lists all the retail API solutions the project has
@@ -475,11 +445,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         return self._stubs["list_enrolled_solutions"]
 
     @property
-    def get_logging_config(
-        self,
-    ) -> Callable[
-        [project_service.GetLoggingConfigRequest], Awaitable[project.LoggingConfig]
-    ]:
+    def get_logging_config(self) -> Callable[[project_service.GetLoggingConfigRequest], Awaitable[project.LoggingConfig]]:
         r"""Return a callable for the get logging config method over gRPC.
 
         Gets the
@@ -505,11 +471,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         return self._stubs["get_logging_config"]
 
     @property
-    def update_logging_config(
-        self,
-    ) -> Callable[
-        [project_service.UpdateLoggingConfigRequest], Awaitable[project.LoggingConfig]
-    ]:
+    def update_logging_config(self) -> Callable[[project_service.UpdateLoggingConfigRequest], Awaitable[project.LoggingConfig]]:
         r"""Return a callable for the update logging config method over gRPC.
 
         Updates the
@@ -535,11 +497,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         return self._stubs["update_logging_config"]
 
     @property
-    def get_alert_config(
-        self,
-    ) -> Callable[
-        [project_service.GetAlertConfigRequest], Awaitable[project.AlertConfig]
-    ]:
+    def get_alert_config(self) -> Callable[[project_service.GetAlertConfigRequest], Awaitable[project.AlertConfig]]:
         r"""Return a callable for the get alert config method over gRPC.
 
         Get the [AlertConfig][google.cloud.retail.v2alpha.AlertConfig]
@@ -564,11 +522,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
         return self._stubs["get_alert_config"]
 
     @property
-    def update_alert_config(
-        self,
-    ) -> Callable[
-        [project_service.UpdateAlertConfigRequest], Awaitable[project.AlertConfig]
-    ]:
+    def update_alert_config(self) -> Callable[[project_service.UpdateAlertConfigRequest], Awaitable[project.AlertConfig]]:
         r"""Return a callable for the update alert config method over gRPC.
 
         Update the alert config of the requested project.
@@ -678,9 +632,7 @@ class ProjectServiceGrpcAsyncIOTransport(ProjectServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

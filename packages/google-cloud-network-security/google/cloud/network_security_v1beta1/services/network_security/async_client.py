@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -55,15 +44,9 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.network_security_v1beta1.services.network_security import pagers
-from google.cloud.network_security_v1beta1.types import (
-    authorization_policy as gcn_authorization_policy,
-)
-from google.cloud.network_security_v1beta1.types import (
-    client_tls_policy as gcn_client_tls_policy,
-)
-from google.cloud.network_security_v1beta1.types import (
-    server_tls_policy as gcn_server_tls_policy,
-)
+from google.cloud.network_security_v1beta1.types import authorization_policy as gcn_authorization_policy
+from google.cloud.network_security_v1beta1.types import client_tls_policy as gcn_client_tls_policy
+from google.cloud.network_security_v1beta1.types import server_tls_policy as gcn_server_tls_policy
 from google.cloud.network_security_v1beta1.types import authorization_policy
 from google.cloud.network_security_v1beta1.types import client_tls_policy
 from google.cloud.network_security_v1beta1.types import common
@@ -99,44 +82,22 @@ class NetworkSecurityAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = NetworkSecurityClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = NetworkSecurityClient._DEFAULT_UNIVERSE
 
-    authorization_policy_path = staticmethod(
-        NetworkSecurityClient.authorization_policy_path
-    )
-    parse_authorization_policy_path = staticmethod(
-        NetworkSecurityClient.parse_authorization_policy_path
-    )
+    authorization_policy_path = staticmethod(NetworkSecurityClient.authorization_policy_path)
+    parse_authorization_policy_path = staticmethod(NetworkSecurityClient.parse_authorization_policy_path)
     client_tls_policy_path = staticmethod(NetworkSecurityClient.client_tls_policy_path)
-    parse_client_tls_policy_path = staticmethod(
-        NetworkSecurityClient.parse_client_tls_policy_path
-    )
+    parse_client_tls_policy_path = staticmethod(NetworkSecurityClient.parse_client_tls_policy_path)
     server_tls_policy_path = staticmethod(NetworkSecurityClient.server_tls_policy_path)
-    parse_server_tls_policy_path = staticmethod(
-        NetworkSecurityClient.parse_server_tls_policy_path
-    )
-    common_billing_account_path = staticmethod(
-        NetworkSecurityClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        NetworkSecurityClient.parse_common_billing_account_path
-    )
+    parse_server_tls_policy_path = staticmethod(NetworkSecurityClient.parse_server_tls_policy_path)
+    common_billing_account_path = staticmethod(NetworkSecurityClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(NetworkSecurityClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(NetworkSecurityClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        NetworkSecurityClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        NetworkSecurityClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        NetworkSecurityClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(NetworkSecurityClient.parse_common_folder_path)
+    common_organization_path = staticmethod(NetworkSecurityClient.common_organization_path)
+    parse_common_organization_path = staticmethod(NetworkSecurityClient.parse_common_organization_path)
     common_project_path = staticmethod(NetworkSecurityClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        NetworkSecurityClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(NetworkSecurityClient.parse_common_project_path)
     common_location_path = staticmethod(NetworkSecurityClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        NetworkSecurityClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(NetworkSecurityClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -172,9 +133,7 @@ class NetworkSecurityAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -241,11 +200,7 @@ class NetworkSecurityAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, NetworkSecurityTransport, Callable[..., NetworkSecurityTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, NetworkSecurityTransport, Callable[..., NetworkSecurityTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -305,20 +260,14 @@ class NetworkSecurityAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networksecurity_v1beta1.NetworkSecurityAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -329,9 +278,7 @@ class NetworkSecurityAsyncClient:
 
     async def list_authorization_policies(
         self,
-        request: Optional[
-            Union[authorization_policy.ListAuthorizationPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[authorization_policy.ListAuthorizationPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -401,20 +348,13 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, authorization_policy.ListAuthorizationPoliciesRequest
-        ):
+        if not isinstance(request, authorization_policy.ListAuthorizationPoliciesRequest):
             request = authorization_policy.ListAuthorizationPoliciesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -424,15 +364,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_authorization_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_authorization_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -461,9 +397,7 @@ class NetworkSecurityAsyncClient:
 
     async def get_authorization_policy(
         self,
-        request: Optional[
-            Union[authorization_policy.GetAuthorizationPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[authorization_policy.GetAuthorizationPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -533,14 +467,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -554,15 +483,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_authorization_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_authorization_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -580,14 +505,10 @@ class NetworkSecurityAsyncClient:
 
     async def create_authorization_policy(
         self,
-        request: Optional[
-            Union[gcn_authorization_policy.CreateAuthorizationPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcn_authorization_policy.CreateAuthorizationPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        authorization_policy: Optional[
-            gcn_authorization_policy.AuthorizationPolicy
-        ] = None,
+        authorization_policy: Optional[gcn_authorization_policy.AuthorizationPolicy] = None,
         authorization_policy_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -684,20 +605,13 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, authorization_policy, authorization_policy_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcn_authorization_policy.CreateAuthorizationPolicyRequest
-        ):
+        if not isinstance(request, gcn_authorization_policy.CreateAuthorizationPolicyRequest):
             request = gcn_authorization_policy.CreateAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -711,15 +625,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_authorization_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_authorization_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -745,13 +655,9 @@ class NetworkSecurityAsyncClient:
 
     async def update_authorization_policy(
         self,
-        request: Optional[
-            Union[gcn_authorization_policy.UpdateAuthorizationPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcn_authorization_policy.UpdateAuthorizationPolicyRequest, dict]] = None,
         *,
-        authorization_policy: Optional[
-            gcn_authorization_policy.AuthorizationPolicy
-        ] = None,
+        authorization_policy: Optional[gcn_authorization_policy.AuthorizationPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -840,20 +746,13 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [authorization_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, gcn_authorization_policy.UpdateAuthorizationPolicyRequest
-        ):
+        if not isinstance(request, gcn_authorization_policy.UpdateAuthorizationPolicyRequest):
             request = gcn_authorization_policy.UpdateAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -865,17 +764,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_authorization_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_authorization_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("authorization_policy.name", request.authorization_policy.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("authorization_policy.name", request.authorization_policy.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -901,9 +794,7 @@ class NetworkSecurityAsyncClient:
 
     async def delete_authorization_policy(
         self,
-        request: Optional[
-            Union[authorization_policy.DeleteAuthorizationPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[authorization_policy.DeleteAuthorizationPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -982,20 +873,13 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, authorization_policy.DeleteAuthorizationPolicyRequest
-        ):
+        if not isinstance(request, authorization_policy.DeleteAuthorizationPolicyRequest):
             request = authorization_policy.DeleteAuthorizationPolicyRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1005,15 +889,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_authorization_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_authorization_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1039,9 +919,7 @@ class NetworkSecurityAsyncClient:
 
     async def list_server_tls_policies(
         self,
-        request: Optional[
-            Union[server_tls_policy.ListServerTlsPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[server_tls_policy.ListServerTlsPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1111,14 +989,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1132,15 +1005,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_server_tls_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_server_tls_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1169,9 +1038,7 @@ class NetworkSecurityAsyncClient:
 
     async def get_server_tls_policy(
         self,
-        request: Optional[
-            Union[server_tls_policy.GetServerTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[server_tls_policy.GetServerTlsPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1241,14 +1108,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1262,15 +1124,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_server_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_server_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1288,9 +1146,7 @@ class NetworkSecurityAsyncClient:
 
     async def create_server_tls_policy(
         self,
-        request: Optional[
-            Union[gcn_server_tls_policy.CreateServerTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcn_server_tls_policy.CreateServerTlsPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         server_tls_policy: Optional[gcn_server_tls_policy.ServerTlsPolicy] = None,
@@ -1389,14 +1245,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, server_tls_policy, server_tls_policy_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1414,15 +1265,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_server_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_server_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1448,9 +1295,7 @@ class NetworkSecurityAsyncClient:
 
     async def update_server_tls_policy(
         self,
-        request: Optional[
-            Union[gcn_server_tls_policy.UpdateServerTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcn_server_tls_policy.UpdateServerTlsPolicyRequest, dict]] = None,
         *,
         server_tls_policy: Optional[gcn_server_tls_policy.ServerTlsPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1539,14 +1384,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [server_tls_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1562,17 +1402,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_server_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_server_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("server_tls_policy.name", request.server_tls_policy.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("server_tls_policy.name", request.server_tls_policy.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1598,9 +1432,7 @@ class NetworkSecurityAsyncClient:
 
     async def delete_server_tls_policy(
         self,
-        request: Optional[
-            Union[server_tls_policy.DeleteServerTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[server_tls_policy.DeleteServerTlsPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1679,14 +1511,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1700,15 +1527,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_server_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_server_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1734,9 +1557,7 @@ class NetworkSecurityAsyncClient:
 
     async def list_client_tls_policies(
         self,
-        request: Optional[
-            Union[client_tls_policy.ListClientTlsPoliciesRequest, dict]
-        ] = None,
+        request: Optional[Union[client_tls_policy.ListClientTlsPoliciesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1806,14 +1627,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1827,15 +1643,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_client_tls_policies
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_client_tls_policies]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1864,9 +1676,7 @@ class NetworkSecurityAsyncClient:
 
     async def get_client_tls_policy(
         self,
-        request: Optional[
-            Union[client_tls_policy.GetClientTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[client_tls_policy.GetClientTlsPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1935,14 +1745,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1956,15 +1761,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_client_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_client_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1982,9 +1783,7 @@ class NetworkSecurityAsyncClient:
 
     async def create_client_tls_policy(
         self,
-        request: Optional[
-            Union[gcn_client_tls_policy.CreateClientTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcn_client_tls_policy.CreateClientTlsPolicyRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         client_tls_policy: Optional[gcn_client_tls_policy.ClientTlsPolicy] = None,
@@ -2082,14 +1881,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, client_tls_policy, client_tls_policy_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2107,15 +1901,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_client_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_client_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2141,9 +1931,7 @@ class NetworkSecurityAsyncClient:
 
     async def update_client_tls_policy(
         self,
-        request: Optional[
-            Union[gcn_client_tls_policy.UpdateClientTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[gcn_client_tls_policy.UpdateClientTlsPolicyRequest, dict]] = None,
         *,
         client_tls_policy: Optional[gcn_client_tls_policy.ClientTlsPolicy] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2231,14 +2019,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [client_tls_policy, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2254,17 +2037,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_client_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_client_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("client_tls_policy.name", request.client_tls_policy.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("client_tls_policy.name", request.client_tls_policy.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2290,9 +2067,7 @@ class NetworkSecurityAsyncClient:
 
     async def delete_client_tls_policy(
         self,
-        request: Optional[
-            Union[client_tls_policy.DeleteClientTlsPolicyRequest, dict]
-        ] = None,
+        request: Optional[Union[client_tls_policy.DeleteClientTlsPolicyRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2371,14 +2146,9 @@ class NetworkSecurityAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2392,15 +2162,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_client_tls_policy
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_client_tls_policy]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2461,9 +2227,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2516,9 +2280,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2575,9 +2337,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2630,9 +2390,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2748,9 +2506,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2870,9 +2626,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2926,15 +2680,11 @@ class NetworkSecurityAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2987,9 +2737,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3042,9 +2790,7 @@ class NetworkSecurityAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3067,9 +2813,7 @@ class NetworkSecurityAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

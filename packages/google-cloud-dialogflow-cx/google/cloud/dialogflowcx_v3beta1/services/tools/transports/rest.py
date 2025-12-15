@@ -163,9 +163,7 @@ class ToolsRestInterceptor:
     """
 
     def pre_create_tool(
-        self,
-        request: gcdc_tool.CreateToolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcdc_tool.CreateToolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_tool.CreateToolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tool
 
@@ -188,9 +186,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_create_tool_with_metadata(
-        self,
-        response: gcdc_tool.Tool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_tool.Tool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_tool.Tool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tool
 
@@ -207,9 +203,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_create_tool_version(
-        self,
-        request: tool.CreateToolVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.CreateToolVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.CreateToolVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_tool_version
 
@@ -232,9 +226,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_create_tool_version_with_metadata(
-        self,
-        response: tool.ToolVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tool.ToolVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ToolVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_tool_version
 
@@ -251,9 +243,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_delete_tool(
-        self,
-        request: tool.DeleteToolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.DeleteToolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.DeleteToolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tool
 
@@ -263,9 +253,7 @@ class ToolsRestInterceptor:
         return request, metadata
 
     def pre_delete_tool_version(
-        self,
-        request: tool.DeleteToolVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.DeleteToolVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.DeleteToolVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_tool_version
 
@@ -275,9 +263,7 @@ class ToolsRestInterceptor:
         return request, metadata
 
     def pre_export_tools(
-        self,
-        request: tool.ExportToolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.ExportToolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ExportToolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_tools
 
@@ -286,9 +272,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_export_tools(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_tools(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_tools
 
         DEPRECATED. Please use the `post_export_tools_with_metadata`
@@ -302,9 +286,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_export_tools_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_tools
 
@@ -321,9 +303,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_get_tool(
-        self,
-        request: tool.GetToolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.GetToolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.GetToolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tool
 
@@ -363,9 +343,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_get_tool_version(
-        self,
-        request: tool.GetToolVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.GetToolVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.GetToolVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_tool_version
 
@@ -388,9 +366,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_get_tool_version_with_metadata(
-        self,
-        response: tool.ToolVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tool.ToolVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ToolVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_tool_version
 
@@ -407,9 +383,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_list_tools(
-        self,
-        request: tool.ListToolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.ListToolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ListToolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tools
 
@@ -418,9 +392,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tools(
-        self, response: tool.ListToolsResponse
-    ) -> tool.ListToolsResponse:
+    def post_list_tools(self, response: tool.ListToolsResponse) -> tool.ListToolsResponse:
         """Post-rpc interceptor for list_tools
 
         DEPRECATED. Please use the `post_list_tools_with_metadata`
@@ -434,9 +406,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_list_tools_with_metadata(
-        self,
-        response: tool.ListToolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tool.ListToolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ListToolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tools
 
@@ -453,9 +423,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_list_tool_versions(
-        self,
-        request: tool.ListToolVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.ListToolVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ListToolVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tool_versions
 
@@ -464,9 +432,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tool_versions(
-        self, response: tool.ListToolVersionsResponse
-    ) -> tool.ListToolVersionsResponse:
+    def post_list_tool_versions(self, response: tool.ListToolVersionsResponse) -> tool.ListToolVersionsResponse:
         """Post-rpc interceptor for list_tool_versions
 
         DEPRECATED. Please use the `post_list_tool_versions_with_metadata`
@@ -480,9 +446,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_list_tool_versions_with_metadata(
-        self,
-        response: tool.ListToolVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tool.ListToolVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.ListToolVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tool_versions
 
@@ -499,9 +463,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_restore_tool_version(
-        self,
-        request: tool.RestoreToolVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tool.RestoreToolVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tool.RestoreToolVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_tool_version
 
@@ -510,9 +472,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_tool_version(
-        self, response: tool.RestoreToolVersionResponse
-    ) -> tool.RestoreToolVersionResponse:
+    def post_restore_tool_version(self, response: tool.RestoreToolVersionResponse) -> tool.RestoreToolVersionResponse:
         """Post-rpc interceptor for restore_tool_version
 
         DEPRECATED. Please use the `post_restore_tool_version_with_metadata`
@@ -526,12 +486,8 @@ class ToolsRestInterceptor:
         return response
 
     def post_restore_tool_version_with_metadata(
-        self,
-        response: tool.RestoreToolVersionResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        tool.RestoreToolVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: tool.RestoreToolVersionResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[tool.RestoreToolVersionResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_tool_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -547,9 +503,7 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_update_tool(
-        self,
-        request: gcdc_tool.UpdateToolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: gcdc_tool.UpdateToolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_tool.UpdateToolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_tool
 
@@ -572,9 +526,7 @@ class ToolsRestInterceptor:
         return response
 
     def post_update_tool_with_metadata(
-        self,
-        response: gcdc_tool.Tool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_tool.Tool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_tool.Tool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_tool
 
@@ -591,12 +543,8 @@ class ToolsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -604,9 +552,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -616,12 +562,8 @@ class ToolsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -629,9 +571,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -641,12 +581,8 @@ class ToolsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -664,12 +600,8 @@ class ToolsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -677,9 +609,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -689,12 +619,8 @@ class ToolsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -702,9 +628,7 @@ class ToolsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -794,9 +718,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -854,9 +776,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 path_prefix="v3beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -866,15 +786,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.CreateTool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -924,29 +836,15 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseCreateTool._get_http_options()
 
             request, metadata = self._interceptor.pre_create_tool(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseCreateTool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseCreateTool._get_transcoded_request(http_options, request)
 
-            body = _BaseToolsRestTransport._BaseCreateTool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseToolsRestTransport._BaseCreateTool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseCreateTool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseCreateTool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -970,13 +868,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._CreateTool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -992,12 +884,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_create_tool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_tool.Tool.to_json(response)
                 except:
@@ -1018,22 +906,12 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
             return resp
 
-    class _CreateToolVersion(
-        _BaseToolsRestTransport._BaseCreateToolVersion, ToolsRestStub
-    ):
+    class _CreateToolVersion(_BaseToolsRestTransport._BaseCreateToolVersion, ToolsRestStub):
         def __hash__(self):
             return hash("ToolsRestTransport.CreateToolVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1078,38 +956,18 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseCreateToolVersion._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseCreateToolVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_tool_version(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseCreateToolVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_tool_version(request, metadata)
+            transcoded_request = _BaseToolsRestTransport._BaseCreateToolVersion._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseToolsRestTransport._BaseCreateToolVersion._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseToolsRestTransport._BaseCreateToolVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseCreateToolVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseCreateToolVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1133,13 +991,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._CreateToolVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1155,12 +1007,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_create_tool_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_tool_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_tool_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tool.ToolVersion.to_json(response)
                 except:
@@ -1186,15 +1034,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.DeleteTool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1233,25 +1073,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseDeleteTool._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_tool(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseDeleteTool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseDeleteTool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseDeleteTool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseDeleteTool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1274,36 +1102,19 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
 
             # Send the request
-            response = ToolsRestTransport._DeleteTool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ToolsRestTransport._DeleteTool._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteToolVersion(
-        _BaseToolsRestTransport._BaseDeleteToolVersion, ToolsRestStub
-    ):
+    class _DeleteToolVersion(_BaseToolsRestTransport._BaseDeleteToolVersion, ToolsRestStub):
         def __hash__(self):
             return hash("ToolsRestTransport.DeleteToolVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1339,32 +1150,16 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseDeleteToolVersion._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseDeleteToolVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_tool_version(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseDeleteToolVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_tool_version(request, metadata)
+            transcoded_request = _BaseToolsRestTransport._BaseDeleteToolVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseDeleteToolVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseDeleteToolVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1388,12 +1183,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._DeleteToolVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1406,15 +1196,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.ExportTools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1461,29 +1243,15 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseExportTools._get_http_options()
 
             request, metadata = self._interceptor.pre_export_tools(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseExportTools._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseExportTools._get_transcoded_request(http_options, request)
 
-            body = _BaseToolsRestTransport._BaseExportTools._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseToolsRestTransport._BaseExportTools._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseExportTools._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseExportTools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1507,13 +1275,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._ExportTools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1527,12 +1289,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_export_tools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_tools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_tools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1558,15 +1316,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.GetTool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1615,23 +1365,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseGetTool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_tool(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseGetTool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseGetTool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseToolsRestTransport._BaseGetTool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseToolsRestTransport._BaseGetTool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1654,14 +1394,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
 
             # Send the request
-            response = ToolsRestTransport._GetTool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ToolsRestTransport._GetTool._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1676,12 +1409,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_get_tool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_tool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_tool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tool.Tool.to_json(response)
                 except:
@@ -1707,15 +1436,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.GetToolVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1757,32 +1478,16 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseGetToolVersion._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseGetToolVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_tool_version(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseGetToolVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_tool_version(request, metadata)
+            transcoded_request = _BaseToolsRestTransport._BaseGetToolVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseGetToolVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseGetToolVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1806,12 +1511,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._GetToolVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1827,12 +1527,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_get_tool_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_tool_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_tool_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tool.ToolVersion.to_json(response)
                 except:
@@ -1858,15 +1554,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.ListTools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1911,25 +1599,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseListTools._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tools(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseListTools._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseListTools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseListTools._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseListTools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1952,14 +1628,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
 
             # Send the request
-            response = ToolsRestTransport._ListTools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ToolsRestTransport._ListTools._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1974,12 +1643,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_list_tools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tool.ListToolsResponse.to_json(response)
                 except:
@@ -2000,22 +1665,12 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
             return resp
 
-    class _ListToolVersions(
-        _BaseToolsRestTransport._BaseListToolVersions, ToolsRestStub
-    ):
+    class _ListToolVersions(_BaseToolsRestTransport._BaseListToolVersions, ToolsRestStub):
         def __hash__(self):
             return hash("ToolsRestTransport.ListToolVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2057,32 +1712,16 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseListToolVersions._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseListToolVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_tool_versions(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseListToolVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_tool_versions(request, metadata)
+            transcoded_request = _BaseToolsRestTransport._BaseListToolVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseListToolVersions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseListToolVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2106,12 +1745,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._ListToolVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2127,12 +1761,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_list_tool_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tool_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tool_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tool.ListToolVersionsResponse.to_json(response)
                 except:
@@ -2153,22 +1783,12 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
             return resp
 
-    class _RestoreToolVersion(
-        _BaseToolsRestTransport._BaseRestoreToolVersion, ToolsRestStub
-    ):
+    class _RestoreToolVersion(_BaseToolsRestTransport._BaseRestoreToolVersion, ToolsRestStub):
         def __hash__(self):
             return hash("ToolsRestTransport.RestoreToolVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2211,38 +1831,18 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseRestoreToolVersion._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseRestoreToolVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_tool_version(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseRestoreToolVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_restore_tool_version(request, metadata)
+            transcoded_request = _BaseToolsRestTransport._BaseRestoreToolVersion._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseToolsRestTransport._BaseRestoreToolVersion._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseToolsRestTransport._BaseRestoreToolVersion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseRestoreToolVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseRestoreToolVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2266,13 +1866,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._RestoreToolVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2288,12 +1882,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_restore_tool_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_tool_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_tool_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tool.RestoreToolVersionResponse.to_json(response)
                 except:
@@ -2319,15 +1909,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.UpdateTool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2377,29 +1959,15 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseUpdateTool._get_http_options()
 
             request, metadata = self._interceptor.pre_update_tool(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseUpdateTool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseUpdateTool._get_transcoded_request(http_options, request)
 
-            body = _BaseToolsRestTransport._BaseUpdateTool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseToolsRestTransport._BaseUpdateTool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseUpdateTool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseUpdateTool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2423,13 +1991,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._UpdateTool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2445,12 +2007,8 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             resp = self._interceptor.post_update_tool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_tool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_tool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_tool.Tool.to_json(response)
                 except:
@@ -2478,9 +2036,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
         return self._CreateTool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_tool_version(
-        self,
-    ) -> Callable[[tool.CreateToolVersionRequest], tool.ToolVersion]:
+    def create_tool_version(self) -> Callable[[tool.CreateToolVersionRequest], tool.ToolVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateToolVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -2492,17 +2048,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
         return self._DeleteTool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_tool_version(
-        self,
-    ) -> Callable[[tool.DeleteToolVersionRequest], empty_pb2.Empty]:
+    def delete_tool_version(self) -> Callable[[tool.DeleteToolVersionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteToolVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_tools(
-        self,
-    ) -> Callable[[tool.ExportToolsRequest], operations_pb2.Operation]:
+    def export_tools(self) -> Callable[[tool.ExportToolsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportTools(self._session, self._host, self._interceptor)  # type: ignore
@@ -2514,9 +2066,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
         return self._GetTool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_tool_version(
-        self,
-    ) -> Callable[[tool.GetToolVersionRequest], tool.ToolVersion]:
+    def get_tool_version(self) -> Callable[[tool.GetToolVersionRequest], tool.ToolVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetToolVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -2528,17 +2078,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
         return self._ListTools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tool_versions(
-        self,
-    ) -> Callable[[tool.ListToolVersionsRequest], tool.ListToolVersionsResponse]:
+    def list_tool_versions(self) -> Callable[[tool.ListToolVersionsRequest], tool.ListToolVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListToolVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_tool_version(
-        self,
-    ) -> Callable[[tool.RestoreToolVersionRequest], tool.RestoreToolVersionResponse]:
+    def restore_tool_version(self) -> Callable[[tool.RestoreToolVersionRequest], tool.RestoreToolVersionResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreToolVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -2558,15 +2104,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2607,25 +2145,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2648,14 +2174,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
 
             # Send the request
-            response = ToolsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ToolsRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2666,9 +2185,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2698,15 +2215,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2744,30 +2253,16 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2790,14 +2285,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
 
             # Send the request
-            response = ToolsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ToolsRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2808,9 +2296,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2840,15 +2326,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2883,32 +2361,16 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseToolsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2932,12 +2394,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2956,15 +2413,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3005,25 +2454,13 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             http_options = _BaseToolsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3046,14 +2483,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 )
 
             # Send the request
-            response = ToolsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ToolsRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3064,9 +2494,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3096,15 +2524,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             return hash("ToolsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3142,30 +2562,16 @@ class ToolsRestTransport(_BaseToolsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseToolsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseToolsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseToolsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseToolsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseToolsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseToolsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3189,12 +2595,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
 
             # Send the request
             response = ToolsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3206,9 +2607,7 @@ class ToolsRestTransport(_BaseToolsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -18,52 +18,22 @@ from google.cloud.dataproc import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.dataproc_v1.services.autoscaling_policy_service.async_client import (
-    AutoscalingPolicyServiceAsyncClient,
-)
-from google.cloud.dataproc_v1.services.autoscaling_policy_service.client import (
-    AutoscalingPolicyServiceClient,
-)
-from google.cloud.dataproc_v1.services.batch_controller.async_client import (
-    BatchControllerAsyncClient,
-)
-from google.cloud.dataproc_v1.services.batch_controller.client import (
-    BatchControllerClient,
-)
-from google.cloud.dataproc_v1.services.cluster_controller.async_client import (
-    ClusterControllerAsyncClient,
-)
-from google.cloud.dataproc_v1.services.cluster_controller.client import (
-    ClusterControllerClient,
-)
-from google.cloud.dataproc_v1.services.job_controller.async_client import (
-    JobControllerAsyncClient,
-)
+from google.cloud.dataproc_v1.services.autoscaling_policy_service.async_client import AutoscalingPolicyServiceAsyncClient
+from google.cloud.dataproc_v1.services.autoscaling_policy_service.client import AutoscalingPolicyServiceClient
+from google.cloud.dataproc_v1.services.batch_controller.async_client import BatchControllerAsyncClient
+from google.cloud.dataproc_v1.services.batch_controller.client import BatchControllerClient
+from google.cloud.dataproc_v1.services.cluster_controller.async_client import ClusterControllerAsyncClient
+from google.cloud.dataproc_v1.services.cluster_controller.client import ClusterControllerClient
+from google.cloud.dataproc_v1.services.job_controller.async_client import JobControllerAsyncClient
 from google.cloud.dataproc_v1.services.job_controller.client import JobControllerClient
-from google.cloud.dataproc_v1.services.node_group_controller.async_client import (
-    NodeGroupControllerAsyncClient,
-)
-from google.cloud.dataproc_v1.services.node_group_controller.client import (
-    NodeGroupControllerClient,
-)
-from google.cloud.dataproc_v1.services.session_controller.async_client import (
-    SessionControllerAsyncClient,
-)
-from google.cloud.dataproc_v1.services.session_controller.client import (
-    SessionControllerClient,
-)
-from google.cloud.dataproc_v1.services.session_template_controller.async_client import (
-    SessionTemplateControllerAsyncClient,
-)
-from google.cloud.dataproc_v1.services.session_template_controller.client import (
-    SessionTemplateControllerClient,
-)
-from google.cloud.dataproc_v1.services.workflow_template_service.async_client import (
-    WorkflowTemplateServiceAsyncClient,
-)
-from google.cloud.dataproc_v1.services.workflow_template_service.client import (
-    WorkflowTemplateServiceClient,
-)
+from google.cloud.dataproc_v1.services.node_group_controller.async_client import NodeGroupControllerAsyncClient
+from google.cloud.dataproc_v1.services.node_group_controller.client import NodeGroupControllerClient
+from google.cloud.dataproc_v1.services.session_controller.async_client import SessionControllerAsyncClient
+from google.cloud.dataproc_v1.services.session_controller.client import SessionControllerClient
+from google.cloud.dataproc_v1.services.session_template_controller.async_client import SessionTemplateControllerAsyncClient
+from google.cloud.dataproc_v1.services.session_template_controller.client import SessionTemplateControllerClient
+from google.cloud.dataproc_v1.services.workflow_template_service.async_client import WorkflowTemplateServiceAsyncClient
+from google.cloud.dataproc_v1.services.workflow_template_service.client import WorkflowTemplateServiceClient
 from google.cloud.dataproc_v1.types.autoscaling_policies import (
     AutoscalingPolicy,
     BasicAutoscalingAlgorithm,
@@ -160,11 +130,7 @@ from google.cloud.dataproc_v1.types.jobs import (
     UpdateJobRequest,
     YarnApplication,
 )
-from google.cloud.dataproc_v1.types.node_groups import (
-    CreateNodeGroupRequest,
-    GetNodeGroupRequest,
-    ResizeNodeGroupRequest,
-)
+from google.cloud.dataproc_v1.types.node_groups import CreateNodeGroupRequest, GetNodeGroupRequest, ResizeNodeGroupRequest
 from google.cloud.dataproc_v1.types.operations import (
     BatchOperationMetadata,
     ClusterOperationMetadata,

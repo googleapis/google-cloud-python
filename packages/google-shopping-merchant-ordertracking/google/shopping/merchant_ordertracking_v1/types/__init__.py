@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .order_tracking_signals import (
-    CreateOrderTrackingSignalRequest,
-    OrderTrackingSignal,
-)
+from .order_tracking_signals import CreateOrderTrackingSignalRequest, OrderTrackingSignal
 
 __all__ = (
     "CreateOrderTrackingSignalRequest",

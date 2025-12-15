@@ -30,10 +30,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.rapidmigrationassessment_v1.types import (
-    api_entities,
-    rapidmigrationassessment,
-)
+from google.cloud.rapidmigrationassessment_v1.types import api_entities, rapidmigrationassessment
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseRapidMigrationAssessmentRestTransport
@@ -164,13 +161,8 @@ class RapidMigrationAssessmentRestInterceptor:
     """
 
     def pre_create_annotation(
-        self,
-        request: rapidmigrationassessment.CreateAnnotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.CreateAnnotationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.CreateAnnotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.CreateAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -178,9 +170,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_create_annotation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_annotation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_annotation
 
         DEPRECATED. Please use the `post_create_annotation_with_metadata`
@@ -194,9 +184,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_create_annotation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_annotation
 
@@ -213,13 +201,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_create_collector(
-        self,
-        request: rapidmigrationassessment.CreateCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.CreateCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.CreateCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.CreateCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -227,9 +210,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_create_collector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_collector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_collector
 
         DEPRECATED. Please use the `post_create_collector_with_metadata`
@@ -243,9 +224,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_create_collector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_collector
 
@@ -262,13 +241,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_delete_collector(
-        self,
-        request: rapidmigrationassessment.DeleteCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.DeleteCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.DeleteCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.DeleteCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +250,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_collector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_collector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_collector
 
         DEPRECATED. Please use the `post_delete_collector_with_metadata`
@@ -292,9 +264,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_delete_collector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_collector
 
@@ -311,13 +281,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_get_annotation(
-        self,
-        request: rapidmigrationassessment.GetAnnotationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.GetAnnotationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.GetAnnotationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.GetAnnotationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_annotation
 
         Override in a subclass to manipulate the request or metadata
@@ -325,9 +290,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_annotation(
-        self, response: api_entities.Annotation
-    ) -> api_entities.Annotation:
+    def post_get_annotation(self, response: api_entities.Annotation) -> api_entities.Annotation:
         """Post-rpc interceptor for get_annotation
 
         DEPRECATED. Please use the `post_get_annotation_with_metadata`
@@ -341,9 +304,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_get_annotation_with_metadata(
-        self,
-        response: api_entities.Annotation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: api_entities.Annotation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[api_entities.Annotation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_annotation
 
@@ -360,13 +321,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_get_collector(
-        self,
-        request: rapidmigrationassessment.GetCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.GetCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.GetCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.GetCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -374,9 +330,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_collector(
-        self, response: api_entities.Collector
-    ) -> api_entities.Collector:
+    def post_get_collector(self, response: api_entities.Collector) -> api_entities.Collector:
         """Post-rpc interceptor for get_collector
 
         DEPRECATED. Please use the `post_get_collector_with_metadata`
@@ -390,9 +344,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_get_collector_with_metadata(
-        self,
-        response: api_entities.Collector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: api_entities.Collector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[api_entities.Collector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_collector
 
@@ -409,13 +361,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_list_collectors(
-        self,
-        request: rapidmigrationassessment.ListCollectorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.ListCollectorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.ListCollectorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.ListCollectorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_collectors
 
         Override in a subclass to manipulate the request or metadata
@@ -423,9 +370,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_list_collectors(
-        self, response: rapidmigrationassessment.ListCollectorsResponse
-    ) -> rapidmigrationassessment.ListCollectorsResponse:
+    def post_list_collectors(self, response: rapidmigrationassessment.ListCollectorsResponse) -> rapidmigrationassessment.ListCollectorsResponse:
         """Post-rpc interceptor for list_collectors
 
         DEPRECATED. Please use the `post_list_collectors_with_metadata`
@@ -439,13 +384,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_list_collectors_with_metadata(
-        self,
-        response: rapidmigrationassessment.ListCollectorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.ListCollectorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: rapidmigrationassessment.ListCollectorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.ListCollectorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_collectors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -461,13 +401,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_pause_collector(
-        self,
-        request: rapidmigrationassessment.PauseCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.PauseCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.PauseCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.PauseCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -475,9 +410,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_pause_collector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_pause_collector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for pause_collector
 
         DEPRECATED. Please use the `post_pause_collector_with_metadata`
@@ -491,9 +424,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_pause_collector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for pause_collector
 
@@ -510,13 +441,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_register_collector(
-        self,
-        request: rapidmigrationassessment.RegisterCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.RegisterCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.RegisterCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.RegisterCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for register_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -524,9 +450,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_register_collector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_register_collector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for register_collector
 
         DEPRECATED. Please use the `post_register_collector_with_metadata`
@@ -540,9 +464,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_register_collector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for register_collector
 
@@ -559,13 +481,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_resume_collector(
-        self,
-        request: rapidmigrationassessment.ResumeCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.ResumeCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.ResumeCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.ResumeCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -573,9 +490,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_resume_collector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_resume_collector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for resume_collector
 
         DEPRECATED. Please use the `post_resume_collector_with_metadata`
@@ -589,9 +504,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_resume_collector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_collector
 
@@ -608,13 +521,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_update_collector(
-        self,
-        request: rapidmigrationassessment.UpdateCollectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rapidmigrationassessment.UpdateCollectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: rapidmigrationassessment.UpdateCollectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rapidmigrationassessment.UpdateCollectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_collector
 
         Override in a subclass to manipulate the request or metadata
@@ -622,9 +530,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_update_collector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_collector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_collector
 
         DEPRECATED. Please use the `post_update_collector_with_metadata`
@@ -638,9 +544,7 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def post_update_collector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_collector
 
@@ -657,12 +561,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +570,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -682,12 +580,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -695,9 +589,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -707,12 +599,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -730,12 +618,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -753,12 +637,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -766,9 +646,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -778,12 +656,8 @@ class RapidMigrationAssessmentRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -791,9 +665,7 @@ class RapidMigrationAssessmentRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -882,9 +754,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -937,30 +807,17 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAnnotation(
-        _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _CreateAnnotation(_BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.CreateAnnotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1003,32 +860,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_annotation(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_annotation(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateAnnotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1051,16 +894,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._CreateAnnotation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._CreateAnnotation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1074,12 +909,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_create_annotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_annotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_annotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1100,23 +931,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _CreateCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _CreateCollector(_BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.CreateCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1159,32 +979,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_collector(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_collector(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCreateCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1207,16 +1013,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._CreateCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._CreateCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1230,12 +1028,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_create_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1256,23 +1050,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _DeleteCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _DeleteCollector(_BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.DeleteCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1314,28 +1097,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_collector(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_collector(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1358,15 +1129,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._DeleteCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._DeleteCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1380,12 +1144,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_delete_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1406,23 +1166,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _GetAnnotation(
-        _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _GetAnnotation(_BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.GetAnnotation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1462,26 +1211,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                     Message describing an Annotation
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_annotation(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetAnnotation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1504,15 +1243,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._GetAnnotation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._GetAnnotation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1528,12 +1260,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_get_annotation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_annotation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_annotation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Annotation.to_json(response)
                 except:
@@ -1554,23 +1282,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _GetCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _GetCollector(_BaseRapidMigrationAssessmentRestTransport._BaseGetCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.GetCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1610,26 +1327,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                     Message describing Collector object.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_http_options()
 
             request, metadata = self._interceptor.pre_get_collector(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1652,15 +1359,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._GetCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._GetCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1676,12 +1376,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_get_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Collector.to_json(response)
                 except:
@@ -1702,23 +1398,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _ListCollectors(
-        _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _ListCollectors(_BaseRapidMigrationAssessmentRestTransport._BaseListCollectors, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.ListCollectors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1760,26 +1445,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_http_options()
 
             request, metadata = self._interceptor.pre_list_collectors(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListCollectors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1802,15 +1477,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._ListCollectors._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._ListCollectors._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1826,18 +1494,10 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_list_collectors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_collectors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_collectors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        rapidmigrationassessment.ListCollectorsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = rapidmigrationassessment.ListCollectorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1856,23 +1516,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _PauseCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _PauseCollector(_BaseRapidMigrationAssessmentRestTransport._BasePauseCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.PauseCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1915,30 +1564,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_collector(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BasePauseCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1961,16 +1598,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._PauseCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._PauseCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1984,12 +1613,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_pause_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pause_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pause_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2010,23 +1635,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _RegisterCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _RegisterCollector(_BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.RegisterCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2069,32 +1683,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_http_options()
 
-            request, metadata = self._interceptor.pre_register_collector(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_register_collector(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseRegisterCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2117,16 +1717,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._RegisterCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._RegisterCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2140,12 +1732,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_register_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_register_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_register_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2166,23 +1754,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _ResumeCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _ResumeCollector(_BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.ResumeCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2225,32 +1802,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_collector(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_resume_collector(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseResumeCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2273,16 +1836,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._ResumeCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._ResumeCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2296,12 +1851,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_resume_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2322,23 +1873,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
             return resp
 
-    class _UpdateCollector(
-        _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _UpdateCollector(_BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.UpdateCollector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2381,32 +1921,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_collector(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_collector(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseUpdateCollector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2429,16 +1955,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._UpdateCollector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._UpdateCollector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2452,12 +1970,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             resp = self._interceptor.post_update_collector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_collector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_collector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2479,102 +1993,61 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             return resp
 
     @property
-    def create_annotation(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.CreateAnnotationRequest], operations_pb2.Operation
-    ]:
+    def create_annotation(self) -> Callable[[rapidmigrationassessment.CreateAnnotationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAnnotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.CreateCollectorRequest], operations_pb2.Operation
-    ]:
+    def create_collector(self) -> Callable[[rapidmigrationassessment.CreateCollectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCollector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.DeleteCollectorRequest], operations_pb2.Operation
-    ]:
+    def delete_collector(self) -> Callable[[rapidmigrationassessment.DeleteCollectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCollector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_annotation(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.GetAnnotationRequest], api_entities.Annotation
-    ]:
+    def get_annotation(self) -> Callable[[rapidmigrationassessment.GetAnnotationRequest], api_entities.Annotation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAnnotation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.GetCollectorRequest], api_entities.Collector
-    ]:
+    def get_collector(self) -> Callable[[rapidmigrationassessment.GetCollectorRequest], api_entities.Collector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCollector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_collectors(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.ListCollectorsRequest],
-        rapidmigrationassessment.ListCollectorsResponse,
-    ]:
+    def list_collectors(self) -> Callable[[rapidmigrationassessment.ListCollectorsRequest], rapidmigrationassessment.ListCollectorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCollectors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pause_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.PauseCollectorRequest], operations_pb2.Operation
-    ]:
+    def pause_collector(self) -> Callable[[rapidmigrationassessment.PauseCollectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PauseCollector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def register_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.RegisterCollectorRequest], operations_pb2.Operation
-    ]:
+    def register_collector(self) -> Callable[[rapidmigrationassessment.RegisterCollectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RegisterCollector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.ResumeCollectorRequest], operations_pb2.Operation
-    ]:
+    def resume_collector(self) -> Callable[[rapidmigrationassessment.ResumeCollectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeCollector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_collector(
-        self,
-    ) -> Callable[
-        [rapidmigrationassessment.UpdateCollectorRequest], operations_pb2.Operation
-    ]:
+    def update_collector(self) -> Callable[[rapidmigrationassessment.UpdateCollectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCollector(self._session, self._host, self._interceptor)  # type: ignore
@@ -2583,23 +2056,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _GetLocation(_BaseRapidMigrationAssessmentRestTransport._BaseGetLocation, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2637,26 +2099,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2680,12 +2132,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
 
             # Send the request
             response = RapidMigrationAssessmentRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2697,9 +2144,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2724,23 +2169,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseRapidMigrationAssessmentRestTransport._BaseListLocations,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _ListLocations(_BaseRapidMigrationAssessmentRestTransport._BaseListLocations, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2778,26 +2212,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2820,15 +2244,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2840,9 +2257,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2867,23 +2282,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _CancelOperation(_BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2919,32 +2323,18 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2967,16 +2357,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = RapidMigrationAssessmentRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2990,23 +2372,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _DeleteOperation(_BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3041,28 +2412,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3085,15 +2444,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3107,23 +2459,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _GetOperation(_BaseRapidMigrationAssessmentRestTransport._BaseGetOperation, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3161,26 +2502,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3203,15 +2534,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3223,9 +2547,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3250,23 +2572,12 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseRapidMigrationAssessmentRestTransport._BaseListOperations,
-        RapidMigrationAssessmentRestStub,
-    ):
+    class _ListOperations(_BaseRapidMigrationAssessmentRestTransport._BaseListOperations, RapidMigrationAssessmentRestStub):
         def __hash__(self):
             return hash("RapidMigrationAssessmentRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3304,26 +2615,16 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRapidMigrationAssessmentRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3346,15 +2647,8 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
                 )
 
             # Send the request
-            response = (
-                RapidMigrationAssessmentRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RapidMigrationAssessmentRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3366,9 +2660,7 @@ class RapidMigrationAssessmentRestTransport(_BaseRapidMigrationAssessmentRestTra
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

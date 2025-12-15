@@ -135,13 +135,8 @@ class WorkflowTemplateServiceRestInterceptor:
     """
 
     def pre_create_workflow_template(
-        self,
-        request: workflow_templates.CreateWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.CreateWorkflowTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.CreateWorkflowTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.CreateWorkflowTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_workflow_template
 
         Override in a subclass to manipulate the request or metadata
@@ -149,9 +144,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_workflow_template(
-        self, response: workflow_templates.WorkflowTemplate
-    ) -> workflow_templates.WorkflowTemplate:
+    def post_create_workflow_template(self, response: workflow_templates.WorkflowTemplate) -> workflow_templates.WorkflowTemplate:
         """Post-rpc interceptor for create_workflow_template
 
         DEPRECATED. Please use the `post_create_workflow_template_with_metadata`
@@ -165,12 +158,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def post_create_workflow_template_with_metadata(
-        self,
-        response: workflow_templates.WorkflowTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.WorkflowTemplate, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: workflow_templates.WorkflowTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.WorkflowTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_workflow_template
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -186,13 +175,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_workflow_template(
-        self,
-        request: workflow_templates.DeleteWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.DeleteWorkflowTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.DeleteWorkflowTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.DeleteWorkflowTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_workflow_template
 
         Override in a subclass to manipulate the request or metadata
@@ -201,13 +185,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return request, metadata
 
     def pre_get_workflow_template(
-        self,
-        request: workflow_templates.GetWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.GetWorkflowTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.GetWorkflowTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.GetWorkflowTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workflow_template
 
         Override in a subclass to manipulate the request or metadata
@@ -215,9 +194,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_workflow_template(
-        self, response: workflow_templates.WorkflowTemplate
-    ) -> workflow_templates.WorkflowTemplate:
+    def post_get_workflow_template(self, response: workflow_templates.WorkflowTemplate) -> workflow_templates.WorkflowTemplate:
         """Post-rpc interceptor for get_workflow_template
 
         DEPRECATED. Please use the `post_get_workflow_template_with_metadata`
@@ -231,12 +208,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def post_get_workflow_template_with_metadata(
-        self,
-        response: workflow_templates.WorkflowTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.WorkflowTemplate, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: workflow_templates.WorkflowTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.WorkflowTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_workflow_template
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -252,13 +225,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_instantiate_inline_workflow_template(
-        self,
-        request: workflow_templates.InstantiateInlineWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.InstantiateInlineWorkflowTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.InstantiateInlineWorkflowTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.InstantiateInlineWorkflowTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for instantiate_inline_workflow_template
 
         Override in a subclass to manipulate the request or metadata
@@ -266,9 +234,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_instantiate_inline_workflow_template(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_instantiate_inline_workflow_template(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for instantiate_inline_workflow_template
 
         DEPRECATED. Please use the `post_instantiate_inline_workflow_template_with_metadata`
@@ -282,9 +248,7 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def post_instantiate_inline_workflow_template_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for instantiate_inline_workflow_template
 
@@ -301,13 +265,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_instantiate_workflow_template(
-        self,
-        request: workflow_templates.InstantiateWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.InstantiateWorkflowTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.InstantiateWorkflowTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.InstantiateWorkflowTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for instantiate_workflow_template
 
         Override in a subclass to manipulate the request or metadata
@@ -315,9 +274,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_instantiate_workflow_template(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_instantiate_workflow_template(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for instantiate_workflow_template
 
         DEPRECATED. Please use the `post_instantiate_workflow_template_with_metadata`
@@ -331,9 +288,7 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def post_instantiate_workflow_template_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for instantiate_workflow_template
 
@@ -350,13 +305,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_list_workflow_templates(
-        self,
-        request: workflow_templates.ListWorkflowTemplatesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.ListWorkflowTemplatesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.ListWorkflowTemplatesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.ListWorkflowTemplatesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workflow_templates
 
         Override in a subclass to manipulate the request or metadata
@@ -380,13 +330,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def post_list_workflow_templates_with_metadata(
-        self,
-        response: workflow_templates.ListWorkflowTemplatesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.ListWorkflowTemplatesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: workflow_templates.ListWorkflowTemplatesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.ListWorkflowTemplatesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_workflow_templates
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -402,13 +347,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_update_workflow_template(
-        self,
-        request: workflow_templates.UpdateWorkflowTemplateRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.UpdateWorkflowTemplateRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: workflow_templates.UpdateWorkflowTemplateRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.UpdateWorkflowTemplateRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_workflow_template
 
         Override in a subclass to manipulate the request or metadata
@@ -416,9 +356,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_workflow_template(
-        self, response: workflow_templates.WorkflowTemplate
-    ) -> workflow_templates.WorkflowTemplate:
+    def post_update_workflow_template(self, response: workflow_templates.WorkflowTemplate) -> workflow_templates.WorkflowTemplate:
         """Post-rpc interceptor for update_workflow_template
 
         DEPRECATED. Please use the `post_update_workflow_template_with_metadata`
@@ -432,12 +370,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def post_update_workflow_template_with_metadata(
-        self,
-        response: workflow_templates.WorkflowTemplate,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        workflow_templates.WorkflowTemplate, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: workflow_templates.WorkflowTemplate, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[workflow_templates.WorkflowTemplate, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_workflow_template
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -453,12 +387,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -476,12 +406,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -499,13 +425,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -513,9 +434,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -525,12 +444,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -548,12 +463,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -571,12 +482,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -584,9 +491,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -596,12 +501,8 @@ class WorkflowTemplateServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -609,9 +510,7 @@ class WorkflowTemplateServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -701,9 +600,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -771,30 +668,17 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateWorkflowTemplate(
-        _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _CreateWorkflowTemplate(_BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.CreateWorkflowTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -837,32 +721,18 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_workflow_template(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_workflow_template(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCreateWorkflowTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -886,13 +756,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._CreateWorkflowTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -908,16 +772,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             resp = self._interceptor.post_create_workflow_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_workflow_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_workflow_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = workflow_templates.WorkflowTemplate.to_json(
-                        response
-                    )
+                    response_payload = workflow_templates.WorkflowTemplate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -936,23 +794,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
             return resp
 
-    class _DeleteWorkflowTemplate(
-        _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _DeleteWorkflowTemplate(_BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.DeleteWorkflowTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -990,28 +837,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_workflow_template(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_workflow_template(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteWorkflowTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1035,12 +870,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._DeleteWorkflowTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1048,23 +878,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetWorkflowTemplate(
-        _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _GetWorkflowTemplate(_BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.GetWorkflowTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1106,28 +925,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_workflow_template(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_workflow_template(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetWorkflowTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1150,15 +957,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                WorkflowTemplateServiceRestTransport._GetWorkflowTemplate._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = WorkflowTemplateServiceRestTransport._GetWorkflowTemplate._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1174,16 +974,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             resp = self._interceptor.post_get_workflow_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_workflow_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_workflow_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = workflow_templates.WorkflowTemplate.to_json(
-                        response
-                    )
+                    response_payload = workflow_templates.WorkflowTemplate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1203,24 +997,13 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             return resp
 
     class _InstantiateInlineWorkflowTemplate(
-        _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate,
-        WorkflowTemplateServiceRestStub,
+        _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate, WorkflowTemplateServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "WorkflowTemplateServiceRestTransport.InstantiateInlineWorkflowTemplate"
-            )
+            return hash("WorkflowTemplateServiceRestTransport.InstantiateInlineWorkflowTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1265,35 +1048,20 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_instantiate_inline_workflow_template(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_instantiate_inline_workflow_template(request, metadata)
             transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateInlineWorkflowTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1317,13 +1085,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._InstantiateInlineWorkflowTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1337,15 +1099,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             resp = self._interceptor.post_instantiate_inline_workflow_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_instantiate_inline_workflow_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_instantiate_inline_workflow_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1366,25 +1121,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
             return resp
 
-    class _InstantiateWorkflowTemplate(
-        _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _InstantiateWorkflowTemplate(_BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate, WorkflowTemplateServiceRestStub):
         def __hash__(self):
-            return hash(
-                "WorkflowTemplateServiceRestTransport.InstantiateWorkflowTemplate"
-            )
+            return hash("WorkflowTemplateServiceRestTransport.InstantiateWorkflowTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1429,32 +1171,20 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_instantiate_workflow_template(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_instantiate_workflow_template(request, metadata)
             transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseInstantiateWorkflowTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1478,13 +1208,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._InstantiateWorkflowTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1498,15 +1222,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             resp = self._interceptor.post_instantiate_workflow_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_instantiate_workflow_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_instantiate_workflow_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1527,23 +1244,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
             return resp
 
-    class _ListWorkflowTemplates(
-        _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _ListWorkflowTemplates(_BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.ListWorkflowTemplates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1585,28 +1291,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_workflow_templates(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_workflow_templates(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListWorkflowTemplates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1630,12 +1324,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._ListWorkflowTemplates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1651,18 +1340,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             resp = self._interceptor.post_list_workflow_templates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_workflow_templates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_workflow_templates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        workflow_templates.ListWorkflowTemplatesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = workflow_templates.ListWorkflowTemplatesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1681,23 +1362,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
             return resp
 
-    class _UpdateWorkflowTemplate(
-        _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _UpdateWorkflowTemplate(_BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.UpdateWorkflowTemplate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1740,32 +1410,18 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_workflow_template(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_workflow_template(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseUpdateWorkflowTemplate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1789,13 +1445,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._UpdateWorkflowTemplate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1811,16 +1461,10 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             resp = self._interceptor.post_update_workflow_template(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_workflow_template_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_workflow_template_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = workflow_templates.WorkflowTemplate.to_json(
-                        response
-                    )
+                    response_payload = workflow_templates.WorkflowTemplate.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1840,31 +1484,19 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             return resp
 
     @property
-    def create_workflow_template(
-        self,
-    ) -> Callable[
-        [workflow_templates.CreateWorkflowTemplateRequest],
-        workflow_templates.WorkflowTemplate,
-    ]:
+    def create_workflow_template(self) -> Callable[[workflow_templates.CreateWorkflowTemplateRequest], workflow_templates.WorkflowTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkflowTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_workflow_template(
-        self,
-    ) -> Callable[[workflow_templates.DeleteWorkflowTemplateRequest], empty_pb2.Empty]:
+    def delete_workflow_template(self) -> Callable[[workflow_templates.DeleteWorkflowTemplateRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkflowTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_workflow_template(
-        self,
-    ) -> Callable[
-        [workflow_templates.GetWorkflowTemplateRequest],
-        workflow_templates.WorkflowTemplate,
-    ]:
+    def get_workflow_template(self) -> Callable[[workflow_templates.GetWorkflowTemplateRequest], workflow_templates.WorkflowTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkflowTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -1872,21 +1504,13 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     @property
     def instantiate_inline_workflow_template(
         self,
-    ) -> Callable[
-        [workflow_templates.InstantiateInlineWorkflowTemplateRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[workflow_templates.InstantiateInlineWorkflowTemplateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InstantiateInlineWorkflowTemplate(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def instantiate_workflow_template(
-        self,
-    ) -> Callable[
-        [workflow_templates.InstantiateWorkflowTemplateRequest],
-        operations_pb2.Operation,
-    ]:
+    def instantiate_workflow_template(self) -> Callable[[workflow_templates.InstantiateWorkflowTemplateRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InstantiateWorkflowTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -1894,21 +1518,13 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     @property
     def list_workflow_templates(
         self,
-    ) -> Callable[
-        [workflow_templates.ListWorkflowTemplatesRequest],
-        workflow_templates.ListWorkflowTemplatesResponse,
-    ]:
+    ) -> Callable[[workflow_templates.ListWorkflowTemplatesRequest], workflow_templates.ListWorkflowTemplatesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkflowTemplates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_workflow_template(
-        self,
-    ) -> Callable[
-        [workflow_templates.UpdateWorkflowTemplateRequest],
-        workflow_templates.WorkflowTemplate,
-    ]:
+    def update_workflow_template(self) -> Callable[[workflow_templates.UpdateWorkflowTemplateRequest], workflow_templates.WorkflowTemplate]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWorkflowTemplate(self._session, self._host, self._interceptor)  # type: ignore
@@ -1917,23 +1533,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1972,30 +1577,18 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2019,13 +1612,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2037,9 +1624,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2064,23 +1649,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2119,30 +1693,18 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2166,13 +1728,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2184,9 +1740,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2211,23 +1765,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2266,32 +1809,18 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2314,16 +1843,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                WorkflowTemplateServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = WorkflowTemplateServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2335,9 +1856,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2362,23 +1881,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _CancelOperation(_BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2413,28 +1921,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2457,15 +1953,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                WorkflowTemplateServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = WorkflowTemplateServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2479,23 +1968,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2530,28 +2008,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2574,15 +2040,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                WorkflowTemplateServiceRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = WorkflowTemplateServiceRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2596,23 +2055,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _GetOperation(_BaseWorkflowTemplateServiceRestTransport._BaseGetOperation, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2650,26 +2098,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2693,12 +2131,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
 
             # Send the request
             response = WorkflowTemplateServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2710,9 +2143,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2737,23 +2168,12 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseWorkflowTemplateServiceRestTransport._BaseListOperations,
-        WorkflowTemplateServiceRestStub,
-    ):
+    class _ListOperations(_BaseWorkflowTemplateServiceRestTransport._BaseListOperations, WorkflowTemplateServiceRestStub):
         def __hash__(self):
             return hash("WorkflowTemplateServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2791,26 +2211,16 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkflowTemplateServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2833,15 +2243,8 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                WorkflowTemplateServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = WorkflowTemplateServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2853,9 +2256,7 @@ class WorkflowTemplateServiceRestTransport(_BaseWorkflowTemplateServiceRestTrans
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

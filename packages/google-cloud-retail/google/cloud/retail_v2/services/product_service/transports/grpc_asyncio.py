@@ -52,13 +52,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -68,10 +64,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -90,11 +83,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -274,18 +263,14 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -321,9 +306,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -346,19 +329,13 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_product(
-        self,
-    ) -> Callable[
-        [product_service.CreateProductRequest], Awaitable[gcr_product.Product]
-    ]:
+    def create_product(self) -> Callable[[product_service.CreateProductRequest], Awaitable[gcr_product.Product]]:
         r"""Return a callable for the create product method over gRPC.
 
         Creates a [Product][google.cloud.retail.v2.Product].
@@ -382,9 +359,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["create_product"]
 
     @property
-    def get_product(
-        self,
-    ) -> Callable[[product_service.GetProductRequest], Awaitable[product.Product]]:
+    def get_product(self) -> Callable[[product_service.GetProductRequest], Awaitable[product.Product]]:
         r"""Return a callable for the get product method over gRPC.
 
         Gets a [Product][google.cloud.retail.v2.Product].
@@ -408,12 +383,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["get_product"]
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [product_service.ListProductsRequest],
-        Awaitable[product_service.ListProductsResponse],
-    ]:
+    def list_products(self) -> Callable[[product_service.ListProductsRequest], Awaitable[product_service.ListProductsResponse]]:
         r"""Return a callable for the list products method over gRPC.
 
         Gets a list of [Product][google.cloud.retail.v2.Product]s.
@@ -437,11 +407,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["list_products"]
 
     @property
-    def update_product(
-        self,
-    ) -> Callable[
-        [product_service.UpdateProductRequest], Awaitable[gcr_product.Product]
-    ]:
+    def update_product(self) -> Callable[[product_service.UpdateProductRequest], Awaitable[gcr_product.Product]]:
         r"""Return a callable for the update product method over gRPC.
 
         Updates a [Product][google.cloud.retail.v2.Product].
@@ -465,9 +431,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["update_product"]
 
     @property
-    def delete_product(
-        self,
-    ) -> Callable[[product_service.DeleteProductRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_product(self) -> Callable[[product_service.DeleteProductRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete product method over gRPC.
 
         Deletes a [Product][google.cloud.retail.v2.Product].
@@ -491,11 +455,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["delete_product"]
 
     @property
-    def purge_products(
-        self,
-    ) -> Callable[
-        [purge_config.PurgeProductsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def purge_products(self) -> Callable[[purge_config.PurgeProductsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the purge products method over gRPC.
 
         Permanently deletes all selected
@@ -538,11 +498,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["purge_products"]
 
     @property
-    def import_products(
-        self,
-    ) -> Callable[
-        [import_config.ImportProductsRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def import_products(self) -> Callable[[import_config.ImportProductsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import products method over gRPC.
 
         Bulk import of multiple
@@ -574,11 +530,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["import_products"]
 
     @property
-    def set_inventory(
-        self,
-    ) -> Callable[
-        [product_service.SetInventoryRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def set_inventory(self) -> Callable[[product_service.SetInventoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the set inventory method over gRPC.
 
         Updates inventory information for a
@@ -654,12 +606,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["set_inventory"]
 
     @property
-    def add_fulfillment_places(
-        self,
-    ) -> Callable[
-        [product_service.AddFulfillmentPlacesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def add_fulfillment_places(self) -> Callable[[product_service.AddFulfillmentPlacesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the add fulfillment places method over gRPC.
 
         We recommend that you use the
@@ -714,12 +661,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["add_fulfillment_places"]
 
     @property
-    def remove_fulfillment_places(
-        self,
-    ) -> Callable[
-        [product_service.RemoveFulfillmentPlacesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def remove_fulfillment_places(self) -> Callable[[product_service.RemoveFulfillmentPlacesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the remove fulfillment places method over gRPC.
 
         We recommend that you use the
@@ -774,12 +716,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["remove_fulfillment_places"]
 
     @property
-    def add_local_inventories(
-        self,
-    ) -> Callable[
-        [product_service.AddLocalInventoriesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def add_local_inventories(self) -> Callable[[product_service.AddLocalInventoriesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the add local inventories method over gRPC.
 
         Updates local inventory information for a
@@ -834,12 +771,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
         return self._stubs["add_local_inventories"]
 
     @property
-    def remove_local_inventories(
-        self,
-    ) -> Callable[
-        [product_service.RemoveLocalInventoriesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def remove_local_inventories(self) -> Callable[[product_service.RemoveLocalInventoriesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the remove local inventories method over gRPC.
 
         Remove local inventory information for a
@@ -1007,9 +939,7 @@ class ProductServiceGrpcAsyncIOTransport(ProductServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

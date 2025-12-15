@@ -28,25 +28,10 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.oracledatabase_v1 import gapic_version as package_version
-from google.cloud.oracledatabase_v1.types import (
-    db_system_initial_storage_size,
-    db_version,
-    exadata_infra,
-    exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
-    database,
-    database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
-    oracledatabase,
-    pluggable_database,
-    vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exascale_db_storage_vault as gco_exascale_db_storage_vault,
-)
+from google.cloud.oracledatabase_v1.types import db_system_initial_storage_size, db_version, exadata_infra, exadb_vm_cluster
+from google.cloud.oracledatabase_v1.types import autonomous_database, database, database_character_set
+from google.cloud.oracledatabase_v1.types import oracledatabase, pluggable_database, vm_cluster
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault as gco_exascale_db_storage_vault
 from google.cloud.oracledatabase_v1.types import db_system
 from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
@@ -56,9 +41,7 @@ from google.cloud.oracledatabase_v1.types import odb_network as gco_odb_network
 from google.cloud.oracledatabase_v1.types import odb_subnet
 from google.cloud.oracledatabase_v1.types import odb_subnet as gco_odb_subnet
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -120,23 +103,15 @@ class OracleDatabaseTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -822,10 +797,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListCloudExadataInfrastructuresRequest],
-        Union[
-            oracledatabase.ListCloudExadataInfrastructuresResponse,
-            Awaitable[oracledatabase.ListCloudExadataInfrastructuresResponse],
-        ],
+        Union[oracledatabase.ListCloudExadataInfrastructuresResponse, Awaitable[oracledatabase.ListCloudExadataInfrastructuresResponse]],
     ]:
         raise NotImplementedError()
 
@@ -834,29 +806,20 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.GetCloudExadataInfrastructureRequest],
-        Union[
-            exadata_infra.CloudExadataInfrastructure,
-            Awaitable[exadata_infra.CloudExadataInfrastructure],
-        ],
+        Union[exadata_infra.CloudExadataInfrastructure, Awaitable[exadata_infra.CloudExadataInfrastructure]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_cloud_exadata_infrastructure(
         self,
-    ) -> Callable[
-        [oracledatabase.CreateCloudExadataInfrastructureRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.CreateCloudExadataInfrastructureRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_cloud_exadata_infrastructure(
         self,
-    ) -> Callable[
-        [oracledatabase.DeleteCloudExadataInfrastructureRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.DeleteCloudExadataInfrastructureRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -864,49 +827,33 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListCloudVmClustersRequest],
-        Union[
-            oracledatabase.ListCloudVmClustersResponse,
-            Awaitable[oracledatabase.ListCloudVmClustersResponse],
-        ],
+        Union[oracledatabase.ListCloudVmClustersResponse, Awaitable[oracledatabase.ListCloudVmClustersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_cloud_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.GetCloudVmClusterRequest],
-        Union[vm_cluster.CloudVmCluster, Awaitable[vm_cluster.CloudVmCluster]],
-    ]:
+    ) -> Callable[[oracledatabase.GetCloudVmClusterRequest], Union[vm_cluster.CloudVmCluster, Awaitable[vm_cluster.CloudVmCluster]]]:
         raise NotImplementedError()
 
     @property
     def create_cloud_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.CreateCloudVmClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.CreateCloudVmClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_cloud_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.DeleteCloudVmClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.DeleteCloudVmClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_entitlements(
         self,
     ) -> Callable[
-        [oracledatabase.ListEntitlementsRequest],
-        Union[
-            oracledatabase.ListEntitlementsResponse,
-            Awaitable[oracledatabase.ListEntitlementsResponse],
-        ],
+        [oracledatabase.ListEntitlementsRequest], Union[oracledatabase.ListEntitlementsResponse, Awaitable[oracledatabase.ListEntitlementsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -914,35 +861,21 @@ class OracleDatabaseTransport(abc.ABC):
     def list_db_servers(
         self,
     ) -> Callable[
-        [oracledatabase.ListDbServersRequest],
-        Union[
-            oracledatabase.ListDbServersResponse,
-            Awaitable[oracledatabase.ListDbServersResponse],
-        ],
+        [oracledatabase.ListDbServersRequest], Union[oracledatabase.ListDbServersResponse, Awaitable[oracledatabase.ListDbServersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_db_nodes(
         self,
-    ) -> Callable[
-        [oracledatabase.ListDbNodesRequest],
-        Union[
-            oracledatabase.ListDbNodesResponse,
-            Awaitable[oracledatabase.ListDbNodesResponse],
-        ],
-    ]:
+    ) -> Callable[[oracledatabase.ListDbNodesRequest], Union[oracledatabase.ListDbNodesResponse, Awaitable[oracledatabase.ListDbNodesResponse]]]:
         raise NotImplementedError()
 
     @property
     def list_gi_versions(
         self,
     ) -> Callable[
-        [oracledatabase.ListGiVersionsRequest],
-        Union[
-            oracledatabase.ListGiVersionsResponse,
-            Awaitable[oracledatabase.ListGiVersionsResponse],
-        ],
+        [oracledatabase.ListGiVersionsRequest], Union[oracledatabase.ListGiVersionsResponse, Awaitable[oracledatabase.ListGiVersionsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -950,11 +883,7 @@ class OracleDatabaseTransport(abc.ABC):
     def list_minor_versions(
         self,
     ) -> Callable[
-        [minor_version.ListMinorVersionsRequest],
-        Union[
-            minor_version.ListMinorVersionsResponse,
-            Awaitable[minor_version.ListMinorVersionsResponse],
-        ],
+        [minor_version.ListMinorVersionsRequest], Union[minor_version.ListMinorVersionsResponse, Awaitable[minor_version.ListMinorVersionsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -963,10 +892,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListDbSystemShapesRequest],
-        Union[
-            oracledatabase.ListDbSystemShapesResponse,
-            Awaitable[oracledatabase.ListDbSystemShapesResponse],
-        ],
+        Union[oracledatabase.ListDbSystemShapesResponse, Awaitable[oracledatabase.ListDbSystemShapesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -975,10 +901,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListAutonomousDatabasesRequest],
-        Union[
-            oracledatabase.ListAutonomousDatabasesResponse,
-            Awaitable[oracledatabase.ListAutonomousDatabasesResponse],
-        ],
+        Union[oracledatabase.ListAutonomousDatabasesResponse, Awaitable[oracledatabase.ListAutonomousDatabasesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -987,47 +910,32 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.GetAutonomousDatabaseRequest],
-        Union[
-            autonomous_database.AutonomousDatabase,
-            Awaitable[autonomous_database.AutonomousDatabase],
-        ],
+        Union[autonomous_database.AutonomousDatabase, Awaitable[autonomous_database.AutonomousDatabase]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.CreateAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.CreateAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.UpdateAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.UpdateAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.DeleteAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.DeleteAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def restore_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.RestoreAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.RestoreAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1035,10 +943,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.GenerateAutonomousDatabaseWalletRequest],
-        Union[
-            oracledatabase.GenerateAutonomousDatabaseWalletResponse,
-            Awaitable[oracledatabase.GenerateAutonomousDatabaseWalletResponse],
-        ],
+        Union[oracledatabase.GenerateAutonomousDatabaseWalletResponse, Awaitable[oracledatabase.GenerateAutonomousDatabaseWalletResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1047,10 +952,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListAutonomousDbVersionsRequest],
-        Union[
-            oracledatabase.ListAutonomousDbVersionsResponse,
-            Awaitable[oracledatabase.ListAutonomousDbVersionsResponse],
-        ],
+        Union[oracledatabase.ListAutonomousDbVersionsResponse, Awaitable[oracledatabase.ListAutonomousDbVersionsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1059,10 +961,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListAutonomousDatabaseCharacterSetsRequest],
-        Union[
-            oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
-            Awaitable[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse],
-        ],
+        Union[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse, Awaitable[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1071,134 +970,82 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListAutonomousDatabaseBackupsRequest],
-        Union[
-            oracledatabase.ListAutonomousDatabaseBackupsResponse,
-            Awaitable[oracledatabase.ListAutonomousDatabaseBackupsResponse],
-        ],
+        Union[oracledatabase.ListAutonomousDatabaseBackupsResponse, Awaitable[oracledatabase.ListAutonomousDatabaseBackupsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def stop_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.StopAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.StopAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.StartAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.StartAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def restart_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.RestartAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.RestartAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def switchover_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.SwitchoverAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.SwitchoverAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def failover_autonomous_database(
         self,
-    ) -> Callable[
-        [oracledatabase.FailoverAutonomousDatabaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.FailoverAutonomousDatabaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_odb_networks(
         self,
-    ) -> Callable[
-        [odb_network.ListOdbNetworksRequest],
-        Union[
-            odb_network.ListOdbNetworksResponse,
-            Awaitable[odb_network.ListOdbNetworksResponse],
-        ],
-    ]:
+    ) -> Callable[[odb_network.ListOdbNetworksRequest], Union[odb_network.ListOdbNetworksResponse, Awaitable[odb_network.ListOdbNetworksResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_odb_network(
-        self,
-    ) -> Callable[
-        [odb_network.GetOdbNetworkRequest],
-        Union[odb_network.OdbNetwork, Awaitable[odb_network.OdbNetwork]],
-    ]:
+    def get_odb_network(self) -> Callable[[odb_network.GetOdbNetworkRequest], Union[odb_network.OdbNetwork, Awaitable[odb_network.OdbNetwork]]]:
         raise NotImplementedError()
 
     @property
     def create_odb_network(
         self,
-    ) -> Callable[
-        [gco_odb_network.CreateOdbNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gco_odb_network.CreateOdbNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_odb_network(
         self,
-    ) -> Callable[
-        [odb_network.DeleteOdbNetworkRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[odb_network.DeleteOdbNetworkRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_odb_subnets(
         self,
-    ) -> Callable[
-        [odb_subnet.ListOdbSubnetsRequest],
-        Union[
-            odb_subnet.ListOdbSubnetsResponse,
-            Awaitable[odb_subnet.ListOdbSubnetsResponse],
-        ],
-    ]:
+    ) -> Callable[[odb_subnet.ListOdbSubnetsRequest], Union[odb_subnet.ListOdbSubnetsResponse, Awaitable[odb_subnet.ListOdbSubnetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_odb_subnet(
-        self,
-    ) -> Callable[
-        [odb_subnet.GetOdbSubnetRequest],
-        Union[odb_subnet.OdbSubnet, Awaitable[odb_subnet.OdbSubnet]],
-    ]:
+    def get_odb_subnet(self) -> Callable[[odb_subnet.GetOdbSubnetRequest], Union[odb_subnet.OdbSubnet, Awaitable[odb_subnet.OdbSubnet]]]:
         raise NotImplementedError()
 
     @property
     def create_odb_subnet(
         self,
-    ) -> Callable[
-        [gco_odb_subnet.CreateOdbSubnetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gco_odb_subnet.CreateOdbSubnetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_odb_subnet(
         self,
-    ) -> Callable[
-        [odb_subnet.DeleteOdbSubnetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[odb_subnet.DeleteOdbSubnetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1206,58 +1053,38 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [oracledatabase.ListExadbVmClustersRequest],
-        Union[
-            oracledatabase.ListExadbVmClustersResponse,
-            Awaitable[oracledatabase.ListExadbVmClustersResponse],
-        ],
+        Union[oracledatabase.ListExadbVmClustersResponse, Awaitable[oracledatabase.ListExadbVmClustersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.GetExadbVmClusterRequest],
-        Union[
-            exadb_vm_cluster.ExadbVmCluster, Awaitable[exadb_vm_cluster.ExadbVmCluster]
-        ],
-    ]:
+    ) -> Callable[[oracledatabase.GetExadbVmClusterRequest], Union[exadb_vm_cluster.ExadbVmCluster, Awaitable[exadb_vm_cluster.ExadbVmCluster]]]:
         raise NotImplementedError()
 
     @property
     def create_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.CreateExadbVmClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.CreateExadbVmClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.DeleteExadbVmClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.DeleteExadbVmClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.UpdateExadbVmClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.UpdateExadbVmClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_virtual_machine_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.RemoveVirtualMachineExadbVmClusterRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1266,8 +1093,7 @@ class OracleDatabaseTransport(abc.ABC):
     ) -> Callable[
         [exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest],
         Union[
-            exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
-            Awaitable[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse],
+            exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse, Awaitable[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]
         ],
     ]:
         raise NotImplementedError()
@@ -1277,10 +1103,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [exascale_db_storage_vault.GetExascaleDbStorageVaultRequest],
-        Union[
-            exascale_db_storage_vault.ExascaleDbStorageVault,
-            Awaitable[exascale_db_storage_vault.ExascaleDbStorageVault],
-        ],
+        Union[exascale_db_storage_vault.ExascaleDbStorageVault, Awaitable[exascale_db_storage_vault.ExascaleDbStorageVault]],
     ]:
         raise NotImplementedError()
 
@@ -1288,8 +1111,7 @@ class OracleDatabaseTransport(abc.ABC):
     def create_exascale_db_storage_vault(
         self,
     ) -> Callable[
-        [gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -1297,8 +1119,7 @@ class OracleDatabaseTransport(abc.ABC):
     def delete_exascale_db_storage_vault(
         self,
     ) -> Callable[
-        [exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+        [exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]
     ]:
         raise NotImplementedError()
 
@@ -1309,9 +1130,7 @@ class OracleDatabaseTransport(abc.ABC):
         [db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest],
         Union[
             db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse,
-            Awaitable[
-                db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
-            ],
+            Awaitable[db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -1319,21 +1138,11 @@ class OracleDatabaseTransport(abc.ABC):
     @property
     def list_databases(
         self,
-    ) -> Callable[
-        [database.ListDatabasesRequest],
-        Union[
-            database.ListDatabasesResponse, Awaitable[database.ListDatabasesResponse]
-        ],
-    ]:
+    ) -> Callable[[database.ListDatabasesRequest], Union[database.ListDatabasesResponse, Awaitable[database.ListDatabasesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[
-        [database.GetDatabaseRequest],
-        Union[database.Database, Awaitable[database.Database]],
-    ]:
+    def get_database(self) -> Callable[[database.GetDatabaseRequest], Union[database.Database, Awaitable[database.Database]]]:
         raise NotImplementedError()
 
     @property
@@ -1341,10 +1150,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [pluggable_database.ListPluggableDatabasesRequest],
-        Union[
-            pluggable_database.ListPluggableDatabasesResponse,
-            Awaitable[pluggable_database.ListPluggableDatabasesResponse],
-        ],
+        Union[pluggable_database.ListPluggableDatabasesResponse, Awaitable[pluggable_database.ListPluggableDatabasesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1352,62 +1158,34 @@ class OracleDatabaseTransport(abc.ABC):
     def get_pluggable_database(
         self,
     ) -> Callable[
-        [pluggable_database.GetPluggableDatabaseRequest],
-        Union[
-            pluggable_database.PluggableDatabase,
-            Awaitable[pluggable_database.PluggableDatabase],
-        ],
+        [pluggable_database.GetPluggableDatabaseRequest], Union[pluggable_database.PluggableDatabase, Awaitable[pluggable_database.PluggableDatabase]]
     ]:
         raise NotImplementedError()
 
     @property
     def list_db_systems(
         self,
-    ) -> Callable[
-        [db_system.ListDbSystemsRequest],
-        Union[
-            db_system.ListDbSystemsResponse, Awaitable[db_system.ListDbSystemsResponse]
-        ],
-    ]:
+    ) -> Callable[[db_system.ListDbSystemsRequest], Union[db_system.ListDbSystemsResponse, Awaitable[db_system.ListDbSystemsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_db_system(
-        self,
-    ) -> Callable[
-        [db_system.GetDbSystemRequest],
-        Union[db_system.DbSystem, Awaitable[db_system.DbSystem]],
-    ]:
+    def get_db_system(self) -> Callable[[db_system.GetDbSystemRequest], Union[db_system.DbSystem, Awaitable[db_system.DbSystem]]]:
         raise NotImplementedError()
 
     @property
     def create_db_system(
         self,
-    ) -> Callable[
-        [gco_db_system.CreateDbSystemRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[gco_db_system.CreateDbSystemRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_db_system(
-        self,
-    ) -> Callable[
-        [db_system.DeleteDbSystemRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_db_system(self) -> Callable[[db_system.DeleteDbSystemRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_db_versions(
         self,
-    ) -> Callable[
-        [db_version.ListDbVersionsRequest],
-        Union[
-            db_version.ListDbVersionsResponse,
-            Awaitable[db_version.ListDbVersionsResponse],
-        ],
-    ]:
+    ) -> Callable[[db_version.ListDbVersionsRequest], Union[db_version.ListDbVersionsResponse, Awaitable[db_version.ListDbVersionsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -1415,10 +1193,7 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [database_character_set.ListDatabaseCharacterSetsRequest],
-        Union[
-            database_character_set.ListDatabaseCharacterSetsResponse,
-            Awaitable[database_character_set.ListDatabaseCharacterSetsResponse],
-        ],
+        Union[database_character_set.ListDatabaseCharacterSetsResponse, Awaitable[database_character_set.ListDatabaseCharacterSetsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1427,20 +1202,14 @@ class OracleDatabaseTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -1458,22 +1227,13 @@ class OracleDatabaseTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

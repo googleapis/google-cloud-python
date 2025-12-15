@@ -45,12 +45,7 @@ from .engine_config import (
     ListEngineConfigsResponse,
     UpdateEngineConfigRequest,
 )
-from .engine_version import (
-    EngineVersion,
-    GetEngineVersionRequest,
-    ListEngineVersionsRequest,
-    ListEngineVersionsResponse,
-)
+from .engine_version import EngineVersion, GetEngineVersionRequest, ListEngineVersionsRequest, ListEngineVersionsResponse
 from .instance import (
     CreateInstanceRequest,
     DeleteInstanceRequest,

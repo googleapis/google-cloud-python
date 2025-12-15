@@ -87,9 +87,7 @@ class ReportServiceRestInterceptor:
     """
 
     def pre_search(
-        self,
-        request: reports.SearchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: reports.SearchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reports.SearchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search
 
@@ -112,9 +110,7 @@ class ReportServiceRestInterceptor:
         return response
 
     def post_search_with_metadata(
-        self,
-        response: reports.SearchResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: reports.SearchResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[reports.SearchResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search
 
@@ -212,9 +208,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ReportServiceRestInterceptor()
@@ -225,15 +219,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
             return hash("ReportServiceRestTransport.Search")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -275,34 +261,18 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseReportServiceRestTransport._BaseSearch._get_http_options()
-            )
+            http_options = _BaseReportServiceRestTransport._BaseSearch._get_http_options()
 
             request, metadata = self._interceptor.pre_search(request, metadata)
-            transcoded_request = (
-                _BaseReportServiceRestTransport._BaseSearch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseReportServiceRestTransport._BaseSearch._get_transcoded_request(http_options, request)
 
-            body = _BaseReportServiceRestTransport._BaseSearch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseReportServiceRestTransport._BaseSearch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseReportServiceRestTransport._BaseSearch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseReportServiceRestTransport._BaseSearch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -326,13 +296,7 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             # Send the request
             response = ReportServiceRestTransport._Search._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -348,12 +312,8 @@ class ReportServiceRestTransport(_BaseReportServiceRestTransport):
 
             resp = self._interceptor.post_search(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = reports.SearchResponse.to_json(response)
                 except:

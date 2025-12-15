@@ -138,9 +138,7 @@ class ListProgrammaticBuyersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    programmatic_buyers: MutableSequence[
-        programmatic_buyer_messages.ProgrammaticBuyer
-    ] = proto.RepeatedField(
+    programmatic_buyers: MutableSequence[programmatic_buyer_messages.ProgrammaticBuyer] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=programmatic_buyer_messages.ProgrammaticBuyer,

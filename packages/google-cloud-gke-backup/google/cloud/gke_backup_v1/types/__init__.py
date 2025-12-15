@@ -17,13 +17,7 @@ from .backup import Backup
 from .backup_channel import BackupChannel
 from .backup_plan import BackupPlan, ExclusionWindow, RpoConfig
 from .backup_plan_binding import BackupPlanBinding
-from .common import (
-    EncryptionKey,
-    NamespacedName,
-    NamespacedNames,
-    Namespaces,
-    VolumeTypeEnum,
-)
+from .common import EncryptionKey, NamespacedName, NamespacedNames, Namespaces, VolumeTypeEnum
 from .gkebackup import (
     CreateBackupChannelRequest,
     CreateBackupPlanRequest,
@@ -77,12 +71,7 @@ from .gkebackup import (
     UpdateRestorePlanRequest,
     UpdateRestoreRequest,
 )
-from .restore import (
-    ResourceSelector,
-    Restore,
-    RestoreConfig,
-    VolumeDataRestorePolicyOverride,
-)
+from .restore import ResourceSelector, Restore, RestoreConfig, VolumeDataRestorePolicyOverride
 from .restore_channel import RestoreChannel
 from .restore_plan import RestorePlan
 from .restore_plan_binding import RestorePlanBinding

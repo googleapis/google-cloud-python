@@ -18,12 +18,8 @@ from google.maps.routeoptimization import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.maps.routeoptimization_v1.services.route_optimization.async_client import (
-    RouteOptimizationAsyncClient,
-)
-from google.maps.routeoptimization_v1.services.route_optimization.client import (
-    RouteOptimizationClient,
-)
+from google.maps.routeoptimization_v1.services.route_optimization.async_client import RouteOptimizationAsyncClient
+from google.maps.routeoptimization_v1.services.route_optimization.client import RouteOptimizationClient
 from google.maps.routeoptimization_v1.types.route_optimization_service import (
     AggregatedMetrics,
     BatchOptimizeToursMetadata,

@@ -272,9 +272,7 @@ class CalculateStatsResponse(proto.Message):
             number=1,
             message=duration_pb2.Duration,
         )
-        points: MutableSequence[
-            "CalculateStatsResponse.TimeSeries.Interval"
-        ] = proto.RepeatedField(
+        points: MutableSequence["CalculateStatsResponse.TimeSeries.Interval"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CalculateStatsResponse.TimeSeries.Interval",
@@ -308,9 +306,7 @@ class CalculateStatsResponse(proto.Message):
         proto.INT32,
         number=6,
     )
-    issue_matches_stats: MutableMapping[
-        str, resources.IssueModelLabelStats.IssueStats
-    ] = proto.MapField(
+    issue_matches_stats: MutableMapping[str, resources.IssueModelLabelStats.IssueStats] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=8,
@@ -771,12 +767,10 @@ class IngestConversationsRequest(proto.Message):
             proto.STRING,
             number=1,
         )
-        bucket_object_type: "IngestConversationsRequest.GcsSource.BucketObjectType" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                enum="IngestConversationsRequest.GcsSource.BucketObjectType",
-            )
+        bucket_object_type: "IngestConversationsRequest.GcsSource.BucketObjectType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="IngestConversationsRequest.GcsSource.BucketObjectType",
         )
         metadata_bucket_uri: str = proto.Field(
             proto.STRING,
@@ -2710,13 +2704,11 @@ class Dimension(proto.Message):
         oneof="dimension_metadata",
         message=QaQuestionDimensionMetadata,
     )
-    qa_question_answer_dimension_metadata: QaQuestionAnswerDimensionMetadata = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="dimension_metadata",
-            message=QaQuestionAnswerDimensionMetadata,
-        )
+    qa_question_answer_dimension_metadata: QaQuestionAnswerDimensionMetadata = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="dimension_metadata",
+        message=QaQuestionAnswerDimensionMetadata,
     )
     dimension_key: DimensionKey = proto.Field(
         proto.ENUM,
@@ -3009,9 +3001,7 @@ class QueryMetricsResponse(proto.Message):
                     number=7,
                     optional=True,
                 )
-                qa_tag_scores: MutableSequence[
-                    "QueryMetricsResponse.Slice.DataPoint.ConversationMeasure.QaTagScore"
-                ] = proto.RepeatedField(
+                qa_tag_scores: MutableSequence["QueryMetricsResponse.Slice.DataPoint.ConversationMeasure.QaTagScore"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=9,
                     message="QueryMetricsResponse.Slice.DataPoint.ConversationMeasure.QaTagScore",
@@ -3043,9 +3033,7 @@ class QueryMetricsResponse(proto.Message):
                     .
             """
 
-            data_points: MutableSequence[
-                "QueryMetricsResponse.Slice.DataPoint"
-            ] = proto.RepeatedField(
+            data_points: MutableSequence["QueryMetricsResponse.Slice.DataPoint"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="QueryMetricsResponse.Slice.DataPoint",
@@ -3486,9 +3474,7 @@ class TuneQaScorecardRevisionMetadata(proto.Message):
             proto.STRING,
             number=1,
         )
-        dataset_validation_warnings: MutableSequence[
-            resources.DatasetValidationWarning
-        ] = proto.RepeatedField(
+        dataset_validation_warnings: MutableSequence[resources.DatasetValidationWarning] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum=resources.DatasetValidationWarning,
@@ -3550,16 +3536,12 @@ class TuneQaScorecardRevisionMetadata(proto.Message):
         number=3,
         message="TuneQaScorecardRevisionRequest",
     )
-    qa_question_dataset_validation_results: MutableSequence[
-        QaQuestionDatasetValidationResult
-    ] = proto.RepeatedField(
+    qa_question_dataset_validation_results: MutableSequence[QaQuestionDatasetValidationResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=QaQuestionDatasetValidationResult,
     )
-    qa_question_dataset_tuning_metrics: MutableSequence[
-        QaQuestionDatasetTuningMetrics
-    ] = proto.RepeatedField(
+    qa_question_dataset_tuning_metrics: MutableSequence[QaQuestionDatasetTuningMetrics] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=QaQuestionDatasetTuningMetrics,
@@ -3746,9 +3728,7 @@ class ListQaScorecardRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    qa_scorecard_revisions: MutableSequence[
-        resources.QaScorecardRevision
-    ] = proto.RepeatedField(
+    qa_scorecard_revisions: MutableSequence[resources.QaScorecardRevision] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.QaScorecardRevision,
@@ -4271,12 +4251,10 @@ class BulkDownloadFeedbackLabelsRequest(proto.Message):
             CSV = 1
             JSON = 2
 
-        format_: "BulkDownloadFeedbackLabelsRequest.GcsDestination.Format" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="BulkDownloadFeedbackLabelsRequest.GcsDestination.Format",
-            )
+        format_: "BulkDownloadFeedbackLabelsRequest.GcsDestination.Format" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="BulkDownloadFeedbackLabelsRequest.GcsDestination.Format",
         )
         object_uri: str = proto.Field(
             proto.STRING,

@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import GDCHardwareManagementTransport
 from .grpc import GDCHardwareManagementGrpcTransport
 from .grpc_asyncio import GDCHardwareManagementGrpcAsyncIOTransport
-from .rest import (
-    GDCHardwareManagementRestInterceptor,
-    GDCHardwareManagementRestTransport,
-)
+from .rest import GDCHardwareManagementRestInterceptor, GDCHardwareManagementRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[GDCHardwareManagementTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[GDCHardwareManagementTransport]]
 _transport_registry["grpc"] = GDCHardwareManagementGrpcTransport
 _transport_registry["grpc_asyncio"] = GDCHardwareManagementGrpcAsyncIOTransport
 _transport_registry["rest"] = GDCHardwareManagementRestTransport

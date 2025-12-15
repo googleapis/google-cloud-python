@@ -18,25 +18,11 @@ from google.cloud.osconfig import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.osconfig_v1.services.os_config_service.async_client import (
-    OsConfigServiceAsyncClient,
-)
-from google.cloud.osconfig_v1.services.os_config_service.client import (
-    OsConfigServiceClient,
-)
-from google.cloud.osconfig_v1.services.os_config_zonal_service.async_client import (
-    OsConfigZonalServiceAsyncClient,
-)
-from google.cloud.osconfig_v1.services.os_config_zonal_service.client import (
-    OsConfigZonalServiceClient,
-)
-from google.cloud.osconfig_v1.types.inventory import (
-    GetInventoryRequest,
-    Inventory,
-    InventoryView,
-    ListInventoriesRequest,
-    ListInventoriesResponse,
-)
+from google.cloud.osconfig_v1.services.os_config_service.async_client import OsConfigServiceAsyncClient
+from google.cloud.osconfig_v1.services.os_config_service.client import OsConfigServiceClient
+from google.cloud.osconfig_v1.services.os_config_zonal_service.async_client import OsConfigZonalServiceAsyncClient
+from google.cloud.osconfig_v1.services.os_config_zonal_service.client import OsConfigZonalServiceClient
+from google.cloud.osconfig_v1.types.inventory import GetInventoryRequest, Inventory, InventoryView, ListInventoriesRequest, ListInventoriesResponse
 from google.cloud.osconfig_v1.types.os_policy import OSPolicy
 from google.cloud.osconfig_v1.types.os_policy_assignment_reports import (
     GetOSPolicyAssignmentReportRequest,

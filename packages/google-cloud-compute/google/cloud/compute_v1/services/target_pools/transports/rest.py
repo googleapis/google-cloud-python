@@ -183,12 +183,8 @@ class TargetPoolsRestInterceptor:
     """
 
     def pre_add_health_check(
-        self,
-        request: compute.AddHealthCheckTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddHealthCheckTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AddHealthCheckTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddHealthCheckTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_health_check
 
         Override in a subclass to manipulate the request or metadata
@@ -210,9 +206,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_add_health_check_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_health_check
 
@@ -229,12 +223,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_add_instance(
-        self,
-        request: compute.AddInstanceTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddInstanceTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AddInstanceTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddInstanceTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -256,9 +246,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_add_instance_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_instance
 
@@ -275,13 +263,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListTargetPoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListTargetPoolsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListTargetPoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListTargetPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +272,7 @@ class TargetPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.TargetPoolAggregatedList
-    ) -> compute.TargetPoolAggregatedList:
+    def post_aggregated_list(self, response: compute.TargetPoolAggregatedList) -> compute.TargetPoolAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -305,12 +286,8 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.TargetPoolAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TargetPoolAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TargetPoolAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TargetPoolAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -326,12 +303,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -353,9 +326,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -372,9 +343,7 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -397,9 +366,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.TargetPool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.TargetPool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.TargetPool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -416,12 +383,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_get_health(
-        self,
-        request: compute.GetHealthTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetHealthTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetHealthTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetHealthTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_health
 
         Override in a subclass to manipulate the request or metadata
@@ -429,9 +392,7 @@ class TargetPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_health(
-        self, response: compute.TargetPoolInstanceHealth
-    ) -> compute.TargetPoolInstanceHealth:
+    def post_get_health(self, response: compute.TargetPoolInstanceHealth) -> compute.TargetPoolInstanceHealth:
         """Post-rpc interceptor for get_health
 
         DEPRECATED. Please use the `post_get_health_with_metadata`
@@ -445,12 +406,8 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_get_health_with_metadata(
-        self,
-        response: compute.TargetPoolInstanceHealth,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TargetPoolInstanceHealth, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TargetPoolInstanceHealth, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TargetPoolInstanceHealth, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_health
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -466,12 +423,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -493,9 +446,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -512,9 +463,7 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListTargetPoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListTargetPoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListTargetPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -537,9 +486,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.TargetPoolList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.TargetPoolList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.TargetPoolList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -556,13 +503,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_remove_health_check(
-        self,
-        request: compute.RemoveHealthCheckTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveHealthCheckTargetPoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RemoveHealthCheckTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveHealthCheckTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_health_check
 
         Override in a subclass to manipulate the request or metadata
@@ -570,9 +512,7 @@ class TargetPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_health_check(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_remove_health_check(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for remove_health_check
 
         DEPRECATED. Please use the `post_remove_health_check_with_metadata`
@@ -586,9 +526,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_remove_health_check_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_health_check
 
@@ -605,12 +543,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_remove_instance(
-        self,
-        request: compute.RemoveInstanceTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveInstanceTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.RemoveInstanceTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveInstanceTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -632,9 +566,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_remove_instance_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_instance
 
@@ -651,12 +583,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_set_backup(
-        self,
-        request: compute.SetBackupTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetBackupTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetBackupTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetBackupTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -678,9 +606,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_set_backup_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_backup
 
@@ -697,13 +623,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_set_security_policy(
-        self,
-        request: compute.SetSecurityPolicyTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetSecurityPolicyTargetPoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetSecurityPolicyTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetSecurityPolicyTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_security_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -711,9 +632,7 @@ class TargetPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_set_security_policy(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_security_policy(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_security_policy
 
         DEPRECATED. Please use the `post_set_security_policy_with_metadata`
@@ -727,9 +646,7 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_set_security_policy_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_security_policy
 
@@ -746,13 +663,8 @@ class TargetPoolsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsTargetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsTargetPoolRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsTargetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsTargetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -760,9 +672,7 @@ class TargetPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -776,12 +686,8 @@ class TargetPoolsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -880,30 +786,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TargetPoolsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AddHealthCheck(
-        _BaseTargetPoolsRestTransport._BaseAddHealthCheck, TargetPoolsRestStub
-    ):
+    class _AddHealthCheck(_BaseTargetPoolsRestTransport._BaseAddHealthCheck, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.AddHealthCheck")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -962,32 +856,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_health_check(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_health_check(request, metadata)
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseAddHealthCheck._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1011,13 +891,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._AddHealthCheck._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1033,12 +907,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_add_health_check(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_health_check_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_health_check_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1059,22 +929,12 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
             return resp
 
-    class _AddInstance(
-        _BaseTargetPoolsRestTransport._BaseAddInstance, TargetPoolsRestStub
-    ):
+    class _AddInstance(_BaseTargetPoolsRestTransport._BaseAddInstance, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.AddInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1133,36 +993,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseAddInstance._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseAddInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_add_instance(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseAddInstance._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseAddInstance._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTargetPoolsRestTransport._BaseAddInstance._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTargetPoolsRestTransport._BaseAddInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseAddInstance._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseAddInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1186,13 +1028,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._AddInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1208,12 +1044,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_add_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1234,22 +1066,12 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
             return resp
 
-    class _AggregatedList(
-        _BaseTargetPoolsRestTransport._BaseAggregatedList, TargetPoolsRestStub
-    ):
+    class _AggregatedList(_BaseTargetPoolsRestTransport._BaseAggregatedList, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1290,26 +1112,16 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1333,12 +1145,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1354,16 +1161,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.TargetPoolAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.TargetPoolAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1387,15 +1188,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return hash("TargetPoolsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1456,25 +1249,13 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = _BaseTargetPoolsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1497,14 +1278,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
 
             # Send the request
-            response = TargetPoolsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TargetPoolsRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1519,12 +1293,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1550,15 +1320,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return hash("TargetPoolsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1610,25 +1372,13 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = _BaseTargetPoolsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1651,14 +1401,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
 
             # Send the request
-            response = TargetPoolsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TargetPoolsRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1674,9 +1417,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TargetPool.to_json(response)
                 except:
@@ -1702,15 +1443,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return hash("TargetPoolsRestTransport.GetHealth")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1752,34 +1485,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseGetHealth._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseGetHealth._get_http_options()
 
             request, metadata = self._interceptor.pre_get_health(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseGetHealth._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseGetHealth._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseGetHealth._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseGetHealth._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseGetHealth._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseGetHealth._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1803,13 +1520,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._GetHealth._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1825,16 +1536,10 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_get_health(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_health_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_health_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.TargetPoolInstanceHealth.to_json(
-                        response
-                    )
+                    response_payload = compute.TargetPoolInstanceHealth.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1858,15 +1563,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return hash("TargetPoolsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1928,29 +1625,15 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = _BaseTargetPoolsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1974,13 +1657,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1996,12 +1673,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2027,15 +1700,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return hash("TargetPoolsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2081,25 +1746,13 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             http_options = _BaseTargetPoolsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2122,14 +1775,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
 
             # Send the request
-            response = TargetPoolsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TargetPoolsRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2145,9 +1791,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TargetPoolList.to_json(response)
                 except:
@@ -2168,22 +1812,12 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
             return resp
 
-    class _RemoveHealthCheck(
-        _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck, TargetPoolsRestStub
-    ):
+    class _RemoveHealthCheck(_BaseTargetPoolsRestTransport._BaseRemoveHealthCheck, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.RemoveHealthCheck")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2242,32 +1876,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_health_check(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_health_check(request, metadata)
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseRemoveHealthCheck._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2291,13 +1911,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._RemoveHealthCheck._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2313,12 +1927,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_remove_health_check(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_health_check_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_health_check_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2339,22 +1949,12 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
             return resp
 
-    class _RemoveInstance(
-        _BaseTargetPoolsRestTransport._BaseRemoveInstance, TargetPoolsRestStub
-    ):
+    class _RemoveInstance(_BaseTargetPoolsRestTransport._BaseRemoveInstance, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.RemoveInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2413,30 +2013,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_instance(request, metadata)
-            transcoded_request = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseRemoveInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2460,13 +2048,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._RemoveInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2482,12 +2064,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_remove_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2513,15 +2091,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return hash("TargetPoolsRestTransport.SetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2580,34 +2150,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseSetBackup._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseSetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_set_backup(request, metadata)
-            transcoded_request = (
-                _BaseTargetPoolsRestTransport._BaseSetBackup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseSetBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseSetBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseSetBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetPoolsRestTransport._BaseSetBackup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseSetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2631,13 +2185,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._SetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2653,12 +2201,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_set_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2679,22 +2223,12 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
             return resp
 
-    class _SetSecurityPolicy(
-        _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy, TargetPoolsRestStub
-    ):
+    class _SetSecurityPolicy(_BaseTargetPoolsRestTransport._BaseSetSecurityPolicy, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.SetSecurityPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2753,32 +2287,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_security_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_security_policy(request, metadata)
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseSetSecurityPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2802,13 +2322,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._SetSecurityPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2824,12 +2338,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_set_security_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_security_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_security_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2850,22 +2360,12 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseTargetPoolsRestTransport._BaseTestIamPermissions, TargetPoolsRestStub
-    ):
+    class _TestIamPermissions(_BaseTargetPoolsRestTransport._BaseTestIamPermissions, TargetPoolsRestStub):
         def __hash__(self):
             return hash("TargetPoolsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2907,32 +2407,18 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetPoolsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2956,13 +2442,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             # Send the request
             response = TargetPoolsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2978,12 +2458,8 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -3005,27 +2481,19 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
             return resp
 
     @property
-    def add_health_check(
-        self,
-    ) -> Callable[[compute.AddHealthCheckTargetPoolRequest], compute.Operation]:
+    def add_health_check(self) -> Callable[[compute.AddHealthCheckTargetPoolRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddHealthCheck(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def add_instance(
-        self,
-    ) -> Callable[[compute.AddInstanceTargetPoolRequest], compute.Operation]:
+    def add_instance(self) -> Callable[[compute.AddInstanceTargetPoolRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListTargetPoolsRequest], compute.TargetPoolAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListTargetPoolsRequest], compute.TargetPoolAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
@@ -3043,11 +2511,7 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_health(
-        self,
-    ) -> Callable[
-        [compute.GetHealthTargetPoolRequest], compute.TargetPoolInstanceHealth
-    ]:
+    def get_health(self) -> Callable[[compute.GetHealthTargetPoolRequest], compute.TargetPoolInstanceHealth]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetHealth(self._session, self._host, self._interceptor)  # type: ignore
@@ -3059,51 +2523,37 @@ class TargetPoolsRestTransport(_BaseTargetPoolsRestTransport):
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListTargetPoolsRequest], compute.TargetPoolList]:
+    def list(self) -> Callable[[compute.ListTargetPoolsRequest], compute.TargetPoolList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_health_check(
-        self,
-    ) -> Callable[[compute.RemoveHealthCheckTargetPoolRequest], compute.Operation]:
+    def remove_health_check(self) -> Callable[[compute.RemoveHealthCheckTargetPoolRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveHealthCheck(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_instance(
-        self,
-    ) -> Callable[[compute.RemoveInstanceTargetPoolRequest], compute.Operation]:
+    def remove_instance(self) -> Callable[[compute.RemoveInstanceTargetPoolRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_backup(
-        self,
-    ) -> Callable[[compute.SetBackupTargetPoolRequest], compute.Operation]:
+    def set_backup(self) -> Callable[[compute.SetBackupTargetPoolRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_security_policy(
-        self,
-    ) -> Callable[[compute.SetSecurityPolicyTargetPoolRequest], compute.Operation]:
+    def set_security_policy(self) -> Callable[[compute.SetSecurityPolicyTargetPoolRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetSecurityPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsTargetPoolRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsTargetPoolRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

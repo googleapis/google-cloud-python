@@ -32,9 +32,7 @@ from google.cloud.bigquery_reservation_v1 import gapic_version as package_versio
 from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.cloud.bigquery_reservation_v1.types import reservation
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class ReservationServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -399,69 +389,41 @@ class ReservationServiceTransport(abc.ABC):
     @property
     def create_reservation(
         self,
-    ) -> Callable[
-        [gcbr_reservation.CreateReservationRequest],
-        Union[gcbr_reservation.Reservation, Awaitable[gcbr_reservation.Reservation]],
-    ]:
+    ) -> Callable[[gcbr_reservation.CreateReservationRequest], Union[gcbr_reservation.Reservation, Awaitable[gcbr_reservation.Reservation]]]:
         raise NotImplementedError()
 
     @property
     def list_reservations(
         self,
     ) -> Callable[
-        [reservation.ListReservationsRequest],
-        Union[
-            reservation.ListReservationsResponse,
-            Awaitable[reservation.ListReservationsResponse],
-        ],
+        [reservation.ListReservationsRequest], Union[reservation.ListReservationsResponse, Awaitable[reservation.ListReservationsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_reservation(
-        self,
-    ) -> Callable[
-        [reservation.GetReservationRequest],
-        Union[reservation.Reservation, Awaitable[reservation.Reservation]],
-    ]:
+    def get_reservation(self) -> Callable[[reservation.GetReservationRequest], Union[reservation.Reservation, Awaitable[reservation.Reservation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_reservation(
-        self,
-    ) -> Callable[
-        [reservation.DeleteReservationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_reservation(self) -> Callable[[reservation.DeleteReservationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_reservation(
         self,
-    ) -> Callable[
-        [gcbr_reservation.UpdateReservationRequest],
-        Union[gcbr_reservation.Reservation, Awaitable[gcbr_reservation.Reservation]],
-    ]:
+    ) -> Callable[[gcbr_reservation.UpdateReservationRequest], Union[gcbr_reservation.Reservation, Awaitable[gcbr_reservation.Reservation]]]:
         raise NotImplementedError()
 
     @property
     def failover_reservation(
         self,
-    ) -> Callable[
-        [reservation.FailoverReservationRequest],
-        Union[reservation.Reservation, Awaitable[reservation.Reservation]],
-    ]:
+    ) -> Callable[[reservation.FailoverReservationRequest], Union[reservation.Reservation, Awaitable[reservation.Reservation]]]:
         raise NotImplementedError()
 
     @property
     def create_capacity_commitment(
         self,
-    ) -> Callable[
-        [reservation.CreateCapacityCommitmentRequest],
-        Union[
-            reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]
-        ],
-    ]:
+    ) -> Callable[[reservation.CreateCapacityCommitmentRequest], Union[reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]]]:
         raise NotImplementedError()
 
     @property
@@ -469,42 +431,26 @@ class ReservationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [reservation.ListCapacityCommitmentsRequest],
-        Union[
-            reservation.ListCapacityCommitmentsResponse,
-            Awaitable[reservation.ListCapacityCommitmentsResponse],
-        ],
+        Union[reservation.ListCapacityCommitmentsResponse, Awaitable[reservation.ListCapacityCommitmentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_capacity_commitment(
         self,
-    ) -> Callable[
-        [reservation.GetCapacityCommitmentRequest],
-        Union[
-            reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]
-        ],
-    ]:
+    ) -> Callable[[reservation.GetCapacityCommitmentRequest], Union[reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]]]:
         raise NotImplementedError()
 
     @property
     def delete_capacity_commitment(
         self,
-    ) -> Callable[
-        [reservation.DeleteCapacityCommitmentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[reservation.DeleteCapacityCommitmentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_capacity_commitment(
         self,
-    ) -> Callable[
-        [reservation.UpdateCapacityCommitmentRequest],
-        Union[
-            reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]
-        ],
-    ]:
+    ) -> Callable[[reservation.UpdateCapacityCommitmentRequest], Union[reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]]]:
         raise NotImplementedError()
 
     @property
@@ -512,63 +458,35 @@ class ReservationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [reservation.SplitCapacityCommitmentRequest],
-        Union[
-            reservation.SplitCapacityCommitmentResponse,
-            Awaitable[reservation.SplitCapacityCommitmentResponse],
-        ],
+        Union[reservation.SplitCapacityCommitmentResponse, Awaitable[reservation.SplitCapacityCommitmentResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def merge_capacity_commitments(
         self,
-    ) -> Callable[
-        [reservation.MergeCapacityCommitmentsRequest],
-        Union[
-            reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]
-        ],
-    ]:
+    ) -> Callable[[reservation.MergeCapacityCommitmentsRequest], Union[reservation.CapacityCommitment, Awaitable[reservation.CapacityCommitment]]]:
         raise NotImplementedError()
 
     @property
-    def create_assignment(
-        self,
-    ) -> Callable[
-        [reservation.CreateAssignmentRequest],
-        Union[reservation.Assignment, Awaitable[reservation.Assignment]],
-    ]:
+    def create_assignment(self) -> Callable[[reservation.CreateAssignmentRequest], Union[reservation.Assignment, Awaitable[reservation.Assignment]]]:
         raise NotImplementedError()
 
     @property
     def list_assignments(
         self,
-    ) -> Callable[
-        [reservation.ListAssignmentsRequest],
-        Union[
-            reservation.ListAssignmentsResponse,
-            Awaitable[reservation.ListAssignmentsResponse],
-        ],
-    ]:
+    ) -> Callable[[reservation.ListAssignmentsRequest], Union[reservation.ListAssignmentsResponse, Awaitable[reservation.ListAssignmentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_assignment(
-        self,
-    ) -> Callable[
-        [reservation.DeleteAssignmentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_assignment(self) -> Callable[[reservation.DeleteAssignmentRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def search_assignments(
         self,
     ) -> Callable[
-        [reservation.SearchAssignmentsRequest],
-        Union[
-            reservation.SearchAssignmentsResponse,
-            Awaitable[reservation.SearchAssignmentsResponse],
-        ],
+        [reservation.SearchAssignmentsRequest], Union[reservation.SearchAssignmentsResponse, Awaitable[reservation.SearchAssignmentsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -577,65 +495,36 @@ class ReservationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [reservation.SearchAllAssignmentsRequest],
-        Union[
-            reservation.SearchAllAssignmentsResponse,
-            Awaitable[reservation.SearchAllAssignmentsResponse],
-        ],
+        Union[reservation.SearchAllAssignmentsResponse, Awaitable[reservation.SearchAllAssignmentsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def move_assignment(
-        self,
-    ) -> Callable[
-        [reservation.MoveAssignmentRequest],
-        Union[reservation.Assignment, Awaitable[reservation.Assignment]],
-    ]:
+    def move_assignment(self) -> Callable[[reservation.MoveAssignmentRequest], Union[reservation.Assignment, Awaitable[reservation.Assignment]]]:
         raise NotImplementedError()
 
     @property
-    def update_assignment(
-        self,
-    ) -> Callable[
-        [reservation.UpdateAssignmentRequest],
-        Union[reservation.Assignment, Awaitable[reservation.Assignment]],
-    ]:
+    def update_assignment(self) -> Callable[[reservation.UpdateAssignmentRequest], Union[reservation.Assignment, Awaitable[reservation.Assignment]]]:
         raise NotImplementedError()
 
     @property
     def get_bi_reservation(
         self,
-    ) -> Callable[
-        [reservation.GetBiReservationRequest],
-        Union[reservation.BiReservation, Awaitable[reservation.BiReservation]],
-    ]:
+    ) -> Callable[[reservation.GetBiReservationRequest], Union[reservation.BiReservation, Awaitable[reservation.BiReservation]]]:
         raise NotImplementedError()
 
     @property
     def update_bi_reservation(
         self,
-    ) -> Callable[
-        [reservation.UpdateBiReservationRequest],
-        Union[reservation.BiReservation, Awaitable[reservation.BiReservation]],
-    ]:
+    ) -> Callable[[reservation.UpdateBiReservationRequest], Union[reservation.BiReservation, Awaitable[reservation.BiReservation]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -643,38 +532,24 @@ class ReservationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_reservation_group(
         self,
-    ) -> Callable[
-        [reservation.CreateReservationGroupRequest],
-        Union[reservation.ReservationGroup, Awaitable[reservation.ReservationGroup]],
-    ]:
+    ) -> Callable[[reservation.CreateReservationGroupRequest], Union[reservation.ReservationGroup, Awaitable[reservation.ReservationGroup]]]:
         raise NotImplementedError()
 
     @property
     def get_reservation_group(
         self,
-    ) -> Callable[
-        [reservation.GetReservationGroupRequest],
-        Union[reservation.ReservationGroup, Awaitable[reservation.ReservationGroup]],
-    ]:
+    ) -> Callable[[reservation.GetReservationGroupRequest], Union[reservation.ReservationGroup, Awaitable[reservation.ReservationGroup]]]:
         raise NotImplementedError()
 
     @property
-    def delete_reservation_group(
-        self,
-    ) -> Callable[
-        [reservation.DeleteReservationGroupRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_reservation_group(self) -> Callable[[reservation.DeleteReservationGroupRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -682,10 +557,7 @@ class ReservationServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [reservation.ListReservationGroupsRequest],
-        Union[
-            reservation.ListReservationGroupsResponse,
-            Awaitable[reservation.ListReservationGroupsResponse],
-        ],
+        Union[reservation.ListReservationGroupsResponse, Awaitable[reservation.ListReservationGroupsResponse]],
     ]:
         raise NotImplementedError()
 

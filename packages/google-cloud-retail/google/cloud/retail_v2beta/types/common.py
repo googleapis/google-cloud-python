@@ -577,9 +577,7 @@ class Rule(proto.Message):
                 number=2,
             )
 
-        facet_position_adjustments: MutableSequence[
-            "Rule.ForceReturnFacetAction.FacetPositionAdjustment"
-        ] = proto.RepeatedField(
+        facet_position_adjustments: MutableSequence["Rule.ForceReturnFacetAction.FacetPositionAdjustment"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Rule.ForceReturnFacetAction.FacetPositionAdjustment",

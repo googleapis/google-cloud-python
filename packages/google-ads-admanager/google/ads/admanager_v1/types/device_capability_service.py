@@ -136,9 +136,7 @@ class ListDeviceCapabilitiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    device_capabilities: MutableSequence[
-        device_capability_messages.DeviceCapability
-    ] = proto.RepeatedField(
+    device_capabilities: MutableSequence[device_capability_messages.DeviceCapability] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=device_capability_messages.DeviceCapability,

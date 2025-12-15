@@ -36,9 +36,7 @@ from google.cloud import network_security_v1alpha1
 
 async def sample_update_security_profile_group():
     # Create a client
-    client = (
-        network_security_v1alpha1.OrganizationSecurityProfileGroupServiceAsyncClient()
-    )
+    client = network_security_v1alpha1.OrganizationSecurityProfileGroupServiceAsyncClient()
 
     # Initialize request argument(s)
     request = network_security_v1alpha1.UpdateSecurityProfileGroupRequest()

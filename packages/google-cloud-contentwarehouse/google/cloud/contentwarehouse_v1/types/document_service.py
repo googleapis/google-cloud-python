@@ -73,9 +73,7 @@ class CreateDocumentResponse(proto.Message):
         number=3,
         message=common.ResponseMetadata,
     )
-    long_running_operations: MutableSequence[
-        operations_pb2.Operation
-    ] = proto.RepeatedField(
+    long_running_operations: MutableSequence[operations_pb2.Operation] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=operations_pb2.Operation,
@@ -266,9 +264,7 @@ class SearchDocumentsResponse(proto.Message):
         number=4,
         message=common.ResponseMetadata,
     )
-    histogram_query_results: MutableSequence[
-        histogram.HistogramQueryResult
-    ] = proto.RepeatedField(
+    histogram_query_results: MutableSequence[histogram.HistogramQueryResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=histogram.HistogramQueryResult,

@@ -68,14 +68,7 @@ from .job_service import (
     UpdateJobRequest,
 )
 from .tenant import Tenant
-from .tenant_service import (
-    CreateTenantRequest,
-    DeleteTenantRequest,
-    GetTenantRequest,
-    ListTenantsRequest,
-    ListTenantsResponse,
-    UpdateTenantRequest,
-)
+from .tenant_service import CreateTenantRequest, DeleteTenantRequest, GetTenantRequest, ListTenantsRequest, ListTenantsResponse, UpdateTenantRequest
 
 __all__ = (
     "BatchOperationMetadata",

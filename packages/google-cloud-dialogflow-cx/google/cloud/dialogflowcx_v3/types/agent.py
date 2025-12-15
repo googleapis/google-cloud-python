@@ -21,12 +21,8 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
-from google.cloud.dialogflowcx_v3.types import (
-    generative_settings as gcdc_generative_settings,
-)
+from google.cloud.dialogflowcx_v3.types import advanced_settings as gcdc_advanced_settings
+from google.cloud.dialogflowcx_v3.types import generative_settings as gcdc_generative_settings
 from google.cloud.dialogflowcx_v3.types import audio_config, flow
 
 __protobuf__ = proto.module(
@@ -889,9 +885,7 @@ class AgentValidationResult(proto.Message):
         proto.STRING,
         number=1,
     )
-    flow_validation_results: MutableSequence[
-        flow.FlowValidationResult
-    ] = proto.RepeatedField(
+    flow_validation_results: MutableSequence[flow.FlowValidationResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=flow.FlowValidationResult,

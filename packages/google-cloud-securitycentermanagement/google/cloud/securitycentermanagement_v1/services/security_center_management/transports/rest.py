@@ -241,13 +241,8 @@ class SecurityCenterManagementRestInterceptor:
     """
 
     def pre_create_event_threat_detection_custom_module(
-        self,
-        request: security_center_management.CreateEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.CreateEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.CreateEventThreatDetectionCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.CreateEventThreatDetectionCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -271,13 +266,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_create_event_threat_detection_custom_module_with_metadata(
-        self,
-        response: security_center_management.EventThreatDetectionCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.EventThreatDetectionCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.EventThreatDetectionCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.EventThreatDetectionCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_event_threat_detection_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -293,13 +283,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_create_security_health_analytics_custom_module(
-        self,
-        request: security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -323,13 +308,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_create_security_health_analytics_custom_module_with_metadata(
-        self,
-        response: security_center_management.SecurityHealthAnalyticsCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SecurityHealthAnalyticsCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.SecurityHealthAnalyticsCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.SecurityHealthAnalyticsCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_security_health_analytics_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -345,13 +325,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_delete_event_threat_detection_custom_module(
-        self,
-        request: security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.DeleteEventThreatDetectionCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.DeleteEventThreatDetectionCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -360,13 +335,8 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def pre_delete_security_health_analytics_custom_module(
-        self,
-        request: security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -378,10 +348,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_effective_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -390,8 +357,7 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_get_effective_event_threat_detection_custom_module(
-        self,
-        response: security_center_management.EffectiveEventThreatDetectionCustomModule,
+        self, response: security_center_management.EffectiveEventThreatDetectionCustomModule
     ) -> security_center_management.EffectiveEventThreatDetectionCustomModule:
         """Post-rpc interceptor for get_effective_event_threat_detection_custom_module
 
@@ -406,13 +372,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_get_effective_event_threat_detection_custom_module_with_metadata(
-        self,
-        response: security_center_management.EffectiveEventThreatDetectionCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.EffectiveEventThreatDetectionCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.EffectiveEventThreatDetectionCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.EffectiveEventThreatDetectionCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_effective_event_threat_detection_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -431,10 +392,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_effective_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -443,8 +401,7 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_get_effective_security_health_analytics_custom_module(
-        self,
-        response: security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
+        self, response: security_center_management.EffectiveSecurityHealthAnalyticsCustomModule
     ) -> security_center_management.EffectiveSecurityHealthAnalyticsCustomModule:
         """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
 
@@ -459,13 +416,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_get_effective_security_health_analytics_custom_module_with_metadata(
-        self,
-        response: security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.EffectiveSecurityHealthAnalyticsCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.EffectiveSecurityHealthAnalyticsCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_effective_security_health_analytics_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -481,13 +433,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_get_event_threat_detection_custom_module(
-        self,
-        request: security_center_management.GetEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.GetEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.GetEventThreatDetectionCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.GetEventThreatDetectionCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -511,13 +458,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_get_event_threat_detection_custom_module_with_metadata(
-        self,
-        response: security_center_management.EventThreatDetectionCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.EventThreatDetectionCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.EventThreatDetectionCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.EventThreatDetectionCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_event_threat_detection_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -533,13 +475,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_get_security_center_service(
-        self,
-        request: security_center_management.GetSecurityCenterServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.GetSecurityCenterServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.GetSecurityCenterServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.GetSecurityCenterServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_security_center_service
 
         Override in a subclass to manipulate the request or metadata
@@ -563,13 +500,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_get_security_center_service_with_metadata(
-        self,
-        response: security_center_management.SecurityCenterService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SecurityCenterService,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.SecurityCenterService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.SecurityCenterService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_security_center_service
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -585,13 +517,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_get_security_health_analytics_custom_module(
-        self,
-        request: security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -615,13 +542,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_get_security_health_analytics_custom_module_with_metadata(
-        self,
-        response: security_center_management.SecurityHealthAnalyticsCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SecurityHealthAnalyticsCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.SecurityHealthAnalyticsCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.SecurityHealthAnalyticsCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_security_health_analytics_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -640,10 +562,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
         Override in a subclass to manipulate the request or metadata
@@ -652,11 +571,8 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_list_descendant_event_threat_detection_custom_modules(
-        self,
-        response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
-    ) -> (
-        security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
-    ):
+        self, response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
+    ) -> security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse:
         """Post-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
         DEPRECATED. Please use the `post_list_descendant_event_threat_detection_custom_modules_with_metadata`
@@ -673,10 +589,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         response: security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_descendant_event_threat_detection_custom_modules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -695,10 +608,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
         Override in a subclass to manipulate the request or metadata
@@ -707,11 +617,8 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_list_descendant_security_health_analytics_custom_modules(
-        self,
-        response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-    ) -> (
-        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-    ):
+        self, response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
+    ) -> security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
         """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
         DEPRECATED. Please use the `post_list_descendant_security_health_analytics_custom_modules_with_metadata`
@@ -728,10 +635,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         response: security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_descendant_security_health_analytics_custom_modules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -750,10 +654,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_effective_event_threat_detection_custom_modules
 
         Override in a subclass to manipulate the request or metadata
@@ -762,11 +663,8 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_list_effective_event_threat_detection_custom_modules(
-        self,
-        response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
-    ) -> (
-        security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
-    ):
+        self, response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
+    ) -> security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse:
         """Post-rpc interceptor for list_effective_event_threat_detection_custom_modules
 
         DEPRECATED. Please use the `post_list_effective_event_threat_detection_custom_modules_with_metadata`
@@ -783,10 +681,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         response: security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_effective_event_threat_detection_custom_modules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -805,10 +700,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
         Override in a subclass to manipulate the request or metadata
@@ -817,11 +709,8 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_list_effective_security_health_analytics_custom_modules(
-        self,
-        response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-    ) -> (
-        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-    ):
+        self, response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
+    ) -> security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
         """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
         DEPRECATED. Please use the `post_list_effective_security_health_analytics_custom_modules_with_metadata`
@@ -838,10 +727,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         response: security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_effective_security_health_analytics_custom_modules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -857,13 +743,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_list_event_threat_detection_custom_modules(
-        self,
-        request: security_center_management.ListEventThreatDetectionCustomModulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListEventThreatDetectionCustomModulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.ListEventThreatDetectionCustomModulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ListEventThreatDetectionCustomModulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_event_threat_detection_custom_modules
 
         Override in a subclass to manipulate the request or metadata
@@ -872,8 +753,7 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_list_event_threat_detection_custom_modules(
-        self,
-        response: security_center_management.ListEventThreatDetectionCustomModulesResponse,
+        self, response: security_center_management.ListEventThreatDetectionCustomModulesResponse
     ) -> security_center_management.ListEventThreatDetectionCustomModulesResponse:
         """Post-rpc interceptor for list_event_threat_detection_custom_modules
 
@@ -888,13 +768,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_list_event_threat_detection_custom_modules_with_metadata(
-        self,
-        response: security_center_management.ListEventThreatDetectionCustomModulesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListEventThreatDetectionCustomModulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.ListEventThreatDetectionCustomModulesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ListEventThreatDetectionCustomModulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_event_threat_detection_custom_modules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -910,13 +785,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_list_security_center_services(
-        self,
-        request: security_center_management.ListSecurityCenterServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListSecurityCenterServicesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.ListSecurityCenterServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ListSecurityCenterServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_security_center_services
 
         Override in a subclass to manipulate the request or metadata
@@ -940,13 +810,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_list_security_center_services_with_metadata(
-        self,
-        response: security_center_management.ListSecurityCenterServicesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListSecurityCenterServicesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.ListSecurityCenterServicesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ListSecurityCenterServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_security_center_services
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -962,13 +827,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_list_security_health_analytics_custom_modules(
-        self,
-        request: security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_security_health_analytics_custom_modules
 
         Override in a subclass to manipulate the request or metadata
@@ -977,8 +837,7 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_list_security_health_analytics_custom_modules(
-        self,
-        response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
+        self, response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse
     ) -> security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse:
         """Post-rpc interceptor for list_security_health_analytics_custom_modules
 
@@ -993,13 +852,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_list_security_health_analytics_custom_modules_with_metadata(
-        self,
-        response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_security_health_analytics_custom_modules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1018,10 +872,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         request: security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for simulate_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -1030,8 +881,7 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_simulate_security_health_analytics_custom_module(
-        self,
-        response: security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
+        self, response: security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse
     ) -> security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse:
         """Post-rpc interceptor for simulate_security_health_analytics_custom_module
 
@@ -1049,10 +899,7 @@ class SecurityCenterManagementRestInterceptor:
         self,
         response: security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for simulate_security_health_analytics_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1068,13 +915,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_update_event_threat_detection_custom_module(
-        self,
-        request: security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.UpdateEventThreatDetectionCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.UpdateEventThreatDetectionCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -1098,13 +940,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_update_event_threat_detection_custom_module_with_metadata(
-        self,
-        response: security_center_management.EventThreatDetectionCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.EventThreatDetectionCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.EventThreatDetectionCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.EventThreatDetectionCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_event_threat_detection_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1120,13 +957,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_update_security_center_service(
-        self,
-        request: security_center_management.UpdateSecurityCenterServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.UpdateSecurityCenterServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.UpdateSecurityCenterServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.UpdateSecurityCenterServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_security_center_service
 
         Override in a subclass to manipulate the request or metadata
@@ -1150,13 +982,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_update_security_center_service_with_metadata(
-        self,
-        response: security_center_management.SecurityCenterService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SecurityCenterService,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.SecurityCenterService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.SecurityCenterService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_security_center_service
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1172,13 +999,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_update_security_health_analytics_custom_module(
-        self,
-        request: security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_security_health_analytics_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -1202,13 +1024,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_update_security_health_analytics_custom_module_with_metadata(
-        self,
-        response: security_center_management.SecurityHealthAnalyticsCustomModule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.SecurityHealthAnalyticsCustomModule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.SecurityHealthAnalyticsCustomModule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.SecurityHealthAnalyticsCustomModule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_security_health_analytics_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1224,13 +1041,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_validate_event_threat_detection_custom_module(
-        self,
-        request: security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: security_center_management.ValidateEventThreatDetectionCustomModuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ValidateEventThreatDetectionCustomModuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate_event_threat_detection_custom_module
 
         Override in a subclass to manipulate the request or metadata
@@ -1239,8 +1051,7 @@ class SecurityCenterManagementRestInterceptor:
         return request, metadata
 
     def post_validate_event_threat_detection_custom_module(
-        self,
-        response: security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
+        self, response: security_center_management.ValidateEventThreatDetectionCustomModuleResponse
     ) -> security_center_management.ValidateEventThreatDetectionCustomModuleResponse:
         """Post-rpc interceptor for validate_event_threat_detection_custom_module
 
@@ -1255,13 +1066,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def post_validate_event_threat_detection_custom_module_with_metadata(
-        self,
-        response: security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        security_center_management.ValidateEventThreatDetectionCustomModuleResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: security_center_management.ValidateEventThreatDetectionCustomModuleResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[security_center_management.ValidateEventThreatDetectionCustomModuleResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for validate_event_threat_detection_custom_module
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1277,12 +1083,8 @@ class SecurityCenterManagementRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1290,9 +1092,7 @@ class SecurityCenterManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1302,12 +1102,8 @@ class SecurityCenterManagementRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1315,9 +1111,7 @@ class SecurityCenterManagementRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1406,33 +1200,20 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SecurityCenterManagementRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CreateEventThreatDetectionCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.CreateEventThreatDetectionCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.CreateEventThreatDetectionCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1480,35 +1261,22 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_event_threat_detection_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_event_threat_detection_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseSecurityCenterManagementRestTransport._BaseCreateEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1532,13 +1300,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._CreateEventThreatDetectionCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1548,29 +1310,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.EventThreatDetectionCustomModule()
-            pb_resp = security_center_management.EventThreatDetectionCustomModule.pb(
-                resp
-            )
+            pb_resp = security_center_management.EventThreatDetectionCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_create_event_threat_detection_custom_module(
-                resp
-            )
+            resp = self._interceptor.post_create_event_threat_detection_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_event_threat_detection_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1590,24 +1339,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _CreateSecurityHealthAnalyticsCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.CreateSecurityHealthAnalyticsCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.CreateSecurityHealthAnalyticsCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1659,16 +1397,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_security_health_analytics_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_security_health_analytics_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseCreateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -1682,12 +1413,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1711,13 +1438,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._CreateSecurityHealthAnalyticsCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1727,31 +1448,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.SecurityHealthAnalyticsCustomModule()
-            pb_resp = security_center_management.SecurityHealthAnalyticsCustomModule.pb(
-                resp
-            )
+            pb_resp = security_center_management.SecurityHealthAnalyticsCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = (
-                self._interceptor.post_create_security_health_analytics_custom_module(
-                    resp
-                )
-            )
+            resp = self._interceptor.post_create_security_health_analytics_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_security_health_analytics_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1771,24 +1477,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _DeleteEventThreatDetectionCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.DeleteEventThreatDetectionCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.DeleteEventThreatDetectionCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1825,16 +1520,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_event_threat_detection_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_event_threat_detection_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseDeleteEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -1844,12 +1532,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1873,12 +1557,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._DeleteEventThreatDetectionCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1887,24 +1566,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
     class _DeleteSecurityHealthAnalyticsCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.DeleteSecurityHealthAnalyticsCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.DeleteSecurityHealthAnalyticsCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1941,16 +1609,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_security_health_analytics_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_security_health_analytics_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseDeleteSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -1960,12 +1621,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1989,12 +1646,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._DeleteSecurityHealthAnalyticsCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2003,24 +1655,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
     class _GetEffectiveEventThreatDetectionCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.GetEffectiveEventThreatDetectionCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.GetEffectiveEventThreatDetectionCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2070,16 +1711,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_effective_event_threat_detection_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_effective_event_threat_detection_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -2089,12 +1723,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2118,12 +1748,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetEffectiveEventThreatDetectionCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2132,34 +1757,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.EffectiveEventThreatDetectionCustomModule()
-            )
-            pb_resp = (
-                security_center_management.EffectiveEventThreatDetectionCustomModule.pb(
-                    resp
-                )
-            )
+            resp = security_center_management.EffectiveEventThreatDetectionCustomModule()
+            pb_resp = security_center_management.EffectiveEventThreatDetectionCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_effective_event_threat_detection_custom_module(
-                resp
-            )
+            resp = self._interceptor.post_get_effective_event_threat_detection_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_effective_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_effective_event_threat_detection_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.EffectiveEventThreatDetectionCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.EffectiveEventThreatDetectionCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2179,24 +1787,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _GetEffectiveSecurityHealthAnalyticsCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.GetEffectiveSecurityHealthAnalyticsCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.GetEffectiveSecurityHealthAnalyticsCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2247,18 +1844,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_effective_security_health_analytics_custom_module(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_get_effective_security_health_analytics_custom_module(request, metadata)
+            transcoded_request = (
+                _BaseSecurityCenterManagementRestTransport._BaseGetEffectiveSecurityHealthAnalyticsCustomModule._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
@@ -2266,12 +1858,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2295,12 +1883,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetEffectiveSecurityHealthAnalyticsCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2309,32 +1892,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.EffectiveSecurityHealthAnalyticsCustomModule()
-            )
-            pb_resp = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.pb(
-                resp
-            )
+            resp = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule()
+            pb_resp = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_effective_security_health_analytics_custom_module(
-                resp
-            )
+            resp = self._interceptor.post_get_effective_security_health_analytics_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_effective_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_effective_security_health_analytics_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.EffectiveSecurityHealthAnalyticsCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2354,24 +1922,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _GetEventThreatDetectionCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.GetEventThreatDetectionCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.GetEventThreatDetectionCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2418,16 +1975,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_event_threat_detection_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_event_threat_detection_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -2437,12 +1987,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2466,12 +2012,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetEventThreatDetectionCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2481,27 +2022,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.EventThreatDetectionCustomModule()
-            pb_resp = security_center_management.EventThreatDetectionCustomModule.pb(
-                resp
-            )
+            pb_resp = security_center_management.EventThreatDetectionCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_event_threat_detection_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_event_threat_detection_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2520,25 +2050,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
             return resp
 
-    class _GetSecurityCenterService(
-        _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService,
-        SecurityCenterManagementRestStub,
-    ):
+    class _GetSecurityCenterService(_BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService, SecurityCenterManagementRestStub):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.GetSecurityCenterService"
-            )
+            return hash("SecurityCenterManagementRestTransport.GetSecurityCenterService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2589,28 +2106,18 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_security_center_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_security_center_service(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityCenterService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2634,12 +2141,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetSecurityCenterService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2655,18 +2157,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_get_security_center_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_security_center_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_security_center_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        security_center_management.SecurityCenterService.to_json(
-                            response
-                        )
-                    )
+                    response_payload = security_center_management.SecurityCenterService.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2686,24 +2180,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _GetSecurityHealthAnalyticsCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.GetSecurityHealthAnalyticsCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.GetSecurityHealthAnalyticsCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2754,16 +2237,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_security_health_analytics_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_security_health_analytics_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -2773,12 +2249,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2802,12 +2274,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetSecurityHealthAnalyticsCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2817,29 +2284,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.SecurityHealthAnalyticsCustomModule()
-            pb_resp = security_center_management.SecurityHealthAnalyticsCustomModule.pb(
-                resp
-            )
+            pb_resp = security_center_management.SecurityHealthAnalyticsCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_get_security_health_analytics_custom_module(
-                resp
-            )
+            resp = self._interceptor.post_get_security_health_analytics_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_security_health_analytics_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2859,24 +2313,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ListDescendantEventThreatDetectionCustomModules(
-        _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListDescendantEventThreatDetectionCustomModules"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListDescendantEventThreatDetectionCustomModules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2896,9 +2339,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse
-        ):
+        ) -> security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse:
             r"""Call the list descendant event
             threat detection custom modules method over HTTP.
 
@@ -2921,18 +2362,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_descendant_event_threat_detection_custom_modules(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_list_descendant_event_threat_detection_custom_modules(request, metadata)
+            transcoded_request = (
+                _BaseSecurityCenterManagementRestTransport._BaseListDescendantEventThreatDetectionCustomModules._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
@@ -2940,12 +2376,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2969,12 +2401,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListDescendantEventThreatDetectionCustomModules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2983,32 +2410,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse()
-            )
-            pb_resp = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.pb(
-                resp
-            )
+            resp = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse()
+            pb_resp = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_descendant_event_threat_detection_custom_modules(
-                resp
-            )
+            resp = self._interceptor.post_list_descendant_event_threat_detection_custom_modules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_descendant_event_threat_detection_custom_modules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_descendant_event_threat_detection_custom_modules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3028,24 +2440,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ListDescendantSecurityHealthAnalyticsCustomModules(
-        _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListDescendantSecurityHealthAnalyticsCustomModules"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListDescendantSecurityHealthAnalyticsCustomModules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3065,9 +2466,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse
-        ):
+        ) -> security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse:
             r"""Call the list descendant security
             health analytics custom modules method over HTTP.
 
@@ -3090,18 +2489,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_descendant_security_health_analytics_custom_modules(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_list_descendant_security_health_analytics_custom_modules(request, metadata)
+            transcoded_request = (
+                _BaseSecurityCenterManagementRestTransport._BaseListDescendantSecurityHealthAnalyticsCustomModules._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
@@ -3109,12 +2503,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3138,12 +2528,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListDescendantSecurityHealthAnalyticsCustomModules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3152,32 +2537,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
-            )
-            pb_resp = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(
-                resp
-            )
+            resp = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse()
+            pb_resp = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_descendant_security_health_analytics_custom_modules(
-                resp
-            )
+            resp = self._interceptor.post_list_descendant_security_health_analytics_custom_modules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_descendant_security_health_analytics_custom_modules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_descendant_security_health_analytics_custom_modules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3197,24 +2567,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ListEffectiveEventThreatDetectionCustomModules(
-        _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListEffectiveEventThreatDetectionCustomModules"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListEffectiveEventThreatDetectionCustomModules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3234,9 +2593,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse
-        ):
+        ) -> security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse:
             r"""Call the list effective event
             threat detection custom modules method over HTTP.
 
@@ -3259,18 +2616,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_effective_event_threat_detection_custom_modules(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_list_effective_event_threat_detection_custom_modules(request, metadata)
+            transcoded_request = (
+                _BaseSecurityCenterManagementRestTransport._BaseListEffectiveEventThreatDetectionCustomModules._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
@@ -3278,12 +2630,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3307,12 +2655,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListEffectiveEventThreatDetectionCustomModules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3321,32 +2664,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse()
-            )
-            pb_resp = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(
-                resp
-            )
+            resp = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse()
+            pb_resp = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_effective_event_threat_detection_custom_modules(
-                resp
-            )
+            resp = self._interceptor.post_list_effective_event_threat_detection_custom_modules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_effective_event_threat_detection_custom_modules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_effective_event_threat_detection_custom_modules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3366,24 +2694,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ListEffectiveSecurityHealthAnalyticsCustomModules(
-        _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListEffectiveSecurityHealthAnalyticsCustomModules"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListEffectiveSecurityHealthAnalyticsCustomModules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3403,9 +2720,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse
-        ):
+        ) -> security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse:
             r"""Call the list effective security
             health analytics custom modules method over HTTP.
 
@@ -3428,18 +2743,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_effective_security_health_analytics_custom_modules(
-                request, metadata
-            )
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_list_effective_security_health_analytics_custom_modules(request, metadata)
+            transcoded_request = (
+                _BaseSecurityCenterManagementRestTransport._BaseListEffectiveSecurityHealthAnalyticsCustomModules._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
@@ -3447,12 +2757,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3476,12 +2782,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListEffectiveSecurityHealthAnalyticsCustomModules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3490,32 +2791,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
-            )
-            pb_resp = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(
-                resp
-            )
+            resp = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse()
+            pb_resp = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_effective_security_health_analytics_custom_modules(
-                resp
-            )
+            resp = self._interceptor.post_list_effective_security_health_analytics_custom_modules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_effective_security_health_analytics_custom_modules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_effective_security_health_analytics_custom_modules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3535,24 +2821,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ListEventThreatDetectionCustomModules(
-        _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListEventThreatDetectionCustomModules"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListEventThreatDetectionCustomModules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3595,16 +2870,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_event_threat_detection_custom_modules(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_event_threat_detection_custom_modules(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListEventThreatDetectionCustomModules._get_transcoded_request(
                 http_options, request
             )
@@ -3614,12 +2882,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3643,12 +2907,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListEventThreatDetectionCustomModules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3657,32 +2916,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListEventThreatDetectionCustomModulesResponse()
-            )
-            pb_resp = security_center_management.ListEventThreatDetectionCustomModulesResponse.pb(
-                resp
-            )
+            resp = security_center_management.ListEventThreatDetectionCustomModulesResponse()
+            pb_resp = security_center_management.ListEventThreatDetectionCustomModulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_event_threat_detection_custom_modules(
-                resp
-            )
+            resp = self._interceptor.post_list_event_threat_detection_custom_modules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_event_threat_detection_custom_modules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_event_threat_detection_custom_modules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListEventThreatDetectionCustomModulesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListEventThreatDetectionCustomModulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3701,25 +2945,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
             return resp
 
-    class _ListSecurityCenterServices(
-        _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices,
-        SecurityCenterManagementRestStub,
-    ):
+    class _ListSecurityCenterServices(_BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices, SecurityCenterManagementRestStub):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListSecurityCenterServices"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListSecurityCenterServices")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3762,28 +2993,18 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_security_center_services(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_security_center_services(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterManagementRestTransport._BaseListSecurityCenterServices._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3807,12 +3028,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListSecurityCenterServices._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3822,27 +3038,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.ListSecurityCenterServicesResponse()
-            pb_resp = security_center_management.ListSecurityCenterServicesResponse.pb(
-                resp
-            )
+            pb_resp = security_center_management.ListSecurityCenterServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_security_center_services(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_security_center_services_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_security_center_services_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListSecurityCenterServicesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListSecurityCenterServicesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3862,24 +3067,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ListSecurityHealthAnalyticsCustomModules(
-        _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ListSecurityHealthAnalyticsCustomModules"
-            )
+            return hash("SecurityCenterManagementRestTransport.ListSecurityHealthAnalyticsCustomModules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3899,9 +3093,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse
-        ):
+        ) -> security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse:
             r"""Call the list security health
             analytics custom modules method over HTTP.
 
@@ -3924,16 +3116,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_security_health_analytics_custom_modules(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_security_health_analytics_custom_modules(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListSecurityHealthAnalyticsCustomModules._get_transcoded_request(
                 http_options, request
             )
@@ -3943,12 +3128,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3972,12 +3153,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ListSecurityHealthAnalyticsCustomModules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3986,32 +3162,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse()
-            )
-            pb_resp = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.pb(
-                resp
-            )
+            resp = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse()
+            pb_resp = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_list_security_health_analytics_custom_modules(
-                resp
-            )
+            resp = self._interceptor.post_list_security_health_analytics_custom_modules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_security_health_analytics_custom_modules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_security_health_analytics_custom_modules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ListSecurityHealthAnalyticsCustomModulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4031,24 +3192,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _SimulateSecurityHealthAnalyticsCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.SimulateSecurityHealthAnalyticsCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.SimulateSecurityHealthAnalyticsCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4069,9 +3219,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse
-        ):
+        ) -> security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse:
             r"""Call the simulate security health
             analytics custom module method over HTTP.
 
@@ -4095,16 +3243,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_simulate_security_health_analytics_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_simulate_security_health_analytics_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseSimulateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -4118,12 +3259,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4147,13 +3284,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._SimulateSecurityHealthAnalyticsCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4162,34 +3293,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse()
-            )
-            pb_resp = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.pb(
-                resp
-            )
+            resp = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse()
+            pb_resp = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = (
-                self._interceptor.post_simulate_security_health_analytics_custom_module(
-                    resp
-                )
-            )
+            resp = self._interceptor.post_simulate_security_health_analytics_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_simulate_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_simulate_security_health_analytics_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.SimulateSecurityHealthAnalyticsCustomModuleResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4209,24 +3323,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _UpdateEventThreatDetectionCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.UpdateEventThreatDetectionCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.UpdateEventThreatDetectionCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4274,35 +3377,22 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_event_threat_detection_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_event_threat_detection_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseSecurityCenterManagementRestTransport._BaseUpdateEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4326,13 +3416,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._UpdateEventThreatDetectionCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4342,29 +3426,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.EventThreatDetectionCustomModule()
-            pb_resp = security_center_management.EventThreatDetectionCustomModule.pb(
-                resp
-            )
+            pb_resp = security_center_management.EventThreatDetectionCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_update_event_threat_detection_custom_module(
-                resp
-            )
+            resp = self._interceptor.post_update_event_threat_detection_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_event_threat_detection_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.EventThreatDetectionCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4383,25 +3454,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
             return resp
 
-    class _UpdateSecurityCenterService(
-        _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService,
-        SecurityCenterManagementRestStub,
-    ):
+    class _UpdateSecurityCenterService(_BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService, SecurityCenterManagementRestStub):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.UpdateSecurityCenterService"
-            )
+            return hash("SecurityCenterManagementRestTransport.UpdateSecurityCenterService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4453,32 +3511,20 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_security_center_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_security_center_service(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityCenterService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4502,13 +3548,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._UpdateSecurityCenterService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4524,21 +3564,10 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             resp = self._interceptor.post_update_security_center_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_security_center_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_security_center_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        security_center_management.SecurityCenterService.to_json(
-                            response
-                        )
-                    )
+                    response_payload = security_center_management.SecurityCenterService.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4558,24 +3587,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _UpdateSecurityHealthAnalyticsCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.UpdateSecurityHealthAnalyticsCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.UpdateSecurityHealthAnalyticsCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4627,16 +3645,9 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_security_health_analytics_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_security_health_analytics_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseUpdateSecurityHealthAnalyticsCustomModule._get_transcoded_request(
                 http_options, request
             )
@@ -4650,12 +3661,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4679,13 +3686,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._UpdateSecurityHealthAnalyticsCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4695,31 +3696,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Return the response
             resp = security_center_management.SecurityHealthAnalyticsCustomModule()
-            pb_resp = security_center_management.SecurityHealthAnalyticsCustomModule.pb(
-                resp
-            )
+            pb_resp = security_center_management.SecurityHealthAnalyticsCustomModule.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = (
-                self._interceptor.post_update_security_health_analytics_custom_module(
-                    resp
-                )
-            )
+            resp = self._interceptor.post_update_security_health_analytics_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_security_health_analytics_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_security_health_analytics_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.SecurityHealthAnalyticsCustomModule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4739,24 +3725,13 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             return resp
 
     class _ValidateEventThreatDetectionCustomModule(
-        _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule,
-        SecurityCenterManagementRestStub,
+        _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule, SecurityCenterManagementRestStub
     ):
         def __hash__(self):
-            return hash(
-                "SecurityCenterManagementRestTransport.ValidateEventThreatDetectionCustomModule"
-            )
+            return hash("SecurityCenterManagementRestTransport.ValidateEventThreatDetectionCustomModule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4777,9 +3752,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            security_center_management.ValidateEventThreatDetectionCustomModuleResponse
-        ):
+        ) -> security_center_management.ValidateEventThreatDetectionCustomModuleResponse:
             r"""Call the validate event threat
             detection custom module method over HTTP.
 
@@ -4802,35 +3775,22 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_validate_event_threat_detection_custom_module(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_validate_event_threat_detection_custom_module(request, metadata)
             transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseSecurityCenterManagementRestTransport._BaseValidateEventThreatDetectionCustomModule._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4854,13 +3814,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._ValidateEventThreatDetectionCustomModule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4869,32 +3823,17 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                security_center_management.ValidateEventThreatDetectionCustomModuleResponse()
-            )
-            pb_resp = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.pb(
-                resp
-            )
+            resp = security_center_management.ValidateEventThreatDetectionCustomModuleResponse()
+            pb_resp = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = self._interceptor.post_validate_event_threat_detection_custom_module(
-                resp
-            )
+            resp = self._interceptor.post_validate_event_threat_detection_custom_module(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_validate_event_threat_detection_custom_module_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_validate_event_threat_detection_custom_module_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.to_json(
-                        response
-                    )
+                    response_payload = security_center_management.ValidateEventThreatDetectionCustomModuleResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4917,8 +3856,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def create_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.CreateEventThreatDetectionCustomModuleRequest],
-        security_center_management.EventThreatDetectionCustomModule,
+        [security_center_management.CreateEventThreatDetectionCustomModuleRequest], security_center_management.EventThreatDetectionCustomModule
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4928,8 +3866,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def create_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest],
-        security_center_management.SecurityHealthAnalyticsCustomModule,
+        [security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest], security_center_management.SecurityHealthAnalyticsCustomModule
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4938,10 +3875,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     @property
     def delete_event_threat_detection_custom_module(
         self,
-    ) -> Callable[
-        [security_center_management.DeleteEventThreatDetectionCustomModuleRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[security_center_management.DeleteEventThreatDetectionCustomModuleRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEventThreatDetectionCustomModule(self._session, self._host, self._interceptor)  # type: ignore
@@ -4949,10 +3883,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     @property
     def delete_security_health_analytics_custom_module(
         self,
-    ) -> Callable[
-        [security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest],
-        empty_pb2.Empty,
-    ]:
+    ) -> Callable[[security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSecurityHealthAnalyticsCustomModule(self._session, self._host, self._interceptor)  # type: ignore
@@ -4961,9 +3892,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def get_effective_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [
-            security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest
-        ],
+        [security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest],
         security_center_management.EffectiveEventThreatDetectionCustomModule,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -4974,9 +3903,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def get_effective_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [
-            security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest
-        ],
+        [security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest],
         security_center_management.EffectiveSecurityHealthAnalyticsCustomModule,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -4987,8 +3914,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def get_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.GetEventThreatDetectionCustomModuleRequest],
-        security_center_management.EventThreatDetectionCustomModule,
+        [security_center_management.GetEventThreatDetectionCustomModuleRequest], security_center_management.EventThreatDetectionCustomModule
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -4997,10 +3923,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     @property
     def get_security_center_service(
         self,
-    ) -> Callable[
-        [security_center_management.GetSecurityCenterServiceRequest],
-        security_center_management.SecurityCenterService,
-    ]:
+    ) -> Callable[[security_center_management.GetSecurityCenterServiceRequest], security_center_management.SecurityCenterService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSecurityCenterService(self._session, self._host, self._interceptor)  # type: ignore
@@ -5009,8 +3932,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def get_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest],
-        security_center_management.SecurityHealthAnalyticsCustomModule,
+        [security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest], security_center_management.SecurityHealthAnalyticsCustomModule
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5020,9 +3942,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def list_descendant_event_threat_detection_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest
-        ],
+        [security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest],
         security_center_management.ListDescendantEventThreatDetectionCustomModulesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -5033,9 +3953,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def list_descendant_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],
         security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -5046,9 +3964,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def list_effective_event_threat_detection_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest
-        ],
+        [security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest],
         security_center_management.ListEffectiveEventThreatDetectionCustomModulesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -5059,9 +3975,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def list_effective_security_health_analytics_custom_modules(
         self,
     ) -> Callable[
-        [
-            security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest
-        ],
+        [security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest],
         security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -5082,10 +3996,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     @property
     def list_security_center_services(
         self,
-    ) -> Callable[
-        [security_center_management.ListSecurityCenterServicesRequest],
-        security_center_management.ListSecurityCenterServicesResponse,
-    ]:
+    ) -> Callable[[security_center_management.ListSecurityCenterServicesRequest], security_center_management.ListSecurityCenterServicesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSecurityCenterServices(self._session, self._host, self._interceptor)  # type: ignore
@@ -5116,8 +4027,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def update_event_threat_detection_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.UpdateEventThreatDetectionCustomModuleRequest],
-        security_center_management.EventThreatDetectionCustomModule,
+        [security_center_management.UpdateEventThreatDetectionCustomModuleRequest], security_center_management.EventThreatDetectionCustomModule
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5126,10 +4036,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     @property
     def update_security_center_service(
         self,
-    ) -> Callable[
-        [security_center_management.UpdateSecurityCenterServiceRequest],
-        security_center_management.SecurityCenterService,
-    ]:
+    ) -> Callable[[security_center_management.UpdateSecurityCenterServiceRequest], security_center_management.SecurityCenterService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSecurityCenterService(self._session, self._host, self._interceptor)  # type: ignore
@@ -5138,8 +4045,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def update_security_health_analytics_custom_module(
         self,
     ) -> Callable[
-        [security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest],
-        security_center_management.SecurityHealthAnalyticsCustomModule,
+        [security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest], security_center_management.SecurityHealthAnalyticsCustomModule
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -5160,23 +4066,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseSecurityCenterManagementRestTransport._BaseGetLocation,
-        SecurityCenterManagementRestStub,
-    ):
+    class _GetLocation(_BaseSecurityCenterManagementRestTransport._BaseGetLocation, SecurityCenterManagementRestStub):
         def __hash__(self):
             return hash("SecurityCenterManagementRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5214,26 +4109,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterManagementRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5257,12 +4142,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
 
             # Send the request
             response = SecurityCenterManagementRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5274,9 +4154,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5301,23 +4179,12 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSecurityCenterManagementRestTransport._BaseListLocations,
-        SecurityCenterManagementRestStub,
-    ):
+    class _ListLocations(_BaseSecurityCenterManagementRestTransport._BaseListLocations, SecurityCenterManagementRestStub):
         def __hash__(self):
             return hash("SecurityCenterManagementRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5355,26 +4222,16 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSecurityCenterManagementRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5397,15 +4254,8 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
                 )
 
             # Send the request
-            response = (
-                SecurityCenterManagementRestTransport._ListLocations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SecurityCenterManagementRestTransport._ListLocations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5417,9 +4267,7 @@ class SecurityCenterManagementRestTransport(_BaseSecurityCenterManagementRestTra
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

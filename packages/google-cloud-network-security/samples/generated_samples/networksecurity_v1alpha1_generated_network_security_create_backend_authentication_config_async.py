@@ -39,9 +39,7 @@ async def sample_create_backend_authentication_config():
     client = network_security_v1alpha1.NetworkSecurityAsyncClient()
 
     # Initialize request argument(s)
-    backend_authentication_config = (
-        network_security_v1alpha1.BackendAuthenticationConfig()
-    )
+    backend_authentication_config = network_security_v1alpha1.BackendAuthenticationConfig()
     backend_authentication_config.name = "name_value"
 
     request = network_security_v1alpha1.CreateBackendAuthenticationConfigRequest(

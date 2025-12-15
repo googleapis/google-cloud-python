@@ -128,12 +128,8 @@ class ServiceHealthRestInterceptor:
     """
 
     def pre_get_event(
-        self,
-        request: event_resources.GetEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.GetEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: event_resources.GetEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.GetEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_event
 
         Override in a subclass to manipulate the request or metadata
@@ -155,9 +151,7 @@ class ServiceHealthRestInterceptor:
         return response
 
     def post_get_event_with_metadata(
-        self,
-        response: event_resources.Event,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: event_resources.Event, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[event_resources.Event, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_event
 
@@ -174,13 +168,8 @@ class ServiceHealthRestInterceptor:
         return response, metadata
 
     def pre_get_organization_event(
-        self,
-        request: event_resources.GetOrganizationEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.GetOrganizationEventRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: event_resources.GetOrganizationEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.GetOrganizationEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_organization_event
 
         Override in a subclass to manipulate the request or metadata
@@ -188,9 +177,7 @@ class ServiceHealthRestInterceptor:
         """
         return request, metadata
 
-    def post_get_organization_event(
-        self, response: event_resources.OrganizationEvent
-    ) -> event_resources.OrganizationEvent:
+    def post_get_organization_event(self, response: event_resources.OrganizationEvent) -> event_resources.OrganizationEvent:
         """Post-rpc interceptor for get_organization_event
 
         DEPRECATED. Please use the `post_get_organization_event_with_metadata`
@@ -204,12 +191,8 @@ class ServiceHealthRestInterceptor:
         return response
 
     def post_get_organization_event_with_metadata(
-        self,
-        response: event_resources.OrganizationEvent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.OrganizationEvent, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: event_resources.OrganizationEvent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.OrganizationEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_organization_event
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -225,13 +208,8 @@ class ServiceHealthRestInterceptor:
         return response, metadata
 
     def pre_get_organization_impact(
-        self,
-        request: event_resources.GetOrganizationImpactRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.GetOrganizationImpactRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: event_resources.GetOrganizationImpactRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.GetOrganizationImpactRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_organization_impact
 
         Override in a subclass to manipulate the request or metadata
@@ -239,9 +217,7 @@ class ServiceHealthRestInterceptor:
         """
         return request, metadata
 
-    def post_get_organization_impact(
-        self, response: event_resources.OrganizationImpact
-    ) -> event_resources.OrganizationImpact:
+    def post_get_organization_impact(self, response: event_resources.OrganizationImpact) -> event_resources.OrganizationImpact:
         """Post-rpc interceptor for get_organization_impact
 
         DEPRECATED. Please use the `post_get_organization_impact_with_metadata`
@@ -255,12 +231,8 @@ class ServiceHealthRestInterceptor:
         return response
 
     def post_get_organization_impact_with_metadata(
-        self,
-        response: event_resources.OrganizationImpact,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.OrganizationImpact, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: event_resources.OrganizationImpact, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.OrganizationImpact, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_organization_impact
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -276,12 +248,8 @@ class ServiceHealthRestInterceptor:
         return response, metadata
 
     def pre_list_events(
-        self,
-        request: event_resources.ListEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.ListEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: event_resources.ListEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.ListEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_events
 
         Override in a subclass to manipulate the request or metadata
@@ -289,9 +257,7 @@ class ServiceHealthRestInterceptor:
         """
         return request, metadata
 
-    def post_list_events(
-        self, response: event_resources.ListEventsResponse
-    ) -> event_resources.ListEventsResponse:
+    def post_list_events(self, response: event_resources.ListEventsResponse) -> event_resources.ListEventsResponse:
         """Post-rpc interceptor for list_events
 
         DEPRECATED. Please use the `post_list_events_with_metadata`
@@ -305,12 +271,8 @@ class ServiceHealthRestInterceptor:
         return response
 
     def post_list_events_with_metadata(
-        self,
-        response: event_resources.ListEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.ListEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: event_resources.ListEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.ListEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -326,13 +288,8 @@ class ServiceHealthRestInterceptor:
         return response, metadata
 
     def pre_list_organization_events(
-        self,
-        request: event_resources.ListOrganizationEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.ListOrganizationEventsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: event_resources.ListOrganizationEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.ListOrganizationEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_organization_events
 
         Override in a subclass to manipulate the request or metadata
@@ -356,13 +313,8 @@ class ServiceHealthRestInterceptor:
         return response
 
     def post_list_organization_events_with_metadata(
-        self,
-        response: event_resources.ListOrganizationEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.ListOrganizationEventsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: event_resources.ListOrganizationEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.ListOrganizationEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_organization_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -378,13 +330,8 @@ class ServiceHealthRestInterceptor:
         return response, metadata
 
     def pre_list_organization_impacts(
-        self,
-        request: event_resources.ListOrganizationImpactsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.ListOrganizationImpactsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: event_resources.ListOrganizationImpactsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.ListOrganizationImpactsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_organization_impacts
 
         Override in a subclass to manipulate the request or metadata
@@ -408,13 +355,8 @@ class ServiceHealthRestInterceptor:
         return response
 
     def post_list_organization_impacts_with_metadata(
-        self,
-        response: event_resources.ListOrganizationImpactsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        event_resources.ListOrganizationImpactsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: event_resources.ListOrganizationImpactsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[event_resources.ListOrganizationImpactsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_organization_impacts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -430,12 +372,8 @@ class ServiceHealthRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -443,9 +381,7 @@ class ServiceHealthRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -455,12 +391,8 @@ class ServiceHealthRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -468,9 +400,7 @@ class ServiceHealthRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -560,30 +490,18 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ServiceHealthRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetEvent(
-        _BaseServiceHealthRestTransport._BaseGetEvent, ServiceHealthRestStub
-    ):
+    class _GetEvent(_BaseServiceHealthRestTransport._BaseGetEvent, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.GetEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -628,30 +546,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseGetEvent._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseGetEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_get_event(request, metadata)
-            transcoded_request = (
-                _BaseServiceHealthRestTransport._BaseGetEvent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseServiceHealthRestTransport._BaseGetEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseServiceHealthRestTransport._BaseGetEvent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseGetEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -675,12 +579,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._GetEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -696,12 +595,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             resp = self._interceptor.post_get_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = event_resources.Event.to_json(response)
                 except:
@@ -722,22 +617,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 )
             return resp
 
-    class _GetOrganizationEvent(
-        _BaseServiceHealthRestTransport._BaseGetOrganizationEvent, ServiceHealthRestStub
-    ):
+    class _GetOrganizationEvent(_BaseServiceHealthRestTransport._BaseGetOrganizationEvent, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.GetOrganizationEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -782,28 +667,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_organization_event(
-                request, metadata
-            )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_organization_event(request, metadata)
+            transcoded_request = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -827,12 +700,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._GetOrganizationEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -848,16 +716,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             resp = self._interceptor.post_get_organization_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_organization_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_organization_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = event_resources.OrganizationEvent.to_json(
-                        response
-                    )
+                    response_payload = event_resources.OrganizationEvent.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -876,23 +738,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 )
             return resp
 
-    class _GetOrganizationImpact(
-        _BaseServiceHealthRestTransport._BaseGetOrganizationImpact,
-        ServiceHealthRestStub,
-    ):
+    class _GetOrganizationImpact(_BaseServiceHealthRestTransport._BaseGetOrganizationImpact, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.GetOrganizationImpact")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -936,28 +787,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_organization_impact(
-                request, metadata
-            )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_organization_impact(request, metadata)
+            transcoded_request = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseGetOrganizationImpact._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -981,12 +820,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._GetOrganizationImpact._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1002,16 +836,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             resp = self._interceptor.post_get_organization_impact(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_organization_impact_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_organization_impact_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = event_resources.OrganizationImpact.to_json(
-                        response
-                    )
+                    response_payload = event_resources.OrganizationImpact.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1030,22 +858,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 )
             return resp
 
-    class _ListEvents(
-        _BaseServiceHealthRestTransport._BaseListEvents, ServiceHealthRestStub
-    ):
+    class _ListEvents(_BaseServiceHealthRestTransport._BaseListEvents, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.ListEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1086,30 +904,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseListEvents._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseListEvents._get_http_options()
 
             request, metadata = self._interceptor.pre_list_events(request, metadata)
-            transcoded_request = (
-                _BaseServiceHealthRestTransport._BaseListEvents._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseServiceHealthRestTransport._BaseListEvents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseServiceHealthRestTransport._BaseListEvents._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseListEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1133,12 +937,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._ListEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1154,16 +953,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             resp = self._interceptor.post_list_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = event_resources.ListEventsResponse.to_json(
-                        response
-                    )
+                    response_payload = event_resources.ListEventsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1182,23 +975,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 )
             return resp
 
-    class _ListOrganizationEvents(
-        _BaseServiceHealthRestTransport._BaseListOrganizationEvents,
-        ServiceHealthRestStub,
-    ):
+    class _ListOrganizationEvents(_BaseServiceHealthRestTransport._BaseListOrganizationEvents, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.ListOrganizationEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1240,28 +1022,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_organization_events(
-                request, metadata
-            )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_organization_events(request, metadata)
+            transcoded_request = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseListOrganizationEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1285,12 +1055,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._ListOrganizationEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1306,16 +1071,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             resp = self._interceptor.post_list_organization_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_organization_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_organization_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        event_resources.ListOrganizationEventsResponse.to_json(response)
-                    )
+                    response_payload = event_resources.ListOrganizationEventsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1334,23 +1093,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 )
             return resp
 
-    class _ListOrganizationImpacts(
-        _BaseServiceHealthRestTransport._BaseListOrganizationImpacts,
-        ServiceHealthRestStub,
-    ):
+    class _ListOrganizationImpacts(_BaseServiceHealthRestTransport._BaseListOrganizationImpacts, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.ListOrganizationImpacts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1393,28 +1141,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_organization_impacts(
-                request, metadata
-            )
-            transcoded_request = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_organization_impacts(request, metadata)
+            transcoded_request = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseListOrganizationImpacts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1437,15 +1173,8 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 )
 
             # Send the request
-            response = (
-                ServiceHealthRestTransport._ListOrganizationImpacts._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ServiceHealthRestTransport._ListOrganizationImpacts._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1461,18 +1190,10 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             resp = self._interceptor.post_list_organization_impacts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_organization_impacts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_organization_impacts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        event_resources.ListOrganizationImpactsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = event_resources.ListOrganizationImpactsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1492,51 +1213,31 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             return resp
 
     @property
-    def get_event(
-        self,
-    ) -> Callable[[event_resources.GetEventRequest], event_resources.Event]:
+    def get_event(self) -> Callable[[event_resources.GetEventRequest], event_resources.Event]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_organization_event(
-        self,
-    ) -> Callable[
-        [event_resources.GetOrganizationEventRequest], event_resources.OrganizationEvent
-    ]:
+    def get_organization_event(self) -> Callable[[event_resources.GetOrganizationEventRequest], event_resources.OrganizationEvent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganizationEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_organization_impact(
-        self,
-    ) -> Callable[
-        [event_resources.GetOrganizationImpactRequest],
-        event_resources.OrganizationImpact,
-    ]:
+    def get_organization_impact(self) -> Callable[[event_resources.GetOrganizationImpactRequest], event_resources.OrganizationImpact]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOrganizationImpact(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_events(
-        self,
-    ) -> Callable[
-        [event_resources.ListEventsRequest], event_resources.ListEventsResponse
-    ]:
+    def list_events(self) -> Callable[[event_resources.ListEventsRequest], event_resources.ListEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_organization_events(
-        self,
-    ) -> Callable[
-        [event_resources.ListOrganizationEventsRequest],
-        event_resources.ListOrganizationEventsResponse,
-    ]:
+    def list_organization_events(self) -> Callable[[event_resources.ListOrganizationEventsRequest], event_resources.ListOrganizationEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrganizationEvents(self._session, self._host, self._interceptor)  # type: ignore
@@ -1544,10 +1245,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
     @property
     def list_organization_impacts(
         self,
-    ) -> Callable[
-        [event_resources.ListOrganizationImpactsRequest],
-        event_resources.ListOrganizationImpactsResponse,
-    ]:
+    ) -> Callable[[event_resources.ListOrganizationImpactsRequest], event_resources.ListOrganizationImpactsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrganizationImpacts(self._session, self._host, self._interceptor)  # type: ignore
@@ -1556,22 +1254,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseServiceHealthRestTransport._BaseGetLocation, ServiceHealthRestStub
-    ):
+    class _GetLocation(_BaseServiceHealthRestTransport._BaseGetLocation, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1609,28 +1297,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseServiceHealthRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseServiceHealthRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseServiceHealthRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1654,12 +1330,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1671,9 +1342,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1698,22 +1367,12 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseServiceHealthRestTransport._BaseListLocations, ServiceHealthRestStub
-    ):
+    class _ListLocations(_BaseServiceHealthRestTransport._BaseListLocations, ServiceHealthRestStub):
         def __hash__(self):
             return hash("ServiceHealthRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1751,26 +1410,16 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseServiceHealthRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseServiceHealthRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseServiceHealthRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseServiceHealthRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseServiceHealthRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseServiceHealthRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1794,12 +1443,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
 
             # Send the request
             response = ServiceHealthRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1811,9 +1455,7 @@ class ServiceHealthRestTransport(_BaseServiceHealthRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

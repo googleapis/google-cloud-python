@@ -915,9 +915,7 @@ class ListOrchestrationClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    orchestration_clusters: MutableSequence[
-        "OrchestrationCluster"
-    ] = proto.RepeatedField(
+    orchestration_clusters: MutableSequence["OrchestrationCluster"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OrchestrationCluster",

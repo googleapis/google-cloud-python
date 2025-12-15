@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -51,13 +40,7 @@ from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 
 from google.maps.fleetengine_delivery_v1.services.delivery_service import pagers
-from google.maps.fleetengine_delivery_v1.types import (
-    common,
-    delivery_api,
-    delivery_vehicles,
-    task_tracking_info,
-    tasks,
-)
+from google.maps.fleetengine_delivery_v1.types import common, delivery_api, delivery_vehicles, task_tracking_info, tasks
 
 from .client import DeliveryServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DeliveryServiceTransport
@@ -86,41 +69,21 @@ class DeliveryServiceAsyncClient:
     _DEFAULT_UNIVERSE = DeliveryServiceClient._DEFAULT_UNIVERSE
 
     delivery_vehicle_path = staticmethod(DeliveryServiceClient.delivery_vehicle_path)
-    parse_delivery_vehicle_path = staticmethod(
-        DeliveryServiceClient.parse_delivery_vehicle_path
-    )
+    parse_delivery_vehicle_path = staticmethod(DeliveryServiceClient.parse_delivery_vehicle_path)
     task_path = staticmethod(DeliveryServiceClient.task_path)
     parse_task_path = staticmethod(DeliveryServiceClient.parse_task_path)
-    task_tracking_info_path = staticmethod(
-        DeliveryServiceClient.task_tracking_info_path
-    )
-    parse_task_tracking_info_path = staticmethod(
-        DeliveryServiceClient.parse_task_tracking_info_path
-    )
-    common_billing_account_path = staticmethod(
-        DeliveryServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DeliveryServiceClient.parse_common_billing_account_path
-    )
+    task_tracking_info_path = staticmethod(DeliveryServiceClient.task_tracking_info_path)
+    parse_task_tracking_info_path = staticmethod(DeliveryServiceClient.parse_task_tracking_info_path)
+    common_billing_account_path = staticmethod(DeliveryServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DeliveryServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DeliveryServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DeliveryServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DeliveryServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DeliveryServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DeliveryServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DeliveryServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DeliveryServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DeliveryServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DeliveryServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DeliveryServiceClient.parse_common_project_path)
     common_location_path = staticmethod(DeliveryServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DeliveryServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DeliveryServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -156,9 +119,7 @@ class DeliveryServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -225,11 +186,7 @@ class DeliveryServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, DeliveryServiceTransport, Callable[..., DeliveryServiceTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DeliveryServiceTransport, Callable[..., DeliveryServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -289,20 +246,14 @@ class DeliveryServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `maps.fleetengine.delivery_v1.DeliveryServiceAsyncClient`.",
                 extra={
                     "serviceName": "maps.fleetengine.delivery.v1.DeliveryService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -313,9 +264,7 @@ class DeliveryServiceAsyncClient:
 
     async def create_delivery_vehicle(
         self,
-        request: Optional[
-            Union[delivery_api.CreateDeliveryVehicleRequest, dict]
-        ] = None,
+        request: Optional[Union[delivery_api.CreateDeliveryVehicleRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         delivery_vehicle: Optional[delivery_vehicles.DeliveryVehicle] = None,
@@ -422,14 +371,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, delivery_vehicle, delivery_vehicle_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -447,9 +391,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_delivery_vehicle
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_delivery_vehicle]
 
         header_params = {}
 
@@ -459,9 +401,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -553,14 +493,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -574,9 +509,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_delivery_vehicle
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_delivery_vehicle]
 
         header_params = {}
 
@@ -586,9 +519,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -606,9 +537,7 @@ class DeliveryServiceAsyncClient:
 
     async def delete_delivery_vehicle(
         self,
-        request: Optional[
-            Union[delivery_api.DeleteDeliveryVehicleRequest, dict]
-        ] = None,
+        request: Optional[Union[delivery_api.DeleteDeliveryVehicleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -668,14 +597,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -689,9 +613,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_delivery_vehicle
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_delivery_vehicle]
 
         header_params = {}
 
@@ -701,9 +623,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -718,9 +638,7 @@ class DeliveryServiceAsyncClient:
 
     async def update_delivery_vehicle(
         self,
-        request: Optional[
-            Union[delivery_api.UpdateDeliveryVehicleRequest, dict]
-        ] = None,
+        request: Optional[Union[delivery_api.UpdateDeliveryVehicleRequest, dict]] = None,
         *,
         delivery_vehicle: Optional[delivery_vehicles.DeliveryVehicle] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -813,14 +731,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [delivery_vehicle, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -836,9 +749,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_delivery_vehicle
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_delivery_vehicle]
 
         header_params = {}
 
@@ -848,9 +759,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -932,9 +841,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_create_tasks
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_create_tasks]
 
         header_params = {}
 
@@ -944,9 +851,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1094,14 +999,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, task, task_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1119,9 +1019,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_task
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_task]
 
         header_params = {}
 
@@ -1131,9 +1029,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1230,14 +1126,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1261,9 +1152,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1340,14 +1229,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1361,9 +1245,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_task
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_task]
 
         header_params = {}
 
@@ -1373,9 +1255,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1500,14 +1380,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [task, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1523,9 +1398,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_task
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_task]
 
         header_params = {}
 
@@ -1535,9 +1408,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1624,14 +1495,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1645,9 +1511,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_tasks
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_tasks]
 
         header_params = {}
 
@@ -1657,9 +1521,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1758,14 +1620,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1779,9 +1636,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_task_tracking_info
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_task_tracking_info]
 
         header_params = {}
 
@@ -1791,9 +1646,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1880,14 +1733,9 @@ class DeliveryServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1901,9 +1749,7 @@ class DeliveryServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_delivery_vehicles
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_delivery_vehicles]
 
         header_params = {}
 
@@ -1913,9 +1759,7 @@ class DeliveryServiceAsyncClient:
             header_params["provider_id"] = regex_match.group("provider_id")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1949,9 +1793,7 @@ class DeliveryServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

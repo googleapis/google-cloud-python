@@ -95,13 +95,8 @@ class DiscussServiceRestInterceptor:
     """
 
     def pre_count_message_tokens(
-        self,
-        request: discuss_service.CountMessageTokensRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discuss_service.CountMessageTokensRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: discuss_service.CountMessageTokensRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discuss_service.CountMessageTokensRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for count_message_tokens
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +104,7 @@ class DiscussServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_count_message_tokens(
-        self, response: discuss_service.CountMessageTokensResponse
-    ) -> discuss_service.CountMessageTokensResponse:
+    def post_count_message_tokens(self, response: discuss_service.CountMessageTokensResponse) -> discuss_service.CountMessageTokensResponse:
         """Post-rpc interceptor for count_message_tokens
 
         DEPRECATED. Please use the `post_count_message_tokens_with_metadata`
@@ -125,13 +118,8 @@ class DiscussServiceRestInterceptor:
         return response
 
     def post_count_message_tokens_with_metadata(
-        self,
-        response: discuss_service.CountMessageTokensResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discuss_service.CountMessageTokensResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: discuss_service.CountMessageTokensResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discuss_service.CountMessageTokensResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for count_message_tokens
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -147,12 +135,8 @@ class DiscussServiceRestInterceptor:
         return response, metadata
 
     def pre_generate_message(
-        self,
-        request: discuss_service.GenerateMessageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discuss_service.GenerateMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: discuss_service.GenerateMessageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discuss_service.GenerateMessageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_message
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +144,7 @@ class DiscussServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_message(
-        self, response: discuss_service.GenerateMessageResponse
-    ) -> discuss_service.GenerateMessageResponse:
+    def post_generate_message(self, response: discuss_service.GenerateMessageResponse) -> discuss_service.GenerateMessageResponse:
         """Post-rpc interceptor for generate_message
 
         DEPRECATED. Please use the `post_generate_message_with_metadata`
@@ -176,12 +158,8 @@ class DiscussServiceRestInterceptor:
         return response
 
     def post_generate_message_with_metadata(
-        self,
-        response: discuss_service.GenerateMessageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        discuss_service.GenerateMessageResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: discuss_service.GenerateMessageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[discuss_service.GenerateMessageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_message
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -279,30 +257,18 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DiscussServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CountMessageTokens(
-        _BaseDiscussServiceRestTransport._BaseCountMessageTokens, DiscussServiceRestStub
-    ):
+    class _CountMessageTokens(_BaseDiscussServiceRestTransport._BaseCountMessageTokens, DiscussServiceRestStub):
         def __hash__(self):
             return hash("DiscussServiceRestTransport.CountMessageTokens")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -350,32 +316,18 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_http_options()
-            )
+            http_options = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_http_options()
 
-            request, metadata = self._interceptor.pre_count_message_tokens(
-                request, metadata
-            )
-            transcoded_request = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_count_message_tokens(request, metadata)
+            transcoded_request = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_transcoded_request(http_options, request)
 
-            body = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDiscussServiceRestTransport._BaseCountMessageTokens._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -399,13 +351,7 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
 
             # Send the request
             response = DiscussServiceRestTransport._CountMessageTokens._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -421,16 +367,10 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
 
             resp = self._interceptor.post_count_message_tokens(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_count_message_tokens_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_count_message_tokens_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        discuss_service.CountMessageTokensResponse.to_json(response)
-                    )
+                    response_payload = discuss_service.CountMessageTokensResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -449,22 +389,12 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
                 )
             return resp
 
-    class _GenerateMessage(
-        _BaseDiscussServiceRestTransport._BaseGenerateMessage, DiscussServiceRestStub
-    ):
+    class _GenerateMessage(_BaseDiscussServiceRestTransport._BaseGenerateMessage, DiscussServiceRestStub):
         def __hash__(self):
             return hash("DiscussServiceRestTransport.GenerateMessage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -510,32 +440,18 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_http_options()
-            )
+            http_options = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_message(
-                request, metadata
-            )
-            transcoded_request = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_message(request, metadata)
+            transcoded_request = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_transcoded_request(http_options, request)
 
-            body = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDiscussServiceRestTransport._BaseGenerateMessage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -559,13 +475,7 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
 
             # Send the request
             response = DiscussServiceRestTransport._GenerateMessage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -581,16 +491,10 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
 
             resp = self._interceptor.post_generate_message(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_message_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_message_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = discuss_service.GenerateMessageResponse.to_json(
-                        response
-                    )
+                    response_payload = discuss_service.GenerateMessageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -610,23 +514,13 @@ class DiscussServiceRestTransport(_BaseDiscussServiceRestTransport):
             return resp
 
     @property
-    def count_message_tokens(
-        self,
-    ) -> Callable[
-        [discuss_service.CountMessageTokensRequest],
-        discuss_service.CountMessageTokensResponse,
-    ]:
+    def count_message_tokens(self) -> Callable[[discuss_service.CountMessageTokensRequest], discuss_service.CountMessageTokensResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CountMessageTokens(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_message(
-        self,
-    ) -> Callable[
-        [discuss_service.GenerateMessageRequest],
-        discuss_service.GenerateMessageResponse,
-    ]:
+    def generate_message(self) -> Callable[[discuss_service.GenerateMessageRequest], discuss_service.GenerateMessageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateMessage(self._session, self._host, self._interceptor)  # type: ignore

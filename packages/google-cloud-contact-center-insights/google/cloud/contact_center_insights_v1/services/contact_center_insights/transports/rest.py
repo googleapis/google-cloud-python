@@ -32,10 +32,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.contact_center_insights_v1.types import (
-    contact_center_insights,
-    resources,
-)
+from google.cloud.contact_center_insights_v1.types import contact_center_insights, resources
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseContactCenterInsightsRestTransport
@@ -638,13 +635,8 @@ class ContactCenterInsightsRestInterceptor:
     """
 
     def pre_bulk_analyze_conversations(
-        self,
-        request: contact_center_insights.BulkAnalyzeConversationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.BulkAnalyzeConversationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.BulkAnalyzeConversationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.BulkAnalyzeConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for bulk_analyze_conversations
 
         Override in a subclass to manipulate the request or metadata
@@ -652,9 +644,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_bulk_analyze_conversations(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_bulk_analyze_conversations(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_analyze_conversations
 
         DEPRECATED. Please use the `post_bulk_analyze_conversations_with_metadata`
@@ -668,9 +658,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_bulk_analyze_conversations_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for bulk_analyze_conversations
 
@@ -687,13 +675,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_bulk_delete_conversations(
-        self,
-        request: contact_center_insights.BulkDeleteConversationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.BulkDeleteConversationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.BulkDeleteConversationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.BulkDeleteConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for bulk_delete_conversations
 
         Override in a subclass to manipulate the request or metadata
@@ -701,9 +684,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_bulk_delete_conversations(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_bulk_delete_conversations(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_delete_conversations
 
         DEPRECATED. Please use the `post_bulk_delete_conversations_with_metadata`
@@ -717,9 +698,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_bulk_delete_conversations_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for bulk_delete_conversations
 
@@ -736,13 +715,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_bulk_download_feedback_labels(
-        self,
-        request: contact_center_insights.BulkDownloadFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.BulkDownloadFeedbackLabelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.BulkDownloadFeedbackLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.BulkDownloadFeedbackLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for bulk_download_feedback_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -750,9 +724,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_bulk_download_feedback_labels(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_bulk_download_feedback_labels(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_download_feedback_labels
 
         DEPRECATED. Please use the `post_bulk_download_feedback_labels_with_metadata`
@@ -766,9 +738,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_bulk_download_feedback_labels_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for bulk_download_feedback_labels
 
@@ -785,13 +755,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_bulk_upload_feedback_labels(
-        self,
-        request: contact_center_insights.BulkUploadFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.BulkUploadFeedbackLabelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.BulkUploadFeedbackLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.BulkUploadFeedbackLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for bulk_upload_feedback_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -799,9 +764,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_bulk_upload_feedback_labels(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_bulk_upload_feedback_labels(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for bulk_upload_feedback_labels
 
         DEPRECATED. Please use the `post_bulk_upload_feedback_labels_with_metadata`
@@ -815,9 +778,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_bulk_upload_feedback_labels_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for bulk_upload_feedback_labels
 
@@ -834,13 +795,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_calculate_issue_model_stats(
-        self,
-        request: contact_center_insights.CalculateIssueModelStatsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CalculateIssueModelStatsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CalculateIssueModelStatsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CalculateIssueModelStatsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for calculate_issue_model_stats
 
         Override in a subclass to manipulate the request or metadata
@@ -864,13 +820,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_calculate_issue_model_stats_with_metadata(
-        self,
-        response: contact_center_insights.CalculateIssueModelStatsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CalculateIssueModelStatsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.CalculateIssueModelStatsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CalculateIssueModelStatsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for calculate_issue_model_stats
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -886,13 +837,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_calculate_stats(
-        self,
-        request: contact_center_insights.CalculateStatsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CalculateStatsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CalculateStatsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CalculateStatsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for calculate_stats
 
         Override in a subclass to manipulate the request or metadata
@@ -900,9 +846,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_calculate_stats(
-        self, response: contact_center_insights.CalculateStatsResponse
-    ) -> contact_center_insights.CalculateStatsResponse:
+    def post_calculate_stats(self, response: contact_center_insights.CalculateStatsResponse) -> contact_center_insights.CalculateStatsResponse:
         """Post-rpc interceptor for calculate_stats
 
         DEPRECATED. Please use the `post_calculate_stats_with_metadata`
@@ -916,13 +860,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_calculate_stats_with_metadata(
-        self,
-        response: contact_center_insights.CalculateStatsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CalculateStatsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.CalculateStatsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CalculateStatsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for calculate_stats
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -938,13 +877,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_analysis(
-        self,
-        request: contact_center_insights.CreateAnalysisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateAnalysisRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateAnalysisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -952,9 +886,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_analysis(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_analysis(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_analysis
 
         DEPRECATED. Please use the `post_create_analysis_with_metadata`
@@ -968,9 +900,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_analysis_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_analysis
 
@@ -987,13 +917,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_analysis_rule(
-        self,
-        request: contact_center_insights.CreateAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateAnalysisRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateAnalysisRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateAnalysisRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_analysis_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1001,9 +926,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_analysis_rule(
-        self, response: resources.AnalysisRule
-    ) -> resources.AnalysisRule:
+    def post_create_analysis_rule(self, response: resources.AnalysisRule) -> resources.AnalysisRule:
         """Post-rpc interceptor for create_analysis_rule
 
         DEPRECATED. Please use the `post_create_analysis_rule_with_metadata`
@@ -1017,9 +940,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_analysis_rule_with_metadata(
-        self,
-        response: resources.AnalysisRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.AnalysisRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.AnalysisRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_analysis_rule
 
@@ -1036,13 +957,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_conversation(
-        self,
-        request: contact_center_insights.CreateConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -1050,9 +966,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_conversation(
-        self, response: resources.Conversation
-    ) -> resources.Conversation:
+    def post_create_conversation(self, response: resources.Conversation) -> resources.Conversation:
         """Post-rpc interceptor for create_conversation
 
         DEPRECATED. Please use the `post_create_conversation_with_metadata`
@@ -1066,9 +980,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_conversation_with_metadata(
-        self,
-        response: resources.Conversation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Conversation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_conversation
 
@@ -1085,13 +997,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_feedback_label(
-        self,
-        request: contact_center_insights.CreateFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateFeedbackLabelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateFeedbackLabelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateFeedbackLabelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_feedback_label
 
         Override in a subclass to manipulate the request or metadata
@@ -1099,9 +1006,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_feedback_label(
-        self, response: resources.FeedbackLabel
-    ) -> resources.FeedbackLabel:
+    def post_create_feedback_label(self, response: resources.FeedbackLabel) -> resources.FeedbackLabel:
         """Post-rpc interceptor for create_feedback_label
 
         DEPRECATED. Please use the `post_create_feedback_label_with_metadata`
@@ -1115,9 +1020,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_feedback_label_with_metadata(
-        self,
-        response: resources.FeedbackLabel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.FeedbackLabel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.FeedbackLabel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_feedback_label
 
@@ -1134,13 +1037,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_issue_model(
-        self,
-        request: contact_center_insights.CreateIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -1148,9 +1046,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_issue_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_issue_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_issue_model
 
         DEPRECATED. Please use the `post_create_issue_model_with_metadata`
@@ -1164,9 +1060,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_issue_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_issue_model
 
@@ -1183,13 +1077,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_phrase_matcher(
-        self,
-        request: contact_center_insights.CreatePhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreatePhraseMatcherRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreatePhraseMatcherRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreatePhraseMatcherRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_phrase_matcher
 
         Override in a subclass to manipulate the request or metadata
@@ -1197,9 +1086,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_phrase_matcher(
-        self, response: resources.PhraseMatcher
-    ) -> resources.PhraseMatcher:
+    def post_create_phrase_matcher(self, response: resources.PhraseMatcher) -> resources.PhraseMatcher:
         """Post-rpc interceptor for create_phrase_matcher
 
         DEPRECATED. Please use the `post_create_phrase_matcher_with_metadata`
@@ -1213,9 +1100,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_phrase_matcher_with_metadata(
-        self,
-        response: resources.PhraseMatcher,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.PhraseMatcher, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.PhraseMatcher, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_phrase_matcher
 
@@ -1232,13 +1117,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_qa_question(
-        self,
-        request: contact_center_insights.CreateQaQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateQaQuestionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateQaQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateQaQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_qa_question
 
         Override in a subclass to manipulate the request or metadata
@@ -1246,9 +1126,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_qa_question(
-        self, response: resources.QaQuestion
-    ) -> resources.QaQuestion:
+    def post_create_qa_question(self, response: resources.QaQuestion) -> resources.QaQuestion:
         """Post-rpc interceptor for create_qa_question
 
         DEPRECATED. Please use the `post_create_qa_question_with_metadata`
@@ -1262,9 +1140,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_qa_question_with_metadata(
-        self,
-        response: resources.QaQuestion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaQuestion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaQuestion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_qa_question
 
@@ -1281,13 +1157,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_qa_scorecard(
-        self,
-        request: contact_center_insights.CreateQaScorecardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateQaScorecardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateQaScorecardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateQaScorecardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_qa_scorecard
 
         Override in a subclass to manipulate the request or metadata
@@ -1295,9 +1166,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_qa_scorecard(
-        self, response: resources.QaScorecard
-    ) -> resources.QaScorecard:
+    def post_create_qa_scorecard(self, response: resources.QaScorecard) -> resources.QaScorecard:
         """Post-rpc interceptor for create_qa_scorecard
 
         DEPRECATED. Please use the `post_create_qa_scorecard_with_metadata`
@@ -1311,9 +1180,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_qa_scorecard_with_metadata(
-        self,
-        response: resources.QaScorecard,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecard, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecard, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_qa_scorecard
 
@@ -1330,13 +1197,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_qa_scorecard_revision(
-        self,
-        request: contact_center_insights.CreateQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateQaScorecardRevisionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateQaScorecardRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateQaScorecardRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_qa_scorecard_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -1344,9 +1206,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_qa_scorecard_revision(
-        self, response: resources.QaScorecardRevision
-    ) -> resources.QaScorecardRevision:
+    def post_create_qa_scorecard_revision(self, response: resources.QaScorecardRevision) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for create_qa_scorecard_revision
 
         DEPRECATED. Please use the `post_create_qa_scorecard_revision_with_metadata`
@@ -1360,9 +1220,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_qa_scorecard_revision_with_metadata(
-        self,
-        response: resources.QaScorecardRevision,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecardRevision, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_qa_scorecard_revision
 
@@ -1379,13 +1237,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_create_view(
-        self,
-        request: contact_center_insights.CreateViewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.CreateViewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.CreateViewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.CreateViewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_view
 
         Override in a subclass to manipulate the request or metadata
@@ -1407,9 +1260,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_create_view_with_metadata(
-        self,
-        response: resources.View,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.View, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.View, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_view
 
@@ -1426,13 +1277,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_delete_analysis(
-        self,
-        request: contact_center_insights.DeleteAnalysisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteAnalysisRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteAnalysisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -1441,13 +1287,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_analysis_rule(
-        self,
-        request: contact_center_insights.DeleteAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteAnalysisRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteAnalysisRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteAnalysisRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_analysis_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1456,13 +1297,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_conversation(
-        self,
-        request: contact_center_insights.DeleteConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -1471,13 +1307,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_feedback_label(
-        self,
-        request: contact_center_insights.DeleteFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteFeedbackLabelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteFeedbackLabelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteFeedbackLabelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_feedback_label
 
         Override in a subclass to manipulate the request or metadata
@@ -1486,13 +1317,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_issue(
-        self,
-        request: contact_center_insights.DeleteIssueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteIssueRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteIssueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_issue
 
         Override in a subclass to manipulate the request or metadata
@@ -1501,13 +1327,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_issue_model(
-        self,
-        request: contact_center_insights.DeleteIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -1515,9 +1336,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_issue_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_issue_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_issue_model
 
         DEPRECATED. Please use the `post_delete_issue_model_with_metadata`
@@ -1531,9 +1350,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_delete_issue_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_issue_model
 
@@ -1550,13 +1367,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_delete_phrase_matcher(
-        self,
-        request: contact_center_insights.DeletePhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeletePhraseMatcherRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeletePhraseMatcherRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeletePhraseMatcherRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_phrase_matcher
 
         Override in a subclass to manipulate the request or metadata
@@ -1565,13 +1377,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_qa_question(
-        self,
-        request: contact_center_insights.DeleteQaQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteQaQuestionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteQaQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteQaQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_qa_question
 
         Override in a subclass to manipulate the request or metadata
@@ -1580,13 +1387,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_qa_scorecard(
-        self,
-        request: contact_center_insights.DeleteQaScorecardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteQaScorecardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteQaScorecardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteQaScorecardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_qa_scorecard
 
         Override in a subclass to manipulate the request or metadata
@@ -1595,13 +1397,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_qa_scorecard_revision(
-        self,
-        request: contact_center_insights.DeleteQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteQaScorecardRevisionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteQaScorecardRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteQaScorecardRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_qa_scorecard_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -1610,13 +1407,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_delete_view(
-        self,
-        request: contact_center_insights.DeleteViewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeleteViewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeleteViewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeleteViewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_view
 
         Override in a subclass to manipulate the request or metadata
@@ -1625,13 +1417,8 @@ class ContactCenterInsightsRestInterceptor:
         return request, metadata
 
     def pre_deploy_issue_model(
-        self,
-        request: contact_center_insights.DeployIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeployIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeployIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeployIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -1639,9 +1426,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_issue_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deploy_issue_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deploy_issue_model
 
         DEPRECATED. Please use the `post_deploy_issue_model_with_metadata`
@@ -1655,9 +1440,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_deploy_issue_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_issue_model
 
@@ -1674,13 +1457,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_deploy_qa_scorecard_revision(
-        self,
-        request: contact_center_insights.DeployQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.DeployQaScorecardRevisionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.DeployQaScorecardRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.DeployQaScorecardRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deploy_qa_scorecard_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -1688,9 +1466,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_deploy_qa_scorecard_revision(
-        self, response: resources.QaScorecardRevision
-    ) -> resources.QaScorecardRevision:
+    def post_deploy_qa_scorecard_revision(self, response: resources.QaScorecardRevision) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for deploy_qa_scorecard_revision
 
         DEPRECATED. Please use the `post_deploy_qa_scorecard_revision_with_metadata`
@@ -1704,9 +1480,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_deploy_qa_scorecard_revision_with_metadata(
-        self,
-        response: resources.QaScorecardRevision,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecardRevision, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deploy_qa_scorecard_revision
 
@@ -1723,13 +1497,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_export_insights_data(
-        self,
-        request: contact_center_insights.ExportInsightsDataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ExportInsightsDataRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ExportInsightsDataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ExportInsightsDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_insights_data
 
         Override in a subclass to manipulate the request or metadata
@@ -1737,9 +1506,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_export_insights_data(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_insights_data(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_insights_data
 
         DEPRECATED. Please use the `post_export_insights_data_with_metadata`
@@ -1753,9 +1520,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_export_insights_data_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_insights_data
 
@@ -1772,13 +1537,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_export_issue_model(
-        self,
-        request: contact_center_insights.ExportIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ExportIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ExportIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ExportIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -1786,9 +1546,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_export_issue_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_issue_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_issue_model
 
         DEPRECATED. Please use the `post_export_issue_model_with_metadata`
@@ -1802,9 +1560,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_export_issue_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_issue_model
 
@@ -1821,13 +1577,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_analysis(
-        self,
-        request: contact_center_insights.GetAnalysisRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetAnalysisRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetAnalysisRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetAnalysisRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_analysis
 
         Override in a subclass to manipulate the request or metadata
@@ -1849,9 +1600,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_analysis_with_metadata(
-        self,
-        response: resources.Analysis,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Analysis, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Analysis, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_analysis
 
@@ -1868,13 +1617,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_analysis_rule(
-        self,
-        request: contact_center_insights.GetAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetAnalysisRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetAnalysisRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetAnalysisRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_analysis_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -1882,9 +1626,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_analysis_rule(
-        self, response: resources.AnalysisRule
-    ) -> resources.AnalysisRule:
+    def post_get_analysis_rule(self, response: resources.AnalysisRule) -> resources.AnalysisRule:
         """Post-rpc interceptor for get_analysis_rule
 
         DEPRECATED. Please use the `post_get_analysis_rule_with_metadata`
@@ -1898,9 +1640,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_analysis_rule_with_metadata(
-        self,
-        response: resources.AnalysisRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.AnalysisRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.AnalysisRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_analysis_rule
 
@@ -1917,13 +1657,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_conversation(
-        self,
-        request: contact_center_insights.GetConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -1931,9 +1666,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_conversation(
-        self, response: resources.Conversation
-    ) -> resources.Conversation:
+    def post_get_conversation(self, response: resources.Conversation) -> resources.Conversation:
         """Post-rpc interceptor for get_conversation
 
         DEPRECATED. Please use the `post_get_conversation_with_metadata`
@@ -1947,9 +1680,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_conversation_with_metadata(
-        self,
-        response: resources.Conversation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Conversation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_conversation
 
@@ -1966,13 +1697,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_encryption_spec(
-        self,
-        request: contact_center_insights.GetEncryptionSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetEncryptionSpecRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetEncryptionSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetEncryptionSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_encryption_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -1980,9 +1706,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_encryption_spec(
-        self, response: resources.EncryptionSpec
-    ) -> resources.EncryptionSpec:
+    def post_get_encryption_spec(self, response: resources.EncryptionSpec) -> resources.EncryptionSpec:
         """Post-rpc interceptor for get_encryption_spec
 
         DEPRECATED. Please use the `post_get_encryption_spec_with_metadata`
@@ -1996,9 +1720,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_encryption_spec_with_metadata(
-        self,
-        response: resources.EncryptionSpec,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.EncryptionSpec, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.EncryptionSpec, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_encryption_spec
 
@@ -2015,13 +1737,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_feedback_label(
-        self,
-        request: contact_center_insights.GetFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetFeedbackLabelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetFeedbackLabelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetFeedbackLabelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_feedback_label
 
         Override in a subclass to manipulate the request or metadata
@@ -2029,9 +1746,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_feedback_label(
-        self, response: resources.FeedbackLabel
-    ) -> resources.FeedbackLabel:
+    def post_get_feedback_label(self, response: resources.FeedbackLabel) -> resources.FeedbackLabel:
         """Post-rpc interceptor for get_feedback_label
 
         DEPRECATED. Please use the `post_get_feedback_label_with_metadata`
@@ -2045,9 +1760,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_feedback_label_with_metadata(
-        self,
-        response: resources.FeedbackLabel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.FeedbackLabel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.FeedbackLabel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_feedback_label
 
@@ -2064,12 +1777,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_issue(
-        self,
-        request: contact_center_insights.GetIssueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: contact_center_insights.GetIssueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_issue
 
         Override in a subclass to manipulate the request or metadata
@@ -2091,9 +1800,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_issue_with_metadata(
-        self,
-        response: resources.Issue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Issue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Issue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_issue
 
@@ -2110,13 +1817,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_issue_model(
-        self,
-        request: contact_center_insights.GetIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -2124,9 +1826,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_issue_model(
-        self, response: resources.IssueModel
-    ) -> resources.IssueModel:
+    def post_get_issue_model(self, response: resources.IssueModel) -> resources.IssueModel:
         """Post-rpc interceptor for get_issue_model
 
         DEPRECATED. Please use the `post_get_issue_model_with_metadata`
@@ -2140,9 +1840,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_issue_model_with_metadata(
-        self,
-        response: resources.IssueModel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.IssueModel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.IssueModel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_issue_model
 
@@ -2159,13 +1857,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_phrase_matcher(
-        self,
-        request: contact_center_insights.GetPhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetPhraseMatcherRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetPhraseMatcherRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetPhraseMatcherRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_phrase_matcher
 
         Override in a subclass to manipulate the request or metadata
@@ -2173,9 +1866,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_phrase_matcher(
-        self, response: resources.PhraseMatcher
-    ) -> resources.PhraseMatcher:
+    def post_get_phrase_matcher(self, response: resources.PhraseMatcher) -> resources.PhraseMatcher:
         """Post-rpc interceptor for get_phrase_matcher
 
         DEPRECATED. Please use the `post_get_phrase_matcher_with_metadata`
@@ -2189,9 +1880,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_phrase_matcher_with_metadata(
-        self,
-        response: resources.PhraseMatcher,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.PhraseMatcher, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.PhraseMatcher, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_phrase_matcher
 
@@ -2208,13 +1897,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_qa_question(
-        self,
-        request: contact_center_insights.GetQaQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetQaQuestionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetQaQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetQaQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_qa_question
 
         Override in a subclass to manipulate the request or metadata
@@ -2222,9 +1906,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_qa_question(
-        self, response: resources.QaQuestion
-    ) -> resources.QaQuestion:
+    def post_get_qa_question(self, response: resources.QaQuestion) -> resources.QaQuestion:
         """Post-rpc interceptor for get_qa_question
 
         DEPRECATED. Please use the `post_get_qa_question_with_metadata`
@@ -2238,9 +1920,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_qa_question_with_metadata(
-        self,
-        response: resources.QaQuestion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaQuestion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaQuestion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_qa_question
 
@@ -2257,13 +1937,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_qa_scorecard(
-        self,
-        request: contact_center_insights.GetQaScorecardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetQaScorecardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetQaScorecardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetQaScorecardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_qa_scorecard
 
         Override in a subclass to manipulate the request or metadata
@@ -2271,9 +1946,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_qa_scorecard(
-        self, response: resources.QaScorecard
-    ) -> resources.QaScorecard:
+    def post_get_qa_scorecard(self, response: resources.QaScorecard) -> resources.QaScorecard:
         """Post-rpc interceptor for get_qa_scorecard
 
         DEPRECATED. Please use the `post_get_qa_scorecard_with_metadata`
@@ -2287,9 +1960,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_qa_scorecard_with_metadata(
-        self,
-        response: resources.QaScorecard,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecard, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecard, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_qa_scorecard
 
@@ -2306,13 +1977,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_qa_scorecard_revision(
-        self,
-        request: contact_center_insights.GetQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetQaScorecardRevisionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetQaScorecardRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetQaScorecardRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_qa_scorecard_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -2320,9 +1986,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_qa_scorecard_revision(
-        self, response: resources.QaScorecardRevision
-    ) -> resources.QaScorecardRevision:
+    def post_get_qa_scorecard_revision(self, response: resources.QaScorecardRevision) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for get_qa_scorecard_revision
 
         DEPRECATED. Please use the `post_get_qa_scorecard_revision_with_metadata`
@@ -2336,9 +2000,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_qa_scorecard_revision_with_metadata(
-        self,
-        response: resources.QaScorecardRevision,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecardRevision, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_qa_scorecard_revision
 
@@ -2355,13 +2017,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_settings(
-        self,
-        request: contact_center_insights.GetSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.GetSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -2383,9 +2040,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_settings_with_metadata(
-        self,
-        response: resources.Settings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Settings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_settings
 
@@ -2402,12 +2057,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_get_view(
-        self,
-        request: contact_center_insights.GetViewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.GetViewRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: contact_center_insights.GetViewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.GetViewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_view
 
         Override in a subclass to manipulate the request or metadata
@@ -2429,9 +2080,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_get_view_with_metadata(
-        self,
-        response: resources.View,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.View, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.View, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_view
 
@@ -2448,13 +2097,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_import_issue_model(
-        self,
-        request: contact_center_insights.ImportIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ImportIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ImportIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ImportIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -2462,9 +2106,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_import_issue_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_issue_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_issue_model
 
         DEPRECATED. Please use the `post_import_issue_model_with_metadata`
@@ -2478,9 +2120,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_import_issue_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_issue_model
 
@@ -2497,13 +2137,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_ingest_conversations(
-        self,
-        request: contact_center_insights.IngestConversationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.IngestConversationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.IngestConversationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.IngestConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for ingest_conversations
 
         Override in a subclass to manipulate the request or metadata
@@ -2511,9 +2146,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_ingest_conversations(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_ingest_conversations(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for ingest_conversations
 
         DEPRECATED. Please use the `post_ingest_conversations_with_metadata`
@@ -2527,9 +2160,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_ingest_conversations_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for ingest_conversations
 
@@ -2546,13 +2177,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_initialize_encryption_spec(
-        self,
-        request: contact_center_insights.InitializeEncryptionSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.InitializeEncryptionSpecRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.InitializeEncryptionSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.InitializeEncryptionSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for initialize_encryption_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -2560,9 +2186,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_initialize_encryption_spec(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_initialize_encryption_spec(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for initialize_encryption_spec
 
         DEPRECATED. Please use the `post_initialize_encryption_spec_with_metadata`
@@ -2576,9 +2200,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_initialize_encryption_spec_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for initialize_encryption_spec
 
@@ -2595,13 +2217,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_all_feedback_labels(
-        self,
-        request: contact_center_insights.ListAllFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListAllFeedbackLabelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListAllFeedbackLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListAllFeedbackLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_all_feedback_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -2625,13 +2242,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_all_feedback_labels_with_metadata(
-        self,
-        response: contact_center_insights.ListAllFeedbackLabelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListAllFeedbackLabelsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListAllFeedbackLabelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListAllFeedbackLabelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_all_feedback_labels
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2647,13 +2259,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_analyses(
-        self,
-        request: contact_center_insights.ListAnalysesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListAnalysesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListAnalysesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListAnalysesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_analyses
 
         Override in a subclass to manipulate the request or metadata
@@ -2661,9 +2268,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_analyses(
-        self, response: contact_center_insights.ListAnalysesResponse
-    ) -> contact_center_insights.ListAnalysesResponse:
+    def post_list_analyses(self, response: contact_center_insights.ListAnalysesResponse) -> contact_center_insights.ListAnalysesResponse:
         """Post-rpc interceptor for list_analyses
 
         DEPRECATED. Please use the `post_list_analyses_with_metadata`
@@ -2677,13 +2282,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_analyses_with_metadata(
-        self,
-        response: contact_center_insights.ListAnalysesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListAnalysesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListAnalysesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListAnalysesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_analyses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2699,13 +2299,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_analysis_rules(
-        self,
-        request: contact_center_insights.ListAnalysisRulesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListAnalysisRulesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListAnalysisRulesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListAnalysisRulesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_analysis_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -2729,13 +2324,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_analysis_rules_with_metadata(
-        self,
-        response: contact_center_insights.ListAnalysisRulesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListAnalysisRulesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListAnalysisRulesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListAnalysisRulesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_analysis_rules
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2751,13 +2341,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_conversations(
-        self,
-        request: contact_center_insights.ListConversationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListConversationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListConversationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_conversations
 
         Override in a subclass to manipulate the request or metadata
@@ -2781,13 +2366,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_conversations_with_metadata(
-        self,
-        response: contact_center_insights.ListConversationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListConversationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListConversationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListConversationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_conversations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2803,13 +2383,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_feedback_labels(
-        self,
-        request: contact_center_insights.ListFeedbackLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListFeedbackLabelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListFeedbackLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListFeedbackLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_feedback_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -2833,13 +2408,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_feedback_labels_with_metadata(
-        self,
-        response: contact_center_insights.ListFeedbackLabelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListFeedbackLabelsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListFeedbackLabelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListFeedbackLabelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_feedback_labels
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2855,13 +2425,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_issue_models(
-        self,
-        request: contact_center_insights.ListIssueModelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListIssueModelsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListIssueModelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListIssueModelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_issue_models
 
         Override in a subclass to manipulate the request or metadata
@@ -2869,9 +2434,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_issue_models(
-        self, response: contact_center_insights.ListIssueModelsResponse
-    ) -> contact_center_insights.ListIssueModelsResponse:
+    def post_list_issue_models(self, response: contact_center_insights.ListIssueModelsResponse) -> contact_center_insights.ListIssueModelsResponse:
         """Post-rpc interceptor for list_issue_models
 
         DEPRECATED. Please use the `post_list_issue_models_with_metadata`
@@ -2885,13 +2448,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_issue_models_with_metadata(
-        self,
-        response: contact_center_insights.ListIssueModelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListIssueModelsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListIssueModelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListIssueModelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_issue_models
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2907,13 +2465,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_issues(
-        self,
-        request: contact_center_insights.ListIssuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListIssuesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListIssuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListIssuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_issues
 
         Override in a subclass to manipulate the request or metadata
@@ -2921,9 +2474,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_issues(
-        self, response: contact_center_insights.ListIssuesResponse
-    ) -> contact_center_insights.ListIssuesResponse:
+    def post_list_issues(self, response: contact_center_insights.ListIssuesResponse) -> contact_center_insights.ListIssuesResponse:
         """Post-rpc interceptor for list_issues
 
         DEPRECATED. Please use the `post_list_issues_with_metadata`
@@ -2937,13 +2488,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_issues_with_metadata(
-        self,
-        response: contact_center_insights.ListIssuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListIssuesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListIssuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListIssuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_issues
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2959,13 +2505,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_phrase_matchers(
-        self,
-        request: contact_center_insights.ListPhraseMatchersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListPhraseMatchersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListPhraseMatchersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListPhraseMatchersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_phrase_matchers
 
         Override in a subclass to manipulate the request or metadata
@@ -2989,13 +2530,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_phrase_matchers_with_metadata(
-        self,
-        response: contact_center_insights.ListPhraseMatchersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListPhraseMatchersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListPhraseMatchersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListPhraseMatchersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_phrase_matchers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3011,13 +2547,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_qa_questions(
-        self,
-        request: contact_center_insights.ListQaQuestionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListQaQuestionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListQaQuestionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListQaQuestionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_qa_questions
 
         Override in a subclass to manipulate the request or metadata
@@ -3025,9 +2556,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_qa_questions(
-        self, response: contact_center_insights.ListQaQuestionsResponse
-    ) -> contact_center_insights.ListQaQuestionsResponse:
+    def post_list_qa_questions(self, response: contact_center_insights.ListQaQuestionsResponse) -> contact_center_insights.ListQaQuestionsResponse:
         """Post-rpc interceptor for list_qa_questions
 
         DEPRECATED. Please use the `post_list_qa_questions_with_metadata`
@@ -3041,13 +2570,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_qa_questions_with_metadata(
-        self,
-        response: contact_center_insights.ListQaQuestionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListQaQuestionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListQaQuestionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListQaQuestionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_qa_questions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3063,13 +2587,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_qa_scorecard_revisions(
-        self,
-        request: contact_center_insights.ListQaScorecardRevisionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListQaScorecardRevisionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListQaScorecardRevisionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListQaScorecardRevisionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_qa_scorecard_revisions
 
         Override in a subclass to manipulate the request or metadata
@@ -3093,13 +2612,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_qa_scorecard_revisions_with_metadata(
-        self,
-        response: contact_center_insights.ListQaScorecardRevisionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListQaScorecardRevisionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListQaScorecardRevisionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListQaScorecardRevisionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_qa_scorecard_revisions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3115,13 +2629,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_qa_scorecards(
-        self,
-        request: contact_center_insights.ListQaScorecardsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListQaScorecardsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListQaScorecardsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListQaScorecardsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_qa_scorecards
 
         Override in a subclass to manipulate the request or metadata
@@ -3129,9 +2638,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_qa_scorecards(
-        self, response: contact_center_insights.ListQaScorecardsResponse
-    ) -> contact_center_insights.ListQaScorecardsResponse:
+    def post_list_qa_scorecards(self, response: contact_center_insights.ListQaScorecardsResponse) -> contact_center_insights.ListQaScorecardsResponse:
         """Post-rpc interceptor for list_qa_scorecards
 
         DEPRECATED. Please use the `post_list_qa_scorecards_with_metadata`
@@ -3145,13 +2652,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_qa_scorecards_with_metadata(
-        self,
-        response: contact_center_insights.ListQaScorecardsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListQaScorecardsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListQaScorecardsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListQaScorecardsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_qa_scorecards
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3167,13 +2669,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_list_views(
-        self,
-        request: contact_center_insights.ListViewsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListViewsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.ListViewsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListViewsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_views
 
         Override in a subclass to manipulate the request or metadata
@@ -3181,9 +2678,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_views(
-        self, response: contact_center_insights.ListViewsResponse
-    ) -> contact_center_insights.ListViewsResponse:
+    def post_list_views(self, response: contact_center_insights.ListViewsResponse) -> contact_center_insights.ListViewsResponse:
         """Post-rpc interceptor for list_views
 
         DEPRECATED. Please use the `post_list_views_with_metadata`
@@ -3197,13 +2692,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_list_views_with_metadata(
-        self,
-        response: contact_center_insights.ListViewsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.ListViewsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: contact_center_insights.ListViewsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.ListViewsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_views
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3219,13 +2709,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_query_metrics(
-        self,
-        request: contact_center_insights.QueryMetricsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.QueryMetricsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.QueryMetricsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.QueryMetricsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -3233,9 +2718,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_query_metrics(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_query_metrics(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for query_metrics
 
         DEPRECATED. Please use the `post_query_metrics_with_metadata`
@@ -3249,9 +2732,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_query_metrics_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_metrics
 
@@ -3268,13 +2749,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_tune_qa_scorecard_revision(
-        self,
-        request: contact_center_insights.TuneQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.TuneQaScorecardRevisionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.TuneQaScorecardRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.TuneQaScorecardRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for tune_qa_scorecard_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -3282,9 +2758,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_tune_qa_scorecard_revision(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_tune_qa_scorecard_revision(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for tune_qa_scorecard_revision
 
         DEPRECATED. Please use the `post_tune_qa_scorecard_revision_with_metadata`
@@ -3298,9 +2772,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_tune_qa_scorecard_revision_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for tune_qa_scorecard_revision
 
@@ -3317,13 +2789,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_undeploy_issue_model(
-        self,
-        request: contact_center_insights.UndeployIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UndeployIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UndeployIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UndeployIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -3331,9 +2798,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_undeploy_issue_model(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undeploy_issue_model(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undeploy_issue_model
 
         DEPRECATED. Please use the `post_undeploy_issue_model_with_metadata`
@@ -3347,9 +2812,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_undeploy_issue_model_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undeploy_issue_model
 
@@ -3366,13 +2829,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_undeploy_qa_scorecard_revision(
-        self,
-        request: contact_center_insights.UndeployQaScorecardRevisionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UndeployQaScorecardRevisionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UndeployQaScorecardRevisionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UndeployQaScorecardRevisionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undeploy_qa_scorecard_revision
 
         Override in a subclass to manipulate the request or metadata
@@ -3380,9 +2838,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_undeploy_qa_scorecard_revision(
-        self, response: resources.QaScorecardRevision
-    ) -> resources.QaScorecardRevision:
+    def post_undeploy_qa_scorecard_revision(self, response: resources.QaScorecardRevision) -> resources.QaScorecardRevision:
         """Post-rpc interceptor for undeploy_qa_scorecard_revision
 
         DEPRECATED. Please use the `post_undeploy_qa_scorecard_revision_with_metadata`
@@ -3396,9 +2852,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_undeploy_qa_scorecard_revision_with_metadata(
-        self,
-        response: resources.QaScorecardRevision,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecardRevision, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecardRevision, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undeploy_qa_scorecard_revision
 
@@ -3415,13 +2869,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_analysis_rule(
-        self,
-        request: contact_center_insights.UpdateAnalysisRuleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateAnalysisRuleRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateAnalysisRuleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateAnalysisRuleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_analysis_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -3429,9 +2878,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_analysis_rule(
-        self, response: resources.AnalysisRule
-    ) -> resources.AnalysisRule:
+    def post_update_analysis_rule(self, response: resources.AnalysisRule) -> resources.AnalysisRule:
         """Post-rpc interceptor for update_analysis_rule
 
         DEPRECATED. Please use the `post_update_analysis_rule_with_metadata`
@@ -3445,9 +2892,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_analysis_rule_with_metadata(
-        self,
-        response: resources.AnalysisRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.AnalysisRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.AnalysisRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_analysis_rule
 
@@ -3464,13 +2909,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_conversation(
-        self,
-        request: contact_center_insights.UpdateConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -3478,9 +2918,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_conversation(
-        self, response: resources.Conversation
-    ) -> resources.Conversation:
+    def post_update_conversation(self, response: resources.Conversation) -> resources.Conversation:
         """Post-rpc interceptor for update_conversation
 
         DEPRECATED. Please use the `post_update_conversation_with_metadata`
@@ -3494,9 +2932,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_conversation_with_metadata(
-        self,
-        response: resources.Conversation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Conversation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_conversation
 
@@ -3513,13 +2949,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_feedback_label(
-        self,
-        request: contact_center_insights.UpdateFeedbackLabelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateFeedbackLabelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateFeedbackLabelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateFeedbackLabelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_feedback_label
 
         Override in a subclass to manipulate the request or metadata
@@ -3527,9 +2958,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_feedback_label(
-        self, response: resources.FeedbackLabel
-    ) -> resources.FeedbackLabel:
+    def post_update_feedback_label(self, response: resources.FeedbackLabel) -> resources.FeedbackLabel:
         """Post-rpc interceptor for update_feedback_label
 
         DEPRECATED. Please use the `post_update_feedback_label_with_metadata`
@@ -3543,9 +2972,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_feedback_label_with_metadata(
-        self,
-        response: resources.FeedbackLabel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.FeedbackLabel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.FeedbackLabel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_feedback_label
 
@@ -3562,13 +2989,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_issue(
-        self,
-        request: contact_center_insights.UpdateIssueRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateIssueRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateIssueRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateIssueRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_issue
 
         Override in a subclass to manipulate the request or metadata
@@ -3590,9 +3012,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_issue_with_metadata(
-        self,
-        response: resources.Issue,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Issue, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Issue, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_issue
 
@@ -3609,13 +3029,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_issue_model(
-        self,
-        request: contact_center_insights.UpdateIssueModelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateIssueModelRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateIssueModelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateIssueModelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_issue_model
 
         Override in a subclass to manipulate the request or metadata
@@ -3623,9 +3038,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_issue_model(
-        self, response: resources.IssueModel
-    ) -> resources.IssueModel:
+    def post_update_issue_model(self, response: resources.IssueModel) -> resources.IssueModel:
         """Post-rpc interceptor for update_issue_model
 
         DEPRECATED. Please use the `post_update_issue_model_with_metadata`
@@ -3639,9 +3052,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_issue_model_with_metadata(
-        self,
-        response: resources.IssueModel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.IssueModel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.IssueModel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_issue_model
 
@@ -3658,13 +3069,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_phrase_matcher(
-        self,
-        request: contact_center_insights.UpdatePhraseMatcherRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdatePhraseMatcherRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdatePhraseMatcherRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdatePhraseMatcherRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_phrase_matcher
 
         Override in a subclass to manipulate the request or metadata
@@ -3672,9 +3078,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_phrase_matcher(
-        self, response: resources.PhraseMatcher
-    ) -> resources.PhraseMatcher:
+    def post_update_phrase_matcher(self, response: resources.PhraseMatcher) -> resources.PhraseMatcher:
         """Post-rpc interceptor for update_phrase_matcher
 
         DEPRECATED. Please use the `post_update_phrase_matcher_with_metadata`
@@ -3688,9 +3092,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_phrase_matcher_with_metadata(
-        self,
-        response: resources.PhraseMatcher,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.PhraseMatcher, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.PhraseMatcher, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_phrase_matcher
 
@@ -3707,13 +3109,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_qa_question(
-        self,
-        request: contact_center_insights.UpdateQaQuestionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateQaQuestionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateQaQuestionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateQaQuestionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_qa_question
 
         Override in a subclass to manipulate the request or metadata
@@ -3721,9 +3118,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_qa_question(
-        self, response: resources.QaQuestion
-    ) -> resources.QaQuestion:
+    def post_update_qa_question(self, response: resources.QaQuestion) -> resources.QaQuestion:
         """Post-rpc interceptor for update_qa_question
 
         DEPRECATED. Please use the `post_update_qa_question_with_metadata`
@@ -3737,9 +3132,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_qa_question_with_metadata(
-        self,
-        response: resources.QaQuestion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaQuestion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaQuestion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_qa_question
 
@@ -3756,13 +3149,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_qa_scorecard(
-        self,
-        request: contact_center_insights.UpdateQaScorecardRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateQaScorecardRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateQaScorecardRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateQaScorecardRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_qa_scorecard
 
         Override in a subclass to manipulate the request or metadata
@@ -3770,9 +3158,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_qa_scorecard(
-        self, response: resources.QaScorecard
-    ) -> resources.QaScorecard:
+    def post_update_qa_scorecard(self, response: resources.QaScorecard) -> resources.QaScorecard:
         """Post-rpc interceptor for update_qa_scorecard
 
         DEPRECATED. Please use the `post_update_qa_scorecard_with_metadata`
@@ -3786,9 +3172,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_qa_scorecard_with_metadata(
-        self,
-        response: resources.QaScorecard,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.QaScorecard, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.QaScorecard, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_qa_scorecard
 
@@ -3805,13 +3189,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_settings(
-        self,
-        request: contact_center_insights.UpdateSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateSettingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -3833,9 +3212,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_settings_with_metadata(
-        self,
-        response: resources.Settings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Settings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_settings
 
@@ -3852,13 +3229,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_update_view(
-        self,
-        request: contact_center_insights.UpdateViewRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UpdateViewRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UpdateViewRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UpdateViewRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_view
 
         Override in a subclass to manipulate the request or metadata
@@ -3880,9 +3252,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_update_view_with_metadata(
-        self,
-        response: resources.View,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.View, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.View, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_view
 
@@ -3899,13 +3269,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_upload_conversation(
-        self,
-        request: contact_center_insights.UploadConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        contact_center_insights.UploadConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: contact_center_insights.UploadConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[contact_center_insights.UploadConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upload_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -3913,9 +3278,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_upload_conversation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_upload_conversation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upload_conversation
 
         DEPRECATED. Please use the `post_upload_conversation_with_metadata`
@@ -3929,9 +3292,7 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def post_upload_conversation_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upload_conversation
 
@@ -3948,12 +3309,8 @@ class ContactCenterInsightsRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3971,12 +3328,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3984,9 +3337,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -3996,12 +3347,8 @@ class ContactCenterInsightsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -4009,9 +3356,7 @@ class ContactCenterInsightsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -4101,9 +3446,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -4149,30 +3492,17 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BulkAnalyzeConversations(
-        _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations,
-        ContactCenterInsightsRestStub,
-    ):
+    class _BulkAnalyzeConversations(_BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.BulkAnalyzeConversations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4217,32 +3547,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_http_options()
 
-            request, metadata = self._interceptor.pre_bulk_analyze_conversations(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_bulk_analyze_conversations(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4266,13 +3582,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkAnalyzeConversations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4286,12 +3596,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_bulk_analyze_conversations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_bulk_analyze_conversations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_bulk_analyze_conversations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4312,23 +3618,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _BulkDeleteConversations(
-        _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations,
-        ContactCenterInsightsRestStub,
-    ):
+    class _BulkDeleteConversations(_BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.BulkDeleteConversations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4372,32 +3667,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_http_options()
 
-            request, metadata = self._interceptor.pre_bulk_delete_conversations(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_bulk_delete_conversations(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4421,13 +3702,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkDeleteConversations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4441,12 +3716,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_bulk_delete_conversations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_bulk_delete_conversations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_bulk_delete_conversations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4467,23 +3738,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _BulkDownloadFeedbackLabels(
-        _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels,
-        ContactCenterInsightsRestStub,
-    ):
+    class _BulkDownloadFeedbackLabels(_BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.BulkDownloadFeedbackLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4528,32 +3788,20 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_http_options()
 
-            request, metadata = self._interceptor.pre_bulk_download_feedback_labels(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_bulk_download_feedback_labels(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4577,13 +3825,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkDownloadFeedbackLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4597,15 +3839,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_bulk_download_feedback_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_bulk_download_feedback_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_bulk_download_feedback_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4626,23 +3861,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _BulkUploadFeedbackLabels(
-        _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels,
-        ContactCenterInsightsRestStub,
-    ):
+    class _BulkUploadFeedbackLabels(_BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.BulkUploadFeedbackLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4687,32 +3911,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_http_options()
 
-            request, metadata = self._interceptor.pre_bulk_upload_feedback_labels(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_bulk_upload_feedback_labels(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4736,13 +3946,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._BulkUploadFeedbackLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4756,12 +3960,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_bulk_upload_feedback_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_bulk_upload_feedback_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_bulk_upload_feedback_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4782,23 +3982,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CalculateIssueModelStats(
-        _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CalculateIssueModelStats(_BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CalculateIssueModelStats")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4841,28 +4030,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_http_options()
 
-            request, metadata = self._interceptor.pre_calculate_issue_model_stats(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_calculate_issue_model_stats(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4886,12 +4063,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CalculateIssueModelStats._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4907,16 +4079,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_calculate_issue_model_stats(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_calculate_issue_model_stats_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_calculate_issue_model_stats_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = contact_center_insights.CalculateIssueModelStatsResponse.to_json(
-                        response
-                    )
+                    response_payload = contact_center_insights.CalculateIssueModelStatsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4935,23 +4101,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CalculateStats(
-        _BaseContactCenterInsightsRestTransport._BaseCalculateStats,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CalculateStats(_BaseContactCenterInsightsRestTransport._BaseCalculateStats, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CalculateStats")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4993,26 +4148,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_http_options()
 
             request, metadata = self._interceptor.pre_calculate_stats(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5036,12 +4181,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CalculateStats._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5057,16 +4197,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_calculate_stats(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_calculate_stats_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_calculate_stats_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.CalculateStatsResponse.to_json(response)
-                    )
+                    response_payload = contact_center_insights.CalculateStatsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5085,23 +4219,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateAnalysis(
-        _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateAnalysis(_BaseContactCenterInsightsRestTransport._BaseCreateAnalysis, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateAnalysis")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5144,30 +4267,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_create_analysis(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5191,13 +4302,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CreateAnalysis._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5211,12 +4316,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_analysis(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_analysis_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_analysis_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5237,23 +4338,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateAnalysisRule(
-        _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateAnalysisRule(_BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateAnalysisRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5304,32 +4394,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_analysis_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_analysis_rule(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5352,16 +4428,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreateAnalysisRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreateAnalysisRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5377,12 +4445,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_analysis_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_analysis_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_analysis_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalysisRule.to_json(response)
                 except:
@@ -5403,23 +4467,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateConversation(
-        _BaseContactCenterInsightsRestTransport._BaseCreateConversation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateConversation(_BaseContactCenterInsightsRestTransport._BaseCreateConversation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5459,32 +4512,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The conversation resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_conversation(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5507,16 +4546,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreateConversation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreateConversation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5532,12 +4563,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_conversation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_conversation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Conversation.to_json(response)
                 except:
@@ -5558,23 +4585,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateFeedbackLabel(
-        _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateFeedbackLabel(_BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateFeedbackLabel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5617,32 +4633,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_feedback_label(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_feedback_label(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5665,16 +4667,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreateFeedbackLabel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreateFeedbackLabel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5690,12 +4684,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_feedback_label(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_feedback_label_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_feedback_label_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.FeedbackLabel.to_json(response)
                 except:
@@ -5716,23 +4706,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateIssueModel(_BaseContactCenterInsightsRestTransport._BaseCreateIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5775,32 +4754,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5823,16 +4788,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreateIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreateIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5846,12 +4803,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5872,23 +4825,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreatePhraseMatcher(
-        _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreatePhraseMatcher(_BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreatePhraseMatcher")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5928,32 +4870,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The phrase matcher resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_phrase_matcher(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_phrase_matcher(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5976,16 +4904,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreatePhraseMatcher._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreatePhraseMatcher._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6001,12 +4921,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_phrase_matcher(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_phrase_matcher_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_phrase_matcher_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.PhraseMatcher.to_json(response)
                 except:
@@ -6027,23 +4943,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateQaQuestion(
-        _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateQaQuestion(_BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateQaQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6086,32 +4991,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_qa_question(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_qa_question(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6134,16 +5025,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreateQaQuestion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreateQaQuestion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6159,12 +5042,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_qa_question(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_qa_question_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_qa_question_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaQuestion.to_json(response)
                 except:
@@ -6185,23 +5064,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateQaScorecard(
-        _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateQaScorecard(_BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateQaScorecard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6245,32 +5113,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_qa_scorecard(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_qa_scorecard(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6293,16 +5147,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CreateQaScorecard._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._CreateQaScorecard._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6318,12 +5164,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_qa_scorecard(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_qa_scorecard_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_qa_scorecard_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecard.to_json(response)
                 except:
@@ -6344,23 +5186,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateQaScorecardRevision(
-        _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateQaScorecardRevision(_BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateQaScorecardRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6412,32 +5243,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_qa_scorecard_revision(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_qa_scorecard_revision(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6461,13 +5278,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CreateQaScorecardRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6483,12 +5294,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_qa_scorecard_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_qa_scorecard_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_qa_scorecard_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
                 except:
@@ -6509,23 +5316,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _CreateView(
-        _BaseContactCenterInsightsRestTransport._BaseCreateView,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CreateView(_BaseContactCenterInsightsRestTransport._BaseCreateView, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CreateView")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6565,30 +5361,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The View resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCreateView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_http_options()
 
             request, metadata = self._interceptor.pre_create_view(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCreateView._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6612,13 +5396,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._CreateView._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6634,12 +5412,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_create_view(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_view_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_view_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.View.to_json(response)
                 except:
@@ -6660,23 +5434,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _DeleteAnalysis(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteAnalysis(_BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteAnalysis")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6711,26 +5474,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_analysis(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6754,12 +5507,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteAnalysis._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6767,23 +5515,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteAnalysisRule(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteAnalysisRule(_BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteAnalysisRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6819,28 +5556,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_analysis_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_analysis_rule(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6863,15 +5588,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeleteAnalysisRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeleteAnalysisRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6879,23 +5597,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteConversation(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteConversation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteConversation(_BaseContactCenterInsightsRestTransport._BaseDeleteConversation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6930,28 +5637,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_conversation(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6974,15 +5669,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeleteConversation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeleteConversation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6990,23 +5678,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteFeedbackLabel(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteFeedbackLabel(_BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteFeedbackLabel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7042,28 +5719,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_feedback_label(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_feedback_label(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7086,15 +5751,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeleteFeedbackLabel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeleteFeedbackLabel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7102,23 +5760,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteIssue(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteIssue,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteIssue(_BaseContactCenterInsightsRestTransport._BaseDeleteIssue, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteIssue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7153,26 +5800,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_issue(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7196,12 +5833,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteIssue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7209,23 +5841,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteIssueModel(_BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7267,28 +5888,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7311,15 +5920,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeleteIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeleteIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7333,12 +5935,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_delete_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7359,23 +5957,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _DeletePhraseMatcher(
-        _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeletePhraseMatcher(_BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeletePhraseMatcher")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7411,28 +5998,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_phrase_matcher(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_phrase_matcher(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7455,15 +6030,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeletePhraseMatcher._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeletePhraseMatcher._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7471,23 +6039,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteQaQuestion(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteQaQuestion(_BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteQaQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7523,28 +6080,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_qa_question(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_qa_question(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7567,15 +6112,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeleteQaQuestion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeleteQaQuestion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7583,23 +6121,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteQaScorecard(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteQaScorecard(_BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteQaScorecard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7635,28 +6162,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_qa_scorecard(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_qa_scorecard(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7679,15 +6194,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeleteQaScorecard._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._DeleteQaScorecard._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7695,23 +6203,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteQaScorecardRevision(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteQaScorecardRevision(_BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteQaScorecardRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7748,28 +6245,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_qa_scorecard_revision(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_qa_scorecard_revision(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7793,12 +6278,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteQaScorecardRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7806,23 +6286,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteView(
-        _BaseContactCenterInsightsRestTransport._BaseDeleteView,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeleteView(_BaseContactCenterInsightsRestTransport._BaseDeleteView, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeleteView")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7857,26 +6326,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_view(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7900,12 +6359,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeleteView._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7913,23 +6367,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeployIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeployIssueModel(_BaseContactCenterInsightsRestTransport._BaseDeployIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeployIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7972,32 +6415,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_deploy_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deploy_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8020,16 +6449,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._DeployIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._DeployIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8043,12 +6464,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_deploy_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8069,23 +6486,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _DeployQaScorecardRevision(
-        _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision,
-        ContactCenterInsightsRestStub,
-    ):
+    class _DeployQaScorecardRevision(_BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.DeployQaScorecardRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8137,32 +6543,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_deploy_qa_scorecard_revision(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deploy_qa_scorecard_revision(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8186,13 +6578,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._DeployQaScorecardRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8208,12 +6594,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_deploy_qa_scorecard_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deploy_qa_scorecard_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deploy_qa_scorecard_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
                 except:
@@ -8234,23 +6616,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ExportInsightsData(
-        _BaseContactCenterInsightsRestTransport._BaseExportInsightsData,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ExportInsightsData(_BaseContactCenterInsightsRestTransport._BaseExportInsightsData, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ExportInsightsData")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8293,32 +6664,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_insights_data(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_insights_data(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8341,16 +6698,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ExportInsightsData._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._ExportInsightsData._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8364,12 +6713,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_export_insights_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_insights_data_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_insights_data_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8390,23 +6735,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ExportIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseExportIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ExportIssueModel(_BaseContactCenterInsightsRestTransport._BaseExportIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ExportIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8449,32 +6783,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8497,16 +6817,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ExportIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._ExportIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8520,12 +6832,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_export_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8546,23 +6854,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetAnalysis(
-        _BaseContactCenterInsightsRestTransport._BaseGetAnalysis,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetAnalysis(_BaseContactCenterInsightsRestTransport._BaseGetAnalysis, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetAnalysis")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8601,26 +6898,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The analysis resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_http_options()
 
             request, metadata = self._interceptor.pre_get_analysis(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8644,12 +6931,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetAnalysis._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8665,12 +6947,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_analysis(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_analysis_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_analysis_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Analysis.to_json(response)
                 except:
@@ -8691,23 +6969,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetAnalysisRule(
-        _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetAnalysisRule(_BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetAnalysisRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8757,28 +7024,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_analysis_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_analysis_rule(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8801,15 +7056,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._GetAnalysisRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._GetAnalysisRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8825,12 +7073,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_analysis_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_analysis_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_analysis_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalysisRule.to_json(response)
                 except:
@@ -8851,23 +7095,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetConversation(
-        _BaseContactCenterInsightsRestTransport._BaseGetConversation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetConversation(_BaseContactCenterInsightsRestTransport._BaseGetConversation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8906,28 +7139,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The conversation resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_conversation(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8950,15 +7171,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._GetConversation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._GetConversation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8974,12 +7188,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_conversation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_conversation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Conversation.to_json(response)
                 except:
@@ -9000,23 +7210,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetEncryptionSpec(
-        _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetEncryptionSpec(_BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetEncryptionSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9059,28 +7258,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_encryption_spec(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_encryption_spec(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9103,15 +7290,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._GetEncryptionSpec._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._GetEncryptionSpec._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9127,12 +7307,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_encryption_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_encryption_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_encryption_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.EncryptionSpec.to_json(response)
                 except:
@@ -9153,23 +7329,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetFeedbackLabel(
-        _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetFeedbackLabel(_BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetFeedbackLabel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9211,28 +7376,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_feedback_label(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_feedback_label(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9255,15 +7408,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._GetFeedbackLabel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._GetFeedbackLabel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9279,12 +7425,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_feedback_label(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_feedback_label_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_feedback_label_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.FeedbackLabel.to_json(response)
                 except:
@@ -9305,23 +7447,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetIssue(
-        _BaseContactCenterInsightsRestTransport._BaseGetIssue,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetIssue(_BaseContactCenterInsightsRestTransport._BaseGetIssue, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetIssue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9360,26 +7491,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_get_issue(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9403,12 +7524,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetIssue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9424,12 +7540,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_issue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_issue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_issue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Issue.to_json(response)
                 except:
@@ -9450,23 +7562,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseGetIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetIssueModel(_BaseContactCenterInsightsRestTransport._BaseGetIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9505,26 +7606,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue model resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_issue_model(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9548,12 +7639,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetIssueModel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9569,12 +7655,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.IssueModel.to_json(response)
                 except:
@@ -9595,23 +7677,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetPhraseMatcher(
-        _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetPhraseMatcher(_BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetPhraseMatcher")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9651,28 +7722,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The phrase matcher resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_phrase_matcher(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_phrase_matcher(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9695,15 +7754,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._GetPhraseMatcher._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._GetPhraseMatcher._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9719,12 +7771,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_phrase_matcher(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_phrase_matcher_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_phrase_matcher_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.PhraseMatcher.to_json(response)
                 except:
@@ -9745,23 +7793,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetQaQuestion(
-        _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetQaQuestion(_BaseContactCenterInsightsRestTransport._BaseGetQaQuestion, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetQaQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9802,26 +7839,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_qa_question(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9845,12 +7872,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetQaQuestion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9866,12 +7888,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_qa_question(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_qa_question_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_qa_question_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaQuestion.to_json(response)
                 except:
@@ -9892,23 +7910,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetQaScorecard(
-        _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetQaScorecard(_BaseContactCenterInsightsRestTransport._BaseGetQaScorecard, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetQaScorecard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9951,28 +7958,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_qa_scorecard(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_qa_scorecard(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9996,12 +7991,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetQaScorecard._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10017,12 +8007,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_qa_scorecard(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_qa_scorecard_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_qa_scorecard_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecard.to_json(response)
                 except:
@@ -10043,23 +8029,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetQaScorecardRevision(
-        _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetQaScorecardRevision(_BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetQaScorecardRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10109,28 +8084,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_qa_scorecard_revision(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_qa_scorecard_revision(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10154,12 +8117,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetQaScorecardRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10175,12 +8133,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_qa_scorecard_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_qa_scorecard_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_qa_scorecard_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
                 except:
@@ -10201,23 +8155,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetSettings(
-        _BaseContactCenterInsightsRestTransport._BaseGetSettings,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetSettings(_BaseContactCenterInsightsRestTransport._BaseGetSettings, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10263,26 +8206,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10306,12 +8239,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10327,12 +8255,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Settings.to_json(response)
                 except:
@@ -10353,23 +8277,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _GetView(
-        _BaseContactCenterInsightsRestTransport._BaseGetView,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetView(_BaseContactCenterInsightsRestTransport._BaseGetView, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetView")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10408,26 +8321,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The View resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetView._get_http_options()
 
             request, metadata = self._interceptor.pre_get_view(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetView._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetView._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetView._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetView._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10451,12 +8354,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetView._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10472,12 +8370,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_get_view(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_view_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_view_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.View.to_json(response)
                 except:
@@ -10498,23 +8392,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ImportIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseImportIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ImportIssueModel(_BaseContactCenterInsightsRestTransport._BaseImportIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ImportIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10557,32 +8440,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10605,16 +8474,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ImportIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._ImportIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10628,12 +8489,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_import_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10654,23 +8511,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _IngestConversations(
-        _BaseContactCenterInsightsRestTransport._BaseIngestConversations,
-        ContactCenterInsightsRestStub,
-    ):
+    class _IngestConversations(_BaseContactCenterInsightsRestTransport._BaseIngestConversations, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.IngestConversations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10713,32 +8559,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_http_options()
 
-            request, metadata = self._interceptor.pre_ingest_conversations(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_ingest_conversations(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10761,16 +8593,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._IngestConversations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._IngestConversations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10784,12 +8608,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_ingest_conversations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_ingest_conversations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_ingest_conversations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10810,23 +8630,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _InitializeEncryptionSpec(
-        _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec,
-        ContactCenterInsightsRestStub,
-    ):
+    class _InitializeEncryptionSpec(_BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.InitializeEncryptionSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10871,32 +8680,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_http_options()
 
-            request, metadata = self._interceptor.pre_initialize_encryption_spec(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_initialize_encryption_spec(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10920,13 +8715,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._InitializeEncryptionSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10940,12 +8729,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_initialize_encryption_spec(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_initialize_encryption_spec_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_initialize_encryption_spec_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10966,23 +8751,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListAllFeedbackLabels(
-        _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListAllFeedbackLabels(_BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListAllFeedbackLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11024,28 +8798,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_all_feedback_labels(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_all_feedback_labels(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11068,15 +8830,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListAllFeedbackLabels._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListAllFeedbackLabels._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11092,18 +8847,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_all_feedback_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_all_feedback_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_all_feedback_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListAllFeedbackLabelsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListAllFeedbackLabelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11122,23 +8869,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListAnalyses(
-        _BaseContactCenterInsightsRestTransport._BaseListAnalyses,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListAnalyses(_BaseContactCenterInsightsRestTransport._BaseListAnalyses, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListAnalyses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11177,26 +8913,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response to list analyses.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_analyses(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11220,12 +8946,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListAnalyses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11241,16 +8962,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_analyses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_analyses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_analyses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListAnalysesResponse.to_json(response)
-                    )
+                    response_payload = contact_center_insights.ListAnalysesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11269,23 +8984,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListAnalysisRules(
-        _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListAnalysisRules(_BaseContactCenterInsightsRestTransport._BaseListAnalysisRules, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListAnalysisRules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11324,28 +9028,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing views.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_analysis_rules(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_analysis_rules(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11368,15 +9060,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListAnalysisRules._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListAnalysisRules._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11392,18 +9077,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_analysis_rules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_analysis_rules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_analysis_rules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListAnalysisRulesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListAnalysisRulesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11422,23 +9099,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListConversations(
-        _BaseContactCenterInsightsRestTransport._BaseListConversations,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListConversations(_BaseContactCenterInsightsRestTransport._BaseListConversations, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListConversations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11479,28 +9145,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListConversations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_conversations(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_conversations(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListConversations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11523,15 +9177,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListConversations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListConversations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11547,18 +9194,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_conversations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_conversations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_conversations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListConversationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListConversationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11577,23 +9216,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListFeedbackLabels(
-        _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListFeedbackLabels(_BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListFeedbackLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11635,28 +9263,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_feedback_labels(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_feedback_labels(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11679,15 +9295,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListFeedbackLabels._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListFeedbackLabels._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11703,18 +9312,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_feedback_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_feedback_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_feedback_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListFeedbackLabelsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListFeedbackLabelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11733,23 +9334,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListIssueModels(
-        _BaseContactCenterInsightsRestTransport._BaseListIssueModels,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListIssueModels(_BaseContactCenterInsightsRestTransport._BaseListIssueModels, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListIssueModels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11788,28 +9378,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing issue models.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_issue_models(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_issue_models(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11832,15 +9410,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListIssueModels._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListIssueModels._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11856,18 +9427,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_issue_models(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_issue_models_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_issue_models_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListIssueModelsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListIssueModelsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11886,23 +9449,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListIssues(
-        _BaseContactCenterInsightsRestTransport._BaseListIssues,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListIssues(_BaseContactCenterInsightsRestTransport._BaseListIssues, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListIssues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11941,26 +9493,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing issues.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListIssues._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_http_options()
 
             request, metadata = self._interceptor.pre_list_issues(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListIssues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11984,12 +9526,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListIssues._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12005,16 +9542,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_issues(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_issues_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_issues_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListIssuesResponse.to_json(response)
-                    )
+                    response_payload = contact_center_insights.ListIssuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12033,23 +9564,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListPhraseMatchers(
-        _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListPhraseMatchers(_BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListPhraseMatchers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12090,28 +9610,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_phrase_matchers(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_phrase_matchers(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12134,15 +9642,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListPhraseMatchers._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListPhraseMatchers._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12158,18 +9659,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_phrase_matchers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_phrase_matchers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_phrase_matchers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListPhraseMatchersResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListPhraseMatchersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12188,23 +9681,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListQaQuestions(
-        _BaseContactCenterInsightsRestTransport._BaseListQaQuestions,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListQaQuestions(_BaseContactCenterInsightsRestTransport._BaseListQaQuestions, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListQaQuestions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12245,28 +9727,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_qa_questions(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_qa_questions(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12289,15 +9759,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListQaQuestions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListQaQuestions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12313,18 +9776,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_qa_questions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_qa_questions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_qa_questions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListQaQuestionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListQaQuestionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12343,23 +9798,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListQaScorecardRevisions(
-        _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListQaScorecardRevisions(_BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListQaScorecardRevisions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12401,28 +9845,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_qa_scorecard_revisions(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_qa_scorecard_revisions(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12446,12 +9878,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListQaScorecardRevisions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12467,16 +9894,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_qa_scorecard_revisions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_qa_scorecard_revisions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_qa_scorecard_revisions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = contact_center_insights.ListQaScorecardRevisionsResponse.to_json(
-                        response
-                    )
+                    response_payload = contact_center_insights.ListQaScorecardRevisionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12495,23 +9916,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListQaScorecards(
-        _BaseContactCenterInsightsRestTransport._BaseListQaScorecards,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListQaScorecards(_BaseContactCenterInsightsRestTransport._BaseListQaScorecards, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListQaScorecards")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12552,28 +9962,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_qa_scorecards(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_qa_scorecards(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12596,15 +9994,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._ListQaScorecards._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._ListQaScorecards._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12620,18 +10011,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_qa_scorecards(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_qa_scorecards_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_qa_scorecards_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListQaScorecardsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = contact_center_insights.ListQaScorecardsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12650,23 +10033,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _ListViews(
-        _BaseContactCenterInsightsRestTransport._BaseListViews,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListViews(_BaseContactCenterInsightsRestTransport._BaseListViews, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListViews")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12705,26 +10077,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The response of listing views.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListViews._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListViews._get_http_options()
 
             request, metadata = self._interceptor.pre_list_views(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListViews._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListViews._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListViews._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListViews._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -12748,12 +10110,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListViews._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12769,16 +10126,10 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_list_views(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_views_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_views_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        contact_center_insights.ListViewsResponse.to_json(response)
-                    )
+                    response_payload = contact_center_insights.ListViewsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -12797,23 +10148,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _QueryMetrics(
-        _BaseContactCenterInsightsRestTransport._BaseQueryMetrics,
-        ContactCenterInsightsRestStub,
-    ):
+    class _QueryMetrics(_BaseContactCenterInsightsRestTransport._BaseQueryMetrics, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.QueryMetrics")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12856,30 +10196,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_http_options()
 
             request, metadata = self._interceptor.pre_query_metrics(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12903,13 +10231,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._QueryMetrics._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12923,12 +10245,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_query_metrics(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_metrics_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_metrics_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12949,23 +10267,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _TuneQaScorecardRevision(
-        _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision,
-        ContactCenterInsightsRestStub,
-    ):
+    class _TuneQaScorecardRevision(_BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.TuneQaScorecardRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13010,32 +10317,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_tune_qa_scorecard_revision(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_tune_qa_scorecard_revision(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13059,13 +10352,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._TuneQaScorecardRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13079,12 +10366,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_tune_qa_scorecard_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_tune_qa_scorecard_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_tune_qa_scorecard_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13105,23 +10388,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UndeployIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UndeployIssueModel(_BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UndeployIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13165,32 +10437,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_undeploy_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undeploy_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13213,16 +10471,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UndeployIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UndeployIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13236,12 +10486,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_undeploy_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undeploy_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undeploy_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13262,25 +10508,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UndeployQaScorecardRevision(
-        _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UndeployQaScorecardRevision(_BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision, ContactCenterInsightsRestStub):
         def __hash__(self):
-            return hash(
-                "ContactCenterInsightsRestTransport.UndeployQaScorecardRevision"
-            )
+            return hash("ContactCenterInsightsRestTransport.UndeployQaScorecardRevision")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13332,32 +10565,20 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_http_options()
 
-            request, metadata = self._interceptor.pre_undeploy_qa_scorecard_revision(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_undeploy_qa_scorecard_revision(request, metadata)
             transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13381,13 +10602,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UndeployQaScorecardRevision._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13403,15 +10618,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_undeploy_qa_scorecard_revision(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_undeploy_qa_scorecard_revision_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undeploy_qa_scorecard_revision_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecardRevision.to_json(response)
                 except:
@@ -13432,23 +10640,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateAnalysisRule(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateAnalysisRule(_BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateAnalysisRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13499,32 +10696,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_analysis_rule(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_analysis_rule(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13547,16 +10730,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdateAnalysisRule._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdateAnalysisRule._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13572,12 +10747,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_analysis_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_analysis_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_analysis_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.AnalysisRule.to_json(response)
                 except:
@@ -13598,23 +10769,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateConversation(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateConversation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateConversation(_BaseContactCenterInsightsRestTransport._BaseUpdateConversation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13654,32 +10814,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The conversation resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_conversation(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13702,16 +10848,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdateConversation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdateConversation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13727,12 +10865,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_conversation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_conversation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Conversation.to_json(response)
                 except:
@@ -13753,23 +10887,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateFeedbackLabel(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateFeedbackLabel(_BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateFeedbackLabel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13812,32 +10935,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_feedback_label(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_feedback_label(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -13860,16 +10969,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdateFeedbackLabel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdateFeedbackLabel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13885,12 +10986,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_feedback_label(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_feedback_label_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_feedback_label_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.FeedbackLabel.to_json(response)
                 except:
@@ -13911,23 +11008,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateIssue(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateIssue,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateIssue(_BaseContactCenterInsightsRestTransport._BaseUpdateIssue, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateIssue")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13967,30 +11053,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_http_options()
 
             request, metadata = self._interceptor.pre_update_issue(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14014,13 +11088,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UpdateIssue._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14036,12 +11104,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_issue(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_issue_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_issue_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Issue.to_json(response)
                 except:
@@ -14062,23 +11126,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateIssueModel(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateIssueModel(_BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateIssueModel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14118,32 +11171,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The issue model resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_issue_model(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_issue_model(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14166,16 +11205,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdateIssueModel._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdateIssueModel._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14191,12 +11222,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_issue_model(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_issue_model_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_issue_model_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.IssueModel.to_json(response)
                 except:
@@ -14217,23 +11244,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdatePhraseMatcher(
-        _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdatePhraseMatcher(_BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdatePhraseMatcher")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14274,32 +11290,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The phrase matcher resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_phrase_matcher(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_phrase_matcher(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14322,16 +11324,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdatePhraseMatcher._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdatePhraseMatcher._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14347,12 +11341,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_phrase_matcher(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_phrase_matcher_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_phrase_matcher_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.PhraseMatcher.to_json(response)
                 except:
@@ -14373,23 +11363,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateQaQuestion(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateQaQuestion(_BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateQaQuestion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14432,32 +11411,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_qa_question(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_qa_question(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14480,16 +11445,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdateQaQuestion._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdateQaQuestion._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14505,12 +11462,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_qa_question(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_qa_question_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_qa_question_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaQuestion.to_json(response)
                 except:
@@ -14531,23 +11484,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateQaScorecard(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateQaScorecard(_BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateQaScorecard")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14591,32 +11533,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_qa_scorecard(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_qa_scorecard(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14639,16 +11567,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UpdateQaScorecard._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UpdateQaScorecard._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14664,12 +11584,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_qa_scorecard(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_qa_scorecard_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_qa_scorecard_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.QaScorecard.to_json(response)
                 except:
@@ -14690,23 +11606,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateSettings(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateSettings,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateSettings(_BaseContactCenterInsightsRestTransport._BaseUpdateSettings, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14753,30 +11658,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14800,13 +11693,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UpdateSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14822,12 +11709,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Settings.to_json(response)
                 except:
@@ -14848,23 +11731,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UpdateView(
-        _BaseContactCenterInsightsRestTransport._BaseUpdateView,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UpdateView(_BaseContactCenterInsightsRestTransport._BaseUpdateView, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UpdateView")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14904,30 +11776,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     The View resource.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_http_options()
 
             request, metadata = self._interceptor.pre_update_view(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -14951,13 +11811,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._UpdateView._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14973,12 +11827,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_update_view(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_view_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_view_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.View.to_json(response)
                 except:
@@ -14999,23 +11849,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
             return resp
 
-    class _UploadConversation(
-        _BaseContactCenterInsightsRestTransport._BaseUploadConversation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _UploadConversation(_BaseContactCenterInsightsRestTransport._BaseUploadConversation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.UploadConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15058,32 +11897,18 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_upload_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_upload_conversation(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_transcoded_request(http_options, request)
 
-            body = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15106,16 +11931,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._UploadConversation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ContactCenterInsightsRestTransport._UploadConversation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -15129,12 +11946,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             resp = self._interceptor.post_upload_conversation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upload_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upload_conversation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -15156,45 +11969,25 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             return resp
 
     @property
-    def bulk_analyze_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkAnalyzeConversationsRequest],
-        operations_pb2.Operation,
-    ]:
+    def bulk_analyze_conversations(self) -> Callable[[contact_center_insights.BulkAnalyzeConversationsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkAnalyzeConversations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def bulk_delete_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkDeleteConversationsRequest],
-        operations_pb2.Operation,
-    ]:
+    def bulk_delete_conversations(self) -> Callable[[contact_center_insights.BulkDeleteConversationsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkDeleteConversations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def bulk_download_feedback_labels(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkDownloadFeedbackLabelsRequest],
-        operations_pb2.Operation,
-    ]:
+    def bulk_download_feedback_labels(self) -> Callable[[contact_center_insights.BulkDownloadFeedbackLabelsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkDownloadFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def bulk_upload_feedback_labels(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkUploadFeedbackLabelsRequest],
-        operations_pb2.Operation,
-    ]:
+    def bulk_upload_feedback_labels(self) -> Callable[[contact_center_insights.BulkUploadFeedbackLabelsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkUploadFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
@@ -15202,407 +11995,259 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     @property
     def calculate_issue_model_stats(
         self,
-    ) -> Callable[
-        [contact_center_insights.CalculateIssueModelStatsRequest],
-        contact_center_insights.CalculateIssueModelStatsResponse,
-    ]:
+    ) -> Callable[[contact_center_insights.CalculateIssueModelStatsRequest], contact_center_insights.CalculateIssueModelStatsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CalculateIssueModelStats(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def calculate_stats(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CalculateStatsRequest],
-        contact_center_insights.CalculateStatsResponse,
-    ]:
+    def calculate_stats(self) -> Callable[[contact_center_insights.CalculateStatsRequest], contact_center_insights.CalculateStatsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CalculateStats(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_analysis(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateAnalysisRequest], operations_pb2.Operation
-    ]:
+    def create_analysis(self) -> Callable[[contact_center_insights.CreateAnalysisRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAnalysis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateAnalysisRuleRequest], resources.AnalysisRule
-    ]:
+    def create_analysis_rule(self) -> Callable[[contact_center_insights.CreateAnalysisRuleRequest], resources.AnalysisRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateConversationRequest], resources.Conversation
-    ]:
+    def create_conversation(self) -> Callable[[contact_center_insights.CreateConversationRequest], resources.Conversation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateFeedbackLabelRequest], resources.FeedbackLabel
-    ]:
+    def create_feedback_label(self) -> Callable[[contact_center_insights.CreateFeedbackLabelRequest], resources.FeedbackLabel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateIssueModelRequest], operations_pb2.Operation
-    ]:
+    def create_issue_model(self) -> Callable[[contact_center_insights.CreateIssueModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreatePhraseMatcherRequest], resources.PhraseMatcher
-    ]:
+    def create_phrase_matcher(self) -> Callable[[contact_center_insights.CreatePhraseMatcherRequest], resources.PhraseMatcher]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaQuestionRequest], resources.QaQuestion
-    ]:
+    def create_qa_question(self) -> Callable[[contact_center_insights.CreateQaQuestionRequest], resources.QaQuestion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaScorecardRequest], resources.QaScorecard
-    ]:
+    def create_qa_scorecard(self) -> Callable[[contact_center_insights.CreateQaScorecardRequest], resources.QaScorecard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaScorecardRevisionRequest],
-        resources.QaScorecardRevision,
-    ]:
+    def create_qa_scorecard_revision(self) -> Callable[[contact_center_insights.CreateQaScorecardRevisionRequest], resources.QaScorecardRevision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_view(
-        self,
-    ) -> Callable[[contact_center_insights.CreateViewRequest], resources.View]:
+    def create_view(self) -> Callable[[contact_center_insights.CreateViewRequest], resources.View]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_analysis(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteAnalysisRequest], empty_pb2.Empty]:
+    def delete_analysis(self) -> Callable[[contact_center_insights.DeleteAnalysisRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAnalysis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_analysis_rule(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteAnalysisRuleRequest], empty_pb2.Empty]:
+    def delete_analysis_rule(self) -> Callable[[contact_center_insights.DeleteAnalysisRuleRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_conversation(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteConversationRequest], empty_pb2.Empty]:
+    def delete_conversation(self) -> Callable[[contact_center_insights.DeleteConversationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteFeedbackLabelRequest], empty_pb2.Empty
-    ]:
+    def delete_feedback_label(self) -> Callable[[contact_center_insights.DeleteFeedbackLabelRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_issue(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteIssueRequest], empty_pb2.Empty]:
+    def delete_issue(self) -> Callable[[contact_center_insights.DeleteIssueRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIssue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteIssueModelRequest], operations_pb2.Operation
-    ]:
+    def delete_issue_model(self) -> Callable[[contact_center_insights.DeleteIssueModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeletePhraseMatcherRequest], empty_pb2.Empty
-    ]:
+    def delete_phrase_matcher(self) -> Callable[[contact_center_insights.DeletePhraseMatcherRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_qa_question(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteQaQuestionRequest], empty_pb2.Empty]:
+    def delete_qa_question(self) -> Callable[[contact_center_insights.DeleteQaQuestionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_qa_scorecard(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteQaScorecardRequest], empty_pb2.Empty]:
+    def delete_qa_scorecard(self) -> Callable[[contact_center_insights.DeleteQaScorecardRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaScorecardRevisionRequest], empty_pb2.Empty
-    ]:
+    def delete_qa_scorecard_revision(self) -> Callable[[contact_center_insights.DeleteQaScorecardRevisionRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_view(
-        self,
-    ) -> Callable[[contact_center_insights.DeleteViewRequest], empty_pb2.Empty]:
+    def delete_view(self) -> Callable[[contact_center_insights.DeleteViewRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeployIssueModelRequest], operations_pb2.Operation
-    ]:
+    def deploy_issue_model(self) -> Callable[[contact_center_insights.DeployIssueModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deploy_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeployQaScorecardRevisionRequest],
-        resources.QaScorecardRevision,
-    ]:
+    def deploy_qa_scorecard_revision(self) -> Callable[[contact_center_insights.DeployQaScorecardRevisionRequest], resources.QaScorecardRevision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeployQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_insights_data(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ExportInsightsDataRequest], operations_pb2.Operation
-    ]:
+    def export_insights_data(self) -> Callable[[contact_center_insights.ExportInsightsDataRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportInsightsData(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ExportIssueModelRequest], operations_pb2.Operation
-    ]:
+    def export_issue_model(self) -> Callable[[contact_center_insights.ExportIssueModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_analysis(
-        self,
-    ) -> Callable[[contact_center_insights.GetAnalysisRequest], resources.Analysis]:
+    def get_analysis(self) -> Callable[[contact_center_insights.GetAnalysisRequest], resources.Analysis]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAnalysis(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetAnalysisRuleRequest], resources.AnalysisRule
-    ]:
+    def get_analysis_rule(self) -> Callable[[contact_center_insights.GetAnalysisRuleRequest], resources.AnalysisRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetConversationRequest], resources.Conversation
-    ]:
+    def get_conversation(self) -> Callable[[contact_center_insights.GetConversationRequest], resources.Conversation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_encryption_spec(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetEncryptionSpecRequest], resources.EncryptionSpec
-    ]:
+    def get_encryption_spec(self) -> Callable[[contact_center_insights.GetEncryptionSpecRequest], resources.EncryptionSpec]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetFeedbackLabelRequest], resources.FeedbackLabel
-    ]:
+    def get_feedback_label(self) -> Callable[[contact_center_insights.GetFeedbackLabelRequest], resources.FeedbackLabel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_issue(
-        self,
-    ) -> Callable[[contact_center_insights.GetIssueRequest], resources.Issue]:
+    def get_issue(self) -> Callable[[contact_center_insights.GetIssueRequest], resources.Issue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIssue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_issue_model(
-        self,
-    ) -> Callable[[contact_center_insights.GetIssueModelRequest], resources.IssueModel]:
+    def get_issue_model(self) -> Callable[[contact_center_insights.GetIssueModelRequest], resources.IssueModel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetPhraseMatcherRequest], resources.PhraseMatcher
-    ]:
+    def get_phrase_matcher(self) -> Callable[[contact_center_insights.GetPhraseMatcherRequest], resources.PhraseMatcher]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_qa_question(
-        self,
-    ) -> Callable[[contact_center_insights.GetQaQuestionRequest], resources.QaQuestion]:
+    def get_qa_question(self) -> Callable[[contact_center_insights.GetQaQuestionRequest], resources.QaQuestion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetQaScorecardRequest], resources.QaScorecard
-    ]:
+    def get_qa_scorecard(self) -> Callable[[contact_center_insights.GetQaScorecardRequest], resources.QaScorecard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetQaScorecardRevisionRequest],
-        resources.QaScorecardRevision,
-    ]:
+    def get_qa_scorecard_revision(self) -> Callable[[contact_center_insights.GetQaScorecardRevisionRequest], resources.QaScorecardRevision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[[contact_center_insights.GetSettingsRequest], resources.Settings]:
+    def get_settings(self) -> Callable[[contact_center_insights.GetSettingsRequest], resources.Settings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_view(
-        self,
-    ) -> Callable[[contact_center_insights.GetViewRequest], resources.View]:
+    def get_view(self) -> Callable[[contact_center_insights.GetViewRequest], resources.View]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ImportIssueModelRequest], operations_pb2.Operation
-    ]:
+    def import_issue_model(self) -> Callable[[contact_center_insights.ImportIssueModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def ingest_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.IngestConversationsRequest], operations_pb2.Operation
-    ]:
+    def ingest_conversations(self) -> Callable[[contact_center_insights.IngestConversationsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IngestConversations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def initialize_encryption_spec(
-        self,
-    ) -> Callable[
-        [contact_center_insights.InitializeEncryptionSpecRequest],
-        operations_pb2.Operation,
-    ]:
+    def initialize_encryption_spec(self) -> Callable[[contact_center_insights.InitializeEncryptionSpecRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InitializeEncryptionSpec(self._session, self._host, self._interceptor)  # type: ignore
@@ -15610,43 +12255,25 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     @property
     def list_all_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListAllFeedbackLabelsRequest],
-        contact_center_insights.ListAllFeedbackLabelsResponse,
-    ]:
+    ) -> Callable[[contact_center_insights.ListAllFeedbackLabelsRequest], contact_center_insights.ListAllFeedbackLabelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAllFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_analyses(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListAnalysesRequest],
-        contact_center_insights.ListAnalysesResponse,
-    ]:
+    def list_analyses(self) -> Callable[[contact_center_insights.ListAnalysesRequest], contact_center_insights.ListAnalysesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAnalyses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_analysis_rules(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListAnalysisRulesRequest],
-        contact_center_insights.ListAnalysisRulesResponse,
-    ]:
+    def list_analysis_rules(self) -> Callable[[contact_center_insights.ListAnalysisRulesRequest], contact_center_insights.ListAnalysisRulesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAnalysisRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListConversationsRequest],
-        contact_center_insights.ListConversationsResponse,
-    ]:
+    def list_conversations(self) -> Callable[[contact_center_insights.ListConversationsRequest], contact_center_insights.ListConversationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConversations(self._session, self._host, self._interceptor)  # type: ignore
@@ -15654,32 +12281,19 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     @property
     def list_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListFeedbackLabelsRequest],
-        contact_center_insights.ListFeedbackLabelsResponse,
-    ]:
+    ) -> Callable[[contact_center_insights.ListFeedbackLabelsRequest], contact_center_insights.ListFeedbackLabelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFeedbackLabels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_issue_models(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListIssueModelsRequest],
-        contact_center_insights.ListIssueModelsResponse,
-    ]:
+    def list_issue_models(self) -> Callable[[contact_center_insights.ListIssueModelsRequest], contact_center_insights.ListIssueModelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIssueModels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_issues(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListIssuesRequest],
-        contact_center_insights.ListIssuesResponse,
-    ]:
+    def list_issues(self) -> Callable[[contact_center_insights.ListIssuesRequest], contact_center_insights.ListIssuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListIssues(self._session, self._host, self._interceptor)  # type: ignore
@@ -15687,21 +12301,13 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     @property
     def list_phrase_matchers(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListPhraseMatchersRequest],
-        contact_center_insights.ListPhraseMatchersResponse,
-    ]:
+    ) -> Callable[[contact_center_insights.ListPhraseMatchersRequest], contact_center_insights.ListPhraseMatchersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPhraseMatchers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_qa_questions(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListQaQuestionsRequest],
-        contact_center_insights.ListQaQuestionsResponse,
-    ]:
+    def list_qa_questions(self) -> Callable[[contact_center_insights.ListQaQuestionsRequest], contact_center_insights.ListQaQuestionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQaQuestions(self._session, self._host, self._interceptor)  # type: ignore
@@ -15709,178 +12315,109 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     @property
     def list_qa_scorecard_revisions(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListQaScorecardRevisionsRequest],
-        contact_center_insights.ListQaScorecardRevisionsResponse,
-    ]:
+    ) -> Callable[[contact_center_insights.ListQaScorecardRevisionsRequest], contact_center_insights.ListQaScorecardRevisionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQaScorecardRevisions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_qa_scorecards(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListQaScorecardsRequest],
-        contact_center_insights.ListQaScorecardsResponse,
-    ]:
+    def list_qa_scorecards(self) -> Callable[[contact_center_insights.ListQaScorecardsRequest], contact_center_insights.ListQaScorecardsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQaScorecards(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_views(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListViewsRequest],
-        contact_center_insights.ListViewsResponse,
-    ]:
+    def list_views(self) -> Callable[[contact_center_insights.ListViewsRequest], contact_center_insights.ListViewsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListViews(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_metrics(
-        self,
-    ) -> Callable[
-        [contact_center_insights.QueryMetricsRequest], operations_pb2.Operation
-    ]:
+    def query_metrics(self) -> Callable[[contact_center_insights.QueryMetricsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryMetrics(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def tune_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.TuneQaScorecardRevisionRequest],
-        operations_pb2.Operation,
-    ]:
+    def tune_qa_scorecard_revision(self) -> Callable[[contact_center_insights.TuneQaScorecardRevisionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TuneQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undeploy_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UndeployIssueModelRequest], operations_pb2.Operation
-    ]:
+    def undeploy_issue_model(self) -> Callable[[contact_center_insights.UndeployIssueModelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeployIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undeploy_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UndeployQaScorecardRevisionRequest],
-        resources.QaScorecardRevision,
-    ]:
+    def undeploy_qa_scorecard_revision(self) -> Callable[[contact_center_insights.UndeployQaScorecardRevisionRequest], resources.QaScorecardRevision]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeployQaScorecardRevision(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateAnalysisRuleRequest], resources.AnalysisRule
-    ]:
+    def update_analysis_rule(self) -> Callable[[contact_center_insights.UpdateAnalysisRuleRequest], resources.AnalysisRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAnalysisRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateConversationRequest], resources.Conversation
-    ]:
+    def update_conversation(self) -> Callable[[contact_center_insights.UpdateConversationRequest], resources.Conversation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateFeedbackLabelRequest], resources.FeedbackLabel
-    ]:
+    def update_feedback_label(self) -> Callable[[contact_center_insights.UpdateFeedbackLabelRequest], resources.FeedbackLabel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateFeedbackLabel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_issue(
-        self,
-    ) -> Callable[[contact_center_insights.UpdateIssueRequest], resources.Issue]:
+    def update_issue(self) -> Callable[[contact_center_insights.UpdateIssueRequest], resources.Issue]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIssue(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateIssueModelRequest], resources.IssueModel
-    ]:
+    def update_issue_model(self) -> Callable[[contact_center_insights.UpdateIssueModelRequest], resources.IssueModel]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateIssueModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdatePhraseMatcherRequest], resources.PhraseMatcher
-    ]:
+    def update_phrase_matcher(self) -> Callable[[contact_center_insights.UpdatePhraseMatcherRequest], resources.PhraseMatcher]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePhraseMatcher(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateQaQuestionRequest], resources.QaQuestion
-    ]:
+    def update_qa_question(self) -> Callable[[contact_center_insights.UpdateQaQuestionRequest], resources.QaQuestion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateQaQuestion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateQaScorecardRequest], resources.QaScorecard
-    ]:
+    def update_qa_scorecard(self) -> Callable[[contact_center_insights.UpdateQaScorecardRequest], resources.QaScorecard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateQaScorecard(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[[contact_center_insights.UpdateSettingsRequest], resources.Settings]:
+    def update_settings(self) -> Callable[[contact_center_insights.UpdateSettingsRequest], resources.Settings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_view(
-        self,
-    ) -> Callable[[contact_center_insights.UpdateViewRequest], resources.View]:
+    def update_view(self) -> Callable[[contact_center_insights.UpdateViewRequest], resources.View]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateView(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upload_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UploadConversationRequest], operations_pb2.Operation
-    ]:
+    def upload_conversation(self) -> Callable[[contact_center_insights.UploadConversationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UploadConversation(self._session, self._host, self._interceptor)  # type: ignore
@@ -15889,23 +12426,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseContactCenterInsightsRestTransport._BaseCancelOperation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _CancelOperation(_BaseContactCenterInsightsRestTransport._BaseCancelOperation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -15940,28 +12466,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -15984,15 +12498,8 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 )
 
             # Send the request
-            response = (
-                ContactCenterInsightsRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ContactCenterInsightsRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16006,23 +12513,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseContactCenterInsightsRestTransport._BaseGetOperation,
-        ContactCenterInsightsRestStub,
-    ):
+    class _GetOperation(_BaseContactCenterInsightsRestTransport._BaseGetOperation, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -16060,26 +12556,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -16103,12 +12589,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16120,9 +12601,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -16147,23 +12626,12 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseContactCenterInsightsRestTransport._BaseListOperations,
-        ContactCenterInsightsRestStub,
-    ):
+    class _ListOperations(_BaseContactCenterInsightsRestTransport._BaseListOperations, ContactCenterInsightsRestStub):
         def __hash__(self):
             return hash("ContactCenterInsightsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -16201,26 +12669,16 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseContactCenterInsightsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContactCenterInsightsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -16244,12 +12702,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
 
             # Send the request
             response = ContactCenterInsightsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -16261,9 +12714,7 @@ class ContactCenterInsightsRestTransport(_BaseContactCenterInsightsRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

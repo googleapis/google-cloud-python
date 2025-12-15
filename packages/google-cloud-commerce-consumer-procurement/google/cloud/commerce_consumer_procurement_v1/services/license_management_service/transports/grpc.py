@@ -29,9 +29,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.commerce_consumer_procurement_v1.types import (
-    license_management_service,
-)
+from google.cloud.commerce_consumer_procurement_v1.types import license_management_service
 
 from .base import DEFAULT_CLIENT_INFO, LicenseManagementServiceTransport
 
@@ -47,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -59,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -81,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +208,14 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +249,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,12 +308,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         return self._grpc_channel
 
     @property
-    def get_license_pool(
-        self,
-    ) -> Callable[
-        [license_management_service.GetLicensePoolRequest],
-        license_management_service.LicensePool,
-    ]:
+    def get_license_pool(self) -> Callable[[license_management_service.GetLicensePoolRequest], license_management_service.LicensePool]:
         r"""Return a callable for the get license pool method over gRPC.
 
         Gets the license pool.
@@ -354,12 +332,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         return self._stubs["get_license_pool"]
 
     @property
-    def update_license_pool(
-        self,
-    ) -> Callable[
-        [license_management_service.UpdateLicensePoolRequest],
-        license_management_service.LicensePool,
-    ]:
+    def update_license_pool(self) -> Callable[[license_management_service.UpdateLicensePoolRequest], license_management_service.LicensePool]:
         r"""Return a callable for the update license pool method over gRPC.
 
         Updates the license pool if one exists for this
@@ -384,12 +357,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         return self._stubs["update_license_pool"]
 
     @property
-    def assign(
-        self,
-    ) -> Callable[
-        [license_management_service.AssignRequest],
-        license_management_service.AssignResponse,
-    ]:
+    def assign(self) -> Callable[[license_management_service.AssignRequest], license_management_service.AssignResponse]:
         r"""Return a callable for the assign method over gRPC.
 
         Assigns a license to a user.
@@ -413,12 +381,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
         return self._stubs["assign"]
 
     @property
-    def unassign(
-        self,
-    ) -> Callable[
-        [license_management_service.UnassignRequest],
-        license_management_service.UnassignResponse,
-    ]:
+    def unassign(self) -> Callable[[license_management_service.UnassignRequest], license_management_service.UnassignResponse]:
         r"""Return a callable for the unassign method over gRPC.
 
         Unassigns a license from a user.
@@ -444,10 +407,7 @@ class LicenseManagementServiceGrpcTransport(LicenseManagementServiceTransport):
     @property
     def enumerate_licensed_users(
         self,
-    ) -> Callable[
-        [license_management_service.EnumerateLicensedUsersRequest],
-        license_management_service.EnumerateLicensedUsersResponse,
-    ]:
+    ) -> Callable[[license_management_service.EnumerateLicensedUsersRequest], license_management_service.EnumerateLicensedUsersResponse]:
         r"""Return a callable for the enumerate licensed users method over gRPC.
 
         Enumerates all users assigned a license.

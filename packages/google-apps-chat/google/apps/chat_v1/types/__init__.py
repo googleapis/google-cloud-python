@@ -26,14 +26,7 @@ from .annotation import (
     SlashCommandMetadata,
     UserMentionMetadata,
 )
-from .attachment import (
-    Attachment,
-    AttachmentDataRef,
-    DriveDataRef,
-    GetAttachmentRequest,
-    UploadAttachmentRequest,
-    UploadAttachmentResponse,
-)
+from .attachment import Attachment, AttachmentDataRef, DriveDataRef, GetAttachmentRequest, UploadAttachmentRequest, UploadAttachmentResponse
 from .contextual_addon import ContextualAddOnMarkup
 from .deletion_metadata import DeletionMetadata
 from .event_payload import (
@@ -115,22 +108,9 @@ from .space import (
     Space,
     UpdateSpaceRequest,
 )
-from .space_event import (
-    GetSpaceEventRequest,
-    ListSpaceEventsRequest,
-    ListSpaceEventsResponse,
-    SpaceEvent,
-)
-from .space_notification_setting import (
-    GetSpaceNotificationSettingRequest,
-    SpaceNotificationSetting,
-    UpdateSpaceNotificationSettingRequest,
-)
-from .space_read_state import (
-    GetSpaceReadStateRequest,
-    SpaceReadState,
-    UpdateSpaceReadStateRequest,
-)
+from .space_event import GetSpaceEventRequest, ListSpaceEventsRequest, ListSpaceEventsResponse, SpaceEvent
+from .space_notification_setting import GetSpaceNotificationSettingRequest, SpaceNotificationSetting, UpdateSpaceNotificationSettingRequest
+from .space_read_state import GetSpaceReadStateRequest, SpaceReadState, UpdateSpaceReadStateRequest
 from .space_setup import SetUpSpaceRequest
 from .thread_read_state import GetThreadReadStateRequest, ThreadReadState
 from .user import User

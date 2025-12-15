@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import BandwidthGroupServiceTransport
-from .rest import (
-    BandwidthGroupServiceRestInterceptor,
-    BandwidthGroupServiceRestTransport,
-)
+from .rest import BandwidthGroupServiceRestInterceptor, BandwidthGroupServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[BandwidthGroupServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[BandwidthGroupServiceTransport]]
 _transport_registry["rest"] = BandwidthGroupServiceRestTransport
 
 __all__ = (

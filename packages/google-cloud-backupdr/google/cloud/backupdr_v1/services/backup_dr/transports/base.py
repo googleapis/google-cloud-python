@@ -30,17 +30,9 @@ from google.oauth2 import service_account  # type: ignore
 import google.protobuf
 
 from google.cloud.backupdr_v1 import gapic_version as package_version
-from google.cloud.backupdr_v1.types import (
-    backupdr,
-    backupplan,
-    backupplanassociation,
-    backupvault,
-    datasourcereference,
-)
+from google.cloud.backupdr_v1.types import backupdr, backupplan, backupplanassociation, backupvault, datasourcereference
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -102,23 +94,15 @@ class BackupDRTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -501,59 +485,39 @@ class BackupDRTransport(abc.ABC):
     def list_management_servers(
         self,
     ) -> Callable[
-        [backupdr.ListManagementServersRequest],
-        Union[
-            backupdr.ListManagementServersResponse,
-            Awaitable[backupdr.ListManagementServersResponse],
-        ],
+        [backupdr.ListManagementServersRequest], Union[backupdr.ListManagementServersResponse, Awaitable[backupdr.ListManagementServersResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_management_server(
         self,
-    ) -> Callable[
-        [backupdr.GetManagementServerRequest],
-        Union[backupdr.ManagementServer, Awaitable[backupdr.ManagementServer]],
-    ]:
+    ) -> Callable[[backupdr.GetManagementServerRequest], Union[backupdr.ManagementServer, Awaitable[backupdr.ManagementServer]]]:
         raise NotImplementedError()
 
     @property
     def create_management_server(
         self,
-    ) -> Callable[
-        [backupdr.CreateManagementServerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupdr.CreateManagementServerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_management_server(
         self,
-    ) -> Callable[
-        [backupdr.DeleteManagementServerRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupdr.DeleteManagementServerRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_backup_vault(
         self,
-    ) -> Callable[
-        [backupvault.CreateBackupVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupvault.CreateBackupVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_backup_vaults(
         self,
     ) -> Callable[
-        [backupvault.ListBackupVaultsRequest],
-        Union[
-            backupvault.ListBackupVaultsResponse,
-            Awaitable[backupvault.ListBackupVaultsResponse],
-        ],
+        [backupvault.ListBackupVaultsRequest], Union[backupvault.ListBackupVaultsResponse, Awaitable[backupvault.ListBackupVaultsResponse]]
     ]:
         raise NotImplementedError()
 
@@ -562,79 +526,46 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [backupvault.FetchUsableBackupVaultsRequest],
-        Union[
-            backupvault.FetchUsableBackupVaultsResponse,
-            Awaitable[backupvault.FetchUsableBackupVaultsResponse],
-        ],
+        Union[backupvault.FetchUsableBackupVaultsResponse, Awaitable[backupvault.FetchUsableBackupVaultsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_backup_vault(
-        self,
-    ) -> Callable[
-        [backupvault.GetBackupVaultRequest],
-        Union[backupvault.BackupVault, Awaitable[backupvault.BackupVault]],
-    ]:
+    def get_backup_vault(self) -> Callable[[backupvault.GetBackupVaultRequest], Union[backupvault.BackupVault, Awaitable[backupvault.BackupVault]]]:
         raise NotImplementedError()
 
     @property
     def update_backup_vault(
         self,
-    ) -> Callable[
-        [backupvault.UpdateBackupVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupvault.UpdateBackupVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup_vault(
         self,
-    ) -> Callable[
-        [backupvault.DeleteBackupVaultRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupvault.DeleteBackupVaultRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_data_sources(
         self,
-    ) -> Callable[
-        [backupvault.ListDataSourcesRequest],
-        Union[
-            backupvault.ListDataSourcesResponse,
-            Awaitable[backupvault.ListDataSourcesResponse],
-        ],
-    ]:
+    ) -> Callable[[backupvault.ListDataSourcesRequest], Union[backupvault.ListDataSourcesResponse, Awaitable[backupvault.ListDataSourcesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_data_source(
-        self,
-    ) -> Callable[
-        [backupvault.GetDataSourceRequest],
-        Union[backupvault.DataSource, Awaitable[backupvault.DataSource]],
-    ]:
+    def get_data_source(self) -> Callable[[backupvault.GetDataSourceRequest], Union[backupvault.DataSource, Awaitable[backupvault.DataSource]]]:
         raise NotImplementedError()
 
     @property
     def update_data_source(
         self,
-    ) -> Callable[
-        [backupvault.UpdateDataSourceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupvault.UpdateDataSourceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_backups(
         self,
-    ) -> Callable[
-        [backupvault.ListBackupsRequest],
-        Union[
-            backupvault.ListBackupsResponse, Awaitable[backupvault.ListBackupsResponse]
-        ],
-    ]:
+    ) -> Callable[[backupvault.ListBackupsRequest], Union[backupvault.ListBackupsResponse, Awaitable[backupvault.ListBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -642,104 +573,58 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [backupvault.FetchBackupsForResourceTypeRequest],
-        Union[
-            backupvault.FetchBackupsForResourceTypeResponse,
-            Awaitable[backupvault.FetchBackupsForResourceTypeResponse],
-        ],
+        Union[backupvault.FetchBackupsForResourceTypeResponse, Awaitable[backupvault.FetchBackupsForResourceTypeResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [backupvault.GetBackupRequest],
-        Union[backupvault.Backup, Awaitable[backupvault.Backup]],
-    ]:
+    def get_backup(self) -> Callable[[backupvault.GetBackupRequest], Union[backupvault.Backup, Awaitable[backupvault.Backup]]]:
         raise NotImplementedError()
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [backupvault.UpdateBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_backup(self) -> Callable[[backupvault.UpdateBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [backupvault.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_backup(self) -> Callable[[backupvault.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def restore_backup(
-        self,
-    ) -> Callable[
-        [backupvault.RestoreBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def restore_backup(self) -> Callable[[backupvault.RestoreBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_backup_plan(
         self,
-    ) -> Callable[
-        [backupplan.CreateBackupPlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplan.CreateBackupPlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_backup_plan(
         self,
-    ) -> Callable[
-        [backupplan.UpdateBackupPlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplan.UpdateBackupPlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup_plan(
-        self,
-    ) -> Callable[
-        [backupplan.GetBackupPlanRequest],
-        Union[backupplan.BackupPlan, Awaitable[backupplan.BackupPlan]],
-    ]:
+    def get_backup_plan(self) -> Callable[[backupplan.GetBackupPlanRequest], Union[backupplan.BackupPlan, Awaitable[backupplan.BackupPlan]]]:
         raise NotImplementedError()
 
     @property
     def list_backup_plans(
         self,
-    ) -> Callable[
-        [backupplan.ListBackupPlansRequest],
-        Union[
-            backupplan.ListBackupPlansResponse,
-            Awaitable[backupplan.ListBackupPlansResponse],
-        ],
-    ]:
+    ) -> Callable[[backupplan.ListBackupPlansRequest], Union[backupplan.ListBackupPlansResponse, Awaitable[backupplan.ListBackupPlansResponse]]]:
         raise NotImplementedError()
 
     @property
     def delete_backup_plan(
         self,
-    ) -> Callable[
-        [backupplan.DeleteBackupPlanRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplan.DeleteBackupPlanRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_backup_plan_revision(
         self,
-    ) -> Callable[
-        [backupplan.GetBackupPlanRevisionRequest],
-        Union[backupplan.BackupPlanRevision, Awaitable[backupplan.BackupPlanRevision]],
-    ]:
+    ) -> Callable[[backupplan.GetBackupPlanRevisionRequest], Union[backupplan.BackupPlanRevision, Awaitable[backupplan.BackupPlanRevision]]]:
         raise NotImplementedError()
 
     @property
@@ -747,29 +632,20 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [backupplan.ListBackupPlanRevisionsRequest],
-        Union[
-            backupplan.ListBackupPlanRevisionsResponse,
-            Awaitable[backupplan.ListBackupPlanRevisionsResponse],
-        ],
+        Union[backupplan.ListBackupPlanRevisionsResponse, Awaitable[backupplan.ListBackupPlanRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.CreateBackupPlanAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplanassociation.CreateBackupPlanAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.UpdateBackupPlanAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplanassociation.UpdateBackupPlanAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -777,10 +653,7 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [backupplanassociation.GetBackupPlanAssociationRequest],
-        Union[
-            backupplanassociation.BackupPlanAssociation,
-            Awaitable[backupplanassociation.BackupPlanAssociation],
-        ],
+        Union[backupplanassociation.BackupPlanAssociation, Awaitable[backupplanassociation.BackupPlanAssociation]],
     ]:
         raise NotImplementedError()
 
@@ -789,10 +662,7 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [backupplanassociation.ListBackupPlanAssociationsRequest],
-        Union[
-            backupplanassociation.ListBackupPlanAssociationsResponse,
-            Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse],
-        ],
+        Union[backupplanassociation.ListBackupPlanAssociationsResponse, Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -803,9 +673,7 @@ class BackupDRTransport(abc.ABC):
         [backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest],
         Union[
             backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
-            Awaitable[
-                backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
-            ],
+            Awaitable[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -813,19 +681,13 @@ class BackupDRTransport(abc.ABC):
     @property
     def delete_backup_plan_association(
         self,
-    ) -> Callable[
-        [backupplanassociation.DeleteBackupPlanAssociationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplanassociation.DeleteBackupPlanAssociationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def trigger_backup(
         self,
-    ) -> Callable[
-        [backupplanassociation.TriggerBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupplanassociation.TriggerBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -833,10 +695,7 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [datasourcereference.GetDataSourceReferenceRequest],
-        Union[
-            datasourcereference.DataSourceReference,
-            Awaitable[datasourcereference.DataSourceReference],
-        ],
+        Union[datasourcereference.DataSourceReference, Awaitable[datasourcereference.DataSourceReference]],
     ]:
         raise NotImplementedError()
 
@@ -845,10 +704,7 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [datasourcereference.ListDataSourceReferencesRequest],
-        Union[
-            datasourcereference.ListDataSourceReferencesResponse,
-            Awaitable[datasourcereference.ListDataSourceReferencesResponse],
-        ],
+        Union[datasourcereference.ListDataSourceReferencesResponse, Awaitable[datasourcereference.ListDataSourceReferencesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -859,9 +715,7 @@ class BackupDRTransport(abc.ABC):
         [datasourcereference.FetchDataSourceReferencesForResourceTypeRequest],
         Union[
             datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
-            Awaitable[
-                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
-            ],
+            Awaitable[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse],
         ],
     ]:
         raise NotImplementedError()
@@ -869,10 +723,7 @@ class BackupDRTransport(abc.ABC):
     @property
     def initialize_service(
         self,
-    ) -> Callable[
-        [backupdr.InitializeServiceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[backupdr.InitializeServiceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -880,20 +731,14 @@ class BackupDRTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -911,19 +756,13 @@ class BackupDRTransport(abc.ABC):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],]:
         raise NotImplementedError()
 
     @property
@@ -941,22 +780,13 @@ class BackupDRTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

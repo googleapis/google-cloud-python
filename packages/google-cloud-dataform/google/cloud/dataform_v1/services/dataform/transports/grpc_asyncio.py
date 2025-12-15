@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -335,11 +318,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._grpc_channel
 
     @property
-    def list_repositories(
-        self,
-    ) -> Callable[
-        [dataform.ListRepositoriesRequest], Awaitable[dataform.ListRepositoriesResponse]
-    ]:
+    def list_repositories(self) -> Callable[[dataform.ListRepositoriesRequest], Awaitable[dataform.ListRepositoriesResponse]]:
         r"""Return a callable for the list repositories method over gRPC.
 
         Lists Repositories in a given project and location.
@@ -367,9 +346,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["list_repositories"]
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[[dataform.GetRepositoryRequest], Awaitable[dataform.Repository]]:
+    def get_repository(self) -> Callable[[dataform.GetRepositoryRequest], Awaitable[dataform.Repository]]:
         r"""Return a callable for the get repository method over gRPC.
 
         Fetches a single Repository.
@@ -393,9 +370,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_repository"]
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[[dataform.CreateRepositoryRequest], Awaitable[dataform.Repository]]:
+    def create_repository(self) -> Callable[[dataform.CreateRepositoryRequest], Awaitable[dataform.Repository]]:
         r"""Return a callable for the create repository method over gRPC.
 
         Creates a new Repository in a given project and
@@ -420,9 +395,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["create_repository"]
 
     @property
-    def update_repository(
-        self,
-    ) -> Callable[[dataform.UpdateRepositoryRequest], Awaitable[dataform.Repository]]:
+    def update_repository(self) -> Callable[[dataform.UpdateRepositoryRequest], Awaitable[dataform.Repository]]:
         r"""Return a callable for the update repository method over gRPC.
 
         Updates a single Repository.
@@ -452,9 +425,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["update_repository"]
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[[dataform.DeleteRepositoryRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_repository(self) -> Callable[[dataform.DeleteRepositoryRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete repository method over gRPC.
 
         Deletes a single Repository.
@@ -478,12 +449,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["delete_repository"]
 
     @property
-    def commit_repository_changes(
-        self,
-    ) -> Callable[
-        [dataform.CommitRepositoryChangesRequest],
-        Awaitable[dataform.CommitRepositoryChangesResponse],
-    ]:
+    def commit_repository_changes(self) -> Callable[[dataform.CommitRepositoryChangesRequest], Awaitable[dataform.CommitRepositoryChangesResponse]]:
         r"""Return a callable for the commit repository changes method over gRPC.
 
         Applies a Git commit to a Repository. The Repository must not
@@ -508,12 +474,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["commit_repository_changes"]
 
     @property
-    def read_repository_file(
-        self,
-    ) -> Callable[
-        [dataform.ReadRepositoryFileRequest],
-        Awaitable[dataform.ReadRepositoryFileResponse],
-    ]:
+    def read_repository_file(self) -> Callable[[dataform.ReadRepositoryFileRequest], Awaitable[dataform.ReadRepositoryFileResponse]]:
         r"""Return a callable for the read repository file method over gRPC.
 
         Returns the contents of a file (inside a Repository). The
@@ -541,10 +502,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def query_repository_directory_contents(
         self,
-    ) -> Callable[
-        [dataform.QueryRepositoryDirectoryContentsRequest],
-        Awaitable[dataform.QueryRepositoryDirectoryContentsResponse],
-    ]:
+    ) -> Callable[[dataform.QueryRepositoryDirectoryContentsRequest], Awaitable[dataform.QueryRepositoryDirectoryContentsResponse]]:
         r"""Return a callable for the query repository directory
         contents method over gRPC.
 
@@ -563,9 +521,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_repository_directory_contents" not in self._stubs:
-            self._stubs[
-                "query_repository_directory_contents"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["query_repository_directory_contents"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/QueryRepositoryDirectoryContents",
                 request_serializer=dataform.QueryRepositoryDirectoryContentsRequest.serialize,
                 response_deserializer=dataform.QueryRepositoryDirectoryContentsResponse.deserialize,
@@ -573,12 +529,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["query_repository_directory_contents"]
 
     @property
-    def fetch_repository_history(
-        self,
-    ) -> Callable[
-        [dataform.FetchRepositoryHistoryRequest],
-        Awaitable[dataform.FetchRepositoryHistoryResponse],
-    ]:
+    def fetch_repository_history(self) -> Callable[[dataform.FetchRepositoryHistoryRequest], Awaitable[dataform.FetchRepositoryHistoryResponse]]:
         r"""Return a callable for the fetch repository history method over gRPC.
 
         Fetches a Repository's history of commits. The Repository must
@@ -605,10 +556,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def compute_repository_access_token_status(
         self,
-    ) -> Callable[
-        [dataform.ComputeRepositoryAccessTokenStatusRequest],
-        Awaitable[dataform.ComputeRepositoryAccessTokenStatusResponse],
-    ]:
+    ) -> Callable[[dataform.ComputeRepositoryAccessTokenStatusRequest], Awaitable[dataform.ComputeRepositoryAccessTokenStatusResponse]]:
         r"""Return a callable for the compute repository access
         token status method over gRPC.
 
@@ -625,9 +573,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "compute_repository_access_token_status" not in self._stubs:
-            self._stubs[
-                "compute_repository_access_token_status"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["compute_repository_access_token_status"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/ComputeRepositoryAccessTokenStatus",
                 request_serializer=dataform.ComputeRepositoryAccessTokenStatusRequest.serialize,
                 response_deserializer=dataform.ComputeRepositoryAccessTokenStatusResponse.deserialize,
@@ -635,12 +581,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["compute_repository_access_token_status"]
 
     @property
-    def fetch_remote_branches(
-        self,
-    ) -> Callable[
-        [dataform.FetchRemoteBranchesRequest],
-        Awaitable[dataform.FetchRemoteBranchesResponse],
-    ]:
+    def fetch_remote_branches(self) -> Callable[[dataform.FetchRemoteBranchesRequest], Awaitable[dataform.FetchRemoteBranchesResponse]]:
         r"""Return a callable for the fetch remote branches method over gRPC.
 
         Fetches a Repository's remote branches.
@@ -664,11 +605,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["fetch_remote_branches"]
 
     @property
-    def list_workspaces(
-        self,
-    ) -> Callable[
-        [dataform.ListWorkspacesRequest], Awaitable[dataform.ListWorkspacesResponse]
-    ]:
+    def list_workspaces(self) -> Callable[[dataform.ListWorkspacesRequest], Awaitable[dataform.ListWorkspacesResponse]]:
         r"""Return a callable for the list workspaces method over gRPC.
 
         Lists Workspaces in a given Repository.
@@ -692,9 +629,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["list_workspaces"]
 
     @property
-    def get_workspace(
-        self,
-    ) -> Callable[[dataform.GetWorkspaceRequest], Awaitable[dataform.Workspace]]:
+    def get_workspace(self) -> Callable[[dataform.GetWorkspaceRequest], Awaitable[dataform.Workspace]]:
         r"""Return a callable for the get workspace method over gRPC.
 
         Fetches a single Workspace.
@@ -718,9 +653,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_workspace"]
 
     @property
-    def create_workspace(
-        self,
-    ) -> Callable[[dataform.CreateWorkspaceRequest], Awaitable[dataform.Workspace]]:
+    def create_workspace(self) -> Callable[[dataform.CreateWorkspaceRequest], Awaitable[dataform.Workspace]]:
         r"""Return a callable for the create workspace method over gRPC.
 
         Creates a new Workspace in a given Repository.
@@ -744,9 +677,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["create_workspace"]
 
     @property
-    def delete_workspace(
-        self,
-    ) -> Callable[[dataform.DeleteWorkspaceRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_workspace(self) -> Callable[[dataform.DeleteWorkspaceRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete workspace method over gRPC.
 
         Deletes a single Workspace.
@@ -770,12 +701,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["delete_workspace"]
 
     @property
-    def install_npm_packages(
-        self,
-    ) -> Callable[
-        [dataform.InstallNpmPackagesRequest],
-        Awaitable[dataform.InstallNpmPackagesResponse],
-    ]:
+    def install_npm_packages(self) -> Callable[[dataform.InstallNpmPackagesRequest], Awaitable[dataform.InstallNpmPackagesResponse]]:
         r"""Return a callable for the install npm packages method over gRPC.
 
         Installs dependency NPM packages (inside a
@@ -800,11 +726,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["install_npm_packages"]
 
     @property
-    def pull_git_commits(
-        self,
-    ) -> Callable[
-        [dataform.PullGitCommitsRequest], Awaitable[dataform.PullGitCommitsResponse]
-    ]:
+    def pull_git_commits(self) -> Callable[[dataform.PullGitCommitsRequest], Awaitable[dataform.PullGitCommitsResponse]]:
         r"""Return a callable for the pull git commits method over gRPC.
 
         Pulls Git commits from the Repository's remote into a
@@ -829,11 +751,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["pull_git_commits"]
 
     @property
-    def push_git_commits(
-        self,
-    ) -> Callable[
-        [dataform.PushGitCommitsRequest], Awaitable[dataform.PushGitCommitsResponse]
-    ]:
+    def push_git_commits(self) -> Callable[[dataform.PushGitCommitsRequest], Awaitable[dataform.PushGitCommitsResponse]]:
         r"""Return a callable for the push git commits method over gRPC.
 
         Pushes Git commits from a Workspace to the
@@ -858,12 +776,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["push_git_commits"]
 
     @property
-    def fetch_file_git_statuses(
-        self,
-    ) -> Callable[
-        [dataform.FetchFileGitStatusesRequest],
-        Awaitable[dataform.FetchFileGitStatusesResponse],
-    ]:
+    def fetch_file_git_statuses(self) -> Callable[[dataform.FetchFileGitStatusesRequest], Awaitable[dataform.FetchFileGitStatusesResponse]]:
         r"""Return a callable for the fetch file git statuses method over gRPC.
 
         Fetches Git statuses for the files in a Workspace.
@@ -887,12 +800,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["fetch_file_git_statuses"]
 
     @property
-    def fetch_git_ahead_behind(
-        self,
-    ) -> Callable[
-        [dataform.FetchGitAheadBehindRequest],
-        Awaitable[dataform.FetchGitAheadBehindResponse],
-    ]:
+    def fetch_git_ahead_behind(self) -> Callable[[dataform.FetchGitAheadBehindRequest], Awaitable[dataform.FetchGitAheadBehindResponse]]:
         r"""Return a callable for the fetch git ahead behind method over gRPC.
 
         Fetches Git ahead/behind against a remote branch.
@@ -916,12 +824,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["fetch_git_ahead_behind"]
 
     @property
-    def commit_workspace_changes(
-        self,
-    ) -> Callable[
-        [dataform.CommitWorkspaceChangesRequest],
-        Awaitable[dataform.CommitWorkspaceChangesResponse],
-    ]:
+    def commit_workspace_changes(self) -> Callable[[dataform.CommitWorkspaceChangesRequest], Awaitable[dataform.CommitWorkspaceChangesResponse]]:
         r"""Return a callable for the commit workspace changes method over gRPC.
 
         Applies a Git commit for uncommitted files in a
@@ -946,12 +849,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["commit_workspace_changes"]
 
     @property
-    def reset_workspace_changes(
-        self,
-    ) -> Callable[
-        [dataform.ResetWorkspaceChangesRequest],
-        Awaitable[dataform.ResetWorkspaceChangesResponse],
-    ]:
+    def reset_workspace_changes(self) -> Callable[[dataform.ResetWorkspaceChangesRequest], Awaitable[dataform.ResetWorkspaceChangesResponse]]:
         r"""Return a callable for the reset workspace changes method over gRPC.
 
         Performs a Git reset for uncommitted files in a
@@ -976,11 +874,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["reset_workspace_changes"]
 
     @property
-    def fetch_file_diff(
-        self,
-    ) -> Callable[
-        [dataform.FetchFileDiffRequest], Awaitable[dataform.FetchFileDiffResponse]
-    ]:
+    def fetch_file_diff(self) -> Callable[[dataform.FetchFileDiffRequest], Awaitable[dataform.FetchFileDiffResponse]]:
         r"""Return a callable for the fetch file diff method over gRPC.
 
         Fetches Git diff for an uncommitted file in a
@@ -1005,12 +899,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["fetch_file_diff"]
 
     @property
-    def query_directory_contents(
-        self,
-    ) -> Callable[
-        [dataform.QueryDirectoryContentsRequest],
-        Awaitable[dataform.QueryDirectoryContentsResponse],
-    ]:
+    def query_directory_contents(self) -> Callable[[dataform.QueryDirectoryContentsRequest], Awaitable[dataform.QueryDirectoryContentsResponse]]:
         r"""Return a callable for the query directory contents method over gRPC.
 
         Returns the contents of a given Workspace directory.
@@ -1034,11 +923,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["query_directory_contents"]
 
     @property
-    def search_files(
-        self,
-    ) -> Callable[
-        [dataform.SearchFilesRequest], Awaitable[dataform.SearchFilesResponse]
-    ]:
+    def search_files(self) -> Callable[[dataform.SearchFilesRequest], Awaitable[dataform.SearchFilesResponse]]:
         r"""Return a callable for the search files method over gRPC.
 
         Finds the contents of a given Workspace directory by
@@ -1063,11 +948,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["search_files"]
 
     @property
-    def make_directory(
-        self,
-    ) -> Callable[
-        [dataform.MakeDirectoryRequest], Awaitable[dataform.MakeDirectoryResponse]
-    ]:
+    def make_directory(self) -> Callable[[dataform.MakeDirectoryRequest], Awaitable[dataform.MakeDirectoryResponse]]:
         r"""Return a callable for the make directory method over gRPC.
 
         Creates a directory inside a Workspace.
@@ -1091,11 +972,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["make_directory"]
 
     @property
-    def remove_directory(
-        self,
-    ) -> Callable[
-        [dataform.RemoveDirectoryRequest], Awaitable[dataform.RemoveDirectoryResponse]
-    ]:
+    def remove_directory(self) -> Callable[[dataform.RemoveDirectoryRequest], Awaitable[dataform.RemoveDirectoryResponse]]:
         r"""Return a callable for the remove directory method over gRPC.
 
         Deletes a directory (inside a Workspace) and all of
@@ -1120,11 +997,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["remove_directory"]
 
     @property
-    def move_directory(
-        self,
-    ) -> Callable[
-        [dataform.MoveDirectoryRequest], Awaitable[dataform.MoveDirectoryResponse]
-    ]:
+    def move_directory(self) -> Callable[[dataform.MoveDirectoryRequest], Awaitable[dataform.MoveDirectoryResponse]]:
         r"""Return a callable for the move directory method over gRPC.
 
         Moves a directory (inside a Workspace), and all of
@@ -1149,9 +1022,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["move_directory"]
 
     @property
-    def read_file(
-        self,
-    ) -> Callable[[dataform.ReadFileRequest], Awaitable[dataform.ReadFileResponse]]:
+    def read_file(self) -> Callable[[dataform.ReadFileRequest], Awaitable[dataform.ReadFileResponse]]:
         r"""Return a callable for the read file method over gRPC.
 
         Returns the contents of a file (inside a Workspace).
@@ -1175,9 +1046,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["read_file"]
 
     @property
-    def remove_file(
-        self,
-    ) -> Callable[[dataform.RemoveFileRequest], Awaitable[dataform.RemoveFileResponse]]:
+    def remove_file(self) -> Callable[[dataform.RemoveFileRequest], Awaitable[dataform.RemoveFileResponse]]:
         r"""Return a callable for the remove file method over gRPC.
 
         Deletes a file (inside a Workspace).
@@ -1201,9 +1070,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["remove_file"]
 
     @property
-    def move_file(
-        self,
-    ) -> Callable[[dataform.MoveFileRequest], Awaitable[dataform.MoveFileResponse]]:
+    def move_file(self) -> Callable[[dataform.MoveFileRequest], Awaitable[dataform.MoveFileResponse]]:
         r"""Return a callable for the move file method over gRPC.
 
         Moves a file (inside a Workspace) to a new location.
@@ -1227,9 +1094,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["move_file"]
 
     @property
-    def write_file(
-        self,
-    ) -> Callable[[dataform.WriteFileRequest], Awaitable[dataform.WriteFileResponse]]:
+    def write_file(self) -> Callable[[dataform.WriteFileRequest], Awaitable[dataform.WriteFileResponse]]:
         r"""Return a callable for the write file method over gRPC.
 
         Writes to a file (inside a Workspace).
@@ -1253,12 +1118,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["write_file"]
 
     @property
-    def list_release_configs(
-        self,
-    ) -> Callable[
-        [dataform.ListReleaseConfigsRequest],
-        Awaitable[dataform.ListReleaseConfigsResponse],
-    ]:
+    def list_release_configs(self) -> Callable[[dataform.ListReleaseConfigsRequest], Awaitable[dataform.ListReleaseConfigsResponse]]:
         r"""Return a callable for the list release configs method over gRPC.
 
         Lists ReleaseConfigs in a given Repository.
@@ -1282,11 +1142,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["list_release_configs"]
 
     @property
-    def get_release_config(
-        self,
-    ) -> Callable[
-        [dataform.GetReleaseConfigRequest], Awaitable[dataform.ReleaseConfig]
-    ]:
+    def get_release_config(self) -> Callable[[dataform.GetReleaseConfigRequest], Awaitable[dataform.ReleaseConfig]]:
         r"""Return a callable for the get release config method over gRPC.
 
         Fetches a single ReleaseConfig.
@@ -1310,11 +1166,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_release_config"]
 
     @property
-    def create_release_config(
-        self,
-    ) -> Callable[
-        [dataform.CreateReleaseConfigRequest], Awaitable[dataform.ReleaseConfig]
-    ]:
+    def create_release_config(self) -> Callable[[dataform.CreateReleaseConfigRequest], Awaitable[dataform.ReleaseConfig]]:
         r"""Return a callable for the create release config method over gRPC.
 
         Creates a new ReleaseConfig in a given Repository.
@@ -1338,11 +1190,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["create_release_config"]
 
     @property
-    def update_release_config(
-        self,
-    ) -> Callable[
-        [dataform.UpdateReleaseConfigRequest], Awaitable[dataform.ReleaseConfig]
-    ]:
+    def update_release_config(self) -> Callable[[dataform.UpdateReleaseConfigRequest], Awaitable[dataform.ReleaseConfig]]:
         r"""Return a callable for the update release config method over gRPC.
 
         Updates a single ReleaseConfig.
@@ -1372,9 +1220,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["update_release_config"]
 
     @property
-    def delete_release_config(
-        self,
-    ) -> Callable[[dataform.DeleteReleaseConfigRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_release_config(self) -> Callable[[dataform.DeleteReleaseConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete release config method over gRPC.
 
         Deletes a single ReleaseConfig.
@@ -1398,12 +1244,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["delete_release_config"]
 
     @property
-    def list_compilation_results(
-        self,
-    ) -> Callable[
-        [dataform.ListCompilationResultsRequest],
-        Awaitable[dataform.ListCompilationResultsResponse],
-    ]:
+    def list_compilation_results(self) -> Callable[[dataform.ListCompilationResultsRequest], Awaitable[dataform.ListCompilationResultsResponse]]:
         r"""Return a callable for the list compilation results method over gRPC.
 
         Lists CompilationResults in a given Repository.
@@ -1427,11 +1268,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["list_compilation_results"]
 
     @property
-    def get_compilation_result(
-        self,
-    ) -> Callable[
-        [dataform.GetCompilationResultRequest], Awaitable[dataform.CompilationResult]
-    ]:
+    def get_compilation_result(self) -> Callable[[dataform.GetCompilationResultRequest], Awaitable[dataform.CompilationResult]]:
         r"""Return a callable for the get compilation result method over gRPC.
 
         Fetches a single CompilationResult.
@@ -1455,11 +1292,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_compilation_result"]
 
     @property
-    def create_compilation_result(
-        self,
-    ) -> Callable[
-        [dataform.CreateCompilationResultRequest], Awaitable[dataform.CompilationResult]
-    ]:
+    def create_compilation_result(self) -> Callable[[dataform.CreateCompilationResultRequest], Awaitable[dataform.CompilationResult]]:
         r"""Return a callable for the create compilation result method over gRPC.
 
         Creates a new CompilationResult in a given project
@@ -1486,10 +1319,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def query_compilation_result_actions(
         self,
-    ) -> Callable[
-        [dataform.QueryCompilationResultActionsRequest],
-        Awaitable[dataform.QueryCompilationResultActionsResponse],
-    ]:
+    ) -> Callable[[dataform.QueryCompilationResultActionsRequest], Awaitable[dataform.QueryCompilationResultActionsResponse]]:
         r"""Return a callable for the query compilation result
         actions method over gRPC.
 
@@ -1507,9 +1337,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_compilation_result_actions" not in self._stubs:
-            self._stubs[
-                "query_compilation_result_actions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["query_compilation_result_actions"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/QueryCompilationResultActions",
                 request_serializer=dataform.QueryCompilationResultActionsRequest.serialize,
                 response_deserializer=dataform.QueryCompilationResultActionsResponse.deserialize,
@@ -1517,12 +1345,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["query_compilation_result_actions"]
 
     @property
-    def list_workflow_configs(
-        self,
-    ) -> Callable[
-        [dataform.ListWorkflowConfigsRequest],
-        Awaitable[dataform.ListWorkflowConfigsResponse],
-    ]:
+    def list_workflow_configs(self) -> Callable[[dataform.ListWorkflowConfigsRequest], Awaitable[dataform.ListWorkflowConfigsResponse]]:
         r"""Return a callable for the list workflow configs method over gRPC.
 
         Lists WorkflowConfigs in a given Repository.
@@ -1546,11 +1369,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["list_workflow_configs"]
 
     @property
-    def get_workflow_config(
-        self,
-    ) -> Callable[
-        [dataform.GetWorkflowConfigRequest], Awaitable[dataform.WorkflowConfig]
-    ]:
+    def get_workflow_config(self) -> Callable[[dataform.GetWorkflowConfigRequest], Awaitable[dataform.WorkflowConfig]]:
         r"""Return a callable for the get workflow config method over gRPC.
 
         Fetches a single WorkflowConfig.
@@ -1574,11 +1393,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_workflow_config"]
 
     @property
-    def create_workflow_config(
-        self,
-    ) -> Callable[
-        [dataform.CreateWorkflowConfigRequest], Awaitable[dataform.WorkflowConfig]
-    ]:
+    def create_workflow_config(self) -> Callable[[dataform.CreateWorkflowConfigRequest], Awaitable[dataform.WorkflowConfig]]:
         r"""Return a callable for the create workflow config method over gRPC.
 
         Creates a new WorkflowConfig in a given Repository.
@@ -1602,11 +1417,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["create_workflow_config"]
 
     @property
-    def update_workflow_config(
-        self,
-    ) -> Callable[
-        [dataform.UpdateWorkflowConfigRequest], Awaitable[dataform.WorkflowConfig]
-    ]:
+    def update_workflow_config(self) -> Callable[[dataform.UpdateWorkflowConfigRequest], Awaitable[dataform.WorkflowConfig]]:
         r"""Return a callable for the update workflow config method over gRPC.
 
         Updates a single WorkflowConfig.
@@ -1636,9 +1447,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["update_workflow_config"]
 
     @property
-    def delete_workflow_config(
-        self,
-    ) -> Callable[[dataform.DeleteWorkflowConfigRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_workflow_config(self) -> Callable[[dataform.DeleteWorkflowConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete workflow config method over gRPC.
 
         Deletes a single WorkflowConfig.
@@ -1662,12 +1471,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["delete_workflow_config"]
 
     @property
-    def list_workflow_invocations(
-        self,
-    ) -> Callable[
-        [dataform.ListWorkflowInvocationsRequest],
-        Awaitable[dataform.ListWorkflowInvocationsResponse],
-    ]:
+    def list_workflow_invocations(self) -> Callable[[dataform.ListWorkflowInvocationsRequest], Awaitable[dataform.ListWorkflowInvocationsResponse]]:
         r"""Return a callable for the list workflow invocations method over gRPC.
 
         Lists WorkflowInvocations in a given Repository.
@@ -1691,11 +1495,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["list_workflow_invocations"]
 
     @property
-    def get_workflow_invocation(
-        self,
-    ) -> Callable[
-        [dataform.GetWorkflowInvocationRequest], Awaitable[dataform.WorkflowInvocation]
-    ]:
+    def get_workflow_invocation(self) -> Callable[[dataform.GetWorkflowInvocationRequest], Awaitable[dataform.WorkflowInvocation]]:
         r"""Return a callable for the get workflow invocation method over gRPC.
 
         Fetches a single WorkflowInvocation.
@@ -1719,12 +1519,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_workflow_invocation"]
 
     @property
-    def create_workflow_invocation(
-        self,
-    ) -> Callable[
-        [dataform.CreateWorkflowInvocationRequest],
-        Awaitable[dataform.WorkflowInvocation],
-    ]:
+    def create_workflow_invocation(self) -> Callable[[dataform.CreateWorkflowInvocationRequest], Awaitable[dataform.WorkflowInvocation]]:
         r"""Return a callable for the create workflow invocation method over gRPC.
 
         Creates a new WorkflowInvocation in a given
@@ -1741,9 +1536,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_workflow_invocation" not in self._stubs:
-            self._stubs[
-                "create_workflow_invocation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_workflow_invocation"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/CreateWorkflowInvocation",
                 request_serializer=dataform.CreateWorkflowInvocationRequest.serialize,
                 response_deserializer=dataform.WorkflowInvocation.deserialize,
@@ -1751,11 +1544,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["create_workflow_invocation"]
 
     @property
-    def delete_workflow_invocation(
-        self,
-    ) -> Callable[
-        [dataform.DeleteWorkflowInvocationRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_workflow_invocation(self) -> Callable[[dataform.DeleteWorkflowInvocationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete workflow invocation method over gRPC.
 
         Deletes a single WorkflowInvocation.
@@ -1771,9 +1560,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_workflow_invocation" not in self._stubs:
-            self._stubs[
-                "delete_workflow_invocation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_workflow_invocation"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/DeleteWorkflowInvocation",
                 request_serializer=dataform.DeleteWorkflowInvocationRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1783,10 +1570,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def cancel_workflow_invocation(
         self,
-    ) -> Callable[
-        [dataform.CancelWorkflowInvocationRequest],
-        Awaitable[dataform.CancelWorkflowInvocationResponse],
-    ]:
+    ) -> Callable[[dataform.CancelWorkflowInvocationRequest], Awaitable[dataform.CancelWorkflowInvocationResponse]]:
         r"""Return a callable for the cancel workflow invocation method over gRPC.
 
         Requests cancellation of a running
@@ -1803,9 +1587,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "cancel_workflow_invocation" not in self._stubs:
-            self._stubs[
-                "cancel_workflow_invocation"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["cancel_workflow_invocation"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/CancelWorkflowInvocation",
                 request_serializer=dataform.CancelWorkflowInvocationRequest.serialize,
                 response_deserializer=dataform.CancelWorkflowInvocationResponse.deserialize,
@@ -1815,10 +1597,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def query_workflow_invocation_actions(
         self,
-    ) -> Callable[
-        [dataform.QueryWorkflowInvocationActionsRequest],
-        Awaitable[dataform.QueryWorkflowInvocationActionsResponse],
-    ]:
+    ) -> Callable[[dataform.QueryWorkflowInvocationActionsRequest], Awaitable[dataform.QueryWorkflowInvocationActionsResponse]]:
         r"""Return a callable for the query workflow invocation
         actions method over gRPC.
 
@@ -1836,9 +1615,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "query_workflow_invocation_actions" not in self._stubs:
-            self._stubs[
-                "query_workflow_invocation_actions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["query_workflow_invocation_actions"] = self._logged_channel.unary_unary(
                 "/google.cloud.dataform.v1.Dataform/QueryWorkflowInvocationActions",
                 request_serializer=dataform.QueryWorkflowInvocationActionsRequest.serialize,
                 response_deserializer=dataform.QueryWorkflowInvocationActionsResponse.deserialize,
@@ -1846,9 +1623,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["query_workflow_invocation_actions"]
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[[dataform.GetConfigRequest], Awaitable[dataform.Config]]:
+    def get_config(self) -> Callable[[dataform.GetConfigRequest], Awaitable[dataform.Config]]:
         r"""Return a callable for the get config method over gRPC.
 
         Get default config for a given project and location.
@@ -1872,9 +1647,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
         return self._stubs["get_config"]
 
     @property
-    def update_config(
-        self,
-    ) -> Callable[[dataform.UpdateConfigRequest], Awaitable[dataform.Config]]:
+    def update_config(self) -> Callable[[dataform.UpdateConfigRequest], Awaitable[dataform.Config]]:
         r"""Return a callable for the update config method over gRPC.
 
         Update default config for a given project and location.
@@ -2218,9 +1991,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -2305,10 +2076,7 @@ class DataformGrpcAsyncIOTransport(DataformTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

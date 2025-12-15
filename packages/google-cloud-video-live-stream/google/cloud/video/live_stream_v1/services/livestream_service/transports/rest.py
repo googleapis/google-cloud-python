@@ -350,9 +350,7 @@ class LivestreamServiceRestInterceptor:
     """
 
     def pre_create_asset(
-        self,
-        request: service.CreateAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_asset
 
@@ -361,9 +359,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_asset
 
         DEPRECATED. Please use the `post_create_asset_with_metadata`
@@ -377,9 +373,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_create_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_asset
 
@@ -396,9 +390,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_create_channel(
-        self,
-        request: service.CreateChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_channel
 
@@ -407,9 +399,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_channel
 
         DEPRECATED. Please use the `post_create_channel_with_metadata`
@@ -423,9 +413,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_create_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_channel
 
@@ -442,9 +430,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_create_clip(
-        self,
-        request: service.CreateClipRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateClipRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateClipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_clip
 
@@ -453,9 +439,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_clip(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_clip(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_clip
 
         DEPRECATED. Please use the `post_create_clip_with_metadata`
@@ -469,9 +453,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_create_clip_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_clip
 
@@ -488,12 +470,8 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_create_dvr_session(
-        self,
-        request: service.CreateDvrSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.CreateDvrSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_dvr_session
 
         Override in a subclass to manipulate the request or metadata
@@ -501,9 +479,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_dvr_session(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_dvr_session(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_dvr_session
 
         DEPRECATED. Please use the `post_create_dvr_session_with_metadata`
@@ -517,9 +493,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_create_dvr_session_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_dvr_session
 
@@ -536,9 +510,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_create_event(
-        self,
-        request: service.CreateEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_event
 
@@ -561,9 +533,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_create_event_with_metadata(
-        self,
-        response: resources.Event,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Event, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Event, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_event
 
@@ -580,9 +550,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_create_input(
-        self,
-        request: service.CreateInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_input
 
@@ -591,9 +559,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_input(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_input(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_input
 
         DEPRECATED. Please use the `post_create_input_with_metadata`
@@ -607,9 +573,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_create_input_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_input
 
@@ -626,9 +590,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_asset(
-        self,
-        request: service.DeleteAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_asset
 
@@ -637,9 +599,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_asset(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_asset(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_asset
 
         DEPRECATED. Please use the `post_delete_asset_with_metadata`
@@ -653,9 +613,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_delete_asset_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_asset
 
@@ -672,9 +630,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_channel(
-        self,
-        request: service.DeleteChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_channel
 
@@ -683,9 +639,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_channel
 
         DEPRECATED. Please use the `post_delete_channel_with_metadata`
@@ -699,9 +653,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_delete_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_channel
 
@@ -718,9 +670,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_clip(
-        self,
-        request: service.DeleteClipRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteClipRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteClipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_clip
 
@@ -729,9 +679,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_clip(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_clip(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_clip
 
         DEPRECATED. Please use the `post_delete_clip_with_metadata`
@@ -745,9 +693,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_delete_clip_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_clip
 
@@ -764,12 +710,8 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_dvr_session(
-        self,
-        request: service.DeleteDvrSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.DeleteDvrSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_dvr_session
 
         Override in a subclass to manipulate the request or metadata
@@ -777,9 +719,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_dvr_session(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_dvr_session(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_dvr_session
 
         DEPRECATED. Please use the `post_delete_dvr_session_with_metadata`
@@ -793,9 +733,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_delete_dvr_session_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_dvr_session
 
@@ -812,9 +750,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_event(
-        self,
-        request: service.DeleteEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_event
 
@@ -824,9 +760,7 @@ class LivestreamServiceRestInterceptor:
         return request, metadata
 
     def pre_delete_input(
-        self,
-        request: service.DeleteInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.DeleteInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.DeleteInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_input
 
@@ -835,9 +769,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_input(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_input(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_input
 
         DEPRECATED. Please use the `post_delete_input_with_metadata`
@@ -851,9 +783,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_delete_input_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_input
 
@@ -870,9 +800,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_asset(
-        self,
-        request: service.GetAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_asset
 
@@ -895,9 +823,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_asset_with_metadata(
-        self,
-        response: resources.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_asset
 
@@ -914,9 +840,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_channel(
-        self,
-        request: service.GetChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_channel
 
@@ -939,9 +863,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_channel_with_metadata(
-        self,
-        response: resources.Channel,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Channel, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Channel, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_channel
 
@@ -958,9 +880,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_clip(
-        self,
-        request: service.GetClipRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetClipRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetClipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_clip
 
@@ -983,9 +903,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_clip_with_metadata(
-        self,
-        response: resources.Clip,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Clip, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Clip, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_clip
 
@@ -1002,9 +920,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_dvr_session(
-        self,
-        request: service.GetDvrSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetDvrSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_dvr_session
 
@@ -1013,9 +929,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_dvr_session(
-        self, response: resources.DvrSession
-    ) -> resources.DvrSession:
+    def post_get_dvr_session(self, response: resources.DvrSession) -> resources.DvrSession:
         """Post-rpc interceptor for get_dvr_session
 
         DEPRECATED. Please use the `post_get_dvr_session_with_metadata`
@@ -1029,9 +943,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_dvr_session_with_metadata(
-        self,
-        response: resources.DvrSession,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.DvrSession, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.DvrSession, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_dvr_session
 
@@ -1048,9 +960,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_event(
-        self,
-        request: service.GetEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_event
 
@@ -1073,9 +983,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_event_with_metadata(
-        self,
-        response: resources.Event,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Event, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Event, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_event
 
@@ -1092,9 +1000,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_input(
-        self,
-        request: service.GetInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_input
 
@@ -1117,9 +1023,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_input_with_metadata(
-        self,
-        response: resources.Input,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Input, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Input, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_input
 
@@ -1136,9 +1040,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_pool(
-        self,
-        request: service.GetPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_pool
 
@@ -1161,9 +1063,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_get_pool_with_metadata(
-        self,
-        response: resources.Pool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: resources.Pool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[resources.Pool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_pool
 
@@ -1180,9 +1080,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_assets(
-        self,
-        request: service.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
@@ -1191,9 +1089,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assets(
-        self, response: service.ListAssetsResponse
-    ) -> service.ListAssetsResponse:
+    def post_list_assets(self, response: service.ListAssetsResponse) -> service.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
         DEPRECATED. Please use the `post_list_assets_with_metadata`
@@ -1207,9 +1103,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_list_assets_with_metadata(
-        self,
-        response: service.ListAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
@@ -1226,9 +1120,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_channels(
-        self,
-        request: service.ListChannelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListChannelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListChannelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_channels
 
@@ -1237,9 +1129,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_channels(
-        self, response: service.ListChannelsResponse
-    ) -> service.ListChannelsResponse:
+    def post_list_channels(self, response: service.ListChannelsResponse) -> service.ListChannelsResponse:
         """Post-rpc interceptor for list_channels
 
         DEPRECATED. Please use the `post_list_channels_with_metadata`
@@ -1253,9 +1143,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_list_channels_with_metadata(
-        self,
-        response: service.ListChannelsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListChannelsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListChannelsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_channels
 
@@ -1272,9 +1160,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_clips(
-        self,
-        request: service.ListClipsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListClipsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListClipsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clips
 
@@ -1283,9 +1169,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_clips(
-        self, response: service.ListClipsResponse
-    ) -> service.ListClipsResponse:
+    def post_list_clips(self, response: service.ListClipsResponse) -> service.ListClipsResponse:
         """Post-rpc interceptor for list_clips
 
         DEPRECATED. Please use the `post_list_clips_with_metadata`
@@ -1299,9 +1183,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_list_clips_with_metadata(
-        self,
-        response: service.ListClipsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListClipsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListClipsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_clips
 
@@ -1318,9 +1200,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_dvr_sessions(
-        self,
-        request: service.ListDvrSessionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListDvrSessionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListDvrSessionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_dvr_sessions
 
@@ -1329,9 +1209,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_dvr_sessions(
-        self, response: service.ListDvrSessionsResponse
-    ) -> service.ListDvrSessionsResponse:
+    def post_list_dvr_sessions(self, response: service.ListDvrSessionsResponse) -> service.ListDvrSessionsResponse:
         """Post-rpc interceptor for list_dvr_sessions
 
         DEPRECATED. Please use the `post_list_dvr_sessions_with_metadata`
@@ -1345,12 +1223,8 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_list_dvr_sessions_with_metadata(
-        self,
-        response: service.ListDvrSessionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListDvrSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListDvrSessionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListDvrSessionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_dvr_sessions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1366,9 +1240,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_events(
-        self,
-        request: service.ListEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_events
 
@@ -1377,9 +1249,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_events(
-        self, response: service.ListEventsResponse
-    ) -> service.ListEventsResponse:
+    def post_list_events(self, response: service.ListEventsResponse) -> service.ListEventsResponse:
         """Post-rpc interceptor for list_events
 
         DEPRECATED. Please use the `post_list_events_with_metadata`
@@ -1393,9 +1263,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_list_events_with_metadata(
-        self,
-        response: service.ListEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_events
 
@@ -1412,9 +1280,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_list_inputs(
-        self,
-        request: service.ListInputsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.ListInputsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListInputsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_inputs
 
@@ -1423,9 +1289,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_inputs(
-        self, response: service.ListInputsResponse
-    ) -> service.ListInputsResponse:
+    def post_list_inputs(self, response: service.ListInputsResponse) -> service.ListInputsResponse:
         """Post-rpc interceptor for list_inputs
 
         DEPRECATED. Please use the `post_list_inputs_with_metadata`
@@ -1439,9 +1303,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_list_inputs_with_metadata(
-        self,
-        response: service.ListInputsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.ListInputsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.ListInputsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_inputs
 
@@ -1458,9 +1320,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_preview_input(
-        self,
-        request: service.PreviewInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.PreviewInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.PreviewInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for preview_input
 
@@ -1469,9 +1329,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_preview_input(
-        self, response: service.PreviewInputResponse
-    ) -> service.PreviewInputResponse:
+    def post_preview_input(self, response: service.PreviewInputResponse) -> service.PreviewInputResponse:
         """Post-rpc interceptor for preview_input
 
         DEPRECATED. Please use the `post_preview_input_with_metadata`
@@ -1485,9 +1343,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_preview_input_with_metadata(
-        self,
-        response: service.PreviewInputResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.PreviewInputResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.PreviewInputResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for preview_input
 
@@ -1504,9 +1360,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_start_channel(
-        self,
-        request: service.StartChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.StartChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.StartChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_channel
 
@@ -1515,9 +1369,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_start_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_channel
 
         DEPRECATED. Please use the `post_start_channel_with_metadata`
@@ -1531,9 +1383,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_start_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_channel
 
@@ -1550,12 +1400,8 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_start_distribution(
-        self,
-        request: service.StartDistributionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.StartDistributionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.StartDistributionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.StartDistributionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_distribution
 
         Override in a subclass to manipulate the request or metadata
@@ -1563,9 +1409,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_start_distribution(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_distribution(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_distribution
 
         DEPRECATED. Please use the `post_start_distribution_with_metadata`
@@ -1579,9 +1423,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_start_distribution_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_distribution
 
@@ -1598,9 +1440,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_stop_channel(
-        self,
-        request: service.StopChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.StopChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.StopChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_channel
 
@@ -1609,9 +1449,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_channel
 
         DEPRECATED. Please use the `post_stop_channel_with_metadata`
@@ -1625,9 +1463,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_stop_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_channel
 
@@ -1644,12 +1480,8 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_stop_distribution(
-        self,
-        request: service.StopDistributionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.StopDistributionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.StopDistributionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.StopDistributionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_distribution
 
         Override in a subclass to manipulate the request or metadata
@@ -1657,9 +1489,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_distribution(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_distribution(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_distribution
 
         DEPRECATED. Please use the `post_stop_distribution_with_metadata`
@@ -1673,9 +1503,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_stop_distribution_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_distribution
 
@@ -1692,9 +1520,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_update_channel(
-        self,
-        request: service.UpdateChannelRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateChannelRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateChannelRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_channel
 
@@ -1703,9 +1529,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_channel(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_channel(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_channel
 
         DEPRECATED. Please use the `post_update_channel_with_metadata`
@@ -1719,9 +1543,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_update_channel_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_channel
 
@@ -1738,12 +1560,8 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_update_dvr_session(
-        self,
-        request: service.UpdateDvrSessionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.UpdateDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.UpdateDvrSessionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.UpdateDvrSessionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_dvr_session
 
         Override in a subclass to manipulate the request or metadata
@@ -1751,9 +1569,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_dvr_session(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_dvr_session(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_dvr_session
 
         DEPRECATED. Please use the `post_update_dvr_session_with_metadata`
@@ -1767,9 +1583,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_update_dvr_session_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_dvr_session
 
@@ -1786,9 +1600,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_update_input(
-        self,
-        request: service.UpdateInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_input
 
@@ -1797,9 +1609,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_input(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_input(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_input
 
         DEPRECATED. Please use the `post_update_input_with_metadata`
@@ -1813,9 +1623,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_update_input_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_input
 
@@ -1832,9 +1640,7 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_update_pool(
-        self,
-        request: service.UpdatePoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdatePoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdatePoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_pool
 
@@ -1843,9 +1649,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_pool
 
         DEPRECATED. Please use the `post_update_pool_with_metadata`
@@ -1859,9 +1663,7 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def post_update_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_pool
 
@@ -1878,12 +1680,8 @@ class LivestreamServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1891,9 +1689,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1903,12 +1699,8 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1916,9 +1708,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1928,12 +1718,8 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1951,12 +1737,8 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1974,12 +1756,8 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1987,9 +1765,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1999,12 +1775,8 @@ class LivestreamServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2012,9 +1784,7 @@ class LivestreamServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2108,9 +1878,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -2163,29 +1931,17 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAsset(
-        _BaseLivestreamServiceRestTransport._BaseCreateAsset, LivestreamServiceRestStub
-    ):
+    class _CreateAsset(_BaseLivestreamServiceRestTransport._BaseCreateAsset, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CreateAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2229,30 +1985,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_create_asset(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCreateAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2276,13 +2020,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2296,12 +2034,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_create_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2322,23 +2056,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _CreateChannel(
-        _BaseLivestreamServiceRestTransport._BaseCreateChannel,
-        LivestreamServiceRestStub,
-    ):
+    class _CreateChannel(_BaseLivestreamServiceRestTransport._BaseCreateChannel, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CreateChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2382,30 +2105,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_create_channel(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCreateChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2429,13 +2140,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2449,12 +2154,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_create_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2475,22 +2176,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _CreateClip(
-        _BaseLivestreamServiceRestTransport._BaseCreateClip, LivestreamServiceRestStub
-    ):
+    class _CreateClip(_BaseLivestreamServiceRestTransport._BaseCreateClip, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CreateClip")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2534,30 +2225,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCreateClip._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_http_options()
 
             request, metadata = self._interceptor.pre_create_clip(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCreateClip._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2581,13 +2260,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateClip._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2601,12 +2274,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_create_clip(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_clip_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_clip_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2627,23 +2296,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _CreateDvrSession(
-        _BaseLivestreamServiceRestTransport._BaseCreateDvrSession,
-        LivestreamServiceRestStub,
-    ):
+    class _CreateDvrSession(_BaseLivestreamServiceRestTransport._BaseCreateDvrSession, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CreateDvrSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2687,32 +2345,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_dvr_session(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_dvr_session(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCreateDvrSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2736,13 +2380,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateDvrSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2756,12 +2394,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_create_dvr_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_dvr_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_dvr_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2782,22 +2416,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _CreateEvent(
-        _BaseLivestreamServiceRestTransport._BaseCreateEvent, LivestreamServiceRestStub
-    ):
+    class _CreateEvent(_BaseLivestreamServiceRestTransport._BaseCreateEvent, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CreateEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2842,30 +2466,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_create_event(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCreateEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2889,13 +2501,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2911,12 +2517,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_create_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Event.to_json(response)
                 except:
@@ -2937,22 +2539,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _CreateInput(
-        _BaseLivestreamServiceRestTransport._BaseCreateInput, LivestreamServiceRestStub
-    ):
+    class _CreateInput(_BaseLivestreamServiceRestTransport._BaseCreateInput, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CreateInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2996,30 +2588,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCreateInput._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_http_options()
 
             request, metadata = self._interceptor.pre_create_input(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCreateInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3043,13 +2623,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CreateInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3063,12 +2637,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_create_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3089,22 +2659,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _DeleteAsset(
-        _BaseLivestreamServiceRestTransport._BaseDeleteAsset, LivestreamServiceRestStub
-    ):
+    class _DeleteAsset(_BaseLivestreamServiceRestTransport._BaseDeleteAsset, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3147,26 +2707,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3190,12 +2740,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3209,12 +2754,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_delete_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3235,23 +2776,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _DeleteChannel(
-        _BaseLivestreamServiceRestTransport._BaseDeleteChannel,
-        LivestreamServiceRestStub,
-    ):
+    class _DeleteChannel(_BaseLivestreamServiceRestTransport._BaseDeleteChannel, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3294,26 +2824,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_channel(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3337,12 +2857,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3356,12 +2871,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_delete_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3382,22 +2893,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _DeleteClip(
-        _BaseLivestreamServiceRestTransport._BaseDeleteClip, LivestreamServiceRestStub
-    ):
+    class _DeleteClip(_BaseLivestreamServiceRestTransport._BaseDeleteClip, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteClip")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3440,26 +2941,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_clip(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteClip._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3483,12 +2974,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteClip._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3502,12 +2988,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_delete_clip(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_clip_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_clip_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3528,23 +3010,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDvrSession(
-        _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession,
-        LivestreamServiceRestStub,
-    ):
+    class _DeleteDvrSession(_BaseLivestreamServiceRestTransport._BaseDeleteDvrSession, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteDvrSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3587,28 +3058,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_dvr_session(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_dvr_session(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteDvrSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3632,12 +3091,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteDvrSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3651,12 +3105,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_delete_dvr_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_dvr_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_dvr_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3677,22 +3127,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEvent(
-        _BaseLivestreamServiceRestTransport._BaseDeleteEvent, LivestreamServiceRestStub
-    ):
+    class _DeleteEvent(_BaseLivestreamServiceRestTransport._BaseDeleteEvent, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3728,26 +3168,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_event(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3771,12 +3201,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3784,22 +3209,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteInput(
-        _BaseLivestreamServiceRestTransport._BaseDeleteInput, LivestreamServiceRestStub
-    ):
+    class _DeleteInput(_BaseLivestreamServiceRestTransport._BaseDeleteInput, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3842,26 +3257,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_input(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3885,12 +3290,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3904,12 +3304,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_delete_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3930,22 +3326,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetAsset(
-        _BaseLivestreamServiceRestTransport._BaseGetAsset, LivestreamServiceRestStub
-    ):
+    class _GetAsset(_BaseLivestreamServiceRestTransport._BaseGetAsset, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3987,26 +3373,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetAsset._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4030,12 +3406,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4051,12 +3422,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Asset.to_json(response)
                 except:
@@ -4077,22 +3444,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetChannel(
-        _BaseLivestreamServiceRestTransport._BaseGetChannel, LivestreamServiceRestStub
-    ):
+    class _GetChannel(_BaseLivestreamServiceRestTransport._BaseGetChannel, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4140,26 +3497,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetChannel._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_get_channel(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4183,12 +3530,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4204,12 +3546,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Channel.to_json(response)
                 except:
@@ -4230,22 +3568,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetClip(
-        _BaseLivestreamServiceRestTransport._BaseGetClip, LivestreamServiceRestStub
-    ):
+    class _GetClip(_BaseLivestreamServiceRestTransport._BaseGetClip, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetClip")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4290,28 +3618,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetClip._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetClip._get_http_options()
 
             request, metadata = self._interceptor.pre_get_clip(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetClip._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetClip._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLivestreamServiceRestTransport._BaseGetClip._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetClip._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4335,12 +3651,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetClip._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4356,12 +3667,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_clip(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_clip_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_clip_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Clip.to_json(response)
                 except:
@@ -4382,23 +3689,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetDvrSession(
-        _BaseLivestreamServiceRestTransport._BaseGetDvrSession,
-        LivestreamServiceRestStub,
-    ):
+    class _GetDvrSession(_BaseLivestreamServiceRestTransport._BaseGetDvrSession, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetDvrSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4442,26 +3738,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetDvrSession._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetDvrSession._get_http_options()
 
             request, metadata = self._interceptor.pre_get_dvr_session(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetDvrSession._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetDvrSession._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetDvrSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetDvrSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4485,12 +3771,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetDvrSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4506,12 +3787,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_dvr_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_dvr_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_dvr_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.DvrSession.to_json(response)
                 except:
@@ -4532,22 +3809,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetEvent(
-        _BaseLivestreamServiceRestTransport._BaseGetEvent, LivestreamServiceRestStub
-    ):
+    class _GetEvent(_BaseLivestreamServiceRestTransport._BaseGetEvent, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4591,26 +3858,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetEvent._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_http_options()
 
             request, metadata = self._interceptor.pre_get_event(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4634,12 +3891,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4655,12 +3907,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Event.to_json(response)
                 except:
@@ -4681,22 +3929,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetInput(
-        _BaseLivestreamServiceRestTransport._BaseGetInput, LivestreamServiceRestStub
-    ):
+    class _GetInput(_BaseLivestreamServiceRestTransport._BaseGetInput, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4739,26 +3977,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetInput._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetInput._get_http_options()
 
             request, metadata = self._interceptor.pre_get_input(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetInput._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetInput._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4782,12 +4010,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4803,12 +4026,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Input.to_json(response)
                 except:
@@ -4829,22 +4048,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _GetPool(
-        _BaseLivestreamServiceRestTransport._BaseGetPool, LivestreamServiceRestStub
-    ):
+    class _GetPool(_BaseLivestreamServiceRestTransport._BaseGetPool, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4892,28 +4101,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetPool._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetPool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_pool(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetPool._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLivestreamServiceRestTransport._BaseGetPool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4937,12 +4134,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4958,12 +4150,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_get_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = resources.Pool.to_json(response)
                 except:
@@ -4984,22 +4172,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _ListAssets(
-        _BaseLivestreamServiceRestTransport._BaseListAssets, LivestreamServiceRestStub
-    ):
+    class _ListAssets(_BaseLivestreamServiceRestTransport._BaseListAssets, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5041,26 +4219,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListAssets._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListAssets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5084,12 +4252,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5105,12 +4268,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListAssetsResponse.to_json(response)
                 except:
@@ -5131,22 +4290,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _ListChannels(
-        _BaseLivestreamServiceRestTransport._BaseListChannels, LivestreamServiceRestStub
-    ):
+    class _ListChannels(_BaseLivestreamServiceRestTransport._BaseListChannels, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListChannels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5188,26 +4337,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListChannels._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListChannels._get_http_options()
 
             request, metadata = self._interceptor.pre_list_channels(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListChannels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListChannels._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListChannels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListChannels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5231,12 +4370,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListChannels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5252,12 +4386,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_list_channels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_channels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_channels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListChannelsResponse.to_json(response)
                 except:
@@ -5278,22 +4408,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _ListClips(
-        _BaseLivestreamServiceRestTransport._BaseListClips, LivestreamServiceRestStub
-    ):
+    class _ListClips(_BaseLivestreamServiceRestTransport._BaseListClips, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListClips")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5335,26 +4455,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListClips._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListClips._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clips(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListClips._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListClips._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListClips._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListClips._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5378,12 +4488,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListClips._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5399,12 +4504,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_list_clips(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_clips_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_clips_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListClipsResponse.to_json(response)
                 except:
@@ -5425,23 +4526,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _ListDvrSessions(
-        _BaseLivestreamServiceRestTransport._BaseListDvrSessions,
-        LivestreamServiceRestStub,
-    ):
+    class _ListDvrSessions(_BaseLivestreamServiceRestTransport._BaseListDvrSessions, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListDvrSessions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5483,28 +4573,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListDvrSessions._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListDvrSessions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_dvr_sessions(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListDvrSessions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_dvr_sessions(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListDvrSessions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListDvrSessions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListDvrSessions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5528,12 +4606,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListDvrSessions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5549,12 +4622,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_list_dvr_sessions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_dvr_sessions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_dvr_sessions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListDvrSessionsResponse.to_json(response)
                 except:
@@ -5575,22 +4644,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _ListEvents(
-        _BaseLivestreamServiceRestTransport._BaseListEvents, LivestreamServiceRestStub
-    ):
+    class _ListEvents(_BaseLivestreamServiceRestTransport._BaseListEvents, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5632,26 +4691,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListEvents._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListEvents._get_http_options()
 
             request, metadata = self._interceptor.pre_list_events(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListEvents._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListEvents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5675,12 +4724,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5696,12 +4740,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_list_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListEventsResponse.to_json(response)
                 except:
@@ -5722,22 +4762,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _ListInputs(
-        _BaseLivestreamServiceRestTransport._BaseListInputs, LivestreamServiceRestStub
-    ):
+    class _ListInputs(_BaseLivestreamServiceRestTransport._BaseListInputs, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListInputs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5779,26 +4809,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListInputs._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListInputs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_inputs(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListInputs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListInputs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListInputs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListInputs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5822,12 +4842,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListInputs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5843,12 +4858,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_list_inputs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_inputs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_inputs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.ListInputsResponse.to_json(response)
                 except:
@@ -5869,22 +4880,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _PreviewInput(
-        _BaseLivestreamServiceRestTransport._BasePreviewInput, LivestreamServiceRestStub
-    ):
+    class _PreviewInput(_BaseLivestreamServiceRestTransport._BasePreviewInput, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.PreviewInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5927,30 +4928,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BasePreviewInput._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_http_options()
 
             request, metadata = self._interceptor.pre_preview_input(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BasePreviewInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5974,13 +4963,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._PreviewInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5996,12 +4979,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_preview_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_preview_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_preview_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.PreviewInputResponse.to_json(response)
                 except:
@@ -6022,22 +5001,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _StartChannel(
-        _BaseLivestreamServiceRestTransport._BaseStartChannel, LivestreamServiceRestStub
-    ):
+    class _StartChannel(_BaseLivestreamServiceRestTransport._BaseStartChannel, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.StartChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6081,30 +5050,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseStartChannel._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_start_channel(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseStartChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6128,13 +5085,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._StartChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6148,12 +5099,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_start_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6174,23 +5121,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _StartDistribution(
-        _BaseLivestreamServiceRestTransport._BaseStartDistribution,
-        LivestreamServiceRestStub,
-    ):
+    class _StartDistribution(_BaseLivestreamServiceRestTransport._BaseStartDistribution, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.StartDistribution")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6234,32 +5170,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_distribution(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_distribution(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseStartDistribution._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6283,13 +5205,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._StartDistribution._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6303,12 +5219,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_start_distribution(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_distribution_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_distribution_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6329,22 +5241,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _StopChannel(
-        _BaseLivestreamServiceRestTransport._BaseStopChannel, LivestreamServiceRestStub
-    ):
+    class _StopChannel(_BaseLivestreamServiceRestTransport._BaseStopChannel, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.StopChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6388,30 +5290,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseStopChannel._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_channel(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseStopChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6435,13 +5325,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._StopChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6455,12 +5339,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_stop_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6481,23 +5361,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _StopDistribution(
-        _BaseLivestreamServiceRestTransport._BaseStopDistribution,
-        LivestreamServiceRestStub,
-    ):
+    class _StopDistribution(_BaseLivestreamServiceRestTransport._BaseStopDistribution, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.StopDistribution")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6541,32 +5410,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_http_options()
 
-            request, metadata = self._interceptor.pre_stop_distribution(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_stop_distribution(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseStopDistribution._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6590,13 +5445,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._StopDistribution._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6610,12 +5459,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_stop_distribution(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_distribution_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_distribution_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6636,23 +5481,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _UpdateChannel(
-        _BaseLivestreamServiceRestTransport._BaseUpdateChannel,
-        LivestreamServiceRestStub,
-    ):
+    class _UpdateChannel(_BaseLivestreamServiceRestTransport._BaseUpdateChannel, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.UpdateChannel")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6696,30 +5530,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_http_options()
 
             request, metadata = self._interceptor.pre_update_channel(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseUpdateChannel._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6743,13 +5565,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdateChannel._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6763,12 +5579,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_update_channel(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_channel_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_channel_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6789,23 +5601,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDvrSession(
-        _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession,
-        LivestreamServiceRestStub,
-    ):
+    class _UpdateDvrSession(_BaseLivestreamServiceRestTransport._BaseUpdateDvrSession, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.UpdateDvrSession")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6849,32 +5650,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_dvr_session(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_dvr_session(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseUpdateDvrSession._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6898,13 +5685,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdateDvrSession._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6918,12 +5699,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_update_dvr_session(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_dvr_session_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_dvr_session_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6944,22 +5721,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _UpdateInput(
-        _BaseLivestreamServiceRestTransport._BaseUpdateInput, LivestreamServiceRestStub
-    ):
+    class _UpdateInput(_BaseLivestreamServiceRestTransport._BaseUpdateInput, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.UpdateInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7003,30 +5770,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_http_options()
 
             request, metadata = self._interceptor.pre_update_input(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseUpdateInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7050,13 +5805,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdateInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7070,12 +5819,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_update_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7096,22 +5841,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 )
             return resp
 
-    class _UpdatePool(
-        _BaseLivestreamServiceRestTransport._BaseUpdatePool, LivestreamServiceRestStub
-    ):
+    class _UpdatePool(_BaseLivestreamServiceRestTransport._BaseUpdatePool, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.UpdatePool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7155,30 +5890,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_http_options()
 
             request, metadata = self._interceptor.pre_update_pool(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseUpdatePool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7202,13 +5925,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._UpdatePool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7222,12 +5939,8 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             resp = self._interceptor.post_update_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7249,33 +5962,25 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             return resp
 
     @property
-    def create_asset(
-        self,
-    ) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
+    def create_asset(self) -> Callable[[service.CreateAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_channel_(
-        self,
-    ) -> Callable[[service.CreateChannelRequest], operations_pb2.Operation]:
+    def create_channel_(self) -> Callable[[service.CreateChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_clip(
-        self,
-    ) -> Callable[[service.CreateClipRequest], operations_pb2.Operation]:
+    def create_clip(self) -> Callable[[service.CreateClipRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateClip(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_dvr_session(
-        self,
-    ) -> Callable[[service.CreateDvrSessionRequest], operations_pb2.Operation]:
+    def create_dvr_session(self) -> Callable[[service.CreateDvrSessionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDvrSession(self._session, self._host, self._interceptor)  # type: ignore
@@ -7287,41 +5992,31 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
         return self._CreateEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_input(
-        self,
-    ) -> Callable[[service.CreateInputRequest], operations_pb2.Operation]:
+    def create_input(self) -> Callable[[service.CreateInputRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
+    def delete_asset(self) -> Callable[[service.DeleteAssetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_channel(
-        self,
-    ) -> Callable[[service.DeleteChannelRequest], operations_pb2.Operation]:
+    def delete_channel(self) -> Callable[[service.DeleteChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_clip(
-        self,
-    ) -> Callable[[service.DeleteClipRequest], operations_pb2.Operation]:
+    def delete_clip(self) -> Callable[[service.DeleteClipRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteClip(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_dvr_session(
-        self,
-    ) -> Callable[[service.DeleteDvrSessionRequest], operations_pb2.Operation]:
+    def delete_dvr_session(self) -> Callable[[service.DeleteDvrSessionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDvrSession(self._session, self._host, self._interceptor)  # type: ignore
@@ -7333,9 +6028,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
         return self._DeleteEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_input(
-        self,
-    ) -> Callable[[service.DeleteInputRequest], operations_pb2.Operation]:
+    def delete_input(self) -> Callable[[service.DeleteInputRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInput(self._session, self._host, self._interceptor)  # type: ignore
@@ -7359,9 +6052,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
         return self._GetClip(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_dvr_session(
-        self,
-    ) -> Callable[[service.GetDvrSessionRequest], resources.DvrSession]:
+    def get_dvr_session(self) -> Callable[[service.GetDvrSessionRequest], resources.DvrSession]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDvrSession(self._session, self._host, self._interceptor)  # type: ignore
@@ -7385,121 +6076,91 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
         return self._GetPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
+    def list_assets(self) -> Callable[[service.ListAssetsRequest], service.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_channels(
-        self,
-    ) -> Callable[[service.ListChannelsRequest], service.ListChannelsResponse]:
+    def list_channels(self) -> Callable[[service.ListChannelsRequest], service.ListChannelsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChannels(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_clips(
-        self,
-    ) -> Callable[[service.ListClipsRequest], service.ListClipsResponse]:
+    def list_clips(self) -> Callable[[service.ListClipsRequest], service.ListClipsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListClips(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_dvr_sessions(
-        self,
-    ) -> Callable[[service.ListDvrSessionsRequest], service.ListDvrSessionsResponse]:
+    def list_dvr_sessions(self) -> Callable[[service.ListDvrSessionsRequest], service.ListDvrSessionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDvrSessions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_events(
-        self,
-    ) -> Callable[[service.ListEventsRequest], service.ListEventsResponse]:
+    def list_events(self) -> Callable[[service.ListEventsRequest], service.ListEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_inputs(
-        self,
-    ) -> Callable[[service.ListInputsRequest], service.ListInputsResponse]:
+    def list_inputs(self) -> Callable[[service.ListInputsRequest], service.ListInputsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInputs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def preview_input(
-        self,
-    ) -> Callable[[service.PreviewInputRequest], service.PreviewInputResponse]:
+    def preview_input(self) -> Callable[[service.PreviewInputRequest], service.PreviewInputResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PreviewInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_channel(
-        self,
-    ) -> Callable[[service.StartChannelRequest], operations_pb2.Operation]:
+    def start_channel(self) -> Callable[[service.StartChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_distribution(
-        self,
-    ) -> Callable[[service.StartDistributionRequest], operations_pb2.Operation]:
+    def start_distribution(self) -> Callable[[service.StartDistributionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartDistribution(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_channel(
-        self,
-    ) -> Callable[[service.StopChannelRequest], operations_pb2.Operation]:
+    def stop_channel(self) -> Callable[[service.StopChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_distribution(
-        self,
-    ) -> Callable[[service.StopDistributionRequest], operations_pb2.Operation]:
+    def stop_distribution(self) -> Callable[[service.StopDistributionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopDistribution(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_channel(
-        self,
-    ) -> Callable[[service.UpdateChannelRequest], operations_pb2.Operation]:
+    def update_channel(self) -> Callable[[service.UpdateChannelRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateChannel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_dvr_session(
-        self,
-    ) -> Callable[[service.UpdateDvrSessionRequest], operations_pb2.Operation]:
+    def update_dvr_session(self) -> Callable[[service.UpdateDvrSessionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDvrSession(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_input(
-        self,
-    ) -> Callable[[service.UpdateInputRequest], operations_pb2.Operation]:
+    def update_input(self) -> Callable[[service.UpdateInputRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_pool(
-        self,
-    ) -> Callable[[service.UpdatePoolRequest], operations_pb2.Operation]:
+    def update_pool(self) -> Callable[[service.UpdatePoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePool(self._session, self._host, self._interceptor)  # type: ignore
@@ -7508,22 +6169,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseLivestreamServiceRestTransport._BaseGetLocation, LivestreamServiceRestStub
-    ):
+    class _GetLocation(_BaseLivestreamServiceRestTransport._BaseGetLocation, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7561,26 +6212,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7604,12 +6245,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7621,9 +6257,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7648,23 +6282,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseLivestreamServiceRestTransport._BaseListLocations,
-        LivestreamServiceRestStub,
-    ):
+    class _ListLocations(_BaseLivestreamServiceRestTransport._BaseListLocations, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7702,26 +6325,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7745,12 +6358,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7762,9 +6370,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7789,23 +6395,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseLivestreamServiceRestTransport._BaseCancelOperation,
-        LivestreamServiceRestStub,
-    ):
+    class _CancelOperation(_BaseLivestreamServiceRestTransport._BaseCancelOperation, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7841,32 +6436,18 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7890,13 +6471,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7910,23 +6485,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseLivestreamServiceRestTransport._BaseDeleteOperation,
-        LivestreamServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseLivestreamServiceRestTransport._BaseDeleteOperation, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7961,28 +6525,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8006,12 +6558,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8025,22 +6572,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseLivestreamServiceRestTransport._BaseGetOperation, LivestreamServiceRestStub
-    ):
+    class _GetOperation(_BaseLivestreamServiceRestTransport._BaseGetOperation, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8078,26 +6615,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8121,12 +6648,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8138,9 +6660,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8165,23 +6685,12 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseLivestreamServiceRestTransport._BaseListOperations,
-        LivestreamServiceRestStub,
-    ):
+    class _ListOperations(_BaseLivestreamServiceRestTransport._BaseListOperations, LivestreamServiceRestStub):
         def __hash__(self):
             return hash("LivestreamServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8219,26 +6728,16 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseLivestreamServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseLivestreamServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLivestreamServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLivestreamServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLivestreamServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8262,12 +6761,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
 
             # Send the request
             response = LivestreamServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8279,9 +6773,7 @@ class LivestreamServiceRestTransport(_BaseLivestreamServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

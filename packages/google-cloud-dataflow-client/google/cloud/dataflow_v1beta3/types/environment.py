@@ -999,9 +999,7 @@ class WorkerPool(proto.Message):
         number=21,
         enum="WorkerIPAddressConfiguration",
     )
-    sdk_harness_container_images: MutableSequence[
-        "SdkHarnessContainerImage"
-    ] = proto.RepeatedField(
+    sdk_harness_container_images: MutableSequence["SdkHarnessContainerImage"] = proto.RepeatedField(
         proto.MESSAGE,
         number=22,
         message="SdkHarnessContainerImage",

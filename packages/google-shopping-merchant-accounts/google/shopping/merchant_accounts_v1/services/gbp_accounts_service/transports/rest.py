@@ -95,12 +95,8 @@ class GbpAccountsServiceRestInterceptor:
     """
 
     def pre_link_gbp_account(
-        self,
-        request: gbpaccounts.LinkGbpAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gbpaccounts.LinkGbpAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gbpaccounts.LinkGbpAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gbpaccounts.LinkGbpAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for link_gbp_account
 
         Override in a subclass to manipulate the request or metadata
@@ -108,9 +104,7 @@ class GbpAccountsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_link_gbp_account(
-        self, response: gbpaccounts.LinkGbpAccountResponse
-    ) -> gbpaccounts.LinkGbpAccountResponse:
+    def post_link_gbp_account(self, response: gbpaccounts.LinkGbpAccountResponse) -> gbpaccounts.LinkGbpAccountResponse:
         """Post-rpc interceptor for link_gbp_account
 
         DEPRECATED. Please use the `post_link_gbp_account_with_metadata`
@@ -124,12 +118,8 @@ class GbpAccountsServiceRestInterceptor:
         return response
 
     def post_link_gbp_account_with_metadata(
-        self,
-        response: gbpaccounts.LinkGbpAccountResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gbpaccounts.LinkGbpAccountResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gbpaccounts.LinkGbpAccountResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gbpaccounts.LinkGbpAccountResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for link_gbp_account
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -145,12 +135,8 @@ class GbpAccountsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_gbp_accounts(
-        self,
-        request: gbpaccounts.ListGbpAccountsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gbpaccounts.ListGbpAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gbpaccounts.ListGbpAccountsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gbpaccounts.ListGbpAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_gbp_accounts
 
         Override in a subclass to manipulate the request or metadata
@@ -158,9 +144,7 @@ class GbpAccountsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_gbp_accounts(
-        self, response: gbpaccounts.ListGbpAccountsResponse
-    ) -> gbpaccounts.ListGbpAccountsResponse:
+    def post_list_gbp_accounts(self, response: gbpaccounts.ListGbpAccountsResponse) -> gbpaccounts.ListGbpAccountsResponse:
         """Post-rpc interceptor for list_gbp_accounts
 
         DEPRECATED. Please use the `post_list_gbp_accounts_with_metadata`
@@ -174,12 +158,8 @@ class GbpAccountsServiceRestInterceptor:
         return response
 
     def post_list_gbp_accounts_with_metadata(
-        self,
-        response: gbpaccounts.ListGbpAccountsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gbpaccounts.ListGbpAccountsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: gbpaccounts.ListGbpAccountsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gbpaccounts.ListGbpAccountsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_gbp_accounts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,31 +258,18 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GbpAccountsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _LinkGbpAccount(
-        _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount,
-        GbpAccountsServiceRestStub,
-    ):
+    class _LinkGbpAccount(_BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount, GbpAccountsServiceRestStub):
         def __hash__(self):
             return hash("GbpAccountsServiceRestTransport.LinkGbpAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -345,32 +312,18 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_http_options()
-            )
+            http_options = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_link_gbp_account(
-                request, metadata
-            )
-            transcoded_request = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_link_gbp_account(request, metadata)
+            transcoded_request = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_transcoded_request(http_options, request)
 
-            body = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGbpAccountsServiceRestTransport._BaseLinkGbpAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -394,13 +347,7 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
 
             # Send the request
             response = GbpAccountsServiceRestTransport._LinkGbpAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -416,16 +363,10 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
 
             resp = self._interceptor.post_link_gbp_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_link_gbp_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_link_gbp_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gbpaccounts.LinkGbpAccountResponse.to_json(
-                        response
-                    )
+                    response_payload = gbpaccounts.LinkGbpAccountResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -444,23 +385,12 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
                 )
             return resp
 
-    class _ListGbpAccounts(
-        _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts,
-        GbpAccountsServiceRestStub,
-    ):
+    class _ListGbpAccounts(_BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts, GbpAccountsServiceRestStub):
         def __hash__(self):
             return hash("GbpAccountsServiceRestTransport.ListGbpAccounts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -502,28 +432,16 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts._get_http_options()
-            )
+            http_options = _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_gbp_accounts(
-                request, metadata
-            )
-            transcoded_request = _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_gbp_accounts(request, metadata)
+            transcoded_request = _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGbpAccountsServiceRestTransport._BaseListGbpAccounts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -547,12 +465,7 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
 
             # Send the request
             response = GbpAccountsServiceRestTransport._ListGbpAccounts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -568,16 +481,10 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
 
             resp = self._interceptor.post_list_gbp_accounts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_gbp_accounts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_gbp_accounts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = gbpaccounts.ListGbpAccountsResponse.to_json(
-                        response
-                    )
+                    response_payload = gbpaccounts.ListGbpAccountsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -597,21 +504,13 @@ class GbpAccountsServiceRestTransport(_BaseGbpAccountsServiceRestTransport):
             return resp
 
     @property
-    def link_gbp_account(
-        self,
-    ) -> Callable[
-        [gbpaccounts.LinkGbpAccountRequest], gbpaccounts.LinkGbpAccountResponse
-    ]:
+    def link_gbp_account(self) -> Callable[[gbpaccounts.LinkGbpAccountRequest], gbpaccounts.LinkGbpAccountResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LinkGbpAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_gbp_accounts(
-        self,
-    ) -> Callable[
-        [gbpaccounts.ListGbpAccountsRequest], gbpaccounts.ListGbpAccountsResponse
-    ]:
+    def list_gbp_accounts(self) -> Callable[[gbpaccounts.ListGbpAccountsRequest], gbpaccounts.ListGbpAccountsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGbpAccounts(self._session, self._host, self._interceptor)  # type: ignore

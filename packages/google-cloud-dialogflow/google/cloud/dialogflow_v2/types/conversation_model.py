@@ -684,9 +684,7 @@ class ListConversationModelEvaluationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    conversation_model_evaluations: MutableSequence[
-        "ConversationModelEvaluation"
-    ] = proto.RepeatedField(
+    conversation_model_evaluations: MutableSequence["ConversationModelEvaluation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ConversationModelEvaluation",

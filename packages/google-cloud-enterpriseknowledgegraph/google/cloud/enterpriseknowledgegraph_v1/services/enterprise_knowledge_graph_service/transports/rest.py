@@ -145,13 +145,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
     """
 
     def pre_cancel_entity_reconciliation_job(
-        self,
-        request: service.CancelEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CancelEntityReconciliationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.CancelEntityReconciliationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CancelEntityReconciliationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -160,13 +155,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return request, metadata
 
     def pre_create_entity_reconciliation_job(
-        self,
-        request: service.CreateEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.CreateEntityReconciliationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.CreateEntityReconciliationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.CreateEntityReconciliationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -174,9 +164,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_entity_reconciliation_job(
-        self, response: service.EntityReconciliationJob
-    ) -> service.EntityReconciliationJob:
+    def post_create_entity_reconciliation_job(self, response: service.EntityReconciliationJob) -> service.EntityReconciliationJob:
         """Post-rpc interceptor for create_entity_reconciliation_job
 
         DEPRECATED. Please use the `post_create_entity_reconciliation_job_with_metadata`
@@ -190,12 +178,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_create_entity_reconciliation_job_with_metadata(
-        self,
-        response: service.EntityReconciliationJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.EntityReconciliationJob, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.EntityReconciliationJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.EntityReconciliationJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entity_reconciliation_job
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -211,13 +195,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_entity_reconciliation_job(
-        self,
-        request: service.DeleteEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.DeleteEntityReconciliationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.DeleteEntityReconciliationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.DeleteEntityReconciliationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -226,13 +205,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return request, metadata
 
     def pre_get_entity_reconciliation_job(
-        self,
-        request: service.GetEntityReconciliationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.GetEntityReconciliationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.GetEntityReconciliationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.GetEntityReconciliationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entity_reconciliation_job
 
         Override in a subclass to manipulate the request or metadata
@@ -240,9 +214,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_entity_reconciliation_job(
-        self, response: service.EntityReconciliationJob
-    ) -> service.EntityReconciliationJob:
+    def post_get_entity_reconciliation_job(self, response: service.EntityReconciliationJob) -> service.EntityReconciliationJob:
         """Post-rpc interceptor for get_entity_reconciliation_job
 
         DEPRECATED. Please use the `post_get_entity_reconciliation_job_with_metadata`
@@ -256,12 +228,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_get_entity_reconciliation_job_with_metadata(
-        self,
-        response: service.EntityReconciliationJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.EntityReconciliationJob, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.EntityReconciliationJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.EntityReconciliationJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entity_reconciliation_job
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,13 +245,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response, metadata
 
     def pre_list_entity_reconciliation_jobs(
-        self,
-        request: service.ListEntityReconciliationJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEntityReconciliationJobsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: service.ListEntityReconciliationJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListEntityReconciliationJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entity_reconciliation_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -307,13 +270,8 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_list_entity_reconciliation_jobs_with_metadata(
-        self,
-        response: service.ListEntityReconciliationJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListEntityReconciliationJobsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: service.ListEntityReconciliationJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListEntityReconciliationJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entity_reconciliation_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -329,9 +287,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response, metadata
 
     def pre_lookup(
-        self,
-        request: service.LookupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.LookupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.LookupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup
 
@@ -354,9 +310,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_lookup_with_metadata(
-        self,
-        response: service.LookupResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.LookupResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.LookupResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for lookup
 
@@ -373,9 +327,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response, metadata
 
     def pre_lookup_public_kg(
-        self,
-        request: service.LookupPublicKgRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.LookupPublicKgRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.LookupPublicKgRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_public_kg
 
@@ -384,9 +336,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_lookup_public_kg(
-        self, response: service.LookupPublicKgResponse
-    ) -> service.LookupPublicKgResponse:
+    def post_lookup_public_kg(self, response: service.LookupPublicKgResponse) -> service.LookupPublicKgResponse:
         """Post-rpc interceptor for lookup_public_kg
 
         DEPRECATED. Please use the `post_lookup_public_kg_with_metadata`
@@ -400,9 +350,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_lookup_public_kg_with_metadata(
-        self,
-        response: service.LookupPublicKgResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.LookupPublicKgResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.LookupPublicKgResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for lookup_public_kg
 
@@ -419,9 +367,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response, metadata
 
     def pre_search(
-        self,
-        request: service.SearchRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.SearchRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SearchRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search
 
@@ -444,9 +390,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_search_with_metadata(
-        self,
-        response: service.SearchResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.SearchResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SearchResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search
 
@@ -463,9 +407,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response, metadata
 
     def pre_search_public_kg(
-        self,
-        request: service.SearchPublicKgRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.SearchPublicKgRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SearchPublicKgRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_public_kg
 
@@ -474,9 +416,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_public_kg(
-        self, response: service.SearchPublicKgResponse
-    ) -> service.SearchPublicKgResponse:
+    def post_search_public_kg(self, response: service.SearchPublicKgResponse) -> service.SearchPublicKgResponse:
         """Post-rpc interceptor for search_public_kg
 
         DEPRECATED. Please use the `post_search_public_kg_with_metadata`
@@ -490,9 +430,7 @@ class EnterpriseKnowledgeGraphServiceRestInterceptor:
         return response
 
     def post_search_public_kg_with_metadata(
-        self,
-        response: service.SearchPublicKgResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.SearchPublicKgResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.SearchPublicKgResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_public_kg
 
@@ -516,9 +454,7 @@ class EnterpriseKnowledgeGraphServiceRestStub:
     _interceptor: EnterpriseKnowledgeGraphServiceRestInterceptor
 
 
-class EnterpriseKnowledgeGraphServiceRestTransport(
-    _BaseEnterpriseKnowledgeGraphServiceRestTransport
-):
+class EnterpriseKnowledgeGraphServiceRestTransport(_BaseEnterpriseKnowledgeGraphServiceRestTransport):
     """REST backend synchronous transport for EnterpriseKnowledgeGraphService.
 
     APIs for enterprise knowledge graph product.
@@ -590,35 +526,20 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or EnterpriseKnowledgeGraphServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or EnterpriseKnowledgeGraphServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _CancelEntityReconciliationJob(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob,
-        EnterpriseKnowledgeGraphServiceRestStub,
+        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob, EnterpriseKnowledgeGraphServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EnterpriseKnowledgeGraphServiceRestTransport.CancelEntityReconciliationJob"
-            )
+            return hash("EnterpriseKnowledgeGraphServiceRestTransport.CancelEntityReconciliationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -656,32 +577,22 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_entity_reconciliation_job(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_cancel_entity_reconciliation_job(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCancelEntityReconciliationJob._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -705,13 +616,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._CancelEntityReconciliationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -720,24 +625,13 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
     class _CreateEntityReconciliationJob(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob,
-        EnterpriseKnowledgeGraphServiceRestStub,
+        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob, EnterpriseKnowledgeGraphServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EnterpriseKnowledgeGraphServiceRestTransport.CreateEntityReconciliationJob"
-            )
+            return hash("EnterpriseKnowledgeGraphServiceRestTransport.CreateEntityReconciliationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -779,32 +673,22 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                         Entity reconciliation job message.
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_entity_reconciliation_job(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_entity_reconciliation_job(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseCreateEntityReconciliationJob._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -828,13 +712,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._CreateEntityReconciliationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -850,15 +728,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_create_entity_reconciliation_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_entity_reconciliation_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entity_reconciliation_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.EntityReconciliationJob.to_json(response)
                 except:
@@ -880,24 +751,13 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             return resp
 
     class _DeleteEntityReconciliationJob(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob,
-        EnterpriseKnowledgeGraphServiceRestStub,
+        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob, EnterpriseKnowledgeGraphServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EnterpriseKnowledgeGraphServiceRestTransport.DeleteEntityReconciliationJob"
-            )
+            return hash("EnterpriseKnowledgeGraphServiceRestTransport.DeleteEntityReconciliationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -934,13 +794,9 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_entity_reconciliation_job(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_entity_reconciliation_job(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseDeleteEntityReconciliationJob._get_transcoded_request(
                 http_options, request
             )
@@ -950,12 +806,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -979,12 +831,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._DeleteEntityReconciliationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -993,24 +840,13 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
     class _GetEntityReconciliationJob(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob,
-        EnterpriseKnowledgeGraphServiceRestStub,
+        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob, EnterpriseKnowledgeGraphServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EnterpriseKnowledgeGraphServiceRestTransport.GetEntityReconciliationJob"
-            )
+            return hash("EnterpriseKnowledgeGraphServiceRestTransport.GetEntityReconciliationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1051,13 +887,9 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                         Entity reconciliation job message.
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_entity_reconciliation_job(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_entity_reconciliation_job(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseGetEntityReconciliationJob._get_transcoded_request(
                 http_options, request
             )
@@ -1067,12 +899,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1096,12 +924,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._GetEntityReconciliationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1117,15 +940,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_get_entity_reconciliation_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_entity_reconciliation_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entity_reconciliation_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.EntityReconciliationJob.to_json(response)
                 except:
@@ -1147,24 +963,13 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             return resp
 
     class _ListEntityReconciliationJobs(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs,
-        EnterpriseKnowledgeGraphServiceRestStub,
+        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs, EnterpriseKnowledgeGraphServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "EnterpriseKnowledgeGraphServiceRestTransport.ListEntityReconciliationJobs"
-            )
+            return hash("EnterpriseKnowledgeGraphServiceRestTransport.ListEntityReconciliationJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1207,13 +1012,9 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_entity_reconciliation_jobs(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_entity_reconciliation_jobs(request, metadata)
             transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseListEntityReconciliationJobs._get_transcoded_request(
                 http_options, request
             )
@@ -1223,12 +1024,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1252,12 +1049,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._ListEntityReconciliationJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1273,19 +1065,10 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_list_entity_reconciliation_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_entity_reconciliation_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entity_reconciliation_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        service.ListEntityReconciliationJobsResponse.to_json(response)
-                    )
+                    response_payload = service.ListEntityReconciliationJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1304,23 +1087,12 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 )
             return resp
 
-    class _Lookup(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup,
-        EnterpriseKnowledgeGraphServiceRestStub,
-    ):
+    class _Lookup(_BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup, EnterpriseKnowledgeGraphServiceRestStub):
         def __hash__(self):
             return hash("EnterpriseKnowledgeGraphServiceRestTransport.Lookup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1362,26 +1134,16 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup(request, metadata)
-            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1404,15 +1166,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                EnterpriseKnowledgeGraphServiceRestTransport._Lookup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EnterpriseKnowledgeGraphServiceRestTransport._Lookup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1428,12 +1183,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_lookup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.LookupResponse.to_json(response)
                 except:
@@ -1454,23 +1205,12 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 )
             return resp
 
-    class _LookupPublicKg(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg,
-        EnterpriseKnowledgeGraphServiceRestStub,
-    ):
+    class _LookupPublicKg(_BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg, EnterpriseKnowledgeGraphServiceRestStub):
         def __hash__(self):
             return hash("EnterpriseKnowledgeGraphServiceRestTransport.LookupPublicKg")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1512,28 +1252,16 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_http_options()
 
-            request, metadata = self._interceptor.pre_lookup_public_kg(
-                request, metadata
-            )
-            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_lookup_public_kg(request, metadata)
+            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseLookupPublicKg._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1557,12 +1285,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._LookupPublicKg._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1578,12 +1301,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_lookup_public_kg(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_public_kg_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_public_kg_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.LookupPublicKgResponse.to_json(response)
                 except:
@@ -1604,23 +1323,12 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 )
             return resp
 
-    class _Search(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch,
-        EnterpriseKnowledgeGraphServiceRestStub,
-    ):
+    class _Search(_BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch, EnterpriseKnowledgeGraphServiceRestStub):
         def __hash__(self):
             return hash("EnterpriseKnowledgeGraphServiceRestTransport.Search")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1662,26 +1370,16 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_http_options()
 
             request, metadata = self._interceptor.pre_search(request, metadata)
-            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1704,15 +1402,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                EnterpriseKnowledgeGraphServiceRestTransport._Search._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = EnterpriseKnowledgeGraphServiceRestTransport._Search._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1728,12 +1419,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_search(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.SearchResponse.to_json(response)
                 except:
@@ -1754,23 +1441,12 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
                 )
             return resp
 
-    class _SearchPublicKg(
-        _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg,
-        EnterpriseKnowledgeGraphServiceRestStub,
-    ):
+    class _SearchPublicKg(_BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg, EnterpriseKnowledgeGraphServiceRestStub):
         def __hash__(self):
             return hash("EnterpriseKnowledgeGraphServiceRestTransport.SearchPublicKg")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1812,28 +1488,16 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_http_options()
-            )
+            http_options = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_public_kg(
-                request, metadata
-            )
-            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_public_kg(request, metadata)
+            transcoded_request = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseEnterpriseKnowledgeGraphServiceRestTransport._BaseSearchPublicKg._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1857,12 +1521,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             # Send the request
             response = EnterpriseKnowledgeGraphServiceRestTransport._SearchPublicKg._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1878,12 +1537,8 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
 
             resp = self._interceptor.post_search_public_kg(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_public_kg_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_public_kg_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.SearchPublicKgResponse.to_json(response)
                 except:
@@ -1905,37 +1560,25 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
             return resp
 
     @property
-    def cancel_entity_reconciliation_job(
-        self,
-    ) -> Callable[[service.CancelEntityReconciliationJobRequest], empty_pb2.Empty]:
+    def cancel_entity_reconciliation_job(self) -> Callable[[service.CancelEntityReconciliationJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelEntityReconciliationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_entity_reconciliation_job(
-        self,
-    ) -> Callable[
-        [service.CreateEntityReconciliationJobRequest], service.EntityReconciliationJob
-    ]:
+    def create_entity_reconciliation_job(self) -> Callable[[service.CreateEntityReconciliationJobRequest], service.EntityReconciliationJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntityReconciliationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_entity_reconciliation_job(
-        self,
-    ) -> Callable[[service.DeleteEntityReconciliationJobRequest], empty_pb2.Empty]:
+    def delete_entity_reconciliation_job(self) -> Callable[[service.DeleteEntityReconciliationJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEntityReconciliationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_entity_reconciliation_job(
-        self,
-    ) -> Callable[
-        [service.GetEntityReconciliationJobRequest], service.EntityReconciliationJob
-    ]:
+    def get_entity_reconciliation_job(self) -> Callable[[service.GetEntityReconciliationJobRequest], service.EntityReconciliationJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntityReconciliationJob(self._session, self._host, self._interceptor)  # type: ignore
@@ -1943,10 +1586,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
     @property
     def list_entity_reconciliation_jobs(
         self,
-    ) -> Callable[
-        [service.ListEntityReconciliationJobsRequest],
-        service.ListEntityReconciliationJobsResponse,
-    ]:
+    ) -> Callable[[service.ListEntityReconciliationJobsRequest], service.ListEntityReconciliationJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntityReconciliationJobs(self._session, self._host, self._interceptor)  # type: ignore
@@ -1958,9 +1598,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         return self._Lookup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def lookup_public_kg(
-        self,
-    ) -> Callable[[service.LookupPublicKgRequest], service.LookupPublicKgResponse]:
+    def lookup_public_kg(self) -> Callable[[service.LookupPublicKgRequest], service.LookupPublicKgResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupPublicKg(self._session, self._host, self._interceptor)  # type: ignore
@@ -1972,9 +1610,7 @@ class EnterpriseKnowledgeGraphServiceRestTransport(
         return self._Search(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_public_kg(
-        self,
-    ) -> Callable[[service.SearchPublicKgRequest], service.SearchPublicKgResponse]:
+    def search_public_kg(self) -> Callable[[service.SearchPublicKgRequest], service.SearchPublicKgResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchPublicKg(self._session, self._host, self._interceptor)  # type: ignore

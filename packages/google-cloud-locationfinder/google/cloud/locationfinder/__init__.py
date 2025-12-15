@@ -18,12 +18,8 @@ from google.cloud.locationfinder import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.locationfinder_v1.services.cloud_location_finder.async_client import (
-    CloudLocationFinderAsyncClient,
-)
-from google.cloud.locationfinder_v1.services.cloud_location_finder.client import (
-    CloudLocationFinderClient,
-)
+from google.cloud.locationfinder_v1.services.cloud_location_finder.async_client import CloudLocationFinderAsyncClient
+from google.cloud.locationfinder_v1.services.cloud_location_finder.client import CloudLocationFinderClient
 from google.cloud.locationfinder_v1.types.cloud_location import (
     CloudLocation,
     GetCloudLocationRequest,

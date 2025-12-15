@@ -34,9 +34,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflow_v2.types import (
-    conversation_profile as gcd_conversation_profile,
-)
+from google.cloud.dialogflow_v2.types import conversation_profile as gcd_conversation_profile
 from google.cloud.dialogflow_v2.types import conversation_profile
 
 from .base import DEFAULT_CLIENT_INFO, ConversationProfilesTransport
@@ -52,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -68,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -90,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -274,18 +261,14 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -321,9 +304,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -346,9 +327,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -356,10 +335,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def list_conversation_profiles(
         self,
-    ) -> Callable[
-        [conversation_profile.ListConversationProfilesRequest],
-        Awaitable[conversation_profile.ListConversationProfilesResponse],
-    ]:
+    ) -> Callable[[conversation_profile.ListConversationProfilesRequest], Awaitable[conversation_profile.ListConversationProfilesResponse]]:
         r"""Return a callable for the list conversation profiles method over gRPC.
 
         Returns the list of all conversation profiles in the
@@ -376,9 +352,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_conversation_profiles" not in self._stubs:
-            self._stubs[
-                "list_conversation_profiles"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_conversation_profiles"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.ConversationProfiles/ListConversationProfiles",
                 request_serializer=conversation_profile.ListConversationProfilesRequest.serialize,
                 response_deserializer=conversation_profile.ListConversationProfilesResponse.deserialize,
@@ -388,10 +362,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def get_conversation_profile(
         self,
-    ) -> Callable[
-        [conversation_profile.GetConversationProfileRequest],
-        Awaitable[conversation_profile.ConversationProfile],
-    ]:
+    ) -> Callable[[conversation_profile.GetConversationProfileRequest], Awaitable[conversation_profile.ConversationProfile]]:
         r"""Return a callable for the get conversation profile method over gRPC.
 
         Retrieves the specified conversation profile.
@@ -417,10 +388,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def create_conversation_profile(
         self,
-    ) -> Callable[
-        [gcd_conversation_profile.CreateConversationProfileRequest],
-        Awaitable[gcd_conversation_profile.ConversationProfile],
-    ]:
+    ) -> Callable[[gcd_conversation_profile.CreateConversationProfileRequest], Awaitable[gcd_conversation_profile.ConversationProfile]]:
         r"""Return a callable for the create conversation profile method over gRPC.
 
         Creates a conversation profile in the specified project.
@@ -443,9 +411,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_conversation_profile" not in self._stubs:
-            self._stubs[
-                "create_conversation_profile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_conversation_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.ConversationProfiles/CreateConversationProfile",
                 request_serializer=gcd_conversation_profile.CreateConversationProfileRequest.serialize,
                 response_deserializer=gcd_conversation_profile.ConversationProfile.deserialize,
@@ -455,10 +421,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def update_conversation_profile(
         self,
-    ) -> Callable[
-        [gcd_conversation_profile.UpdateConversationProfileRequest],
-        Awaitable[gcd_conversation_profile.ConversationProfile],
-    ]:
+    ) -> Callable[[gcd_conversation_profile.UpdateConversationProfileRequest], Awaitable[gcd_conversation_profile.ConversationProfile]]:
         r"""Return a callable for the update conversation profile method over gRPC.
 
         Updates the specified conversation profile.
@@ -481,9 +444,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_conversation_profile" not in self._stubs:
-            self._stubs[
-                "update_conversation_profile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_conversation_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.ConversationProfiles/UpdateConversationProfile",
                 request_serializer=gcd_conversation_profile.UpdateConversationProfileRequest.serialize,
                 response_deserializer=gcd_conversation_profile.ConversationProfile.deserialize,
@@ -491,12 +452,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         return self._stubs["update_conversation_profile"]
 
     @property
-    def delete_conversation_profile(
-        self,
-    ) -> Callable[
-        [conversation_profile.DeleteConversationProfileRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_conversation_profile(self) -> Callable[[conversation_profile.DeleteConversationProfileRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete conversation profile method over gRPC.
 
         Deletes the specified conversation profile.
@@ -512,9 +468,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_conversation_profile" not in self._stubs:
-            self._stubs[
-                "delete_conversation_profile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_conversation_profile"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.ConversationProfiles/DeleteConversationProfile",
                 request_serializer=conversation_profile.DeleteConversationProfileRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -524,10 +478,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def set_suggestion_feature_config(
         self,
-    ) -> Callable[
-        [gcd_conversation_profile.SetSuggestionFeatureConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[gcd_conversation_profile.SetSuggestionFeatureConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the set suggestion feature config method over gRPC.
 
         Adds or updates a suggestion feature in a conversation profile.
@@ -562,9 +513,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_suggestion_feature_config" not in self._stubs:
-            self._stubs[
-                "set_suggestion_feature_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["set_suggestion_feature_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.ConversationProfiles/SetSuggestionFeatureConfig",
                 request_serializer=gcd_conversation_profile.SetSuggestionFeatureConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -574,10 +523,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def clear_suggestion_feature_config(
         self,
-    ) -> Callable[
-        [gcd_conversation_profile.ClearSuggestionFeatureConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[gcd_conversation_profile.ClearSuggestionFeatureConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the clear suggestion feature
         config method over gRPC.
 
@@ -605,9 +551,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "clear_suggestion_feature_config" not in self._stubs:
-            self._stubs[
-                "clear_suggestion_feature_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["clear_suggestion_feature_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.v2.ConversationProfiles/ClearSuggestionFeatureConfig",
                 request_serializer=gcd_conversation_profile.ClearSuggestionFeatureConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -728,9 +672,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -747,9 +689,7 @@ class ConversationProfilesGrpcAsyncIOTransport(ConversationProfilesTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

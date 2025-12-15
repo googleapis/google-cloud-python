@@ -900,9 +900,7 @@ class ListUserWorkloadsSecretsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    user_workloads_secrets: MutableSequence[
-        "UserWorkloadsSecret"
-    ] = proto.RepeatedField(
+    user_workloads_secrets: MutableSequence["UserWorkloadsSecret"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="UserWorkloadsSecret",
@@ -960,9 +958,7 @@ class ListUserWorkloadsConfigMapsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    user_workloads_config_maps: MutableSequence[
-        "UserWorkloadsConfigMap"
-    ] = proto.RepeatedField(
+    user_workloads_config_maps: MutableSequence["UserWorkloadsConfigMap"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="UserWorkloadsConfigMap",
@@ -3011,12 +3007,10 @@ class DataRetentionConfig(proto.Message):
             logs retention
     """
 
-    airflow_metadata_retention_config: "AirflowMetadataRetentionPolicyConfig" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message="AirflowMetadataRetentionPolicyConfig",
-        )
+    airflow_metadata_retention_config: "AirflowMetadataRetentionPolicyConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AirflowMetadataRetentionPolicyConfig",
     )
     task_logs_retention_config: "TaskLogsRetentionConfig" = proto.Field(
         proto.MESSAGE,

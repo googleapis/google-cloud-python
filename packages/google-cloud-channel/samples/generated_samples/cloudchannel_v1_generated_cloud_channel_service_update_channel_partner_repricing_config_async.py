@@ -40,9 +40,7 @@ async def sample_update_channel_partner_repricing_config():
 
     # Initialize request argument(s)
     channel_partner_repricing_config = channel_v1.ChannelPartnerRepricingConfig()
-    channel_partner_repricing_config.repricing_config.rebilling_basis = (
-        "DIRECT_CUSTOMER_COST"
-    )
+    channel_partner_repricing_config.repricing_config.rebilling_basis = "DIRECT_CUSTOMER_COST"
 
     request = channel_v1.UpdateChannelPartnerRepricingConfigRequest(
         channel_partner_repricing_config=channel_partner_repricing_config,

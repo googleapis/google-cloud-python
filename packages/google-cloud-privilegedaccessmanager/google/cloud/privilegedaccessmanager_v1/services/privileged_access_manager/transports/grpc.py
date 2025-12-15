@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -240,18 +231,14 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -285,9 +272,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -354,9 +339,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -364,10 +347,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
     @property
     def check_onboarding_status(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.CheckOnboardingStatusRequest],
-        privilegedaccessmanager.CheckOnboardingStatusResponse,
-    ]:
+    ) -> Callable[[privilegedaccessmanager.CheckOnboardingStatusRequest], privilegedaccessmanager.CheckOnboardingStatusResponse]:
         r"""Return a callable for the check onboarding status method over gRPC.
 
         ``CheckOnboardingStatus`` reports the onboarding status for a
@@ -393,12 +373,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["check_onboarding_status"]
 
     @property
-    def list_entitlements(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.ListEntitlementsRequest],
-        privilegedaccessmanager.ListEntitlementsResponse,
-    ]:
+    def list_entitlements(self) -> Callable[[privilegedaccessmanager.ListEntitlementsRequest], privilegedaccessmanager.ListEntitlementsResponse]:
         r"""Return a callable for the list entitlements method over gRPC.
 
         Lists entitlements in a given
@@ -425,10 +400,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
     @property
     def search_entitlements(
         self,
-    ) -> Callable[
-        [privilegedaccessmanager.SearchEntitlementsRequest],
-        privilegedaccessmanager.SearchEntitlementsResponse,
-    ]:
+    ) -> Callable[[privilegedaccessmanager.SearchEntitlementsRequest], privilegedaccessmanager.SearchEntitlementsResponse]:
         r"""Return a callable for the search entitlements method over gRPC.
 
         ``SearchEntitlements`` returns entitlements on which the caller
@@ -453,12 +425,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["search_entitlements"]
 
     @property
-    def get_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.GetEntitlementRequest],
-        privilegedaccessmanager.Entitlement,
-    ]:
+    def get_entitlement(self) -> Callable[[privilegedaccessmanager.GetEntitlementRequest], privilegedaccessmanager.Entitlement]:
         r"""Return a callable for the get entitlement method over gRPC.
 
         Gets details of a single entitlement.
@@ -482,11 +449,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["get_entitlement"]
 
     @property
-    def create_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.CreateEntitlementRequest], operations_pb2.Operation
-    ]:
+    def create_entitlement(self) -> Callable[[privilegedaccessmanager.CreateEntitlementRequest], operations_pb2.Operation]:
         r"""Return a callable for the create entitlement method over gRPC.
 
         Creates a new entitlement in a given
@@ -511,11 +474,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["create_entitlement"]
 
     @property
-    def delete_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.DeleteEntitlementRequest], operations_pb2.Operation
-    ]:
+    def delete_entitlement(self) -> Callable[[privilegedaccessmanager.DeleteEntitlementRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete entitlement method over gRPC.
 
         Deletes a single entitlement. This method can only be called
@@ -542,11 +501,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["delete_entitlement"]
 
     @property
-    def update_entitlement(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.UpdateEntitlementRequest], operations_pb2.Operation
-    ]:
+    def update_entitlement(self) -> Callable[[privilegedaccessmanager.UpdateEntitlementRequest], operations_pb2.Operation]:
         r"""Return a callable for the update entitlement method over gRPC.
 
         Updates the entitlement specified in the request. Updated fields
@@ -590,12 +545,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["update_entitlement"]
 
     @property
-    def list_grants(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.ListGrantsRequest],
-        privilegedaccessmanager.ListGrantsResponse,
-    ]:
+    def list_grants(self) -> Callable[[privilegedaccessmanager.ListGrantsRequest], privilegedaccessmanager.ListGrantsResponse]:
         r"""Return a callable for the list grants method over gRPC.
 
         Lists grants for a given entitlement.
@@ -619,12 +569,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["list_grants"]
 
     @property
-    def search_grants(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.SearchGrantsRequest],
-        privilegedaccessmanager.SearchGrantsResponse,
-    ]:
+    def search_grants(self) -> Callable[[privilegedaccessmanager.SearchGrantsRequest], privilegedaccessmanager.SearchGrantsResponse]:
         r"""Return a callable for the search grants method over gRPC.
 
         ``SearchGrants`` returns grants that are related to the calling
@@ -649,11 +594,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["search_grants"]
 
     @property
-    def get_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.GetGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def get_grant(self) -> Callable[[privilegedaccessmanager.GetGrantRequest], privilegedaccessmanager.Grant]:
         r"""Return a callable for the get grant method over gRPC.
 
         Get details of a single grant.
@@ -677,11 +618,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["get_grant"]
 
     @property
-    def create_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.CreateGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def create_grant(self) -> Callable[[privilegedaccessmanager.CreateGrantRequest], privilegedaccessmanager.Grant]:
         r"""Return a callable for the create grant method over gRPC.
 
         Creates a new grant in a given
@@ -706,11 +643,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["create_grant"]
 
     @property
-    def approve_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.ApproveGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def approve_grant(self) -> Callable[[privilegedaccessmanager.ApproveGrantRequest], privilegedaccessmanager.Grant]:
         r"""Return a callable for the approve grant method over gRPC.
 
         ``ApproveGrant`` is used to approve a grant. This method can
@@ -736,11 +669,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["approve_grant"]
 
     @property
-    def deny_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.DenyGrantRequest], privilegedaccessmanager.Grant
-    ]:
+    def deny_grant(self) -> Callable[[privilegedaccessmanager.DenyGrantRequest], privilegedaccessmanager.Grant]:
         r"""Return a callable for the deny grant method over gRPC.
 
         ``DenyGrant`` is used to deny a grant. This method can only be
@@ -766,11 +695,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
         return self._stubs["deny_grant"]
 
     @property
-    def revoke_grant(
-        self,
-    ) -> Callable[
-        [privilegedaccessmanager.RevokeGrantRequest], operations_pb2.Operation
-    ]:
+    def revoke_grant(self) -> Callable[[privilegedaccessmanager.RevokeGrantRequest], operations_pb2.Operation]:
         r"""Return a callable for the revoke grant method over gRPC.
 
         ``RevokeGrant`` is used to immediately revoke access for a
@@ -835,9 +760,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -854,9 +777,7 @@ class PrivilegedAccessManagerGrpcTransport(PrivilegedAccessManagerTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

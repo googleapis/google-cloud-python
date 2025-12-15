@@ -1197,9 +1197,7 @@ class InspectConfig(proto.Message):
             proto.INT32,
             number=2,
         )
-        max_findings_per_info_type: MutableSequence[
-            "InspectConfig.FindingLimits.InfoTypeLimit"
-        ] = proto.RepeatedField(
+        max_findings_per_info_type: MutableSequence["InspectConfig.FindingLimits.InfoTypeLimit"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="InspectConfig.FindingLimits.InfoTypeLimit",
@@ -1215,9 +1213,7 @@ class InspectConfig(proto.Message):
         number=2,
         enum=storage.Likelihood,
     )
-    min_likelihood_per_info_type: MutableSequence[
-        InfoTypeLikelihood
-    ] = proto.RepeatedField(
+    min_likelihood_per_info_type: MutableSequence[InfoTypeLikelihood] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=InfoTypeLikelihood,
@@ -2092,9 +2088,7 @@ class RedactImageRequest(proto.Message):
         number=2,
         message="InspectConfig",
     )
-    image_redaction_configs: MutableSequence[
-        ImageRedactionConfig
-    ] = proto.RepeatedField(
+    image_redaction_configs: MutableSequence[ImageRedactionConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=ImageRedactionConfig,
@@ -3806,9 +3800,7 @@ class PrivacyMetric(proto.Message):
                 number=3,
                 message=storage.BigQueryTable,
             )
-            quasi_ids: MutableSequence[
-                "PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField"
-            ] = proto.RepeatedField(
+            quasi_ids: MutableSequence["PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="PrivacyMetric.KMapEstimationConfig.AuxiliaryTable.QuasiIdField",
@@ -3819,9 +3811,7 @@ class PrivacyMetric(proto.Message):
                 message=storage.FieldId,
             )
 
-        quasi_ids: MutableSequence[
-            "PrivacyMetric.KMapEstimationConfig.TaggedField"
-        ] = proto.RepeatedField(
+        quasi_ids: MutableSequence["PrivacyMetric.KMapEstimationConfig.TaggedField"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="PrivacyMetric.KMapEstimationConfig.TaggedField",
@@ -3830,9 +3820,7 @@ class PrivacyMetric(proto.Message):
             proto.STRING,
             number=2,
         )
-        auxiliary_tables: MutableSequence[
-            "PrivacyMetric.KMapEstimationConfig.AuxiliaryTable"
-        ] = proto.RepeatedField(
+        auxiliary_tables: MutableSequence["PrivacyMetric.KMapEstimationConfig.AuxiliaryTable"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="PrivacyMetric.KMapEstimationConfig.AuxiliaryTable",
@@ -4111,9 +4099,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 proto.INT64,
                 number=3,
             )
-            bucket_values: MutableSequence[
-                "AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass"
-            ] = proto.RepeatedField(
+            bucket_values: MutableSequence["AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="AnalyzeDataSourceRiskDetails.KAnonymityResult.KAnonymityEquivalenceClass",
@@ -4172,9 +4158,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 proto.INT64,
                 number=3,
             )
-            top_sensitive_values: MutableSequence[
-                "ValueFrequency"
-            ] = proto.RepeatedField(
+            top_sensitive_values: MutableSequence["ValueFrequency"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="ValueFrequency",
@@ -4217,9 +4201,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 proto.INT64,
                 number=3,
             )
-            bucket_values: MutableSequence[
-                "AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass"
-            ] = proto.RepeatedField(
+            bucket_values: MutableSequence["AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="AnalyzeDataSourceRiskDetails.LDiversityResult.LDiversityEquivalenceClass",
@@ -4311,9 +4293,7 @@ class AnalyzeDataSourceRiskDetails(proto.Message):
                 proto.INT64,
                 number=5,
             )
-            bucket_values: MutableSequence[
-                "AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues"
-            ] = proto.RepeatedField(
+            bucket_values: MutableSequence["AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=6,
                 message="AnalyzeDataSourceRiskDetails.KMapEstimationResult.KMapEstimationQuasiIdValues",
@@ -4821,13 +4801,11 @@ class ImageTransformations(proto.Message):
             oneof="target",
             message="ImageTransformations.ImageTransformation.SelectedInfoTypes",
         )
-        all_info_types: "ImageTransformations.ImageTransformation.AllInfoTypes" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=5,
-                oneof="target",
-                message="ImageTransformations.ImageTransformation.AllInfoTypes",
-            )
+        all_info_types: "ImageTransformations.ImageTransformation.AllInfoTypes" = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            oneof="target",
+            message="ImageTransformations.ImageTransformation.AllInfoTypes",
         )
         all_text: "ImageTransformations.ImageTransformation.AllText" = proto.Field(
             proto.MESSAGE,
@@ -6123,9 +6101,7 @@ class TransformationOverview(proto.Message):
         proto.INT64,
         number=2,
     )
-    transformation_summaries: MutableSequence[
-        "TransformationSummary"
-    ] = proto.RepeatedField(
+    transformation_summaries: MutableSequence["TransformationSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="TransformationSummary",
@@ -7106,21 +7082,17 @@ class Action(proto.Message):
             number=7,
             message="TransformationConfig",
         )
-        transformation_details_storage_config: "TransformationDetailsStorageConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="TransformationDetailsStorageConfig",
-            )
+        transformation_details_storage_config: "TransformationDetailsStorageConfig" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="TransformationDetailsStorageConfig",
         )
         cloud_storage_output: str = proto.Field(
             proto.STRING,
             number=9,
             oneof="output",
         )
-        file_types_to_transform: MutableSequence[
-            storage.FileType
-        ] = proto.RepeatedField(
+        file_types_to_transform: MutableSequence[storage.FileType] = proto.RepeatedField(
             proto.ENUM,
             number=8,
             enum=storage.FileType,
@@ -7159,21 +7131,17 @@ class Action(proto.Message):
         oneof="action",
         message=PublishSummaryToCscc,
     )
-    publish_findings_to_cloud_data_catalog: PublishFindingsToCloudDataCatalog = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="action",
-            message=PublishFindingsToCloudDataCatalog,
-        )
+    publish_findings_to_cloud_data_catalog: PublishFindingsToCloudDataCatalog = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="action",
+        message=PublishFindingsToCloudDataCatalog,
     )
-    publish_findings_to_dataplex_catalog: PublishFindingsToDataplexCatalog = (
-        proto.Field(
-            proto.MESSAGE,
-            number=10,
-            oneof="action",
-            message=PublishFindingsToDataplexCatalog,
-        )
+    publish_findings_to_dataplex_catalog: PublishFindingsToDataplexCatalog = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="action",
+        message=PublishFindingsToDataplexCatalog,
     )
     deidentify: Deidentify = proto.Field(
         proto.MESSAGE,
@@ -8249,12 +8217,10 @@ class DataProfileAction(proto.Message):
             number=3,
             message="DataProfilePubSubCondition",
         )
-        detail_of_message: "DataProfileAction.PubSubNotification.DetailLevel" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="DataProfileAction.PubSubNotification.DetailLevel",
-            )
+        detail_of_message: "DataProfileAction.PubSubNotification.DetailLevel" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="DataProfileAction.PubSubNotification.DetailLevel",
         )
 
     class PublishToChronicle(proto.Message):
@@ -8378,16 +8344,12 @@ class DataProfileAction(proto.Message):
                 oneof="format",
             )
 
-        tag_conditions: MutableSequence[
-            "DataProfileAction.TagResources.TagCondition"
-        ] = proto.RepeatedField(
+        tag_conditions: MutableSequence["DataProfileAction.TagResources.TagCondition"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="DataProfileAction.TagResources.TagCondition",
         )
-        profile_generations_to_tag: MutableSequence[
-            "ProfileGeneration"
-        ] = proto.RepeatedField(
+        profile_generations_to_tag: MutableSequence["ProfileGeneration"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="ProfileGeneration",
@@ -8544,13 +8506,11 @@ class DataProfileFindingLocation(proto.Message):
         proto.STRING,
         number=1,
     )
-    data_profile_finding_record_location: "DataProfileFindingRecordLocation" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            oneof="location_extra_details",
-            message="DataProfileFindingRecordLocation",
-        )
+    data_profile_finding_record_location: "DataProfileFindingRecordLocation" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="location_extra_details",
+        message="DataProfileFindingRecordLocation",
     )
 
 
@@ -9271,12 +9231,10 @@ class DiscoveryGenerationCadence(proto.Message):
         number=2,
         message="DiscoveryTableModifiedCadence",
     )
-    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="DiscoveryInspectTemplateModifiedCadence",
-        )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DiscoveryInspectTemplateModifiedCadence",
     )
     refresh_frequency: "DataProfileUpdateFrequency" = proto.Field(
         proto.ENUM,
@@ -9705,9 +9663,7 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
             NEW_COLUMNS = 1
             REMOVED_COLUMNS = 2
 
-        types: MutableSequence[
-            "DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence.CloudSqlSchemaModification"
-        ] = proto.RepeatedField(
+        types: MutableSequence["DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence.CloudSqlSchemaModification"] = proto.RepeatedField(
             proto.ENUM,
             number=1,
             enum="DiscoveryCloudSqlGenerationCadence.SchemaModifiedCadence.CloudSqlSchemaModification",
@@ -9728,12 +9684,10 @@ class DiscoveryCloudSqlGenerationCadence(proto.Message):
         number=2,
         enum="DataProfileUpdateFrequency",
     )
-    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=3,
-            message="DiscoveryInspectTemplateModifiedCadence",
-        )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DiscoveryInspectTemplateModifiedCadence",
     )
 
 
@@ -10021,12 +9975,10 @@ class DiscoveryCloudStorageGenerationCadence(proto.Message):
         number=1,
         enum="DataProfileUpdateFrequency",
     )
-    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="DiscoveryInspectTemplateModifiedCadence",
-        )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryInspectTemplateModifiedCadence",
     )
 
 
@@ -10113,16 +10065,12 @@ class DiscoveryCloudStorageConditions(proto.Message):
         AUTOCLASS_DISABLED = 2
         AUTOCLASS_ENABLED = 3
 
-    included_object_attributes: MutableSequence[
-        CloudStorageObjectAttribute
-    ] = proto.RepeatedField(
+    included_object_attributes: MutableSequence[CloudStorageObjectAttribute] = proto.RepeatedField(
         proto.ENUM,
         number=1,
         enum=CloudStorageObjectAttribute,
     )
-    included_bucket_attributes: MutableSequence[
-        CloudStorageBucketAttribute
-    ] = proto.RepeatedField(
+    included_bucket_attributes: MutableSequence[CloudStorageBucketAttribute] = proto.RepeatedField(
         proto.ENUM,
         number=2,
         enum=CloudStorageBucketAttribute,
@@ -10567,12 +10515,10 @@ class DiscoveryOtherCloudGenerationCadence(proto.Message):
         number=1,
         enum="DataProfileUpdateFrequency",
     )
-    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="DiscoveryInspectTemplateModifiedCadence",
-        )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryInspectTemplateModifiedCadence",
     )
 
 
@@ -10902,12 +10848,10 @@ class DiscoveryVertexDatasetGenerationCadence(proto.Message):
         number=1,
         enum="DataProfileUpdateFrequency",
     )
-    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message="DiscoveryInspectTemplateModifiedCadence",
-        )
+    inspect_template_modified_cadence: "DiscoveryInspectTemplateModifiedCadence" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DiscoveryInspectTemplateModifiedCadence",
     )
 
 
@@ -13472,9 +13416,7 @@ class FileStoreDataProfile(proto.Message):
         proto.STRING,
         number=18,
     )
-    file_store_info_type_summaries: MutableSequence[
-        "FileStoreInfoTypeSummary"
-    ] = proto.RepeatedField(
+    file_store_info_type_summaries: MutableSequence["FileStoreInfoTypeSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=21,
         message="FileStoreInfoTypeSummary",
@@ -13685,9 +13627,7 @@ class FileClusterSummary(proto.Message):
         number=1,
         message="FileClusterType",
     )
-    file_store_info_type_summaries: MutableSequence[
-        "FileStoreInfoTypeSummary"
-    ] = proto.RepeatedField(
+    file_store_info_type_summaries: MutableSequence["FileStoreInfoTypeSummary"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="FileStoreInfoTypeSummary",
@@ -13884,9 +13824,7 @@ class ListFileStoreDataProfilesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    file_store_data_profiles: MutableSequence[
-        "FileStoreDataProfile"
-    ] = proto.RepeatedField(
+    file_store_data_profiles: MutableSequence["FileStoreDataProfile"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="FileStoreDataProfile",
@@ -13989,21 +13927,17 @@ class DataProfilePubSubCondition(proto.Message):
                 This field is a member of `oneof`_ ``value``.
         """
 
-        minimum_risk_score: "DataProfilePubSubCondition.ProfileScoreBucket" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                oneof="value",
-                enum="DataProfilePubSubCondition.ProfileScoreBucket",
-            )
+        minimum_risk_score: "DataProfilePubSubCondition.ProfileScoreBucket" = proto.Field(
+            proto.ENUM,
+            number=1,
+            oneof="value",
+            enum="DataProfilePubSubCondition.ProfileScoreBucket",
         )
-        minimum_sensitivity_score: "DataProfilePubSubCondition.ProfileScoreBucket" = (
-            proto.Field(
-                proto.ENUM,
-                number=2,
-                oneof="value",
-                enum="DataProfilePubSubCondition.ProfileScoreBucket",
-            )
+        minimum_sensitivity_score: "DataProfilePubSubCondition.ProfileScoreBucket" = proto.Field(
+            proto.ENUM,
+            number=2,
+            oneof="value",
+            enum="DataProfilePubSubCondition.ProfileScoreBucket",
         )
 
     class PubSubExpressions(proto.Message):
@@ -14037,9 +13971,7 @@ class DataProfilePubSubCondition(proto.Message):
             number=1,
             enum="DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator",
         )
-        conditions: MutableSequence[
-            "DataProfilePubSubCondition.PubSubCondition"
-        ] = proto.RepeatedField(
+        conditions: MutableSequence["DataProfilePubSubCondition.PubSubCondition"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="DataProfilePubSubCondition.PubSubCondition",
@@ -14621,12 +14553,10 @@ class ProcessingLocation(proto.Message):
                 Processing occurs in the global region.
         """
 
-        multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=100,
-                message="ProcessingLocation.MultiRegionProcessing",
-            )
+        multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = proto.Field(
+            proto.MESSAGE,
+            number=100,
+            message="ProcessingLocation.MultiRegionProcessing",
         )
         global_processing: "ProcessingLocation.GlobalProcessing" = proto.Field(
             proto.MESSAGE,
@@ -14647,12 +14577,10 @@ class ProcessingLocation(proto.Message):
                 Processing occurs in the global region.
         """
 
-        multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=100,
-                message="ProcessingLocation.MultiRegionProcessing",
-            )
+        multi_region_processing: "ProcessingLocation.MultiRegionProcessing" = proto.Field(
+            proto.MESSAGE,
+            number=100,
+            message="ProcessingLocation.MultiRegionProcessing",
         )
         global_processing: "ProcessingLocation.GlobalProcessing" = proto.Field(
             proto.MESSAGE,

@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -273,18 +262,14 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -320,9 +305,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -337,9 +320,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._grpc_channel
 
     @property
-    def inspect_content(
-        self,
-    ) -> Callable[[dlp.InspectContentRequest], Awaitable[dlp.InspectContentResponse]]:
+    def inspect_content(self) -> Callable[[dlp.InspectContentRequest], Awaitable[dlp.InspectContentResponse]]:
         r"""Return a callable for the inspect content method over gRPC.
 
         Finds potentially sensitive info in content.
@@ -375,9 +356,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["inspect_content"]
 
     @property
-    def redact_image(
-        self,
-    ) -> Callable[[dlp.RedactImageRequest], Awaitable[dlp.RedactImageResponse]]:
+    def redact_image(self) -> Callable[[dlp.RedactImageRequest], Awaitable[dlp.RedactImageResponse]]:
         r"""Return a callable for the redact image method over gRPC.
 
         Redacts potentially sensitive info from an image.
@@ -414,11 +393,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["redact_image"]
 
     @property
-    def deidentify_content(
-        self,
-    ) -> Callable[
-        [dlp.DeidentifyContentRequest], Awaitable[dlp.DeidentifyContentResponse]
-    ]:
+    def deidentify_content(self) -> Callable[[dlp.DeidentifyContentRequest], Awaitable[dlp.DeidentifyContentResponse]]:
         r"""Return a callable for the deidentify content method over gRPC.
 
         De-identifies potentially sensitive info from a
@@ -451,11 +426,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["deidentify_content"]
 
     @property
-    def reidentify_content(
-        self,
-    ) -> Callable[
-        [dlp.ReidentifyContentRequest], Awaitable[dlp.ReidentifyContentResponse]
-    ]:
+    def reidentify_content(self) -> Callable[[dlp.ReidentifyContentRequest], Awaitable[dlp.ReidentifyContentResponse]]:
         r"""Return a callable for the reidentify content method over gRPC.
 
         Re-identifies content that has been de-identified. See
@@ -481,9 +452,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["reidentify_content"]
 
     @property
-    def list_info_types(
-        self,
-    ) -> Callable[[dlp.ListInfoTypesRequest], Awaitable[dlp.ListInfoTypesResponse]]:
+    def list_info_types(self) -> Callable[[dlp.ListInfoTypesRequest], Awaitable[dlp.ListInfoTypesResponse]]:
         r"""Return a callable for the list info types method over gRPC.
 
         Returns a list of the sensitive information types
@@ -510,9 +479,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_info_types"]
 
     @property
-    def create_inspect_template(
-        self,
-    ) -> Callable[[dlp.CreateInspectTemplateRequest], Awaitable[dlp.InspectTemplate]]:
+    def create_inspect_template(self) -> Callable[[dlp.CreateInspectTemplateRequest], Awaitable[dlp.InspectTemplate]]:
         r"""Return a callable for the create inspect template method over gRPC.
 
         Creates an InspectTemplate for reusing frequently
@@ -540,9 +507,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_inspect_template"]
 
     @property
-    def update_inspect_template(
-        self,
-    ) -> Callable[[dlp.UpdateInspectTemplateRequest], Awaitable[dlp.InspectTemplate]]:
+    def update_inspect_template(self) -> Callable[[dlp.UpdateInspectTemplateRequest], Awaitable[dlp.InspectTemplate]]:
         r"""Return a callable for the update inspect template method over gRPC.
 
         Updates the InspectTemplate.
@@ -569,9 +534,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["update_inspect_template"]
 
     @property
-    def get_inspect_template(
-        self,
-    ) -> Callable[[dlp.GetInspectTemplateRequest], Awaitable[dlp.InspectTemplate]]:
+    def get_inspect_template(self) -> Callable[[dlp.GetInspectTemplateRequest], Awaitable[dlp.InspectTemplate]]:
         r"""Return a callable for the get inspect template method over gRPC.
 
         Gets an InspectTemplate.
@@ -598,11 +561,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_inspect_template"]
 
     @property
-    def list_inspect_templates(
-        self,
-    ) -> Callable[
-        [dlp.ListInspectTemplatesRequest], Awaitable[dlp.ListInspectTemplatesResponse]
-    ]:
+    def list_inspect_templates(self) -> Callable[[dlp.ListInspectTemplatesRequest], Awaitable[dlp.ListInspectTemplatesResponse]]:
         r"""Return a callable for the list inspect templates method over gRPC.
 
         Lists InspectTemplates.
@@ -629,9 +588,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_inspect_templates"]
 
     @property
-    def delete_inspect_template(
-        self,
-    ) -> Callable[[dlp.DeleteInspectTemplateRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_inspect_template(self) -> Callable[[dlp.DeleteInspectTemplateRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete inspect template method over gRPC.
 
         Deletes an InspectTemplate.
@@ -658,11 +615,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_inspect_template"]
 
     @property
-    def create_deidentify_template(
-        self,
-    ) -> Callable[
-        [dlp.CreateDeidentifyTemplateRequest], Awaitable[dlp.DeidentifyTemplate]
-    ]:
+    def create_deidentify_template(self) -> Callable[[dlp.CreateDeidentifyTemplateRequest], Awaitable[dlp.DeidentifyTemplate]]:
         r"""Return a callable for the create deidentify template method over gRPC.
 
         Creates a DeidentifyTemplate for reusing frequently
@@ -682,9 +635,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_deidentify_template" not in self._stubs:
-            self._stubs[
-                "create_deidentify_template"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_deidentify_template"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/CreateDeidentifyTemplate",
                 request_serializer=dlp.CreateDeidentifyTemplateRequest.serialize,
                 response_deserializer=dlp.DeidentifyTemplate.deserialize,
@@ -692,11 +643,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_deidentify_template"]
 
     @property
-    def update_deidentify_template(
-        self,
-    ) -> Callable[
-        [dlp.UpdateDeidentifyTemplateRequest], Awaitable[dlp.DeidentifyTemplate]
-    ]:
+    def update_deidentify_template(self) -> Callable[[dlp.UpdateDeidentifyTemplateRequest], Awaitable[dlp.DeidentifyTemplate]]:
         r"""Return a callable for the update deidentify template method over gRPC.
 
         Updates the DeidentifyTemplate.
@@ -715,9 +662,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_deidentify_template" not in self._stubs:
-            self._stubs[
-                "update_deidentify_template"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_deidentify_template"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/UpdateDeidentifyTemplate",
                 request_serializer=dlp.UpdateDeidentifyTemplateRequest.serialize,
                 response_deserializer=dlp.DeidentifyTemplate.deserialize,
@@ -725,11 +670,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["update_deidentify_template"]
 
     @property
-    def get_deidentify_template(
-        self,
-    ) -> Callable[
-        [dlp.GetDeidentifyTemplateRequest], Awaitable[dlp.DeidentifyTemplate]
-    ]:
+    def get_deidentify_template(self) -> Callable[[dlp.GetDeidentifyTemplateRequest], Awaitable[dlp.DeidentifyTemplate]]:
         r"""Return a callable for the get deidentify template method over gRPC.
 
         Gets a DeidentifyTemplate.
@@ -756,12 +697,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_deidentify_template"]
 
     @property
-    def list_deidentify_templates(
-        self,
-    ) -> Callable[
-        [dlp.ListDeidentifyTemplatesRequest],
-        Awaitable[dlp.ListDeidentifyTemplatesResponse],
-    ]:
+    def list_deidentify_templates(self) -> Callable[[dlp.ListDeidentifyTemplatesRequest], Awaitable[dlp.ListDeidentifyTemplatesResponse]]:
         r"""Return a callable for the list deidentify templates method over gRPC.
 
         Lists DeidentifyTemplates.
@@ -788,9 +724,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_deidentify_templates"]
 
     @property
-    def delete_deidentify_template(
-        self,
-    ) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_deidentify_template(self) -> Callable[[dlp.DeleteDeidentifyTemplateRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete deidentify template method over gRPC.
 
         Deletes a DeidentifyTemplate.
@@ -809,9 +743,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_deidentify_template" not in self._stubs:
-            self._stubs[
-                "delete_deidentify_template"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_deidentify_template"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteDeidentifyTemplate",
                 request_serializer=dlp.DeleteDeidentifyTemplateRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -819,9 +751,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_deidentify_template"]
 
     @property
-    def create_job_trigger(
-        self,
-    ) -> Callable[[dlp.CreateJobTriggerRequest], Awaitable[dlp.JobTrigger]]:
+    def create_job_trigger(self) -> Callable[[dlp.CreateJobTriggerRequest], Awaitable[dlp.JobTrigger]]:
         r"""Return a callable for the create job trigger method over gRPC.
 
         Creates a job trigger to run DLP actions such as
@@ -849,9 +779,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_job_trigger"]
 
     @property
-    def update_job_trigger(
-        self,
-    ) -> Callable[[dlp.UpdateJobTriggerRequest], Awaitable[dlp.JobTrigger]]:
+    def update_job_trigger(self) -> Callable[[dlp.UpdateJobTriggerRequest], Awaitable[dlp.JobTrigger]]:
         r"""Return a callable for the update job trigger method over gRPC.
 
         Updates a job trigger.
@@ -878,11 +806,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["update_job_trigger"]
 
     @property
-    def hybrid_inspect_job_trigger(
-        self,
-    ) -> Callable[
-        [dlp.HybridInspectJobTriggerRequest], Awaitable[dlp.HybridInspectResponse]
-    ]:
+    def hybrid_inspect_job_trigger(self) -> Callable[[dlp.HybridInspectJobTriggerRequest], Awaitable[dlp.HybridInspectResponse]]:
         r"""Return a callable for the hybrid inspect job trigger method over gRPC.
 
         Inspect hybrid content and store findings to a
@@ -901,9 +825,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "hybrid_inspect_job_trigger" not in self._stubs:
-            self._stubs[
-                "hybrid_inspect_job_trigger"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["hybrid_inspect_job_trigger"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/HybridInspectJobTrigger",
                 request_serializer=dlp.HybridInspectJobTriggerRequest.serialize,
                 response_deserializer=dlp.HybridInspectResponse.deserialize,
@@ -911,9 +833,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["hybrid_inspect_job_trigger"]
 
     @property
-    def get_job_trigger(
-        self,
-    ) -> Callable[[dlp.GetJobTriggerRequest], Awaitable[dlp.JobTrigger]]:
+    def get_job_trigger(self) -> Callable[[dlp.GetJobTriggerRequest], Awaitable[dlp.JobTrigger]]:
         r"""Return a callable for the get job trigger method over gRPC.
 
         Gets a job trigger.
@@ -940,9 +860,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_job_trigger"]
 
     @property
-    def list_job_triggers(
-        self,
-    ) -> Callable[[dlp.ListJobTriggersRequest], Awaitable[dlp.ListJobTriggersResponse]]:
+    def list_job_triggers(self) -> Callable[[dlp.ListJobTriggersRequest], Awaitable[dlp.ListJobTriggersResponse]]:
         r"""Return a callable for the list job triggers method over gRPC.
 
         Lists job triggers.
@@ -969,9 +887,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_job_triggers"]
 
     @property
-    def delete_job_trigger(
-        self,
-    ) -> Callable[[dlp.DeleteJobTriggerRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_job_trigger(self) -> Callable[[dlp.DeleteJobTriggerRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete job trigger method over gRPC.
 
         Deletes a job trigger.
@@ -998,9 +914,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_job_trigger"]
 
     @property
-    def activate_job_trigger(
-        self,
-    ) -> Callable[[dlp.ActivateJobTriggerRequest], Awaitable[dlp.DlpJob]]:
+    def activate_job_trigger(self) -> Callable[[dlp.ActivateJobTriggerRequest], Awaitable[dlp.DlpJob]]:
         r"""Return a callable for the activate job trigger method over gRPC.
 
         Activate a job trigger. Causes the immediate execute
@@ -1026,9 +940,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["activate_job_trigger"]
 
     @property
-    def create_discovery_config(
-        self,
-    ) -> Callable[[dlp.CreateDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
+    def create_discovery_config(self) -> Callable[[dlp.CreateDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
         r"""Return a callable for the create discovery config method over gRPC.
 
         Creates a config for discovery to scan and profile
@@ -1053,9 +965,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_discovery_config"]
 
     @property
-    def update_discovery_config(
-        self,
-    ) -> Callable[[dlp.UpdateDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
+    def update_discovery_config(self) -> Callable[[dlp.UpdateDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
         r"""Return a callable for the update discovery config method over gRPC.
 
         Updates a discovery configuration.
@@ -1079,9 +989,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["update_discovery_config"]
 
     @property
-    def get_discovery_config(
-        self,
-    ) -> Callable[[dlp.GetDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
+    def get_discovery_config(self) -> Callable[[dlp.GetDiscoveryConfigRequest], Awaitable[dlp.DiscoveryConfig]]:
         r"""Return a callable for the get discovery config method over gRPC.
 
         Gets a discovery configuration.
@@ -1105,11 +1013,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_discovery_config"]
 
     @property
-    def list_discovery_configs(
-        self,
-    ) -> Callable[
-        [dlp.ListDiscoveryConfigsRequest], Awaitable[dlp.ListDiscoveryConfigsResponse]
-    ]:
+    def list_discovery_configs(self) -> Callable[[dlp.ListDiscoveryConfigsRequest], Awaitable[dlp.ListDiscoveryConfigsResponse]]:
         r"""Return a callable for the list discovery configs method over gRPC.
 
         Lists discovery configurations.
@@ -1133,9 +1037,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_discovery_configs"]
 
     @property
-    def delete_discovery_config(
-        self,
-    ) -> Callable[[dlp.DeleteDiscoveryConfigRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_discovery_config(self) -> Callable[[dlp.DeleteDiscoveryConfigRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete discovery config method over gRPC.
 
         Deletes a discovery configuration.
@@ -1159,9 +1061,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_discovery_config"]
 
     @property
-    def create_dlp_job(
-        self,
-    ) -> Callable[[dlp.CreateDlpJobRequest], Awaitable[dlp.DlpJob]]:
+    def create_dlp_job(self) -> Callable[[dlp.CreateDlpJobRequest], Awaitable[dlp.DlpJob]]:
         r"""Return a callable for the create dlp job method over gRPC.
 
         Creates a new job to inspect storage or calculate
@@ -1195,9 +1095,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_dlp_job"]
 
     @property
-    def list_dlp_jobs(
-        self,
-    ) -> Callable[[dlp.ListDlpJobsRequest], Awaitable[dlp.ListDlpJobsResponse]]:
+    def list_dlp_jobs(self) -> Callable[[dlp.ListDlpJobsRequest], Awaitable[dlp.ListDlpJobsResponse]]:
         r"""Return a callable for the list dlp jobs method over gRPC.
 
         Lists DlpJobs that match the specified filter in the
@@ -1255,9 +1153,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_dlp_job"]
 
     @property
-    def delete_dlp_job(
-        self,
-    ) -> Callable[[dlp.DeleteDlpJobRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_dlp_job(self) -> Callable[[dlp.DeleteDlpJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete dlp job method over gRPC.
 
         Deletes a long-running DlpJob. This method indicates
@@ -1288,9 +1184,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_dlp_job"]
 
     @property
-    def cancel_dlp_job(
-        self,
-    ) -> Callable[[dlp.CancelDlpJobRequest], Awaitable[empty_pb2.Empty]]:
+    def cancel_dlp_job(self) -> Callable[[dlp.CancelDlpJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the cancel dlp job method over gRPC.
 
         Starts asynchronous cancellation on a long-running
@@ -1321,9 +1215,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["cancel_dlp_job"]
 
     @property
-    def create_stored_info_type(
-        self,
-    ) -> Callable[[dlp.CreateStoredInfoTypeRequest], Awaitable[dlp.StoredInfoType]]:
+    def create_stored_info_type(self) -> Callable[[dlp.CreateStoredInfoTypeRequest], Awaitable[dlp.StoredInfoType]]:
         r"""Return a callable for the create stored info type method over gRPC.
 
         Creates a pre-built stored infoType to be used for
@@ -1350,9 +1242,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_stored_info_type"]
 
     @property
-    def update_stored_info_type(
-        self,
-    ) -> Callable[[dlp.UpdateStoredInfoTypeRequest], Awaitable[dlp.StoredInfoType]]:
+    def update_stored_info_type(self) -> Callable[[dlp.UpdateStoredInfoTypeRequest], Awaitable[dlp.StoredInfoType]]:
         r"""Return a callable for the update stored info type method over gRPC.
 
         Updates the stored infoType by creating a new
@@ -1380,9 +1270,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["update_stored_info_type"]
 
     @property
-    def get_stored_info_type(
-        self,
-    ) -> Callable[[dlp.GetStoredInfoTypeRequest], Awaitable[dlp.StoredInfoType]]:
+    def get_stored_info_type(self) -> Callable[[dlp.GetStoredInfoTypeRequest], Awaitable[dlp.StoredInfoType]]:
         r"""Return a callable for the get stored info type method over gRPC.
 
         Gets a stored infoType.
@@ -1409,11 +1297,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_stored_info_type"]
 
     @property
-    def list_stored_info_types(
-        self,
-    ) -> Callable[
-        [dlp.ListStoredInfoTypesRequest], Awaitable[dlp.ListStoredInfoTypesResponse]
-    ]:
+    def list_stored_info_types(self) -> Callable[[dlp.ListStoredInfoTypesRequest], Awaitable[dlp.ListStoredInfoTypesResponse]]:
         r"""Return a callable for the list stored info types method over gRPC.
 
         Lists stored infoTypes.
@@ -1440,9 +1324,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_stored_info_types"]
 
     @property
-    def delete_stored_info_type(
-        self,
-    ) -> Callable[[dlp.DeleteStoredInfoTypeRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_stored_info_type(self) -> Callable[[dlp.DeleteStoredInfoTypeRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete stored info type method over gRPC.
 
         Deletes a stored infoType.
@@ -1469,12 +1351,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_stored_info_type"]
 
     @property
-    def list_project_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListProjectDataProfilesRequest],
-        Awaitable[dlp.ListProjectDataProfilesResponse],
-    ]:
+    def list_project_data_profiles(self) -> Callable[[dlp.ListProjectDataProfilesRequest], Awaitable[dlp.ListProjectDataProfilesResponse]]:
         r"""Return a callable for the list project data profiles method over gRPC.
 
         Lists project data profiles for an organization.
@@ -1490,9 +1367,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_project_data_profiles" not in self._stubs:
-            self._stubs[
-                "list_project_data_profiles"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_project_data_profiles"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/ListProjectDataProfiles",
                 request_serializer=dlp.ListProjectDataProfilesRequest.serialize,
                 response_deserializer=dlp.ListProjectDataProfilesResponse.deserialize,
@@ -1500,11 +1375,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_project_data_profiles"]
 
     @property
-    def list_table_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListTableDataProfilesRequest], Awaitable[dlp.ListTableDataProfilesResponse]
-    ]:
+    def list_table_data_profiles(self) -> Callable[[dlp.ListTableDataProfilesRequest], Awaitable[dlp.ListTableDataProfilesResponse]]:
         r"""Return a callable for the list table data profiles method over gRPC.
 
         Lists table data profiles for an organization.
@@ -1528,12 +1399,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_table_data_profiles"]
 
     @property
-    def list_column_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListColumnDataProfilesRequest],
-        Awaitable[dlp.ListColumnDataProfilesResponse],
-    ]:
+    def list_column_data_profiles(self) -> Callable[[dlp.ListColumnDataProfilesRequest], Awaitable[dlp.ListColumnDataProfilesResponse]]:
         r"""Return a callable for the list column data profiles method over gRPC.
 
         Lists column data profiles for an organization.
@@ -1557,11 +1423,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_column_data_profiles"]
 
     @property
-    def get_project_data_profile(
-        self,
-    ) -> Callable[
-        [dlp.GetProjectDataProfileRequest], Awaitable[dlp.ProjectDataProfile]
-    ]:
+    def get_project_data_profile(self) -> Callable[[dlp.GetProjectDataProfileRequest], Awaitable[dlp.ProjectDataProfile]]:
         r"""Return a callable for the get project data profile method over gRPC.
 
         Gets a project data profile.
@@ -1585,12 +1447,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_project_data_profile"]
 
     @property
-    def list_file_store_data_profiles(
-        self,
-    ) -> Callable[
-        [dlp.ListFileStoreDataProfilesRequest],
-        Awaitable[dlp.ListFileStoreDataProfilesResponse],
-    ]:
+    def list_file_store_data_profiles(self) -> Callable[[dlp.ListFileStoreDataProfilesRequest], Awaitable[dlp.ListFileStoreDataProfilesResponse]]:
         r"""Return a callable for the list file store data profiles method over gRPC.
 
         Lists file store data profiles for an organization.
@@ -1606,9 +1463,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_file_store_data_profiles" not in self._stubs:
-            self._stubs[
-                "list_file_store_data_profiles"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_file_store_data_profiles"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/ListFileStoreDataProfiles",
                 request_serializer=dlp.ListFileStoreDataProfilesRequest.serialize,
                 response_deserializer=dlp.ListFileStoreDataProfilesResponse.deserialize,
@@ -1616,11 +1471,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_file_store_data_profiles"]
 
     @property
-    def get_file_store_data_profile(
-        self,
-    ) -> Callable[
-        [dlp.GetFileStoreDataProfileRequest], Awaitable[dlp.FileStoreDataProfile]
-    ]:
+    def get_file_store_data_profile(self) -> Callable[[dlp.GetFileStoreDataProfileRequest], Awaitable[dlp.FileStoreDataProfile]]:
         r"""Return a callable for the get file store data profile method over gRPC.
 
         Gets a file store data profile.
@@ -1636,9 +1487,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_file_store_data_profile" not in self._stubs:
-            self._stubs[
-                "get_file_store_data_profile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_file_store_data_profile"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/GetFileStoreDataProfile",
                 request_serializer=dlp.GetFileStoreDataProfileRequest.serialize,
                 response_deserializer=dlp.FileStoreDataProfile.deserialize,
@@ -1646,9 +1495,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_file_store_data_profile"]
 
     @property
-    def delete_file_store_data_profile(
-        self,
-    ) -> Callable[[dlp.DeleteFileStoreDataProfileRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_file_store_data_profile(self) -> Callable[[dlp.DeleteFileStoreDataProfileRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete file store data profile method over gRPC.
 
         Delete a FileStoreDataProfile. Will not prevent the
@@ -1666,9 +1513,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_file_store_data_profile" not in self._stubs:
-            self._stubs[
-                "delete_file_store_data_profile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_file_store_data_profile"] = self._logged_channel.unary_unary(
                 "/google.privacy.dlp.v2.DlpService/DeleteFileStoreDataProfile",
                 request_serializer=dlp.DeleteFileStoreDataProfileRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -1676,9 +1521,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_file_store_data_profile"]
 
     @property
-    def get_table_data_profile(
-        self,
-    ) -> Callable[[dlp.GetTableDataProfileRequest], Awaitable[dlp.TableDataProfile]]:
+    def get_table_data_profile(self) -> Callable[[dlp.GetTableDataProfileRequest], Awaitable[dlp.TableDataProfile]]:
         r"""Return a callable for the get table data profile method over gRPC.
 
         Gets a table data profile.
@@ -1702,9 +1545,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_table_data_profile"]
 
     @property
-    def get_column_data_profile(
-        self,
-    ) -> Callable[[dlp.GetColumnDataProfileRequest], Awaitable[dlp.ColumnDataProfile]]:
+    def get_column_data_profile(self) -> Callable[[dlp.GetColumnDataProfileRequest], Awaitable[dlp.ColumnDataProfile]]:
         r"""Return a callable for the get column data profile method over gRPC.
 
         Gets a column data profile.
@@ -1728,9 +1569,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_column_data_profile"]
 
     @property
-    def delete_table_data_profile(
-        self,
-    ) -> Callable[[dlp.DeleteTableDataProfileRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_table_data_profile(self) -> Callable[[dlp.DeleteTableDataProfileRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete table data profile method over gRPC.
 
         Delete a TableDataProfile. Will not prevent the
@@ -1756,11 +1595,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_table_data_profile"]
 
     @property
-    def hybrid_inspect_dlp_job(
-        self,
-    ) -> Callable[
-        [dlp.HybridInspectDlpJobRequest], Awaitable[dlp.HybridInspectResponse]
-    ]:
+    def hybrid_inspect_dlp_job(self) -> Callable[[dlp.HybridInspectDlpJobRequest], Awaitable[dlp.HybridInspectResponse]]:
         r"""Return a callable for the hybrid inspect dlp job method over gRPC.
 
         Inspect hybrid content and store findings to a job.
@@ -1786,9 +1621,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["hybrid_inspect_dlp_job"]
 
     @property
-    def finish_dlp_job(
-        self,
-    ) -> Callable[[dlp.FinishDlpJobRequest], Awaitable[empty_pb2.Empty]]:
+    def finish_dlp_job(self) -> Callable[[dlp.FinishDlpJobRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the finish dlp job method over gRPC.
 
         Finish a running hybrid DlpJob. Triggers the
@@ -1814,9 +1647,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["finish_dlp_job"]
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[[dlp.CreateConnectionRequest], Awaitable[dlp.Connection]]:
+    def create_connection(self) -> Callable[[dlp.CreateConnectionRequest], Awaitable[dlp.Connection]]:
         r"""Return a callable for the create connection method over gRPC.
 
         Create a Connection to an external data source.
@@ -1840,9 +1671,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["create_connection"]
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[[dlp.GetConnectionRequest], Awaitable[dlp.Connection]]:
+    def get_connection(self) -> Callable[[dlp.GetConnectionRequest], Awaitable[dlp.Connection]]:
         r"""Return a callable for the get connection method over gRPC.
 
         Get a Connection by name.
@@ -1866,9 +1695,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["get_connection"]
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[[dlp.ListConnectionsRequest], Awaitable[dlp.ListConnectionsResponse]]:
+    def list_connections(self) -> Callable[[dlp.ListConnectionsRequest], Awaitable[dlp.ListConnectionsResponse]]:
         r"""Return a callable for the list connections method over gRPC.
 
         Lists Connections in a parent. Use SearchConnections
@@ -1893,11 +1720,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["list_connections"]
 
     @property
-    def search_connections(
-        self,
-    ) -> Callable[
-        [dlp.SearchConnectionsRequest], Awaitable[dlp.SearchConnectionsResponse]
-    ]:
+    def search_connections(self) -> Callable[[dlp.SearchConnectionsRequest], Awaitable[dlp.SearchConnectionsResponse]]:
         r"""Return a callable for the search connections method over gRPC.
 
         Searches for Connections in a parent.
@@ -1921,9 +1744,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["search_connections"]
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[[dlp.DeleteConnectionRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_connection(self) -> Callable[[dlp.DeleteConnectionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete connection method over gRPC.
 
         Delete a Connection.
@@ -1947,9 +1768,7 @@ class DlpServiceGrpcAsyncIOTransport(DlpServiceTransport):
         return self._stubs["delete_connection"]
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[[dlp.UpdateConnectionRequest], Awaitable[dlp.Connection]]:
+    def update_connection(self) -> Callable[[dlp.UpdateConnectionRequest], Awaitable[dlp.Connection]]:
         r"""Return a callable for the update connection method over gRPC.
 
         Update a Connection.

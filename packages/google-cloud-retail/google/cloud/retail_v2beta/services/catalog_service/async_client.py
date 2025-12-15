@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -81,41 +70,23 @@ class CatalogServiceAsyncClient:
     _DEFAULT_UNIVERSE = CatalogServiceClient._DEFAULT_UNIVERSE
 
     attributes_config_path = staticmethod(CatalogServiceClient.attributes_config_path)
-    parse_attributes_config_path = staticmethod(
-        CatalogServiceClient.parse_attributes_config_path
-    )
+    parse_attributes_config_path = staticmethod(CatalogServiceClient.parse_attributes_config_path)
     branch_path = staticmethod(CatalogServiceClient.branch_path)
     parse_branch_path = staticmethod(CatalogServiceClient.parse_branch_path)
     catalog_path = staticmethod(CatalogServiceClient.catalog_path)
     parse_catalog_path = staticmethod(CatalogServiceClient.parse_catalog_path)
     completion_config_path = staticmethod(CatalogServiceClient.completion_config_path)
-    parse_completion_config_path = staticmethod(
-        CatalogServiceClient.parse_completion_config_path
-    )
-    common_billing_account_path = staticmethod(
-        CatalogServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        CatalogServiceClient.parse_common_billing_account_path
-    )
+    parse_completion_config_path = staticmethod(CatalogServiceClient.parse_completion_config_path)
+    common_billing_account_path = staticmethod(CatalogServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(CatalogServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(CatalogServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        CatalogServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        CatalogServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        CatalogServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(CatalogServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(CatalogServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(CatalogServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(CatalogServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        CatalogServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(CatalogServiceClient.parse_common_project_path)
     common_location_path = staticmethod(CatalogServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        CatalogServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(CatalogServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -151,9 +122,7 @@ class CatalogServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -220,9 +189,7 @@ class CatalogServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, CatalogServiceTransport, Callable[..., CatalogServiceTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, CatalogServiceTransport, Callable[..., CatalogServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -282,20 +249,14 @@ class CatalogServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.retail_v2beta.CatalogServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.retail.v2beta.CatalogService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -382,14 +343,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -403,15 +359,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_catalogs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_catalogs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -526,14 +478,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [catalog, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -549,17 +496,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_catalog
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_catalog]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("catalog.name", request.catalog.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("catalog.name", request.catalog.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -665,14 +606,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [catalog]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -686,15 +622,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_default_branch
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_default_branch]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -774,14 +706,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [catalog]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -795,15 +722,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_default_branch
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_default_branch]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("catalog", request.catalog),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -821,9 +744,7 @@ class CatalogServiceAsyncClient:
 
     async def get_completion_config(
         self,
-        request: Optional[
-            Union[catalog_service.GetCompletionConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.GetCompletionConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -890,14 +811,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -911,15 +827,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_completion_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_completion_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -937,9 +849,7 @@ class CatalogServiceAsyncClient:
 
     async def update_completion_config(
         self,
-        request: Optional[
-            Union[catalog_service.UpdateCompletionConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.UpdateCompletionConfigRequest, dict]] = None,
         *,
         completion_config: Optional[catalog.CompletionConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1034,14 +944,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [completion_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1057,17 +962,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_completion_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_completion_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("completion_config.name", request.completion_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("completion_config.name", request.completion_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1085,9 +984,7 @@ class CatalogServiceAsyncClient:
 
     async def get_attributes_config(
         self,
-        request: Optional[
-            Union[catalog_service.GetAttributesConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.GetAttributesConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1151,14 +1048,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1172,15 +1064,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_attributes_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_attributes_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1198,9 +1086,7 @@ class CatalogServiceAsyncClient:
 
     async def update_attributes_config(
         self,
-        request: Optional[
-            Union[catalog_service.UpdateAttributesConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.UpdateAttributesConfigRequest, dict]] = None,
         *,
         attributes_config: Optional[catalog.AttributesConfig] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1290,14 +1176,9 @@ class CatalogServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [attributes_config, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1313,17 +1194,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_attributes_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_attributes_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attributes_config.name", request.attributes_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attributes_config.name", request.attributes_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1341,9 +1216,7 @@ class CatalogServiceAsyncClient:
 
     async def add_catalog_attribute(
         self,
-        request: Optional[
-            Union[catalog_service.AddCatalogAttributeRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.AddCatalogAttributeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1413,17 +1286,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.add_catalog_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.add_catalog_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attributes_config", request.attributes_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attributes_config", request.attributes_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1441,9 +1308,7 @@ class CatalogServiceAsyncClient:
 
     async def remove_catalog_attribute(
         self,
-        request: Optional[
-            Union[catalog_service.RemoveCatalogAttributeRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.RemoveCatalogAttributeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1510,17 +1375,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.remove_catalog_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.remove_catalog_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attributes_config", request.attributes_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attributes_config", request.attributes_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1538,9 +1397,7 @@ class CatalogServiceAsyncClient:
 
     async def batch_remove_catalog_attributes(
         self,
-        request: Optional[
-            Union[catalog_service.BatchRemoveCatalogAttributesRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.BatchRemoveCatalogAttributesRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1605,17 +1462,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_remove_catalog_attributes
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_remove_catalog_attributes]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attributes_config", request.attributes_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attributes_config", request.attributes_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1633,9 +1484,7 @@ class CatalogServiceAsyncClient:
 
     async def replace_catalog_attribute(
         self,
-        request: Optional[
-            Union[catalog_service.ReplaceCatalogAttributeRequest, dict]
-        ] = None,
+        request: Optional[Union[catalog_service.ReplaceCatalogAttributeRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1707,17 +1556,11 @@ class CatalogServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.replace_catalog_attribute
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.replace_catalog_attribute]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("attributes_config", request.attributes_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("attributes_config", request.attributes_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1770,9 +1613,7 @@ class CatalogServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1825,9 +1666,7 @@ class CatalogServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1850,9 +1689,7 @@ class CatalogServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

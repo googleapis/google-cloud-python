@@ -31,9 +31,7 @@ from google.cloud.chronicle_v1 import gapic_version as package_version
 from google.cloud.chronicle_v1.types import rule
 from google.cloud.chronicle_v1.types import rule as gcc_rule
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class RuleServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -296,109 +286,55 @@ class RuleServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_rule(
-        self,
-    ) -> Callable[
-        [gcc_rule.CreateRuleRequest], Union[gcc_rule.Rule, Awaitable[gcc_rule.Rule]]
-    ]:
+    def create_rule(self) -> Callable[[gcc_rule.CreateRuleRequest], Union[gcc_rule.Rule, Awaitable[gcc_rule.Rule]]]:
         raise NotImplementedError()
 
     @property
-    def get_rule(
-        self,
-    ) -> Callable[[rule.GetRuleRequest], Union[rule.Rule, Awaitable[rule.Rule]]]:
+    def get_rule(self) -> Callable[[rule.GetRuleRequest], Union[rule.Rule, Awaitable[rule.Rule]]]:
         raise NotImplementedError()
 
     @property
-    def list_rules(
-        self,
-    ) -> Callable[
-        [rule.ListRulesRequest],
-        Union[rule.ListRulesResponse, Awaitable[rule.ListRulesResponse]],
-    ]:
+    def list_rules(self) -> Callable[[rule.ListRulesRequest], Union[rule.ListRulesResponse, Awaitable[rule.ListRulesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_rule(
-        self,
-    ) -> Callable[
-        [gcc_rule.UpdateRuleRequest], Union[gcc_rule.Rule, Awaitable[gcc_rule.Rule]]
-    ]:
+    def update_rule(self) -> Callable[[gcc_rule.UpdateRuleRequest], Union[gcc_rule.Rule, Awaitable[gcc_rule.Rule]]]:
         raise NotImplementedError()
 
     @property
-    def delete_rule(
-        self,
-    ) -> Callable[
-        [rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_rule(self) -> Callable[[rule.DeleteRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def list_rule_revisions(
         self,
-    ) -> Callable[
-        [rule.ListRuleRevisionsRequest],
-        Union[
-            rule.ListRuleRevisionsResponse, Awaitable[rule.ListRuleRevisionsResponse]
-        ],
-    ]:
+    ) -> Callable[[rule.ListRuleRevisionsRequest], Union[rule.ListRuleRevisionsResponse, Awaitable[rule.ListRuleRevisionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_retrohunt(
-        self,
-    ) -> Callable[
-        [rule.CreateRetrohuntRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_retrohunt(self) -> Callable[[rule.CreateRetrohuntRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_retrohunt(
-        self,
-    ) -> Callable[
-        [rule.GetRetrohuntRequest], Union[rule.Retrohunt, Awaitable[rule.Retrohunt]]
-    ]:
+    def get_retrohunt(self) -> Callable[[rule.GetRetrohuntRequest], Union[rule.Retrohunt, Awaitable[rule.Retrohunt]]]:
         raise NotImplementedError()
 
     @property
-    def list_retrohunts(
-        self,
-    ) -> Callable[
-        [rule.ListRetrohuntsRequest],
-        Union[rule.ListRetrohuntsResponse, Awaitable[rule.ListRetrohuntsResponse]],
-    ]:
+    def list_retrohunts(self) -> Callable[[rule.ListRetrohuntsRequest], Union[rule.ListRetrohuntsResponse, Awaitable[rule.ListRetrohuntsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_rule_deployment(
-        self,
-    ) -> Callable[
-        [rule.GetRuleDeploymentRequest],
-        Union[rule.RuleDeployment, Awaitable[rule.RuleDeployment]],
-    ]:
+    def get_rule_deployment(self) -> Callable[[rule.GetRuleDeploymentRequest], Union[rule.RuleDeployment, Awaitable[rule.RuleDeployment]]]:
         raise NotImplementedError()
 
     @property
     def list_rule_deployments(
         self,
-    ) -> Callable[
-        [rule.ListRuleDeploymentsRequest],
-        Union[
-            rule.ListRuleDeploymentsResponse,
-            Awaitable[rule.ListRuleDeploymentsResponse],
-        ],
-    ]:
+    ) -> Callable[[rule.ListRuleDeploymentsRequest], Union[rule.ListRuleDeploymentsResponse, Awaitable[rule.ListRuleDeploymentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_rule_deployment(
-        self,
-    ) -> Callable[
-        [rule.UpdateRuleDeploymentRequest],
-        Union[rule.RuleDeployment, Awaitable[rule.RuleDeployment]],
-    ]:
+    def update_rule_deployment(self) -> Callable[[rule.UpdateRuleDeploymentRequest], Union[rule.RuleDeployment, Awaitable[rule.RuleDeployment]]]:
         raise NotImplementedError()
 
     @property
@@ -406,20 +342,14 @@ class RuleServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

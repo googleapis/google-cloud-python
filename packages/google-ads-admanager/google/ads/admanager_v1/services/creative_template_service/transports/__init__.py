@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import CreativeTemplateServiceTransport
-from .rest import (
-    CreativeTemplateServiceRestInterceptor,
-    CreativeTemplateServiceRestTransport,
-)
+from .rest import CreativeTemplateServiceRestInterceptor, CreativeTemplateServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CreativeTemplateServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CreativeTemplateServiceTransport]]
 _transport_registry["rest"] = CreativeTemplateServiceRestTransport
 
 __all__ = (

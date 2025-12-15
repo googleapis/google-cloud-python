@@ -16,12 +16,7 @@
 from .csql_resources import CloudSQLBackupRunSource
 from .csql_service import RestoreFromCloudSQLRequest
 from .data_model import SqlResult, SqlResultColumn, SqlResultRow, SqlResultValue
-from .gemini import (
-    GCAEntitlementType,
-    GCAInstanceConfig,
-    GeminiClusterConfig,
-    GeminiInstanceConfig,
-)
+from .gemini import GCAEntitlementType, GCAInstanceConfig, GeminiClusterConfig, GeminiInstanceConfig
 from .resources import (
     AutomatedBackupPolicy,
     Backup,

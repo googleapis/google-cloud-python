@@ -29,9 +29,7 @@ import google.protobuf
 from google.ads.admanager_v1 import gapic_version as package_version
 from google.ads.admanager_v1.types import placement_messages, placement_service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class PlacementServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -198,10 +188,7 @@ class PlacementServiceTransport(abc.ABC):
     @property
     def get_placement(
         self,
-    ) -> Callable[
-        [placement_service.GetPlacementRequest],
-        Union[placement_messages.Placement, Awaitable[placement_messages.Placement]],
-    ]:
+    ) -> Callable[[placement_service.GetPlacementRequest], Union[placement_messages.Placement, Awaitable[placement_messages.Placement]]]:
         raise NotImplementedError()
 
     @property
@@ -209,29 +196,20 @@ class PlacementServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [placement_service.ListPlacementsRequest],
-        Union[
-            placement_service.ListPlacementsResponse,
-            Awaitable[placement_service.ListPlacementsResponse],
-        ],
+        Union[placement_service.ListPlacementsResponse, Awaitable[placement_service.ListPlacementsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_placement(
         self,
-    ) -> Callable[
-        [placement_service.CreatePlacementRequest],
-        Union[placement_messages.Placement, Awaitable[placement_messages.Placement]],
-    ]:
+    ) -> Callable[[placement_service.CreatePlacementRequest], Union[placement_messages.Placement, Awaitable[placement_messages.Placement]]]:
         raise NotImplementedError()
 
     @property
     def update_placement(
         self,
-    ) -> Callable[
-        [placement_service.UpdatePlacementRequest],
-        Union[placement_messages.Placement, Awaitable[placement_messages.Placement]],
-    ]:
+    ) -> Callable[[placement_service.UpdatePlacementRequest], Union[placement_messages.Placement, Awaitable[placement_messages.Placement]]]:
         raise NotImplementedError()
 
     @property
@@ -239,10 +217,7 @@ class PlacementServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [placement_service.BatchCreatePlacementsRequest],
-        Union[
-            placement_service.BatchCreatePlacementsResponse,
-            Awaitable[placement_service.BatchCreatePlacementsResponse],
-        ],
+        Union[placement_service.BatchCreatePlacementsResponse, Awaitable[placement_service.BatchCreatePlacementsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -251,10 +226,7 @@ class PlacementServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [placement_service.BatchUpdatePlacementsRequest],
-        Union[
-            placement_service.BatchUpdatePlacementsResponse,
-            Awaitable[placement_service.BatchUpdatePlacementsResponse],
-        ],
+        Union[placement_service.BatchUpdatePlacementsResponse, Awaitable[placement_service.BatchUpdatePlacementsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -263,10 +235,7 @@ class PlacementServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [placement_service.BatchActivatePlacementsRequest],
-        Union[
-            placement_service.BatchActivatePlacementsResponse,
-            Awaitable[placement_service.BatchActivatePlacementsResponse],
-        ],
+        Union[placement_service.BatchActivatePlacementsResponse, Awaitable[placement_service.BatchActivatePlacementsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -275,10 +244,7 @@ class PlacementServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [placement_service.BatchDeactivatePlacementsRequest],
-        Union[
-            placement_service.BatchDeactivatePlacementsResponse,
-            Awaitable[placement_service.BatchDeactivatePlacementsResponse],
-        ],
+        Union[placement_service.BatchDeactivatePlacementsResponse, Awaitable[placement_service.BatchDeactivatePlacementsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -287,20 +253,14 @@ class PlacementServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [placement_service.BatchArchivePlacementsRequest],
-        Union[
-            placement_service.BatchArchivePlacementsResponse,
-            Awaitable[placement_service.BatchArchivePlacementsResponse],
-        ],
+        Union[placement_service.BatchArchivePlacementsResponse, Awaitable[placement_service.BatchArchivePlacementsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

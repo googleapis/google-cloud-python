@@ -24,14 +24,8 @@ from google.type import localized_text_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.routing_v2.types import (
-    route_label,
-    route_travel_mode,
-    speed_reading_interval,
-)
-from google.maps.routing_v2.types import (
-    navigation_instruction as gmr_navigation_instruction,
-)
+from google.maps.routing_v2.types import route_label, route_travel_mode, speed_reading_interval
+from google.maps.routing_v2.types import navigation_instruction as gmr_navigation_instruction
 from google.maps.routing_v2.types import polyline_details as gmr_polyline_details
 from google.maps.routing_v2.types import localized_time, location
 from google.maps.routing_v2.types import polyline as gmr_polyline
@@ -281,9 +275,7 @@ class RouteTravelAdvisory(proto.Message):
         number=2,
         message=gmr_toll_info.TollInfo,
     )
-    speed_reading_intervals: MutableSequence[
-        speed_reading_interval.SpeedReadingInterval
-    ] = proto.RepeatedField(
+    speed_reading_intervals: MutableSequence[speed_reading_interval.SpeedReadingInterval] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=speed_reading_interval.SpeedReadingInterval,
@@ -338,9 +330,7 @@ class RouteLegTravelAdvisory(proto.Message):
         number=1,
         message=gmr_toll_info.TollInfo,
     )
-    speed_reading_intervals: MutableSequence[
-        speed_reading_interval.SpeedReadingInterval
-    ] = proto.RepeatedField(
+    speed_reading_intervals: MutableSequence[speed_reading_interval.SpeedReadingInterval] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=speed_reading_interval.SpeedReadingInterval,
@@ -357,9 +347,7 @@ class RouteLegStepTravelAdvisory(proto.Message):
             NOTE: This field is not currently populated.
     """
 
-    speed_reading_intervals: MutableSequence[
-        speed_reading_interval.SpeedReadingInterval
-    ] = proto.RepeatedField(
+    speed_reading_intervals: MutableSequence[speed_reading_interval.SpeedReadingInterval] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=speed_reading_interval.SpeedReadingInterval,
@@ -494,12 +482,10 @@ class RouteLeg(proto.Message):
                 number=2,
                 optional=True,
             )
-            navigation_instruction: gmr_navigation_instruction.NavigationInstruction = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=3,
-                    message=gmr_navigation_instruction.NavigationInstruction,
-                )
+            navigation_instruction: gmr_navigation_instruction.NavigationInstruction = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message=gmr_navigation_instruction.NavigationInstruction,
             )
             travel_mode: route_travel_mode.RouteTravelMode = proto.Field(
                 proto.ENUM,
@@ -507,9 +493,7 @@ class RouteLeg(proto.Message):
                 enum=route_travel_mode.RouteTravelMode,
             )
 
-        multi_modal_segments: MutableSequence[
-            "RouteLeg.StepsOverview.MultiModalSegment"
-        ] = proto.RepeatedField(
+        multi_modal_segments: MutableSequence["RouteLeg.StepsOverview.MultiModalSegment"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="RouteLeg.StepsOverview.MultiModalSegment",
@@ -648,12 +632,10 @@ class RouteLegStep(proto.Message):
         number=5,
         message=location.Location,
     )
-    navigation_instruction: gmr_navigation_instruction.NavigationInstruction = (
-        proto.Field(
-            proto.MESSAGE,
-            number=6,
-            message=gmr_navigation_instruction.NavigationInstruction,
-        )
+    navigation_instruction: gmr_navigation_instruction.NavigationInstruction = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=gmr_navigation_instruction.NavigationInstruction,
     )
     travel_advisory: "RouteLegStepTravelAdvisory" = proto.Field(
         proto.MESSAGE,

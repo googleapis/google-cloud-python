@@ -95,9 +95,7 @@ class CloudControlsPartnerMonitoringRestInterceptor:
     """
 
     def pre_get_violation(
-        self,
-        request: violations.GetViolationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: violations.GetViolationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[violations.GetViolationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_violation
 
@@ -106,9 +104,7 @@ class CloudControlsPartnerMonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_get_violation(
-        self, response: violations.Violation
-    ) -> violations.Violation:
+    def post_get_violation(self, response: violations.Violation) -> violations.Violation:
         """Post-rpc interceptor for get_violation
 
         DEPRECATED. Please use the `post_get_violation_with_metadata`
@@ -122,9 +118,7 @@ class CloudControlsPartnerMonitoringRestInterceptor:
         return response
 
     def post_get_violation_with_metadata(
-        self,
-        response: violations.Violation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: violations.Violation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[violations.Violation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_violation
 
@@ -141,12 +135,8 @@ class CloudControlsPartnerMonitoringRestInterceptor:
         return response, metadata
 
     def pre_list_violations(
-        self,
-        request: violations.ListViolationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        violations.ListViolationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: violations.ListViolationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[violations.ListViolationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_violations
 
         Override in a subclass to manipulate the request or metadata
@@ -154,9 +144,7 @@ class CloudControlsPartnerMonitoringRestInterceptor:
         """
         return request, metadata
 
-    def post_list_violations(
-        self, response: violations.ListViolationsResponse
-    ) -> violations.ListViolationsResponse:
+    def post_list_violations(self, response: violations.ListViolationsResponse) -> violations.ListViolationsResponse:
         """Post-rpc interceptor for list_violations
 
         DEPRECATED. Please use the `post_list_violations_with_metadata`
@@ -170,12 +158,8 @@ class CloudControlsPartnerMonitoringRestInterceptor:
         return response
 
     def post_list_violations_with_metadata(
-        self,
-        response: violations.ListViolationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        violations.ListViolationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: violations.ListViolationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[violations.ListViolationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_violations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -198,9 +182,7 @@ class CloudControlsPartnerMonitoringRestStub:
     _interceptor: CloudControlsPartnerMonitoringRestInterceptor
 
 
-class CloudControlsPartnerMonitoringRestTransport(
-    _BaseCloudControlsPartnerMonitoringRestTransport
-):
+class CloudControlsPartnerMonitoringRestTransport(_BaseCloudControlsPartnerMonitoringRestTransport):
     """REST backend synchronous transport for CloudControlsPartnerMonitoring.
 
     Service describing handlers for resources
@@ -272,33 +254,18 @@ class CloudControlsPartnerMonitoringRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or CloudControlsPartnerMonitoringRestInterceptor()
-        )
+        self._interceptor = interceptor or CloudControlsPartnerMonitoringRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetViolation(
-        _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation,
-        CloudControlsPartnerMonitoringRestStub,
-    ):
+    class _GetViolation(_BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation, CloudControlsPartnerMonitoringRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerMonitoringRestTransport.GetViolation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -337,26 +304,16 @@ class CloudControlsPartnerMonitoringRestTransport(
                     Details of resource Violation
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_violation(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerMonitoringRestTransport._BaseGetViolation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -379,15 +336,8 @@ class CloudControlsPartnerMonitoringRestTransport(
                 )
 
             # Send the request
-            response = (
-                CloudControlsPartnerMonitoringRestTransport._GetViolation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudControlsPartnerMonitoringRestTransport._GetViolation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -403,12 +353,8 @@ class CloudControlsPartnerMonitoringRestTransport(
 
             resp = self._interceptor.post_get_violation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_violation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_violation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = violations.Violation.to_json(response)
                 except:
@@ -429,23 +375,12 @@ class CloudControlsPartnerMonitoringRestTransport(
                 )
             return resp
 
-    class _ListViolations(
-        _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations,
-        CloudControlsPartnerMonitoringRestStub,
-    ):
+    class _ListViolations(_BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations, CloudControlsPartnerMonitoringRestStub):
         def __hash__(self):
             return hash("CloudControlsPartnerMonitoringRestTransport.ListViolations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -487,26 +422,16 @@ class CloudControlsPartnerMonitoringRestTransport(
 
             """
 
-            http_options = (
-                _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations._get_http_options()
-            )
+            http_options = _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_violations(request, metadata)
-            transcoded_request = _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudControlsPartnerMonitoringRestTransport._BaseListViolations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -530,12 +455,7 @@ class CloudControlsPartnerMonitoringRestTransport(
 
             # Send the request
             response = CloudControlsPartnerMonitoringRestTransport._ListViolations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -551,16 +471,10 @@ class CloudControlsPartnerMonitoringRestTransport(
 
             resp = self._interceptor.post_list_violations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_violations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_violations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = violations.ListViolationsResponse.to_json(
-                        response
-                    )
+                    response_payload = violations.ListViolationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -580,19 +494,13 @@ class CloudControlsPartnerMonitoringRestTransport(
             return resp
 
     @property
-    def get_violation(
-        self,
-    ) -> Callable[[violations.GetViolationRequest], violations.Violation]:
+    def get_violation(self) -> Callable[[violations.GetViolationRequest], violations.Violation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetViolation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_violations(
-        self,
-    ) -> Callable[
-        [violations.ListViolationsRequest], violations.ListViolationsResponse
-    ]:
+    def list_violations(self) -> Callable[[violations.ListViolationsRequest], violations.ListViolationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListViolations(self._session, self._host, self._interceptor)  # type: ignore

@@ -92,9 +92,7 @@ class TraceServiceRestInterceptor:
     """
 
     def pre_batch_write_spans(
-        self,
-        request: tracing.BatchWriteSpansRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tracing.BatchWriteSpansRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tracing.BatchWriteSpansRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_write_spans
 
@@ -230,30 +228,18 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TraceServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchWriteSpans(
-        _BaseTraceServiceRestTransport._BaseBatchWriteSpans, TraceServiceRestStub
-    ):
+    class _BatchWriteSpans(_BaseTraceServiceRestTransport._BaseBatchWriteSpans, TraceServiceRestStub):
         def __hash__(self):
             return hash("TraceServiceRestTransport.BatchWriteSpans")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -289,32 +275,18 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_http_options()
-            )
+            http_options = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_write_spans(
-                request, metadata
-            )
-            transcoded_request = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_write_spans(request, metadata)
+            transcoded_request = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_transcoded_request(http_options, request)
 
-            body = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTraceServiceRestTransport._BaseBatchWriteSpans._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -338,13 +310,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             # Send the request
             response = TraceServiceRestTransport._BatchWriteSpans._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -352,22 +318,12 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateSpan(
-        _BaseTraceServiceRestTransport._BaseCreateSpan, TraceServiceRestStub
-    ):
+    class _CreateSpan(_BaseTraceServiceRestTransport._BaseCreateSpan, TraceServiceRestStub):
         def __hash__(self):
             return hash("TraceServiceRestTransport.CreateSpan")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -428,36 +384,18 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTraceServiceRestTransport._BaseCreateSpan._get_http_options()
-            )
+            http_options = _BaseTraceServiceRestTransport._BaseCreateSpan._get_http_options()
 
             request, metadata = self._interceptor.pre_create_span(request, metadata)
-            transcoded_request = (
-                _BaseTraceServiceRestTransport._BaseCreateSpan._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTraceServiceRestTransport._BaseCreateSpan._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTraceServiceRestTransport._BaseCreateSpan._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTraceServiceRestTransport._BaseCreateSpan._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTraceServiceRestTransport._BaseCreateSpan._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTraceServiceRestTransport._BaseCreateSpan._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -481,13 +419,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             # Send the request
             response = TraceServiceRestTransport._CreateSpan._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -503,12 +435,8 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
 
             resp = self._interceptor.post_create_span(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_span_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_span_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = trace.Span.to_json(response)
                 except:
@@ -530,9 +458,7 @@ class TraceServiceRestTransport(_BaseTraceServiceRestTransport):
             return resp
 
     @property
-    def batch_write_spans(
-        self,
-    ) -> Callable[[tracing.BatchWriteSpansRequest], empty_pb2.Empty]:
+    def batch_write_spans(self) -> Callable[[tracing.BatchWriteSpansRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchWriteSpans(self._session, self._host, self._interceptor)  # type: ignore

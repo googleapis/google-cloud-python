@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    taxonomy_category_messages,
-    taxonomy_category_service,
-)
+from google.ads.admanager_v1.types import taxonomy_category_messages, taxonomy_category_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseTaxonomyCategoryServiceRestTransport
@@ -99,13 +96,8 @@ class TaxonomyCategoryServiceRestInterceptor:
     """
 
     def pre_get_taxonomy_category(
-        self,
-        request: taxonomy_category_service.GetTaxonomyCategoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        taxonomy_category_service.GetTaxonomyCategoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: taxonomy_category_service.GetTaxonomyCategoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[taxonomy_category_service.GetTaxonomyCategoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_taxonomy_category
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class TaxonomyCategoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_taxonomy_category(
-        self, response: taxonomy_category_messages.TaxonomyCategory
-    ) -> taxonomy_category_messages.TaxonomyCategory:
+    def post_get_taxonomy_category(self, response: taxonomy_category_messages.TaxonomyCategory) -> taxonomy_category_messages.TaxonomyCategory:
         """Post-rpc interceptor for get_taxonomy_category
 
         DEPRECATED. Please use the `post_get_taxonomy_category_with_metadata`
@@ -129,13 +119,8 @@ class TaxonomyCategoryServiceRestInterceptor:
         return response
 
     def post_get_taxonomy_category_with_metadata(
-        self,
-        response: taxonomy_category_messages.TaxonomyCategory,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        taxonomy_category_messages.TaxonomyCategory,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: taxonomy_category_messages.TaxonomyCategory, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[taxonomy_category_messages.TaxonomyCategory, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_taxonomy_category
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +136,8 @@ class TaxonomyCategoryServiceRestInterceptor:
         return response, metadata
 
     def pre_list_taxonomy_categories(
-        self,
-        request: taxonomy_category_service.ListTaxonomyCategoriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        taxonomy_category_service.ListTaxonomyCategoriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: taxonomy_category_service.ListTaxonomyCategoriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[taxonomy_category_service.ListTaxonomyCategoriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_taxonomy_categories
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +161,8 @@ class TaxonomyCategoryServiceRestInterceptor:
         return response
 
     def post_list_taxonomy_categories_with_metadata(
-        self,
-        response: taxonomy_category_service.ListTaxonomyCategoriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        taxonomy_category_service.ListTaxonomyCategoriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: taxonomy_category_service.ListTaxonomyCategoriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[taxonomy_category_service.ListTaxonomyCategoriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_taxonomy_categories
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +178,8 @@ class TaxonomyCategoryServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +187,7 @@ class TaxonomyCategoryServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -307,31 +276,18 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TaxonomyCategoryServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetTaxonomyCategory(
-        _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory,
-        TaxonomyCategoryServiceRestStub,
-    ):
+    class _GetTaxonomyCategory(_BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory, TaxonomyCategoryServiceRestStub):
         def __hash__(self):
             return hash("TaxonomyCategoryServiceRestTransport.GetTaxonomyCategory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -370,28 +326,16 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                     The ``TaxonomyCategory`` resource.
             """
 
-            http_options = (
-                _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_http_options()
-            )
+            http_options = _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_taxonomy_category(
-                request, metadata
-            )
-            transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_taxonomy_category(request, metadata)
+            transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseGetTaxonomyCategory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -414,15 +358,8 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                 )
 
             # Send the request
-            response = (
-                TaxonomyCategoryServiceRestTransport._GetTaxonomyCategory._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = TaxonomyCategoryServiceRestTransport._GetTaxonomyCategory._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -438,16 +375,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
 
             resp = self._interceptor.post_get_taxonomy_category(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_taxonomy_category_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_taxonomy_category_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        taxonomy_category_messages.TaxonomyCategory.to_json(response)
-                    )
+                    response_payload = taxonomy_category_messages.TaxonomyCategory.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -466,23 +397,12 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                 )
             return resp
 
-    class _ListTaxonomyCategories(
-        _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories,
-        TaxonomyCategoryServiceRestStub,
-    ):
+    class _ListTaxonomyCategories(_BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories, TaxonomyCategoryServiceRestStub):
         def __hash__(self):
             return hash("TaxonomyCategoryServiceRestTransport.ListTaxonomyCategories")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -523,28 +443,16 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_http_options()
-            )
+            http_options = _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_taxonomy_categories(
-                request, metadata
-            )
-            transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_taxonomy_categories(request, metadata)
+            transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseListTaxonomyCategories._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -568,12 +476,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
 
             # Send the request
             response = TaxonomyCategoryServiceRestTransport._ListTaxonomyCategories._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -589,16 +492,10 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
 
             resp = self._interceptor.post_list_taxonomy_categories(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_taxonomy_categories_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_taxonomy_categories_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = taxonomy_category_service.ListTaxonomyCategoriesResponse.to_json(
-                        response
-                    )
+                    response_payload = taxonomy_category_service.ListTaxonomyCategoriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -618,12 +515,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             return resp
 
     @property
-    def get_taxonomy_category(
-        self,
-    ) -> Callable[
-        [taxonomy_category_service.GetTaxonomyCategoryRequest],
-        taxonomy_category_messages.TaxonomyCategory,
-    ]:
+    def get_taxonomy_category(self) -> Callable[[taxonomy_category_service.GetTaxonomyCategoryRequest], taxonomy_category_messages.TaxonomyCategory]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTaxonomyCategory(self._session, self._host, self._interceptor)  # type: ignore
@@ -631,10 +523,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
     @property
     def list_taxonomy_categories(
         self,
-    ) -> Callable[
-        [taxonomy_category_service.ListTaxonomyCategoriesRequest],
-        taxonomy_category_service.ListTaxonomyCategoriesResponse,
-    ]:
+    ) -> Callable[[taxonomy_category_service.ListTaxonomyCategoriesRequest], taxonomy_category_service.ListTaxonomyCategoriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTaxonomyCategories(self._session, self._host, self._interceptor)  # type: ignore
@@ -643,23 +532,12 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation,
-        TaxonomyCategoryServiceRestStub,
-    ):
+    class _GetOperation(_BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation, TaxonomyCategoryServiceRestStub):
         def __hash__(self):
             return hash("TaxonomyCategoryServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -697,26 +575,16 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTaxonomyCategoryServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -740,12 +608,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
 
             # Send the request
             response = TaxonomyCategoryServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -757,9 +620,7 @@ class TaxonomyCategoryServiceRestTransport(_BaseTaxonomyCategoryServiceRestTrans
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

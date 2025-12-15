@@ -22,9 +22,7 @@ from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3.types import data_store_connection, fulfillment
-from google.cloud.dialogflowcx_v3.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
+from google.cloud.dialogflowcx_v3.types import advanced_settings as gcdc_advanced_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
@@ -304,9 +302,7 @@ class Form(proto.Message):
                 number=3,
                 message=fulfillment.Fulfillment,
             )
-            reprompt_event_handlers: MutableSequence[
-                "EventHandler"
-            ] = proto.RepeatedField(
+            reprompt_event_handlers: MutableSequence["EventHandler"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=5,
                 message="EventHandler",
@@ -864,9 +860,7 @@ class KnowledgeConnectorSettings(proto.Message):
         number=5,
         oneof="target",
     )
-    data_store_connections: MutableSequence[
-        data_store_connection.DataStoreConnection
-    ] = proto.RepeatedField(
+    data_store_connections: MutableSequence[data_store_connection.DataStoreConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=data_store_connection.DataStoreConnection,

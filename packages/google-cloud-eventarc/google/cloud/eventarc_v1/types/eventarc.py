@@ -23,9 +23,7 @@ import proto  # type: ignore
 
 from google.cloud.eventarc_v1.types import channel_connection as gce_channel_connection
 from google.cloud.eventarc_v1.types import google_api_source as gce_google_api_source
-from google.cloud.eventarc_v1.types import (
-    google_channel_config as gce_google_channel_config,
-)
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import channel as gce_channel
 from google.cloud.eventarc_v1.types import discovery
 from google.cloud.eventarc_v1.types import enrollment as gce_enrollment
@@ -656,9 +654,7 @@ class ListChannelConnectionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channel_connections: MutableSequence[
-        gce_channel_connection.ChannelConnection
-    ] = proto.RepeatedField(
+    channel_connections: MutableSequence[gce_channel_connection.ChannelConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gce_channel_connection.ChannelConnection,
@@ -1554,9 +1550,7 @@ class ListGoogleApiSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    google_api_sources: MutableSequence[
-        gce_google_api_source.GoogleApiSource
-    ] = proto.RepeatedField(
+    google_api_sources: MutableSequence[gce_google_api_source.GoogleApiSource] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gce_google_api_source.GoogleApiSource,

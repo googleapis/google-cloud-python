@@ -151,12 +151,8 @@ class TargetSslProxiesRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -178,9 +174,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -197,12 +191,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -224,9 +214,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.TargetSslProxy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.TargetSslProxy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.TargetSslProxy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -243,12 +231,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -270,9 +254,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -289,12 +271,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListTargetSslProxiesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListTargetSslProxiesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListTargetSslProxiesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListTargetSslProxiesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +280,7 @@ class TargetSslProxiesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.TargetSslProxyList
-    ) -> compute.TargetSslProxyList:
+    def post_list(self, response: compute.TargetSslProxyList) -> compute.TargetSslProxyList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -318,9 +294,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.TargetSslProxyList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.TargetSslProxyList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.TargetSslProxyList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -337,13 +311,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_set_backend_service(
-        self,
-        request: compute.SetBackendServiceTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetBackendServiceTargetSslProxyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetBackendServiceTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetBackendServiceTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_backend_service
 
         Override in a subclass to manipulate the request or metadata
@@ -351,9 +320,7 @@ class TargetSslProxiesRestInterceptor:
         """
         return request, metadata
 
-    def post_set_backend_service(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_backend_service(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_backend_service
 
         DEPRECATED. Please use the `post_set_backend_service_with_metadata`
@@ -367,9 +334,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_set_backend_service_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_backend_service
 
@@ -386,13 +351,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_set_certificate_map(
-        self,
-        request: compute.SetCertificateMapTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetCertificateMapTargetSslProxyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetCertificateMapTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetCertificateMapTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_certificate_map
 
         Override in a subclass to manipulate the request or metadata
@@ -400,9 +360,7 @@ class TargetSslProxiesRestInterceptor:
         """
         return request, metadata
 
-    def post_set_certificate_map(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_certificate_map(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_certificate_map
 
         DEPRECATED. Please use the `post_set_certificate_map_with_metadata`
@@ -416,9 +374,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_set_certificate_map_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_certificate_map
 
@@ -435,13 +391,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_set_proxy_header(
-        self,
-        request: compute.SetProxyHeaderTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetProxyHeaderTargetSslProxyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetProxyHeaderTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetProxyHeaderTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_proxy_header
 
         Override in a subclass to manipulate the request or metadata
@@ -463,9 +414,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_set_proxy_header_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_proxy_header
 
@@ -482,13 +431,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_set_ssl_certificates(
-        self,
-        request: compute.SetSslCertificatesTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetSslCertificatesTargetSslProxyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetSslCertificatesTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetSslCertificatesTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_ssl_certificates
 
         Override in a subclass to manipulate the request or metadata
@@ -496,9 +440,7 @@ class TargetSslProxiesRestInterceptor:
         """
         return request, metadata
 
-    def post_set_ssl_certificates(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_ssl_certificates(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_ssl_certificates
 
         DEPRECATED. Please use the `post_set_ssl_certificates_with_metadata`
@@ -512,9 +454,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_set_ssl_certificates_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_ssl_certificates
 
@@ -531,13 +471,8 @@ class TargetSslProxiesRestInterceptor:
         return response, metadata
 
     def pre_set_ssl_policy(
-        self,
-        request: compute.SetSslPolicyTargetSslProxyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetSslPolicyTargetSslProxyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetSslPolicyTargetSslProxyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetSslPolicyTargetSslProxyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_ssl_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -559,9 +494,7 @@ class TargetSslProxiesRestInterceptor:
         return response
 
     def post_set_ssl_policy_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_ssl_policy
 
@@ -661,30 +594,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TargetSslProxiesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Delete(
-        _BaseTargetSslProxiesRestTransport._BaseDelete, TargetSslProxiesRestStub
-    ):
+    class _Delete(_BaseTargetSslProxiesRestTransport._BaseDelete, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -742,30 +663,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -789,12 +696,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -810,12 +712,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -841,15 +739,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             return hash("TargetSslProxiesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -898,30 +788,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -945,12 +821,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -967,9 +838,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TargetSslProxy.to_json(response)
                 except:
@@ -990,22 +859,12 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseTargetSslProxiesRestTransport._BaseInsert, TargetSslProxiesRestStub
-    ):
+    class _Insert(_BaseTargetSslProxiesRestTransport._BaseInsert, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1064,36 +923,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTargetSslProxiesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1117,13 +958,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1139,12 +974,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1170,15 +1001,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             return hash("TargetSslProxiesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1221,30 +1044,16 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseTargetSslProxiesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTargetSslProxiesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1268,12 +1077,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1290,9 +1094,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TargetSslProxyList.to_json(response)
                 except:
@@ -1313,23 +1115,12 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 )
             return resp
 
-    class _SetBackendService(
-        _BaseTargetSslProxiesRestTransport._BaseSetBackendService,
-        TargetSslProxiesRestStub,
-    ):
+    class _SetBackendService(_BaseTargetSslProxiesRestTransport._BaseSetBackendService, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.SetBackendService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1388,32 +1179,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_backend_service(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_backend_service(request, metadata)
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseSetBackendService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1437,13 +1214,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetBackendService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1459,12 +1230,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_set_backend_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_backend_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_backend_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1485,23 +1252,12 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 )
             return resp
 
-    class _SetCertificateMap(
-        _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap,
-        TargetSslProxiesRestStub,
-    ):
+    class _SetCertificateMap(_BaseTargetSslProxiesRestTransport._BaseSetCertificateMap, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.SetCertificateMap")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1560,32 +1316,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_certificate_map(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_certificate_map(request, metadata)
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseSetCertificateMap._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1609,13 +1351,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetCertificateMap._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1631,12 +1367,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_set_certificate_map(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_certificate_map_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_certificate_map_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1657,22 +1389,12 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 )
             return resp
 
-    class _SetProxyHeader(
-        _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader, TargetSslProxiesRestStub
-    ):
+    class _SetProxyHeader(_BaseTargetSslProxiesRestTransport._BaseSetProxyHeader, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.SetProxyHeader")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1731,32 +1453,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_proxy_header(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_proxy_header(request, metadata)
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseSetProxyHeader._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1780,13 +1488,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetProxyHeader._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1802,12 +1504,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_set_proxy_header(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_proxy_header_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_proxy_header_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1828,23 +1526,12 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 )
             return resp
 
-    class _SetSslCertificates(
-        _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates,
-        TargetSslProxiesRestStub,
-    ):
+    class _SetSslCertificates(_BaseTargetSslProxiesRestTransport._BaseSetSslCertificates, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.SetSslCertificates")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1903,32 +1590,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_ssl_certificates(
-                request, metadata
-            )
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_ssl_certificates(request, metadata)
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslCertificates._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1952,13 +1625,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetSslCertificates._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1974,12 +1641,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_set_ssl_certificates(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_ssl_certificates_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_ssl_certificates_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2000,22 +1663,12 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
                 )
             return resp
 
-    class _SetSslPolicy(
-        _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy, TargetSslProxiesRestStub
-    ):
+    class _SetSslPolicy(_BaseTargetSslProxiesRestTransport._BaseSetSslPolicy, TargetSslProxiesRestStub):
         def __hash__(self):
             return hash("TargetSslProxiesRestTransport.SetSslPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2074,30 +1727,18 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_http_options()
-            )
+            http_options = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_ssl_policy(request, metadata)
-            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTargetSslProxiesRestTransport._BaseSetSslPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2121,13 +1762,7 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             # Send the request
             response = TargetSslProxiesRestTransport._SetSslPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2143,12 +1778,8 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
 
             resp = self._interceptor.post_set_ssl_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_ssl_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_ssl_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2170,73 +1801,55 @@ class TargetSslProxiesRestTransport(_BaseTargetSslProxiesRestTransport):
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteTargetSslProxyRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetTargetSslProxyRequest], compute.TargetSslProxy]:
+    def get(self) -> Callable[[compute.GetTargetSslProxyRequest], compute.TargetSslProxy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertTargetSslProxyRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListTargetSslProxiesRequest], compute.TargetSslProxyList]:
+    def list(self) -> Callable[[compute.ListTargetSslProxiesRequest], compute.TargetSslProxyList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_backend_service(
-        self,
-    ) -> Callable[[compute.SetBackendServiceTargetSslProxyRequest], compute.Operation]:
+    def set_backend_service(self) -> Callable[[compute.SetBackendServiceTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetBackendService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_certificate_map(
-        self,
-    ) -> Callable[[compute.SetCertificateMapTargetSslProxyRequest], compute.Operation]:
+    def set_certificate_map(self) -> Callable[[compute.SetCertificateMapTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetCertificateMap(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_proxy_header(
-        self,
-    ) -> Callable[[compute.SetProxyHeaderTargetSslProxyRequest], compute.Operation]:
+    def set_proxy_header(self) -> Callable[[compute.SetProxyHeaderTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetProxyHeader(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_ssl_certificates(
-        self,
-    ) -> Callable[[compute.SetSslCertificatesTargetSslProxyRequest], compute.Operation]:
+    def set_ssl_certificates(self) -> Callable[[compute.SetSslCertificatesTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetSslCertificates(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_ssl_policy(
-        self,
-    ) -> Callable[[compute.SetSslPolicyTargetSslProxyRequest], compute.Operation]:
+    def set_ssl_policy(self) -> Callable[[compute.SetSslPolicyTargetSslProxyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetSslPolicy(self._session, self._host, self._interceptor)  # type: ignore

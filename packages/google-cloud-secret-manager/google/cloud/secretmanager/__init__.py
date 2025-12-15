@@ -18,12 +18,8 @@ from google.cloud.secretmanager import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.secretmanager_v1.services.secret_manager_service.async_client import (
-    SecretManagerServiceAsyncClient,
-)
-from google.cloud.secretmanager_v1.services.secret_manager_service.client import (
-    SecretManagerServiceClient,
-)
+from google.cloud.secretmanager_v1.services.secret_manager_service.async_client import SecretManagerServiceAsyncClient
+from google.cloud.secretmanager_v1.services.secret_manager_service.client import SecretManagerServiceClient
 from google.cloud.secretmanager_v1.types.resources import (
     CustomerManagedEncryption,
     CustomerManagedEncryptionStatus,

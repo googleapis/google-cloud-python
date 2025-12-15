@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -220,18 +211,14 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -265,9 +252,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -334,19 +319,13 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.CreateAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def create_attached_cluster(self) -> Callable[[attached_service.CreateAttachedClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the create attached cluster method over gRPC.
 
         Creates a new
@@ -376,11 +355,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         return self._stubs["create_attached_cluster"]
 
     @property
-    def update_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.UpdateAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def update_attached_cluster(self) -> Callable[[attached_service.UpdateAttachedClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the update attached cluster method over gRPC.
 
         Updates an
@@ -405,11 +380,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         return self._stubs["update_attached_cluster"]
 
     @property
-    def import_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.ImportAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def import_attached_cluster(self) -> Callable[[attached_service.ImportAttachedClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the import attached cluster method over gRPC.
 
         Imports creates a new
@@ -442,11 +413,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         return self._stubs["import_attached_cluster"]
 
     @property
-    def get_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.GetAttachedClusterRequest], attached_resources.AttachedCluster
-    ]:
+    def get_attached_cluster(self) -> Callable[[attached_service.GetAttachedClusterRequest], attached_resources.AttachedCluster]:
         r"""Return a callable for the get attached cluster method over gRPC.
 
         Describes a specific
@@ -472,12 +439,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         return self._stubs["get_attached_cluster"]
 
     @property
-    def list_attached_clusters(
-        self,
-    ) -> Callable[
-        [attached_service.ListAttachedClustersRequest],
-        attached_service.ListAttachedClustersResponse,
-    ]:
+    def list_attached_clusters(self) -> Callable[[attached_service.ListAttachedClustersRequest], attached_service.ListAttachedClustersResponse]:
         r"""Return a callable for the list attached clusters method over gRPC.
 
         Lists all
@@ -503,11 +465,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         return self._stubs["list_attached_clusters"]
 
     @property
-    def delete_attached_cluster(
-        self,
-    ) -> Callable[
-        [attached_service.DeleteAttachedClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_attached_cluster(self) -> Callable[[attached_service.DeleteAttachedClusterRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete attached cluster method over gRPC.
 
         Deletes a specific
@@ -537,12 +495,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         return self._stubs["delete_attached_cluster"]
 
     @property
-    def get_attached_server_config(
-        self,
-    ) -> Callable[
-        [attached_service.GetAttachedServerConfigRequest],
-        attached_resources.AttachedServerConfig,
-    ]:
+    def get_attached_server_config(self) -> Callable[[attached_service.GetAttachedServerConfigRequest], attached_resources.AttachedServerConfig]:
         r"""Return a callable for the get attached server config method over gRPC.
 
         Returns information, such as supported Kubernetes
@@ -559,9 +512,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_attached_server_config" not in self._stubs:
-            self._stubs[
-                "get_attached_server_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_attached_server_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedServerConfig",
                 request_serializer=attached_service.GetAttachedServerConfigRequest.serialize,
                 response_deserializer=attached_resources.AttachedServerConfig.deserialize,
@@ -571,10 +522,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
     @property
     def generate_attached_cluster_install_manifest(
         self,
-    ) -> Callable[
-        [attached_service.GenerateAttachedClusterInstallManifestRequest],
-        attached_service.GenerateAttachedClusterInstallManifestResponse,
-    ]:
+    ) -> Callable[[attached_service.GenerateAttachedClusterInstallManifestRequest], attached_service.GenerateAttachedClusterInstallManifestResponse]:
         r"""Return a callable for the generate attached cluster
         install manifest method over gRPC.
 
@@ -592,9 +540,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_attached_cluster_install_manifest" not in self._stubs:
-            self._stubs[
-                "generate_attached_cluster_install_manifest"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_attached_cluster_install_manifest"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterInstallManifest",
                 request_serializer=attached_service.GenerateAttachedClusterInstallManifestRequest.serialize,
                 response_deserializer=attached_service.GenerateAttachedClusterInstallManifestResponse.deserialize,
@@ -604,10 +550,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
     @property
     def generate_attached_cluster_agent_token(
         self,
-    ) -> Callable[
-        [attached_service.GenerateAttachedClusterAgentTokenRequest],
-        attached_service.GenerateAttachedClusterAgentTokenResponse,
-    ]:
+    ) -> Callable[[attached_service.GenerateAttachedClusterAgentTokenRequest], attached_service.GenerateAttachedClusterAgentTokenResponse]:
         r"""Return a callable for the generate attached cluster
         agent token method over gRPC.
 
@@ -624,9 +567,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_attached_cluster_agent_token" not in self._stubs:
-            self._stubs[
-                "generate_attached_cluster_agent_token"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_attached_cluster_agent_token"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkemulticloud.v1.AttachedClusters/GenerateAttachedClusterAgentToken",
                 request_serializer=attached_service.GenerateAttachedClusterAgentTokenRequest.serialize,
                 response_deserializer=attached_service.GenerateAttachedClusterAgentTokenResponse.deserialize,
@@ -690,9 +631,7 @@ class AttachedClustersGrpcTransport(AttachedClustersTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

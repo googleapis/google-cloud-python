@@ -18,12 +18,8 @@ from google.cloud.managedidentities import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.managedidentities_v1.services.managed_identities_service.async_client import (
-    ManagedIdentitiesServiceAsyncClient,
-)
-from google.cloud.managedidentities_v1.services.managed_identities_service.client import (
-    ManagedIdentitiesServiceClient,
-)
+from google.cloud.managedidentities_v1.services.managed_identities_service.async_client import ManagedIdentitiesServiceAsyncClient
+from google.cloud.managedidentities_v1.services.managed_identities_service.client import ManagedIdentitiesServiceClient
 from google.cloud.managedidentities_v1.types.managed_identities_service import (
     AttachTrustRequest,
     CreateMicrosoftAdDomainRequest,

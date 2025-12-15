@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    operating_system_version_messages,
-    operating_system_version_service,
-)
+from google.ads.admanager_v1.types import operating_system_version_messages, operating_system_version_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseOperatingSystemVersionServiceRestTransport
@@ -99,13 +96,8 @@ class OperatingSystemVersionServiceRestInterceptor:
     """
 
     def pre_get_operating_system_version(
-        self,
-        request: operating_system_version_service.GetOperatingSystemVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_version_service.GetOperatingSystemVersionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: operating_system_version_service.GetOperatingSystemVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_version_service.GetOperatingSystemVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operating_system_version
 
         Override in a subclass to manipulate the request or metadata
@@ -129,13 +121,8 @@ class OperatingSystemVersionServiceRestInterceptor:
         return response
 
     def post_get_operating_system_version_with_metadata(
-        self,
-        response: operating_system_version_messages.OperatingSystemVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_version_messages.OperatingSystemVersion,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: operating_system_version_messages.OperatingSystemVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_version_messages.OperatingSystemVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_operating_system_version
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +138,8 @@ class OperatingSystemVersionServiceRestInterceptor:
         return response, metadata
 
     def pre_list_operating_system_versions(
-        self,
-        request: operating_system_version_service.ListOperatingSystemVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_version_service.ListOperatingSystemVersionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: operating_system_version_service.ListOperatingSystemVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_version_service.ListOperatingSystemVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operating_system_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -166,8 +148,7 @@ class OperatingSystemVersionServiceRestInterceptor:
         return request, metadata
 
     def post_list_operating_system_versions(
-        self,
-        response: operating_system_version_service.ListOperatingSystemVersionsResponse,
+        self, response: operating_system_version_service.ListOperatingSystemVersionsResponse
     ) -> operating_system_version_service.ListOperatingSystemVersionsResponse:
         """Post-rpc interceptor for list_operating_system_versions
 
@@ -182,13 +163,8 @@ class OperatingSystemVersionServiceRestInterceptor:
         return response
 
     def post_list_operating_system_versions_with_metadata(
-        self,
-        response: operating_system_version_service.ListOperatingSystemVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operating_system_version_service.ListOperatingSystemVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: operating_system_version_service.ListOperatingSystemVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operating_system_version_service.ListOperatingSystemVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_operating_system_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -204,12 +180,8 @@ class OperatingSystemVersionServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -217,9 +189,7 @@ class OperatingSystemVersionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -236,9 +206,7 @@ class OperatingSystemVersionServiceRestStub:
     _interceptor: OperatingSystemVersionServiceRestInterceptor
 
 
-class OperatingSystemVersionServiceRestTransport(
-    _BaseOperatingSystemVersionServiceRestTransport
-):
+class OperatingSystemVersionServiceRestTransport(_BaseOperatingSystemVersionServiceRestTransport):
     """REST backend synchronous transport for OperatingSystemVersionService.
 
     Provides methods for handling ``OperatingSystemVersion`` objects.
@@ -310,35 +278,20 @@ class OperatingSystemVersionServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or OperatingSystemVersionServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or OperatingSystemVersionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _GetOperatingSystemVersion(
-        _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion,
-        OperatingSystemVersionServiceRestStub,
+        _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion, OperatingSystemVersionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OperatingSystemVersionServiceRestTransport.GetOperatingSystemVersion"
-            )
+            return hash("OperatingSystemVersionServiceRestTransport.GetOperatingSystemVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -380,28 +333,18 @@ class OperatingSystemVersionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion._get_http_options()
-            )
+            http_options = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_operating_system_version(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_operating_system_version(request, metadata)
             transcoded_request = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperatingSystemVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -425,12 +368,7 @@ class OperatingSystemVersionServiceRestTransport(
 
             # Send the request
             response = OperatingSystemVersionServiceRestTransport._GetOperatingSystemVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -446,16 +384,10 @@ class OperatingSystemVersionServiceRestTransport(
 
             resp = self._interceptor.post_get_operating_system_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_operating_system_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_operating_system_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = operating_system_version_messages.OperatingSystemVersion.to_json(
-                        response
-                    )
+                    response_payload = operating_system_version_messages.OperatingSystemVersion.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -475,24 +407,13 @@ class OperatingSystemVersionServiceRestTransport(
             return resp
 
     class _ListOperatingSystemVersions(
-        _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions,
-        OperatingSystemVersionServiceRestStub,
+        _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions, OperatingSystemVersionServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "OperatingSystemVersionServiceRestTransport.ListOperatingSystemVersions"
-            )
+            return hash("OperatingSystemVersionServiceRestTransport.ListOperatingSystemVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -536,28 +457,18 @@ class OperatingSystemVersionServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions._get_http_options()
-            )
+            http_options = _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_operating_system_versions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_operating_system_versions(request, metadata)
             transcoded_request = _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOperatingSystemVersionServiceRestTransport._BaseListOperatingSystemVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -581,12 +492,7 @@ class OperatingSystemVersionServiceRestTransport(
 
             # Send the request
             response = OperatingSystemVersionServiceRestTransport._ListOperatingSystemVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -595,32 +501,17 @@ class OperatingSystemVersionServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                operating_system_version_service.ListOperatingSystemVersionsResponse()
-            )
-            pb_resp = (
-                operating_system_version_service.ListOperatingSystemVersionsResponse.pb(
-                    resp
-                )
-            )
+            resp = operating_system_version_service.ListOperatingSystemVersionsResponse()
+            pb_resp = operating_system_version_service.ListOperatingSystemVersionsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_operating_system_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_operating_system_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_operating_system_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = operating_system_version_service.ListOperatingSystemVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = operating_system_version_service.ListOperatingSystemVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -642,10 +533,7 @@ class OperatingSystemVersionServiceRestTransport(
     @property
     def get_operating_system_version(
         self,
-    ) -> Callable[
-        [operating_system_version_service.GetOperatingSystemVersionRequest],
-        operating_system_version_messages.OperatingSystemVersion,
-    ]:
+    ) -> Callable[[operating_system_version_service.GetOperatingSystemVersionRequest], operating_system_version_messages.OperatingSystemVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOperatingSystemVersion(self._session, self._host, self._interceptor)  # type: ignore
@@ -654,8 +542,7 @@ class OperatingSystemVersionServiceRestTransport(
     def list_operating_system_versions(
         self,
     ) -> Callable[
-        [operating_system_version_service.ListOperatingSystemVersionsRequest],
-        operating_system_version_service.ListOperatingSystemVersionsResponse,
+        [operating_system_version_service.ListOperatingSystemVersionsRequest], operating_system_version_service.ListOperatingSystemVersionsResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -665,23 +552,12 @@ class OperatingSystemVersionServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation,
-        OperatingSystemVersionServiceRestStub,
-    ):
+    class _GetOperation(_BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation, OperatingSystemVersionServiceRestStub):
         def __hash__(self):
             return hash("OperatingSystemVersionServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -719,26 +595,16 @@ class OperatingSystemVersionServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOperatingSystemVersionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -761,15 +627,8 @@ class OperatingSystemVersionServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                OperatingSystemVersionServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OperatingSystemVersionServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -781,9 +640,7 @@ class OperatingSystemVersionServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

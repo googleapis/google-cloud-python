@@ -103,13 +103,8 @@ class AccountRelationshipsServiceRestInterceptor:
     """
 
     def pre_get_account_relationship(
-        self,
-        request: accountrelationships.GetAccountRelationshipRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountrelationships.GetAccountRelationshipRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountrelationships.GetAccountRelationshipRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountrelationships.GetAccountRelationshipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account_relationship
 
         Override in a subclass to manipulate the request or metadata
@@ -117,9 +112,7 @@ class AccountRelationshipsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_account_relationship(
-        self, response: accountrelationships.AccountRelationship
-    ) -> accountrelationships.AccountRelationship:
+    def post_get_account_relationship(self, response: accountrelationships.AccountRelationship) -> accountrelationships.AccountRelationship:
         """Post-rpc interceptor for get_account_relationship
 
         DEPRECATED. Please use the `post_get_account_relationship_with_metadata`
@@ -133,13 +126,8 @@ class AccountRelationshipsServiceRestInterceptor:
         return response
 
     def post_get_account_relationship_with_metadata(
-        self,
-        response: accountrelationships.AccountRelationship,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountrelationships.AccountRelationship,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: accountrelationships.AccountRelationship, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountrelationships.AccountRelationship, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_account_relationship
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -155,13 +143,8 @@ class AccountRelationshipsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_account_relationships(
-        self,
-        request: accountrelationships.ListAccountRelationshipsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountrelationships.ListAccountRelationshipsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountrelationships.ListAccountRelationshipsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountrelationships.ListAccountRelationshipsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_account_relationships
 
         Override in a subclass to manipulate the request or metadata
@@ -185,13 +168,8 @@ class AccountRelationshipsServiceRestInterceptor:
         return response
 
     def post_list_account_relationships_with_metadata(
-        self,
-        response: accountrelationships.ListAccountRelationshipsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountrelationships.ListAccountRelationshipsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: accountrelationships.ListAccountRelationshipsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountrelationships.ListAccountRelationshipsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_account_relationships
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -207,13 +185,8 @@ class AccountRelationshipsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_account_relationship(
-        self,
-        request: accountrelationships.UpdateAccountRelationshipRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountrelationships.UpdateAccountRelationshipRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountrelationships.UpdateAccountRelationshipRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountrelationships.UpdateAccountRelationshipRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_account_relationship
 
         Override in a subclass to manipulate the request or metadata
@@ -221,9 +194,7 @@ class AccountRelationshipsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_account_relationship(
-        self, response: accountrelationships.AccountRelationship
-    ) -> accountrelationships.AccountRelationship:
+    def post_update_account_relationship(self, response: accountrelationships.AccountRelationship) -> accountrelationships.AccountRelationship:
         """Post-rpc interceptor for update_account_relationship
 
         DEPRECATED. Please use the `post_update_account_relationship_with_metadata`
@@ -237,13 +208,8 @@ class AccountRelationshipsServiceRestInterceptor:
         return response
 
     def post_update_account_relationship_with_metadata(
-        self,
-        response: accountrelationships.AccountRelationship,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountrelationships.AccountRelationship,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: accountrelationships.AccountRelationship, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountrelationships.AccountRelationship, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_account_relationship
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -266,9 +232,7 @@ class AccountRelationshipsServiceRestStub:
     _interceptor: AccountRelationshipsServiceRestInterceptor
 
 
-class AccountRelationshipsServiceRestTransport(
-    _BaseAccountRelationshipsServiceRestTransport
-):
+class AccountRelationshipsServiceRestTransport(_BaseAccountRelationshipsServiceRestTransport):
     """REST backend synchronous transport for AccountRelationshipsService.
 
     Service to support AccountRelationship API.
@@ -340,33 +304,18 @@ class AccountRelationshipsServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AccountRelationshipsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetAccountRelationship(
-        _BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship,
-        AccountRelationshipsServiceRestStub,
-    ):
+    class _GetAccountRelationship(_BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship, AccountRelationshipsServiceRestStub):
         def __hash__(self):
-            return hash(
-                "AccountRelationshipsServiceRestTransport.GetAccountRelationship"
-            )
+            return hash("AccountRelationshipsServiceRestTransport.GetAccountRelationship")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -419,28 +368,18 @@ class AccountRelationshipsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship._get_http_options()
-            )
+            http_options = _BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_account_relationship(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_account_relationship(request, metadata)
             transcoded_request = _BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountRelationshipsServiceRestTransport._BaseGetAccountRelationship._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -464,12 +403,7 @@ class AccountRelationshipsServiceRestTransport(
 
             # Send the request
             response = AccountRelationshipsServiceRestTransport._GetAccountRelationship._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -485,16 +419,10 @@ class AccountRelationshipsServiceRestTransport(
 
             resp = self._interceptor.post_get_account_relationship(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_account_relationship_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_account_relationship_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = accountrelationships.AccountRelationship.to_json(
-                        response
-                    )
+                    response_payload = accountrelationships.AccountRelationship.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -513,25 +441,12 @@ class AccountRelationshipsServiceRestTransport(
                 )
             return resp
 
-    class _ListAccountRelationships(
-        _BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships,
-        AccountRelationshipsServiceRestStub,
-    ):
+    class _ListAccountRelationships(_BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships, AccountRelationshipsServiceRestStub):
         def __hash__(self):
-            return hash(
-                "AccountRelationshipsServiceRestTransport.ListAccountRelationships"
-            )
+            return hash("AccountRelationshipsServiceRestTransport.ListAccountRelationships")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -574,28 +489,18 @@ class AccountRelationshipsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships._get_http_options()
-            )
+            http_options = _BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_account_relationships(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_account_relationships(request, metadata)
             transcoded_request = _BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountRelationshipsServiceRestTransport._BaseListAccountRelationships._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -619,12 +524,7 @@ class AccountRelationshipsServiceRestTransport(
 
             # Send the request
             response = AccountRelationshipsServiceRestTransport._ListAccountRelationships._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -640,18 +540,10 @@ class AccountRelationshipsServiceRestTransport(
 
             resp = self._interceptor.post_list_account_relationships(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_account_relationships_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_account_relationships_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        accountrelationships.ListAccountRelationshipsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = accountrelationships.ListAccountRelationshipsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -671,24 +563,13 @@ class AccountRelationshipsServiceRestTransport(
             return resp
 
     class _UpdateAccountRelationship(
-        _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship,
-        AccountRelationshipsServiceRestStub,
+        _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship, AccountRelationshipsServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "AccountRelationshipsServiceRestTransport.UpdateAccountRelationship"
-            )
+            return hash("AccountRelationshipsServiceRestTransport.UpdateAccountRelationship")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -743,32 +624,20 @@ class AccountRelationshipsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_http_options()
-            )
+            http_options = _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_account_relationship(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_account_relationship(request, metadata)
             transcoded_request = _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountRelationshipsServiceRestTransport._BaseUpdateAccountRelationship._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -792,13 +661,7 @@ class AccountRelationshipsServiceRestTransport(
 
             # Send the request
             response = AccountRelationshipsServiceRestTransport._UpdateAccountRelationship._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -814,16 +677,10 @@ class AccountRelationshipsServiceRestTransport(
 
             resp = self._interceptor.post_update_account_relationship(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_account_relationship_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_account_relationship_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = accountrelationships.AccountRelationship.to_json(
-                        response
-                    )
+                    response_payload = accountrelationships.AccountRelationship.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -843,12 +700,7 @@ class AccountRelationshipsServiceRestTransport(
             return resp
 
     @property
-    def get_account_relationship(
-        self,
-    ) -> Callable[
-        [accountrelationships.GetAccountRelationshipRequest],
-        accountrelationships.AccountRelationship,
-    ]:
+    def get_account_relationship(self) -> Callable[[accountrelationships.GetAccountRelationshipRequest], accountrelationships.AccountRelationship]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccountRelationship(self._session, self._host, self._interceptor)  # type: ignore
@@ -856,10 +708,7 @@ class AccountRelationshipsServiceRestTransport(
     @property
     def list_account_relationships(
         self,
-    ) -> Callable[
-        [accountrelationships.ListAccountRelationshipsRequest],
-        accountrelationships.ListAccountRelationshipsResponse,
-    ]:
+    ) -> Callable[[accountrelationships.ListAccountRelationshipsRequest], accountrelationships.ListAccountRelationshipsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccountRelationships(self._session, self._host, self._interceptor)  # type: ignore
@@ -867,10 +716,7 @@ class AccountRelationshipsServiceRestTransport(
     @property
     def update_account_relationship(
         self,
-    ) -> Callable[
-        [accountrelationships.UpdateAccountRelationshipRequest],
-        accountrelationships.AccountRelationship,
-    ]:
+    ) -> Callable[[accountrelationships.UpdateAccountRelationshipRequest], accountrelationships.AccountRelationship]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAccountRelationship(self._session, self._host, self._interceptor)  # type: ignore

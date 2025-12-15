@@ -16,14 +16,7 @@
 from .lfpinventory import InsertLfpInventoryRequest, LfpInventory
 from .lfpmerchantstate import GetLfpMerchantStateRequest, LfpMerchantState
 from .lfpsale import InsertLfpSaleRequest, LfpSale
-from .lfpstore import (
-    DeleteLfpStoreRequest,
-    GetLfpStoreRequest,
-    InsertLfpStoreRequest,
-    LfpStore,
-    ListLfpStoresRequest,
-    ListLfpStoresResponse,
-)
+from .lfpstore import DeleteLfpStoreRequest, GetLfpStoreRequest, InsertLfpStoreRequest, LfpStore, ListLfpStoresRequest, ListLfpStoresResponse
 
 __all__ = (
     "InsertLfpInventoryRequest",

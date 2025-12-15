@@ -44,9 +44,7 @@ async def sample_get_multicloud_data_transfer_supported_service():
     )
 
     # Make the request
-    response = await client.get_multicloud_data_transfer_supported_service(
-        request=request
-    )
+    response = await client.get_multicloud_data_transfer_supported_service(request=request)
 
     # Handle the response
     print(response)

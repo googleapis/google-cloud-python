@@ -19,19 +19,12 @@ from typing import Dict, Type
 from .base import BinauthzManagementServiceV1Beta1Transport
 from .grpc import BinauthzManagementServiceV1Beta1GrpcTransport
 from .grpc_asyncio import BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport
-from .rest import (
-    BinauthzManagementServiceV1Beta1RestInterceptor,
-    BinauthzManagementServiceV1Beta1RestTransport,
-)
+from .rest import BinauthzManagementServiceV1Beta1RestInterceptor, BinauthzManagementServiceV1Beta1RestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[BinauthzManagementServiceV1Beta1Transport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[BinauthzManagementServiceV1Beta1Transport]]
 _transport_registry["grpc"] = BinauthzManagementServiceV1Beta1GrpcTransport
-_transport_registry[
-    "grpc_asyncio"
-] = BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport
+_transport_registry["grpc_asyncio"] = BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport
 _transport_registry["rest"] = BinauthzManagementServiceV1Beta1RestTransport
 
 __all__ = (

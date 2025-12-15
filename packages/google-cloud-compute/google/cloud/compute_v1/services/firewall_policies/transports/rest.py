@@ -223,13 +223,8 @@ class FirewallPoliciesRestInterceptor:
     """
 
     def pre_add_association(
-        self,
-        request: compute.AddAssociationFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddAssociationFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AddAssociationFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddAssociationFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_association
 
         Override in a subclass to manipulate the request or metadata
@@ -251,9 +246,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_add_association_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_association
 
@@ -270,12 +263,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_add_rule(
-        self,
-        request: compute.AddRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AddRuleFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -297,9 +286,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_add_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_rule
 
@@ -316,12 +303,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_clone_rules(
-        self,
-        request: compute.CloneRulesFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.CloneRulesFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.CloneRulesFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.CloneRulesFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for clone_rules
 
         Override in a subclass to manipulate the request or metadata
@@ -343,9 +326,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_clone_rules_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for clone_rules
 
@@ -362,12 +343,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -389,9 +366,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -408,12 +383,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -435,9 +406,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.FirewallPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.FirewallPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.FirewallPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -454,13 +423,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_association(
-        self,
-        request: compute.GetAssociationFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetAssociationFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetAssociationFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetAssociationFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_association
 
         Override in a subclass to manipulate the request or metadata
@@ -468,9 +432,7 @@ class FirewallPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_association(
-        self, response: compute.FirewallPolicyAssociation
-    ) -> compute.FirewallPolicyAssociation:
+    def post_get_association(self, response: compute.FirewallPolicyAssociation) -> compute.FirewallPolicyAssociation:
         """Post-rpc interceptor for get_association
 
         DEPRECATED. Please use the `post_get_association_with_metadata`
@@ -484,12 +446,8 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_get_association_with_metadata(
-        self,
-        response: compute.FirewallPolicyAssociation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.FirewallPolicyAssociation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.FirewallPolicyAssociation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.FirewallPolicyAssociation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_association
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -505,13 +463,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicyFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicyFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetIamPolicyFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicyFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -533,9 +486,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -552,12 +503,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_rule(
-        self,
-        request: compute.GetRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRuleFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -565,9 +512,7 @@ class FirewallPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_rule(
-        self, response: compute.FirewallPolicyRule
-    ) -> compute.FirewallPolicyRule:
+    def post_get_rule(self, response: compute.FirewallPolicyRule) -> compute.FirewallPolicyRule:
         """Post-rpc interceptor for get_rule
 
         DEPRECATED. Please use the `post_get_rule_with_metadata`
@@ -581,9 +526,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_get_rule_with_metadata(
-        self,
-        response: compute.FirewallPolicyRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.FirewallPolicyRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.FirewallPolicyRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_rule
 
@@ -600,12 +543,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -627,9 +566,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -646,12 +583,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListFirewallPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListFirewallPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListFirewallPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListFirewallPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -659,9 +592,7 @@ class FirewallPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.FirewallPolicyList
-    ) -> compute.FirewallPolicyList:
+    def post_list(self, response: compute.FirewallPolicyList) -> compute.FirewallPolicyList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -675,9 +606,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.FirewallPolicyList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.FirewallPolicyList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.FirewallPolicyList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -694,13 +623,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_list_associations(
-        self,
-        request: compute.ListAssociationsFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListAssociationsFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListAssociationsFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListAssociationsFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_associations
 
         Override in a subclass to manipulate the request or metadata
@@ -708,9 +632,7 @@ class FirewallPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_associations(
-        self, response: compute.FirewallPoliciesListAssociationsResponse
-    ) -> compute.FirewallPoliciesListAssociationsResponse:
+    def post_list_associations(self, response: compute.FirewallPoliciesListAssociationsResponse) -> compute.FirewallPoliciesListAssociationsResponse:
         """Post-rpc interceptor for list_associations
 
         DEPRECATED. Please use the `post_list_associations_with_metadata`
@@ -724,13 +646,8 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_list_associations_with_metadata(
-        self,
-        response: compute.FirewallPoliciesListAssociationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.FirewallPoliciesListAssociationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.FirewallPoliciesListAssociationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.FirewallPoliciesListAssociationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_associations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -746,12 +663,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_move(
-        self,
-        request: compute.MoveFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.MoveFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.MoveFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.MoveFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for move
 
         Override in a subclass to manipulate the request or metadata
@@ -773,9 +686,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_move_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for move
 
@@ -792,12 +703,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -819,9 +726,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -838,12 +743,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch_rule(
-        self,
-        request: compute.PatchRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchRuleFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -865,9 +766,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_patch_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch_rule
 
@@ -884,13 +783,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_remove_association(
-        self,
-        request: compute.RemoveAssociationFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveAssociationFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RemoveAssociationFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveAssociationFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_association
 
         Override in a subclass to manipulate the request or metadata
@@ -912,9 +806,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_remove_association_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_association
 
@@ -931,12 +823,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_remove_rule(
-        self,
-        request: compute.RemoveRuleFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.RemoveRuleFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveRuleFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -958,9 +846,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_remove_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_rule
 
@@ -977,13 +863,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicyFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicyFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetIamPolicyFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicyFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -1005,9 +886,7 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -1024,13 +903,8 @@ class FirewallPoliciesRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsFirewallPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsFirewallPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsFirewallPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsFirewallPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -1038,9 +912,7 @@ class FirewallPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -1054,12 +926,8 @@ class FirewallPoliciesRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1158,30 +1026,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or FirewallPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AddAssociation(
-        _BaseFirewallPoliciesRestTransport._BaseAddAssociation, FirewallPoliciesRestStub
-    ):
+    class _AddAssociation(_BaseFirewallPoliciesRestTransport._BaseAddAssociation, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.AddAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1240,30 +1096,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseAddAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1287,13 +1131,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._AddAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1309,12 +1147,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_add_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1335,22 +1169,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _AddRule(
-        _BaseFirewallPoliciesRestTransport._BaseAddRule, FirewallPoliciesRestStub
-    ):
+    class _AddRule(_BaseFirewallPoliciesRestTransport._BaseAddRule, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.AddRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1409,36 +1233,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseAddRule._get_http_options()
 
             request, metadata = self._interceptor.pre_add_rule(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseAddRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseAddRule._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseFirewallPoliciesRestTransport._BaseAddRule._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseFirewallPoliciesRestTransport._BaseAddRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseAddRule._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseAddRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1462,13 +1268,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._AddRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1484,12 +1284,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_add_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1510,22 +1306,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _CloneRules(
-        _BaseFirewallPoliciesRestTransport._BaseCloneRules, FirewallPoliciesRestStub
-    ):
+    class _CloneRules(_BaseFirewallPoliciesRestTransport._BaseCloneRules, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.CloneRules")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1583,26 +1369,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_http_options()
 
             request, metadata = self._interceptor.pre_clone_rules(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseCloneRules._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1626,12 +1402,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._CloneRules._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1647,12 +1418,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_clone_rules(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_clone_rules_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_clone_rules_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1673,22 +1440,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _Delete(
-        _BaseFirewallPoliciesRestTransport._BaseDelete, FirewallPoliciesRestStub
-    ):
+    class _Delete(_BaseFirewallPoliciesRestTransport._BaseDelete, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1746,30 +1503,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1793,12 +1536,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1814,12 +1552,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1845,15 +1579,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             return hash("FirewallPoliciesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1896,30 +1622,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1943,12 +1655,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1965,9 +1672,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.FirewallPolicy.to_json(response)
                 except:
@@ -1988,22 +1693,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _GetAssociation(
-        _BaseFirewallPoliciesRestTransport._BaseGetAssociation, FirewallPoliciesRestStub
-    ):
+    class _GetAssociation(_BaseFirewallPoliciesRestTransport._BaseGetAssociation, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.GetAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2044,26 +1739,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseGetAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2087,12 +1772,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._GetAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2108,16 +1788,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_get_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.FirewallPolicyAssociation.to_json(
-                        response
-                    )
+                    response_payload = compute.FirewallPolicyAssociation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2136,22 +1810,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy, FirewallPoliciesRestStub
-    ):
+    class _GetIamPolicy(_BaseFirewallPoliciesRestTransport._BaseGetIamPolicy, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2215,26 +1879,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2258,12 +1912,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2279,12 +1928,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2305,22 +1950,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _GetRule(
-        _BaseFirewallPoliciesRestTransport._BaseGetRule, FirewallPoliciesRestStub
-    ):
+    class _GetRule(_BaseFirewallPoliciesRestTransport._BaseGetRule, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.GetRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2365,30 +2000,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseGetRule._get_http_options()
 
             request, metadata = self._interceptor.pre_get_rule(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseGetRule._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseGetRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseGetRule._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseGetRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2412,12 +2033,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._GetRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2433,12 +2049,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_get_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.FirewallPolicyRule.to_json(response)
                 except:
@@ -2459,22 +2071,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseFirewallPoliciesRestTransport._BaseInsert, FirewallPoliciesRestStub
-    ):
+    class _Insert(_BaseFirewallPoliciesRestTransport._BaseInsert, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2533,36 +2135,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseFirewallPoliciesRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseFirewallPoliciesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2586,13 +2170,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2608,12 +2186,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2639,15 +2213,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             return hash("FirewallPoliciesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2688,30 +2254,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2735,12 +2287,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2757,9 +2304,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.FirewallPolicyList.to_json(response)
                 except:
@@ -2780,23 +2325,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _ListAssociations(
-        _BaseFirewallPoliciesRestTransport._BaseListAssociations,
-        FirewallPoliciesRestStub,
-    ):
+    class _ListAssociations(_BaseFirewallPoliciesRestTransport._BaseListAssociations, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.ListAssociations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2837,28 +2371,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_associations(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_associations(request, metadata)
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseListAssociations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2882,12 +2404,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._ListAssociations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2903,18 +2420,10 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_list_associations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_associations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_associations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.FirewallPoliciesListAssociationsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = compute.FirewallPoliciesListAssociationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2938,15 +2447,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             return hash("FirewallPoliciesRestTransport.Move")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3004,30 +2505,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseMove._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseMove._get_http_options()
 
             request, metadata = self._interceptor.pre_move(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BaseMove._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseMove._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BaseMove._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseMove._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3051,12 +2538,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._Move._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3073,9 +2555,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             resp = self._interceptor.post_move(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_move_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3096,22 +2576,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _Patch(
-        _BaseFirewallPoliciesRestTransport._BasePatch, FirewallPoliciesRestStub
-    ):
+    class _Patch(_BaseFirewallPoliciesRestTransport._BasePatch, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3170,34 +2640,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseFirewallPoliciesRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallPoliciesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallPoliciesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseFirewallPoliciesRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3221,13 +2675,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3243,12 +2691,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3269,22 +2713,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _PatchRule(
-        _BaseFirewallPoliciesRestTransport._BasePatchRule, FirewallPoliciesRestStub
-    ):
+    class _PatchRule(_BaseFirewallPoliciesRestTransport._BasePatchRule, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.PatchRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3343,30 +2777,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_http_options()
 
             request, metadata = self._interceptor.pre_patch_rule(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BasePatchRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3390,13 +2812,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._PatchRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3412,12 +2828,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_patch_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3438,23 +2850,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _RemoveAssociation(
-        _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation,
-        FirewallPoliciesRestStub,
-    ):
+    class _RemoveAssociation(_BaseFirewallPoliciesRestTransport._BaseRemoveAssociation, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.RemoveAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3512,28 +2913,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_association(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_association(request, metadata)
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseRemoveAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3557,12 +2946,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._RemoveAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3578,12 +2962,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_remove_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3604,22 +2984,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _RemoveRule(
-        _BaseFirewallPoliciesRestTransport._BaseRemoveRule, FirewallPoliciesRestStub
-    ):
+    class _RemoveRule(_BaseFirewallPoliciesRestTransport._BaseRemoveRule, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.RemoveRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3677,26 +3047,16 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_http_options()
 
             request, metadata = self._interceptor.pre_remove_rule(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseRemoveRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3720,12 +3080,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._RemoveRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3741,12 +3096,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_remove_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3767,22 +3118,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy, FirewallPoliciesRestStub
-    ):
+    class _SetIamPolicy(_BaseFirewallPoliciesRestTransport._BaseSetIamPolicy, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3847,30 +3188,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3894,13 +3223,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3916,12 +3239,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -3942,23 +3261,12 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions,
-        FirewallPoliciesRestStub,
-    ):
+    class _TestIamPermissions(_BaseFirewallPoliciesRestTransport._BaseTestIamPermissions, FirewallPoliciesRestStub):
         def __hash__(self):
             return hash("FirewallPoliciesRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4000,32 +3308,18 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             """
 
-            http_options = (
-                _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseFirewallPoliciesRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4049,13 +3343,7 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             # Send the request
             response = FirewallPoliciesRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4071,12 +3359,8 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -4098,94 +3382,67 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
             return resp
 
     @property
-    def add_association(
-        self,
-    ) -> Callable[[compute.AddAssociationFirewallPolicyRequest], compute.Operation]:
+    def add_association(self) -> Callable[[compute.AddAssociationFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def add_rule(
-        self,
-    ) -> Callable[[compute.AddRuleFirewallPolicyRequest], compute.Operation]:
+    def add_rule(self) -> Callable[[compute.AddRuleFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def clone_rules(
-        self,
-    ) -> Callable[[compute.CloneRulesFirewallPolicyRequest], compute.Operation]:
+    def clone_rules(self) -> Callable[[compute.CloneRulesFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CloneRules(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteFirewallPolicyRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetFirewallPolicyRequest], compute.FirewallPolicy]:
+    def get(self) -> Callable[[compute.GetFirewallPolicyRequest], compute.FirewallPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_association(
-        self,
-    ) -> Callable[
-        [compute.GetAssociationFirewallPolicyRequest], compute.FirewallPolicyAssociation
-    ]:
+    def get_association(self) -> Callable[[compute.GetAssociationFirewallPolicyRequest], compute.FirewallPolicyAssociation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicyFirewallPolicyRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyFirewallPolicyRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_rule(
-        self,
-    ) -> Callable[[compute.GetRuleFirewallPolicyRequest], compute.FirewallPolicyRule]:
+    def get_rule(self) -> Callable[[compute.GetRuleFirewallPolicyRequest], compute.FirewallPolicyRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertFirewallPolicyRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListFirewallPoliciesRequest], compute.FirewallPolicyList]:
+    def list(self) -> Callable[[compute.ListFirewallPoliciesRequest], compute.FirewallPolicyList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_associations(
-        self,
-    ) -> Callable[
-        [compute.ListAssociationsFirewallPolicyRequest],
-        compute.FirewallPoliciesListAssociationsResponse,
-    ]:
+    def list_associations(self) -> Callable[[compute.ListAssociationsFirewallPolicyRequest], compute.FirewallPoliciesListAssociationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssociations(self._session, self._host, self._interceptor)  # type: ignore
@@ -4197,52 +3454,37 @@ class FirewallPoliciesRestTransport(_BaseFirewallPoliciesRestTransport):
         return self._Move(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchFirewallPolicyRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch_rule(
-        self,
-    ) -> Callable[[compute.PatchRuleFirewallPolicyRequest], compute.Operation]:
+    def patch_rule(self) -> Callable[[compute.PatchRuleFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PatchRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_association(
-        self,
-    ) -> Callable[[compute.RemoveAssociationFirewallPolicyRequest], compute.Operation]:
+    def remove_association(self) -> Callable[[compute.RemoveAssociationFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_rule(
-        self,
-    ) -> Callable[[compute.RemoveRuleFirewallPolicyRequest], compute.Operation]:
+    def remove_rule(self) -> Callable[[compute.RemoveRuleFirewallPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicyFirewallPolicyRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyFirewallPolicyRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsFirewallPolicyRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsFirewallPolicyRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

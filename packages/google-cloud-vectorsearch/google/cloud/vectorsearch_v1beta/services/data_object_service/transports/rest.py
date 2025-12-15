@@ -132,13 +132,8 @@ class DataObjectServiceRestInterceptor:
     """
 
     def pre_batch_create_data_objects(
-        self,
-        request: data_object_service.BatchCreateDataObjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.BatchCreateDataObjectsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.BatchCreateDataObjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.BatchCreateDataObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_data_objects
 
         Override in a subclass to manipulate the request or metadata
@@ -162,13 +157,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def post_batch_create_data_objects_with_metadata(
-        self,
-        response: data_object_service.BatchCreateDataObjectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.BatchCreateDataObjectsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_object_service.BatchCreateDataObjectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.BatchCreateDataObjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_data_objects
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -184,13 +174,8 @@ class DataObjectServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_delete_data_objects(
-        self,
-        request: data_object_service.BatchDeleteDataObjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.BatchDeleteDataObjectsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.BatchDeleteDataObjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.BatchDeleteDataObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_data_objects
 
         Override in a subclass to manipulate the request or metadata
@@ -199,13 +184,8 @@ class DataObjectServiceRestInterceptor:
         return request, metadata
 
     def pre_batch_update_data_objects(
-        self,
-        request: data_object_service.BatchUpdateDataObjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.BatchUpdateDataObjectsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.BatchUpdateDataObjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.BatchUpdateDataObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_data_objects
 
         Override in a subclass to manipulate the request or metadata
@@ -229,13 +209,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def post_batch_update_data_objects_with_metadata(
-        self,
-        response: data_object_service.BatchUpdateDataObjectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.BatchUpdateDataObjectsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: data_object_service.BatchUpdateDataObjectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.BatchUpdateDataObjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_data_objects
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -251,13 +226,8 @@ class DataObjectServiceRestInterceptor:
         return response, metadata
 
     def pre_create_data_object(
-        self,
-        request: data_object_service.CreateDataObjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.CreateDataObjectRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.CreateDataObjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.CreateDataObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_object
 
         Override in a subclass to manipulate the request or metadata
@@ -265,9 +235,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_object(
-        self, response: gcv_data_object.DataObject
-    ) -> gcv_data_object.DataObject:
+    def post_create_data_object(self, response: gcv_data_object.DataObject) -> gcv_data_object.DataObject:
         """Post-rpc interceptor for create_data_object
 
         DEPRECATED. Please use the `post_create_data_object_with_metadata`
@@ -281,9 +249,7 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def post_create_data_object_with_metadata(
-        self,
-        response: gcv_data_object.DataObject,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcv_data_object.DataObject, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcv_data_object.DataObject, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_object
 
@@ -300,13 +266,8 @@ class DataObjectServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_object(
-        self,
-        request: data_object_service.DeleteDataObjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.DeleteDataObjectRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.DeleteDataObjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.DeleteDataObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_object
 
         Override in a subclass to manipulate the request or metadata
@@ -315,13 +276,8 @@ class DataObjectServiceRestInterceptor:
         return request, metadata
 
     def pre_get_data_object(
-        self,
-        request: data_object_service.GetDataObjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.GetDataObjectRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.GetDataObjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.GetDataObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_object
 
         Override in a subclass to manipulate the request or metadata
@@ -329,9 +285,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_object(
-        self, response: data_object.DataObject
-    ) -> data_object.DataObject:
+    def post_get_data_object(self, response: data_object.DataObject) -> data_object.DataObject:
         """Post-rpc interceptor for get_data_object
 
         DEPRECATED. Please use the `post_get_data_object_with_metadata`
@@ -345,9 +299,7 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def post_get_data_object_with_metadata(
-        self,
-        response: data_object.DataObject,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: data_object.DataObject, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[data_object.DataObject, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_object
 
@@ -364,13 +316,8 @@ class DataObjectServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_object(
-        self,
-        request: data_object_service.UpdateDataObjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_object_service.UpdateDataObjectRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: data_object_service.UpdateDataObjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_object_service.UpdateDataObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_object
 
         Override in a subclass to manipulate the request or metadata
@@ -378,9 +325,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_object(
-        self, response: gcv_data_object.DataObject
-    ) -> gcv_data_object.DataObject:
+    def post_update_data_object(self, response: gcv_data_object.DataObject) -> gcv_data_object.DataObject:
         """Post-rpc interceptor for update_data_object
 
         DEPRECATED. Please use the `post_update_data_object_with_metadata`
@@ -394,9 +339,7 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def post_update_data_object_with_metadata(
-        self,
-        response: gcv_data_object.DataObject,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcv_data_object.DataObject, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcv_data_object.DataObject, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_object
 
@@ -413,12 +356,8 @@ class DataObjectServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -426,9 +365,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -438,12 +375,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -451,9 +384,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -463,12 +394,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -486,12 +413,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -509,12 +432,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -522,9 +441,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -534,12 +451,8 @@ class DataObjectServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -547,9 +460,7 @@ class DataObjectServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -638,31 +549,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DataObjectServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchCreateDataObjects(
-        _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects,
-        DataObjectServiceRestStub,
-    ):
+    class _BatchCreateDataObjects(_BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.BatchCreateDataObjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -705,32 +603,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_data_objects(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_data_objects(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_transcoded_request(http_options, request)
 
-            body = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseBatchCreateDataObjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -753,16 +637,8 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataObjectServiceRestTransport._BatchCreateDataObjects._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataObjectServiceRestTransport._BatchCreateDataObjects._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -778,18 +654,10 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_data_objects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_data_objects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_data_objects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        data_object_service.BatchCreateDataObjectsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = data_object_service.BatchCreateDataObjectsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -808,23 +676,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeleteDataObjects(
-        _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects,
-        DataObjectServiceRestStub,
-    ):
+    class _BatchDeleteDataObjects(_BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.BatchDeleteDataObjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -861,32 +718,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_data_objects(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_data_objects(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_transcoded_request(http_options, request)
 
-            body = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseBatchDeleteDataObjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -909,16 +752,8 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataObjectServiceRestTransport._BatchDeleteDataObjects._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataObjectServiceRestTransport._BatchDeleteDataObjects._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -926,23 +761,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchUpdateDataObjects(
-        _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects,
-        DataObjectServiceRestStub,
-    ):
+    class _BatchUpdateDataObjects(_BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.BatchUpdateDataObjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -985,32 +809,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_data_objects(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_data_objects(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_transcoded_request(http_options, request)
 
-            body = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseBatchUpdateDataObjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1033,16 +843,8 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                DataObjectServiceRestTransport._BatchUpdateDataObjects._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = DataObjectServiceRestTransport._BatchUpdateDataObjects._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1058,18 +860,10 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_data_objects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_data_objects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_data_objects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        data_object_service.BatchUpdateDataObjectsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = data_object_service.BatchUpdateDataObjectsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1088,23 +882,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
             return resp
 
-    class _CreateDataObject(
-        _BaseDataObjectServiceRestTransport._BaseCreateDataObject,
-        DataObjectServiceRestStub,
-    ):
+    class _CreateDataObject(_BaseDataObjectServiceRestTransport._BaseCreateDataObject, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.CreateDataObject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1147,32 +930,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_object(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_object(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_transcoded_request(http_options, request)
 
-            body = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseCreateDataObject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1196,13 +965,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._CreateDataObject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1218,12 +981,8 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             resp = self._interceptor.post_create_data_object(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_object_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_object_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcv_data_object.DataObject.to_json(response)
                 except:
@@ -1244,23 +1003,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataObject(
-        _BaseDataObjectServiceRestTransport._BaseDeleteDataObject,
-        DataObjectServiceRestStub,
-    ):
+    class _DeleteDataObject(_BaseDataObjectServiceRestTransport._BaseDeleteDataObject, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.DeleteDataObject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1296,28 +1044,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_object(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_object(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseDeleteDataObject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1341,12 +1077,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._DeleteDataObject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1354,23 +1085,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDataObject(
-        _BaseDataObjectServiceRestTransport._BaseGetDataObject,
-        DataObjectServiceRestStub,
-    ):
+    class _GetDataObject(_BaseDataObjectServiceRestTransport._BaseGetDataObject, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.GetDataObject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1412,26 +1132,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_object(request, metadata)
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseGetDataObject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1455,12 +1165,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._GetDataObject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1476,12 +1181,8 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             resp = self._interceptor.post_get_data_object(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_object_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_object_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = data_object.DataObject.to_json(response)
                 except:
@@ -1502,23 +1203,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataObject(
-        _BaseDataObjectServiceRestTransport._BaseUpdateDataObject,
-        DataObjectServiceRestStub,
-    ):
+    class _UpdateDataObject(_BaseDataObjectServiceRestTransport._BaseUpdateDataObject, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.UpdateDataObject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1561,32 +1251,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_object(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_object(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_transcoded_request(http_options, request)
 
-            body = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseUpdateDataObject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1610,13 +1286,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._UpdateDataObject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1632,12 +1302,8 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             resp = self._interceptor.post_update_data_object(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_object_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_object_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcv_data_object.DataObject.to_json(response)
                 except:
@@ -1661,18 +1327,13 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     @property
     def batch_create_data_objects(
         self,
-    ) -> Callable[
-        [data_object_service.BatchCreateDataObjectsRequest],
-        data_object_service.BatchCreateDataObjectsResponse,
-    ]:
+    ) -> Callable[[data_object_service.BatchCreateDataObjectsRequest], data_object_service.BatchCreateDataObjectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateDataObjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_delete_data_objects(
-        self,
-    ) -> Callable[[data_object_service.BatchDeleteDataObjectsRequest], empty_pb2.Empty]:
+    def batch_delete_data_objects(self) -> Callable[[data_object_service.BatchDeleteDataObjectsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteDataObjects(self._session, self._host, self._interceptor)  # type: ignore
@@ -1680,46 +1341,31 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     @property
     def batch_update_data_objects(
         self,
-    ) -> Callable[
-        [data_object_service.BatchUpdateDataObjectsRequest],
-        data_object_service.BatchUpdateDataObjectsResponse,
-    ]:
+    ) -> Callable[[data_object_service.BatchUpdateDataObjectsRequest], data_object_service.BatchUpdateDataObjectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateDataObjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_data_object(
-        self,
-    ) -> Callable[
-        [data_object_service.CreateDataObjectRequest], gcv_data_object.DataObject
-    ]:
+    def create_data_object(self) -> Callable[[data_object_service.CreateDataObjectRequest], gcv_data_object.DataObject]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataObject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_object(
-        self,
-    ) -> Callable[[data_object_service.DeleteDataObjectRequest], empty_pb2.Empty]:
+    def delete_data_object(self) -> Callable[[data_object_service.DeleteDataObjectRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataObject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_object(
-        self,
-    ) -> Callable[[data_object_service.GetDataObjectRequest], data_object.DataObject]:
+    def get_data_object(self) -> Callable[[data_object_service.GetDataObjectRequest], data_object.DataObject]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataObject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_object(
-        self,
-    ) -> Callable[
-        [data_object_service.UpdateDataObjectRequest], gcv_data_object.DataObject
-    ]:
+    def update_data_object(self) -> Callable[[data_object_service.UpdateDataObjectRequest], gcv_data_object.DataObject]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataObject(self._session, self._host, self._interceptor)  # type: ignore
@@ -1728,22 +1374,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataObjectServiceRestTransport._BaseGetLocation, DataObjectServiceRestStub
-    ):
+    class _GetLocation(_BaseDataObjectServiceRestTransport._BaseGetLocation, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1781,26 +1417,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1824,12 +1450,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1841,9 +1462,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1868,23 +1487,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataObjectServiceRestTransport._BaseListLocations,
-        DataObjectServiceRestStub,
-    ):
+    class _ListLocations(_BaseDataObjectServiceRestTransport._BaseListLocations, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1922,26 +1530,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1965,12 +1563,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1982,9 +1575,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2009,23 +1600,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataObjectServiceRestTransport._BaseCancelOperation,
-        DataObjectServiceRestStub,
-    ):
+    class _CancelOperation(_BaseDataObjectServiceRestTransport._BaseCancelOperation, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2061,32 +1641,18 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2110,13 +1676,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2130,23 +1690,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataObjectServiceRestTransport._BaseDeleteOperation,
-        DataObjectServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseDataObjectServiceRestTransport._BaseDeleteOperation, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2181,28 +1730,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2226,12 +1763,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2245,22 +1777,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataObjectServiceRestTransport._BaseGetOperation, DataObjectServiceRestStub
-    ):
+    class _GetOperation(_BaseDataObjectServiceRestTransport._BaseGetOperation, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2298,26 +1820,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2341,12 +1853,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2358,9 +1865,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2385,23 +1890,12 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataObjectServiceRestTransport._BaseListOperations,
-        DataObjectServiceRestStub,
-    ):
+    class _ListOperations(_BaseDataObjectServiceRestTransport._BaseListOperations, DataObjectServiceRestStub):
         def __hash__(self):
             return hash("DataObjectServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2439,26 +1933,16 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataObjectServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataObjectServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataObjectServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataObjectServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataObjectServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataObjectServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2482,12 +1966,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
 
             # Send the request
             response = DataObjectServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2499,9 +1978,7 @@ class DataObjectServiceRestTransport(_BaseDataObjectServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

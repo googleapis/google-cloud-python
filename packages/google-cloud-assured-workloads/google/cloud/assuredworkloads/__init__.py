@@ -18,12 +18,8 @@ from google.cloud.assuredworkloads import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.assuredworkloads_v1.services.assured_workloads_service.async_client import (
-    AssuredWorkloadsServiceAsyncClient,
-)
-from google.cloud.assuredworkloads_v1.services.assured_workloads_service.client import (
-    AssuredWorkloadsServiceClient,
-)
+from google.cloud.assuredworkloads_v1.services.assured_workloads_service.async_client import AssuredWorkloadsServiceAsyncClient
+from google.cloud.assuredworkloads_v1.services.assured_workloads_service.client import AssuredWorkloadsServiceClient
 from google.cloud.assuredworkloads_v1.types.assuredworkloads import (
     AcknowledgeViolationRequest,
     AcknowledgeViolationResponse,

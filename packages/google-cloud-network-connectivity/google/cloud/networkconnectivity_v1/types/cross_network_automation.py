@@ -525,9 +525,7 @@ class ServiceConnectionMap(proto.Message):
         number=10,
         message=ConsumerPscConfig,
     )
-    consumer_psc_connections: MutableSequence[
-        ConsumerPscConnection
-    ] = proto.RepeatedField(
+    consumer_psc_connections: MutableSequence[ConsumerPscConnection] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=ConsumerPscConnection,
@@ -602,9 +600,7 @@ class ListServiceConnectionMapsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_maps: MutableSequence[
-        "ServiceConnectionMap"
-    ] = proto.RepeatedField(
+    service_connection_maps: MutableSequence["ServiceConnectionMap"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ServiceConnectionMap",
@@ -967,9 +963,7 @@ class ServiceConnectionPolicy(proto.Message):
             number=3,
             enum="ServiceConnectionPolicy.PscConfig.ProducerInstanceLocation",
         )
-        allowed_google_producers_resource_hierarchy_level: MutableSequence[
-            str
-        ] = proto.RepeatedField(
+        allowed_google_producers_resource_hierarchy_level: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=4,
         )
@@ -1206,9 +1200,7 @@ class ListServiceConnectionPoliciesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_policies: MutableSequence[
-        "ServiceConnectionPolicy"
-    ] = proto.RepeatedField(
+    service_connection_policies: MutableSequence["ServiceConnectionPolicy"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ServiceConnectionPolicy",
@@ -1805,9 +1797,7 @@ class ListServiceConnectionTokensResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_connection_tokens: MutableSequence[
-        "ServiceConnectionToken"
-    ] = proto.RepeatedField(
+    service_connection_tokens: MutableSequence["ServiceConnectionToken"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ServiceConnectionToken",

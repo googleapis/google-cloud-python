@@ -18,12 +18,8 @@ from google.cloud.contact_center_insights import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
-from google.cloud.contact_center_insights_v1.services.contact_center_insights.async_client import (
-    ContactCenterInsightsAsyncClient,
-)
-from google.cloud.contact_center_insights_v1.services.contact_center_insights.client import (
-    ContactCenterInsightsClient,
-)
+from google.cloud.contact_center_insights_v1.services.contact_center_insights.async_client import ContactCenterInsightsAsyncClient
+from google.cloud.contact_center_insights_v1.services.contact_center_insights.client import ContactCenterInsightsClient
 from google.cloud.contact_center_insights_v1.types.contact_center_insights import (
     BulkAnalyzeConversationsMetadata,
     BulkAnalyzeConversationsRequest,

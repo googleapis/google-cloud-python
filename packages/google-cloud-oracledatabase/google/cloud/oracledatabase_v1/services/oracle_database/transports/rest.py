@@ -30,25 +30,10 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.oracledatabase_v1.types import (
-    db_system_initial_storage_size,
-    db_version,
-    exadata_infra,
-    exadb_vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    autonomous_database,
-    database,
-    database_character_set,
-)
-from google.cloud.oracledatabase_v1.types import (
-    oracledatabase,
-    pluggable_database,
-    vm_cluster,
-)
-from google.cloud.oracledatabase_v1.types import (
-    exascale_db_storage_vault as gco_exascale_db_storage_vault,
-)
+from google.cloud.oracledatabase_v1.types import db_system_initial_storage_size, db_version, exadata_infra, exadb_vm_cluster
+from google.cloud.oracledatabase_v1.types import autonomous_database, database, database_character_set
+from google.cloud.oracledatabase_v1.types import oracledatabase, pluggable_database, vm_cluster
+from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault as gco_exascale_db_storage_vault
 from google.cloud.oracledatabase_v1.types import db_system
 from google.cloud.oracledatabase_v1.types import db_system as gco_db_system
 from google.cloud.oracledatabase_v1.types import exascale_db_storage_vault
@@ -571,13 +556,8 @@ class OracleDatabaseRestInterceptor:
     """
 
     def pre_create_autonomous_database(
-        self,
-        request: oracledatabase.CreateAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.CreateAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.CreateAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.CreateAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -585,9 +565,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_autonomous_database
 
         DEPRECATED. Please use the `post_create_autonomous_database_with_metadata`
@@ -601,9 +579,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_autonomous_database
 
@@ -620,13 +596,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_cloud_exadata_infrastructure(
-        self,
-        request: oracledatabase.CreateCloudExadataInfrastructureRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.CreateCloudExadataInfrastructureRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.CreateCloudExadataInfrastructureRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.CreateCloudExadataInfrastructureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cloud_exadata_infrastructure
 
         Override in a subclass to manipulate the request or metadata
@@ -634,9 +605,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cloud_exadata_infrastructure(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cloud_exadata_infrastructure(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cloud_exadata_infrastructure
 
         DEPRECATED. Please use the `post_create_cloud_exadata_infrastructure_with_metadata`
@@ -650,9 +619,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_cloud_exadata_infrastructure_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cloud_exadata_infrastructure
 
@@ -669,13 +636,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_cloud_vm_cluster(
-        self,
-        request: oracledatabase.CreateCloudVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.CreateCloudVmClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.CreateCloudVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.CreateCloudVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cloud_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -683,9 +645,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cloud_vm_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cloud_vm_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cloud_vm_cluster
 
         DEPRECATED. Please use the `post_create_cloud_vm_cluster_with_metadata`
@@ -699,9 +659,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_cloud_vm_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cloud_vm_cluster
 
@@ -718,12 +676,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_db_system(
-        self,
-        request: gco_db_system.CreateDbSystemRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gco_db_system.CreateDbSystemRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gco_db_system.CreateDbSystemRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gco_db_system.CreateDbSystemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_db_system
 
         Override in a subclass to manipulate the request or metadata
@@ -731,9 +685,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_db_system(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_db_system(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_db_system
 
         DEPRECATED. Please use the `post_create_db_system_with_metadata`
@@ -747,9 +699,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_db_system_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_db_system
 
@@ -766,13 +716,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_exadb_vm_cluster(
-        self,
-        request: oracledatabase.CreateExadbVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.CreateExadbVmClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.CreateExadbVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.CreateExadbVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_exadb_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -780,9 +725,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_exadb_vm_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_exadb_vm_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_exadb_vm_cluster
 
         DEPRECATED. Please use the `post_create_exadb_vm_cluster_with_metadata`
@@ -796,9 +739,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_exadb_vm_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_exadb_vm_cluster
 
@@ -815,13 +756,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_exascale_db_storage_vault(
-        self,
-        request: gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_exascale_db_storage_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -829,9 +765,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_exascale_db_storage_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_exascale_db_storage_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_exascale_db_storage_vault
 
         DEPRECATED. Please use the `post_create_exascale_db_storage_vault_with_metadata`
@@ -845,9 +779,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_exascale_db_storage_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_exascale_db_storage_vault
 
@@ -864,12 +796,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_odb_network(
-        self,
-        request: gco_odb_network.CreateOdbNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gco_odb_network.CreateOdbNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gco_odb_network.CreateOdbNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gco_odb_network.CreateOdbNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_odb_network
 
         Override in a subclass to manipulate the request or metadata
@@ -877,9 +805,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_odb_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_odb_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_odb_network
 
         DEPRECATED. Please use the `post_create_odb_network_with_metadata`
@@ -893,9 +819,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_odb_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_odb_network
 
@@ -912,12 +836,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_create_odb_subnet(
-        self,
-        request: gco_odb_subnet.CreateOdbSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gco_odb_subnet.CreateOdbSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gco_odb_subnet.CreateOdbSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gco_odb_subnet.CreateOdbSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_odb_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -925,9 +845,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_create_odb_subnet(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_odb_subnet(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_odb_subnet
 
         DEPRECATED. Please use the `post_create_odb_subnet_with_metadata`
@@ -941,9 +859,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_create_odb_subnet_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_odb_subnet
 
@@ -960,13 +876,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_autonomous_database(
-        self,
-        request: oracledatabase.DeleteAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.DeleteAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.DeleteAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.DeleteAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -974,9 +885,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_autonomous_database
 
         DEPRECATED. Please use the `post_delete_autonomous_database_with_metadata`
@@ -990,9 +899,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_autonomous_database
 
@@ -1009,13 +916,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_cloud_exadata_infrastructure(
-        self,
-        request: oracledatabase.DeleteCloudExadataInfrastructureRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.DeleteCloudExadataInfrastructureRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.DeleteCloudExadataInfrastructureRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.DeleteCloudExadataInfrastructureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cloud_exadata_infrastructure
 
         Override in a subclass to manipulate the request or metadata
@@ -1023,9 +925,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cloud_exadata_infrastructure(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cloud_exadata_infrastructure(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cloud_exadata_infrastructure
 
         DEPRECATED. Please use the `post_delete_cloud_exadata_infrastructure_with_metadata`
@@ -1039,9 +939,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_cloud_exadata_infrastructure_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cloud_exadata_infrastructure
 
@@ -1058,13 +956,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_cloud_vm_cluster(
-        self,
-        request: oracledatabase.DeleteCloudVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.DeleteCloudVmClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.DeleteCloudVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.DeleteCloudVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_cloud_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1072,9 +965,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_cloud_vm_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_cloud_vm_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_cloud_vm_cluster
 
         DEPRECATED. Please use the `post_delete_cloud_vm_cluster_with_metadata`
@@ -1088,9 +979,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_cloud_vm_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_cloud_vm_cluster
 
@@ -1107,12 +996,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_db_system(
-        self,
-        request: db_system.DeleteDbSystemRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        db_system.DeleteDbSystemRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: db_system.DeleteDbSystemRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[db_system.DeleteDbSystemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_db_system
 
         Override in a subclass to manipulate the request or metadata
@@ -1120,9 +1005,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_db_system(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_db_system(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_db_system
 
         DEPRECATED. Please use the `post_delete_db_system_with_metadata`
@@ -1136,9 +1019,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_db_system_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_db_system
 
@@ -1155,13 +1036,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_exadb_vm_cluster(
-        self,
-        request: oracledatabase.DeleteExadbVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.DeleteExadbVmClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.DeleteExadbVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.DeleteExadbVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_exadb_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1169,9 +1045,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_exadb_vm_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_exadb_vm_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_exadb_vm_cluster
 
         DEPRECATED. Please use the `post_delete_exadb_vm_cluster_with_metadata`
@@ -1185,9 +1059,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_exadb_vm_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_exadb_vm_cluster
 
@@ -1204,13 +1076,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_exascale_db_storage_vault(
-        self,
-        request: exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_exascale_db_storage_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1218,9 +1085,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_exascale_db_storage_vault(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_exascale_db_storage_vault(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_exascale_db_storage_vault
 
         DEPRECATED. Please use the `post_delete_exascale_db_storage_vault_with_metadata`
@@ -1234,9 +1099,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_exascale_db_storage_vault_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_exascale_db_storage_vault
 
@@ -1253,12 +1116,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_odb_network(
-        self,
-        request: odb_network.DeleteOdbNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_network.DeleteOdbNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: odb_network.DeleteOdbNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_network.DeleteOdbNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_odb_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1266,9 +1125,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_odb_network(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_odb_network(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_odb_network
 
         DEPRECATED. Please use the `post_delete_odb_network_with_metadata`
@@ -1282,9 +1139,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_odb_network_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_odb_network
 
@@ -1301,12 +1156,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_delete_odb_subnet(
-        self,
-        request: odb_subnet.DeleteOdbSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_subnet.DeleteOdbSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: odb_subnet.DeleteOdbSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_subnet.DeleteOdbSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_odb_subnet
 
         Override in a subclass to manipulate the request or metadata
@@ -1314,9 +1165,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_odb_subnet(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_odb_subnet(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_odb_subnet
 
         DEPRECATED. Please use the `post_delete_odb_subnet_with_metadata`
@@ -1330,9 +1179,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_delete_odb_subnet_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_odb_subnet
 
@@ -1349,13 +1196,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_failover_autonomous_database(
-        self,
-        request: oracledatabase.FailoverAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.FailoverAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.FailoverAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.FailoverAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for failover_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -1363,9 +1205,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_failover_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_failover_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for failover_autonomous_database
 
         DEPRECATED. Please use the `post_failover_autonomous_database_with_metadata`
@@ -1379,9 +1219,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_failover_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for failover_autonomous_database
 
@@ -1398,13 +1236,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_generate_autonomous_database_wallet(
-        self,
-        request: oracledatabase.GenerateAutonomousDatabaseWalletRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.GenerateAutonomousDatabaseWalletRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.GenerateAutonomousDatabaseWalletRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.GenerateAutonomousDatabaseWalletRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_autonomous_database_wallet
 
         Override in a subclass to manipulate the request or metadata
@@ -1428,13 +1261,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_generate_autonomous_database_wallet_with_metadata(
-        self,
-        response: oracledatabase.GenerateAutonomousDatabaseWalletResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.GenerateAutonomousDatabaseWalletResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.GenerateAutonomousDatabaseWalletResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.GenerateAutonomousDatabaseWalletResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_autonomous_database_wallet
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1450,13 +1278,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_autonomous_database(
-        self,
-        request: oracledatabase.GetAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.GetAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.GetAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.GetAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -1464,9 +1287,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_autonomous_database(
-        self, response: autonomous_database.AutonomousDatabase
-    ) -> autonomous_database.AutonomousDatabase:
+    def post_get_autonomous_database(self, response: autonomous_database.AutonomousDatabase) -> autonomous_database.AutonomousDatabase:
         """Post-rpc interceptor for get_autonomous_database
 
         DEPRECATED. Please use the `post_get_autonomous_database_with_metadata`
@@ -1480,12 +1301,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_autonomous_database_with_metadata(
-        self,
-        response: autonomous_database.AutonomousDatabase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autonomous_database.AutonomousDatabase, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: autonomous_database.AutonomousDatabase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autonomous_database.AutonomousDatabase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_autonomous_database
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1501,13 +1318,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_cloud_exadata_infrastructure(
-        self,
-        request: oracledatabase.GetCloudExadataInfrastructureRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.GetCloudExadataInfrastructureRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.GetCloudExadataInfrastructureRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.GetCloudExadataInfrastructureRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cloud_exadata_infrastructure
 
         Override in a subclass to manipulate the request or metadata
@@ -1515,9 +1327,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cloud_exadata_infrastructure(
-        self, response: exadata_infra.CloudExadataInfrastructure
-    ) -> exadata_infra.CloudExadataInfrastructure:
+    def post_get_cloud_exadata_infrastructure(self, response: exadata_infra.CloudExadataInfrastructure) -> exadata_infra.CloudExadataInfrastructure:
         """Post-rpc interceptor for get_cloud_exadata_infrastructure
 
         DEPRECATED. Please use the `post_get_cloud_exadata_infrastructure_with_metadata`
@@ -1531,13 +1341,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_cloud_exadata_infrastructure_with_metadata(
-        self,
-        response: exadata_infra.CloudExadataInfrastructure,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exadata_infra.CloudExadataInfrastructure,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: exadata_infra.CloudExadataInfrastructure, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exadata_infra.CloudExadataInfrastructure, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cloud_exadata_infrastructure
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1553,12 +1358,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_cloud_vm_cluster(
-        self,
-        request: oracledatabase.GetCloudVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.GetCloudVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: oracledatabase.GetCloudVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.GetCloudVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cloud_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1566,9 +1367,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cloud_vm_cluster(
-        self, response: vm_cluster.CloudVmCluster
-    ) -> vm_cluster.CloudVmCluster:
+    def post_get_cloud_vm_cluster(self, response: vm_cluster.CloudVmCluster) -> vm_cluster.CloudVmCluster:
         """Post-rpc interceptor for get_cloud_vm_cluster
 
         DEPRECATED. Please use the `post_get_cloud_vm_cluster_with_metadata`
@@ -1582,9 +1381,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_cloud_vm_cluster_with_metadata(
-        self,
-        response: vm_cluster.CloudVmCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vm_cluster.CloudVmCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vm_cluster.CloudVmCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cloud_vm_cluster
 
@@ -1601,9 +1398,7 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_database(
-        self,
-        request: database.GetDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: database.GetDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[database.GetDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_database
 
@@ -1626,9 +1421,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_database_with_metadata(
-        self,
-        response: database.Database,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: database.Database, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[database.Database, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_database
 
@@ -1645,9 +1438,7 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_db_system(
-        self,
-        request: db_system.GetDbSystemRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: db_system.GetDbSystemRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[db_system.GetDbSystemRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_db_system
 
@@ -1670,9 +1461,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_db_system_with_metadata(
-        self,
-        response: db_system.DbSystem,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: db_system.DbSystem, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[db_system.DbSystem, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_db_system
 
@@ -1689,12 +1478,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_exadb_vm_cluster(
-        self,
-        request: oracledatabase.GetExadbVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.GetExadbVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: oracledatabase.GetExadbVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.GetExadbVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_exadb_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -1702,9 +1487,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_exadb_vm_cluster(
-        self, response: exadb_vm_cluster.ExadbVmCluster
-    ) -> exadb_vm_cluster.ExadbVmCluster:
+    def post_get_exadb_vm_cluster(self, response: exadb_vm_cluster.ExadbVmCluster) -> exadb_vm_cluster.ExadbVmCluster:
         """Post-rpc interceptor for get_exadb_vm_cluster
 
         DEPRECATED. Please use the `post_get_exadb_vm_cluster_with_metadata`
@@ -1718,12 +1501,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_exadb_vm_cluster_with_metadata(
-        self,
-        response: exadb_vm_cluster.ExadbVmCluster,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exadb_vm_cluster.ExadbVmCluster, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: exadb_vm_cluster.ExadbVmCluster, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exadb_vm_cluster.ExadbVmCluster, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_exadb_vm_cluster
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1739,13 +1518,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_exascale_db_storage_vault(
-        self,
-        request: exascale_db_storage_vault.GetExascaleDbStorageVaultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exascale_db_storage_vault.GetExascaleDbStorageVaultRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: exascale_db_storage_vault.GetExascaleDbStorageVaultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exascale_db_storage_vault.GetExascaleDbStorageVaultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_exascale_db_storage_vault
 
         Override in a subclass to manipulate the request or metadata
@@ -1769,13 +1543,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_exascale_db_storage_vault_with_metadata(
-        self,
-        response: exascale_db_storage_vault.ExascaleDbStorageVault,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exascale_db_storage_vault.ExascaleDbStorageVault,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: exascale_db_storage_vault.ExascaleDbStorageVault, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exascale_db_storage_vault.ExascaleDbStorageVault, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_exascale_db_storage_vault
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1791,12 +1560,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_odb_network(
-        self,
-        request: odb_network.GetOdbNetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_network.GetOdbNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: odb_network.GetOdbNetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_network.GetOdbNetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_odb_network
 
         Override in a subclass to manipulate the request or metadata
@@ -1804,9 +1569,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_odb_network(
-        self, response: odb_network.OdbNetwork
-    ) -> odb_network.OdbNetwork:
+    def post_get_odb_network(self, response: odb_network.OdbNetwork) -> odb_network.OdbNetwork:
         """Post-rpc interceptor for get_odb_network
 
         DEPRECATED. Please use the `post_get_odb_network_with_metadata`
@@ -1820,9 +1583,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_odb_network_with_metadata(
-        self,
-        response: odb_network.OdbNetwork,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: odb_network.OdbNetwork, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[odb_network.OdbNetwork, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_odb_network
 
@@ -1839,9 +1600,7 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_odb_subnet(
-        self,
-        request: odb_subnet.GetOdbSubnetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: odb_subnet.GetOdbSubnetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[odb_subnet.GetOdbSubnetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_odb_subnet
 
@@ -1850,9 +1609,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_odb_subnet(
-        self, response: odb_subnet.OdbSubnet
-    ) -> odb_subnet.OdbSubnet:
+    def post_get_odb_subnet(self, response: odb_subnet.OdbSubnet) -> odb_subnet.OdbSubnet:
         """Post-rpc interceptor for get_odb_subnet
 
         DEPRECATED. Please use the `post_get_odb_subnet_with_metadata`
@@ -1866,9 +1623,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_odb_subnet_with_metadata(
-        self,
-        response: odb_subnet.OdbSubnet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: odb_subnet.OdbSubnet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[odb_subnet.OdbSubnet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_odb_subnet
 
@@ -1885,13 +1640,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_pluggable_database(
-        self,
-        request: pluggable_database.GetPluggableDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        pluggable_database.GetPluggableDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: pluggable_database.GetPluggableDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pluggable_database.GetPluggableDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_pluggable_database
 
         Override in a subclass to manipulate the request or metadata
@@ -1899,9 +1649,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_pluggable_database(
-        self, response: pluggable_database.PluggableDatabase
-    ) -> pluggable_database.PluggableDatabase:
+    def post_get_pluggable_database(self, response: pluggable_database.PluggableDatabase) -> pluggable_database.PluggableDatabase:
         """Post-rpc interceptor for get_pluggable_database
 
         DEPRECATED. Please use the `post_get_pluggable_database_with_metadata`
@@ -1915,12 +1663,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_get_pluggable_database_with_metadata(
-        self,
-        response: pluggable_database.PluggableDatabase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        pluggable_database.PluggableDatabase, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: pluggable_database.PluggableDatabase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pluggable_database.PluggableDatabase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_pluggable_database
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1936,13 +1680,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_autonomous_database_backups(
-        self,
-        request: oracledatabase.ListAutonomousDatabaseBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDatabaseBackupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListAutonomousDatabaseBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDatabaseBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_autonomous_database_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -1966,13 +1705,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_autonomous_database_backups_with_metadata(
-        self,
-        response: oracledatabase.ListAutonomousDatabaseBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDatabaseBackupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListAutonomousDatabaseBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDatabaseBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_autonomous_database_backups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1988,13 +1722,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_autonomous_database_character_sets(
-        self,
-        request: oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDatabaseCharacterSetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListAutonomousDatabaseCharacterSetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDatabaseCharacterSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_autonomous_database_character_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -2018,13 +1747,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_autonomous_database_character_sets_with_metadata(
-        self,
-        response: oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListAutonomousDatabaseCharacterSetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDatabaseCharacterSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_autonomous_database_character_sets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2040,13 +1764,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_autonomous_databases(
-        self,
-        request: oracledatabase.ListAutonomousDatabasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDatabasesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListAutonomousDatabasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_autonomous_databases
 
         Override in a subclass to manipulate the request or metadata
@@ -2070,13 +1789,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_autonomous_databases_with_metadata(
-        self,
-        response: oracledatabase.ListAutonomousDatabasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDatabasesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListAutonomousDatabasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_autonomous_databases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2092,13 +1806,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_autonomous_db_versions(
-        self,
-        request: oracledatabase.ListAutonomousDbVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDbVersionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListAutonomousDbVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDbVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_autonomous_db_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -2122,13 +1831,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_autonomous_db_versions_with_metadata(
-        self,
-        response: oracledatabase.ListAutonomousDbVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListAutonomousDbVersionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListAutonomousDbVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListAutonomousDbVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_autonomous_db_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2144,13 +1848,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_cloud_exadata_infrastructures(
-        self,
-        request: oracledatabase.ListCloudExadataInfrastructuresRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListCloudExadataInfrastructuresRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListCloudExadataInfrastructuresRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListCloudExadataInfrastructuresRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cloud_exadata_infrastructures
 
         Override in a subclass to manipulate the request or metadata
@@ -2174,13 +1873,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_cloud_exadata_infrastructures_with_metadata(
-        self,
-        response: oracledatabase.ListCloudExadataInfrastructuresResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListCloudExadataInfrastructuresResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListCloudExadataInfrastructuresResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListCloudExadataInfrastructuresResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cloud_exadata_infrastructures
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2196,13 +1890,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_cloud_vm_clusters(
-        self,
-        request: oracledatabase.ListCloudVmClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListCloudVmClustersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListCloudVmClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListCloudVmClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cloud_vm_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -2210,9 +1899,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cloud_vm_clusters(
-        self, response: oracledatabase.ListCloudVmClustersResponse
-    ) -> oracledatabase.ListCloudVmClustersResponse:
+    def post_list_cloud_vm_clusters(self, response: oracledatabase.ListCloudVmClustersResponse) -> oracledatabase.ListCloudVmClustersResponse:
         """Post-rpc interceptor for list_cloud_vm_clusters
 
         DEPRECATED. Please use the `post_list_cloud_vm_clusters_with_metadata`
@@ -2226,13 +1913,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_cloud_vm_clusters_with_metadata(
-        self,
-        response: oracledatabase.ListCloudVmClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListCloudVmClustersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListCloudVmClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListCloudVmClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cloud_vm_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2248,13 +1930,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_database_character_sets(
-        self,
-        request: database_character_set.ListDatabaseCharacterSetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        database_character_set.ListDatabaseCharacterSetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: database_character_set.ListDatabaseCharacterSetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[database_character_set.ListDatabaseCharacterSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_database_character_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -2278,13 +1955,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_database_character_sets_with_metadata(
-        self,
-        response: database_character_set.ListDatabaseCharacterSetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        database_character_set.ListDatabaseCharacterSetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: database_character_set.ListDatabaseCharacterSetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[database_character_set.ListDatabaseCharacterSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_database_character_sets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2300,9 +1972,7 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_databases(
-        self,
-        request: database.ListDatabasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: database.ListDatabasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[database.ListDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_databases
 
@@ -2311,9 +1981,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_databases(
-        self, response: database.ListDatabasesResponse
-    ) -> database.ListDatabasesResponse:
+    def post_list_databases(self, response: database.ListDatabasesResponse) -> database.ListDatabasesResponse:
         """Post-rpc interceptor for list_databases
 
         DEPRECATED. Please use the `post_list_databases_with_metadata`
@@ -2327,9 +1995,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_databases_with_metadata(
-        self,
-        response: database.ListDatabasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: database.ListDatabasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[database.ListDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_databases
 
@@ -2346,12 +2012,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_db_nodes(
-        self,
-        request: oracledatabase.ListDbNodesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListDbNodesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: oracledatabase.ListDbNodesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListDbNodesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_db_nodes
 
         Override in a subclass to manipulate the request or metadata
@@ -2359,9 +2021,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_db_nodes(
-        self, response: oracledatabase.ListDbNodesResponse
-    ) -> oracledatabase.ListDbNodesResponse:
+    def post_list_db_nodes(self, response: oracledatabase.ListDbNodesResponse) -> oracledatabase.ListDbNodesResponse:
         """Post-rpc interceptor for list_db_nodes
 
         DEPRECATED. Please use the `post_list_db_nodes_with_metadata`
@@ -2375,12 +2035,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_db_nodes_with_metadata(
-        self,
-        response: oracledatabase.ListDbNodesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListDbNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: oracledatabase.ListDbNodesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListDbNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_db_nodes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2396,12 +2052,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_db_servers(
-        self,
-        request: oracledatabase.ListDbServersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListDbServersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: oracledatabase.ListDbServersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListDbServersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_db_servers
 
         Override in a subclass to manipulate the request or metadata
@@ -2409,9 +2061,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_db_servers(
-        self, response: oracledatabase.ListDbServersResponse
-    ) -> oracledatabase.ListDbServersResponse:
+    def post_list_db_servers(self, response: oracledatabase.ListDbServersResponse) -> oracledatabase.ListDbServersResponse:
         """Post-rpc interceptor for list_db_servers
 
         DEPRECATED. Please use the `post_list_db_servers_with_metadata`
@@ -2425,12 +2075,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_db_servers_with_metadata(
-        self,
-        response: oracledatabase.ListDbServersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListDbServersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: oracledatabase.ListDbServersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListDbServersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_db_servers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2446,13 +2092,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_db_system_initial_storage_sizes(
-        self,
-        request: db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[db_system_initial_storage_size.ListDbSystemInitialStorageSizesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_db_system_initial_storage_sizes
 
         Override in a subclass to manipulate the request or metadata
@@ -2461,8 +2102,7 @@ class OracleDatabaseRestInterceptor:
         return request, metadata
 
     def post_list_db_system_initial_storage_sizes(
-        self,
-        response: db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse,
+        self, response: db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse
     ) -> db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse:
         """Post-rpc interceptor for list_db_system_initial_storage_sizes
 
@@ -2477,13 +2117,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_db_system_initial_storage_sizes_with_metadata(
-        self,
-        response: db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_db_system_initial_storage_sizes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2499,9 +2134,7 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_db_systems(
-        self,
-        request: db_system.ListDbSystemsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: db_system.ListDbSystemsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[db_system.ListDbSystemsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_db_systems
 
@@ -2510,9 +2143,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_db_systems(
-        self, response: db_system.ListDbSystemsResponse
-    ) -> db_system.ListDbSystemsResponse:
+    def post_list_db_systems(self, response: db_system.ListDbSystemsResponse) -> db_system.ListDbSystemsResponse:
         """Post-rpc interceptor for list_db_systems
 
         DEPRECATED. Please use the `post_list_db_systems_with_metadata`
@@ -2526,12 +2157,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_db_systems_with_metadata(
-        self,
-        response: db_system.ListDbSystemsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        db_system.ListDbSystemsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: db_system.ListDbSystemsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[db_system.ListDbSystemsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_db_systems
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2547,13 +2174,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_db_system_shapes(
-        self,
-        request: oracledatabase.ListDbSystemShapesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListDbSystemShapesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListDbSystemShapesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListDbSystemShapesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_db_system_shapes
 
         Override in a subclass to manipulate the request or metadata
@@ -2561,9 +2183,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_db_system_shapes(
-        self, response: oracledatabase.ListDbSystemShapesResponse
-    ) -> oracledatabase.ListDbSystemShapesResponse:
+    def post_list_db_system_shapes(self, response: oracledatabase.ListDbSystemShapesResponse) -> oracledatabase.ListDbSystemShapesResponse:
         """Post-rpc interceptor for list_db_system_shapes
 
         DEPRECATED. Please use the `post_list_db_system_shapes_with_metadata`
@@ -2577,13 +2197,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_db_system_shapes_with_metadata(
-        self,
-        response: oracledatabase.ListDbSystemShapesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListDbSystemShapesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListDbSystemShapesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListDbSystemShapesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_db_system_shapes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2599,12 +2214,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_db_versions(
-        self,
-        request: db_version.ListDbVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        db_version.ListDbVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: db_version.ListDbVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[db_version.ListDbVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_db_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -2612,9 +2223,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_db_versions(
-        self, response: db_version.ListDbVersionsResponse
-    ) -> db_version.ListDbVersionsResponse:
+    def post_list_db_versions(self, response: db_version.ListDbVersionsResponse) -> db_version.ListDbVersionsResponse:
         """Post-rpc interceptor for list_db_versions
 
         DEPRECATED. Please use the `post_list_db_versions_with_metadata`
@@ -2628,12 +2237,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_db_versions_with_metadata(
-        self,
-        response: db_version.ListDbVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        db_version.ListDbVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: db_version.ListDbVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[db_version.ListDbVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_db_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2649,12 +2254,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_entitlements(
-        self,
-        request: oracledatabase.ListEntitlementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListEntitlementsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: oracledatabase.ListEntitlementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListEntitlementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entitlements
 
         Override in a subclass to manipulate the request or metadata
@@ -2662,9 +2263,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_entitlements(
-        self, response: oracledatabase.ListEntitlementsResponse
-    ) -> oracledatabase.ListEntitlementsResponse:
+    def post_list_entitlements(self, response: oracledatabase.ListEntitlementsResponse) -> oracledatabase.ListEntitlementsResponse:
         """Post-rpc interceptor for list_entitlements
 
         DEPRECATED. Please use the `post_list_entitlements_with_metadata`
@@ -2678,12 +2277,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_entitlements_with_metadata(
-        self,
-        response: oracledatabase.ListEntitlementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListEntitlementsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: oracledatabase.ListEntitlementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListEntitlementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entitlements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2699,13 +2294,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_exadb_vm_clusters(
-        self,
-        request: oracledatabase.ListExadbVmClustersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListExadbVmClustersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.ListExadbVmClustersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListExadbVmClustersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_exadb_vm_clusters
 
         Override in a subclass to manipulate the request or metadata
@@ -2713,9 +2303,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_exadb_vm_clusters(
-        self, response: oracledatabase.ListExadbVmClustersResponse
-    ) -> oracledatabase.ListExadbVmClustersResponse:
+    def post_list_exadb_vm_clusters(self, response: oracledatabase.ListExadbVmClustersResponse) -> oracledatabase.ListExadbVmClustersResponse:
         """Post-rpc interceptor for list_exadb_vm_clusters
 
         DEPRECATED. Please use the `post_list_exadb_vm_clusters_with_metadata`
@@ -2729,13 +2317,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_exadb_vm_clusters_with_metadata(
-        self,
-        response: oracledatabase.ListExadbVmClustersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListExadbVmClustersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: oracledatabase.ListExadbVmClustersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListExadbVmClustersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_exadb_vm_clusters
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2751,13 +2334,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_exascale_db_storage_vaults(
-        self,
-        request: exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_exascale_db_storage_vaults
 
         Override in a subclass to manipulate the request or metadata
@@ -2781,13 +2359,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_exascale_db_storage_vaults_with_metadata(
-        self,
-        response: exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_exascale_db_storage_vaults
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2803,12 +2376,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_gi_versions(
-        self,
-        request: oracledatabase.ListGiVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListGiVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: oracledatabase.ListGiVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListGiVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_gi_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -2816,9 +2385,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_gi_versions(
-        self, response: oracledatabase.ListGiVersionsResponse
-    ) -> oracledatabase.ListGiVersionsResponse:
+    def post_list_gi_versions(self, response: oracledatabase.ListGiVersionsResponse) -> oracledatabase.ListGiVersionsResponse:
         """Post-rpc interceptor for list_gi_versions
 
         DEPRECATED. Please use the `post_list_gi_versions_with_metadata`
@@ -2832,12 +2399,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_gi_versions_with_metadata(
-        self,
-        response: oracledatabase.ListGiVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.ListGiVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: oracledatabase.ListGiVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.ListGiVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_gi_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2853,12 +2416,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_minor_versions(
-        self,
-        request: minor_version.ListMinorVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        minor_version.ListMinorVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: minor_version.ListMinorVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[minor_version.ListMinorVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_minor_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -2866,9 +2425,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_minor_versions(
-        self, response: minor_version.ListMinorVersionsResponse
-    ) -> minor_version.ListMinorVersionsResponse:
+    def post_list_minor_versions(self, response: minor_version.ListMinorVersionsResponse) -> minor_version.ListMinorVersionsResponse:
         """Post-rpc interceptor for list_minor_versions
 
         DEPRECATED. Please use the `post_list_minor_versions_with_metadata`
@@ -2882,12 +2439,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_minor_versions_with_metadata(
-        self,
-        response: minor_version.ListMinorVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        minor_version.ListMinorVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: minor_version.ListMinorVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[minor_version.ListMinorVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_minor_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2903,12 +2456,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_odb_networks(
-        self,
-        request: odb_network.ListOdbNetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_network.ListOdbNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: odb_network.ListOdbNetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_network.ListOdbNetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_odb_networks
 
         Override in a subclass to manipulate the request or metadata
@@ -2916,9 +2465,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_odb_networks(
-        self, response: odb_network.ListOdbNetworksResponse
-    ) -> odb_network.ListOdbNetworksResponse:
+    def post_list_odb_networks(self, response: odb_network.ListOdbNetworksResponse) -> odb_network.ListOdbNetworksResponse:
         """Post-rpc interceptor for list_odb_networks
 
         DEPRECATED. Please use the `post_list_odb_networks_with_metadata`
@@ -2932,12 +2479,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_odb_networks_with_metadata(
-        self,
-        response: odb_network.ListOdbNetworksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_network.ListOdbNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: odb_network.ListOdbNetworksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_network.ListOdbNetworksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_odb_networks
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2953,12 +2496,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_odb_subnets(
-        self,
-        request: odb_subnet.ListOdbSubnetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_subnet.ListOdbSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: odb_subnet.ListOdbSubnetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_subnet.ListOdbSubnetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_odb_subnets
 
         Override in a subclass to manipulate the request or metadata
@@ -2966,9 +2505,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_odb_subnets(
-        self, response: odb_subnet.ListOdbSubnetsResponse
-    ) -> odb_subnet.ListOdbSubnetsResponse:
+    def post_list_odb_subnets(self, response: odb_subnet.ListOdbSubnetsResponse) -> odb_subnet.ListOdbSubnetsResponse:
         """Post-rpc interceptor for list_odb_subnets
 
         DEPRECATED. Please use the `post_list_odb_subnets_with_metadata`
@@ -2982,12 +2519,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_odb_subnets_with_metadata(
-        self,
-        response: odb_subnet.ListOdbSubnetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        odb_subnet.ListOdbSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: odb_subnet.ListOdbSubnetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[odb_subnet.ListOdbSubnetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_odb_subnets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3003,13 +2536,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_list_pluggable_databases(
-        self,
-        request: pluggable_database.ListPluggableDatabasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        pluggable_database.ListPluggableDatabasesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: pluggable_database.ListPluggableDatabasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pluggable_database.ListPluggableDatabasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_pluggable_databases
 
         Override in a subclass to manipulate the request or metadata
@@ -3033,13 +2561,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_list_pluggable_databases_with_metadata(
-        self,
-        response: pluggable_database.ListPluggableDatabasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        pluggable_database.ListPluggableDatabasesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: pluggable_database.ListPluggableDatabasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[pluggable_database.ListPluggableDatabasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_pluggable_databases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3055,13 +2578,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_remove_virtual_machine_exadb_vm_cluster(
-        self,
-        request: oracledatabase.RemoveVirtualMachineExadbVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.RemoveVirtualMachineExadbVmClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.RemoveVirtualMachineExadbVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_virtual_machine_exadb_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -3069,9 +2587,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_virtual_machine_exadb_vm_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_virtual_machine_exadb_vm_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_virtual_machine_exadb_vm_cluster
 
         DEPRECATED. Please use the `post_remove_virtual_machine_exadb_vm_cluster_with_metadata`
@@ -3085,9 +2601,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_remove_virtual_machine_exadb_vm_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_virtual_machine_exadb_vm_cluster
 
@@ -3104,13 +2618,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_restart_autonomous_database(
-        self,
-        request: oracledatabase.RestartAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.RestartAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.RestartAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.RestartAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restart_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -3118,9 +2627,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_restart_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restart_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restart_autonomous_database
 
         DEPRECATED. Please use the `post_restart_autonomous_database_with_metadata`
@@ -3134,9 +2641,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_restart_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restart_autonomous_database
 
@@ -3153,13 +2658,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_restore_autonomous_database(
-        self,
-        request: oracledatabase.RestoreAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.RestoreAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.RestoreAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.RestoreAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -3167,9 +2667,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_autonomous_database
 
         DEPRECATED. Please use the `post_restore_autonomous_database_with_metadata`
@@ -3183,9 +2681,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_restore_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_autonomous_database
 
@@ -3202,13 +2698,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_start_autonomous_database(
-        self,
-        request: oracledatabase.StartAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.StartAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.StartAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.StartAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -3216,9 +2707,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_start_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_autonomous_database
 
         DEPRECATED. Please use the `post_start_autonomous_database_with_metadata`
@@ -3232,9 +2721,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_start_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_autonomous_database
 
@@ -3251,13 +2738,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_stop_autonomous_database(
-        self,
-        request: oracledatabase.StopAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.StopAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.StopAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.StopAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -3265,9 +2747,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_autonomous_database
 
         DEPRECATED. Please use the `post_stop_autonomous_database_with_metadata`
@@ -3281,9 +2761,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_stop_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_autonomous_database
 
@@ -3300,13 +2778,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_switchover_autonomous_database(
-        self,
-        request: oracledatabase.SwitchoverAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.SwitchoverAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.SwitchoverAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.SwitchoverAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for switchover_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -3314,9 +2787,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_switchover_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_switchover_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for switchover_autonomous_database
 
         DEPRECATED. Please use the `post_switchover_autonomous_database_with_metadata`
@@ -3330,9 +2801,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_switchover_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for switchover_autonomous_database
 
@@ -3349,13 +2818,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_update_autonomous_database(
-        self,
-        request: oracledatabase.UpdateAutonomousDatabaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.UpdateAutonomousDatabaseRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.UpdateAutonomousDatabaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.UpdateAutonomousDatabaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_autonomous_database
 
         Override in a subclass to manipulate the request or metadata
@@ -3363,9 +2827,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_autonomous_database(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_autonomous_database(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_autonomous_database
 
         DEPRECATED. Please use the `post_update_autonomous_database_with_metadata`
@@ -3379,9 +2841,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_update_autonomous_database_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_autonomous_database
 
@@ -3398,13 +2858,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_update_exadb_vm_cluster(
-        self,
-        request: oracledatabase.UpdateExadbVmClusterRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        oracledatabase.UpdateExadbVmClusterRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: oracledatabase.UpdateExadbVmClusterRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[oracledatabase.UpdateExadbVmClusterRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_exadb_vm_cluster
 
         Override in a subclass to manipulate the request or metadata
@@ -3412,9 +2867,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_update_exadb_vm_cluster(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_exadb_vm_cluster(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_exadb_vm_cluster
 
         DEPRECATED. Please use the `post_update_exadb_vm_cluster_with_metadata`
@@ -3428,9 +2881,7 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def post_update_exadb_vm_cluster_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_exadb_vm_cluster
 
@@ -3447,12 +2898,8 @@ class OracleDatabaseRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -3460,9 +2907,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -3472,12 +2917,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -3485,9 +2926,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -3497,12 +2936,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3520,12 +2955,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3543,12 +2974,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3556,9 +2983,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -3568,12 +2993,8 @@ class OracleDatabaseRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -3581,9 +3002,7 @@ class OracleDatabaseRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -3672,9 +3091,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -3727,30 +3144,17 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _CreateAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3794,32 +3198,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3842,16 +3232,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._CreateAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._CreateAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3865,12 +3247,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3891,23 +3269,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateCloudExadataInfrastructure(
-        _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure,
-        OracleDatabaseRestStub,
-    ):
+    class _CreateCloudExadataInfrastructure(_BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateCloudExadataInfrastructure")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3951,35 +3318,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_cloud_exadata_infrastructure(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_cloud_exadata_infrastructure(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudExadataInfrastructure._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4003,13 +3353,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateCloudExadataInfrastructure._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4023,15 +3367,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_cloud_exadata_infrastructure(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_cloud_exadata_infrastructure_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cloud_exadata_infrastructure_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4052,23 +3389,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateCloudVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster,
-        OracleDatabaseRestStub,
-    ):
+    class _CreateCloudVmCluster(_BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateCloudVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4111,32 +3437,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_cloud_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_cloud_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateCloudVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4160,13 +3472,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateCloudVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4180,12 +3486,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_cloud_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cloud_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cloud_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4206,22 +3508,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateDbSystem(
-        _BaseOracleDatabaseRestTransport._BaseCreateDbSystem, OracleDatabaseRestStub
-    ):
+    class _CreateDbSystem(_BaseOracleDatabaseRestTransport._BaseCreateDbSystem, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateDbSystem")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4264,32 +3556,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_db_system(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_db_system(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateDbSystem._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4313,13 +3591,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateDbSystem._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4333,12 +3605,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_db_system(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_db_system_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_db_system_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4359,23 +3627,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateExadbVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster,
-        OracleDatabaseRestStub,
-    ):
+    class _CreateExadbVmCluster(_BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateExadbVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4418,32 +3675,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_exadb_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_exadb_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateExadbVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4467,13 +3710,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateExadbVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4487,12 +3724,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_exadb_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_exadb_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_exadb_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4513,23 +3746,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateExascaleDbStorageVault(
-        _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault,
-        OracleDatabaseRestStub,
-    ):
+    class _CreateExascaleDbStorageVault(_BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateExascaleDbStorageVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4573,32 +3795,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_exascale_db_storage_vault(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_exascale_db_storage_vault(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateExascaleDbStorageVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4621,16 +3829,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._CreateExascaleDbStorageVault._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._CreateExascaleDbStorageVault._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4644,15 +3844,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_exascale_db_storage_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_exascale_db_storage_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_exascale_db_storage_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4673,22 +3866,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateOdbNetwork(
-        _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork, OracleDatabaseRestStub
-    ):
+    class _CreateOdbNetwork(_BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateOdbNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4731,32 +3914,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_odb_network(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_odb_network(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateOdbNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4780,13 +3949,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateOdbNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4800,12 +3963,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_odb_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_odb_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_odb_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4826,22 +3985,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _CreateOdbSubnet(
-        _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet, OracleDatabaseRestStub
-    ):
+    class _CreateOdbSubnet(_BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CreateOdbSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4884,32 +4033,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_odb_subnet(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_odb_subnet(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCreateOdbSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4933,13 +4068,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CreateOdbSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4953,12 +4082,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_create_odb_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_odb_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_odb_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4979,23 +4104,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _DeleteAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5038,28 +4152,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5082,15 +4184,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._DeleteAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._DeleteAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5104,12 +4199,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5130,23 +4221,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteCloudExadataInfrastructure(
-        _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure,
-        OracleDatabaseRestStub,
-    ):
+    class _DeleteCloudExadataInfrastructure(_BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteCloudExadataInfrastructure")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5189,31 +4269,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_cloud_exadata_infrastructure(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_cloud_exadata_infrastructure(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudExadataInfrastructure._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5237,12 +4302,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteCloudExadataInfrastructure._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5256,15 +4316,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_cloud_exadata_infrastructure(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_cloud_exadata_infrastructure_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cloud_exadata_infrastructure_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5285,23 +4338,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteCloudVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster,
-        OracleDatabaseRestStub,
-    ):
+    class _DeleteCloudVmCluster(_BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteCloudVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5343,28 +4385,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_cloud_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_cloud_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteCloudVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5388,12 +4418,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteCloudVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5407,12 +4432,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_cloud_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_cloud_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_cloud_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5433,22 +4454,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteDbSystem(
-        _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem, OracleDatabaseRestStub
-    ):
+    class _DeleteDbSystem(_BaseOracleDatabaseRestTransport._BaseDeleteDbSystem, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteDbSystem")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5490,28 +4501,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_db_system(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_db_system(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteDbSystem._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5535,12 +4534,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteDbSystem._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5554,12 +4548,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_db_system(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_db_system_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_db_system_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5580,23 +4570,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteExadbVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster,
-        OracleDatabaseRestStub,
-    ):
+    class _DeleteExadbVmCluster(_BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteExadbVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5638,28 +4617,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_exadb_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_exadb_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteExadbVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5683,12 +4650,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteExadbVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5702,12 +4664,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_exadb_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_exadb_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_exadb_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5728,23 +4686,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteExascaleDbStorageVault(
-        _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault,
-        OracleDatabaseRestStub,
-    ):
+    class _DeleteExascaleDbStorageVault(_BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteExascaleDbStorageVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5788,28 +4735,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_exascale_db_storage_vault(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_exascale_db_storage_vault(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteExascaleDbStorageVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5832,15 +4767,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._DeleteExascaleDbStorageVault._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._DeleteExascaleDbStorageVault._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5854,15 +4782,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_exascale_db_storage_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_exascale_db_storage_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_exascale_db_storage_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5883,22 +4804,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteOdbNetwork(
-        _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork, OracleDatabaseRestStub
-    ):
+    class _DeleteOdbNetwork(_BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteOdbNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5940,28 +4851,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_odb_network(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_odb_network(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOdbNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5985,12 +4884,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteOdbNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6004,12 +4898,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_odb_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_odb_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_odb_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6030,22 +4920,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _DeleteOdbSubnet(
-        _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet, OracleDatabaseRestStub
-    ):
+    class _DeleteOdbSubnet(_BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteOdbSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6087,28 +4967,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_odb_subnet(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_odb_subnet(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOdbSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6132,12 +5000,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteOdbSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6151,12 +5014,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_delete_odb_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_odb_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_odb_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6177,23 +5036,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _FailoverAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _FailoverAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.FailoverAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6238,32 +5086,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_failover_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_failover_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseFailoverAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6286,16 +5120,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._FailoverAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._FailoverAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6309,12 +5135,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_failover_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_failover_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_failover_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6335,23 +5157,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GenerateAutonomousDatabaseWallet(
-        _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet,
-        OracleDatabaseRestStub,
-    ):
+    class _GenerateAutonomousDatabaseWallet(_BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GenerateAutonomousDatabaseWallet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6392,35 +5203,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``AutonomousDatabase.GenerateWallet``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_generate_autonomous_database_wallet(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_autonomous_database_wallet(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGenerateAutonomousDatabaseWallet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6444,13 +5238,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GenerateAutonomousDatabaseWallet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6466,21 +5254,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_generate_autonomous_database_wallet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_generate_autonomous_database_wallet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_autonomous_database_wallet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.GenerateAutonomousDatabaseWalletResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = oracledatabase.GenerateAutonomousDatabaseWalletResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6499,23 +5276,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _GetAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6557,28 +5323,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6602,12 +5356,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetAutonomousDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6623,16 +5372,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = autonomous_database.AutonomousDatabase.to_json(
-                        response
-                    )
+                    response_payload = autonomous_database.AutonomousDatabase.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6651,23 +5394,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetCloudExadataInfrastructure(
-        _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure,
-        OracleDatabaseRestStub,
-    ):
+    class _GetCloudExadataInfrastructure(_BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetCloudExadataInfrastructure")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6710,28 +5442,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_cloud_exadata_infrastructure(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_cloud_exadata_infrastructure(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudExadataInfrastructure._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6755,12 +5475,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetCloudExadataInfrastructure._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6776,19 +5491,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_cloud_exadata_infrastructure(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_cloud_exadata_infrastructure_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cloud_exadata_infrastructure_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = exadata_infra.CloudExadataInfrastructure.to_json(
-                        response
-                    )
+                    response_payload = exadata_infra.CloudExadataInfrastructure.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -6807,22 +5513,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetCloudVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster, OracleDatabaseRestStub
-    ):
+    class _GetCloudVmCluster(_BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetCloudVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6864,28 +5560,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_cloud_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_cloud_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetCloudVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6909,12 +5593,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetCloudVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6930,12 +5609,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_cloud_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cloud_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cloud_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vm_cluster.CloudVmCluster.to_json(response)
                 except:
@@ -6956,22 +5631,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetDatabase(
-        _BaseOracleDatabaseRestTransport._BaseGetDatabase, OracleDatabaseRestStub
-    ):
+    class _GetDatabase(_BaseOracleDatabaseRestTransport._BaseGetDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7012,26 +5677,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_http_options()
 
             request, metadata = self._interceptor.pre_get_database(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7055,12 +5710,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7076,12 +5726,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = database.Database.to_json(response)
                 except:
@@ -7102,22 +5748,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetDbSystem(
-        _BaseOracleDatabaseRestTransport._BaseGetDbSystem, OracleDatabaseRestStub
-    ):
+    class _GetDbSystem(_BaseOracleDatabaseRestTransport._BaseGetDbSystem, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetDbSystem")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7159,26 +5795,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_http_options()
 
             request, metadata = self._interceptor.pre_get_db_system(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetDbSystem._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7202,12 +5828,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetDbSystem._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7223,12 +5844,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_db_system(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_db_system_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_db_system_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = db_system.DbSystem.to_json(response)
                 except:
@@ -7249,22 +5866,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetExadbVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster, OracleDatabaseRestStub
-    ):
+    class _GetExadbVmCluster(_BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetExadbVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7307,28 +5914,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_exadb_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_exadb_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetExadbVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7352,12 +5947,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetExadbVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7373,12 +5963,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_exadb_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_exadb_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_exadb_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = exadb_vm_cluster.ExadbVmCluster.to_json(response)
                 except:
@@ -7399,23 +5985,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetExascaleDbStorageVault(
-        _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault,
-        OracleDatabaseRestStub,
-    ):
+    class _GetExascaleDbStorageVault(_BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetExascaleDbStorageVault")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7458,28 +6033,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_exascale_db_storage_vault(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_exascale_db_storage_vault(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetExascaleDbStorageVault._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7502,15 +6065,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._GetExascaleDbStorageVault._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._GetExascaleDbStorageVault._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7526,21 +6082,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_exascale_db_storage_vault(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_exascale_db_storage_vault_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_exascale_db_storage_vault_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        exascale_db_storage_vault.ExascaleDbStorageVault.to_json(
-                            response
-                        )
-                    )
+                    response_payload = exascale_db_storage_vault.ExascaleDbStorageVault.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7559,22 +6104,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetOdbNetwork(
-        _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork, OracleDatabaseRestStub
-    ):
+    class _GetOdbNetwork(_BaseOracleDatabaseRestTransport._BaseGetOdbNetwork, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetOdbNetwork")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7613,26 +6148,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     Represents OdbNetwork resource.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_http_options()
 
             request, metadata = self._interceptor.pre_get_odb_network(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetOdbNetwork._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7656,12 +6181,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetOdbNetwork._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7677,12 +6197,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_odb_network(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_odb_network_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_odb_network_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = odb_network.OdbNetwork.to_json(response)
                 except:
@@ -7703,22 +6219,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetOdbSubnet(
-        _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet, OracleDatabaseRestStub
-    ):
+    class _GetOdbSubnet(_BaseOracleDatabaseRestTransport._BaseGetOdbSubnet, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetOdbSubnet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7757,26 +6263,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     Represents OdbSubnet resource.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_odb_subnet(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetOdbSubnet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7800,12 +6296,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetOdbSubnet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7821,12 +6312,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_odb_subnet(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_odb_subnet_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_odb_subnet_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = odb_subnet.OdbSubnet.to_json(response)
                 except:
@@ -7847,23 +6334,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _GetPluggableDatabase(
-        _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _GetPluggableDatabase(_BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetPluggableDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7904,28 +6380,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_pluggable_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_pluggable_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetPluggableDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7949,12 +6413,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetPluggableDatabase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7970,16 +6429,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_get_pluggable_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_pluggable_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_pluggable_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = pluggable_database.PluggableDatabase.to_json(
-                        response
-                    )
+                    response_payload = pluggable_database.PluggableDatabase.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7998,23 +6451,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListAutonomousDatabaseBackups(
-        _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups,
-        OracleDatabaseRestStub,
-    ):
+    class _ListAutonomousDatabaseBackups(_BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListAutonomousDatabaseBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8054,28 +6496,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``AutonomousDatabaseBackup.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_autonomous_database_backups(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_autonomous_database_backups(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8099,12 +6529,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListAutonomousDatabaseBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8120,21 +6545,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_autonomous_database_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_autonomous_database_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_autonomous_database_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = oracledatabase.ListAutonomousDatabaseBackupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8153,25 +6567,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListAutonomousDatabaseCharacterSets(
-        _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets,
-        OracleDatabaseRestStub,
-    ):
+    class _ListAutonomousDatabaseCharacterSets(_BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets, OracleDatabaseRestStub):
         def __hash__(self):
-            return hash(
-                "OracleDatabaseRestTransport.ListAutonomousDatabaseCharacterSets"
-            )
+            return hash("OracleDatabaseRestTransport.ListAutonomousDatabaseCharacterSets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8213,31 +6614,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_autonomous_database_character_sets(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_autonomous_database_character_sets(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabaseCharacterSets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8261,12 +6649,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListAutonomousDatabaseCharacterSets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8276,27 +6659,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Return the response
             resp = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse()
-            pb_resp = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(
-                resp
-            )
+            pb_resp = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_autonomous_database_character_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_autonomous_database_character_sets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_autonomous_database_character_sets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(
-                        response
-                    )
+                    response_payload = oracledatabase.ListAutonomousDatabaseCharacterSetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8315,23 +6687,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListAutonomousDatabases(
-        _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases,
-        OracleDatabaseRestStub,
-    ):
+    class _ListAutonomousDatabases(_BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListAutonomousDatabases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8370,28 +6731,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``AutonomousDatabase.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_autonomous_databases(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_autonomous_databases(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDatabases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8414,15 +6763,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._ListAutonomousDatabases._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._ListAutonomousDatabases._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8438,16 +6780,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_autonomous_databases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_autonomous_databases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_autonomous_databases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListAutonomousDatabasesResponse.to_json(response)
-                    )
+                    response_payload = oracledatabase.ListAutonomousDatabasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8466,23 +6802,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListAutonomousDbVersions(
-        _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions,
-        OracleDatabaseRestStub,
-    ):
+    class _ListAutonomousDbVersions(_BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListAutonomousDbVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8522,28 +6847,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``AutonomousDbVersion.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_autonomous_db_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_autonomous_db_versions(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListAutonomousDbVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8566,15 +6879,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._ListAutonomousDbVersions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._ListAutonomousDbVersions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8590,18 +6896,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_autonomous_db_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_autonomous_db_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_autonomous_db_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListAutonomousDbVersionsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = oracledatabase.ListAutonomousDbVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8620,23 +6918,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListCloudExadataInfrastructures(
-        _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures,
-        OracleDatabaseRestStub,
-    ):
+    class _ListCloudExadataInfrastructures(_BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListCloudExadataInfrastructures")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8676,31 +6963,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``CloudExadataInfrastructures.list``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_cloud_exadata_infrastructures(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cloud_exadata_infrastructures(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudExadataInfrastructures._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8724,12 +6996,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListCloudExadataInfrastructures._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8745,21 +7012,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_cloud_exadata_infrastructures(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_cloud_exadata_infrastructures_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cloud_exadata_infrastructures_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListCloudExadataInfrastructuresResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = oracledatabase.ListCloudExadataInfrastructuresResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8778,23 +7034,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListCloudVmClusters(
-        _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters,
-        OracleDatabaseRestStub,
-    ):
+    class _ListCloudVmClusters(_BaseOracleDatabaseRestTransport._BaseListCloudVmClusters, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListCloudVmClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8833,28 +7078,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``CloudVmCluster.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cloud_vm_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cloud_vm_clusters(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListCloudVmClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8878,12 +7111,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListCloudVmClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8899,16 +7127,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_cloud_vm_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cloud_vm_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cloud_vm_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListCloudVmClustersResponse.to_json(response)
-                    )
+                    response_payload = oracledatabase.ListCloudVmClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8927,23 +7149,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDatabaseCharacterSets(
-        _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets,
-        OracleDatabaseRestStub,
-    ):
+    class _ListDatabaseCharacterSets(_BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDatabaseCharacterSets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8983,28 +7194,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``DatabaseCharacterSet.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_database_character_sets(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_database_character_sets(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDatabaseCharacterSets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9027,15 +7226,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._ListDatabaseCharacterSets._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._ListDatabaseCharacterSets._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9051,16 +7243,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_database_character_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_database_character_sets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_database_character_sets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = database_character_set.ListDatabaseCharacterSetsResponse.to_json(
-                        response
-                    )
+                    response_payload = database_character_set.ListDatabaseCharacterSetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9079,22 +7265,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDatabases(
-        _BaseOracleDatabaseRestTransport._BaseListDatabases, OracleDatabaseRestStub
-    ):
+    class _ListDatabases(_BaseOracleDatabaseRestTransport._BaseListDatabases, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDatabases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9133,26 +7309,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``Database.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDatabases._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_databases(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDatabases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9176,12 +7342,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDatabases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9197,12 +7358,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_databases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_databases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_databases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = database.ListDatabasesResponse.to_json(response)
                 except:
@@ -9223,22 +7380,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDbNodes(
-        _BaseOracleDatabaseRestTransport._BaseListDbNodes, OracleDatabaseRestStub
-    ):
+    class _ListDbNodes(_BaseOracleDatabaseRestTransport._BaseListDbNodes, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDbNodes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9277,26 +7424,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``DbNode.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_db_nodes(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbNodes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9320,12 +7457,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbNodes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9341,16 +7473,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_db_nodes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_db_nodes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_db_nodes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = oracledatabase.ListDbNodesResponse.to_json(
-                        response
-                    )
+                    response_payload = oracledatabase.ListDbNodesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9369,22 +7495,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDbServers(
-        _BaseOracleDatabaseRestTransport._BaseListDbServers, OracleDatabaseRestStub
-    ):
+    class _ListDbServers(_BaseOracleDatabaseRestTransport._BaseListDbServers, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDbServers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9423,26 +7539,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``DbServer.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbServers._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_http_options()
 
             request, metadata = self._interceptor.pre_list_db_servers(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbServers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9466,12 +7572,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbServers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9487,16 +7588,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_db_servers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_db_servers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_db_servers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = oracledatabase.ListDbServersResponse.to_json(
-                        response
-                    )
+                    response_payload = oracledatabase.ListDbServersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9515,23 +7610,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDbSystemInitialStorageSizes(
-        _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes,
-        OracleDatabaseRestStub,
-    ):
+    class _ListDbSystemInitialStorageSizes(_BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDbSystemInitialStorageSizes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9571,31 +7655,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``DbSystemInitialStorageSizes.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_db_system_initial_storage_sizes(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_db_system_initial_storage_sizes(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemInitialStorageSizes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9619,12 +7688,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbSystemInitialStorageSizes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9633,30 +7697,17 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse()
-            )
-            pb_resp = db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.pb(
-                resp
-            )
+            resp = db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse()
+            pb_resp = db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_db_system_initial_storage_sizes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_db_system_initial_storage_sizes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_db_system_initial_storage_sizes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.to_json(
-                        response
-                    )
+                    response_payload = db_system_initial_storage_size.ListDbSystemInitialStorageSizesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9675,22 +7726,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDbSystems(
-        _BaseOracleDatabaseRestTransport._BaseListDbSystems, OracleDatabaseRestStub
-    ):
+    class _ListDbSystems(_BaseOracleDatabaseRestTransport._BaseListDbSystems, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDbSystems")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9729,26 +7770,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``DbSystem.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_http_options()
 
             request, metadata = self._interceptor.pre_list_db_systems(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystems._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9772,12 +7803,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbSystems._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9793,12 +7819,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_db_systems(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_db_systems_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_db_systems_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = db_system.ListDbSystemsResponse.to_json(response)
                 except:
@@ -9819,22 +7841,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDbSystemShapes(
-        _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes, OracleDatabaseRestStub
-    ):
+    class _ListDbSystemShapes(_BaseOracleDatabaseRestTransport._BaseListDbSystemShapes, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDbSystemShapes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9873,28 +7885,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``DbSystemShape.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_db_system_shapes(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_db_system_shapes(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbSystemShapes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9918,12 +7918,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbSystemShapes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9939,16 +7934,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_db_system_shapes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_db_system_shapes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_db_system_shapes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListDbSystemShapesResponse.to_json(response)
-                    )
+                    response_payload = oracledatabase.ListDbSystemShapesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9967,22 +7956,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListDbVersions(
-        _BaseOracleDatabaseRestTransport._BaseListDbVersions, OracleDatabaseRestStub
-    ):
+    class _ListDbVersions(_BaseOracleDatabaseRestTransport._BaseListDbVersions, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListDbVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10021,28 +8000,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``DbVersions.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_db_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_db_versions(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListDbVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10066,12 +8033,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListDbVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10087,16 +8049,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_db_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_db_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_db_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = db_version.ListDbVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = db_version.ListDbVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10115,22 +8071,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListEntitlements(
-        _BaseOracleDatabaseRestTransport._BaseListEntitlements, OracleDatabaseRestStub
-    ):
+    class _ListEntitlements(_BaseOracleDatabaseRestTransport._BaseListEntitlements, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListEntitlements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10169,28 +8115,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``Entitlement.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_entitlements(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_entitlements(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListEntitlements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10214,12 +8148,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListEntitlements._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10235,16 +8164,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_entitlements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entitlements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entitlements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = oracledatabase.ListEntitlementsResponse.to_json(
-                        response
-                    )
+                    response_payload = oracledatabase.ListEntitlementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10263,23 +8186,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListExadbVmClusters(
-        _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters,
-        OracleDatabaseRestStub,
-    ):
+    class _ListExadbVmClusters(_BaseOracleDatabaseRestTransport._BaseListExadbVmClusters, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListExadbVmClusters")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10318,28 +8230,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``ExadbVmCluster.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_exadb_vm_clusters(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_exadb_vm_clusters(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListExadbVmClusters._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10363,12 +8263,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListExadbVmClusters._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10384,16 +8279,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_exadb_vm_clusters(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_exadb_vm_clusters_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_exadb_vm_clusters_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        oracledatabase.ListExadbVmClustersResponse.to_json(response)
-                    )
+                    response_payload = oracledatabase.ListExadbVmClustersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10412,23 +8301,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListExascaleDbStorageVaults(
-        _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults,
-        OracleDatabaseRestStub,
-    ):
+    class _ListExascaleDbStorageVaults(_BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListExascaleDbStorageVaults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10468,28 +8346,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                         The response for ``ExascaleDbStorageVault.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_exascale_db_storage_vaults(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_exascale_db_storage_vaults(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListExascaleDbStorageVaults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10512,15 +8378,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._ListExascaleDbStorageVaults._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._ListExascaleDbStorageVaults._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10530,27 +8389,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Return the response
             resp = exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse()
-            pb_resp = exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.pb(
-                resp
-            )
+            pb_resp = exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_exascale_db_storage_vaults(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_exascale_db_storage_vaults_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_exascale_db_storage_vaults_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.to_json(
-                        response
-                    )
+                    response_payload = exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10569,22 +8417,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListGiVersions(
-        _BaseOracleDatabaseRestTransport._BaseListGiVersions, OracleDatabaseRestStub
-    ):
+    class _ListGiVersions(_BaseOracleDatabaseRestTransport._BaseListGiVersions, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListGiVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10623,28 +8461,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``GiVersion.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_gi_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_gi_versions(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListGiVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10668,12 +8494,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListGiVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10689,16 +8510,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_gi_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_gi_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_gi_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = oracledatabase.ListGiVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = oracledatabase.ListGiVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10717,22 +8532,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListMinorVersions(
-        _BaseOracleDatabaseRestTransport._BaseListMinorVersions, OracleDatabaseRestStub
-    ):
+    class _ListMinorVersions(_BaseOracleDatabaseRestTransport._BaseListMinorVersions, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListMinorVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10771,28 +8576,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``MinorVersion.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_minor_versions(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_minor_versions(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListMinorVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10816,12 +8609,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListMinorVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10837,16 +8625,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_minor_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_minor_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_minor_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = minor_version.ListMinorVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = minor_version.ListMinorVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10865,22 +8647,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListOdbNetworks(
-        _BaseOracleDatabaseRestTransport._BaseListOdbNetworks, OracleDatabaseRestStub
-    ):
+    class _ListOdbNetworks(_BaseOracleDatabaseRestTransport._BaseListOdbNetworks, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListOdbNetworks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10919,28 +8691,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``OdbNetwork.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_odb_networks(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_odb_networks(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListOdbNetworks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10964,12 +8724,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListOdbNetworks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10985,16 +8740,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_odb_networks(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_odb_networks_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_odb_networks_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = odb_network.ListOdbNetworksResponse.to_json(
-                        response
-                    )
+                    response_payload = odb_network.ListOdbNetworksResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11013,22 +8762,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListOdbSubnets(
-        _BaseOracleDatabaseRestTransport._BaseListOdbSubnets, OracleDatabaseRestStub
-    ):
+    class _ListOdbSubnets(_BaseOracleDatabaseRestTransport._BaseListOdbSubnets, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListOdbSubnets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11067,28 +8806,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``OdbSubnet.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_odb_subnets(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_odb_subnets(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListOdbSubnets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11112,12 +8839,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListOdbSubnets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11133,16 +8855,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_odb_subnets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_odb_subnets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_odb_subnets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = odb_subnet.ListOdbSubnetsResponse.to_json(
-                        response
-                    )
+                    response_payload = odb_subnet.ListOdbSubnetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11161,23 +8877,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _ListPluggableDatabases(
-        _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases,
-        OracleDatabaseRestStub,
-    ):
+    class _ListPluggableDatabases(_BaseOracleDatabaseRestTransport._BaseListPluggableDatabases, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListPluggableDatabases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11216,28 +8921,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     The response for ``PluggableDatabase.List``.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_pluggable_databases(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_pluggable_databases(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListPluggableDatabases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11260,15 +8953,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._ListPluggableDatabases._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OracleDatabaseRestTransport._ListPluggableDatabases._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11284,18 +8970,10 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_list_pluggable_databases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_pluggable_databases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_pluggable_databases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        pluggable_database.ListPluggableDatabasesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = pluggable_database.ListPluggableDatabasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11314,25 +8992,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _RemoveVirtualMachineExadbVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster,
-        OracleDatabaseRestStub,
-    ):
+    class _RemoveVirtualMachineExadbVmCluster(_BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
-            return hash(
-                "OracleDatabaseRestTransport.RemoveVirtualMachineExadbVmCluster"
-            )
+            return hash("OracleDatabaseRestTransport.RemoveVirtualMachineExadbVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11376,35 +9041,20 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_remove_virtual_machine_exadb_vm_cluster(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_remove_virtual_machine_exadb_vm_cluster(request, metadata)
             transcoded_request = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseRemoveVirtualMachineExadbVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11428,13 +9078,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._RemoveVirtualMachineExadbVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11448,15 +9092,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_remove_virtual_machine_exadb_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_virtual_machine_exadb_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_virtual_machine_exadb_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11477,23 +9114,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _RestartAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _RestartAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.RestartAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11537,32 +9163,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_restart_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restart_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseRestartAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11585,16 +9197,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._RestartAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._RestartAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11608,12 +9212,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_restart_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restart_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restart_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11634,23 +9234,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _RestoreAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _RestoreAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.RestoreAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11694,32 +9283,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restore_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseRestoreAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11742,16 +9317,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._RestoreAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._RestoreAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11765,12 +9332,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_restore_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11791,23 +9354,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _StartAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _StartAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.StartAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11850,32 +9402,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseStartAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11898,16 +9436,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._StartAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._StartAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11921,12 +9451,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_start_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11947,23 +9473,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _StopAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _StopAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.StopAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12006,32 +9521,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_stop_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_stop_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseStopAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12054,16 +9555,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._StopAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._StopAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12077,12 +9570,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_stop_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12103,23 +9592,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _SwitchoverAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _SwitchoverAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.SwitchoverAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12164,32 +9642,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_switchover_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_switchover_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseSwitchoverAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12212,16 +9676,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._SwitchoverAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._SwitchoverAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12235,15 +9691,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_switchover_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_switchover_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_switchover_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12264,23 +9713,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _UpdateAutonomousDatabase(
-        _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase,
-        OracleDatabaseRestStub,
-    ):
+    class _UpdateAutonomousDatabase(_BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.UpdateAutonomousDatabase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12324,32 +9762,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_autonomous_database(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_autonomous_database(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseUpdateAutonomousDatabase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12372,16 +9796,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
 
             # Send the request
-            response = (
-                OracleDatabaseRestTransport._UpdateAutonomousDatabase._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OracleDatabaseRestTransport._UpdateAutonomousDatabase._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12395,12 +9811,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_update_autonomous_database(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_autonomous_database_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_autonomous_database_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12421,23 +9833,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 )
             return resp
 
-    class _UpdateExadbVmCluster(
-        _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster,
-        OracleDatabaseRestStub,
-    ):
+    class _UpdateExadbVmCluster(_BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.UpdateExadbVmCluster")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12483,32 +9884,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_exadb_vm_cluster(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_exadb_vm_cluster(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseUpdateExadbVmCluster._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12532,13 +9919,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._UpdateExadbVmCluster._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12552,12 +9933,8 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             resp = self._interceptor.post_update_exadb_vm_cluster(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_exadb_vm_cluster_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_exadb_vm_cluster_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12579,50 +9956,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             return resp
 
     @property
-    def create_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def create_autonomous_database(self) -> Callable[[oracledatabase.CreateAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_cloud_exadata_infrastructure(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateCloudExadataInfrastructureRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_cloud_exadata_infrastructure(self) -> Callable[[oracledatabase.CreateCloudExadataInfrastructureRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCloudExadataInfrastructure(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_cloud_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateCloudVmClusterRequest], operations_pb2.Operation
-    ]:
+    def create_cloud_vm_cluster(self) -> Callable[[oracledatabase.CreateCloudVmClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCloudVmCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_db_system(
-        self,
-    ) -> Callable[[gco_db_system.CreateDbSystemRequest], operations_pb2.Operation]:
+    def create_db_system(self) -> Callable[[gco_db_system.CreateDbSystemRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDbSystem(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.CreateExadbVmClusterRequest], operations_pb2.Operation
-    ]:
+    def create_exadb_vm_cluster(self) -> Callable[[oracledatabase.CreateExadbVmClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExadbVmCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -12630,112 +9988,73 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def create_exascale_db_storage_vault(
         self,
-    ) -> Callable[
-        [gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gco_exascale_db_storage_vault.CreateExascaleDbStorageVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExascaleDbStorageVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_odb_network(
-        self,
-    ) -> Callable[[gco_odb_network.CreateOdbNetworkRequest], operations_pb2.Operation]:
+    def create_odb_network(self) -> Callable[[gco_odb_network.CreateOdbNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOdbNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_odb_subnet(
-        self,
-    ) -> Callable[[gco_odb_subnet.CreateOdbSubnetRequest], operations_pb2.Operation]:
+    def create_odb_subnet(self) -> Callable[[gco_odb_subnet.CreateOdbSubnetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOdbSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def delete_autonomous_database(self) -> Callable[[oracledatabase.DeleteAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cloud_exadata_infrastructure(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteCloudExadataInfrastructureRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_cloud_exadata_infrastructure(self) -> Callable[[oracledatabase.DeleteCloudExadataInfrastructureRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCloudExadataInfrastructure(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_cloud_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteCloudVmClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_cloud_vm_cluster(self) -> Callable[[oracledatabase.DeleteCloudVmClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCloudVmCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_db_system(
-        self,
-    ) -> Callable[[db_system.DeleteDbSystemRequest], operations_pb2.Operation]:
+    def delete_db_system(self) -> Callable[[db_system.DeleteDbSystemRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDbSystem(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.DeleteExadbVmClusterRequest], operations_pb2.Operation
-    ]:
+    def delete_exadb_vm_cluster(self) -> Callable[[oracledatabase.DeleteExadbVmClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExadbVmCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_exascale_db_storage_vault(
-        self,
-    ) -> Callable[
-        [exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_exascale_db_storage_vault(self) -> Callable[[exascale_db_storage_vault.DeleteExascaleDbStorageVaultRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExascaleDbStorageVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_odb_network(
-        self,
-    ) -> Callable[[odb_network.DeleteOdbNetworkRequest], operations_pb2.Operation]:
+    def delete_odb_network(self) -> Callable[[odb_network.DeleteOdbNetworkRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteOdbNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_odb_subnet(
-        self,
-    ) -> Callable[[odb_subnet.DeleteOdbSubnetRequest], operations_pb2.Operation]:
+    def delete_odb_subnet(self) -> Callable[[odb_subnet.DeleteOdbSubnetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteOdbSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def failover_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.FailoverAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def failover_autonomous_database(self) -> Callable[[oracledatabase.FailoverAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FailoverAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
@@ -12743,21 +10062,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def generate_autonomous_database_wallet(
         self,
-    ) -> Callable[
-        [oracledatabase.GenerateAutonomousDatabaseWalletRequest],
-        oracledatabase.GenerateAutonomousDatabaseWalletResponse,
-    ]:
+    ) -> Callable[[oracledatabase.GenerateAutonomousDatabaseWalletRequest], oracledatabase.GenerateAutonomousDatabaseWalletResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateAutonomousDatabaseWallet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.GetAutonomousDatabaseRequest],
-        autonomous_database.AutonomousDatabase,
-    ]:
+    def get_autonomous_database(self) -> Callable[[oracledatabase.GetAutonomousDatabaseRequest], autonomous_database.AutonomousDatabase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
@@ -12765,44 +10076,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def get_cloud_exadata_infrastructure(
         self,
-    ) -> Callable[
-        [oracledatabase.GetCloudExadataInfrastructureRequest],
-        exadata_infra.CloudExadataInfrastructure,
-    ]:
+    ) -> Callable[[oracledatabase.GetCloudExadataInfrastructureRequest], exadata_infra.CloudExadataInfrastructure]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCloudExadataInfrastructure(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cloud_vm_cluster(
-        self,
-    ) -> Callable[[oracledatabase.GetCloudVmClusterRequest], vm_cluster.CloudVmCluster]:
+    def get_cloud_vm_cluster(self) -> Callable[[oracledatabase.GetCloudVmClusterRequest], vm_cluster.CloudVmCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCloudVmCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[[database.GetDatabaseRequest], database.Database]:
+    def get_database(self) -> Callable[[database.GetDatabaseRequest], database.Database]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_db_system(
-        self,
-    ) -> Callable[[db_system.GetDbSystemRequest], db_system.DbSystem]:
+    def get_db_system(self) -> Callable[[db_system.GetDbSystemRequest], db_system.DbSystem]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDbSystem(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.GetExadbVmClusterRequest], exadb_vm_cluster.ExadbVmCluster
-    ]:
+    def get_exadb_vm_cluster(self) -> Callable[[oracledatabase.GetExadbVmClusterRequest], exadb_vm_cluster.ExadbVmCluster]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetExadbVmCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -12810,37 +10108,25 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def get_exascale_db_storage_vault(
         self,
-    ) -> Callable[
-        [exascale_db_storage_vault.GetExascaleDbStorageVaultRequest],
-        exascale_db_storage_vault.ExascaleDbStorageVault,
-    ]:
+    ) -> Callable[[exascale_db_storage_vault.GetExascaleDbStorageVaultRequest], exascale_db_storage_vault.ExascaleDbStorageVault]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetExascaleDbStorageVault(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_odb_network(
-        self,
-    ) -> Callable[[odb_network.GetOdbNetworkRequest], odb_network.OdbNetwork]:
+    def get_odb_network(self) -> Callable[[odb_network.GetOdbNetworkRequest], odb_network.OdbNetwork]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOdbNetwork(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_odb_subnet(
-        self,
-    ) -> Callable[[odb_subnet.GetOdbSubnetRequest], odb_subnet.OdbSubnet]:
+    def get_odb_subnet(self) -> Callable[[odb_subnet.GetOdbSubnetRequest], odb_subnet.OdbSubnet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOdbSubnet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_pluggable_database(
-        self,
-    ) -> Callable[
-        [pluggable_database.GetPluggableDatabaseRequest],
-        pluggable_database.PluggableDatabase,
-    ]:
+    def get_pluggable_database(self) -> Callable[[pluggable_database.GetPluggableDatabaseRequest], pluggable_database.PluggableDatabase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPluggableDatabase(self._session, self._host, self._interceptor)  # type: ignore
@@ -12848,10 +10134,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_autonomous_database_backups(
         self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDatabaseBackupsRequest],
-        oracledatabase.ListAutonomousDatabaseBackupsResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListAutonomousDatabaseBackupsRequest], oracledatabase.ListAutonomousDatabaseBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutonomousDatabaseBackups(self._session, self._host, self._interceptor)  # type: ignore
@@ -12859,21 +10142,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_autonomous_database_character_sets(
         self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDatabaseCharacterSetsRequest],
-        oracledatabase.ListAutonomousDatabaseCharacterSetsResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListAutonomousDatabaseCharacterSetsRequest], oracledatabase.ListAutonomousDatabaseCharacterSetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutonomousDatabaseCharacterSets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_autonomous_databases(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDatabasesRequest],
-        oracledatabase.ListAutonomousDatabasesResponse,
-    ]:
+    def list_autonomous_databases(self) -> Callable[[oracledatabase.ListAutonomousDatabasesRequest], oracledatabase.ListAutonomousDatabasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutonomousDatabases(self._session, self._host, self._interceptor)  # type: ignore
@@ -12881,10 +10156,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_autonomous_db_versions(
         self,
-    ) -> Callable[
-        [oracledatabase.ListAutonomousDbVersionsRequest],
-        oracledatabase.ListAutonomousDbVersionsResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListAutonomousDbVersionsRequest], oracledatabase.ListAutonomousDbVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutonomousDbVersions(self._session, self._host, self._interceptor)  # type: ignore
@@ -12892,21 +10164,13 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_cloud_exadata_infrastructures(
         self,
-    ) -> Callable[
-        [oracledatabase.ListCloudExadataInfrastructuresRequest],
-        oracledatabase.ListCloudExadataInfrastructuresResponse,
-    ]:
+    ) -> Callable[[oracledatabase.ListCloudExadataInfrastructuresRequest], oracledatabase.ListCloudExadataInfrastructuresResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCloudExadataInfrastructures(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_cloud_vm_clusters(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListCloudVmClustersRequest],
-        oracledatabase.ListCloudVmClustersResponse,
-    ]:
+    def list_cloud_vm_clusters(self) -> Callable[[oracledatabase.ListCloudVmClustersRequest], oracledatabase.ListCloudVmClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCloudVmClusters(self._session, self._host, self._interceptor)  # type: ignore
@@ -12914,38 +10178,25 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_database_character_sets(
         self,
-    ) -> Callable[
-        [database_character_set.ListDatabaseCharacterSetsRequest],
-        database_character_set.ListDatabaseCharacterSetsResponse,
-    ]:
+    ) -> Callable[[database_character_set.ListDatabaseCharacterSetsRequest], database_character_set.ListDatabaseCharacterSetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatabaseCharacterSets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[[database.ListDatabasesRequest], database.ListDatabasesResponse]:
+    def list_databases(self) -> Callable[[database.ListDatabasesRequest], database.ListDatabasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatabases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_db_nodes(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListDbNodesRequest], oracledatabase.ListDbNodesResponse
-    ]:
+    def list_db_nodes(self) -> Callable[[oracledatabase.ListDbNodesRequest], oracledatabase.ListDbNodesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDbNodes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_db_servers(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListDbServersRequest], oracledatabase.ListDbServersResponse
-    ]:
+    def list_db_servers(self) -> Callable[[oracledatabase.ListDbServersRequest], oracledatabase.ListDbServersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDbServers(self._session, self._host, self._interceptor)  # type: ignore
@@ -12962,52 +10213,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
         return self._ListDbSystemInitialStorageSizes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_db_systems(
-        self,
-    ) -> Callable[[db_system.ListDbSystemsRequest], db_system.ListDbSystemsResponse]:
+    def list_db_systems(self) -> Callable[[db_system.ListDbSystemsRequest], db_system.ListDbSystemsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDbSystems(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_db_system_shapes(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListDbSystemShapesRequest],
-        oracledatabase.ListDbSystemShapesResponse,
-    ]:
+    def list_db_system_shapes(self) -> Callable[[oracledatabase.ListDbSystemShapesRequest], oracledatabase.ListDbSystemShapesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDbSystemShapes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_db_versions(
-        self,
-    ) -> Callable[
-        [db_version.ListDbVersionsRequest], db_version.ListDbVersionsResponse
-    ]:
+    def list_db_versions(self) -> Callable[[db_version.ListDbVersionsRequest], db_version.ListDbVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDbVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_entitlements(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListEntitlementsRequest],
-        oracledatabase.ListEntitlementsResponse,
-    ]:
+    def list_entitlements(self) -> Callable[[oracledatabase.ListEntitlementsRequest], oracledatabase.ListEntitlementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntitlements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_exadb_vm_clusters(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListExadbVmClustersRequest],
-        oracledatabase.ListExadbVmClustersResponse,
-    ]:
+    def list_exadb_vm_clusters(self) -> Callable[[oracledatabase.ListExadbVmClustersRequest], oracledatabase.ListExadbVmClustersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExadbVmClusters(self._session, self._host, self._interceptor)  # type: ignore
@@ -13015,51 +10245,31 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_exascale_db_storage_vaults(
         self,
-    ) -> Callable[
-        [exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest],
-        exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse,
-    ]:
+    ) -> Callable[[exascale_db_storage_vault.ListExascaleDbStorageVaultsRequest], exascale_db_storage_vault.ListExascaleDbStorageVaultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExascaleDbStorageVaults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_gi_versions(
-        self,
-    ) -> Callable[
-        [oracledatabase.ListGiVersionsRequest], oracledatabase.ListGiVersionsResponse
-    ]:
+    def list_gi_versions(self) -> Callable[[oracledatabase.ListGiVersionsRequest], oracledatabase.ListGiVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGiVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_minor_versions(
-        self,
-    ) -> Callable[
-        [minor_version.ListMinorVersionsRequest],
-        minor_version.ListMinorVersionsResponse,
-    ]:
+    def list_minor_versions(self) -> Callable[[minor_version.ListMinorVersionsRequest], minor_version.ListMinorVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMinorVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_odb_networks(
-        self,
-    ) -> Callable[
-        [odb_network.ListOdbNetworksRequest], odb_network.ListOdbNetworksResponse
-    ]:
+    def list_odb_networks(self) -> Callable[[odb_network.ListOdbNetworksRequest], odb_network.ListOdbNetworksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOdbNetworks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_odb_subnets(
-        self,
-    ) -> Callable[
-        [odb_subnet.ListOdbSubnetsRequest], odb_subnet.ListOdbSubnetsResponse
-    ]:
+    def list_odb_subnets(self) -> Callable[[odb_subnet.ListOdbSubnetsRequest], odb_subnet.ListOdbSubnetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOdbSubnets(self._session, self._host, self._interceptor)  # type: ignore
@@ -13067,10 +10277,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def list_pluggable_databases(
         self,
-    ) -> Callable[
-        [pluggable_database.ListPluggableDatabasesRequest],
-        pluggable_database.ListPluggableDatabasesResponse,
-    ]:
+    ) -> Callable[[pluggable_database.ListPluggableDatabasesRequest], pluggable_database.ListPluggableDatabasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPluggableDatabases(self._session, self._host, self._interceptor)  # type: ignore
@@ -13078,80 +10285,49 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     @property
     def remove_virtual_machine_exadb_vm_cluster(
         self,
-    ) -> Callable[
-        [oracledatabase.RemoveVirtualMachineExadbVmClusterRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[oracledatabase.RemoveVirtualMachineExadbVmClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveVirtualMachineExadbVmCluster(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restart_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.RestartAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def restart_autonomous_database(self) -> Callable[[oracledatabase.RestartAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestartAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.RestoreAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def restore_autonomous_database(self) -> Callable[[oracledatabase.RestoreAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.StartAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def start_autonomous_database(self) -> Callable[[oracledatabase.StartAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.StopAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def stop_autonomous_database(self) -> Callable[[oracledatabase.StopAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def switchover_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.SwitchoverAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def switchover_autonomous_database(self) -> Callable[[oracledatabase.SwitchoverAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SwitchoverAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_autonomous_database(
-        self,
-    ) -> Callable[
-        [oracledatabase.UpdateAutonomousDatabaseRequest], operations_pb2.Operation
-    ]:
+    def update_autonomous_database(self) -> Callable[[oracledatabase.UpdateAutonomousDatabaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAutonomousDatabase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_exadb_vm_cluster(
-        self,
-    ) -> Callable[
-        [oracledatabase.UpdateExadbVmClusterRequest], operations_pb2.Operation
-    ]:
+    def update_exadb_vm_cluster(self) -> Callable[[oracledatabase.UpdateExadbVmClusterRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExadbVmCluster(self._session, self._host, self._interceptor)  # type: ignore
@@ -13160,22 +10336,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseOracleDatabaseRestTransport._BaseGetLocation, OracleDatabaseRestStub
-    ):
+    class _GetLocation(_BaseOracleDatabaseRestTransport._BaseGetLocation, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13213,26 +10379,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13256,12 +10412,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13273,9 +10424,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13300,22 +10449,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseOracleDatabaseRestTransport._BaseListLocations, OracleDatabaseRestStub
-    ):
+    class _ListLocations(_BaseOracleDatabaseRestTransport._BaseListLocations, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13353,26 +10492,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13396,12 +10525,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13413,9 +10537,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13440,22 +10562,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseOracleDatabaseRestTransport._BaseCancelOperation, OracleDatabaseRestStub
-    ):
+    class _CancelOperation(_BaseOracleDatabaseRestTransport._BaseCancelOperation, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13491,32 +10603,18 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13540,13 +10638,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13560,22 +10652,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseOracleDatabaseRestTransport._BaseDeleteOperation, OracleDatabaseRestStub
-    ):
+    class _DeleteOperation(_BaseOracleDatabaseRestTransport._BaseDeleteOperation, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13610,28 +10692,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13655,12 +10725,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13674,22 +10739,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseOracleDatabaseRestTransport._BaseGetOperation, OracleDatabaseRestStub
-    ):
+    class _GetOperation(_BaseOracleDatabaseRestTransport._BaseGetOperation, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13727,26 +10782,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13770,12 +10815,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13787,9 +10827,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13814,22 +10852,12 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseOracleDatabaseRestTransport._BaseListOperations, OracleDatabaseRestStub
-    ):
+    class _ListOperations(_BaseOracleDatabaseRestTransport._BaseListOperations, OracleDatabaseRestStub):
         def __hash__(self):
             return hash("OracleDatabaseRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13867,26 +10895,16 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseOracleDatabaseRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseOracleDatabaseRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOracleDatabaseRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOracleDatabaseRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOracleDatabaseRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13910,12 +10928,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
 
             # Send the request
             response = OracleDatabaseRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13927,9 +10940,7 @@ class OracleDatabaseRestTransport(_BaseOracleDatabaseRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

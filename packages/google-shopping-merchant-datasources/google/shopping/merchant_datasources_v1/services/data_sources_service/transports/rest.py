@@ -120,12 +120,8 @@ class DataSourcesServiceRestInterceptor:
     """
 
     def pre_create_data_source(
-        self,
-        request: datasources.CreateDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.CreateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datasources.CreateDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.CreateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +129,7 @@ class DataSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_data_source(
-        self, response: datasources.DataSource
-    ) -> datasources.DataSource:
+    def post_create_data_source(self, response: datasources.DataSource) -> datasources.DataSource:
         """Post-rpc interceptor for create_data_source
 
         DEPRECATED. Please use the `post_create_data_source_with_metadata`
@@ -149,9 +143,7 @@ class DataSourcesServiceRestInterceptor:
         return response
 
     def post_create_data_source_with_metadata(
-        self,
-        response: datasources.DataSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datasources.DataSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datasources.DataSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_data_source
 
@@ -168,12 +160,8 @@ class DataSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_data_source(
-        self,
-        request: datasources.DeleteDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.DeleteDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datasources.DeleteDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.DeleteDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -182,12 +170,8 @@ class DataSourcesServiceRestInterceptor:
         return request, metadata
 
     def pre_fetch_data_source(
-        self,
-        request: datasources.FetchDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.FetchDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datasources.FetchDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.FetchDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -196,12 +180,8 @@ class DataSourcesServiceRestInterceptor:
         return request, metadata
 
     def pre_get_data_source(
-        self,
-        request: datasources.GetDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datasources.GetDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.GetDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +189,7 @@ class DataSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_data_source(
-        self, response: datasources.DataSource
-    ) -> datasources.DataSource:
+    def post_get_data_source(self, response: datasources.DataSource) -> datasources.DataSource:
         """Post-rpc interceptor for get_data_source
 
         DEPRECATED. Please use the `post_get_data_source_with_metadata`
@@ -225,9 +203,7 @@ class DataSourcesServiceRestInterceptor:
         return response
 
     def post_get_data_source_with_metadata(
-        self,
-        response: datasources.DataSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datasources.DataSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datasources.DataSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_data_source
 
@@ -244,12 +220,8 @@ class DataSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_data_sources(
-        self,
-        request: datasources.ListDataSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datasources.ListDataSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.ListDataSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_data_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -257,9 +229,7 @@ class DataSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_data_sources(
-        self, response: datasources.ListDataSourcesResponse
-    ) -> datasources.ListDataSourcesResponse:
+    def post_list_data_sources(self, response: datasources.ListDataSourcesResponse) -> datasources.ListDataSourcesResponse:
         """Post-rpc interceptor for list_data_sources
 
         DEPRECATED. Please use the `post_list_data_sources_with_metadata`
@@ -273,12 +243,8 @@ class DataSourcesServiceRestInterceptor:
         return response
 
     def post_list_data_sources_with_metadata(
-        self,
-        response: datasources.ListDataSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datasources.ListDataSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.ListDataSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_data_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -294,12 +260,8 @@ class DataSourcesServiceRestInterceptor:
         return response, metadata
 
     def pre_update_data_source(
-        self,
-        request: datasources.UpdateDataSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datasources.UpdateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datasources.UpdateDataSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datasources.UpdateDataSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_data_source
 
         Override in a subclass to manipulate the request or metadata
@@ -307,9 +269,7 @@ class DataSourcesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_data_source(
-        self, response: datasources.DataSource
-    ) -> datasources.DataSource:
+    def post_update_data_source(self, response: datasources.DataSource) -> datasources.DataSource:
         """Post-rpc interceptor for update_data_source
 
         DEPRECATED. Please use the `post_update_data_source_with_metadata`
@@ -323,9 +283,7 @@ class DataSourcesServiceRestInterceptor:
         return response
 
     def post_update_data_source_with_metadata(
-        self,
-        response: datasources.DataSource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datasources.DataSource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datasources.DataSource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_data_source
 
@@ -424,31 +382,18 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DataSourcesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateDataSource(
-        _BaseDataSourcesServiceRestTransport._BaseCreateDataSource,
-        DataSourcesServiceRestStub,
-    ):
+    class _CreateDataSource(_BaseDataSourcesServiceRestTransport._BaseCreateDataSource, DataSourcesServiceRestStub):
         def __hash__(self):
             return hash("DataSourcesServiceRestTransport.CreateDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -492,32 +437,18 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_data_source(
-                request, metadata
-            )
-            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_data_source(request, metadata)
+            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_transcoded_request(http_options, request)
 
-            body = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataSourcesServiceRestTransport._BaseCreateDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -541,13 +472,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             # Send the request
             response = DataSourcesServiceRestTransport._CreateDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -563,12 +488,8 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             resp = self._interceptor.post_create_data_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_data_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_data_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datasources.DataSource.to_json(response)
                 except:
@@ -589,23 +510,12 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 )
             return resp
 
-    class _DeleteDataSource(
-        _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource,
-        DataSourcesServiceRestStub,
-    ):
+    class _DeleteDataSource(_BaseDataSourcesServiceRestTransport._BaseDeleteDataSource, DataSourcesServiceRestStub):
         def __hash__(self):
             return hash("DataSourcesServiceRestTransport.DeleteDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -641,28 +551,16 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_data_source(
-                request, metadata
-            )
-            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_data_source(request, metadata)
+            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataSourcesServiceRestTransport._BaseDeleteDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -686,12 +584,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             # Send the request
             response = DataSourcesServiceRestTransport._DeleteDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -699,23 +592,12 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _FetchDataSource(
-        _BaseDataSourcesServiceRestTransport._BaseFetchDataSource,
-        DataSourcesServiceRestStub,
-    ):
+    class _FetchDataSource(_BaseDataSourcesServiceRestTransport._BaseFetchDataSource, DataSourcesServiceRestStub):
         def __hash__(self):
             return hash("DataSourcesServiceRestTransport.FetchDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -752,32 +634,18 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_data_source(
-                request, metadata
-            )
-            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_data_source(request, metadata)
+            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_transcoded_request(http_options, request)
 
-            body = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataSourcesServiceRestTransport._BaseFetchDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -801,13 +669,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             # Send the request
             response = DataSourcesServiceRestTransport._FetchDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -815,23 +677,12 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetDataSource(
-        _BaseDataSourcesServiceRestTransport._BaseGetDataSource,
-        DataSourcesServiceRestStub,
-    ):
+    class _GetDataSource(_BaseDataSourcesServiceRestTransport._BaseGetDataSource, DataSourcesServiceRestStub):
         def __hash__(self):
             return hash("DataSourcesServiceRestTransport.GetDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -874,26 +725,16 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_data_source(request, metadata)
-            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataSourcesServiceRestTransport._BaseGetDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -917,12 +758,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             # Send the request
             response = DataSourcesServiceRestTransport._GetDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -938,12 +774,8 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             resp = self._interceptor.post_get_data_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_data_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_data_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datasources.DataSource.to_json(response)
                 except:
@@ -964,23 +796,12 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 )
             return resp
 
-    class _ListDataSources(
-        _BaseDataSourcesServiceRestTransport._BaseListDataSources,
-        DataSourcesServiceRestStub,
-    ):
+    class _ListDataSources(_BaseDataSourcesServiceRestTransport._BaseListDataSources, DataSourcesServiceRestStub):
         def __hash__(self):
             return hash("DataSourcesServiceRestTransport.ListDataSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1022,28 +843,16 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_data_sources(
-                request, metadata
-            )
-            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_data_sources(request, metadata)
+            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataSourcesServiceRestTransport._BaseListDataSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1067,12 +876,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             # Send the request
             response = DataSourcesServiceRestTransport._ListDataSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1088,16 +892,10 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             resp = self._interceptor.post_list_data_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_data_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_data_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datasources.ListDataSourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = datasources.ListDataSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1116,23 +914,12 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
                 )
             return resp
 
-    class _UpdateDataSource(
-        _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource,
-        DataSourcesServiceRestStub,
-    ):
+    class _UpdateDataSource(_BaseDataSourcesServiceRestTransport._BaseUpdateDataSource, DataSourcesServiceRestStub):
         def __hash__(self):
             return hash("DataSourcesServiceRestTransport.UpdateDataSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1176,32 +963,18 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_http_options()
-            )
+            http_options = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_data_source(
-                request, metadata
-            )
-            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_data_source(request, metadata)
+            transcoded_request = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_transcoded_request(http_options, request)
 
-            body = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataSourcesServiceRestTransport._BaseUpdateDataSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1225,13 +998,7 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             # Send the request
             response = DataSourcesServiceRestTransport._UpdateDataSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1247,12 +1014,8 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
 
             resp = self._interceptor.post_update_data_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_data_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_data_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datasources.DataSource.to_json(response)
                 except:
@@ -1274,51 +1037,37 @@ class DataSourcesServiceRestTransport(_BaseDataSourcesServiceRestTransport):
             return resp
 
     @property
-    def create_data_source(
-        self,
-    ) -> Callable[[datasources.CreateDataSourceRequest], datasources.DataSource]:
+    def create_data_source(self) -> Callable[[datasources.CreateDataSourceRequest], datasources.DataSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDataSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_data_source(
-        self,
-    ) -> Callable[[datasources.DeleteDataSourceRequest], empty_pb2.Empty]:
+    def delete_data_source(self) -> Callable[[datasources.DeleteDataSourceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDataSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_data_source(
-        self,
-    ) -> Callable[[datasources.FetchDataSourceRequest], empty_pb2.Empty]:
+    def fetch_data_source(self) -> Callable[[datasources.FetchDataSourceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchDataSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_data_source(
-        self,
-    ) -> Callable[[datasources.GetDataSourceRequest], datasources.DataSource]:
+    def get_data_source(self) -> Callable[[datasources.GetDataSourceRequest], datasources.DataSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDataSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_data_sources(
-        self,
-    ) -> Callable[
-        [datasources.ListDataSourcesRequest], datasources.ListDataSourcesResponse
-    ]:
+    def list_data_sources(self) -> Callable[[datasources.ListDataSourcesRequest], datasources.ListDataSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDataSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_data_source(
-        self,
-    ) -> Callable[[datasources.UpdateDataSourceRequest], datasources.DataSource]:
+    def update_data_source(self) -> Callable[[datasources.UpdateDataSourceRequest], datasources.DataSource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataSource(self._session, self._host, self._interceptor)  # type: ignore

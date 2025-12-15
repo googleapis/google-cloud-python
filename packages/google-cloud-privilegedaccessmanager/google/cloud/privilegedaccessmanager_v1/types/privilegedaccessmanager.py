@@ -122,13 +122,11 @@ class CheckOnboardingStatusResponse(proto.Message):
                 number=1,
             )
 
-        iam_access_denied: "CheckOnboardingStatusResponse.Finding.IAMAccessDenied" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="finding_type",
-                message="CheckOnboardingStatusResponse.Finding.IAMAccessDenied",
-            )
+        iam_access_denied: "CheckOnboardingStatusResponse.Finding.IAMAccessDenied" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="finding_type",
+            message="CheckOnboardingStatusResponse.Finding.IAMAccessDenied",
         )
 
     service_account: str = proto.Field(
@@ -259,21 +257,17 @@ class Entitlement(proto.Message):
 
             """
 
-        not_mandatory: "Entitlement.RequesterJustificationConfig.NotMandatory" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="justification_type",
-                message="Entitlement.RequesterJustificationConfig.NotMandatory",
-            )
+        not_mandatory: "Entitlement.RequesterJustificationConfig.NotMandatory" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="justification_type",
+            message="Entitlement.RequesterJustificationConfig.NotMandatory",
         )
-        unstructured: "Entitlement.RequesterJustificationConfig.Unstructured" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="justification_type",
-                message="Entitlement.RequesterJustificationConfig.Unstructured",
-            )
+        unstructured: "Entitlement.RequesterJustificationConfig.Unstructured" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="justification_type",
+            message="Entitlement.RequesterJustificationConfig.Unstructured",
         )
 
     class AdditionalNotificationTargets(proto.Message):
@@ -537,9 +531,7 @@ class PrivilegedAccess(proto.Message):
             proto.STRING,
             number=2,
         )
-        role_bindings: MutableSequence[
-            "PrivilegedAccess.GcpIamAccess.RoleBinding"
-        ] = proto.RepeatedField(
+        role_bindings: MutableSequence["PrivilegedAccess.GcpIamAccess.RoleBinding"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="PrivilegedAccess.GcpIamAccess.RoleBinding",
@@ -1248,13 +1240,11 @@ class Grant(proto.Message):
                 oneof="event",
                 message="Grant.Timeline.Event.Ended",
             )
-            externally_modified: "Grant.Timeline.Event.ExternallyModified" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=12,
-                    oneof="event",
-                    message="Grant.Timeline.Event.ExternallyModified",
-                )
+            externally_modified: "Grant.Timeline.Event.ExternallyModified" = proto.Field(
+                proto.MESSAGE,
+                number=12,
+                oneof="event",
+                message="Grant.Timeline.Event.ExternallyModified",
             )
             withdrawn: "Grant.Timeline.Event.Withdrawn" = proto.Field(
                 proto.MESSAGE,

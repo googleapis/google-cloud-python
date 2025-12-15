@@ -48,13 +48,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -272,18 +261,14 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -319,9 +304,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -336,9 +319,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_ssh_public_key(
-        self,
-    ) -> Callable[[oslogin.CreateSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
+    def create_ssh_public_key(self) -> Callable[[oslogin.CreateSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
         r"""Return a callable for the create ssh public key method over gRPC.
 
         Create an SSH public key
@@ -362,9 +343,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._stubs["create_ssh_public_key"]
 
     @property
-    def delete_posix_account(
-        self,
-    ) -> Callable[[oslogin.DeletePosixAccountRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_posix_account(self) -> Callable[[oslogin.DeletePosixAccountRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete posix account method over gRPC.
 
         Deletes a POSIX account.
@@ -388,9 +367,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._stubs["delete_posix_account"]
 
     @property
-    def delete_ssh_public_key(
-        self,
-    ) -> Callable[[oslogin.DeleteSshPublicKeyRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_ssh_public_key(self) -> Callable[[oslogin.DeleteSshPublicKeyRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete ssh public key method over gRPC.
 
         Deletes an SSH public key.
@@ -414,9 +391,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._stubs["delete_ssh_public_key"]
 
     @property
-    def get_login_profile(
-        self,
-    ) -> Callable[[oslogin.GetLoginProfileRequest], Awaitable[oslogin.LoginProfile]]:
+    def get_login_profile(self) -> Callable[[oslogin.GetLoginProfileRequest], Awaitable[oslogin.LoginProfile]]:
         r"""Return a callable for the get login profile method over gRPC.
 
         Retrieves the profile information used for logging in
@@ -441,9 +416,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._stubs["get_login_profile"]
 
     @property
-    def get_ssh_public_key(
-        self,
-    ) -> Callable[[oslogin.GetSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
+    def get_ssh_public_key(self) -> Callable[[oslogin.GetSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
         r"""Return a callable for the get ssh public key method over gRPC.
 
         Retrieves an SSH public key.
@@ -467,12 +440,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._stubs["get_ssh_public_key"]
 
     @property
-    def import_ssh_public_key(
-        self,
-    ) -> Callable[
-        [oslogin.ImportSshPublicKeyRequest],
-        Awaitable[oslogin.ImportSshPublicKeyResponse],
-    ]:
+    def import_ssh_public_key(self) -> Callable[[oslogin.ImportSshPublicKeyRequest], Awaitable[oslogin.ImportSshPublicKeyResponse]]:
         r"""Return a callable for the import ssh public key method over gRPC.
 
         Adds an SSH public key and returns the profile
@@ -499,9 +467,7 @@ class OsLoginServiceGrpcAsyncIOTransport(OsLoginServiceTransport):
         return self._stubs["import_ssh_public_key"]
 
     @property
-    def update_ssh_public_key(
-        self,
-    ) -> Callable[[oslogin.UpdateSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
+    def update_ssh_public_key(self) -> Callable[[oslogin.UpdateSshPublicKeyRequest], Awaitable[common.SshPublicKey]]:
         r"""Return a callable for the update ssh public key method over gRPC.
 
         Updates an SSH public key and returns the profile

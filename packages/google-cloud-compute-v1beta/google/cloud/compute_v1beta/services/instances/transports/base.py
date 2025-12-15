@@ -29,9 +29,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.services import zone_operations
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class InstancesTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -430,104 +420,51 @@ class InstancesTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def add_access_config(
-        self,
-    ) -> Callable[
-        [compute.AddAccessConfigInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def add_access_config(self) -> Callable[[compute.AddAccessConfigInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def add_network_interface(
-        self,
-    ) -> Callable[
-        [compute.AddNetworkInterfaceInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def add_network_interface(self) -> Callable[[compute.AddNetworkInterfaceInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def add_resource_policies(
-        self,
-    ) -> Callable[
-        [compute.AddResourcePoliciesInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def add_resource_policies(self) -> Callable[[compute.AddResourcePoliciesInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def aggregated_list(
         self,
-    ) -> Callable[
-        [compute.AggregatedListInstancesRequest],
-        Union[
-            compute.InstanceAggregatedList, Awaitable[compute.InstanceAggregatedList]
-        ],
-    ]:
+    ) -> Callable[[compute.AggregatedListInstancesRequest], Union[compute.InstanceAggregatedList, Awaitable[compute.InstanceAggregatedList]]]:
         raise NotImplementedError()
 
     @property
-    def attach_disk(
-        self,
-    ) -> Callable[
-        [compute.AttachDiskInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def attach_disk(self) -> Callable[[compute.AttachDiskInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def bulk_insert(
-        self,
-    ) -> Callable[
-        [compute.BulkInsertInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def bulk_insert(self) -> Callable[[compute.BulkInsertInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_access_config(
-        self,
-    ) -> Callable[
-        [compute.DeleteAccessConfigInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete_access_config(self) -> Callable[[compute.DeleteAccessConfigInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_network_interface(
         self,
-    ) -> Callable[
-        [compute.DeleteNetworkInterfaceInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.DeleteNetworkInterfaceInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def detach_disk(
-        self,
-    ) -> Callable[
-        [compute.DetachDiskInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def detach_disk(self) -> Callable[[compute.DetachDiskInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetInstanceRequest],
-        Union[compute.Instance, Awaitable[compute.Instance]],
-    ]:
+    def get(self) -> Callable[[compute.GetInstanceRequest], Union[compute.Instance, Awaitable[compute.Instance]]]:
         raise NotImplementedError()
 
     @property
@@ -535,158 +472,90 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.GetEffectiveFirewallsInstanceRequest],
-        Union[
-            compute.InstancesGetEffectiveFirewallsResponse,
-            Awaitable[compute.InstancesGetEffectiveFirewallsResponse],
-        ],
+        Union[compute.InstancesGetEffectiveFirewallsResponse, Awaitable[compute.InstancesGetEffectiveFirewallsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_guest_attributes(
         self,
-    ) -> Callable[
-        [compute.GetGuestAttributesInstanceRequest],
-        Union[compute.GuestAttributes, Awaitable[compute.GuestAttributes]],
-    ]:
+    ) -> Callable[[compute.GetGuestAttributesInstanceRequest], Union[compute.GuestAttributes, Awaitable[compute.GuestAttributes]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.GetIamPolicyInstanceRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyInstanceRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
     def get_partner_metadata(
         self,
-    ) -> Callable[
-        [compute.GetPartnerMetadataInstanceRequest],
-        Union[compute.PartnerMetadata, Awaitable[compute.PartnerMetadata]],
-    ]:
+    ) -> Callable[[compute.GetPartnerMetadataInstanceRequest], Union[compute.PartnerMetadata, Awaitable[compute.PartnerMetadata]]]:
         raise NotImplementedError()
 
     @property
-    def get_screenshot(
-        self,
-    ) -> Callable[
-        [compute.GetScreenshotInstanceRequest],
-        Union[compute.Screenshot, Awaitable[compute.Screenshot]],
-    ]:
+    def get_screenshot(self) -> Callable[[compute.GetScreenshotInstanceRequest], Union[compute.Screenshot, Awaitable[compute.Screenshot]]]:
         raise NotImplementedError()
 
     @property
     def get_serial_port_output(
         self,
-    ) -> Callable[
-        [compute.GetSerialPortOutputInstanceRequest],
-        Union[compute.SerialPortOutput, Awaitable[compute.SerialPortOutput]],
-    ]:
+    ) -> Callable[[compute.GetSerialPortOutputInstanceRequest], Union[compute.SerialPortOutput, Awaitable[compute.SerialPortOutput]]]:
         raise NotImplementedError()
 
     @property
     def get_shielded_instance_identity(
         self,
     ) -> Callable[
-        [compute.GetShieldedInstanceIdentityInstanceRequest],
-        Union[
-            compute.ShieldedInstanceIdentity,
-            Awaitable[compute.ShieldedInstanceIdentity],
-        ],
+        [compute.GetShieldedInstanceIdentityInstanceRequest], Union[compute.ShieldedInstanceIdentity, Awaitable[compute.ShieldedInstanceIdentity]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_shielded_vm_identity(
         self,
-    ) -> Callable[
-        [compute.GetShieldedVmIdentityInstanceRequest],
-        Union[compute.ShieldedVmIdentity, Awaitable[compute.ShieldedVmIdentity]],
-    ]:
+    ) -> Callable[[compute.GetShieldedVmIdentityInstanceRequest], Union[compute.ShieldedVmIdentity, Awaitable[compute.ShieldedVmIdentity]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListInstancesRequest],
-        Union[compute.InstanceList, Awaitable[compute.InstanceList]],
-    ]:
+    def list(self) -> Callable[[compute.ListInstancesRequest], Union[compute.InstanceList, Awaitable[compute.InstanceList]]]:
         raise NotImplementedError()
 
     @property
     def list_referrers(
         self,
-    ) -> Callable[
-        [compute.ListReferrersInstancesRequest],
-        Union[compute.InstanceListReferrers, Awaitable[compute.InstanceListReferrers]],
-    ]:
+    ) -> Callable[[compute.ListReferrersInstancesRequest], Union[compute.InstanceListReferrers, Awaitable[compute.InstanceListReferrers]]]:
         raise NotImplementedError()
 
     @property
     def patch_partner_metadata(
         self,
-    ) -> Callable[
-        [compute.PatchPartnerMetadataInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.PatchPartnerMetadataInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def perform_maintenance(
-        self,
-    ) -> Callable[
-        [compute.PerformMaintenanceInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def perform_maintenance(self) -> Callable[[compute.PerformMaintenanceInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_resource_policies(
         self,
-    ) -> Callable[
-        [compute.RemoveResourcePoliciesInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.RemoveResourcePoliciesInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def report_host_as_faulty(
-        self,
-    ) -> Callable[
-        [compute.ReportHostAsFaultyInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def report_host_as_faulty(self) -> Callable[[compute.ReportHostAsFaultyInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def reset(
-        self,
-    ) -> Callable[
-        [compute.ResetInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def reset(self) -> Callable[[compute.ResetInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def resume(
-        self,
-    ) -> Callable[
-        [compute.ResumeInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def resume(self) -> Callable[[compute.ResumeInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -694,256 +563,134 @@ class InstancesTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.SendDiagnosticInterruptInstanceRequest],
-        Union[
-            compute.SendDiagnosticInterruptInstanceResponse,
-            Awaitable[compute.SendDiagnosticInterruptInstanceResponse],
-        ],
+        Union[compute.SendDiagnosticInterruptInstanceResponse, Awaitable[compute.SendDiagnosticInterruptInstanceResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def set_deletion_protection(
         self,
-    ) -> Callable[
-        [compute.SetDeletionProtectionInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetDeletionProtectionInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_disk_auto_delete(
-        self,
-    ) -> Callable[
-        [compute.SetDiskAutoDeleteInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_disk_auto_delete(self) -> Callable[[compute.SetDiskAutoDeleteInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.SetIamPolicyInstanceRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyInstanceRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_labels(
-        self,
-    ) -> Callable[
-        [compute.SetLabelsInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_labels(self) -> Callable[[compute.SetLabelsInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_machine_resources(
-        self,
-    ) -> Callable[
-        [compute.SetMachineResourcesInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_machine_resources(self) -> Callable[[compute.SetMachineResourcesInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_machine_type(
-        self,
-    ) -> Callable[
-        [compute.SetMachineTypeInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_machine_type(self) -> Callable[[compute.SetMachineTypeInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_metadata(
-        self,
-    ) -> Callable[
-        [compute.SetMetadataInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_metadata(self) -> Callable[[compute.SetMetadataInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_min_cpu_platform(
-        self,
-    ) -> Callable[
-        [compute.SetMinCpuPlatformInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_min_cpu_platform(self) -> Callable[[compute.SetMinCpuPlatformInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_name(
-        self,
-    ) -> Callable[
-        [compute.SetNameInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_name(self) -> Callable[[compute.SetNameInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_scheduling(
-        self,
-    ) -> Callable[
-        [compute.SetSchedulingInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_scheduling(self) -> Callable[[compute.SetSchedulingInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_security_policy(
-        self,
-    ) -> Callable[
-        [compute.SetSecurityPolicyInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_security_policy(self) -> Callable[[compute.SetSecurityPolicyInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_service_account(
-        self,
-    ) -> Callable[
-        [compute.SetServiceAccountInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_service_account(self) -> Callable[[compute.SetServiceAccountInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_shielded_instance_integrity_policy(
         self,
-    ) -> Callable[
-        [compute.SetShieldedInstanceIntegrityPolicyInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetShieldedInstanceIntegrityPolicyInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_shielded_vm_integrity_policy(
         self,
-    ) -> Callable[
-        [compute.SetShieldedVmIntegrityPolicyInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetShieldedVmIntegrityPolicyInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_tags(
-        self,
-    ) -> Callable[
-        [compute.SetTagsInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def set_tags(self) -> Callable[[compute.SetTagsInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def simulate_maintenance_event(
         self,
-    ) -> Callable[
-        [compute.SimulateMaintenanceEventInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SimulateMaintenanceEventInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def start(
-        self,
-    ) -> Callable[
-        [compute.StartInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def start(self) -> Callable[[compute.StartInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def start_with_encryption_key(
         self,
-    ) -> Callable[
-        [compute.StartWithEncryptionKeyInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.StartWithEncryptionKeyInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def stop(
-        self,
-    ) -> Callable[
-        [compute.StopInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def stop(self) -> Callable[[compute.StopInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def suspend(
-        self,
-    ) -> Callable[
-        [compute.SuspendInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def suspend(self) -> Callable[[compute.SuspendInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [compute.TestIamPermissionsInstanceRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
-    ]:
+    ) -> Callable[[compute.TestIamPermissionsInstanceRequest], Union[compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_access_config(
-        self,
-    ) -> Callable[
-        [compute.UpdateAccessConfigInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update_access_config(self) -> Callable[[compute.UpdateAccessConfigInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_display_device(
-        self,
-    ) -> Callable[
-        [compute.UpdateDisplayDeviceInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update_display_device(self) -> Callable[[compute.UpdateDisplayDeviceInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_network_interface(
         self,
-    ) -> Callable[
-        [compute.UpdateNetworkInterfaceInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.UpdateNetworkInterfaceInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_shielded_instance_config(
         self,
-    ) -> Callable[
-        [compute.UpdateShieldedInstanceConfigInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.UpdateShieldedInstanceConfigInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_shielded_vm_config(
         self,
-    ) -> Callable[
-        [compute.UpdateShieldedVmConfigInstanceRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.UpdateShieldedVmConfigInstanceRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

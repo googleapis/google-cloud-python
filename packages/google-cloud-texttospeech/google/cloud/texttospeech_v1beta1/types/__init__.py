@@ -39,11 +39,7 @@ from .cloud_tts import (
     VoiceCloneParams,
     VoiceSelectionParams,
 )
-from .cloud_tts_lrs import (
-    SynthesizeLongAudioMetadata,
-    SynthesizeLongAudioRequest,
-    SynthesizeLongAudioResponse,
-)
+from .cloud_tts_lrs import SynthesizeLongAudioMetadata, SynthesizeLongAudioRequest, SynthesizeLongAudioResponse
 
 __all__ = (
     "AdvancedVoiceOptions",

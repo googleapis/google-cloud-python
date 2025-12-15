@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,9 +326,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -353,10 +334,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def list_firewall_endpoints(
         self,
-    ) -> Callable[
-        [firewall_activation.ListFirewallEndpointsRequest],
-        Awaitable[firewall_activation.ListFirewallEndpointsResponse],
-    ]:
+    ) -> Callable[[firewall_activation.ListFirewallEndpointsRequest], Awaitable[firewall_activation.ListFirewallEndpointsResponse]]:
         r"""Return a callable for the list firewall endpoints method over gRPC.
 
         Lists FirewallEndpoints in a given project and
@@ -381,12 +359,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["list_firewall_endpoints"]
 
     @property
-    def get_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.GetFirewallEndpointRequest],
-        Awaitable[firewall_activation.FirewallEndpoint],
-    ]:
+    def get_firewall_endpoint(self) -> Callable[[firewall_activation.GetFirewallEndpointRequest], Awaitable[firewall_activation.FirewallEndpoint]]:
         r"""Return a callable for the get firewall endpoint method over gRPC.
 
         Gets details of a single Endpoint.
@@ -410,12 +383,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["get_firewall_endpoint"]
 
     @property
-    def create_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.CreateFirewallEndpointRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_firewall_endpoint(self) -> Callable[[firewall_activation.CreateFirewallEndpointRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create firewall endpoint method over gRPC.
 
         Creates a new FirewallEndpoint in a given project and
@@ -440,12 +408,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["create_firewall_endpoint"]
 
     @property
-    def delete_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.DeleteFirewallEndpointRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_firewall_endpoint(self) -> Callable[[firewall_activation.DeleteFirewallEndpointRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete firewall endpoint method over gRPC.
 
         Deletes a single Endpoint.
@@ -469,12 +432,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         return self._stubs["delete_firewall_endpoint"]
 
     @property
-    def update_firewall_endpoint(
-        self,
-    ) -> Callable[
-        [firewall_activation.UpdateFirewallEndpointRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_firewall_endpoint(self) -> Callable[[firewall_activation.UpdateFirewallEndpointRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update firewall endpoint method over gRPC.
 
         Update a single Endpoint.
@@ -501,8 +459,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     def list_firewall_endpoint_associations(
         self,
     ) -> Callable[
-        [firewall_activation.ListFirewallEndpointAssociationsRequest],
-        Awaitable[firewall_activation.ListFirewallEndpointAssociationsResponse],
+        [firewall_activation.ListFirewallEndpointAssociationsRequest], Awaitable[firewall_activation.ListFirewallEndpointAssociationsResponse]
     ]:
         r"""Return a callable for the list firewall endpoint
         associations method over gRPC.
@@ -520,9 +477,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_firewall_endpoint_associations" not in self._stubs:
-            self._stubs[
-                "list_firewall_endpoint_associations"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_firewall_endpoint_associations"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.FirewallActivation/ListFirewallEndpointAssociations",
                 request_serializer=firewall_activation.ListFirewallEndpointAssociationsRequest.serialize,
                 response_deserializer=firewall_activation.ListFirewallEndpointAssociationsResponse.deserialize,
@@ -532,10 +487,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def get_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.GetFirewallEndpointAssociationRequest],
-        Awaitable[firewall_activation.FirewallEndpointAssociation],
-    ]:
+    ) -> Callable[[firewall_activation.GetFirewallEndpointAssociationRequest], Awaitable[firewall_activation.FirewallEndpointAssociation]]:
         r"""Return a callable for the get firewall endpoint
         association method over gRPC.
 
@@ -552,9 +504,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "get_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_firewall_endpoint_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.FirewallActivation/GetFirewallEndpointAssociation",
                 request_serializer=firewall_activation.GetFirewallEndpointAssociationRequest.serialize,
                 response_deserializer=firewall_activation.FirewallEndpointAssociation.deserialize,
@@ -564,10 +514,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def create_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.CreateFirewallEndpointAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[firewall_activation.CreateFirewallEndpointAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create firewall endpoint
         association method over gRPC.
 
@@ -585,9 +532,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "create_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_firewall_endpoint_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.FirewallActivation/CreateFirewallEndpointAssociation",
                 request_serializer=firewall_activation.CreateFirewallEndpointAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -597,10 +542,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def delete_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.DeleteFirewallEndpointAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[firewall_activation.DeleteFirewallEndpointAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete firewall endpoint
         association method over gRPC.
 
@@ -617,9 +559,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "delete_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_firewall_endpoint_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.FirewallActivation/DeleteFirewallEndpointAssociation",
                 request_serializer=firewall_activation.DeleteFirewallEndpointAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -629,10 +569,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def update_firewall_endpoint_association(
         self,
-    ) -> Callable[
-        [firewall_activation.UpdateFirewallEndpointAssociationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[firewall_activation.UpdateFirewallEndpointAssociationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update firewall endpoint
         association method over gRPC.
 
@@ -649,9 +586,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_firewall_endpoint_association" not in self._stubs:
-            self._stubs[
-                "update_firewall_endpoint_association"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_firewall_endpoint_association"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.FirewallActivation/UpdateFirewallEndpointAssociation",
                 request_serializer=firewall_activation.UpdateFirewallEndpointAssociationRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -824,9 +759,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -843,9 +776,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -930,10 +861,7 @@ class FirewallActivationGrpcAsyncIOTransport(FirewallActivationTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

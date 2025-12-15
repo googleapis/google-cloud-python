@@ -123,13 +123,8 @@ class UserEventServiceRestInterceptor:
     """
 
     def pre_collect_user_event(
-        self,
-        request: user_event_service.CollectUserEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.CollectUserEventRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: user_event_service.CollectUserEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_event_service.CollectUserEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for collect_user_event
 
         Override in a subclass to manipulate the request or metadata
@@ -137,9 +132,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_collect_user_event(
-        self, response: httpbody_pb2.HttpBody
-    ) -> httpbody_pb2.HttpBody:
+    def post_collect_user_event(self, response: httpbody_pb2.HttpBody) -> httpbody_pb2.HttpBody:
         """Post-rpc interceptor for collect_user_event
 
         DEPRECATED. Please use the `post_collect_user_event_with_metadata`
@@ -153,9 +146,7 @@ class UserEventServiceRestInterceptor:
         return response
 
     def post_collect_user_event_with_metadata(
-        self,
-        response: httpbody_pb2.HttpBody,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: httpbody_pb2.HttpBody, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[httpbody_pb2.HttpBody, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for collect_user_event
 
@@ -172,12 +163,8 @@ class UserEventServiceRestInterceptor:
         return response, metadata
 
     def pre_import_user_events(
-        self,
-        request: import_.ImportUserEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        import_.ImportUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: import_.ImportUserEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[import_.ImportUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_user_events
 
         Override in a subclass to manipulate the request or metadata
@@ -185,9 +172,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_import_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_user_events(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_user_events
 
         DEPRECATED. Please use the `post_import_user_events_with_metadata`
@@ -201,9 +186,7 @@ class UserEventServiceRestInterceptor:
         return response
 
     def post_import_user_events_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_user_events
 
@@ -220,13 +203,8 @@ class UserEventServiceRestInterceptor:
         return response, metadata
 
     def pre_list_user_events(
-        self,
-        request: user_event_service.ListUserEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.ListUserEventsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: user_event_service.ListUserEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_event_service.ListUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_user_events
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +212,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_user_events(
-        self, response: user_event_service.ListUserEventsResponse
-    ) -> user_event_service.ListUserEventsResponse:
+    def post_list_user_events(self, response: user_event_service.ListUserEventsResponse) -> user_event_service.ListUserEventsResponse:
         """Post-rpc interceptor for list_user_events
 
         DEPRECATED. Please use the `post_list_user_events_with_metadata`
@@ -250,13 +226,8 @@ class UserEventServiceRestInterceptor:
         return response
 
     def post_list_user_events_with_metadata(
-        self,
-        response: user_event_service.ListUserEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.ListUserEventsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: user_event_service.ListUserEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_event_service.ListUserEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_user_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -272,13 +243,8 @@ class UserEventServiceRestInterceptor:
         return response, metadata
 
     def pre_purge_user_events(
-        self,
-        request: user_event_service.PurgeUserEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.PurgeUserEventsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: user_event_service.PurgeUserEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_event_service.PurgeUserEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for purge_user_events
 
         Override in a subclass to manipulate the request or metadata
@@ -286,9 +252,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_purge_user_events(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_purge_user_events(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for purge_user_events
 
         DEPRECATED. Please use the `post_purge_user_events_with_metadata`
@@ -302,9 +266,7 @@ class UserEventServiceRestInterceptor:
         return response
 
     def post_purge_user_events_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for purge_user_events
 
@@ -321,13 +283,8 @@ class UserEventServiceRestInterceptor:
         return response, metadata
 
     def pre_write_user_event(
-        self,
-        request: user_event_service.WriteUserEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        user_event_service.WriteUserEventRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: user_event_service.WriteUserEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[user_event_service.WriteUserEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for write_user_event
 
         Override in a subclass to manipulate the request or metadata
@@ -335,9 +292,7 @@ class UserEventServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_write_user_event(
-        self, response: gcr_user_event.UserEvent
-    ) -> gcr_user_event.UserEvent:
+    def post_write_user_event(self, response: gcr_user_event.UserEvent) -> gcr_user_event.UserEvent:
         """Post-rpc interceptor for write_user_event
 
         DEPRECATED. Please use the `post_write_user_event_with_metadata`
@@ -351,9 +306,7 @@ class UserEventServiceRestInterceptor:
         return response
 
     def post_write_user_event_with_metadata(
-        self,
-        response: gcr_user_event.UserEvent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcr_user_event.UserEvent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcr_user_event.UserEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for write_user_event
 
@@ -450,9 +403,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -500,30 +451,17 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 path_prefix="v1beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CollectUserEvent(
-        _BaseUserEventServiceRestTransport._BaseCollectUserEvent,
-        UserEventServiceRestStub,
-    ):
+    class _CollectUserEvent(_BaseUserEventServiceRestTransport._BaseCollectUserEvent, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.CollectUserEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -612,28 +550,16 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_collect_user_event(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_collect_user_event(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseCollectUserEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -657,12 +583,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             # Send the request
             response = UserEventServiceRestTransport._CollectUserEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -678,12 +599,8 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_collect_user_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_collect_user_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_collect_user_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -704,23 +621,12 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _ImportUserEvents(
-        _BaseUserEventServiceRestTransport._BaseImportUserEvents,
-        UserEventServiceRestStub,
-    ):
+    class _ImportUserEvents(_BaseUserEventServiceRestTransport._BaseImportUserEvents, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.ImportUserEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -764,32 +670,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_user_events(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_user_events(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseImportUserEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -813,13 +705,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             # Send the request
             response = UserEventServiceRestTransport._ImportUserEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -833,12 +719,8 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_import_user_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_user_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_user_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -859,22 +741,12 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _ListUserEvents(
-        _BaseUserEventServiceRestTransport._BaseListUserEvents, UserEventServiceRestStub
-    ):
+    class _ListUserEvents(_BaseUserEventServiceRestTransport._BaseListUserEvents, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.ListUserEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -916,28 +788,16 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseListUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseListUserEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_user_events(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseListUserEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_user_events(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseListUserEvents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseListUserEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseListUserEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -961,12 +821,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             # Send the request
             response = UserEventServiceRestTransport._ListUserEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -982,16 +837,10 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_list_user_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_user_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_user_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        user_event_service.ListUserEventsResponse.to_json(response)
-                    )
+                    response_payload = user_event_service.ListUserEventsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1010,23 +859,12 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _PurgeUserEvents(
-        _BaseUserEventServiceRestTransport._BasePurgeUserEvents,
-        UserEventServiceRestStub,
-    ):
+    class _PurgeUserEvents(_BaseUserEventServiceRestTransport._BasePurgeUserEvents, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.PurgeUserEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1070,32 +908,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_purge_user_events(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_purge_user_events(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BasePurgeUserEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1119,13 +943,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             # Send the request
             response = UserEventServiceRestTransport._PurgeUserEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1139,12 +957,8 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_purge_user_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_purge_user_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_purge_user_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1165,22 +979,12 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
                 )
             return resp
 
-    class _WriteUserEvent(
-        _BaseUserEventServiceRestTransport._BaseWriteUserEvent, UserEventServiceRestStub
-    ):
+    class _WriteUserEvent(_BaseUserEventServiceRestTransport._BaseWriteUserEvent, UserEventServiceRestStub):
         def __hash__(self):
             return hash("UserEventServiceRestTransport.WriteUserEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1225,32 +1029,18 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
-            )
+            http_options = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_write_user_event(
-                request, metadata
-            )
-            transcoded_request = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_write_user_event(request, metadata)
+            transcoded_request = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_transcoded_request(http_options, request)
 
-            body = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUserEventServiceRestTransport._BaseWriteUserEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1274,13 +1064,7 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             # Send the request
             response = UserEventServiceRestTransport._WriteUserEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1296,12 +1080,8 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
 
             resp = self._interceptor.post_write_user_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_write_user_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_write_user_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcr_user_event.UserEvent.to_json(response)
                 except:
@@ -1323,46 +1103,31 @@ class UserEventServiceRestTransport(_BaseUserEventServiceRestTransport):
             return resp
 
     @property
-    def collect_user_event(
-        self,
-    ) -> Callable[[user_event_service.CollectUserEventRequest], httpbody_pb2.HttpBody]:
+    def collect_user_event(self) -> Callable[[user_event_service.CollectUserEventRequest], httpbody_pb2.HttpBody]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CollectUserEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_user_events(
-        self,
-    ) -> Callable[[import_.ImportUserEventsRequest], operations_pb2.Operation]:
+    def import_user_events(self) -> Callable[[import_.ImportUserEventsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportUserEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_user_events(
-        self,
-    ) -> Callable[
-        [user_event_service.ListUserEventsRequest],
-        user_event_service.ListUserEventsResponse,
-    ]:
+    def list_user_events(self) -> Callable[[user_event_service.ListUserEventsRequest], user_event_service.ListUserEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUserEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def purge_user_events(
-        self,
-    ) -> Callable[
-        [user_event_service.PurgeUserEventsRequest], operations_pb2.Operation
-    ]:
+    def purge_user_events(self) -> Callable[[user_event_service.PurgeUserEventsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PurgeUserEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def write_user_event(
-        self,
-    ) -> Callable[[user_event_service.WriteUserEventRequest], gcr_user_event.UserEvent]:
+    def write_user_event(self) -> Callable[[user_event_service.WriteUserEventRequest], gcr_user_event.UserEvent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._WriteUserEvent(self._session, self._host, self._interceptor)  # type: ignore

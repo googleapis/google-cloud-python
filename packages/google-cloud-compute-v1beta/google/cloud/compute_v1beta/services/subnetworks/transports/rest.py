@@ -175,13 +175,8 @@ class SubnetworksRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListSubnetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListSubnetworksRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListSubnetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListSubnetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -189,9 +184,7 @@ class SubnetworksRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.SubnetworkAggregatedList
-    ) -> compute.SubnetworkAggregatedList:
+    def post_aggregated_list(self, response: compute.SubnetworkAggregatedList) -> compute.SubnetworkAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -205,12 +198,8 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.SubnetworkAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SubnetworkAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.SubnetworkAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SubnetworkAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -226,12 +215,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -253,9 +238,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -272,13 +255,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_expand_ip_cidr_range(
-        self,
-        request: compute.ExpandIpCidrRangeSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ExpandIpCidrRangeSubnetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ExpandIpCidrRangeSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ExpandIpCidrRangeSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for expand_ip_cidr_range
 
         Override in a subclass to manipulate the request or metadata
@@ -286,9 +264,7 @@ class SubnetworksRestInterceptor:
         """
         return request, metadata
 
-    def post_expand_ip_cidr_range(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_expand_ip_cidr_range(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for expand_ip_cidr_range
 
         DEPRECATED. Please use the `post_expand_ip_cidr_range_with_metadata`
@@ -302,9 +278,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_expand_ip_cidr_range_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for expand_ip_cidr_range
 
@@ -321,9 +295,7 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -346,9 +318,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Subnetwork,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Subnetwork, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Subnetwork, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -365,12 +335,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: compute.GetIamPolicySubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetIamPolicySubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetIamPolicySubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetIamPolicySubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -392,9 +358,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -411,12 +375,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -438,9 +398,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -457,9 +415,7 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListSubnetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListSubnetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListSubnetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -482,9 +438,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.SubnetworkList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.SubnetworkList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.SubnetworkList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -501,12 +455,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_list_usable(
-        self,
-        request: compute.ListUsableSubnetworksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListUsableSubnetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListUsableSubnetworksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListUsableSubnetworksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_usable
 
         Override in a subclass to manipulate the request or metadata
@@ -514,9 +464,7 @@ class SubnetworksRestInterceptor:
         """
         return request, metadata
 
-    def post_list_usable(
-        self, response: compute.UsableSubnetworksAggregatedList
-    ) -> compute.UsableSubnetworksAggregatedList:
+    def post_list_usable(self, response: compute.UsableSubnetworksAggregatedList) -> compute.UsableSubnetworksAggregatedList:
         """Post-rpc interceptor for list_usable
 
         DEPRECATED. Please use the `post_list_usable_with_metadata`
@@ -530,12 +478,8 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_list_usable_with_metadata(
-        self,
-        response: compute.UsableSubnetworksAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UsableSubnetworksAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.UsableSubnetworksAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UsableSubnetworksAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_usable
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -551,9 +495,7 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.PatchSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PatchSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
@@ -576,9 +518,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -595,12 +535,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: compute.SetIamPolicySubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetIamPolicySubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.SetIamPolicySubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetIamPolicySubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -622,9 +558,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: compute.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -641,13 +575,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_set_private_ip_google_access(
-        self,
-        request: compute.SetPrivateIpGoogleAccessSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.SetPrivateIpGoogleAccessSubnetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.SetPrivateIpGoogleAccessSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.SetPrivateIpGoogleAccessSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_private_ip_google_access
 
         Override in a subclass to manipulate the request or metadata
@@ -655,9 +584,7 @@ class SubnetworksRestInterceptor:
         """
         return request, metadata
 
-    def post_set_private_ip_google_access(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_set_private_ip_google_access(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for set_private_ip_google_access
 
         DEPRECATED. Please use the `post_set_private_ip_google_access_with_metadata`
@@ -671,9 +598,7 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_set_private_ip_google_access_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_private_ip_google_access
 
@@ -690,13 +615,8 @@ class SubnetworksRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsSubnetworkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsSubnetworkRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsSubnetworkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsSubnetworkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -704,9 +624,7 @@ class SubnetworksRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -720,12 +638,8 @@ class SubnetworksRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -824,30 +738,18 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SubnetworksRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseSubnetworksRestTransport._BaseAggregatedList, SubnetworksRestStub
-    ):
+    class _AggregatedList(_BaseSubnetworksRestTransport._BaseAggregatedList, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -888,26 +790,16 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseSubnetworksRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSubnetworksRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -931,12 +823,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -952,16 +839,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.SubnetworkAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.SubnetworkAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -985,15 +866,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             return hash("SubnetworksRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1054,25 +927,13 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             http_options = _BaseSubnetworksRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1095,14 +956,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
 
             # Send the request
-            response = SubnetworksRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SubnetworksRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1117,12 +971,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1143,22 +993,12 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
             return resp
 
-    class _ExpandIpCidrRange(
-        _BaseSubnetworksRestTransport._BaseExpandIpCidrRange, SubnetworksRestStub
-    ):
+    class _ExpandIpCidrRange(_BaseSubnetworksRestTransport._BaseExpandIpCidrRange, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.ExpandIpCidrRange")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1217,32 +1057,18 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_http_options()
 
-            request, metadata = self._interceptor.pre_expand_ip_cidr_range(
-                request, metadata
-            )
-            transcoded_request = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_expand_ip_cidr_range(request, metadata)
+            transcoded_request = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_transcoded_request(http_options, request)
 
-            body = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseExpandIpCidrRange._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1266,13 +1092,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._ExpandIpCidrRange._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1288,12 +1108,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_expand_ip_cidr_range(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_expand_ip_cidr_range_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_expand_ip_cidr_range_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1319,15 +1135,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             return hash("SubnetworksRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1378,25 +1186,13 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             http_options = _BaseSubnetworksRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1419,14 +1215,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
 
             # Send the request
-            response = SubnetworksRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SubnetworksRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1442,9 +1231,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Subnetwork.to_json(response)
                 except:
@@ -1465,22 +1252,12 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseSubnetworksRestTransport._BaseGetIamPolicy, SubnetworksRestStub
-    ):
+    class _GetIamPolicy(_BaseSubnetworksRestTransport._BaseGetIamPolicy, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1544,30 +1321,16 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1591,12 +1354,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1612,12 +1370,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -1643,15 +1397,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             return hash("SubnetworksRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1713,29 +1459,15 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             http_options = _BaseSubnetworksRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseSubnetworksRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubnetworksRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1759,13 +1491,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1781,12 +1507,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1812,15 +1534,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             return hash("SubnetworksRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1866,25 +1580,13 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             http_options = _BaseSubnetworksRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1907,14 +1609,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
 
             # Send the request
-            response = SubnetworksRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SubnetworksRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1930,9 +1625,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.SubnetworkList.to_json(response)
                 except:
@@ -1953,22 +1646,12 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
             return resp
 
-    class _ListUsable(
-        _BaseSubnetworksRestTransport._BaseListUsable, SubnetworksRestStub
-    ):
+    class _ListUsable(_BaseSubnetworksRestTransport._BaseListUsable, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.ListUsable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2009,30 +1692,16 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseListUsable._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseListUsable._get_http_options()
 
             request, metadata = self._interceptor.pre_list_usable(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseListUsable._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseListUsable._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseListUsable._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseListUsable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2056,12 +1725,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._ListUsable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2077,16 +1741,10 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_list_usable(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_usable_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_usable_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.UsableSubnetworksAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.UsableSubnetworksAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2110,15 +1768,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             return hash("SubnetworksRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2180,29 +1830,15 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             http_options = _BaseSubnetworksRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseSubnetworksRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubnetworksRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2226,13 +1862,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2248,12 +1878,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2274,22 +1900,12 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseSubnetworksRestTransport._BaseSetIamPolicy, SubnetworksRestStub
-    ):
+    class _SetIamPolicy(_BaseSubnetworksRestTransport._BaseSetIamPolicy, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2354,36 +1970,18 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2407,13 +2005,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2429,12 +2021,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Policy.to_json(response)
                 except:
@@ -2455,22 +2043,12 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
             return resp
 
-    class _SetPrivateIpGoogleAccess(
-        _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess, SubnetworksRestStub
-    ):
+    class _SetPrivateIpGoogleAccess(_BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.SetPrivateIpGoogleAccess")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2530,32 +2108,18 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_http_options()
 
-            request, metadata = self._interceptor.pre_set_private_ip_google_access(
-                request, metadata
-            )
-            transcoded_request = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_set_private_ip_google_access(request, metadata)
+            transcoded_request = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_transcoded_request(http_options, request)
 
-            body = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseSetPrivateIpGoogleAccess._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2579,13 +2143,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._SetPrivateIpGoogleAccess._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2601,12 +2159,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_set_private_ip_google_access(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_private_ip_google_access_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_private_ip_google_access_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2627,22 +2181,12 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseSubnetworksRestTransport._BaseTestIamPermissions, SubnetworksRestStub
-    ):
+    class _TestIamPermissions(_BaseSubnetworksRestTransport._BaseTestIamPermissions, SubnetworksRestStub):
         def __hash__(self):
             return hash("SubnetworksRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2684,32 +2228,18 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             """
 
-            http_options = (
-                _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSubnetworksRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2733,13 +2263,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             # Send the request
             response = SubnetworksRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2755,12 +2279,8 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -2782,11 +2302,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListSubnetworksRequest], compute.SubnetworkAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListSubnetworksRequest], compute.SubnetworkAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
@@ -2798,9 +2314,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def expand_ip_cidr_range(
-        self,
-    ) -> Callable[[compute.ExpandIpCidrRangeSubnetworkRequest], compute.Operation]:
+    def expand_ip_cidr_range(self) -> Callable[[compute.ExpandIpCidrRangeSubnetworkRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExpandIpCidrRange(self._session, self._host, self._interceptor)  # type: ignore
@@ -2812,9 +2326,7 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[compute.GetIamPolicySubnetworkRequest], compute.Policy]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicySubnetworkRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -2826,19 +2338,13 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListSubnetworksRequest], compute.SubnetworkList]:
+    def list(self) -> Callable[[compute.ListSubnetworksRequest], compute.SubnetworkList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_usable(
-        self,
-    ) -> Callable[
-        [compute.ListUsableSubnetworksRequest], compute.UsableSubnetworksAggregatedList
-    ]:
+    def list_usable(self) -> Callable[[compute.ListUsableSubnetworksRequest], compute.UsableSubnetworksAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUsable(self._session, self._host, self._interceptor)  # type: ignore
@@ -2850,29 +2356,19 @@ class SubnetworksRestTransport(_BaseSubnetworksRestTransport):
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[compute.SetIamPolicySubnetworkRequest], compute.Policy]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicySubnetworkRequest], compute.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_private_ip_google_access(
-        self,
-    ) -> Callable[
-        [compute.SetPrivateIpGoogleAccessSubnetworkRequest], compute.Operation
-    ]:
+    def set_private_ip_google_access(self) -> Callable[[compute.SetPrivateIpGoogleAccessSubnetworkRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetPrivateIpGoogleAccess(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsSubnetworkRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsSubnetworkRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore

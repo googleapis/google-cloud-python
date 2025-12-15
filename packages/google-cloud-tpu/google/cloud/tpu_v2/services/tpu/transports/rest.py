@@ -225,9 +225,7 @@ class TpuRestInterceptor:
     """
 
     def pre_create_node(
-        self,
-        request: cloud_tpu.CreateNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.CreateNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.CreateNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_node
 
@@ -236,9 +234,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_create_node(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_node(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_node
 
         DEPRECATED. Please use the `post_create_node_with_metadata`
@@ -252,9 +248,7 @@ class TpuRestInterceptor:
         return response
 
     def post_create_node_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_node
 
@@ -271,12 +265,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_create_queued_resource(
-        self,
-        request: cloud_tpu.CreateQueuedResourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.CreateQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.CreateQueuedResourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.CreateQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_queued_resource
 
         Override in a subclass to manipulate the request or metadata
@@ -284,9 +274,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_create_queued_resource(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_queued_resource(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_queued_resource
 
         DEPRECATED. Please use the `post_create_queued_resource_with_metadata`
@@ -300,9 +288,7 @@ class TpuRestInterceptor:
         return response
 
     def post_create_queued_resource_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_queued_resource
 
@@ -319,9 +305,7 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_delete_node(
-        self,
-        request: cloud_tpu.DeleteNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.DeleteNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.DeleteNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_node
 
@@ -330,9 +314,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_node(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_node(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_node
 
         DEPRECATED. Please use the `post_delete_node_with_metadata`
@@ -346,9 +328,7 @@ class TpuRestInterceptor:
         return response
 
     def post_delete_node_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_node
 
@@ -365,12 +345,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_delete_queued_resource(
-        self,
-        request: cloud_tpu.DeleteQueuedResourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.DeleteQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.DeleteQueuedResourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.DeleteQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_queued_resource
 
         Override in a subclass to manipulate the request or metadata
@@ -378,9 +354,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_queued_resource(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_queued_resource(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_queued_resource
 
         DEPRECATED. Please use the `post_delete_queued_resource_with_metadata`
@@ -394,9 +368,7 @@ class TpuRestInterceptor:
         return response
 
     def post_delete_queued_resource_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_queued_resource
 
@@ -413,13 +385,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_generate_service_identity(
-        self,
-        request: cloud_tpu.GenerateServiceIdentityRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GenerateServiceIdentityRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_tpu.GenerateServiceIdentityRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GenerateServiceIdentityRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_service_identity
 
         Override in a subclass to manipulate the request or metadata
@@ -427,9 +394,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_service_identity(
-        self, response: cloud_tpu.GenerateServiceIdentityResponse
-    ) -> cloud_tpu.GenerateServiceIdentityResponse:
+    def post_generate_service_identity(self, response: cloud_tpu.GenerateServiceIdentityResponse) -> cloud_tpu.GenerateServiceIdentityResponse:
         """Post-rpc interceptor for generate_service_identity
 
         DEPRECATED. Please use the `post_generate_service_identity_with_metadata`
@@ -443,13 +408,8 @@ class TpuRestInterceptor:
         return response
 
     def post_generate_service_identity_with_metadata(
-        self,
-        response: cloud_tpu.GenerateServiceIdentityResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GenerateServiceIdentityResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_tpu.GenerateServiceIdentityResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GenerateServiceIdentityResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_service_identity
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -465,12 +425,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_get_accelerator_type(
-        self,
-        request: cloud_tpu.GetAcceleratorTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GetAcceleratorTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.GetAcceleratorTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GetAcceleratorTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_accelerator_type
 
         Override in a subclass to manipulate the request or metadata
@@ -478,9 +434,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_get_accelerator_type(
-        self, response: cloud_tpu.AcceleratorType
-    ) -> cloud_tpu.AcceleratorType:
+    def post_get_accelerator_type(self, response: cloud_tpu.AcceleratorType) -> cloud_tpu.AcceleratorType:
         """Post-rpc interceptor for get_accelerator_type
 
         DEPRECATED. Please use the `post_get_accelerator_type_with_metadata`
@@ -494,9 +448,7 @@ class TpuRestInterceptor:
         return response
 
     def post_get_accelerator_type_with_metadata(
-        self,
-        response: cloud_tpu.AcceleratorType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_tpu.AcceleratorType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.AcceleratorType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_accelerator_type
 
@@ -513,12 +465,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_get_guest_attributes(
-        self,
-        request: cloud_tpu.GetGuestAttributesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GetGuestAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.GetGuestAttributesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GetGuestAttributesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_guest_attributes
 
         Override in a subclass to manipulate the request or metadata
@@ -526,9 +474,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_get_guest_attributes(
-        self, response: cloud_tpu.GetGuestAttributesResponse
-    ) -> cloud_tpu.GetGuestAttributesResponse:
+    def post_get_guest_attributes(self, response: cloud_tpu.GetGuestAttributesResponse) -> cloud_tpu.GetGuestAttributesResponse:
         """Post-rpc interceptor for get_guest_attributes
 
         DEPRECATED. Please use the `post_get_guest_attributes_with_metadata`
@@ -542,12 +488,8 @@ class TpuRestInterceptor:
         return response
 
     def post_get_guest_attributes_with_metadata(
-        self,
-        response: cloud_tpu.GetGuestAttributesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GetGuestAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_tpu.GetGuestAttributesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GetGuestAttributesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_guest_attributes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -563,9 +505,7 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_get_node(
-        self,
-        request: cloud_tpu.GetNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.GetNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.GetNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_node
 
@@ -588,9 +528,7 @@ class TpuRestInterceptor:
         return response
 
     def post_get_node_with_metadata(
-        self,
-        response: cloud_tpu.Node,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_tpu.Node, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.Node, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_node
 
@@ -607,12 +545,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_get_queued_resource(
-        self,
-        request: cloud_tpu.GetQueuedResourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GetQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.GetQueuedResourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GetQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_queued_resource
 
         Override in a subclass to manipulate the request or metadata
@@ -620,9 +554,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_get_queued_resource(
-        self, response: cloud_tpu.QueuedResource
-    ) -> cloud_tpu.QueuedResource:
+    def post_get_queued_resource(self, response: cloud_tpu.QueuedResource) -> cloud_tpu.QueuedResource:
         """Post-rpc interceptor for get_queued_resource
 
         DEPRECATED. Please use the `post_get_queued_resource_with_metadata`
@@ -636,9 +568,7 @@ class TpuRestInterceptor:
         return response
 
     def post_get_queued_resource_with_metadata(
-        self,
-        response: cloud_tpu.QueuedResource,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_tpu.QueuedResource, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.QueuedResource, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_queued_resource
 
@@ -655,12 +585,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_get_runtime_version(
-        self,
-        request: cloud_tpu.GetRuntimeVersionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.GetRuntimeVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.GetRuntimeVersionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.GetRuntimeVersionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_runtime_version
 
         Override in a subclass to manipulate the request or metadata
@@ -668,9 +594,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_get_runtime_version(
-        self, response: cloud_tpu.RuntimeVersion
-    ) -> cloud_tpu.RuntimeVersion:
+    def post_get_runtime_version(self, response: cloud_tpu.RuntimeVersion) -> cloud_tpu.RuntimeVersion:
         """Post-rpc interceptor for get_runtime_version
 
         DEPRECATED. Please use the `post_get_runtime_version_with_metadata`
@@ -684,9 +608,7 @@ class TpuRestInterceptor:
         return response
 
     def post_get_runtime_version_with_metadata(
-        self,
-        response: cloud_tpu.RuntimeVersion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_tpu.RuntimeVersion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.RuntimeVersion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_runtime_version
 
@@ -703,12 +625,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_list_accelerator_types(
-        self,
-        request: cloud_tpu.ListAcceleratorTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ListAcceleratorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.ListAcceleratorTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ListAcceleratorTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_accelerator_types
 
         Override in a subclass to manipulate the request or metadata
@@ -716,9 +634,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_list_accelerator_types(
-        self, response: cloud_tpu.ListAcceleratorTypesResponse
-    ) -> cloud_tpu.ListAcceleratorTypesResponse:
+    def post_list_accelerator_types(self, response: cloud_tpu.ListAcceleratorTypesResponse) -> cloud_tpu.ListAcceleratorTypesResponse:
         """Post-rpc interceptor for list_accelerator_types
 
         DEPRECATED. Please use the `post_list_accelerator_types_with_metadata`
@@ -732,12 +648,8 @@ class TpuRestInterceptor:
         return response
 
     def post_list_accelerator_types_with_metadata(
-        self,
-        response: cloud_tpu.ListAcceleratorTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ListAcceleratorTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_tpu.ListAcceleratorTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ListAcceleratorTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_accelerator_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -753,9 +665,7 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_list_nodes(
-        self,
-        request: cloud_tpu.ListNodesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.ListNodesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.ListNodesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_nodes
 
@@ -764,9 +674,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_list_nodes(
-        self, response: cloud_tpu.ListNodesResponse
-    ) -> cloud_tpu.ListNodesResponse:
+    def post_list_nodes(self, response: cloud_tpu.ListNodesResponse) -> cloud_tpu.ListNodesResponse:
         """Post-rpc interceptor for list_nodes
 
         DEPRECATED. Please use the `post_list_nodes_with_metadata`
@@ -780,9 +688,7 @@ class TpuRestInterceptor:
         return response
 
     def post_list_nodes_with_metadata(
-        self,
-        response: cloud_tpu.ListNodesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_tpu.ListNodesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.ListNodesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_nodes
 
@@ -799,12 +705,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_list_queued_resources(
-        self,
-        request: cloud_tpu.ListQueuedResourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ListQueuedResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.ListQueuedResourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ListQueuedResourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_queued_resources
 
         Override in a subclass to manipulate the request or metadata
@@ -812,9 +714,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_list_queued_resources(
-        self, response: cloud_tpu.ListQueuedResourcesResponse
-    ) -> cloud_tpu.ListQueuedResourcesResponse:
+    def post_list_queued_resources(self, response: cloud_tpu.ListQueuedResourcesResponse) -> cloud_tpu.ListQueuedResourcesResponse:
         """Post-rpc interceptor for list_queued_resources
 
         DEPRECATED. Please use the `post_list_queued_resources_with_metadata`
@@ -828,12 +728,8 @@ class TpuRestInterceptor:
         return response
 
     def post_list_queued_resources_with_metadata(
-        self,
-        response: cloud_tpu.ListQueuedResourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ListQueuedResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_tpu.ListQueuedResourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ListQueuedResourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_queued_resources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -849,12 +745,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_list_runtime_versions(
-        self,
-        request: cloud_tpu.ListRuntimeVersionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ListRuntimeVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.ListRuntimeVersionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ListRuntimeVersionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_runtime_versions
 
         Override in a subclass to manipulate the request or metadata
@@ -862,9 +754,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_list_runtime_versions(
-        self, response: cloud_tpu.ListRuntimeVersionsResponse
-    ) -> cloud_tpu.ListRuntimeVersionsResponse:
+    def post_list_runtime_versions(self, response: cloud_tpu.ListRuntimeVersionsResponse) -> cloud_tpu.ListRuntimeVersionsResponse:
         """Post-rpc interceptor for list_runtime_versions
 
         DEPRECATED. Please use the `post_list_runtime_versions_with_metadata`
@@ -878,12 +768,8 @@ class TpuRestInterceptor:
         return response
 
     def post_list_runtime_versions_with_metadata(
-        self,
-        response: cloud_tpu.ListRuntimeVersionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ListRuntimeVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_tpu.ListRuntimeVersionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ListRuntimeVersionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_runtime_versions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -899,12 +785,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_reset_queued_resource(
-        self,
-        request: cloud_tpu.ResetQueuedResourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_tpu.ResetQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_tpu.ResetQueuedResourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_tpu.ResetQueuedResourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reset_queued_resource
 
         Override in a subclass to manipulate the request or metadata
@@ -912,9 +794,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_reset_queued_resource(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reset_queued_resource(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reset_queued_resource
 
         DEPRECATED. Please use the `post_reset_queued_resource_with_metadata`
@@ -928,9 +808,7 @@ class TpuRestInterceptor:
         return response
 
     def post_reset_queued_resource_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reset_queued_resource
 
@@ -947,9 +825,7 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_start_node(
-        self,
-        request: cloud_tpu.StartNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.StartNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.StartNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_node
 
@@ -958,9 +834,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_start_node(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_node(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_node
 
         DEPRECATED. Please use the `post_start_node_with_metadata`
@@ -974,9 +848,7 @@ class TpuRestInterceptor:
         return response
 
     def post_start_node_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_node
 
@@ -993,9 +865,7 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_stop_node(
-        self,
-        request: cloud_tpu.StopNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.StopNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.StopNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_node
 
@@ -1004,9 +874,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_node(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_stop_node(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for stop_node
 
         DEPRECATED. Please use the `post_stop_node_with_metadata`
@@ -1020,9 +888,7 @@ class TpuRestInterceptor:
         return response
 
     def post_stop_node_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_node
 
@@ -1039,9 +905,7 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_update_node(
-        self,
-        request: cloud_tpu.UpdateNodeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_tpu.UpdateNodeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_tpu.UpdateNodeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_node
 
@@ -1050,9 +914,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_update_node(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_node(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_node
 
         DEPRECATED. Please use the `post_update_node_with_metadata`
@@ -1066,9 +928,7 @@ class TpuRestInterceptor:
         return response
 
     def post_update_node_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_node
 
@@ -1085,12 +945,8 @@ class TpuRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1098,9 +954,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1110,12 +964,8 @@ class TpuRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1123,9 +973,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1135,12 +983,8 @@ class TpuRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1158,12 +1002,8 @@ class TpuRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1181,12 +1021,8 @@ class TpuRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1194,9 +1030,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1206,12 +1040,8 @@ class TpuRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1219,9 +1049,7 @@ class TpuRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1312,9 +1140,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1366,9 +1192,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -1378,15 +1202,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.CreateNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1433,27 +1249,15 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseCreateNode._get_http_options()
 
             request, metadata = self._interceptor.pre_create_node(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseCreateNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseCreateNode._get_transcoded_request(http_options, request)
 
-            body = _BaseTpuRestTransport._BaseCreateNode._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTpuRestTransport._BaseCreateNode._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseCreateNode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseCreateNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1477,13 +1281,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._CreateNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1497,12 +1295,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_create_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1523,22 +1317,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _CreateQueuedResource(
-        _BaseTpuRestTransport._BaseCreateQueuedResource, TpuRestStub
-    ):
+    class _CreateQueuedResource(_BaseTpuRestTransport._BaseCreateQueuedResource, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.CreateQueuedResource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1582,38 +1366,18 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseCreateQueuedResource._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseCreateQueuedResource._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_queued_resource(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseCreateQueuedResource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_queued_resource(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseCreateQueuedResource._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTpuRestTransport._BaseCreateQueuedResource._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTpuRestTransport._BaseCreateQueuedResource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseCreateQueuedResource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseCreateQueuedResource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1637,13 +1401,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._CreateQueuedResource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1657,12 +1415,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_create_queued_resource(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_queued_resource_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_queued_resource_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1688,15 +1442,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.DeleteNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1742,23 +1488,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseDeleteNode._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_node(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseDeleteNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseDeleteNode._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseDeleteNode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseDeleteNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1781,14 +1517,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._DeleteNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._DeleteNode._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1801,12 +1530,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_delete_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1827,22 +1552,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _DeleteQueuedResource(
-        _BaseTpuRestTransport._BaseDeleteQueuedResource, TpuRestStub
-    ):
+    class _DeleteQueuedResource(_BaseTpuRestTransport._BaseDeleteQueuedResource, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.DeleteQueuedResource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1885,32 +1600,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseDeleteQueuedResource._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_queued_resource(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_queued_resource(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseDeleteQueuedResource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseDeleteQueuedResource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseDeleteQueuedResource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1934,12 +1633,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._DeleteQueuedResource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1953,12 +1647,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_delete_queued_resource(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_queued_resource_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_queued_resource_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1979,22 +1669,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _GenerateServiceIdentity(
-        _BaseTpuRestTransport._BaseGenerateServiceIdentity, TpuRestStub
-    ):
+    class _GenerateServiceIdentity(_BaseTpuRestTransport._BaseGenerateServiceIdentity, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.GenerateServiceIdentity")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2037,32 +1717,18 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_service_identity(
-                request, metadata
-            )
-            transcoded_request = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_service_identity(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_transcoded_request(http_options, request)
 
-            body = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseGenerateServiceIdentity._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2086,13 +1752,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._GenerateServiceIdentity._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2108,16 +1768,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_generate_service_identity(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_service_identity_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_service_identity_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_tpu.GenerateServiceIdentityResponse.to_json(response)
-                    )
+                    response_payload = cloud_tpu.GenerateServiceIdentityResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2136,22 +1790,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _GetAcceleratorType(
-        _BaseTpuRestTransport._BaseGetAcceleratorType, TpuRestStub
-    ):
+    class _GetAcceleratorType(_BaseTpuRestTransport._BaseGetAcceleratorType, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.GetAcceleratorType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2193,32 +1837,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseGetAcceleratorType._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseGetAcceleratorType._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_accelerator_type(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetAcceleratorType._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_accelerator_type(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseGetAcceleratorType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseGetAcceleratorType._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseGetAcceleratorType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2242,12 +1870,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._GetAcceleratorType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2263,12 +1886,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_get_accelerator_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_accelerator_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_accelerator_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.AcceleratorType.to_json(response)
                 except:
@@ -2289,22 +1908,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _GetGuestAttributes(
-        _BaseTpuRestTransport._BaseGetGuestAttributes, TpuRestStub
-    ):
+    class _GetGuestAttributes(_BaseTpuRestTransport._BaseGetGuestAttributes, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.GetGuestAttributes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2347,36 +1956,18 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseGetGuestAttributes._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseGetGuestAttributes._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_guest_attributes(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetGuestAttributes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_guest_attributes(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseGetGuestAttributes._get_transcoded_request(http_options, request)
 
-            body = _BaseTpuRestTransport._BaseGetGuestAttributes._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTpuRestTransport._BaseGetGuestAttributes._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseGetGuestAttributes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseGetGuestAttributes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2400,13 +1991,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._GetGuestAttributes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2422,16 +2007,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_get_guest_attributes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_guest_attributes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_guest_attributes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_tpu.GetGuestAttributesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_tpu.GetGuestAttributesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2455,15 +2034,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.GetNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2505,23 +2076,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseGetNode._get_http_options()
 
             request, metadata = self._interceptor.pre_get_node(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseGetNode._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseGetNode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseGetNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2544,14 +2105,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._GetNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._GetNode._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2566,12 +2120,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_get_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.Node.to_json(response)
                 except:
@@ -2597,15 +2147,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.GetQueuedResource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2649,32 +2191,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseGetQueuedResource._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseGetQueuedResource._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_queued_resource(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetQueuedResource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_queued_resource(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseGetQueuedResource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseGetQueuedResource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseGetQueuedResource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2698,12 +2224,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._GetQueuedResource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2719,12 +2240,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_get_queued_resource(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_queued_resource_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_queued_resource_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.QueuedResource.to_json(response)
                 except:
@@ -2750,15 +2267,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.GetRuntimeVersion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2800,32 +2309,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseGetRuntimeVersion._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseGetRuntimeVersion._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_runtime_version(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetRuntimeVersion._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_runtime_version(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseGetRuntimeVersion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseGetRuntimeVersion._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseGetRuntimeVersion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2849,12 +2342,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._GetRuntimeVersion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2870,12 +2358,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_get_runtime_version(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_runtime_version_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_runtime_version_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.RuntimeVersion.to_json(response)
                 except:
@@ -2896,22 +2380,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _ListAcceleratorTypes(
-        _BaseTpuRestTransport._BaseListAcceleratorTypes, TpuRestStub
-    ):
+    class _ListAcceleratorTypes(_BaseTpuRestTransport._BaseListAcceleratorTypes, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.ListAcceleratorTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2953,32 +2427,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseListAcceleratorTypes._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseListAcceleratorTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_accelerator_types(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseListAcceleratorTypes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_accelerator_types(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseListAcceleratorTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseListAcceleratorTypes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseListAcceleratorTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3002,12 +2460,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._ListAcceleratorTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3023,16 +2476,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_list_accelerator_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_accelerator_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_accelerator_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_tpu.ListAcceleratorTypesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_tpu.ListAcceleratorTypesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3056,15 +2503,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.ListNodes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3109,23 +2548,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseListNodes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_nodes(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseListNodes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseListNodes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseListNodes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseListNodes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3148,14 +2577,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._ListNodes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._ListNodes._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3170,12 +2592,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_list_nodes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_nodes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_nodes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_tpu.ListNodesResponse.to_json(response)
                 except:
@@ -3196,22 +2614,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _ListQueuedResources(
-        _BaseTpuRestTransport._BaseListQueuedResources, TpuRestStub
-    ):
+    class _ListQueuedResources(_BaseTpuRestTransport._BaseListQueuedResources, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.ListQueuedResources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3253,32 +2661,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseListQueuedResources._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseListQueuedResources._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_queued_resources(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseListQueuedResources._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_queued_resources(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseListQueuedResources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseListQueuedResources._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseListQueuedResources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3302,12 +2694,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._ListQueuedResources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3323,16 +2710,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_list_queued_resources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_queued_resources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_queued_resources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_tpu.ListQueuedResourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_tpu.ListQueuedResourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3351,22 +2732,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _ListRuntimeVersions(
-        _BaseTpuRestTransport._BaseListRuntimeVersions, TpuRestStub
-    ):
+    class _ListRuntimeVersions(_BaseTpuRestTransport._BaseListRuntimeVersions, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.ListRuntimeVersions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3408,32 +2779,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseListRuntimeVersions._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseListRuntimeVersions._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_runtime_versions(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseListRuntimeVersions._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_runtime_versions(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseListRuntimeVersions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseListRuntimeVersions._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseListRuntimeVersions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3457,12 +2812,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._ListRuntimeVersions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3478,16 +2828,10 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_list_runtime_versions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_runtime_versions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_runtime_versions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_tpu.ListRuntimeVersionsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_tpu.ListRuntimeVersionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3506,22 +2850,12 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
             return resp
 
-    class _ResetQueuedResource(
-        _BaseTpuRestTransport._BaseResetQueuedResource, TpuRestStub
-    ):
+    class _ResetQueuedResource(_BaseTpuRestTransport._BaseResetQueuedResource, TpuRestStub):
         def __hash__(self):
             return hash("TpuRestTransport.ResetQueuedResource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3565,38 +2899,18 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseResetQueuedResource._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseResetQueuedResource._get_http_options()
 
-            request, metadata = self._interceptor.pre_reset_queued_resource(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseResetQueuedResource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_reset_queued_resource(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseResetQueuedResource._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTpuRestTransport._BaseResetQueuedResource._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTpuRestTransport._BaseResetQueuedResource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseResetQueuedResource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseResetQueuedResource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3620,13 +2934,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._ResetQueuedResource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3640,12 +2948,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_reset_queued_resource(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reset_queued_resource_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reset_queued_resource_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3671,15 +2975,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.StartNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3726,27 +3022,15 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseStartNode._get_http_options()
 
             request, metadata = self._interceptor.pre_start_node(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseStartNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseStartNode._get_transcoded_request(http_options, request)
 
-            body = _BaseTpuRestTransport._BaseStartNode._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTpuRestTransport._BaseStartNode._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseStartNode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseStartNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3769,15 +3053,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._StartNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = TpuRestTransport._StartNode._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3790,12 +3066,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_start_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3821,15 +3093,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.StopNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3876,27 +3140,15 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseStopNode._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_node(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseStopNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseStopNode._get_transcoded_request(http_options, request)
 
-            body = _BaseTpuRestTransport._BaseStopNode._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTpuRestTransport._BaseStopNode._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseStopNode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseStopNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3919,15 +3171,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._StopNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = TpuRestTransport._StopNode._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3940,12 +3184,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_stop_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3971,15 +3211,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.UpdateNode")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4026,27 +3258,15 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseUpdateNode._get_http_options()
 
             request, metadata = self._interceptor.pre_update_node(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseUpdateNode._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseUpdateNode._get_transcoded_request(http_options, request)
 
-            body = _BaseTpuRestTransport._BaseUpdateNode._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTpuRestTransport._BaseUpdateNode._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTpuRestTransport._BaseUpdateNode._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTpuRestTransport._BaseUpdateNode._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4070,13 +3290,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             # Send the request
             response = TpuRestTransport._UpdateNode._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4090,12 +3304,8 @@ class TpuRestTransport(_BaseTpuRestTransport):
 
             resp = self._interceptor.post_update_node(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_node_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_node_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4117,62 +3327,43 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return resp
 
     @property
-    def create_node(
-        self,
-    ) -> Callable[[cloud_tpu.CreateNodeRequest], operations_pb2.Operation]:
+    def create_node(self) -> Callable[[cloud_tpu.CreateNodeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.CreateQueuedResourceRequest], operations_pb2.Operation]:
+    def create_queued_resource(self) -> Callable[[cloud_tpu.CreateQueuedResourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_node(
-        self,
-    ) -> Callable[[cloud_tpu.DeleteNodeRequest], operations_pb2.Operation]:
+    def delete_node(self) -> Callable[[cloud_tpu.DeleteNodeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.DeleteQueuedResourceRequest], operations_pb2.Operation]:
+    def delete_queued_resource(self) -> Callable[[cloud_tpu.DeleteQueuedResourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def generate_service_identity(
-        self,
-    ) -> Callable[
-        [cloud_tpu.GenerateServiceIdentityRequest],
-        cloud_tpu.GenerateServiceIdentityResponse,
-    ]:
+    def generate_service_identity(self) -> Callable[[cloud_tpu.GenerateServiceIdentityRequest], cloud_tpu.GenerateServiceIdentityResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateServiceIdentity(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_accelerator_type(
-        self,
-    ) -> Callable[[cloud_tpu.GetAcceleratorTypeRequest], cloud_tpu.AcceleratorType]:
+    def get_accelerator_type(self) -> Callable[[cloud_tpu.GetAcceleratorTypeRequest], cloud_tpu.AcceleratorType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAcceleratorType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_guest_attributes(
-        self,
-    ) -> Callable[
-        [cloud_tpu.GetGuestAttributesRequest], cloud_tpu.GetGuestAttributesResponse
-    ]:
+    def get_guest_attributes(self) -> Callable[[cloud_tpu.GetGuestAttributesRequest], cloud_tpu.GetGuestAttributesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGuestAttributes(self._session, self._host, self._interceptor)  # type: ignore
@@ -4184,87 +3375,61 @@ class TpuRestTransport(_BaseTpuRestTransport):
         return self._GetNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.GetQueuedResourceRequest], cloud_tpu.QueuedResource]:
+    def get_queued_resource(self) -> Callable[[cloud_tpu.GetQueuedResourceRequest], cloud_tpu.QueuedResource]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_runtime_version(
-        self,
-    ) -> Callable[[cloud_tpu.GetRuntimeVersionRequest], cloud_tpu.RuntimeVersion]:
+    def get_runtime_version(self) -> Callable[[cloud_tpu.GetRuntimeVersionRequest], cloud_tpu.RuntimeVersion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRuntimeVersion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_accelerator_types(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListAcceleratorTypesRequest], cloud_tpu.ListAcceleratorTypesResponse
-    ]:
+    def list_accelerator_types(self) -> Callable[[cloud_tpu.ListAcceleratorTypesRequest], cloud_tpu.ListAcceleratorTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAcceleratorTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_nodes(
-        self,
-    ) -> Callable[[cloud_tpu.ListNodesRequest], cloud_tpu.ListNodesResponse]:
+    def list_nodes(self) -> Callable[[cloud_tpu.ListNodesRequest], cloud_tpu.ListNodesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNodes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_queued_resources(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListQueuedResourcesRequest], cloud_tpu.ListQueuedResourcesResponse
-    ]:
+    def list_queued_resources(self) -> Callable[[cloud_tpu.ListQueuedResourcesRequest], cloud_tpu.ListQueuedResourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListQueuedResources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_runtime_versions(
-        self,
-    ) -> Callable[
-        [cloud_tpu.ListRuntimeVersionsRequest], cloud_tpu.ListRuntimeVersionsResponse
-    ]:
+    def list_runtime_versions(self) -> Callable[[cloud_tpu.ListRuntimeVersionsRequest], cloud_tpu.ListRuntimeVersionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRuntimeVersions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reset_queued_resource(
-        self,
-    ) -> Callable[[cloud_tpu.ResetQueuedResourceRequest], operations_pb2.Operation]:
+    def reset_queued_resource(self) -> Callable[[cloud_tpu.ResetQueuedResourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResetQueuedResource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_node(
-        self,
-    ) -> Callable[[cloud_tpu.StartNodeRequest], operations_pb2.Operation]:
+    def start_node(self) -> Callable[[cloud_tpu.StartNodeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_node(
-        self,
-    ) -> Callable[[cloud_tpu.StopNodeRequest], operations_pb2.Operation]:
+    def stop_node(self) -> Callable[[cloud_tpu.StopNodeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopNode(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_node(
-        self,
-    ) -> Callable[[cloud_tpu.UpdateNodeRequest], operations_pb2.Operation]:
+    def update_node(self) -> Callable[[cloud_tpu.UpdateNodeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateNode(self._session, self._host, self._interceptor)  # type: ignore
@@ -4278,15 +3443,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4327,25 +3484,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4368,14 +3513,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4386,9 +3524,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4418,15 +3554,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4467,25 +3595,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4508,14 +3624,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._ListLocations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4526,9 +3635,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4558,15 +3665,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4601,32 +3700,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4649,14 +3732,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._CancelOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4674,15 +3750,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4717,32 +3785,16 @@ class TpuRestTransport(_BaseTpuRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTpuRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseTpuRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseTpuRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4765,14 +3817,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._DeleteOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4790,15 +3835,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4839,25 +3876,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4880,14 +3905,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -4898,9 +3916,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4930,15 +3946,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             return hash("TpuRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4979,25 +3987,13 @@ class TpuRestTransport(_BaseTpuRestTransport):
             http_options = _BaseTpuRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseTpuRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTpuRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTpuRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTpuRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5020,14 +4016,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
                 )
 
             # Send the request
-            response = TpuRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = TpuRestTransport._ListOperations._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5038,9 +4027,7 @@ class TpuRestTransport(_BaseTpuRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

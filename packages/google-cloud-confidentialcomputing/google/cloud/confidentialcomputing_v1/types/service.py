@@ -607,9 +607,7 @@ class SignedEntity(proto.Message):
             signatures attached to an OCI image object.
     """
 
-    container_image_signatures: MutableSequence[
-        "ContainerImageSignature"
-    ] = proto.RepeatedField(
+    container_image_signatures: MutableSequence["ContainerImageSignature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="ContainerImageSignature",

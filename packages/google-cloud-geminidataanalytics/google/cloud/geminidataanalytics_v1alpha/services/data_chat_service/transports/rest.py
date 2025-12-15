@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.geminidataanalytics_v1alpha.types import (
-    conversation as gcg_conversation,
-)
+from google.cloud.geminidataanalytics_v1alpha.types import conversation as gcg_conversation
 from google.cloud.geminidataanalytics_v1alpha.types import conversation
 from google.cloud.geminidataanalytics_v1alpha.types import data_chat_service
 
@@ -138,9 +136,7 @@ class DataChatServiceRestInterceptor:
     """
 
     def pre_chat(
-        self,
-        request: data_chat_service.ChatRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: data_chat_service.ChatRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[data_chat_service.ChatRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for chat
 
@@ -149,9 +145,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_chat(
-        self, response: rest_streaming.ResponseIterator
-    ) -> rest_streaming.ResponseIterator:
+    def post_chat(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for chat
 
         DEPRECATED. Please use the `post_chat_with_metadata`
@@ -165,12 +159,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def post_chat_with_metadata(
-        self,
-        response: rest_streaming.ResponseIterator,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: rest_streaming.ResponseIterator, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for chat
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -186,13 +176,8 @@ class DataChatServiceRestInterceptor:
         return response, metadata
 
     def pre_create_conversation(
-        self,
-        request: gcg_conversation.CreateConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcg_conversation.CreateConversationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gcg_conversation.CreateConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcg_conversation.CreateConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -200,9 +185,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_conversation(
-        self, response: gcg_conversation.Conversation
-    ) -> gcg_conversation.Conversation:
+    def post_create_conversation(self, response: gcg_conversation.Conversation) -> gcg_conversation.Conversation:
         """Post-rpc interceptor for create_conversation
 
         DEPRECATED. Please use the `post_create_conversation_with_metadata`
@@ -216,9 +199,7 @@ class DataChatServiceRestInterceptor:
         return response
 
     def post_create_conversation_with_metadata(
-        self,
-        response: gcg_conversation.Conversation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcg_conversation.Conversation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcg_conversation.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_conversation
 
@@ -235,12 +216,8 @@ class DataChatServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_conversation(
-        self,
-        request: conversation.DeleteConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation.DeleteConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: conversation.DeleteConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation.DeleteConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -249,12 +226,8 @@ class DataChatServiceRestInterceptor:
         return request, metadata
 
     def pre_get_conversation(
-        self,
-        request: conversation.GetConversationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation.GetConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: conversation.GetConversationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation.GetConversationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_conversation
 
         Override in a subclass to manipulate the request or metadata
@@ -262,9 +235,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_conversation(
-        self, response: conversation.Conversation
-    ) -> conversation.Conversation:
+    def post_get_conversation(self, response: conversation.Conversation) -> conversation.Conversation:
         """Post-rpc interceptor for get_conversation
 
         DEPRECATED. Please use the `post_get_conversation_with_metadata`
@@ -278,9 +249,7 @@ class DataChatServiceRestInterceptor:
         return response
 
     def post_get_conversation_with_metadata(
-        self,
-        response: conversation.Conversation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: conversation.Conversation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[conversation.Conversation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_conversation
 
@@ -297,12 +266,8 @@ class DataChatServiceRestInterceptor:
         return response, metadata
 
     def pre_list_conversations(
-        self,
-        request: conversation.ListConversationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation.ListConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: conversation.ListConversationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation.ListConversationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_conversations
 
         Override in a subclass to manipulate the request or metadata
@@ -310,9 +275,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_conversations(
-        self, response: conversation.ListConversationsResponse
-    ) -> conversation.ListConversationsResponse:
+    def post_list_conversations(self, response: conversation.ListConversationsResponse) -> conversation.ListConversationsResponse:
         """Post-rpc interceptor for list_conversations
 
         DEPRECATED. Please use the `post_list_conversations_with_metadata`
@@ -326,12 +289,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def post_list_conversations_with_metadata(
-        self,
-        response: conversation.ListConversationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        conversation.ListConversationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: conversation.ListConversationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[conversation.ListConversationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_conversations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -347,12 +306,8 @@ class DataChatServiceRestInterceptor:
         return response, metadata
 
     def pre_list_messages(
-        self,
-        request: data_chat_service.ListMessagesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_chat_service.ListMessagesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_chat_service.ListMessagesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_chat_service.ListMessagesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_messages
 
         Override in a subclass to manipulate the request or metadata
@@ -360,9 +315,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_messages(
-        self, response: data_chat_service.ListMessagesResponse
-    ) -> data_chat_service.ListMessagesResponse:
+    def post_list_messages(self, response: data_chat_service.ListMessagesResponse) -> data_chat_service.ListMessagesResponse:
         """Post-rpc interceptor for list_messages
 
         DEPRECATED. Please use the `post_list_messages_with_metadata`
@@ -376,12 +329,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def post_list_messages_with_metadata(
-        self,
-        response: data_chat_service.ListMessagesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_chat_service.ListMessagesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: data_chat_service.ListMessagesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_chat_service.ListMessagesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_messages
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -397,12 +346,8 @@ class DataChatServiceRestInterceptor:
         return response, metadata
 
     def pre_query_data(
-        self,
-        request: data_chat_service.QueryDataRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_chat_service.QueryDataRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: data_chat_service.QueryDataRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_chat_service.QueryDataRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_data
 
         Override in a subclass to manipulate the request or metadata
@@ -410,9 +355,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_query_data(
-        self, response: data_chat_service.QueryDataResponse
-    ) -> data_chat_service.QueryDataResponse:
+    def post_query_data(self, response: data_chat_service.QueryDataResponse) -> data_chat_service.QueryDataResponse:
         """Post-rpc interceptor for query_data
 
         DEPRECATED. Please use the `post_query_data_with_metadata`
@@ -426,12 +369,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def post_query_data_with_metadata(
-        self,
-        response: data_chat_service.QueryDataResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        data_chat_service.QueryDataResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: data_chat_service.QueryDataResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[data_chat_service.QueryDataResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_data
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -447,12 +386,8 @@ class DataChatServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -460,9 +395,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -472,12 +405,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -485,9 +414,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -497,12 +424,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -520,12 +443,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -543,12 +462,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -556,9 +471,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -568,12 +481,8 @@ class DataChatServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -581,9 +490,7 @@ class DataChatServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -674,9 +581,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DataChatServiceRestInterceptor()
@@ -687,15 +592,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             return hash("DataChatServiceRestTransport.Chat")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -738,34 +635,18 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseChat._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseChat._get_http_options()
 
             request, metadata = self._interceptor.pre_chat(request, metadata)
-            transcoded_request = (
-                _BaseDataChatServiceRestTransport._BaseChat._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseChat._get_transcoded_request(http_options, request)
 
-            body = _BaseDataChatServiceRestTransport._BaseChat._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataChatServiceRestTransport._BaseChat._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataChatServiceRestTransport._BaseChat._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseChat._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -789,13 +670,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._Chat._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -809,9 +684,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             resp = self._interceptor.post_chat(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_chat_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                     "headers": dict(response.headers),
                     "status": response.status_code,
@@ -827,23 +700,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
-    class _CreateConversation(
-        _BaseDataChatServiceRestTransport._BaseCreateConversation,
-        DataChatServiceRestStub,
-    ):
+    class _CreateConversation(_BaseDataChatServiceRestTransport._BaseCreateConversation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.CreateConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -883,32 +745,18 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                     Message for a conversation.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseCreateConversation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_conversation(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseCreateConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -932,13 +780,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._CreateConversation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -954,12 +796,8 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             resp = self._interceptor.post_create_conversation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_conversation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcg_conversation.Conversation.to_json(response)
                 except:
@@ -980,23 +818,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
-    class _DeleteConversation(
-        _BaseDataChatServiceRestTransport._BaseDeleteConversation,
-        DataChatServiceRestStub,
-    ):
+    class _DeleteConversation(_BaseDataChatServiceRestTransport._BaseDeleteConversation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.DeleteConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1032,28 +859,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_conversation(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseDeleteConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1077,12 +892,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._DeleteConversation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1090,22 +900,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetConversation(
-        _BaseDataChatServiceRestTransport._BaseGetConversation, DataChatServiceRestStub
-    ):
+    class _GetConversation(_BaseDataChatServiceRestTransport._BaseGetConversation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.GetConversation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1145,28 +945,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                     Message for a conversation.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseGetConversation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseGetConversation._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_conversation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseGetConversation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_conversation(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseGetConversation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseGetConversation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseGetConversation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1190,12 +978,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._GetConversation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1211,12 +994,8 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             resp = self._interceptor.post_get_conversation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_conversation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_conversation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = conversation.Conversation.to_json(response)
                 except:
@@ -1237,23 +1016,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
-    class _ListConversations(
-        _BaseDataChatServiceRestTransport._BaseListConversations,
-        DataChatServiceRestStub,
-    ):
+    class _ListConversations(_BaseDataChatServiceRestTransport._BaseListConversations, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.ListConversations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1295,28 +1063,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseListConversations._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseListConversations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_conversations(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseListConversations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_conversations(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseListConversations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseListConversations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseListConversations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1340,12 +1096,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._ListConversations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1361,16 +1112,10 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             resp = self._interceptor.post_list_conversations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_conversations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_conversations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = conversation.ListConversationsResponse.to_json(
-                        response
-                    )
+                    response_payload = conversation.ListConversationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1389,22 +1134,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
-    class _ListMessages(
-        _BaseDataChatServiceRestTransport._BaseListMessages, DataChatServiceRestStub
-    ):
+    class _ListMessages(_BaseDataChatServiceRestTransport._BaseListMessages, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.ListMessages")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1444,26 +1179,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                     Response for listing chat messages.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseListMessages._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseListMessages._get_http_options()
 
             request, metadata = self._interceptor.pre_list_messages(request, metadata)
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseListMessages._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseListMessages._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseListMessages._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseListMessages._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1487,12 +1212,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._ListMessages._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1508,16 +1228,10 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             resp = self._interceptor.post_list_messages(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_messages_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_messages_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = data_chat_service.ListMessagesResponse.to_json(
-                        response
-                    )
+                    response_payload = data_chat_service.ListMessagesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1536,22 +1250,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 )
             return resp
 
-    class _QueryData(
-        _BaseDataChatServiceRestTransport._BaseQueryData, DataChatServiceRestStub
-    ):
+    class _QueryData(_BaseDataChatServiceRestTransport._BaseQueryData, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.QueryData")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1594,34 +1298,18 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseQueryData._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseQueryData._get_http_options()
 
             request, metadata = self._interceptor.pre_query_data(request, metadata)
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseQueryData._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseQueryData._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDataChatServiceRestTransport._BaseQueryData._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDataChatServiceRestTransport._BaseQueryData._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDataChatServiceRestTransport._BaseQueryData._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseQueryData._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1645,13 +1333,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._QueryData._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1667,16 +1349,10 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             resp = self._interceptor.post_query_data(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_query_data_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_data_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = data_chat_service.QueryDataResponse.to_json(
-                        response
-                    )
+                    response_payload = data_chat_service.QueryDataResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1696,65 +1372,43 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             return resp
 
     @property
-    def chat(
-        self,
-    ) -> Callable[[data_chat_service.ChatRequest], data_chat_service.Message]:
+    def chat(self) -> Callable[[data_chat_service.ChatRequest], data_chat_service.Message]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Chat(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [gcg_conversation.CreateConversationRequest], gcg_conversation.Conversation
-    ]:
+    def create_conversation(self) -> Callable[[gcg_conversation.CreateConversationRequest], gcg_conversation.Conversation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_conversation(
-        self,
-    ) -> Callable[[conversation.DeleteConversationRequest], empty_pb2.Empty]:
+    def delete_conversation(self) -> Callable[[conversation.DeleteConversationRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[[conversation.GetConversationRequest], conversation.Conversation]:
+    def get_conversation(self) -> Callable[[conversation.GetConversationRequest], conversation.Conversation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConversation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_conversations(
-        self,
-    ) -> Callable[
-        [conversation.ListConversationsRequest], conversation.ListConversationsResponse
-    ]:
+    def list_conversations(self) -> Callable[[conversation.ListConversationsRequest], conversation.ListConversationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConversations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_messages(
-        self,
-    ) -> Callable[
-        [data_chat_service.ListMessagesRequest], data_chat_service.ListMessagesResponse
-    ]:
+    def list_messages(self) -> Callable[[data_chat_service.ListMessagesRequest], data_chat_service.ListMessagesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMessages(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def query_data(
-        self,
-    ) -> Callable[
-        [data_chat_service.QueryDataRequest], data_chat_service.QueryDataResponse
-    ]:
+    def query_data(self) -> Callable[[data_chat_service.QueryDataRequest], data_chat_service.QueryDataResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryData(self._session, self._host, self._interceptor)  # type: ignore
@@ -1763,22 +1417,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDataChatServiceRestTransport._BaseGetLocation, DataChatServiceRestStub
-    ):
+    class _GetLocation(_BaseDataChatServiceRestTransport._BaseGetLocation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1816,26 +1460,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1859,12 +1493,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1876,9 +1505,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1903,22 +1530,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDataChatServiceRestTransport._BaseListLocations, DataChatServiceRestStub
-    ):
+    class _ListLocations(_BaseDataChatServiceRestTransport._BaseListLocations, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1956,26 +1573,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1999,12 +1606,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2016,9 +1618,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2043,22 +1643,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDataChatServiceRestTransport._BaseCancelOperation, DataChatServiceRestStub
-    ):
+    class _CancelOperation(_BaseDataChatServiceRestTransport._BaseCancelOperation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2094,32 +1684,18 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2143,13 +1719,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2163,22 +1733,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDataChatServiceRestTransport._BaseDeleteOperation, DataChatServiceRestStub
-    ):
+    class _DeleteOperation(_BaseDataChatServiceRestTransport._BaseDeleteOperation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2213,28 +1773,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2258,12 +1806,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2277,22 +1820,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDataChatServiceRestTransport._BaseGetOperation, DataChatServiceRestStub
-    ):
+    class _GetOperation(_BaseDataChatServiceRestTransport._BaseGetOperation, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2330,26 +1863,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2373,12 +1896,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2390,9 +1908,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2417,22 +1933,12 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDataChatServiceRestTransport._BaseListOperations, DataChatServiceRestStub
-    ):
+    class _ListOperations(_BaseDataChatServiceRestTransport._BaseListOperations, DataChatServiceRestStub):
         def __hash__(self):
             return hash("DataChatServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2470,26 +1976,16 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDataChatServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDataChatServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDataChatServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDataChatServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDataChatServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDataChatServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2513,12 +2009,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
 
             # Send the request
             response = DataChatServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2530,9 +2021,7 @@ class DataChatServiceRestTransport(_BaseDataChatServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

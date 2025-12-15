@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import EntitySignalsMappingServiceTransport
-from .rest import (
-    EntitySignalsMappingServiceRestInterceptor,
-    EntitySignalsMappingServiceRestTransport,
-)
+from .rest import EntitySignalsMappingServiceRestInterceptor, EntitySignalsMappingServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[EntitySignalsMappingServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[EntitySignalsMappingServiceTransport]]
 _transport_registry["rest"] = EntitySignalsMappingServiceRestTransport
 
 __all__ = (

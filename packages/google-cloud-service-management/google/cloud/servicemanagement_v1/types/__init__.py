@@ -13,16 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .resources import (
-    ChangeReport,
-    ConfigFile,
-    ConfigRef,
-    ConfigSource,
-    Diagnostic,
-    ManagedService,
-    OperationMetadata,
-    Rollout,
-)
+from .resources import ChangeReport, ConfigFile, ConfigRef, ConfigSource, Diagnostic, ManagedService, OperationMetadata, Rollout
 from .servicemanager import (
     CreateServiceConfigRequest,
     CreateServiceRequest,

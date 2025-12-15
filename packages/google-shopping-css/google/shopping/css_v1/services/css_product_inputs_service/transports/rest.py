@@ -100,13 +100,8 @@ class CssProductInputsServiceRestInterceptor:
     """
 
     def pre_delete_css_product_input(
-        self,
-        request: css_product_inputs.DeleteCssProductInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        css_product_inputs.DeleteCssProductInputRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: css_product_inputs.DeleteCssProductInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[css_product_inputs.DeleteCssProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_css_product_input
 
         Override in a subclass to manipulate the request or metadata
@@ -115,13 +110,8 @@ class CssProductInputsServiceRestInterceptor:
         return request, metadata
 
     def pre_insert_css_product_input(
-        self,
-        request: css_product_inputs.InsertCssProductInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        css_product_inputs.InsertCssProductInputRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: css_product_inputs.InsertCssProductInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[css_product_inputs.InsertCssProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_css_product_input
 
         Override in a subclass to manipulate the request or metadata
@@ -129,9 +119,7 @@ class CssProductInputsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_css_product_input(
-        self, response: css_product_inputs.CssProductInput
-    ) -> css_product_inputs.CssProductInput:
+    def post_insert_css_product_input(self, response: css_product_inputs.CssProductInput) -> css_product_inputs.CssProductInput:
         """Post-rpc interceptor for insert_css_product_input
 
         DEPRECATED. Please use the `post_insert_css_product_input_with_metadata`
@@ -145,12 +133,8 @@ class CssProductInputsServiceRestInterceptor:
         return response
 
     def post_insert_css_product_input_with_metadata(
-        self,
-        response: css_product_inputs.CssProductInput,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        css_product_inputs.CssProductInput, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: css_product_inputs.CssProductInput, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[css_product_inputs.CssProductInput, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_css_product_input
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -166,13 +150,8 @@ class CssProductInputsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_css_product_input(
-        self,
-        request: css_product_inputs.UpdateCssProductInputRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        css_product_inputs.UpdateCssProductInputRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: css_product_inputs.UpdateCssProductInputRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[css_product_inputs.UpdateCssProductInputRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_css_product_input
 
         Override in a subclass to manipulate the request or metadata
@@ -180,9 +159,7 @@ class CssProductInputsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_css_product_input(
-        self, response: css_product_inputs.CssProductInput
-    ) -> css_product_inputs.CssProductInput:
+    def post_update_css_product_input(self, response: css_product_inputs.CssProductInput) -> css_product_inputs.CssProductInput:
         """Post-rpc interceptor for update_css_product_input
 
         DEPRECATED. Please use the `post_update_css_product_input_with_metadata`
@@ -196,12 +173,8 @@ class CssProductInputsServiceRestInterceptor:
         return response
 
     def post_update_css_product_input_with_metadata(
-        self,
-        response: css_product_inputs.CssProductInput,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        css_product_inputs.CssProductInput, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: css_product_inputs.CssProductInput, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[css_product_inputs.CssProductInput, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_css_product_input
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -297,31 +270,18 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CssProductInputsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _DeleteCssProductInput(
-        _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput,
-        CssProductInputsServiceRestStub,
-    ):
+    class _DeleteCssProductInput(_BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput, CssProductInputsServiceRestStub):
         def __hash__(self):
             return hash("CssProductInputsServiceRestTransport.DeleteCssProductInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -357,28 +317,16 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput._get_http_options()
-            )
+            http_options = _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_css_product_input(
-                request, metadata
-            )
-            transcoded_request = _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_css_product_input(request, metadata)
+            transcoded_request = _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCssProductInputsServiceRestTransport._BaseDeleteCssProductInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -402,12 +350,7 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             # Send the request
             response = CssProductInputsServiceRestTransport._DeleteCssProductInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -415,23 +358,12 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _InsertCssProductInput(
-        _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput,
-        CssProductInputsServiceRestStub,
-    ):
+    class _InsertCssProductInput(_BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput, CssProductInputsServiceRestStub):
         def __hash__(self):
             return hash("CssProductInputsServiceRestTransport.InsertCssProductInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -477,32 +409,18 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_http_options()
-            )
+            http_options = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_css_product_input(
-                request, metadata
-            )
-            transcoded_request = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_css_product_input(request, metadata)
+            transcoded_request = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_transcoded_request(http_options, request)
 
-            body = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCssProductInputsServiceRestTransport._BaseInsertCssProductInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -526,13 +444,7 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             # Send the request
             response = CssProductInputsServiceRestTransport._InsertCssProductInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -548,16 +460,10 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             resp = self._interceptor.post_insert_css_product_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_css_product_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_css_product_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = css_product_inputs.CssProductInput.to_json(
-                        response
-                    )
+                    response_payload = css_product_inputs.CssProductInput.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -576,23 +482,12 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
                 )
             return resp
 
-    class _UpdateCssProductInput(
-        _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput,
-        CssProductInputsServiceRestStub,
-    ):
+    class _UpdateCssProductInput(_BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput, CssProductInputsServiceRestStub):
         def __hash__(self):
             return hash("CssProductInputsServiceRestTransport.UpdateCssProductInput")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -638,32 +533,18 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             """
 
-            http_options = (
-                _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_http_options()
-            )
+            http_options = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_css_product_input(
-                request, metadata
-            )
-            transcoded_request = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_css_product_input(request, metadata)
+            transcoded_request = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_transcoded_request(http_options, request)
 
-            body = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCssProductInputsServiceRestTransport._BaseUpdateCssProductInput._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -687,13 +568,7 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             # Send the request
             response = CssProductInputsServiceRestTransport._UpdateCssProductInput._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -709,16 +584,10 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
 
             resp = self._interceptor.post_update_css_product_input(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_css_product_input_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_css_product_input_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = css_product_inputs.CssProductInput.to_json(
-                        response
-                    )
+                    response_payload = css_product_inputs.CssProductInput.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -738,31 +607,19 @@ class CssProductInputsServiceRestTransport(_BaseCssProductInputsServiceRestTrans
             return resp
 
     @property
-    def delete_css_product_input(
-        self,
-    ) -> Callable[[css_product_inputs.DeleteCssProductInputRequest], empty_pb2.Empty]:
+    def delete_css_product_input(self) -> Callable[[css_product_inputs.DeleteCssProductInputRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCssProductInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_css_product_input(
-        self,
-    ) -> Callable[
-        [css_product_inputs.InsertCssProductInputRequest],
-        css_product_inputs.CssProductInput,
-    ]:
+    def insert_css_product_input(self) -> Callable[[css_product_inputs.InsertCssProductInputRequest], css_product_inputs.CssProductInput]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertCssProductInput(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_css_product_input(
-        self,
-    ) -> Callable[
-        [css_product_inputs.UpdateCssProductInputRequest],
-        css_product_inputs.CssProductInput,
-    ]:
+    def update_css_product_input(self) -> Callable[[css_product_inputs.UpdateCssProductInputRequest], css_product_inputs.CssProductInput]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCssProductInput(self._session, self._host, self._interceptor)  # type: ignore

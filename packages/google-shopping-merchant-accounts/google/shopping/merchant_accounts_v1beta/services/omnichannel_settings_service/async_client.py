@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -46,9 +35,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import field_mask_pb2  # type: ignore
 
-from google.shopping.merchant_accounts_v1beta.services.omnichannel_settings_service import (
-    pagers,
-)
+from google.shopping.merchant_accounts_v1beta.services.omnichannel_settings_service import pagers
 from google.shopping.merchant_accounts_v1beta.types import omnichannelsettings
 
 from .client import OmnichannelSettingsServiceClient
@@ -79,51 +66,23 @@ class OmnichannelSettingsServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = OmnichannelSettingsServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = OmnichannelSettingsServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        OmnichannelSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = OmnichannelSettingsServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = OmnichannelSettingsServiceClient._DEFAULT_UNIVERSE
 
     account_path = staticmethod(OmnichannelSettingsServiceClient.account_path)
-    parse_account_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_account_path
-    )
-    omnichannel_setting_path = staticmethod(
-        OmnichannelSettingsServiceClient.omnichannel_setting_path
-    )
-    parse_omnichannel_setting_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_omnichannel_setting_path
-    )
-    common_billing_account_path = staticmethod(
-        OmnichannelSettingsServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        OmnichannelSettingsServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        OmnichannelSettingsServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        OmnichannelSettingsServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        OmnichannelSettingsServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        OmnichannelSettingsServiceClient.parse_common_location_path
-    )
+    parse_account_path = staticmethod(OmnichannelSettingsServiceClient.parse_account_path)
+    omnichannel_setting_path = staticmethod(OmnichannelSettingsServiceClient.omnichannel_setting_path)
+    parse_omnichannel_setting_path = staticmethod(OmnichannelSettingsServiceClient.parse_omnichannel_setting_path)
+    common_billing_account_path = staticmethod(OmnichannelSettingsServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(OmnichannelSettingsServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(OmnichannelSettingsServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(OmnichannelSettingsServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(OmnichannelSettingsServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(OmnichannelSettingsServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(OmnichannelSettingsServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(OmnichannelSettingsServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(OmnichannelSettingsServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(OmnichannelSettingsServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -159,9 +118,7 @@ class OmnichannelSettingsServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -228,13 +185,7 @@ class OmnichannelSettingsServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                OmnichannelSettingsServiceTransport,
-                Callable[..., OmnichannelSettingsServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, OmnichannelSettingsServiceTransport, Callable[..., OmnichannelSettingsServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -294,20 +245,14 @@ class OmnichannelSettingsServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.shopping.merchant.accounts_v1beta.OmnichannelSettingsServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.shopping.merchant.accounts.v1beta.OmnichannelSettingsService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -318,9 +263,7 @@ class OmnichannelSettingsServiceAsyncClient:
 
     async def get_omnichannel_setting(
         self,
-        request: Optional[
-            Union[omnichannelsettings.GetOmnichannelSettingRequest, dict]
-        ] = None,
+        request: Optional[Union[omnichannelsettings.GetOmnichannelSettingRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -385,14 +328,9 @@ class OmnichannelSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -406,15 +344,11 @@ class OmnichannelSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_omnichannel_setting
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_omnichannel_setting]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -432,9 +366,7 @@ class OmnichannelSettingsServiceAsyncClient:
 
     async def list_omnichannel_settings(
         self,
-        request: Optional[
-            Union[omnichannelsettings.ListOmnichannelSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[omnichannelsettings.ListOmnichannelSettingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -503,14 +435,9 @@ class OmnichannelSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -524,15 +451,11 @@ class OmnichannelSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_omnichannel_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_omnichannel_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -561,9 +484,7 @@ class OmnichannelSettingsServiceAsyncClient:
 
     async def create_omnichannel_setting(
         self,
-        request: Optional[
-            Union[omnichannelsettings.CreateOmnichannelSettingRequest, dict]
-        ] = None,
+        request: Optional[Union[omnichannelsettings.CreateOmnichannelSettingRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         omnichannel_setting: Optional[omnichannelsettings.OmnichannelSetting] = None,
@@ -640,14 +561,9 @@ class OmnichannelSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, omnichannel_setting]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -663,15 +579,11 @@ class OmnichannelSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_omnichannel_setting
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_omnichannel_setting]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -689,9 +601,7 @@ class OmnichannelSettingsServiceAsyncClient:
 
     async def update_omnichannel_setting(
         self,
-        request: Optional[
-            Union[omnichannelsettings.UpdateOmnichannelSettingRequest, dict]
-        ] = None,
+        request: Optional[Union[omnichannelsettings.UpdateOmnichannelSettingRequest, dict]] = None,
         *,
         omnichannel_setting: Optional[omnichannelsettings.OmnichannelSetting] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -781,14 +691,9 @@ class OmnichannelSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [omnichannel_setting, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -804,17 +709,11 @@ class OmnichannelSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_omnichannel_setting
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_omnichannel_setting]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("omnichannel_setting.name", request.omnichannel_setting.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("omnichannel_setting.name", request.omnichannel_setting.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -832,9 +731,7 @@ class OmnichannelSettingsServiceAsyncClient:
 
     async def request_inventory_verification(
         self,
-        request: Optional[
-            Union[omnichannelsettings.RequestInventoryVerificationRequest, dict]
-        ] = None,
+        request: Optional[Union[omnichannelsettings.RequestInventoryVerificationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -900,20 +797,13 @@ class OmnichannelSettingsServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, omnichannelsettings.RequestInventoryVerificationRequest
-        ):
+        if not isinstance(request, omnichannelsettings.RequestInventoryVerificationRequest):
             request = omnichannelsettings.RequestInventoryVerificationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -923,15 +813,11 @@ class OmnichannelSettingsServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.request_inventory_verification
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.request_inventory_verification]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -954,9 +840,7 @@ class OmnichannelSettingsServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

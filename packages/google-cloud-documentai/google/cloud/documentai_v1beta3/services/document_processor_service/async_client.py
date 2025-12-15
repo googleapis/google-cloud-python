@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -53,12 +42,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.documentai_v1beta3.services.document_processor_service import pagers
-from google.cloud.documentai_v1beta3.types import (
-    document,
-    document_processor_service,
-    document_schema,
-    evaluation,
-)
+from google.cloud.documentai_v1beta3.types import document, document_processor_service, document_schema, evaluation
 from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 from google.cloud.documentai_v1beta3.types import processor_type
@@ -91,65 +75,29 @@ class DocumentProcessorServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = DocumentProcessorServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DocumentProcessorServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        DocumentProcessorServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = DocumentProcessorServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DocumentProcessorServiceClient._DEFAULT_UNIVERSE
 
     evaluation_path = staticmethod(DocumentProcessorServiceClient.evaluation_path)
-    parse_evaluation_path = staticmethod(
-        DocumentProcessorServiceClient.parse_evaluation_path
-    )
-    human_review_config_path = staticmethod(
-        DocumentProcessorServiceClient.human_review_config_path
-    )
-    parse_human_review_config_path = staticmethod(
-        DocumentProcessorServiceClient.parse_human_review_config_path
-    )
+    parse_evaluation_path = staticmethod(DocumentProcessorServiceClient.parse_evaluation_path)
+    human_review_config_path = staticmethod(DocumentProcessorServiceClient.human_review_config_path)
+    parse_human_review_config_path = staticmethod(DocumentProcessorServiceClient.parse_human_review_config_path)
     processor_path = staticmethod(DocumentProcessorServiceClient.processor_path)
-    parse_processor_path = staticmethod(
-        DocumentProcessorServiceClient.parse_processor_path
-    )
-    processor_type_path = staticmethod(
-        DocumentProcessorServiceClient.processor_type_path
-    )
-    parse_processor_type_path = staticmethod(
-        DocumentProcessorServiceClient.parse_processor_type_path
-    )
-    processor_version_path = staticmethod(
-        DocumentProcessorServiceClient.processor_version_path
-    )
-    parse_processor_version_path = staticmethod(
-        DocumentProcessorServiceClient.parse_processor_version_path
-    )
-    common_billing_account_path = staticmethod(
-        DocumentProcessorServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DocumentProcessorServiceClient.parse_common_billing_account_path
-    )
+    parse_processor_path = staticmethod(DocumentProcessorServiceClient.parse_processor_path)
+    processor_type_path = staticmethod(DocumentProcessorServiceClient.processor_type_path)
+    parse_processor_type_path = staticmethod(DocumentProcessorServiceClient.parse_processor_type_path)
+    processor_version_path = staticmethod(DocumentProcessorServiceClient.processor_version_path)
+    parse_processor_version_path = staticmethod(DocumentProcessorServiceClient.parse_processor_version_path)
+    common_billing_account_path = staticmethod(DocumentProcessorServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DocumentProcessorServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DocumentProcessorServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DocumentProcessorServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DocumentProcessorServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DocumentProcessorServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        DocumentProcessorServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        DocumentProcessorServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        DocumentProcessorServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        DocumentProcessorServiceClient.parse_common_location_path
-    )
+    parse_common_folder_path = staticmethod(DocumentProcessorServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DocumentProcessorServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DocumentProcessorServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(DocumentProcessorServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(DocumentProcessorServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(DocumentProcessorServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(DocumentProcessorServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -185,9 +133,7 @@ class DocumentProcessorServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -254,13 +200,7 @@ class DocumentProcessorServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                DocumentProcessorServiceTransport,
-                Callable[..., DocumentProcessorServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DocumentProcessorServiceTransport, Callable[..., DocumentProcessorServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -320,20 +260,14 @@ class DocumentProcessorServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -344,9 +278,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def process_document(
         self,
-        request: Optional[
-            Union[document_processor_service.ProcessRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ProcessRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -426,14 +358,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -447,15 +374,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.process_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.process_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -473,9 +396,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def batch_process_documents(
         self,
-        request: Optional[
-            Union[document_processor_service.BatchProcessRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.BatchProcessRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -552,14 +473,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -573,15 +489,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_process_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_process_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -607,9 +519,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def fetch_processor_types(
         self,
-        request: Optional[
-            Union[document_processor_service.FetchProcessorTypesRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.FetchProcessorTypesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -678,20 +588,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.FetchProcessorTypesRequest
-        ):
+        if not isinstance(request, document_processor_service.FetchProcessorTypesRequest):
             request = document_processor_service.FetchProcessorTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -701,15 +604,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.fetch_processor_types
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.fetch_processor_types]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -727,9 +626,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def list_processor_types(
         self,
-        request: Optional[
-            Union[document_processor_service.ListProcessorTypesRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ListProcessorTypesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -800,20 +697,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.ListProcessorTypesRequest
-        ):
+        if not isinstance(request, document_processor_service.ListProcessorTypesRequest):
             request = document_processor_service.ListProcessorTypesRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -823,15 +713,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_processor_types
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_processor_types]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -860,9 +746,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def get_processor_type(
         self,
-        request: Optional[
-            Union[document_processor_service.GetProcessorTypeRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.GetProcessorTypeRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -929,14 +813,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -950,15 +829,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_processor_type
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_processor_type]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -976,9 +851,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def list_processors(
         self,
-        request: Optional[
-            Union[document_processor_service.ListProcessorsRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ListProcessorsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1048,14 +921,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1069,15 +937,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_processors
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_processors]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1106,9 +970,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def get_processor(
         self,
-        request: Optional[
-            Union[document_processor_service.GetProcessorRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.GetProcessorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1175,14 +1037,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1196,15 +1053,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_processor
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_processor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1222,9 +1075,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def train_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.TrainProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.TrainProcessorVersionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         processor_version: Optional[processor.ProcessorVersion] = None,
@@ -1306,20 +1157,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, processor_version]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.TrainProcessorVersionRequest
-        ):
+        if not isinstance(request, document_processor_service.TrainProcessorVersionRequest):
             request = document_processor_service.TrainProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1331,15 +1175,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.train_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.train_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1365,9 +1205,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def get_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.GetProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.GetProcessorVersionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1438,20 +1276,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.GetProcessorVersionRequest
-        ):
+        if not isinstance(request, document_processor_service.GetProcessorVersionRequest):
             request = document_processor_service.GetProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1461,15 +1292,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1487,9 +1314,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def list_processor_versions(
         self,
-        request: Optional[
-            Union[document_processor_service.ListProcessorVersionsRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ListProcessorVersionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1560,20 +1385,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.ListProcessorVersionsRequest
-        ):
+        if not isinstance(request, document_processor_service.ListProcessorVersionsRequest):
             request = document_processor_service.ListProcessorVersionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1583,15 +1401,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_processor_versions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_processor_versions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1620,9 +1434,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def delete_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.DeleteProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.DeleteProcessorVersionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1702,20 +1514,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.DeleteProcessorVersionRequest
-        ):
+        if not isinstance(request, document_processor_service.DeleteProcessorVersionRequest):
             request = document_processor_service.DeleteProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1725,15 +1530,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1759,9 +1560,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def deploy_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.DeployProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.DeployProcessorVersionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1833,20 +1632,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.DeployProcessorVersionRequest
-        ):
+        if not isinstance(request, document_processor_service.DeployProcessorVersionRequest):
             request = document_processor_service.DeployProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1856,15 +1648,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.deploy_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.deploy_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1890,9 +1678,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def undeploy_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.UndeployProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.UndeployProcessorVersionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1964,23 +1750,14 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.UndeployProcessorVersionRequest
-        ):
-            request = document_processor_service.UndeployProcessorVersionRequest(
-                request
-            )
+        if not isinstance(request, document_processor_service.UndeployProcessorVersionRequest):
+            request = document_processor_service.UndeployProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -1989,15 +1766,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.undeploy_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.undeploy_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2023,9 +1796,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def create_processor(
         self,
-        request: Optional[
-            Union[document_processor_service.CreateProcessorRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.CreateProcessorRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         processor: Optional[gcd_processor.Processor] = None,
@@ -2116,14 +1887,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, processor]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2139,15 +1905,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_processor
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_processor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2165,9 +1927,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def delete_processor(
         self,
-        request: Optional[
-            Union[document_processor_service.DeleteProcessorRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.DeleteProcessorRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2248,14 +2008,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2269,15 +2024,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_processor
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_processor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2303,9 +2054,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def enable_processor(
         self,
-        request: Optional[
-            Union[document_processor_service.EnableProcessorRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.EnableProcessorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2374,15 +2123,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.enable_processor
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.enable_processor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2408,9 +2153,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def disable_processor(
         self,
-        request: Optional[
-            Union[document_processor_service.DisableProcessorRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.DisableProcessorRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2479,15 +2222,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.disable_processor
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.disable_processor]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2513,9 +2252,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def set_default_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.SetDefaultProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.SetDefaultProcessorVersionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -2584,26 +2321,16 @@ class DocumentProcessorServiceAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.SetDefaultProcessorVersionRequest
-        ):
-            request = document_processor_service.SetDefaultProcessorVersionRequest(
-                request
-            )
+        if not isinstance(request, document_processor_service.SetDefaultProcessorVersionRequest):
+            request = document_processor_service.SetDefaultProcessorVersionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.set_default_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.set_default_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("processor", request.processor),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("processor", request.processor),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2629,9 +2356,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def review_document(
         self,
-        request: Optional[
-            Union[document_processor_service.ReviewDocumentRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ReviewDocumentRequest, dict]] = None,
         *,
         human_review_config: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2709,14 +2434,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [human_review_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2730,17 +2450,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.review_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.review_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("human_review_config", request.human_review_config),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("human_review_config", request.human_review_config),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2766,9 +2480,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def evaluate_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.EvaluateProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.EvaluateProcessorVersionRequest, dict]] = None,
         *,
         processor_version: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2843,23 +2555,14 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [processor_version]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.EvaluateProcessorVersionRequest
-        ):
-            request = document_processor_service.EvaluateProcessorVersionRequest(
-                request
-            )
+        if not isinstance(request, document_processor_service.EvaluateProcessorVersionRequest):
+            request = document_processor_service.EvaluateProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
@@ -2868,17 +2571,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.evaluate_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.evaluate_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("processor_version", request.processor_version),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("processor_version", request.processor_version),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2904,9 +2601,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def get_evaluation(
         self,
-        request: Optional[
-            Union[document_processor_service.GetEvaluationRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.GetEvaluationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2971,14 +2666,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2992,15 +2682,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_evaluation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_evaluation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3018,9 +2704,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def list_evaluations(
         self,
-        request: Optional[
-            Union[document_processor_service.ListEvaluationsRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ListEvaluationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3090,14 +2774,9 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3111,15 +2790,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_evaluations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_evaluations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3148,9 +2823,7 @@ class DocumentProcessorServiceAsyncClient:
 
     async def import_processor_version(
         self,
-        request: Optional[
-            Union[document_processor_service.ImportProcessorVersionRequest, dict]
-        ] = None,
+        request: Optional[Union[document_processor_service.ImportProcessorVersionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3239,20 +2912,13 @@ class DocumentProcessorServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, document_processor_service.ImportProcessorVersionRequest
-        ):
+        if not isinstance(request, document_processor_service.ImportProcessorVersionRequest):
             request = document_processor_service.ImportProcessorVersionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -3262,15 +2928,11 @@ class DocumentProcessorServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_processor_version
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_processor_version]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3331,9 +2993,7 @@ class DocumentProcessorServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3386,9 +3046,7 @@ class DocumentProcessorServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3444,9 +3102,7 @@ class DocumentProcessorServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3496,9 +3152,7 @@ class DocumentProcessorServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3551,9 +3205,7 @@ class DocumentProcessorServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3576,9 +3228,7 @@ class DocumentProcessorServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

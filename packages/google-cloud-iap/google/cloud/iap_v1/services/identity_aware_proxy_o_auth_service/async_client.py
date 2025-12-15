@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -48,10 +37,7 @@ from google.cloud.iap_v1.services.identity_aware_proxy_o_auth_service import pag
 from google.cloud.iap_v1.types import service
 
 from .client import IdentityAwareProxyOAuthServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    IdentityAwareProxyOAuthServiceTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, IdentityAwareProxyOAuthServiceTransport
 from .transports.grpc_asyncio import IdentityAwareProxyOAuthServiceGrpcAsyncIOTransport
 
 try:
@@ -76,41 +62,19 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = IdentityAwareProxyOAuthServiceClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = IdentityAwareProxyOAuthServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        IdentityAwareProxyOAuthServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    _DEFAULT_ENDPOINT_TEMPLATE = IdentityAwareProxyOAuthServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = IdentityAwareProxyOAuthServiceClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        IdentityAwareProxyOAuthServiceClient.parse_common_location_path
-    )
+    common_billing_account_path = staticmethod(IdentityAwareProxyOAuthServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(IdentityAwareProxyOAuthServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(IdentityAwareProxyOAuthServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(IdentityAwareProxyOAuthServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(IdentityAwareProxyOAuthServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(IdentityAwareProxyOAuthServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(IdentityAwareProxyOAuthServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(IdentityAwareProxyOAuthServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(IdentityAwareProxyOAuthServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(IdentityAwareProxyOAuthServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -146,9 +110,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -216,11 +178,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                IdentityAwareProxyOAuthServiceTransport,
-                Callable[..., IdentityAwareProxyOAuthServiceTransport],
-            ]
+            Union[str, IdentityAwareProxyOAuthServiceTransport, Callable[..., IdentityAwareProxyOAuthServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -281,20 +239,14 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.iap_v1.IdentityAwareProxyOAuthServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.iap.v1.IdentityAwareProxyOAuthService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -362,15 +314,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_brands
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_brands]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -457,15 +405,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_brand
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_brand]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -543,15 +487,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_brand
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_brand]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -569,9 +509,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def create_identity_aware_proxy_client(
         self,
-        request: Optional[
-            Union[service.CreateIdentityAwareProxyClientRequest, dict]
-        ] = None,
+        request: Optional[Union[service.CreateIdentityAwareProxyClientRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -634,15 +572,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_identity_aware_proxy_client
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_identity_aware_proxy_client]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -660,9 +594,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def list_identity_aware_proxy_clients(
         self,
-        request: Optional[
-            Union[service.ListIdentityAwareProxyClientsRequest, dict]
-        ] = None,
+        request: Optional[Union[service.ListIdentityAwareProxyClientsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -726,15 +658,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_identity_aware_proxy_clients
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_identity_aware_proxy_clients]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -763,9 +691,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def get_identity_aware_proxy_client(
         self,
-        request: Optional[
-            Union[service.GetIdentityAwareProxyClientRequest, dict]
-        ] = None,
+        request: Optional[Union[service.GetIdentityAwareProxyClientRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -826,15 +752,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_identity_aware_proxy_client
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_identity_aware_proxy_client]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -852,9 +774,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def reset_identity_aware_proxy_client_secret(
         self,
-        request: Optional[
-            Union[service.ResetIdentityAwareProxyClientSecretRequest, dict]
-        ] = None,
+        request: Optional[Union[service.ResetIdentityAwareProxyClientSecretRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -916,15 +836,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.reset_identity_aware_proxy_client_secret
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.reset_identity_aware_proxy_client_secret]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -942,9 +858,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
     async def delete_identity_aware_proxy_client(
         self,
-        request: Optional[
-            Union[service.DeleteIdentityAwareProxyClientRequest, dict]
-        ] = None,
+        request: Optional[Union[service.DeleteIdentityAwareProxyClientRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -998,15 +912,11 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_identity_aware_proxy_client
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_identity_aware_proxy_client]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1026,9 +936,7 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

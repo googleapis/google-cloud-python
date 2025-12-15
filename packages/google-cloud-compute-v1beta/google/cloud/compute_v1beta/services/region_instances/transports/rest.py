@@ -87,12 +87,8 @@ class RegionInstancesRestInterceptor:
     """
 
     def pre_bulk_insert(
-        self,
-        request: compute.BulkInsertRegionInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.BulkInsertRegionInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.BulkInsertRegionInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.BulkInsertRegionInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for bulk_insert
 
         Override in a subclass to manipulate the request or metadata
@@ -114,9 +110,7 @@ class RegionInstancesRestInterceptor:
         return response
 
     def post_bulk_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for bulk_insert
 
@@ -216,30 +210,18 @@ class RegionInstancesRestTransport(_BaseRegionInstancesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionInstancesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BulkInsert(
-        _BaseRegionInstancesRestTransport._BaseBulkInsert, RegionInstancesRestStub
-    ):
+    class _BulkInsert(_BaseRegionInstancesRestTransport._BaseBulkInsert, RegionInstancesRestStub):
         def __hash__(self):
             return hash("RegionInstancesRestTransport.BulkInsert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -298,30 +280,18 @@ class RegionInstancesRestTransport(_BaseRegionInstancesRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionInstancesRestTransport._BaseBulkInsert._get_http_options()
-            )
+            http_options = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_bulk_insert(request, metadata)
-            transcoded_request = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionInstancesRestTransport._BaseBulkInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -345,13 +315,7 @@ class RegionInstancesRestTransport(_BaseRegionInstancesRestTransport):
 
             # Send the request
             response = RegionInstancesRestTransport._BulkInsert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -367,12 +331,8 @@ class RegionInstancesRestTransport(_BaseRegionInstancesRestTransport):
 
             resp = self._interceptor.post_bulk_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_bulk_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_bulk_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -394,9 +354,7 @@ class RegionInstancesRestTransport(_BaseRegionInstancesRestTransport):
             return resp
 
     @property
-    def bulk_insert(
-        self,
-    ) -> Callable[[compute.BulkInsertRegionInstanceRequest], compute.Operation]:
+    def bulk_insert(self) -> Callable[[compute.BulkInsertRegionInstanceRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BulkInsert(self._session, self._host, self._interceptor)  # type: ignore

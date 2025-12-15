@@ -786,9 +786,7 @@ class AllocationPolicy(proto.Message):
             number=4,
             enum="AllocationPolicy.ProvisioningModel",
         )
-        accelerators: MutableSequence[
-            "AllocationPolicy.Accelerator"
-        ] = proto.RepeatedField(
+        accelerators: MutableSequence["AllocationPolicy.Accelerator"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="AllocationPolicy.Accelerator",
@@ -954,9 +952,7 @@ class AllocationPolicy(proto.Message):
                 Network configurations.
         """
 
-        network_interfaces: MutableSequence[
-            "AllocationPolicy.NetworkInterface"
-        ] = proto.RepeatedField(
+        network_interfaces: MutableSequence["AllocationPolicy.NetworkInterface"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="AllocationPolicy.NetworkInterface",

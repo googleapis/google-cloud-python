@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -114,9 +103,7 @@ class _LoggingClientAIOInterceptor(
         return response
 
 
-class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
-    BinauthzManagementServiceV1Beta1Transport
-):
+class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(BinauthzManagementServiceV1Beta1Transport):
     """gRPC AsyncIO backend transport for BinauthzManagementServiceV1Beta1.
 
     Google Cloud Management Service for Binary Authorization admission
@@ -275,18 +262,14 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -322,9 +305,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -339,9 +320,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._grpc_channel
 
     @property
-    def get_policy(
-        self,
-    ) -> Callable[[service.GetPolicyRequest], Awaitable[resources.Policy]]:
+    def get_policy(self) -> Callable[[service.GetPolicyRequest], Awaitable[resources.Policy]]:
         r"""Return a callable for the get policy method over gRPC.
 
         A [policy][google.cloud.binaryauthorization.v1beta1.Policy]
@@ -377,9 +356,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._stubs["get_policy"]
 
     @property
-    def update_policy(
-        self,
-    ) -> Callable[[service.UpdatePolicyRequest], Awaitable[resources.Policy]]:
+    def update_policy(self) -> Callable[[service.UpdatePolicyRequest], Awaitable[resources.Policy]]:
         r"""Return a callable for the update policy method over gRPC.
 
         Creates or updates a project's
@@ -410,9 +387,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._stubs["update_policy"]
 
     @property
-    def create_attestor(
-        self,
-    ) -> Callable[[service.CreateAttestorRequest], Awaitable[resources.Attestor]]:
+    def create_attestor(self) -> Callable[[service.CreateAttestorRequest], Awaitable[resources.Attestor]]:
         r"""Return a callable for the create attestor method over gRPC.
 
         Creates an
@@ -444,9 +419,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._stubs["create_attestor"]
 
     @property
-    def get_attestor(
-        self,
-    ) -> Callable[[service.GetAttestorRequest], Awaitable[resources.Attestor]]:
+    def get_attestor(self) -> Callable[[service.GetAttestorRequest], Awaitable[resources.Attestor]]:
         r"""Return a callable for the get attestor method over gRPC.
 
         Gets an
@@ -474,9 +447,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._stubs["get_attestor"]
 
     @property
-    def update_attestor(
-        self,
-    ) -> Callable[[service.UpdateAttestorRequest], Awaitable[resources.Attestor]]:
+    def update_attestor(self) -> Callable[[service.UpdateAttestorRequest], Awaitable[resources.Attestor]]:
         r"""Return a callable for the update attestor method over gRPC.
 
         Updates an
@@ -504,11 +475,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._stubs["update_attestor"]
 
     @property
-    def list_attestors(
-        self,
-    ) -> Callable[
-        [service.ListAttestorsRequest], Awaitable[service.ListAttestorsResponse]
-    ]:
+    def list_attestors(self) -> Callable[[service.ListAttestorsRequest], Awaitable[service.ListAttestorsResponse]]:
         r"""Return a callable for the list attestors method over gRPC.
 
         Lists
@@ -534,9 +501,7 @@ class BinauthzManagementServiceV1Beta1GrpcAsyncIOTransport(
         return self._stubs["list_attestors"]
 
     @property
-    def delete_attestor(
-        self,
-    ) -> Callable[[service.DeleteAttestorRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_attestor(self) -> Callable[[service.DeleteAttestorRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete attestor method over gRPC.
 
         Deletes an

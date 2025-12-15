@@ -291,13 +291,8 @@ class DatastreamRestInterceptor:
     """
 
     def pre_create_connection_profile(
-        self,
-        request: datastream.CreateConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.CreateConnectionProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.CreateConnectionProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.CreateConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -305,9 +300,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_create_connection_profile(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_connection_profile(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_connection_profile
 
         DEPRECATED. Please use the `post_create_connection_profile_with_metadata`
@@ -321,9 +314,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_create_connection_profile_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_connection_profile
 
@@ -340,13 +331,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_create_private_connection(
-        self,
-        request: datastream.CreatePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.CreatePrivateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.CreatePrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.CreatePrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -354,9 +340,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_create_private_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_private_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_private_connection
 
         DEPRECATED. Please use the `post_create_private_connection_with_metadata`
@@ -370,9 +354,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_create_private_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_private_connection
 
@@ -389,9 +371,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_create_route(
-        self,
-        request: datastream.CreateRouteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.CreateRouteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.CreateRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_route
 
@@ -400,9 +380,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_create_route(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_route(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_route
 
         DEPRECATED. Please use the `post_create_route_with_metadata`
@@ -416,9 +394,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_create_route_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_route
 
@@ -435,9 +411,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_create_stream(
-        self,
-        request: datastream.CreateStreamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.CreateStreamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.CreateStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_stream
 
@@ -446,9 +420,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_create_stream(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_stream(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_stream
 
         DEPRECATED. Please use the `post_create_stream_with_metadata`
@@ -462,9 +434,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_create_stream_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_stream
 
@@ -481,13 +451,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_delete_connection_profile(
-        self,
-        request: datastream.DeleteConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.DeleteConnectionProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.DeleteConnectionProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.DeleteConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -495,9 +460,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_connection_profile(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_connection_profile(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_connection_profile
 
         DEPRECATED. Please use the `post_delete_connection_profile_with_metadata`
@@ -511,9 +474,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_delete_connection_profile_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_connection_profile
 
@@ -530,13 +491,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_delete_private_connection(
-        self,
-        request: datastream.DeletePrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.DeletePrivateConnectionRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.DeletePrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.DeletePrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -544,9 +500,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_private_connection(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_private_connection(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_private_connection
 
         DEPRECATED. Please use the `post_delete_private_connection_with_metadata`
@@ -560,9 +514,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_delete_private_connection_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_private_connection
 
@@ -579,9 +531,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_delete_route(
-        self,
-        request: datastream.DeleteRouteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.DeleteRouteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.DeleteRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_route
 
@@ -590,9 +540,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_route(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_route(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_route
 
         DEPRECATED. Please use the `post_delete_route_with_metadata`
@@ -606,9 +554,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_delete_route_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_route
 
@@ -625,9 +571,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_delete_stream(
-        self,
-        request: datastream.DeleteStreamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.DeleteStreamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.DeleteStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_stream
 
@@ -636,9 +580,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_stream(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_stream(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_stream
 
         DEPRECATED. Please use the `post_delete_stream_with_metadata`
@@ -652,9 +594,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_delete_stream_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_stream
 
@@ -671,13 +611,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_discover_connection_profile(
-        self,
-        request: datastream.DiscoverConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.DiscoverConnectionProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.DiscoverConnectionProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.DiscoverConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for discover_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -701,13 +636,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_discover_connection_profile_with_metadata(
-        self,
-        response: datastream.DiscoverConnectionProfileResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.DiscoverConnectionProfileResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datastream.DiscoverConnectionProfileResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.DiscoverConnectionProfileResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for discover_connection_profile
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -723,12 +653,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_fetch_static_ips(
-        self,
-        request: datastream.FetchStaticIpsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.FetchStaticIpsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.FetchStaticIpsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.FetchStaticIpsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_static_ips
 
         Override in a subclass to manipulate the request or metadata
@@ -736,9 +662,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_static_ips(
-        self, response: datastream.FetchStaticIpsResponse
-    ) -> datastream.FetchStaticIpsResponse:
+    def post_fetch_static_ips(self, response: datastream.FetchStaticIpsResponse) -> datastream.FetchStaticIpsResponse:
         """Post-rpc interceptor for fetch_static_ips
 
         DEPRECATED. Please use the `post_fetch_static_ips_with_metadata`
@@ -752,12 +676,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_fetch_static_ips_with_metadata(
-        self,
-        response: datastream.FetchStaticIpsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.FetchStaticIpsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream.FetchStaticIpsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.FetchStaticIpsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_static_ips
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -773,12 +693,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_get_connection_profile(
-        self,
-        request: datastream.GetConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.GetConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.GetConnectionProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.GetConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -786,9 +702,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_connection_profile(
-        self, response: datastream_resources.ConnectionProfile
-    ) -> datastream_resources.ConnectionProfile:
+    def post_get_connection_profile(self, response: datastream_resources.ConnectionProfile) -> datastream_resources.ConnectionProfile:
         """Post-rpc interceptor for get_connection_profile
 
         DEPRECATED. Please use the `post_get_connection_profile_with_metadata`
@@ -802,12 +716,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_get_connection_profile_with_metadata(
-        self,
-        response: datastream_resources.ConnectionProfile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream_resources.ConnectionProfile, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream_resources.ConnectionProfile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream_resources.ConnectionProfile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_connection_profile
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -823,12 +733,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_get_private_connection(
-        self,
-        request: datastream.GetPrivateConnectionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.GetPrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.GetPrivateConnectionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.GetPrivateConnectionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_private_connection
 
         Override in a subclass to manipulate the request or metadata
@@ -836,9 +742,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_private_connection(
-        self, response: datastream_resources.PrivateConnection
-    ) -> datastream_resources.PrivateConnection:
+    def post_get_private_connection(self, response: datastream_resources.PrivateConnection) -> datastream_resources.PrivateConnection:
         """Post-rpc interceptor for get_private_connection
 
         DEPRECATED. Please use the `post_get_private_connection_with_metadata`
@@ -852,12 +756,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_get_private_connection_with_metadata(
-        self,
-        response: datastream_resources.PrivateConnection,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream_resources.PrivateConnection, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream_resources.PrivateConnection, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream_resources.PrivateConnection, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_private_connection
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -873,9 +773,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_get_route(
-        self,
-        request: datastream.GetRouteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.GetRouteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.GetRouteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_route
 
@@ -884,9 +782,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_route(
-        self, response: datastream_resources.Route
-    ) -> datastream_resources.Route:
+    def post_get_route(self, response: datastream_resources.Route) -> datastream_resources.Route:
         """Post-rpc interceptor for get_route
 
         DEPRECATED. Please use the `post_get_route_with_metadata`
@@ -900,9 +796,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_get_route_with_metadata(
-        self,
-        response: datastream_resources.Route,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datastream_resources.Route, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream_resources.Route, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_route
 
@@ -919,9 +813,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_get_stream(
-        self,
-        request: datastream.GetStreamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.GetStreamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.GetStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_stream
 
@@ -930,9 +822,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_stream(
-        self, response: datastream_resources.Stream
-    ) -> datastream_resources.Stream:
+    def post_get_stream(self, response: datastream_resources.Stream) -> datastream_resources.Stream:
         """Post-rpc interceptor for get_stream
 
         DEPRECATED. Please use the `post_get_stream_with_metadata`
@@ -946,9 +836,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_get_stream_with_metadata(
-        self,
-        response: datastream_resources.Stream,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datastream_resources.Stream, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream_resources.Stream, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_stream
 
@@ -965,12 +853,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_get_stream_object(
-        self,
-        request: datastream.GetStreamObjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.GetStreamObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.GetStreamObjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.GetStreamObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_stream_object
 
         Override in a subclass to manipulate the request or metadata
@@ -978,9 +862,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_stream_object(
-        self, response: datastream_resources.StreamObject
-    ) -> datastream_resources.StreamObject:
+    def post_get_stream_object(self, response: datastream_resources.StreamObject) -> datastream_resources.StreamObject:
         """Post-rpc interceptor for get_stream_object
 
         DEPRECATED. Please use the `post_get_stream_object_with_metadata`
@@ -994,12 +876,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_get_stream_object_with_metadata(
-        self,
-        response: datastream_resources.StreamObject,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream_resources.StreamObject, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream_resources.StreamObject, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream_resources.StreamObject, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_stream_object
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1015,13 +893,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_list_connection_profiles(
-        self,
-        request: datastream.ListConnectionProfilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.ListConnectionProfilesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.ListConnectionProfilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.ListConnectionProfilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_connection_profiles
 
         Override in a subclass to manipulate the request or metadata
@@ -1029,9 +902,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_connection_profiles(
-        self, response: datastream.ListConnectionProfilesResponse
-    ) -> datastream.ListConnectionProfilesResponse:
+    def post_list_connection_profiles(self, response: datastream.ListConnectionProfilesResponse) -> datastream.ListConnectionProfilesResponse:
         """Post-rpc interceptor for list_connection_profiles
 
         DEPRECATED. Please use the `post_list_connection_profiles_with_metadata`
@@ -1045,13 +916,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_list_connection_profiles_with_metadata(
-        self,
-        response: datastream.ListConnectionProfilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.ListConnectionProfilesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datastream.ListConnectionProfilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.ListConnectionProfilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_connection_profiles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1067,13 +933,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_list_private_connections(
-        self,
-        request: datastream.ListPrivateConnectionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.ListPrivateConnectionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.ListPrivateConnectionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.ListPrivateConnectionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_private_connections
 
         Override in a subclass to manipulate the request or metadata
@@ -1081,9 +942,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_private_connections(
-        self, response: datastream.ListPrivateConnectionsResponse
-    ) -> datastream.ListPrivateConnectionsResponse:
+    def post_list_private_connections(self, response: datastream.ListPrivateConnectionsResponse) -> datastream.ListPrivateConnectionsResponse:
         """Post-rpc interceptor for list_private_connections
 
         DEPRECATED. Please use the `post_list_private_connections_with_metadata`
@@ -1097,13 +956,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_list_private_connections_with_metadata(
-        self,
-        response: datastream.ListPrivateConnectionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.ListPrivateConnectionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: datastream.ListPrivateConnectionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.ListPrivateConnectionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_private_connections
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1119,9 +973,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_list_routes(
-        self,
-        request: datastream.ListRoutesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.ListRoutesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.ListRoutesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_routes
 
@@ -1130,9 +982,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_routes(
-        self, response: datastream.ListRoutesResponse
-    ) -> datastream.ListRoutesResponse:
+    def post_list_routes(self, response: datastream.ListRoutesResponse) -> datastream.ListRoutesResponse:
         """Post-rpc interceptor for list_routes
 
         DEPRECATED. Please use the `post_list_routes_with_metadata`
@@ -1146,9 +996,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_list_routes_with_metadata(
-        self,
-        response: datastream.ListRoutesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datastream.ListRoutesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.ListRoutesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_routes
 
@@ -1165,12 +1013,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_list_stream_objects(
-        self,
-        request: datastream.ListStreamObjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.ListStreamObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.ListStreamObjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.ListStreamObjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_stream_objects
 
         Override in a subclass to manipulate the request or metadata
@@ -1178,9 +1022,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_stream_objects(
-        self, response: datastream.ListStreamObjectsResponse
-    ) -> datastream.ListStreamObjectsResponse:
+    def post_list_stream_objects(self, response: datastream.ListStreamObjectsResponse) -> datastream.ListStreamObjectsResponse:
         """Post-rpc interceptor for list_stream_objects
 
         DEPRECATED. Please use the `post_list_stream_objects_with_metadata`
@@ -1194,12 +1036,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_list_stream_objects_with_metadata(
-        self,
-        response: datastream.ListStreamObjectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.ListStreamObjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream.ListStreamObjectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.ListStreamObjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_stream_objects
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1215,9 +1053,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_list_streams(
-        self,
-        request: datastream.ListStreamsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.ListStreamsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.ListStreamsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_streams
 
@@ -1226,9 +1062,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_streams(
-        self, response: datastream.ListStreamsResponse
-    ) -> datastream.ListStreamsResponse:
+    def post_list_streams(self, response: datastream.ListStreamsResponse) -> datastream.ListStreamsResponse:
         """Post-rpc interceptor for list_streams
 
         DEPRECATED. Please use the `post_list_streams_with_metadata`
@@ -1242,9 +1076,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_list_streams_with_metadata(
-        self,
-        response: datastream.ListStreamsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: datastream.ListStreamsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.ListStreamsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_streams
 
@@ -1261,12 +1093,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_lookup_stream_object(
-        self,
-        request: datastream.LookupStreamObjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.LookupStreamObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.LookupStreamObjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.LookupStreamObjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_stream_object
 
         Override in a subclass to manipulate the request or metadata
@@ -1274,9 +1102,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_lookup_stream_object(
-        self, response: datastream_resources.StreamObject
-    ) -> datastream_resources.StreamObject:
+    def post_lookup_stream_object(self, response: datastream_resources.StreamObject) -> datastream_resources.StreamObject:
         """Post-rpc interceptor for lookup_stream_object
 
         DEPRECATED. Please use the `post_lookup_stream_object_with_metadata`
@@ -1290,12 +1116,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_lookup_stream_object_with_metadata(
-        self,
-        response: datastream_resources.StreamObject,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream_resources.StreamObject, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream_resources.StreamObject, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream_resources.StreamObject, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for lookup_stream_object
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1311,9 +1133,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_run_stream(
-        self,
-        request: datastream.RunStreamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.RunStreamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.RunStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_stream
 
@@ -1322,9 +1142,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_run_stream(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_stream(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_stream
 
         DEPRECATED. Please use the `post_run_stream_with_metadata`
@@ -1338,9 +1156,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_run_stream_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_stream
 
@@ -1357,12 +1173,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_start_backfill_job(
-        self,
-        request: datastream.StartBackfillJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.StartBackfillJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.StartBackfillJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.StartBackfillJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_backfill_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1370,9 +1182,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_start_backfill_job(
-        self, response: datastream.StartBackfillJobResponse
-    ) -> datastream.StartBackfillJobResponse:
+    def post_start_backfill_job(self, response: datastream.StartBackfillJobResponse) -> datastream.StartBackfillJobResponse:
         """Post-rpc interceptor for start_backfill_job
 
         DEPRECATED. Please use the `post_start_backfill_job_with_metadata`
@@ -1386,12 +1196,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_start_backfill_job_with_metadata(
-        self,
-        response: datastream.StartBackfillJobResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.StartBackfillJobResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream.StartBackfillJobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.StartBackfillJobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_backfill_job
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1407,12 +1213,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_stop_backfill_job(
-        self,
-        request: datastream.StopBackfillJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.StopBackfillJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: datastream.StopBackfillJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.StopBackfillJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_backfill_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1420,9 +1222,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_stop_backfill_job(
-        self, response: datastream.StopBackfillJobResponse
-    ) -> datastream.StopBackfillJobResponse:
+    def post_stop_backfill_job(self, response: datastream.StopBackfillJobResponse) -> datastream.StopBackfillJobResponse:
         """Post-rpc interceptor for stop_backfill_job
 
         DEPRECATED. Please use the `post_stop_backfill_job_with_metadata`
@@ -1436,12 +1236,8 @@ class DatastreamRestInterceptor:
         return response
 
     def post_stop_backfill_job_with_metadata(
-        self,
-        response: datastream.StopBackfillJobResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.StopBackfillJobResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: datastream.StopBackfillJobResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.StopBackfillJobResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_backfill_job
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1457,13 +1253,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_update_connection_profile(
-        self,
-        request: datastream.UpdateConnectionProfileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        datastream.UpdateConnectionProfileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: datastream.UpdateConnectionProfileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[datastream.UpdateConnectionProfileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_connection_profile
 
         Override in a subclass to manipulate the request or metadata
@@ -1471,9 +1262,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_update_connection_profile(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_connection_profile(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_connection_profile
 
         DEPRECATED. Please use the `post_update_connection_profile_with_metadata`
@@ -1487,9 +1276,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_update_connection_profile_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_connection_profile
 
@@ -1506,9 +1293,7 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_update_stream(
-        self,
-        request: datastream.UpdateStreamRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: datastream.UpdateStreamRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[datastream.UpdateStreamRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_stream
 
@@ -1517,9 +1302,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_update_stream(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_stream(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_stream
 
         DEPRECATED. Please use the `post_update_stream_with_metadata`
@@ -1533,9 +1316,7 @@ class DatastreamRestInterceptor:
         return response
 
     def post_update_stream_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_stream
 
@@ -1552,12 +1333,8 @@ class DatastreamRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1565,9 +1342,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1577,12 +1352,8 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1590,9 +1361,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1602,12 +1371,8 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1625,12 +1390,8 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1648,12 +1409,8 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1661,9 +1418,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1673,12 +1428,8 @@ class DatastreamRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1686,9 +1437,7 @@ class DatastreamRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1777,9 +1526,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1832,29 +1579,17 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateConnectionProfile(
-        _BaseDatastreamRestTransport._BaseCreateConnectionProfile, DatastreamRestStub
-    ):
+    class _CreateConnectionProfile(_BaseDatastreamRestTransport._BaseCreateConnectionProfile, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.CreateConnectionProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1898,32 +1633,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_connection_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_connection_profile(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseCreateConnectionProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1947,13 +1668,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._CreateConnectionProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1967,12 +1682,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_create_connection_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_connection_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_connection_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1993,22 +1704,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _CreatePrivateConnection(
-        _BaseDatastreamRestTransport._BaseCreatePrivateConnection, DatastreamRestStub
-    ):
+    class _CreatePrivateConnection(_BaseDatastreamRestTransport._BaseCreatePrivateConnection, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.CreatePrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2052,32 +1753,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_private_connection(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseCreatePrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2101,13 +1788,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._CreatePrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2121,12 +1802,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_create_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2147,22 +1824,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _CreateRoute(
-        _BaseDatastreamRestTransport._BaseCreateRoute, DatastreamRestStub
-    ):
+    class _CreateRoute(_BaseDatastreamRestTransport._BaseCreateRoute, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.CreateRoute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2205,34 +1872,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCreateRoute._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCreateRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_create_route(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseCreateRoute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseCreateRoute._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseCreateRoute._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseCreateRoute._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseCreateRoute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseCreateRoute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2256,13 +1907,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._CreateRoute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2276,12 +1921,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_create_route(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_route_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_route_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2302,22 +1943,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _CreateStream(
-        _BaseDatastreamRestTransport._BaseCreateStream, DatastreamRestStub
-    ):
+    class _CreateStream(_BaseDatastreamRestTransport._BaseCreateStream, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.CreateStream")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2361,36 +1992,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCreateStream._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCreateStream._get_http_options()
 
             request, metadata = self._interceptor.pre_create_stream(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseCreateStream._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseCreateStream._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDatastreamRestTransport._BaseCreateStream._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDatastreamRestTransport._BaseCreateStream._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseCreateStream._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseCreateStream._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2414,13 +2027,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._CreateStream._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2434,12 +2041,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_create_stream(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_stream_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_stream_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2460,22 +2063,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _DeleteConnectionProfile(
-        _BaseDatastreamRestTransport._BaseDeleteConnectionProfile, DatastreamRestStub
-    ):
+    class _DeleteConnectionProfile(_BaseDatastreamRestTransport._BaseDeleteConnectionProfile, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.DeleteConnectionProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2518,28 +2111,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_connection_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_connection_profile(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseDeleteConnectionProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2563,12 +2144,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._DeleteConnectionProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2582,12 +2158,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_delete_connection_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_connection_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_connection_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2608,22 +2180,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _DeletePrivateConnection(
-        _BaseDatastreamRestTransport._BaseDeletePrivateConnection, DatastreamRestStub
-    ):
+    class _DeletePrivateConnection(_BaseDatastreamRestTransport._BaseDeletePrivateConnection, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.DeletePrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2666,28 +2228,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_private_connection(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseDeletePrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2711,12 +2261,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._DeletePrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2730,12 +2275,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_delete_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2756,22 +2297,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _DeleteRoute(
-        _BaseDatastreamRestTransport._BaseDeleteRoute, DatastreamRestStub
-    ):
+    class _DeleteRoute(_BaseDatastreamRestTransport._BaseDeleteRoute, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.DeleteRoute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2813,30 +2344,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeleteRoute._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeleteRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_route(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseDeleteRoute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseDeleteRoute._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseDeleteRoute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseDeleteRoute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2860,12 +2377,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._DeleteRoute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2879,12 +2391,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_delete_route(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_route_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_route_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2905,22 +2413,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _DeleteStream(
-        _BaseDatastreamRestTransport._BaseDeleteStream, DatastreamRestStub
-    ):
+    class _DeleteStream(_BaseDatastreamRestTransport._BaseDeleteStream, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.DeleteStream")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2963,30 +2461,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeleteStream._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeleteStream._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_stream(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseDeleteStream._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseDeleteStream._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseDeleteStream._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseDeleteStream._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3010,12 +2494,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._DeleteStream._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3029,12 +2508,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_delete_stream(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_stream_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_stream_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3055,22 +2530,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _DiscoverConnectionProfile(
-        _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile, DatastreamRestStub
-    ):
+    class _DiscoverConnectionProfile(_BaseDatastreamRestTransport._BaseDiscoverConnectionProfile, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.DiscoverConnectionProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3112,32 +2577,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                         Response from a discover request.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_discover_connection_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_discover_connection_profile(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseDiscoverConnectionProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3161,13 +2612,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._DiscoverConnectionProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3183,16 +2628,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_discover_connection_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_discover_connection_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_discover_connection_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datastream.DiscoverConnectionProfileResponse.to_json(response)
-                    )
+                    response_payload = datastream.DiscoverConnectionProfileResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3211,22 +2650,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _FetchStaticIps(
-        _BaseDatastreamRestTransport._BaseFetchStaticIps, DatastreamRestStub
-    ):
+    class _FetchStaticIps(_BaseDatastreamRestTransport._BaseFetchStaticIps, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.FetchStaticIps")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3268,30 +2697,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseFetchStaticIps._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseFetchStaticIps._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_static_ips(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseFetchStaticIps._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_static_ips(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseFetchStaticIps._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseFetchStaticIps._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseFetchStaticIps._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3315,12 +2730,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._FetchStaticIps._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3336,16 +2746,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_fetch_static_ips(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_static_ips_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_static_ips_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream.FetchStaticIpsResponse.to_json(
-                        response
-                    )
+                    response_payload = datastream.FetchStaticIpsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3364,22 +2768,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _GetConnectionProfile(
-        _BaseDatastreamRestTransport._BaseGetConnectionProfile, DatastreamRestStub
-    ):
+    class _GetConnectionProfile(_BaseDatastreamRestTransport._BaseGetConnectionProfile, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.GetConnectionProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3422,28 +2816,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_connection_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_connection_profile(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetConnectionProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3467,12 +2849,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._GetConnectionProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3488,16 +2865,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_get_connection_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_connection_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_connection_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream_resources.ConnectionProfile.to_json(
-                        response
-                    )
+                    response_payload = datastream_resources.ConnectionProfile.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3516,22 +2887,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _GetPrivateConnection(
-        _BaseDatastreamRestTransport._BaseGetPrivateConnection, DatastreamRestStub
-    ):
+    class _GetPrivateConnection(_BaseDatastreamRestTransport._BaseGetPrivateConnection, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.GetPrivateConnection")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3575,28 +2936,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_private_connection(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_private_connection(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetPrivateConnection._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3620,12 +2969,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._GetPrivateConnection._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3641,16 +2985,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_get_private_connection(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_private_connection_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_private_connection_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream_resources.PrivateConnection.to_json(
-                        response
-                    )
+                    response_payload = datastream_resources.PrivateConnection.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3674,15 +3012,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             return hash("DatastreamRestTransport.GetRoute")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3725,30 +3055,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetRoute._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetRoute._get_http_options()
 
             request, metadata = self._interceptor.pre_get_route(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseGetRoute._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetRoute._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseGetRoute._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetRoute._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3771,14 +3087,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
 
             # Send the request
-            response = DatastreamRestTransport._GetRoute._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = DatastreamRestTransport._GetRoute._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3793,12 +3102,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_get_route(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_route_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_route_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datastream_resources.Route.to_json(response)
                 except:
@@ -3824,15 +3129,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             return hash("DatastreamRestTransport.GetStream")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3873,30 +3170,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetStream._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetStream._get_http_options()
 
             request, metadata = self._interceptor.pre_get_stream(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseGetStream._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetStream._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseGetStream._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetStream._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3920,12 +3203,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._GetStream._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3941,12 +3219,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_get_stream(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_stream_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_stream_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datastream_resources.Stream.to_json(response)
                 except:
@@ -3967,22 +3241,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _GetStreamObject(
-        _BaseDatastreamRestTransport._BaseGetStreamObject, DatastreamRestStub
-    ):
+    class _GetStreamObject(_BaseDatastreamRestTransport._BaseGetStreamObject, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.GetStreamObject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4024,28 +3288,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetStreamObject._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetStreamObject._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_stream_object(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseGetStreamObject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_stream_object(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetStreamObject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseGetStreamObject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetStreamObject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4069,12 +3321,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._GetStreamObject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4090,16 +3337,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_get_stream_object(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_stream_object_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_stream_object_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream_resources.StreamObject.to_json(
-                        response
-                    )
+                    response_payload = datastream_resources.StreamObject.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4118,22 +3359,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _ListConnectionProfiles(
-        _BaseDatastreamRestTransport._BaseListConnectionProfiles, DatastreamRestStub
-    ):
+    class _ListConnectionProfiles(_BaseDatastreamRestTransport._BaseListConnectionProfiles, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.ListConnectionProfiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4175,28 +3406,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_connection_profiles(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_connection_profiles(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListConnectionProfiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4220,12 +3439,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListConnectionProfiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4241,16 +3455,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_list_connection_profiles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_connection_profiles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_connection_profiles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datastream.ListConnectionProfilesResponse.to_json(response)
-                    )
+                    response_payload = datastream.ListConnectionProfilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4269,22 +3477,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _ListPrivateConnections(
-        _BaseDatastreamRestTransport._BaseListPrivateConnections, DatastreamRestStub
-    ):
+    class _ListPrivateConnections(_BaseDatastreamRestTransport._BaseListPrivateConnections, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.ListPrivateConnections")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4326,28 +3524,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListPrivateConnections._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_private_connections(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_private_connections(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListPrivateConnections._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4371,12 +3557,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListPrivateConnections._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4392,16 +3573,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_list_private_connections(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_private_connections_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_private_connections_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        datastream.ListPrivateConnectionsResponse.to_json(response)
-                    )
+                    response_payload = datastream.ListPrivateConnectionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4425,15 +3600,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             return hash("DatastreamRestTransport.ListRoutes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4472,30 +3639,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     Route list response.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListRoutes._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListRoutes._get_http_options()
 
             request, metadata = self._interceptor.pre_list_routes(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseListRoutes._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseListRoutes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseListRoutes._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListRoutes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4519,12 +3672,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListRoutes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4540,12 +3688,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_list_routes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_routes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_routes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datastream.ListRoutesResponse.to_json(response)
                 except:
@@ -4566,22 +3710,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _ListStreamObjects(
-        _BaseDatastreamRestTransport._BaseListStreamObjects, DatastreamRestStub
-    ):
+    class _ListStreamObjects(_BaseDatastreamRestTransport._BaseListStreamObjects, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.ListStreamObjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4623,28 +3757,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListStreamObjects._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListStreamObjects._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_stream_objects(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseListStreamObjects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_stream_objects(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseListStreamObjects._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseListStreamObjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListStreamObjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4668,12 +3790,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListStreamObjects._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4689,16 +3806,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_list_stream_objects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_stream_objects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_stream_objects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream.ListStreamObjectsResponse.to_json(
-                        response
-                    )
+                    response_payload = datastream.ListStreamObjectsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -4717,22 +3828,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _ListStreams(
-        _BaseDatastreamRestTransport._BaseListStreams, DatastreamRestStub
-    ):
+    class _ListStreams(_BaseDatastreamRestTransport._BaseListStreams, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.ListStreams")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4771,30 +3872,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     Response message for listing streams.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListStreams._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListStreams._get_http_options()
 
             request, metadata = self._interceptor.pre_list_streams(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseListStreams._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseListStreams._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseListStreams._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListStreams._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4818,12 +3905,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListStreams._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4839,12 +3921,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_list_streams(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_streams_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_streams_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = datastream.ListStreamsResponse.to_json(response)
                 except:
@@ -4865,22 +3943,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _LookupStreamObject(
-        _BaseDatastreamRestTransport._BaseLookupStreamObject, DatastreamRestStub
-    ):
+    class _LookupStreamObject(_BaseDatastreamRestTransport._BaseLookupStreamObject, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.LookupStreamObject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4924,32 +3992,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseLookupStreamObject._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_http_options()
 
-            request, metadata = self._interceptor.pre_lookup_stream_object(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_lookup_stream_object(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseLookupStreamObject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4973,13 +4027,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._LookupStreamObject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4995,16 +4043,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_lookup_stream_object(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_stream_object_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_stream_object_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream_resources.StreamObject.to_json(
-                        response
-                    )
+                    response_payload = datastream_resources.StreamObject.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5028,15 +4070,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             return hash("DatastreamRestTransport.RunStream")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5079,34 +4113,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseRunStream._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseRunStream._get_http_options()
 
             request, metadata = self._interceptor.pre_run_stream(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseRunStream._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseRunStream._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseRunStream._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseRunStream._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseRunStream._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseRunStream._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5130,13 +4148,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._RunStream._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5150,12 +4162,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_run_stream(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_stream_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_stream_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5176,22 +4184,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _StartBackfillJob(
-        _BaseDatastreamRestTransport._BaseStartBackfillJob, DatastreamRestStub
-    ):
+    class _StartBackfillJob(_BaseDatastreamRestTransport._BaseStartBackfillJob, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.StartBackfillJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5236,32 +4234,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseStartBackfillJob._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_start_backfill_job(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_start_backfill_job(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseStartBackfillJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5285,13 +4269,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._StartBackfillJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5307,16 +4285,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_start_backfill_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_backfill_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_backfill_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream.StartBackfillJobResponse.to_json(
-                        response
-                    )
+                    response_payload = datastream.StartBackfillJobResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5335,22 +4307,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _StopBackfillJob(
-        _BaseDatastreamRestTransport._BaseStopBackfillJob, DatastreamRestStub
-    ):
+    class _StopBackfillJob(_BaseDatastreamRestTransport._BaseStopBackfillJob, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.StopBackfillJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5394,32 +4356,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseStopBackfillJob._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_stop_backfill_job(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_stop_backfill_job(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseStopBackfillJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5443,13 +4391,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._StopBackfillJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5465,16 +4407,10 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_stop_backfill_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_backfill_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_backfill_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = datastream.StopBackfillJobResponse.to_json(
-                        response
-                    )
+                    response_payload = datastream.StopBackfillJobResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5493,22 +4429,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _UpdateConnectionProfile(
-        _BaseDatastreamRestTransport._BaseUpdateConnectionProfile, DatastreamRestStub
-    ):
+    class _UpdateConnectionProfile(_BaseDatastreamRestTransport._BaseUpdateConnectionProfile, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.UpdateConnectionProfile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5551,32 +4477,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_connection_profile(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_connection_profile(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseUpdateConnectionProfile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5600,13 +4512,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._UpdateConnectionProfile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5620,12 +4526,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_update_connection_profile(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_connection_profile_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_connection_profile_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5646,22 +4548,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 )
             return resp
 
-    class _UpdateStream(
-        _BaseDatastreamRestTransport._BaseUpdateStream, DatastreamRestStub
-    ):
+    class _UpdateStream(_BaseDatastreamRestTransport._BaseUpdateStream, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.UpdateStream")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5705,36 +4597,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseUpdateStream._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseUpdateStream._get_http_options()
 
             request, metadata = self._interceptor.pre_update_stream(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseUpdateStream._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseUpdateStream._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseDatastreamRestTransport._BaseUpdateStream._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseDatastreamRestTransport._BaseUpdateStream._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseUpdateStream._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseUpdateStream._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5758,13 +4632,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._UpdateStream._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5778,12 +4646,8 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             resp = self._interceptor.post_update_stream(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_stream_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_stream_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5805,244 +4669,157 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             return resp
 
     @property
-    def create_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.CreateConnectionProfileRequest], operations_pb2.Operation
-    ]:
+    def create_connection_profile(self) -> Callable[[datastream.CreateConnectionProfileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_private_connection(
-        self,
-    ) -> Callable[
-        [datastream.CreatePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def create_private_connection(self) -> Callable[[datastream.CreatePrivateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_route(
-        self,
-    ) -> Callable[[datastream.CreateRouteRequest], operations_pb2.Operation]:
+    def create_route(self) -> Callable[[datastream.CreateRouteRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRoute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_stream(
-        self,
-    ) -> Callable[[datastream.CreateStreamRequest], operations_pb2.Operation]:
+    def create_stream(self) -> Callable[[datastream.CreateStreamRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateStream(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.DeleteConnectionProfileRequest], operations_pb2.Operation
-    ]:
+    def delete_connection_profile(self) -> Callable[[datastream.DeleteConnectionProfileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_private_connection(
-        self,
-    ) -> Callable[
-        [datastream.DeletePrivateConnectionRequest], operations_pb2.Operation
-    ]:
+    def delete_private_connection(self) -> Callable[[datastream.DeletePrivateConnectionRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_route(
-        self,
-    ) -> Callable[[datastream.DeleteRouteRequest], operations_pb2.Operation]:
+    def delete_route(self) -> Callable[[datastream.DeleteRouteRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRoute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_stream(
-        self,
-    ) -> Callable[[datastream.DeleteStreamRequest], operations_pb2.Operation]:
+    def delete_stream(self) -> Callable[[datastream.DeleteStreamRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteStream(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def discover_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.DiscoverConnectionProfileRequest],
-        datastream.DiscoverConnectionProfileResponse,
-    ]:
+    def discover_connection_profile(self) -> Callable[[datastream.DiscoverConnectionProfileRequest], datastream.DiscoverConnectionProfileResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DiscoverConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_static_ips(
-        self,
-    ) -> Callable[
-        [datastream.FetchStaticIpsRequest], datastream.FetchStaticIpsResponse
-    ]:
+    def fetch_static_ips(self) -> Callable[[datastream.FetchStaticIpsRequest], datastream.FetchStaticIpsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchStaticIps(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.GetConnectionProfileRequest], datastream_resources.ConnectionProfile
-    ]:
+    def get_connection_profile(self) -> Callable[[datastream.GetConnectionProfileRequest], datastream_resources.ConnectionProfile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_private_connection(
-        self,
-    ) -> Callable[
-        [datastream.GetPrivateConnectionRequest], datastream_resources.PrivateConnection
-    ]:
+    def get_private_connection(self) -> Callable[[datastream.GetPrivateConnectionRequest], datastream_resources.PrivateConnection]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPrivateConnection(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_route(
-        self,
-    ) -> Callable[[datastream.GetRouteRequest], datastream_resources.Route]:
+    def get_route(self) -> Callable[[datastream.GetRouteRequest], datastream_resources.Route]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRoute(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_stream(
-        self,
-    ) -> Callable[[datastream.GetStreamRequest], datastream_resources.Stream]:
+    def get_stream(self) -> Callable[[datastream.GetStreamRequest], datastream_resources.Stream]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStream(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_stream_object(
-        self,
-    ) -> Callable[
-        [datastream.GetStreamObjectRequest], datastream_resources.StreamObject
-    ]:
+    def get_stream_object(self) -> Callable[[datastream.GetStreamObjectRequest], datastream_resources.StreamObject]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStreamObject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_connection_profiles(
-        self,
-    ) -> Callable[
-        [datastream.ListConnectionProfilesRequest],
-        datastream.ListConnectionProfilesResponse,
-    ]:
+    def list_connection_profiles(self) -> Callable[[datastream.ListConnectionProfilesRequest], datastream.ListConnectionProfilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConnectionProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_private_connections(
-        self,
-    ) -> Callable[
-        [datastream.ListPrivateConnectionsRequest],
-        datastream.ListPrivateConnectionsResponse,
-    ]:
+    def list_private_connections(self) -> Callable[[datastream.ListPrivateConnectionsRequest], datastream.ListPrivateConnectionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrivateConnections(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_routes(
-        self,
-    ) -> Callable[[datastream.ListRoutesRequest], datastream.ListRoutesResponse]:
+    def list_routes(self) -> Callable[[datastream.ListRoutesRequest], datastream.ListRoutesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRoutes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_stream_objects(
-        self,
-    ) -> Callable[
-        [datastream.ListStreamObjectsRequest], datastream.ListStreamObjectsResponse
-    ]:
+    def list_stream_objects(self) -> Callable[[datastream.ListStreamObjectsRequest], datastream.ListStreamObjectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListStreamObjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_streams(
-        self,
-    ) -> Callable[[datastream.ListStreamsRequest], datastream.ListStreamsResponse]:
+    def list_streams(self) -> Callable[[datastream.ListStreamsRequest], datastream.ListStreamsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListStreams(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def lookup_stream_object(
-        self,
-    ) -> Callable[
-        [datastream.LookupStreamObjectRequest], datastream_resources.StreamObject
-    ]:
+    def lookup_stream_object(self) -> Callable[[datastream.LookupStreamObjectRequest], datastream_resources.StreamObject]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._LookupStreamObject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_stream(
-        self,
-    ) -> Callable[[datastream.RunStreamRequest], operations_pb2.Operation]:
+    def run_stream(self) -> Callable[[datastream.RunStreamRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunStream(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_backfill_job(
-        self,
-    ) -> Callable[
-        [datastream.StartBackfillJobRequest], datastream.StartBackfillJobResponse
-    ]:
+    def start_backfill_job(self) -> Callable[[datastream.StartBackfillJobRequest], datastream.StartBackfillJobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartBackfillJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_backfill_job(
-        self,
-    ) -> Callable[
-        [datastream.StopBackfillJobRequest], datastream.StopBackfillJobResponse
-    ]:
+    def stop_backfill_job(self) -> Callable[[datastream.StopBackfillJobRequest], datastream.StopBackfillJobResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopBackfillJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_connection_profile(
-        self,
-    ) -> Callable[
-        [datastream.UpdateConnectionProfileRequest], operations_pb2.Operation
-    ]:
+    def update_connection_profile(self) -> Callable[[datastream.UpdateConnectionProfileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConnectionProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_stream(
-        self,
-    ) -> Callable[[datastream.UpdateStreamRequest], operations_pb2.Operation]:
+    def update_stream(self) -> Callable[[datastream.UpdateStreamRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateStream(self._session, self._host, self._interceptor)  # type: ignore
@@ -6051,22 +4828,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseDatastreamRestTransport._BaseGetLocation, DatastreamRestStub
-    ):
+    class _GetLocation(_BaseDatastreamRestTransport._BaseGetLocation, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6104,30 +4871,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6151,12 +4904,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6168,9 +4916,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6195,22 +4941,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseDatastreamRestTransport._BaseListLocations, DatastreamRestStub
-    ):
+    class _ListLocations(_BaseDatastreamRestTransport._BaseListLocations, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6248,30 +4984,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6295,12 +5017,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6312,9 +5029,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6339,22 +5054,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseDatastreamRestTransport._BaseCancelOperation, DatastreamRestStub
-    ):
+    class _CancelOperation(_BaseDatastreamRestTransport._BaseCancelOperation, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6390,32 +5095,18 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseDatastreamRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseDatastreamRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6439,13 +5130,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6459,22 +5144,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseDatastreamRestTransport._BaseDeleteOperation, DatastreamRestStub
-    ):
+    class _DeleteOperation(_BaseDatastreamRestTransport._BaseDeleteOperation, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6509,28 +5184,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseDatastreamRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseDatastreamRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDatastreamRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDatastreamRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6554,12 +5217,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6573,22 +5231,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDatastreamRestTransport._BaseGetOperation, DatastreamRestStub
-    ):
+    class _GetOperation(_BaseDatastreamRestTransport._BaseGetOperation, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6626,30 +5274,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseDatastreamRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6673,12 +5307,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6690,9 +5319,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6717,22 +5344,12 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseDatastreamRestTransport._BaseListOperations, DatastreamRestStub
-    ):
+    class _ListOperations(_BaseDatastreamRestTransport._BaseListOperations, DatastreamRestStub):
         def __hash__(self):
             return hash("DatastreamRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6770,28 +5387,16 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseDatastreamRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseDatastreamRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseDatastreamRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDatastreamRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseDatastreamRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseDatastreamRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6815,12 +5420,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
 
             # Send the request
             response = DatastreamRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6832,9 +5432,7 @@ class DatastreamRestTransport(_BaseDatastreamRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

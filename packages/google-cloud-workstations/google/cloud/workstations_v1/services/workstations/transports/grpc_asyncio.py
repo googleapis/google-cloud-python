@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,20 +326,13 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_workstation_cluster(
-        self,
-    ) -> Callable[
-        [workstations.GetWorkstationClusterRequest],
-        Awaitable[workstations.WorkstationCluster],
-    ]:
+    def get_workstation_cluster(self) -> Callable[[workstations.GetWorkstationClusterRequest], Awaitable[workstations.WorkstationCluster]]:
         r"""Return a callable for the get workstation cluster method over gRPC.
 
         Returns the requested workstation cluster.
@@ -382,10 +358,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     @property
     def list_workstation_clusters(
         self,
-    ) -> Callable[
-        [workstations.ListWorkstationClustersRequest],
-        Awaitable[workstations.ListWorkstationClustersResponse],
-    ]:
+    ) -> Callable[[workstations.ListWorkstationClustersRequest], Awaitable[workstations.ListWorkstationClustersResponse]]:
         r"""Return a callable for the list workstation clusters method over gRPC.
 
         Returns all workstation clusters in the specified
@@ -410,12 +383,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["list_workstation_clusters"]
 
     @property
-    def create_workstation_cluster(
-        self,
-    ) -> Callable[
-        [workstations.CreateWorkstationClusterRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_workstation_cluster(self) -> Callable[[workstations.CreateWorkstationClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create workstation cluster method over gRPC.
 
         Creates a new workstation cluster.
@@ -431,9 +399,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_workstation_cluster" not in self._stubs:
-            self._stubs[
-                "create_workstation_cluster"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_workstation_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.workstations.v1.Workstations/CreateWorkstationCluster",
                 request_serializer=workstations.CreateWorkstationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -441,12 +407,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["create_workstation_cluster"]
 
     @property
-    def update_workstation_cluster(
-        self,
-    ) -> Callable[
-        [workstations.UpdateWorkstationClusterRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_workstation_cluster(self) -> Callable[[workstations.UpdateWorkstationClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update workstation cluster method over gRPC.
 
         Updates an existing workstation cluster.
@@ -462,9 +423,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_workstation_cluster" not in self._stubs:
-            self._stubs[
-                "update_workstation_cluster"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_workstation_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.workstations.v1.Workstations/UpdateWorkstationCluster",
                 request_serializer=workstations.UpdateWorkstationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -472,12 +431,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["update_workstation_cluster"]
 
     @property
-    def delete_workstation_cluster(
-        self,
-    ) -> Callable[
-        [workstations.DeleteWorkstationClusterRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_workstation_cluster(self) -> Callable[[workstations.DeleteWorkstationClusterRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete workstation cluster method over gRPC.
 
         Deletes the specified workstation cluster.
@@ -493,9 +447,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_workstation_cluster" not in self._stubs:
-            self._stubs[
-                "delete_workstation_cluster"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_workstation_cluster"] = self._logged_channel.unary_unary(
                 "/google.cloud.workstations.v1.Workstations/DeleteWorkstationCluster",
                 request_serializer=workstations.DeleteWorkstationClusterRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -503,12 +455,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["delete_workstation_cluster"]
 
     @property
-    def get_workstation_config(
-        self,
-    ) -> Callable[
-        [workstations.GetWorkstationConfigRequest],
-        Awaitable[workstations.WorkstationConfig],
-    ]:
+    def get_workstation_config(self) -> Callable[[workstations.GetWorkstationConfigRequest], Awaitable[workstations.WorkstationConfig]]:
         r"""Return a callable for the get workstation config method over gRPC.
 
         Returns the requested workstation configuration.
@@ -534,10 +481,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     @property
     def list_workstation_configs(
         self,
-    ) -> Callable[
-        [workstations.ListWorkstationConfigsRequest],
-        Awaitable[workstations.ListWorkstationConfigsResponse],
-    ]:
+    ) -> Callable[[workstations.ListWorkstationConfigsRequest], Awaitable[workstations.ListWorkstationConfigsResponse]]:
         r"""Return a callable for the list workstation configs method over gRPC.
 
         Returns all workstation configurations in the
@@ -564,10 +508,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     @property
     def list_usable_workstation_configs(
         self,
-    ) -> Callable[
-        [workstations.ListUsableWorkstationConfigsRequest],
-        Awaitable[workstations.ListUsableWorkstationConfigsResponse],
-    ]:
+    ) -> Callable[[workstations.ListUsableWorkstationConfigsRequest], Awaitable[workstations.ListUsableWorkstationConfigsResponse]]:
         r"""Return a callable for the list usable workstation
         configs method over gRPC.
 
@@ -586,9 +527,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_usable_workstation_configs" not in self._stubs:
-            self._stubs[
-                "list_usable_workstation_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_usable_workstation_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.workstations.v1.Workstations/ListUsableWorkstationConfigs",
                 request_serializer=workstations.ListUsableWorkstationConfigsRequest.serialize,
                 response_deserializer=workstations.ListUsableWorkstationConfigsResponse.deserialize,
@@ -596,12 +535,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["list_usable_workstation_configs"]
 
     @property
-    def create_workstation_config(
-        self,
-    ) -> Callable[
-        [workstations.CreateWorkstationConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_workstation_config(self) -> Callable[[workstations.CreateWorkstationConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create workstation config method over gRPC.
 
         Creates a new workstation configuration.
@@ -625,12 +559,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["create_workstation_config"]
 
     @property
-    def update_workstation_config(
-        self,
-    ) -> Callable[
-        [workstations.UpdateWorkstationConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def update_workstation_config(self) -> Callable[[workstations.UpdateWorkstationConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update workstation config method over gRPC.
 
         Updates an existing workstation configuration.
@@ -654,12 +583,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["update_workstation_config"]
 
     @property
-    def delete_workstation_config(
-        self,
-    ) -> Callable[
-        [workstations.DeleteWorkstationConfigRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_workstation_config(self) -> Callable[[workstations.DeleteWorkstationConfigRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete workstation config method over gRPC.
 
         Deletes the specified workstation configuration.
@@ -683,11 +607,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["delete_workstation_config"]
 
     @property
-    def get_workstation(
-        self,
-    ) -> Callable[
-        [workstations.GetWorkstationRequest], Awaitable[workstations.Workstation]
-    ]:
+    def get_workstation(self) -> Callable[[workstations.GetWorkstationRequest], Awaitable[workstations.Workstation]]:
         r"""Return a callable for the get workstation method over gRPC.
 
         Returns the requested workstation.
@@ -711,12 +631,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["get_workstation"]
 
     @property
-    def list_workstations(
-        self,
-    ) -> Callable[
-        [workstations.ListWorkstationsRequest],
-        Awaitable[workstations.ListWorkstationsResponse],
-    ]:
+    def list_workstations(self) -> Callable[[workstations.ListWorkstationsRequest], Awaitable[workstations.ListWorkstationsResponse]]:
         r"""Return a callable for the list workstations method over gRPC.
 
         Returns all Workstations using the specified
@@ -743,10 +658,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     @property
     def list_usable_workstations(
         self,
-    ) -> Callable[
-        [workstations.ListUsableWorkstationsRequest],
-        Awaitable[workstations.ListUsableWorkstationsResponse],
-    ]:
+    ) -> Callable[[workstations.ListUsableWorkstationsRequest], Awaitable[workstations.ListUsableWorkstationsResponse]]:
         r"""Return a callable for the list usable workstations method over gRPC.
 
         Returns all workstations using the specified
@@ -772,11 +684,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["list_usable_workstations"]
 
     @property
-    def create_workstation(
-        self,
-    ) -> Callable[
-        [workstations.CreateWorkstationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_workstation(self) -> Callable[[workstations.CreateWorkstationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create workstation method over gRPC.
 
         Creates a new workstation.
@@ -800,11 +708,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["create_workstation"]
 
     @property
-    def update_workstation(
-        self,
-    ) -> Callable[
-        [workstations.UpdateWorkstationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_workstation(self) -> Callable[[workstations.UpdateWorkstationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update workstation method over gRPC.
 
         Updates an existing workstation.
@@ -828,11 +732,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["update_workstation"]
 
     @property
-    def delete_workstation(
-        self,
-    ) -> Callable[
-        [workstations.DeleteWorkstationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_workstation(self) -> Callable[[workstations.DeleteWorkstationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete workstation method over gRPC.
 
         Deletes the specified workstation.
@@ -856,11 +756,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["delete_workstation"]
 
     @property
-    def start_workstation(
-        self,
-    ) -> Callable[
-        [workstations.StartWorkstationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def start_workstation(self) -> Callable[[workstations.StartWorkstationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the start workstation method over gRPC.
 
         Starts running a workstation so that users can
@@ -885,11 +781,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["start_workstation"]
 
     @property
-    def stop_workstation(
-        self,
-    ) -> Callable[
-        [workstations.StopWorkstationRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def stop_workstation(self) -> Callable[[workstations.StopWorkstationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the stop workstation method over gRPC.
 
         Stops running a workstation, reducing costs.
@@ -913,12 +805,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
         return self._stubs["stop_workstation"]
 
     @property
-    def generate_access_token(
-        self,
-    ) -> Callable[
-        [workstations.GenerateAccessTokenRequest],
-        Awaitable[workstations.GenerateAccessTokenResponse],
-    ]:
+    def generate_access_token(self) -> Callable[[workstations.GenerateAccessTokenRequest], Awaitable[workstations.GenerateAccessTokenResponse]]:
         r"""Return a callable for the generate access token method over gRPC.
 
         Returns a short-lived credential that can be used to
@@ -1230,9 +1117,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1300,10 +1185,7 @@ class WorkstationsGrpcAsyncIOTransport(WorkstationsTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

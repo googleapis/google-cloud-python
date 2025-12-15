@@ -28,11 +28,7 @@ description = "Google Cloud Managedkafka Schemaregistry API client library"
 
 version = None
 
-with open(
-    os.path.join(
-        package_root, "google/cloud/managedkafka_schemaregistry/gapic_version.py"
-    )
-) as fp:
+with open(os.path.join(package_root, "google/cloud/managedkafka_schemaregistry/gapic_version.py")) as fp:
     version_candidates = re.findall(r"(?<=\")\d+.\d+.\d+(?=\")", fp.read())
     assert len(version_candidates) == 1
     version = version_candidates[0]
@@ -62,11 +58,7 @@ readme_filename = os.path.join(package_root, "README.rst")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
-packages = [
-    package
-    for package in setuptools.find_namespace_packages()
-    if package.startswith("google")
-]
+packages = [package for package in setuptools.find_namespace_packages() if package.startswith("google")]
 
 setuptools.setup(
     name=name,

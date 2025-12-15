@@ -159,12 +159,8 @@ class UrlMapsRestInterceptor:
     """
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListUrlMapsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListUrlMapsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.AggregatedListUrlMapsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListUrlMapsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -172,9 +168,7 @@ class UrlMapsRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.UrlMapsAggregatedList
-    ) -> compute.UrlMapsAggregatedList:
+    def post_aggregated_list(self, response: compute.UrlMapsAggregatedList) -> compute.UrlMapsAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -188,9 +182,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.UrlMapsAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.UrlMapsAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.UrlMapsAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
@@ -207,9 +199,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.DeleteUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.DeleteUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
@@ -232,9 +222,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -251,9 +239,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.GetUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.GetUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
@@ -276,9 +262,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.UrlMap,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.UrlMap, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.UrlMap, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -295,9 +279,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.InsertUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.InsertUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
@@ -320,9 +302,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -339,12 +319,8 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_invalidate_cache(
-        self,
-        request: compute.InvalidateCacheUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InvalidateCacheUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InvalidateCacheUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InvalidateCacheUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for invalidate_cache
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +342,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_invalidate_cache_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for invalidate_cache
 
@@ -385,9 +359,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListUrlMapsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ListUrlMapsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ListUrlMapsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
@@ -410,9 +382,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.UrlMapList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.UrlMapList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.UrlMapList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -429,9 +399,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.PatchUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.PatchUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
@@ -454,9 +422,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -473,12 +439,8 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.TestIamPermissionsUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -486,9 +448,7 @@ class UrlMapsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -502,12 +462,8 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -523,9 +479,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdateUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.UpdateUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.UpdateUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
@@ -548,9 +502,7 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -567,9 +519,7 @@ class UrlMapsRestInterceptor:
         return response, metadata
 
     def pre_validate(
-        self,
-        request: compute.ValidateUrlMapRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: compute.ValidateUrlMapRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.ValidateUrlMapRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate
 
@@ -578,9 +528,7 @@ class UrlMapsRestInterceptor:
         """
         return request, metadata
 
-    def post_validate(
-        self, response: compute.UrlMapsValidateResponse
-    ) -> compute.UrlMapsValidateResponse:
+    def post_validate(self, response: compute.UrlMapsValidateResponse) -> compute.UrlMapsValidateResponse:
         """Post-rpc interceptor for validate
 
         DEPRECATED. Please use the `post_validate_with_metadata`
@@ -594,12 +542,8 @@ class UrlMapsRestInterceptor:
         return response
 
     def post_validate_with_metadata(
-        self,
-        response: compute.UrlMapsValidateResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UrlMapsValidateResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.UrlMapsValidateResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UrlMapsValidateResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for validate
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -698,30 +642,18 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or UrlMapsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AggregatedList(
-        _BaseUrlMapsRestTransport._BaseAggregatedList, UrlMapsRestStub
-    ):
+    class _AggregatedList(_BaseUrlMapsRestTransport._BaseAggregatedList, UrlMapsRestStub):
         def __hash__(self):
             return hash("UrlMapsRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -762,30 +694,16 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             """
 
-            http_options = (
-                _BaseUrlMapsRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseUrlMapsRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseAggregatedList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseUrlMapsRestTransport._BaseAggregatedList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -809,12 +727,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             # Send the request
             response = UrlMapsRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -830,12 +743,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.UrlMapsAggregatedList.to_json(response)
                 except:
@@ -861,15 +770,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -929,23 +830,13 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -968,14 +859,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
 
             # Send the request
-            response = UrlMapsRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = UrlMapsRestTransport._Delete._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -990,12 +874,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1021,15 +901,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1098,23 +970,13 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BaseGet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1137,14 +999,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
 
             # Send the request
-            response = UrlMapsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = UrlMapsRestTransport._Get._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1160,9 +1015,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.UrlMap.to_json(response)
                 except:
@@ -1188,15 +1041,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1257,27 +1102,15 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseUrlMapsRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUrlMapsRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1301,13 +1134,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             # Send the request
             response = UrlMapsRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1323,12 +1150,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1349,22 +1172,12 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
             return resp
 
-    class _InvalidateCache(
-        _BaseUrlMapsRestTransport._BaseInvalidateCache, UrlMapsRestStub
-    ):
+    class _InvalidateCache(_BaseUrlMapsRestTransport._BaseInvalidateCache, UrlMapsRestStub):
         def __hash__(self):
             return hash("UrlMapsRestTransport.InvalidateCache")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1423,38 +1236,18 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             """
 
-            http_options = (
-                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_http_options()
-            )
+            http_options = _BaseUrlMapsRestTransport._BaseInvalidateCache._get_http_options()
 
-            request, metadata = self._interceptor.pre_invalidate_cache(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_invalidate_cache(request, metadata)
+            transcoded_request = _BaseUrlMapsRestTransport._BaseInvalidateCache._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseUrlMapsRestTransport._BaseInvalidateCache._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseUrlMapsRestTransport._BaseInvalidateCache._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseInvalidateCache._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1478,13 +1271,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             # Send the request
             response = UrlMapsRestTransport._InvalidateCache._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1500,12 +1287,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_invalidate_cache(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_invalidate_cache_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_invalidate_cache_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1531,15 +1314,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1582,23 +1357,13 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1621,14 +1386,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
 
             # Send the request
-            response = UrlMapsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = UrlMapsRestTransport._List._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1644,9 +1402,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.UrlMapList.to_json(response)
                 except:
@@ -1672,15 +1428,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1741,27 +1489,15 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseUrlMapsRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUrlMapsRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1784,15 +1520,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
 
             # Send the request
-            response = UrlMapsRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
-            )
+            response = UrlMapsRestTransport._Patch._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request, body)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1807,12 +1535,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1833,22 +1557,12 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseUrlMapsRestTransport._BaseTestIamPermissions, UrlMapsRestStub
-    ):
+    class _TestIamPermissions(_BaseUrlMapsRestTransport._BaseTestIamPermissions, UrlMapsRestStub):
         def __hash__(self):
             return hash("UrlMapsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1890,32 +1604,18 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             """
 
-            http_options = (
-                _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1939,13 +1639,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             # Send the request
             response = UrlMapsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1961,12 +1655,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -1992,15 +1682,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2061,27 +1743,15 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = _BaseUrlMapsRestTransport._BaseUpdate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUrlMapsRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseUrlMapsRestTransport._BaseUpdate._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2105,13 +1775,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             # Send the request
             response = UrlMapsRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2127,12 +1791,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2158,15 +1818,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return hash("UrlMapsRestTransport.Validate")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2211,29 +1863,15 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             http_options = _BaseUrlMapsRestTransport._BaseValidate._get_http_options()
 
             request, metadata = self._interceptor.pre_validate(request, metadata)
-            transcoded_request = (
-                _BaseUrlMapsRestTransport._BaseValidate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseUrlMapsRestTransport._BaseValidate._get_transcoded_request(http_options, request)
 
-            body = _BaseUrlMapsRestTransport._BaseValidate._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseUrlMapsRestTransport._BaseValidate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseUrlMapsRestTransport._BaseValidate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseUrlMapsRestTransport._BaseValidate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2257,13 +1895,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             # Send the request
             response = UrlMapsRestTransport._Validate._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2279,12 +1911,8 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
 
             resp = self._interceptor.post_validate(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_validate_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_validate_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.UrlMapsValidateResponse.to_json(response)
                 except:
@@ -2306,11 +1934,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
             return resp
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListUrlMapsRequest], compute.UrlMapsAggregatedList
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListUrlMapsRequest], compute.UrlMapsAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
@@ -2334,9 +1958,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def invalidate_cache(
-        self,
-    ) -> Callable[[compute.InvalidateCacheUrlMapRequest], compute.Operation]:
+    def invalidate_cache(self) -> Callable[[compute.InvalidateCacheUrlMapRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InvalidateCache(self._session, self._host, self._interceptor)  # type: ignore
@@ -2354,11 +1976,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsUrlMapRequest], compute.TestPermissionsResponse
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsUrlMapRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
@@ -2370,9 +1988,7 @@ class UrlMapsRestTransport(_BaseUrlMapsRestTransport):
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def validate(
-        self,
-    ) -> Callable[[compute.ValidateUrlMapRequest], compute.UrlMapsValidateResponse]:
+    def validate(self) -> Callable[[compute.ValidateUrlMapRequest], compute.UrlMapsValidateResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Validate(self._session, self._host, self._interceptor)  # type: ignore

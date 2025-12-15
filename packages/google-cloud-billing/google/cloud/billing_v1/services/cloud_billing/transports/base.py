@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.billing_v1 import gapic_version as package_version
 from google.cloud.billing_v1.types import cloud_billing
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class CloudBillingTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -298,10 +288,7 @@ class CloudBillingTransport(abc.ABC):
     @property
     def get_billing_account(
         self,
-    ) -> Callable[
-        [cloud_billing.GetBillingAccountRequest],
-        Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]],
-    ]:
+    ) -> Callable[[cloud_billing.GetBillingAccountRequest], Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]]]:
         raise NotImplementedError()
 
     @property
@@ -309,29 +296,20 @@ class CloudBillingTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_billing.ListBillingAccountsRequest],
-        Union[
-            cloud_billing.ListBillingAccountsResponse,
-            Awaitable[cloud_billing.ListBillingAccountsResponse],
-        ],
+        Union[cloud_billing.ListBillingAccountsResponse, Awaitable[cloud_billing.ListBillingAccountsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_billing_account(
         self,
-    ) -> Callable[
-        [cloud_billing.UpdateBillingAccountRequest],
-        Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]],
-    ]:
+    ) -> Callable[[cloud_billing.UpdateBillingAccountRequest], Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]]]:
         raise NotImplementedError()
 
     @property
     def create_billing_account(
         self,
-    ) -> Callable[
-        [cloud_billing.CreateBillingAccountRequest],
-        Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]],
-    ]:
+    ) -> Callable[[cloud_billing.CreateBillingAccountRequest], Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]]]:
         raise NotImplementedError()
 
     @property
@@ -339,53 +317,30 @@ class CloudBillingTransport(abc.ABC):
         self,
     ) -> Callable[
         [cloud_billing.ListProjectBillingInfoRequest],
-        Union[
-            cloud_billing.ListProjectBillingInfoResponse,
-            Awaitable[cloud_billing.ListProjectBillingInfoResponse],
-        ],
+        Union[cloud_billing.ListProjectBillingInfoResponse, Awaitable[cloud_billing.ListProjectBillingInfoResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_project_billing_info(
         self,
-    ) -> Callable[
-        [cloud_billing.GetProjectBillingInfoRequest],
-        Union[
-            cloud_billing.ProjectBillingInfo,
-            Awaitable[cloud_billing.ProjectBillingInfo],
-        ],
-    ]:
+    ) -> Callable[[cloud_billing.GetProjectBillingInfoRequest], Union[cloud_billing.ProjectBillingInfo, Awaitable[cloud_billing.ProjectBillingInfo]]]:
         raise NotImplementedError()
 
     @property
     def update_project_billing_info(
         self,
     ) -> Callable[
-        [cloud_billing.UpdateProjectBillingInfoRequest],
-        Union[
-            cloud_billing.ProjectBillingInfo,
-            Awaitable[cloud_billing.ProjectBillingInfo],
-        ],
+        [cloud_billing.UpdateProjectBillingInfoRequest], Union[cloud_billing.ProjectBillingInfo, Awaitable[cloud_billing.ProjectBillingInfo]]
     ]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -393,20 +348,14 @@ class CloudBillingTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def move_billing_account(
         self,
-    ) -> Callable[
-        [cloud_billing.MoveBillingAccountRequest],
-        Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]],
-    ]:
+    ) -> Callable[[cloud_billing.MoveBillingAccountRequest], Union[cloud_billing.BillingAccount, Awaitable[cloud_billing.BillingAccount]]]:
         raise NotImplementedError()
 
     @property

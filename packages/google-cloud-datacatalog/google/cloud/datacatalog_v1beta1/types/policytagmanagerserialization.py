@@ -69,9 +69,7 @@ class SerializedTaxonomy(proto.Message):
         number=3,
         message="SerializedPolicyTag",
     )
-    activated_policy_types: MutableSequence[
-        policytagmanager.Taxonomy.PolicyType
-    ] = proto.RepeatedField(
+    activated_policy_types: MutableSequence[policytagmanager.Taxonomy.PolicyType] = proto.RepeatedField(
         proto.ENUM,
         number=4,
         enum=policytagmanager.Taxonomy.PolicyType,

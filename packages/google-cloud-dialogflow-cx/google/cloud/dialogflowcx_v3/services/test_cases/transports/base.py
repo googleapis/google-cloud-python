@@ -32,9 +32,7 @@ from google.cloud.dialogflowcx_v3 import gapic_version as package_version
 from google.cloud.dialogflowcx_v3.types import test_case
 from google.cloud.dialogflowcx_v3.types import test_case as gcdc_test_case
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +97,15 @@ class TestCasesTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -244,117 +234,65 @@ class TestCasesTransport(abc.ABC):
     @property
     def list_test_cases(
         self,
-    ) -> Callable[
-        [test_case.ListTestCasesRequest],
-        Union[
-            test_case.ListTestCasesResponse, Awaitable[test_case.ListTestCasesResponse]
-        ],
-    ]:
+    ) -> Callable[[test_case.ListTestCasesRequest], Union[test_case.ListTestCasesResponse, Awaitable[test_case.ListTestCasesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def batch_delete_test_cases(
-        self,
-    ) -> Callable[
-        [test_case.BatchDeleteTestCasesRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def batch_delete_test_cases(self) -> Callable[[test_case.BatchDeleteTestCasesRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def get_test_case(
-        self,
-    ) -> Callable[
-        [test_case.GetTestCaseRequest],
-        Union[test_case.TestCase, Awaitable[test_case.TestCase]],
-    ]:
+    def get_test_case(self) -> Callable[[test_case.GetTestCaseRequest], Union[test_case.TestCase, Awaitable[test_case.TestCase]]]:
         raise NotImplementedError()
 
     @property
     def create_test_case(
         self,
-    ) -> Callable[
-        [gcdc_test_case.CreateTestCaseRequest],
-        Union[gcdc_test_case.TestCase, Awaitable[gcdc_test_case.TestCase]],
-    ]:
+    ) -> Callable[[gcdc_test_case.CreateTestCaseRequest], Union[gcdc_test_case.TestCase, Awaitable[gcdc_test_case.TestCase]]]:
         raise NotImplementedError()
 
     @property
     def update_test_case(
         self,
-    ) -> Callable[
-        [gcdc_test_case.UpdateTestCaseRequest],
-        Union[gcdc_test_case.TestCase, Awaitable[gcdc_test_case.TestCase]],
-    ]:
+    ) -> Callable[[gcdc_test_case.UpdateTestCaseRequest], Union[gcdc_test_case.TestCase, Awaitable[gcdc_test_case.TestCase]]]:
         raise NotImplementedError()
 
     @property
-    def run_test_case(
-        self,
-    ) -> Callable[
-        [test_case.RunTestCaseRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def run_test_case(self) -> Callable[[test_case.RunTestCaseRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def batch_run_test_cases(
         self,
-    ) -> Callable[
-        [test_case.BatchRunTestCasesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[test_case.BatchRunTestCasesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def calculate_coverage(
         self,
-    ) -> Callable[
-        [test_case.CalculateCoverageRequest],
-        Union[
-            test_case.CalculateCoverageResponse,
-            Awaitable[test_case.CalculateCoverageResponse],
-        ],
-    ]:
+    ) -> Callable[[test_case.CalculateCoverageRequest], Union[test_case.CalculateCoverageResponse, Awaitable[test_case.CalculateCoverageResponse]]]:
         raise NotImplementedError()
 
     @property
-    def import_test_cases(
-        self,
-    ) -> Callable[
-        [test_case.ImportTestCasesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def import_test_cases(self) -> Callable[[test_case.ImportTestCasesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_test_cases(
-        self,
-    ) -> Callable[
-        [test_case.ExportTestCasesRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_test_cases(self) -> Callable[[test_case.ExportTestCasesRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_test_case_results(
         self,
     ) -> Callable[
-        [test_case.ListTestCaseResultsRequest],
-        Union[
-            test_case.ListTestCaseResultsResponse,
-            Awaitable[test_case.ListTestCaseResultsResponse],
-        ],
+        [test_case.ListTestCaseResultsRequest], Union[test_case.ListTestCaseResultsResponse, Awaitable[test_case.ListTestCaseResultsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_test_case_result(
         self,
-    ) -> Callable[
-        [test_case.GetTestCaseResultRequest],
-        Union[test_case.TestCaseResult, Awaitable[test_case.TestCaseResult]],
-    ]:
+    ) -> Callable[[test_case.GetTestCaseResultRequest], Union[test_case.TestCaseResult, Awaitable[test_case.TestCaseResult]]]:
         raise NotImplementedError()
 
     @property
@@ -362,20 +300,14 @@ class TestCasesTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -387,22 +319,13 @@ class TestCasesTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

@@ -58,9 +58,7 @@ from google.cloud.recommendationengine_v1beta1.services.prediction_api_key_regis
     pagers,
     transports,
 )
-from google.cloud.recommendationengine_v1beta1.types import (
-    prediction_apikey_registry_service,
-)
+from google.cloud.recommendationengine_v1beta1.types import prediction_apikey_registry_service
 
 CRED_INFO_JSON = {
     "credential_source": "/path/to/file",
@@ -92,22 +90,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -118,94 +108,135 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert PredictionApiKeyRegistryClient._get_default_mtls_endpoint(None) is None
-    assert (
-        PredictionApiKeyRegistryClient._get_default_mtls_endpoint(api_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_default_mtls_endpoint(non_googleapi)
-        == non_googleapi
-    )
+    assert PredictionApiKeyRegistryClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert PredictionApiKeyRegistryClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert PredictionApiKeyRegistryClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert PredictionApiKeyRegistryClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
+    assert PredictionApiKeyRegistryClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
 def test__read_environment_variables():
-    assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-        False,
-        "auto",
-        None,
-    )
+    assert PredictionApiKeyRegistryClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-            True,
-            "auto",
-            None,
-        )
+        assert PredictionApiKeyRegistryClient._read_environment_variables() == (True, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
-        assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert PredictionApiKeyRegistryClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            PredictionApiKeyRegistryClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                PredictionApiKeyRegistryClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert PredictionApiKeyRegistryClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert PredictionApiKeyRegistryClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert PredictionApiKeyRegistryClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
-        assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-            False,
-            "auto",
-            None,
-        )
+        assert PredictionApiKeyRegistryClient._read_environment_variables() == (False, "auto", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             PredictionApiKeyRegistryClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert PredictionApiKeyRegistryClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert PredictionApiKeyRegistryClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                PredictionApiKeyRegistryClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert PredictionApiKeyRegistryClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -213,131 +244,56 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert PredictionApiKeyRegistryClient._get_client_cert_source(None, False) is None
-    assert (
-        PredictionApiKeyRegistryClient._get_client_cert_source(
-            mock_provided_cert_source, False
-        )
-        is None
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_client_cert_source(
-            mock_provided_cert_source, True
-        )
-        == mock_provided_cert_source
-    )
+    assert PredictionApiKeyRegistryClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert PredictionApiKeyRegistryClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                PredictionApiKeyRegistryClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                PredictionApiKeyRegistryClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert PredictionApiKeyRegistryClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert PredictionApiKeyRegistryClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
+@mock.patch.object(PredictionApiKeyRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryClient))
 @mock.patch.object(
-    PredictionApiKeyRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryClient),
-)
-@mock.patch.object(
-    PredictionApiKeyRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient),
+    PredictionApiKeyRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient)
 )
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = PredictionApiKeyRegistryClient._DEFAULT_UNIVERSE
-    default_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
+    assert PredictionApiKeyRegistryClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
     assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
+        PredictionApiKeyRegistryClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto")
+        == PredictionApiKeyRegistryClient.DEFAULT_MTLS_ENDPOINT
     )
+    assert PredictionApiKeyRegistryClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
     assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
+        PredictionApiKeyRegistryClient._get_api_endpoint(None, None, default_universe, "always")
         == PredictionApiKeyRegistryClient.DEFAULT_MTLS_ENDPOINT
     )
     assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, None, default_universe, "auto"
-        )
-        == default_endpoint
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, None, default_universe, "always"
-        )
+        PredictionApiKeyRegistryClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always")
         == PredictionApiKeyRegistryClient.DEFAULT_MTLS_ENDPOINT
     )
-    assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == PredictionApiKeyRegistryClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, None, mock_universe, "never"
-        )
-        == mock_endpoint
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, None, default_universe, "never"
-        )
-        == default_endpoint
-    )
+    assert PredictionApiKeyRegistryClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert PredictionApiKeyRegistryClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        PredictionApiKeyRegistryClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        PredictionApiKeyRegistryClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        PredictionApiKeyRegistryClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        PredictionApiKeyRegistryClient._get_universe_domain(None, None)
-        == PredictionApiKeyRegistryClient._DEFAULT_UNIVERSE
-    )
+    assert PredictionApiKeyRegistryClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert PredictionApiKeyRegistryClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert PredictionApiKeyRegistryClient._get_universe_domain(None, None) == PredictionApiKeyRegistryClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         PredictionApiKeyRegistryClient._get_universe_domain("", None)
@@ -395,13 +351,9 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
         (PredictionApiKeyRegistryClient, "rest"),
     ],
 )
-def test_prediction_api_key_registry_client_from_service_account_info(
-    client_class, transport_name
-):
+def test_prediction_api_key_registry_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -409,9 +361,7 @@ def test_prediction_api_key_registry_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "recommendationengine.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://recommendationengine.googleapis.com"
+            "recommendationengine.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://recommendationengine.googleapis.com"
         )
 
 
@@ -423,19 +373,13 @@ def test_prediction_api_key_registry_client_from_service_account_info(
         (transports.PredictionApiKeyRegistryRestTransport, "rest"),
     ],
 )
-def test_prediction_api_key_registry_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_prediction_api_key_registry_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -449,30 +393,20 @@ def test_prediction_api_key_registry_client_service_account_always_use_jwt(
         (PredictionApiKeyRegistryClient, "rest"),
     ],
 )
-def test_prediction_api_key_registry_client_from_service_account_file(
-    client_class, transport_name
-):
+def test_prediction_api_key_registry_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "recommendationengine.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://recommendationengine.googleapis.com"
+            "recommendationengine.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://recommendationengine.googleapis.com"
         )
 
 
@@ -491,48 +425,24 @@ def test_prediction_api_key_registry_client_get_transport_class():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-            "grpc",
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryRestTransport,
-            "rest",
-        ),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport, "grpc"),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryRestTransport, "rest"),
     ],
 )
+@mock.patch.object(PredictionApiKeyRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryClient))
 @mock.patch.object(
-    PredictionApiKeyRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryClient),
+    PredictionApiKeyRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient)
 )
-@mock.patch.object(
-    PredictionApiKeyRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient),
-)
-def test_prediction_api_key_registry_client_client_options(
-    client_class, transport_class, transport_name
-):
+def test_prediction_api_key_registry_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(
-        PredictionApiKeyRegistryClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(PredictionApiKeyRegistryClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(
-        PredictionApiKeyRegistryClient, "get_transport_class"
-    ) as gtc:
+    with mock.patch.object(PredictionApiKeyRegistryClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -562,9 +472,7 @@ def test_prediction_api_key_registry_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -596,21 +504,7 @@ def test_prediction_api_key_registry_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -620,9 +514,7 @@ def test_prediction_api_key_registry_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -631,18 +523,14 @@ def test_prediction_api_key_registry_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -655,78 +543,34 @@ def test_prediction_api_key_registry_client_client_options(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-            "grpc",
-            "true",
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-            "grpc",
-            "false",
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryRestTransport,
-            "rest",
-            "true",
-        ),
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryRestTransport,
-            "rest",
-            "false",
-        ),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport, "grpc", "true"),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, "grpc_asyncio", "true"),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport, "grpc", "false"),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, "grpc_asyncio", "false"),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryRestTransport, "rest", "true"),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryRestTransport, "rest", "false"),
     ],
 )
+@mock.patch.object(PredictionApiKeyRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryClient))
 @mock.patch.object(
-    PredictionApiKeyRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryClient),
-)
-@mock.patch.object(
-    PredictionApiKeyRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient),
+    PredictionApiKeyRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient)
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_prediction_api_key_registry_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_prediction_api_key_registry_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -745,22 +589,12 @@ def test_prediction_api_key_registry_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -781,22 +615,15 @@ def test_prediction_api_key_registry_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -806,34 +633,17 @@ def test_prediction_api_key_registry_client_mtls_env_auto(
                 )
 
 
-@pytest.mark.parametrize(
-    "client_class",
-    [PredictionApiKeyRegistryClient, PredictionApiKeyRegistryAsyncClient],
-)
-@mock.patch.object(
-    PredictionApiKeyRegistryClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PredictionApiKeyRegistryClient),
-)
-@mock.patch.object(
-    PredictionApiKeyRegistryAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(PredictionApiKeyRegistryAsyncClient),
-)
-def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
-    client_class,
-):
+@pytest.mark.parametrize("client_class", [PredictionApiKeyRegistryClient, PredictionApiKeyRegistryAsyncClient])
+@mock.patch.object(PredictionApiKeyRegistryClient, "DEFAULT_ENDPOINT", modify_default_endpoint(PredictionApiKeyRegistryClient))
+@mock.patch.object(PredictionApiKeyRegistryAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(PredictionApiKeyRegistryAsyncClient))
+def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -841,14 +651,106 @@ def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -864,28 +766,16 @@ def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -895,63 +785,28 @@ def test_prediction_api_key_registry_client_get_mtls_endpoint_and_cert_source(
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
-@pytest.mark.parametrize(
-    "client_class",
-    [PredictionApiKeyRegistryClient, PredictionApiKeyRegistryAsyncClient],
-)
+@pytest.mark.parametrize("client_class", [PredictionApiKeyRegistryClient, PredictionApiKeyRegistryAsyncClient])
+@mock.patch.object(PredictionApiKeyRegistryClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryClient))
 @mock.patch.object(
-    PredictionApiKeyRegistryClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryClient),
-)
-@mock.patch.object(
-    PredictionApiKeyRegistryAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient),
+    PredictionApiKeyRegistryAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(PredictionApiKeyRegistryAsyncClient)
 )
 def test_prediction_api_key_registry_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = PredictionApiKeyRegistryClient._DEFAULT_UNIVERSE
-    default_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = PredictionApiKeyRegistryClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -974,19 +829,11 @@ def test_prediction_api_key_registry_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -994,35 +841,19 @@ def test_prediction_api_key_registry_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-            "grpc",
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryRestTransport,
-            "rest",
-        ),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport, "grpc"),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, "grpc_asyncio"),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryRestTransport, "rest"),
     ],
 )
-def test_prediction_api_key_registry_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_prediction_api_key_registry_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -1033,9 +864,7 @@ def test_prediction_api_key_registry_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1048,29 +877,12 @@ def test_prediction_api_key_registry_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryRestTransport,
-            "rest",
-            None,
-        ),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport, "grpc", grpc_helpers),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryRestTransport, "rest", None),
     ],
 )
-def test_prediction_api_key_registry_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_prediction_api_key_registry_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1080,9 +892,7 @@ def test_prediction_api_key_registry_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1097,9 +907,7 @@ def test_prediction_api_key_registry_client_client_options_from_dict():
         "google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.transports.PredictionApiKeyRegistryGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = PredictionApiKeyRegistryClient(
-            client_options={"api_endpoint": "squid.clam.whelk"}
-        )
+        client = PredictionApiKeyRegistryClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
             credentials=None,
             credentials_file=None,
@@ -1116,23 +924,11 @@ def test_prediction_api_key_registry_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport, "grpc", grpc_helpers),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_prediction_api_key_registry_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_prediction_api_key_registry_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1142,9 +938,7 @@ def test_prediction_api_key_registry_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1154,13 +948,9 @@ def test_prediction_api_key_registry_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1200,29 +990,21 @@ def test_create_prediction_api_key_registration(request_type, transport: str = "
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value",
-            )
+        call.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration(
+            api_key="api_key_value",
         )
         response = client.create_prediction_api_key_registration(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, prediction_apikey_registry_service.PredictionApiKeyRegistration
-    )
+    assert isinstance(response, prediction_apikey_registry_service.PredictionApiKeyRegistration)
     assert response.api_key == "api_key_value"
 
 
@@ -1237,25 +1019,17 @@ def test_create_prediction_api_key_registration_non_empty_request_with_auto_popu
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = (
-        prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
-            parent="parent_value",
-        )
+    request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
+        parent="parent_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_prediction_api_key_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
+        assert args[0] == prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(
             parent="parent_value",
         )
 
@@ -1274,19 +1048,12 @@ def test_create_prediction_api_key_registration_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_prediction_api_key_registration
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_prediction_api_key_registration in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_prediction_api_key_registration
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_prediction_api_key_registration] = mock_rpc
         request = {}
         client.create_prediction_api_key_registration(request)
 
@@ -1301,9 +1068,7 @@ def test_create_prediction_api_key_registration_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_prediction_api_key_registration_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_prediction_api_key_registration_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1317,17 +1082,12 @@ async def test_create_prediction_api_key_registration_async_use_cached_wrapped_r
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_prediction_api_key_registration
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_prediction_api_key_registration in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_prediction_api_key_registration
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_prediction_api_key_registration] = mock_rpc
 
         request = {}
         await client.create_prediction_api_key_registration(request)
@@ -1344,8 +1104,7 @@ async def test_create_prediction_api_key_registration_async_use_cached_wrapped_r
 
 @pytest.mark.asyncio
 async def test_create_prediction_api_key_registration_async(
-    transport: str = "grpc_asyncio",
-    request_type=prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
+    transport: str = "grpc_asyncio", request_type=prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest
 ):
     client = PredictionApiKeyRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1357,9 +1116,7 @@ async def test_create_prediction_api_key_registration_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             prediction_apikey_registry_service.PredictionApiKeyRegistration(
@@ -1371,15 +1128,11 @@ async def test_create_prediction_api_key_registration_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, prediction_apikey_registry_service.PredictionApiKeyRegistration
-    )
+    assert isinstance(response, prediction_apikey_registry_service.PredictionApiKeyRegistration)
     assert response.api_key == "api_key_value"
 
 
@@ -1395,19 +1148,13 @@ def test_create_prediction_api_key_registration_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-    )
+    request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
-        call.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
+        call.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration()
         client.create_prediction_api_key_registration(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1431,19 +1178,13 @@ async def test_create_prediction_api_key_registration_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-    )
+    request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(prediction_apikey_registry_service.PredictionApiKeyRegistration())
         await client.create_prediction_api_key_registration(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1465,20 +1206,14 @@ def test_create_prediction_api_key_registration_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
+        call.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_prediction_api_key_registration(
             parent="parent_value",
-            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value"
-            ),
+            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1489,9 +1224,7 @@ def test_create_prediction_api_key_registration_flattened():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].prediction_api_key_registration
-        mock_val = prediction_apikey_registry_service.PredictionApiKeyRegistration(
-            api_key="api_key_value"
-        )
+        mock_val = prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value")
         assert arg == mock_val
 
 
@@ -1506,9 +1239,7 @@ def test_create_prediction_api_key_registration_flattened_error():
         client.create_prediction_api_key_registration(
             prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(),
             parent="parent_value",
-            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value"
-            ),
+            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value"),
         )
 
 
@@ -1519,24 +1250,16 @@ async def test_create_prediction_api_key_registration_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
+        call.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(prediction_apikey_registry_service.PredictionApiKeyRegistration())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_prediction_api_key_registration(
             parent="parent_value",
-            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value"
-            ),
+            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1547,9 +1270,7 @@ async def test_create_prediction_api_key_registration_flattened_async():
         mock_val = "parent_value"
         assert arg == mock_val
         arg = args[0].prediction_api_key_registration
-        mock_val = prediction_apikey_registry_service.PredictionApiKeyRegistration(
-            api_key="api_key_value"
-        )
+        mock_val = prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value")
         assert arg == mock_val
 
 
@@ -1565,9 +1286,7 @@ async def test_create_prediction_api_key_registration_flattened_error_async():
         await client.create_prediction_api_key_registration(
             prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(),
             parent="parent_value",
-            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value"
-            ),
+            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value"),
         )
 
 
@@ -1589,9 +1308,7 @@ def test_list_prediction_api_key_registrations(request_type, transport: str = "g
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
             next_page_token="next_page_token_value",
@@ -1601,9 +1318,7 @@ def test_list_prediction_api_key_registrations(request_type, transport: str = "g
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1622,26 +1337,18 @@ def test_list_prediction_api_key_registrations_non_empty_request_with_auto_popul
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = (
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-            parent="parent_value",
-            page_token="page_token_value",
-        )
+    request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_prediction_api_key_registrations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+        assert args[0] == prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
             parent="parent_value",
             page_token="page_token_value",
         )
@@ -1661,19 +1368,12 @@ def test_list_prediction_api_key_registrations_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_prediction_api_key_registrations
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_prediction_api_key_registrations in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_prediction_api_key_registrations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_prediction_api_key_registrations] = mock_rpc
         request = {}
         client.list_prediction_api_key_registrations(request)
 
@@ -1688,9 +1388,7 @@ def test_list_prediction_api_key_registrations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_prediction_api_key_registrations_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_prediction_api_key_registrations_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1704,17 +1402,12 @@ async def test_list_prediction_api_key_registrations_async_use_cached_wrapped_rp
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_prediction_api_key_registrations
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_prediction_api_key_registrations in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_prediction_api_key_registrations
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_prediction_api_key_registrations] = mock_rpc
 
         request = {}
         await client.list_prediction_api_key_registrations(request)
@@ -1731,8 +1424,7 @@ async def test_list_prediction_api_key_registrations_async_use_cached_wrapped_rp
 
 @pytest.mark.asyncio
 async def test_list_prediction_api_key_registrations_async(
-    transport: str = "grpc_asyncio",
-    request_type=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
+    transport: str = "grpc_asyncio", request_type=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest
 ):
     client = PredictionApiKeyRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -1744,9 +1436,7 @@ async def test_list_prediction_api_key_registrations_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
@@ -1758,9 +1448,7 @@ async def test_list_prediction_api_key_registrations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -1780,19 +1468,13 @@ def test_list_prediction_api_key_registrations_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-    )
+    request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         client.list_prediction_api_key_registrations(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1816,19 +1498,13 @@ async def test_list_prediction_api_key_registrations_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-    )
+    request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse())
         await client.list_prediction_api_key_registrations(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1850,13 +1526,9 @@ def test_list_prediction_api_key_registrations_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_prediction_api_key_registrations(
@@ -1893,17 +1565,11 @@ async def test_list_prediction_api_key_registrations_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_prediction_api_key_registrations(
@@ -1941,9 +1607,7 @@ def test_list_prediction_api_key_registrations_pager(transport_name: str = "grpc
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
@@ -1976,12 +1640,8 @@ def test_list_prediction_api_key_registrations_pager(transport_name: str = "grpc
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_prediction_api_key_registrations(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_prediction_api_key_registrations(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -1989,12 +1649,7 @@ def test_list_prediction_api_key_registrations_pager(transport_name: str = "grpc
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(
-                i, prediction_apikey_registry_service.PredictionApiKeyRegistration
-            )
-            for i in results
-        )
+        assert all(isinstance(i, prediction_apikey_registry_service.PredictionApiKeyRegistration) for i in results)
 
 
 def test_list_prediction_api_key_registrations_pages(transport_name: str = "grpc"):
@@ -2004,9 +1659,7 @@ def test_list_prediction_api_key_registrations_pages(transport_name: str = "grpc
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
@@ -2047,11 +1700,7 @@ async def test_list_prediction_api_key_registrations_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
@@ -2089,12 +1738,7 @@ async def test_list_prediction_api_key_registrations_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(
-            isinstance(
-                i, prediction_apikey_registry_service.PredictionApiKeyRegistration
-            )
-            for i in responses
-        )
+        assert all(isinstance(i, prediction_apikey_registry_service.PredictionApiKeyRegistration) for i in responses)
 
 
 @pytest.mark.asyncio
@@ -2104,11 +1748,7 @@ async def test_list_prediction_api_key_registrations_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
@@ -2140,9 +1780,7 @@ async def test_list_prediction_api_key_registrations_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_prediction_api_key_registrations(request={})
-        ).pages:
+        async for page_ in (await client.list_prediction_api_key_registrations(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2166,9 +1804,7 @@ def test_delete_prediction_api_key_registration(request_type, transport: str = "
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         response = client.delete_prediction_api_key_registration(request)
@@ -2176,9 +1812,7 @@ def test_delete_prediction_api_key_registration(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2196,25 +1830,17 @@ def test_delete_prediction_api_key_registration_non_empty_request_with_auto_popu
     # Populate all string fields in the request which are not UUID4
     # since we want to check that UUID4 are populated automatically
     # if they meet the requirements of AIP 4235.
-    request = (
-        prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
-            name="name_value",
-        )
+    request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
+        name="name_value",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_prediction_api_key_registration(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[
-            0
-        ] == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
+        assert args[0] == prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest(
             name="name_value",
         )
 
@@ -2233,19 +1859,12 @@ def test_delete_prediction_api_key_registration_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_prediction_api_key_registration
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_prediction_api_key_registration in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_prediction_api_key_registration
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_prediction_api_key_registration] = mock_rpc
         request = {}
         client.delete_prediction_api_key_registration(request)
 
@@ -2260,9 +1879,7 @@ def test_delete_prediction_api_key_registration_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_prediction_api_key_registration_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_prediction_api_key_registration_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2276,17 +1893,12 @@ async def test_delete_prediction_api_key_registration_async_use_cached_wrapped_r
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_prediction_api_key_registration
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_prediction_api_key_registration in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_prediction_api_key_registration
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_prediction_api_key_registration] = mock_rpc
 
         request = {}
         await client.delete_prediction_api_key_registration(request)
@@ -2303,8 +1915,7 @@ async def test_delete_prediction_api_key_registration_async_use_cached_wrapped_r
 
 @pytest.mark.asyncio
 async def test_delete_prediction_api_key_registration_async(
-    transport: str = "grpc_asyncio",
-    request_type=prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
+    transport: str = "grpc_asyncio", request_type=prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest
 ):
     client = PredictionApiKeyRegistryAsyncClient(
         credentials=async_anonymous_credentials(),
@@ -2316,9 +1927,7 @@ async def test_delete_prediction_api_key_registration_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         response = await client.delete_prediction_api_key_registration(request)
@@ -2326,9 +1935,7 @@ async def test_delete_prediction_api_key_registration_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        request = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         assert args[0] == request
 
     # Establish that the response is the type that we expect.
@@ -2347,16 +1954,12 @@ def test_delete_prediction_api_key_registration_field_headers():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-    )
+    request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         call.return_value = None
         client.delete_prediction_api_key_registration(request)
 
@@ -2381,16 +1984,12 @@ async def test_delete_prediction_api_key_registration_field_headers_async():
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = (
-        prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-    )
+    request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_prediction_api_key_registration(request)
 
@@ -2413,9 +2012,7 @@ def test_delete_prediction_api_key_registration_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
@@ -2454,9 +2051,7 @@ async def test_delete_prediction_api_key_registration_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = None
 
@@ -2505,19 +2100,12 @@ def test_create_prediction_api_key_registration_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_prediction_api_key_registration
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_prediction_api_key_registration in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_prediction_api_key_registration
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_prediction_api_key_registration] = mock_rpc
 
         request = {}
         client.create_prediction_api_key_registration(request)
@@ -2541,17 +2129,13 @@ def test_create_prediction_api_key_registration_rest_required_fields(
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_prediction_api_key_registration._get_unset_required_fields(
-        jsonified_request
-    )
+    ).create_prediction_api_key_registration._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2560,9 +2144,7 @@ def test_create_prediction_api_key_registration_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_prediction_api_key_registration._get_unset_required_fields(
-        jsonified_request
-    )
+    ).create_prediction_api_key_registration._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2598,11 +2180,7 @@ def test_create_prediction_api_key_registration_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = (
-                prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(
-                    return_value
-                )
-            )
+            return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -2617,13 +2195,9 @@ def test_create_prediction_api_key_registration_rest_required_fields(
 
 
 def test_create_prediction_api_key_registration_rest_unset_required_fields():
-    transport = transports.PredictionApiKeyRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.PredictionApiKeyRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = (
-        transport.create_prediction_api_key_registration._get_unset_required_fields({})
-    )
+    unset_fields = transport.create_prediction_api_key_registration._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
         & set(
@@ -2647,16 +2221,12 @@ def test_create_prediction_api_key_registration_rest_flattened():
         return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value"
-            ),
+            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value"),
         )
         mock_args.update(sample_request)
 
@@ -2664,11 +2234,7 @@ def test_create_prediction_api_key_registration_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(
-                return_value
-            )
-        )
+        return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2681,15 +2247,11 @@ def test_create_prediction_api_key_registration_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/predictionApiKeyRegistrations"
-            % client.transport._host,
-            args[1],
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/predictionApiKeyRegistrations" % client.transport._host, args[1]
         )
 
 
-def test_create_prediction_api_key_registration_rest_flattened_error(
-    transport: str = "rest",
-):
+def test_create_prediction_api_key_registration_rest_flattened_error(transport: str = "rest"):
     client = PredictionApiKeyRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2701,9 +2263,7 @@ def test_create_prediction_api_key_registration_rest_flattened_error(
         client.create_prediction_api_key_registration(
             prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest(),
             parent="parent_value",
-            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(
-                api_key="api_key_value"
-            ),
+            prediction_api_key_registration=prediction_apikey_registry_service.PredictionApiKeyRegistration(api_key="api_key_value"),
         )
 
 
@@ -2721,19 +2281,12 @@ def test_list_prediction_api_key_registrations_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_prediction_api_key_registrations
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_prediction_api_key_registrations in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_prediction_api_key_registrations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_prediction_api_key_registrations] = mock_rpc
 
         request = {}
         client.list_prediction_api_key_registrations(request)
@@ -2757,17 +2310,13 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_prediction_api_key_registrations._get_unset_required_fields(
-        jsonified_request
-    )
+    ).list_prediction_api_key_registrations._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2776,9 +2325,7 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_prediction_api_key_registrations._get_unset_required_fields(
-        jsonified_request
-    )
+    ).list_prediction_api_key_registrations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -2799,9 +2346,7 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = (
-        prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-    )
+    return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2822,9 +2367,7 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
-                return_value
-            )
+            return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -2839,13 +2382,9 @@ def test_list_prediction_api_key_registrations_rest_required_fields(
 
 
 def test_list_prediction_api_key_registrations_rest_unset_required_fields():
-    transport = transports.PredictionApiKeyRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.PredictionApiKeyRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = (
-        transport.list_prediction_api_key_registrations._get_unset_required_fields({})
-    )
+    unset_fields = transport.list_prediction_api_key_registrations._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
@@ -2866,14 +2405,10 @@ def test_list_prediction_api_key_registrations_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -2885,9 +2420,7 @@ def test_list_prediction_api_key_registrations_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
-            return_value
-        )
+        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2900,15 +2433,11 @@ def test_list_prediction_api_key_registrations_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/predictionApiKeyRegistrations"
-            % client.transport._host,
-            args[1],
+            "%s/v1beta1/{parent=projects/*/locations/*/catalogs/*/eventStores/*}/predictionApiKeyRegistrations" % client.transport._host, args[1]
         )
 
 
-def test_list_prediction_api_key_registrations_rest_flattened_error(
-    transport: str = "rest",
-):
+def test_list_prediction_api_key_registrations_rest_flattened_error(transport: str = "rest"):
     client = PredictionApiKeyRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -2964,36 +2493,22 @@ def test_list_prediction_api_key_registrations_rest_pager(transport: str = "rest
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.to_json(
-                x
-            )
-            for x in response
-        )
+        response = tuple(prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
 
         pager = client.list_prediction_api_key_registrations(request=sample_request)
 
         results = list(pager)
         assert len(results) == 6
-        assert all(
-            isinstance(
-                i, prediction_apikey_registry_service.PredictionApiKeyRegistration
-            )
-            for i in results
-        )
+        assert all(isinstance(i, prediction_apikey_registry_service.PredictionApiKeyRegistration) for i in results)
 
-        pages = list(
-            client.list_prediction_api_key_registrations(request=sample_request).pages
-        )
+        pages = list(client.list_prediction_api_key_registrations(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -3012,19 +2527,12 @@ def test_delete_prediction_api_key_registration_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_prediction_api_key_registration
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_prediction_api_key_registration in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_prediction_api_key_registration
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_prediction_api_key_registration] = mock_rpc
 
         request = {}
         client.delete_prediction_api_key_registration(request)
@@ -3048,17 +2556,13 @@ def test_delete_prediction_api_key_registration_rest_required_fields(
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_prediction_api_key_registration._get_unset_required_fields(
-        jsonified_request
-    )
+    ).delete_prediction_api_key_registration._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -3067,9 +2571,7 @@ def test_delete_prediction_api_key_registration_rest_required_fields(
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_prediction_api_key_registration._get_unset_required_fields(
-        jsonified_request
-    )
+    ).delete_prediction_api_key_registration._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3116,13 +2618,9 @@ def test_delete_prediction_api_key_registration_rest_required_fields(
 
 
 def test_delete_prediction_api_key_registration_rest_unset_required_fields():
-    transport = transports.PredictionApiKeyRegistryRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.PredictionApiKeyRegistryRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = (
-        transport.delete_prediction_api_key_registration._get_unset_required_fields({})
-    )
+    unset_fields = transport.delete_prediction_api_key_registration._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
@@ -3138,9 +2636,7 @@ def test_delete_prediction_api_key_registration_rest_flattened():
         return_value = None
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4/predictionApiKeyRegistrations/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4/predictionApiKeyRegistrations/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -3163,15 +2659,11 @@ def test_delete_prediction_api_key_registration_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1beta1/{name=projects/*/locations/*/catalogs/*/eventStores/*/predictionApiKeyRegistrations/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1beta1/{name=projects/*/locations/*/catalogs/*/eventStores/*/predictionApiKeyRegistrations/*}" % client.transport._host, args[1]
         )
 
 
-def test_delete_prediction_api_key_registration_rest_flattened_error(
-    transport: str = "rest",
-):
+def test_delete_prediction_api_key_registration_rest_flattened_error(transport: str = "rest"):
     client = PredictionApiKeyRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -3223,9 +2715,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = PredictionApiKeyRegistryClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = PredictionApiKeyRegistryClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.PredictionApiKeyRegistryGrpcTransport(
@@ -3279,16 +2769,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = PredictionApiKeyRegistryClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = PredictionApiKeyRegistryClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -3301,20 +2787,14 @@ def test_create_prediction_api_key_registration_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
-        call.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
+        call.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration()
         client.create_prediction_api_key_registration(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3328,20 +2808,14 @@ def test_list_prediction_api_key_registrations_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
-        call.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
+        call.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
         client.list_prediction_api_key_registrations(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request_msg = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
         assert args[0] == request_msg
 
@@ -3355,33 +2829,25 @@ def test_delete_prediction_api_key_registration_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         call.return_value = None
         client.delete_prediction_api_key_registration(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = PredictionApiKeyRegistryAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = PredictionApiKeyRegistryAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = PredictionApiKeyRegistryAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = PredictionApiKeyRegistryAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -3395,9 +2861,7 @@ async def test_create_prediction_api_key_registration_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             prediction_apikey_registry_service.PredictionApiKeyRegistration(
@@ -3409,9 +2873,7 @@ async def test_create_prediction_api_key_registration_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3426,9 +2888,7 @@ async def test_list_prediction_api_key_registrations_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(
@@ -3440,9 +2900,7 @@ async def test_list_prediction_api_key_registrations_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request_msg = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
         assert args[0] == request_msg
 
@@ -3457,9 +2915,7 @@ async def test_delete_prediction_api_key_registration_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         await client.delete_prediction_api_key_registration(request=None)
@@ -3467,36 +2923,26 @@ async def test_delete_prediction_api_key_registration_empty_call_grpc_asyncio():
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
 
 def test_transport_kind_rest():
-    transport = PredictionApiKeyRegistryClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = PredictionApiKeyRegistryClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
 def test_create_prediction_api_key_registration_rest_bad_request(
     request_type=prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest,
 ):
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -3516,14 +2962,10 @@ def test_create_prediction_api_key_registration_rest_bad_request(
     ],
 )
 def test_create_prediction_api_key_registration_rest_call_success(request_type):
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3538,11 +2980,7 @@ def test_create_prediction_api_key_registration_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(
-                return_value
-            )
-        )
+        return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3550,9 +2988,7 @@ def test_create_prediction_api_key_registration_rest_call_success(request_type):
         response = client.create_prediction_api_key_registration(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(
-        response, prediction_apikey_registry_service.PredictionApiKeyRegistration
-    )
+    assert isinstance(response, prediction_apikey_registry_service.PredictionApiKeyRegistration)
     assert response.api_key == "api_key_value"
 
 
@@ -3560,25 +2996,18 @@ def test_create_prediction_api_key_registration_rest_call_success(request_type):
 def test_create_prediction_api_key_registration_rest_interceptors(null_interceptor):
     transport = transports.PredictionApiKeyRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PredictionApiKeyRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.PredictionApiKeyRegistryRestInterceptor(),
     )
     client = PredictionApiKeyRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "post_create_prediction_api_key_registration",
+        transports.PredictionApiKeyRegistryRestInterceptor, "post_create_prediction_api_key_registration"
     ) as post, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "post_create_prediction_api_key_registration_with_metadata",
+        transports.PredictionApiKeyRegistryRestInterceptor, "post_create_prediction_api_key_registration_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "pre_create_prediction_api_key_registration",
+        transports.PredictionApiKeyRegistryRestInterceptor, "pre_create_prediction_api_key_registration"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
@@ -3596,28 +3025,19 @@ def test_create_prediction_api_key_registration_rest_interceptors(null_intercept
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration.to_json(
-                prediction_apikey_registry_service.PredictionApiKeyRegistration()
-            )
+        return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration.to_json(
+            prediction_apikey_registry_service.PredictionApiKeyRegistration()
         )
         req.return_value.content = return_value
 
-        request = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration()
-        )
-        post_with_metadata.return_value = (
-            prediction_apikey_registry_service.PredictionApiKeyRegistration(),
-            metadata,
-        )
+        post.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration()
+        post_with_metadata.return_value = prediction_apikey_registry_service.PredictionApiKeyRegistration(), metadata
 
         client.create_prediction_api_key_registration(
             request,
@@ -3635,19 +3055,13 @@ def test_create_prediction_api_key_registration_rest_interceptors(null_intercept
 def test_list_prediction_api_key_registrations_rest_bad_request(
     request_type=prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest,
 ):
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -3667,14 +3081,10 @@ def test_list_prediction_api_key_registrations_rest_bad_request(
     ],
 )
 def test_list_prediction_api_key_registrations_rest_call_success(request_type):
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3689,9 +3099,7 @@ def test_list_prediction_api_key_registrations_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(
-            return_value
-        )
+        return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3707,25 +3115,18 @@ def test_list_prediction_api_key_registrations_rest_call_success(request_type):
 def test_list_prediction_api_key_registrations_rest_interceptors(null_interceptor):
     transport = transports.PredictionApiKeyRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PredictionApiKeyRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.PredictionApiKeyRegistryRestInterceptor(),
     )
     client = PredictionApiKeyRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "post_list_prediction_api_key_registrations",
+        transports.PredictionApiKeyRegistryRestInterceptor, "post_list_prediction_api_key_registrations"
     ) as post, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "post_list_prediction_api_key_registrations_with_metadata",
+        transports.PredictionApiKeyRegistryRestInterceptor, "post_list_prediction_api_key_registrations_with_metadata"
     ) as post_with_metadata, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "pre_list_prediction_api_key_registrations",
+        transports.PredictionApiKeyRegistryRestInterceptor, "pre_list_prediction_api_key_registrations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
@@ -3748,21 +3149,14 @@ def test_list_prediction_api_key_registrations_rest_interceptors(null_intercepto
         )
         req.return_value.content = return_value
 
-        request = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
-        )
-        post_with_metadata.return_value = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(),
-            metadata,
-        )
+        post.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse()
+        post_with_metadata.return_value = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsResponse(), metadata
 
         client.list_prediction_api_key_registrations(
             request,
@@ -3780,19 +3174,13 @@ def test_list_prediction_api_key_registrations_rest_interceptors(null_intercepto
 def test_delete_prediction_api_key_registration_rest_bad_request(
     request_type=prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest,
 ):
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4/predictionApiKeyRegistrations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4/predictionApiKeyRegistrations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -3812,14 +3200,10 @@ def test_delete_prediction_api_key_registration_rest_bad_request(
     ],
 )
 def test_delete_prediction_api_key_registration_rest_call_success(request_type):
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4/predictionApiKeyRegistrations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/catalogs/sample3/eventStores/sample4/predictionApiKeyRegistrations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -3844,20 +3228,13 @@ def test_delete_prediction_api_key_registration_rest_call_success(request_type):
 def test_delete_prediction_api_key_registration_rest_interceptors(null_interceptor):
     transport = transports.PredictionApiKeyRegistryRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.PredictionApiKeyRegistryRestInterceptor(),
+        interceptor=None if null_interceptor else transports.PredictionApiKeyRegistryRestInterceptor(),
     )
     client = PredictionApiKeyRegistryClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.PredictionApiKeyRegistryRestInterceptor,
-        "pre_delete_prediction_api_key_registration",
-    ) as pre:
+    ) as transcode, mock.patch.object(transports.PredictionApiKeyRegistryRestInterceptor, "pre_delete_prediction_api_key_registration") as pre:
         pre.assert_not_called()
         pb_message = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest.pb(
             prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
@@ -3873,9 +3250,7 @@ def test_delete_prediction_api_key_registration_rest_interceptors(null_intercept
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
 
-        request = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -3894,9 +3269,7 @@ def test_delete_prediction_api_key_registration_rest_interceptors(null_intercept
 
 
 def test_initialize_client_w_rest():
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -3909,17 +3282,13 @@ def test_create_prediction_api_key_registration_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_prediction_api_key_registration), "__call__") as call:
         client.create_prediction_api_key_registration(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.CreatePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3933,17 +3302,13 @@ def test_list_prediction_api_key_registrations_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_prediction_api_key_registrations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_prediction_api_key_registrations), "__call__") as call:
         client.list_prediction_api_key_registrations(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
-        )
+        request_msg = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest()
 
         assert args[0] == request_msg
 
@@ -3957,17 +3322,13 @@ def test_delete_prediction_api_key_registration_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_prediction_api_key_registration), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_prediction_api_key_registration), "__call__") as call:
         client.delete_prediction_api_key_registration(request=None)
 
         # Establish that the underlying stub method was called.
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        request_msg = (
-            prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
-        )
+        request_msg = prediction_apikey_registry_service.DeletePredictionApiKeyRegistrationRequest()
 
         assert args[0] == request_msg
 
@@ -3987,8 +3348,7 @@ def test_prediction_api_key_registry_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.PredictionApiKeyRegistryTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
+            credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json"
         )
 
 
@@ -4027,9 +3387,7 @@ def test_prediction_api_key_registry_base_transport():
 
 def test_prediction_api_key_registry_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.recommendationengine_v1beta1.services.prediction_api_key_registry.transports.PredictionApiKeyRegistryTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -4104,9 +3462,7 @@ def test_prediction_api_key_registry_transport_auth_gdch_credentials(transport_c
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -4114,19 +3470,12 @@ def test_prediction_api_key_registry_transport_auth_gdch_credentials(transport_c
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.PredictionApiKeyRegistryGrpcTransport, grpc_helpers),
-        (transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.PredictionApiKeyRegistryGrpcTransport, grpc_helpers), (transports.PredictionApiKeyRegistryGrpcAsyncIOTransport, grpc_helpers_async)],
 )
-def test_prediction_api_key_registry_transport_create_channel(
-    transport_class, grpc_helpers
-):
+def test_prediction_api_key_registry_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -4150,25 +3499,15 @@ def test_prediction_api_key_registry_transport_create_channel(
 
 
 @pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.PredictionApiKeyRegistryGrpcTransport,
-        transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-    ],
+    "transport_class", [transports.PredictionApiKeyRegistryGrpcTransport, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport]
 )
-def test_prediction_api_key_registry_grpc_transport_client_cert_source_for_mtls(
-    transport_class,
-):
+def test_prediction_api_key_registry_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -4186,24 +3525,15 @@ def test_prediction_api_key_registry_grpc_transport_client_cert_source_for_mtls(
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_prediction_api_key_registry_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.PredictionApiKeyRegistryRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.PredictionApiKeyRegistryRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -4218,15 +3548,11 @@ def test_prediction_api_key_registry_http_transport_client_cert_source_for_mtls(
 def test_prediction_api_key_registry_host_no_port(transport_name):
     client = PredictionApiKeyRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="recommendationengine.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="recommendationengine.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "recommendationengine.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://recommendationengine.googleapis.com"
+        "recommendationengine.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://recommendationengine.googleapis.com"
     )
 
 
@@ -4241,9 +3567,7 @@ def test_prediction_api_key_registry_host_no_port(transport_name):
 def test_prediction_api_key_registry_host_with_port(transport_name):
     client = PredictionApiKeyRegistryClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="recommendationengine.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="recommendationengine.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
@@ -4309,22 +3633,13 @@ def test_prediction_api_key_registry_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
+@pytest.mark.filterwarnings("ignore::FutureWarning")
 @pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.PredictionApiKeyRegistryGrpcTransport,
-        transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-    ],
+    "transport_class", [transports.PredictionApiKeyRegistryGrpcTransport, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport]
 )
-def test_prediction_api_key_registry_transport_channel_mtls_with_client_cert_source(
-    transport_class,
-):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+def test_prediction_api_key_registry_transport_channel_mtls_with_client_cert_source(transport_class):
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -4342,9 +3657,7 @@ def test_prediction_api_key_registry_transport_channel_mtls_with_client_cert_sou
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -4364,11 +3677,7 @@ def test_prediction_api_key_registry_transport_channel_mtls_with_client_cert_sou
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
 @pytest.mark.parametrize(
-    "transport_class",
-    [
-        transports.PredictionApiKeyRegistryGrpcTransport,
-        transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-    ],
+    "transport_class", [transports.PredictionApiKeyRegistryGrpcTransport, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport]
 )
 def test_prediction_api_key_registry_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
@@ -4377,9 +3686,7 @@ def test_prediction_api_key_registry_transport_channel_mtls_with_adc(transport_c
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -4418,9 +3725,7 @@ def test_event_store_path():
         catalog=catalog,
         event_store=event_store,
     )
-    actual = PredictionApiKeyRegistryClient.event_store_path(
-        project, location, catalog, event_store
-    )
+    actual = PredictionApiKeyRegistryClient.event_store_path(project, location, catalog, event_store)
     assert expected == actual
 
 
@@ -4465,14 +3770,10 @@ def test_parse_prediction_api_key_registration_path():
         "event_store": "oyster",
         "prediction_api_key_registration": "nudibranch",
     }
-    path = PredictionApiKeyRegistryClient.prediction_api_key_registration_path(
-        **expected
-    )
+    path = PredictionApiKeyRegistryClient.prediction_api_key_registration_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = PredictionApiKeyRegistryClient.parse_prediction_api_key_registration_path(
-        path
-    )
+    actual = PredictionApiKeyRegistryClient.parse_prediction_api_key_registration_path(path)
     assert expected == actual
 
 
@@ -4582,18 +3883,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.PredictionApiKeyRegistryTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.PredictionApiKeyRegistryTransport, "_prep_wrapped_messages") as prep:
         client = PredictionApiKeyRegistryClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.PredictionApiKeyRegistryTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.PredictionApiKeyRegistryTransport, "_prep_wrapped_messages") as prep:
         transport_class = PredictionApiKeyRegistryClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -4603,12 +3900,8 @@ def test_client_with_default_client_info():
 
 
 def test_transport_close_grpc():
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -4616,24 +3909,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = PredictionApiKeyRegistryAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = PredictionApiKeyRegistryAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = PredictionApiKeyRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -4645,9 +3930,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = PredictionApiKeyRegistryClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = PredictionApiKeyRegistryClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -4659,20 +3942,12 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (
-            PredictionApiKeyRegistryClient,
-            transports.PredictionApiKeyRegistryGrpcTransport,
-        ),
-        (
-            PredictionApiKeyRegistryAsyncClient,
-            transports.PredictionApiKeyRegistryGrpcAsyncIOTransport,
-        ),
+        (PredictionApiKeyRegistryClient, transports.PredictionApiKeyRegistryGrpcTransport),
+        (PredictionApiKeyRegistryAsyncClient, transports.PredictionApiKeyRegistryGrpcAsyncIOTransport),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -4683,9 +3958,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

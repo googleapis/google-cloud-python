@@ -232,23 +232,17 @@ class OSPolicyAssignment(proto.Message):
             proto.STRING,
             number=2,
         )
-        inclusion_labels: MutableSequence[
-            "OSPolicyAssignment.LabelSet"
-        ] = proto.RepeatedField(
+        inclusion_labels: MutableSequence["OSPolicyAssignment.LabelSet"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="OSPolicyAssignment.LabelSet",
         )
-        exclusion_labels: MutableSequence[
-            "OSPolicyAssignment.LabelSet"
-        ] = proto.RepeatedField(
+        exclusion_labels: MutableSequence["OSPolicyAssignment.LabelSet"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="OSPolicyAssignment.LabelSet",
         )
-        inventories: MutableSequence[
-            "OSPolicyAssignment.InstanceFilter.Inventory"
-        ] = proto.RepeatedField(
+        inventories: MutableSequence["OSPolicyAssignment.InstanceFilter.Inventory"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="OSPolicyAssignment.InstanceFilter.Inventory",

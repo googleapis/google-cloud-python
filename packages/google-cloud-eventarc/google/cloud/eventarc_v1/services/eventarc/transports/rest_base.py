@@ -24,17 +24,8 @@ from google.iam.v1 import policy_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.eventarc_v1.types import (
-    channel,
-    channel_connection,
-    discovery,
-    enrollment,
-    eventarc,
-    google_api_source,
-)
-from google.cloud.eventarc_v1.types import (
-    google_channel_config as gce_google_channel_config,
-)
+from google.cloud.eventarc_v1.types import channel, channel_connection, discovery, enrollment, eventarc, google_api_source
+from google.cloud.eventarc_v1.types import google_channel_config as gce_google_channel_config
 from google.cloud.eventarc_v1.types import google_channel_config
 from google.cloud.eventarc_v1.types import message_bus, pipeline, trigger
 
@@ -87,20 +78,14 @@ class _BaseEventarcRestTransport(EventarcTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseCreateChannel:
@@ -113,11 +98,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -140,9 +121,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -153,11 +132,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreateChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreateChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -172,11 +147,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -199,9 +170,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -212,11 +181,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreateChannelConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreateChannelConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -231,11 +196,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -258,9 +219,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -271,11 +230,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreateEnrollment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreateEnrollment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -290,11 +245,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -317,9 +268,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -330,11 +279,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreateGoogleApiSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -349,11 +294,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -376,9 +317,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -389,11 +328,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreateMessageBus._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreateMessageBus._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -408,11 +343,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -435,9 +366,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -448,11 +377,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreatePipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreatePipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -467,11 +392,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -494,9 +415,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -507,11 +426,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseCreateTrigger._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseCreateTrigger._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -524,11 +439,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -554,11 +465,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeleteChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeleteChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -571,11 +478,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -601,11 +504,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeleteChannelConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeleteChannelConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -618,11 +517,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -648,11 +543,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeleteEnrollment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeleteEnrollment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -665,11 +556,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -695,11 +582,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeleteGoogleApiSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -712,11 +595,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -742,11 +621,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeleteMessageBus._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeleteMessageBus._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -759,11 +634,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -789,11 +660,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeletePipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeletePipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -806,11 +673,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -836,11 +699,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseDeleteTrigger._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseDeleteTrigger._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -853,11 +712,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -883,11 +738,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetChannel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetChannel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -900,11 +751,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -930,11 +777,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetChannelConnection._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetChannelConnection._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -947,11 +790,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -977,11 +816,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetEnrollment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetEnrollment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -994,11 +829,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1024,11 +855,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetGoogleApiSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetGoogleApiSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1041,11 +868,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1071,11 +894,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetGoogleChannelConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1088,11 +907,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1118,11 +933,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetMessageBus._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetMessageBus._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1135,11 +946,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1165,11 +972,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetPipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetPipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1182,11 +985,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1212,11 +1011,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetProvider._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetProvider._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1229,11 +1024,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1259,11 +1050,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseGetTrigger._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseGetTrigger._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1276,11 +1063,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1306,11 +1089,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListChannelConnections._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListChannelConnections._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1323,11 +1102,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1353,11 +1128,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListChannels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListChannels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1370,11 +1141,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1400,11 +1167,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListEnrollments._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListEnrollments._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1417,11 +1180,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1447,11 +1206,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListGoogleApiSources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListGoogleApiSources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1464,11 +1219,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1494,11 +1245,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListMessageBusEnrollments._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1511,11 +1258,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1541,11 +1284,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListMessageBuses._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListMessageBuses._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1558,11 +1297,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1588,11 +1323,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListPipelines._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListPipelines._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1605,11 +1336,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1635,11 +1362,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListProviders._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListProviders._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1652,11 +1375,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1682,11 +1401,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseListTriggers._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseListTriggers._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1716,9 +1431,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1741,11 +1454,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1768,9 +1477,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1781,11 +1488,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseUpdateEnrollment._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseUpdateEnrollment._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1798,11 +1501,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1825,9 +1524,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1838,11 +1535,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseUpdateGoogleApiSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1855,11 +1548,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1882,9 +1571,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1895,11 +1582,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseUpdateGoogleChannelConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1912,11 +1595,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1939,9 +1618,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1952,11 +1629,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseUpdateMessageBus._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseUpdateMessageBus._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1969,11 +1642,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1996,9 +1665,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2009,11 +1676,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseEventarcRestTransport._BaseUpdatePipeline._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseEventarcRestTransport._BaseUpdatePipeline._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2043,9 +1706,7 @@ class _BaseEventarcRestTransport(EventarcTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod

@@ -172,12 +172,8 @@ class OsConfigServiceRestInterceptor:
     """
 
     def pre_cancel_patch_job(
-        self,
-        request: patch_jobs.CancelPatchJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_jobs.CancelPatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: patch_jobs.CancelPatchJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_jobs.CancelPatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_patch_job
 
         Override in a subclass to manipulate the request or metadata
@@ -185,9 +181,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_patch_job(
-        self, response: patch_jobs.PatchJob
-    ) -> patch_jobs.PatchJob:
+    def post_cancel_patch_job(self, response: patch_jobs.PatchJob) -> patch_jobs.PatchJob:
         """Post-rpc interceptor for cancel_patch_job
 
         DEPRECATED. Please use the `post_cancel_patch_job_with_metadata`
@@ -201,9 +195,7 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_cancel_patch_job_with_metadata(
-        self,
-        response: patch_jobs.PatchJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: patch_jobs.PatchJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[patch_jobs.PatchJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_patch_job
 
@@ -220,13 +212,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_create_patch_deployment(
-        self,
-        request: patch_deployments.CreatePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.CreatePatchDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.CreatePatchDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.CreatePatchDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -234,9 +221,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_patch_deployment(
-        self, response: patch_deployments.PatchDeployment
-    ) -> patch_deployments.PatchDeployment:
+    def post_create_patch_deployment(self, response: patch_deployments.PatchDeployment) -> patch_deployments.PatchDeployment:
         """Post-rpc interceptor for create_patch_deployment
 
         DEPRECATED. Please use the `post_create_patch_deployment_with_metadata`
@@ -250,12 +235,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_create_patch_deployment_with_metadata(
-        self,
-        response: patch_deployments.PatchDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: patch_deployments.PatchDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_patch_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -271,13 +252,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_patch_deployment(
-        self,
-        request: patch_deployments.DeletePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.DeletePatchDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.DeletePatchDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.DeletePatchDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -286,12 +262,8 @@ class OsConfigServiceRestInterceptor:
         return request, metadata
 
     def pre_execute_patch_job(
-        self,
-        request: patch_jobs.ExecutePatchJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_jobs.ExecutePatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: patch_jobs.ExecutePatchJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_jobs.ExecutePatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for execute_patch_job
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +271,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_execute_patch_job(
-        self, response: patch_jobs.PatchJob
-    ) -> patch_jobs.PatchJob:
+    def post_execute_patch_job(self, response: patch_jobs.PatchJob) -> patch_jobs.PatchJob:
         """Post-rpc interceptor for execute_patch_job
 
         DEPRECATED. Please use the `post_execute_patch_job_with_metadata`
@@ -315,9 +285,7 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_execute_patch_job_with_metadata(
-        self,
-        response: patch_jobs.PatchJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: patch_jobs.PatchJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[patch_jobs.PatchJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for execute_patch_job
 
@@ -334,13 +302,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_get_patch_deployment(
-        self,
-        request: patch_deployments.GetPatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.GetPatchDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.GetPatchDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.GetPatchDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -348,9 +311,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_patch_deployment(
-        self, response: patch_deployments.PatchDeployment
-    ) -> patch_deployments.PatchDeployment:
+    def post_get_patch_deployment(self, response: patch_deployments.PatchDeployment) -> patch_deployments.PatchDeployment:
         """Post-rpc interceptor for get_patch_deployment
 
         DEPRECATED. Please use the `post_get_patch_deployment_with_metadata`
@@ -364,12 +325,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_get_patch_deployment_with_metadata(
-        self,
-        response: patch_deployments.PatchDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: patch_deployments.PatchDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_patch_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -385,9 +342,7 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_get_patch_job(
-        self,
-        request: patch_jobs.GetPatchJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: patch_jobs.GetPatchJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[patch_jobs.GetPatchJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_patch_job
 
@@ -410,9 +365,7 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_get_patch_job_with_metadata(
-        self,
-        response: patch_jobs.PatchJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: patch_jobs.PatchJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[patch_jobs.PatchJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_patch_job
 
@@ -429,13 +382,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_list_patch_deployments(
-        self,
-        request: patch_deployments.ListPatchDeploymentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.ListPatchDeploymentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.ListPatchDeploymentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.ListPatchDeploymentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_patch_deployments
 
         Override in a subclass to manipulate the request or metadata
@@ -443,9 +391,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_patch_deployments(
-        self, response: patch_deployments.ListPatchDeploymentsResponse
-    ) -> patch_deployments.ListPatchDeploymentsResponse:
+    def post_list_patch_deployments(self, response: patch_deployments.ListPatchDeploymentsResponse) -> patch_deployments.ListPatchDeploymentsResponse:
         """Post-rpc interceptor for list_patch_deployments
 
         DEPRECATED. Please use the `post_list_patch_deployments_with_metadata`
@@ -459,13 +405,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_list_patch_deployments_with_metadata(
-        self,
-        response: patch_deployments.ListPatchDeploymentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.ListPatchDeploymentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: patch_deployments.ListPatchDeploymentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.ListPatchDeploymentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_patch_deployments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -481,13 +422,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_list_patch_job_instance_details(
-        self,
-        request: patch_jobs.ListPatchJobInstanceDetailsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_jobs.ListPatchJobInstanceDetailsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_jobs.ListPatchJobInstanceDetailsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_jobs.ListPatchJobInstanceDetailsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_patch_job_instance_details
 
         Override in a subclass to manipulate the request or metadata
@@ -511,13 +447,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_list_patch_job_instance_details_with_metadata(
-        self,
-        response: patch_jobs.ListPatchJobInstanceDetailsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_jobs.ListPatchJobInstanceDetailsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: patch_jobs.ListPatchJobInstanceDetailsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_jobs.ListPatchJobInstanceDetailsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_patch_job_instance_details
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -533,12 +464,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_list_patch_jobs(
-        self,
-        request: patch_jobs.ListPatchJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_jobs.ListPatchJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: patch_jobs.ListPatchJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_jobs.ListPatchJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_patch_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -546,9 +473,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_patch_jobs(
-        self, response: patch_jobs.ListPatchJobsResponse
-    ) -> patch_jobs.ListPatchJobsResponse:
+    def post_list_patch_jobs(self, response: patch_jobs.ListPatchJobsResponse) -> patch_jobs.ListPatchJobsResponse:
         """Post-rpc interceptor for list_patch_jobs
 
         DEPRECATED. Please use the `post_list_patch_jobs_with_metadata`
@@ -562,12 +487,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_list_patch_jobs_with_metadata(
-        self,
-        response: patch_jobs.ListPatchJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_jobs.ListPatchJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: patch_jobs.ListPatchJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_jobs.ListPatchJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_patch_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -583,13 +504,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_pause_patch_deployment(
-        self,
-        request: patch_deployments.PausePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.PausePatchDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.PausePatchDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.PausePatchDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -597,9 +513,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_pause_patch_deployment(
-        self, response: patch_deployments.PatchDeployment
-    ) -> patch_deployments.PatchDeployment:
+    def post_pause_patch_deployment(self, response: patch_deployments.PatchDeployment) -> patch_deployments.PatchDeployment:
         """Post-rpc interceptor for pause_patch_deployment
 
         DEPRECATED. Please use the `post_pause_patch_deployment_with_metadata`
@@ -613,12 +527,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_pause_patch_deployment_with_metadata(
-        self,
-        response: patch_deployments.PatchDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: patch_deployments.PatchDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for pause_patch_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -634,13 +544,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_resume_patch_deployment(
-        self,
-        request: patch_deployments.ResumePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.ResumePatchDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.ResumePatchDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.ResumePatchDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -648,9 +553,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_resume_patch_deployment(
-        self, response: patch_deployments.PatchDeployment
-    ) -> patch_deployments.PatchDeployment:
+    def post_resume_patch_deployment(self, response: patch_deployments.PatchDeployment) -> patch_deployments.PatchDeployment:
         """Post-rpc interceptor for resume_patch_deployment
 
         DEPRECATED. Please use the `post_resume_patch_deployment_with_metadata`
@@ -664,12 +567,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_resume_patch_deployment_with_metadata(
-        self,
-        response: patch_deployments.PatchDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: patch_deployments.PatchDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_patch_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -685,13 +584,8 @@ class OsConfigServiceRestInterceptor:
         return response, metadata
 
     def pre_update_patch_deployment(
-        self,
-        request: patch_deployments.UpdatePatchDeploymentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.UpdatePatchDeploymentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: patch_deployments.UpdatePatchDeploymentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.UpdatePatchDeploymentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_patch_deployment
 
         Override in a subclass to manipulate the request or metadata
@@ -699,9 +593,7 @@ class OsConfigServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_patch_deployment(
-        self, response: patch_deployments.PatchDeployment
-    ) -> patch_deployments.PatchDeployment:
+    def post_update_patch_deployment(self, response: patch_deployments.PatchDeployment) -> patch_deployments.PatchDeployment:
         """Post-rpc interceptor for update_patch_deployment
 
         DEPRECATED. Please use the `post_update_patch_deployment_with_metadata`
@@ -715,12 +607,8 @@ class OsConfigServiceRestInterceptor:
         return response
 
     def post_update_patch_deployment_with_metadata(
-        self,
-        response: patch_deployments.PatchDeployment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: patch_deployments.PatchDeployment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[patch_deployments.PatchDeployment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_patch_deployment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -819,30 +707,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OsConfigServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CancelPatchJob(
-        _BaseOsConfigServiceRestTransport._BaseCancelPatchJob, OsConfigServiceRestStub
-    ):
+    class _CancelPatchJob(_BaseOsConfigServiceRestTransport._BaseCancelPatchJob, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.CancelPatchJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -892,32 +768,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_patch_job(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_patch_job(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseCancelPatchJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -941,13 +803,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._CancelPatchJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -963,12 +819,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_cancel_patch_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_patch_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_patch_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = patch_jobs.PatchJob.to_json(response)
                 except:
@@ -989,23 +841,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _CreatePatchDeployment(
-        _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment,
-        OsConfigServiceRestStub,
-    ):
+    class _CreatePatchDeployment(_BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.CreatePatchDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1052,32 +893,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_patch_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_patch_deployment(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseCreatePatchDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1100,16 +927,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigServiceRestTransport._CreatePatchDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OsConfigServiceRestTransport._CreatePatchDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1125,16 +944,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_create_patch_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_patch_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_patch_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = patch_deployments.PatchDeployment.to_json(
-                        response
-                    )
+                    response_payload = patch_deployments.PatchDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1153,23 +966,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _DeletePatchDeployment(
-        _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment,
-        OsConfigServiceRestStub,
-    ):
+    class _DeletePatchDeployment(_BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.DeletePatchDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1205,28 +1007,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_patch_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_patch_deployment(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseDeletePatchDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1249,15 +1039,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigServiceRestTransport._DeletePatchDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OsConfigServiceRestTransport._DeletePatchDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1265,22 +1048,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _ExecutePatchJob(
-        _BaseOsConfigServiceRestTransport._BaseExecutePatchJob, OsConfigServiceRestStub
-    ):
+    class _ExecutePatchJob(_BaseOsConfigServiceRestTransport._BaseExecutePatchJob, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.ExecutePatchJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1332,32 +1105,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_execute_patch_job(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_execute_patch_job(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseExecutePatchJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1381,13 +1140,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._ExecutePatchJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1403,12 +1156,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_execute_patch_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_execute_patch_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_execute_patch_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = patch_jobs.PatchJob.to_json(response)
                 except:
@@ -1429,23 +1178,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _GetPatchDeployment(
-        _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment,
-        OsConfigServiceRestStub,
-    ):
+    class _GetPatchDeployment(_BaseOsConfigServiceRestTransport._BaseGetPatchDeployment, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.GetPatchDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1491,28 +1229,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_patch_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_patch_deployment(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseGetPatchDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1536,12 +1262,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._GetPatchDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1557,16 +1278,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_get_patch_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_patch_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_patch_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = patch_deployments.PatchDeployment.to_json(
-                        response
-                    )
+                    response_payload = patch_deployments.PatchDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1585,22 +1300,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _GetPatchJob(
-        _BaseOsConfigServiceRestTransport._BaseGetPatchJob, OsConfigServiceRestStub
-    ):
+    class _GetPatchJob(_BaseOsConfigServiceRestTransport._BaseGetPatchJob, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.GetPatchJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1650,26 +1355,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_patch_job(request, metadata)
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseGetPatchJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1693,12 +1388,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._GetPatchJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1714,12 +1404,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_get_patch_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_patch_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_patch_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = patch_jobs.PatchJob.to_json(response)
                 except:
@@ -1740,23 +1426,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _ListPatchDeployments(
-        _BaseOsConfigServiceRestTransport._BaseListPatchDeployments,
-        OsConfigServiceRestStub,
-    ):
+    class _ListPatchDeployments(_BaseOsConfigServiceRestTransport._BaseListPatchDeployments, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.ListPatchDeployments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1798,28 +1473,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_patch_deployments(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_patch_deployments(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseListPatchDeployments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1843,12 +1506,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._ListPatchDeployments._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1864,16 +1522,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_list_patch_deployments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_patch_deployments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_patch_deployments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        patch_deployments.ListPatchDeploymentsResponse.to_json(response)
-                    )
+                    response_payload = patch_deployments.ListPatchDeploymentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1892,23 +1544,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _ListPatchJobInstanceDetails(
-        _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails,
-        OsConfigServiceRestStub,
-    ):
+    class _ListPatchJobInstanceDetails(_BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.ListPatchJobInstanceDetails")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1951,28 +1592,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_patch_job_instance_details(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_patch_job_instance_details(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseListPatchJobInstanceDetails._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1995,15 +1624,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigServiceRestTransport._ListPatchJobInstanceDetails._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = OsConfigServiceRestTransport._ListPatchJobInstanceDetails._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2019,19 +1641,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_list_patch_job_instance_details(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_patch_job_instance_details_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_patch_job_instance_details_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        patch_jobs.ListPatchJobInstanceDetailsResponse.to_json(response)
-                    )
+                    response_payload = patch_jobs.ListPatchJobInstanceDetailsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2050,22 +1663,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _ListPatchJobs(
-        _BaseOsConfigServiceRestTransport._BaseListPatchJobs, OsConfigServiceRestStub
-    ):
+    class _ListPatchJobs(_BaseOsConfigServiceRestTransport._BaseListPatchJobs, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.ListPatchJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2107,26 +1710,16 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_patch_jobs(request, metadata)
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseListPatchJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2150,12 +1743,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._ListPatchJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2171,16 +1759,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_list_patch_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_patch_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_patch_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = patch_jobs.ListPatchJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = patch_jobs.ListPatchJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2199,23 +1781,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _PausePatchDeployment(
-        _BaseOsConfigServiceRestTransport._BasePausePatchDeployment,
-        OsConfigServiceRestStub,
-    ):
+    class _PausePatchDeployment(_BaseOsConfigServiceRestTransport._BasePausePatchDeployment, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.PausePatchDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2262,32 +1833,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_pause_patch_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_pause_patch_deployment(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BasePausePatchDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2311,13 +1868,7 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             # Send the request
             response = OsConfigServiceRestTransport._PausePatchDeployment._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2333,16 +1884,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_pause_patch_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pause_patch_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pause_patch_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = patch_deployments.PatchDeployment.to_json(
-                        response
-                    )
+                    response_payload = patch_deployments.PatchDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2361,23 +1906,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _ResumePatchDeployment(
-        _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment,
-        OsConfigServiceRestStub,
-    ):
+    class _ResumePatchDeployment(_BaseOsConfigServiceRestTransport._BaseResumePatchDeployment, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.ResumePatchDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2424,32 +1958,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_patch_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_resume_patch_deployment(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseResumePatchDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2472,16 +1992,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigServiceRestTransport._ResumePatchDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OsConfigServiceRestTransport._ResumePatchDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2497,16 +2009,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_resume_patch_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_patch_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_patch_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = patch_deployments.PatchDeployment.to_json(
-                        response
-                    )
+                    response_payload = patch_deployments.PatchDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2525,23 +2031,12 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
             return resp
 
-    class _UpdatePatchDeployment(
-        _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment,
-        OsConfigServiceRestStub,
-    ):
+    class _UpdatePatchDeployment(_BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment, OsConfigServiceRestStub):
         def __hash__(self):
             return hash("OsConfigServiceRestTransport.UpdatePatchDeployment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2588,32 +2083,18 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_http_options()
-            )
+            http_options = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_patch_deployment(
-                request, metadata
-            )
-            transcoded_request = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_patch_deployment(request, metadata)
+            transcoded_request = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_transcoded_request(http_options, request)
 
-            body = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOsConfigServiceRestTransport._BaseUpdatePatchDeployment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2636,16 +2117,8 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                OsConfigServiceRestTransport._UpdatePatchDeployment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = OsConfigServiceRestTransport._UpdatePatchDeployment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2661,16 +2134,10 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
 
             resp = self._interceptor.post_update_patch_deployment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_patch_deployment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_patch_deployment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = patch_deployments.PatchDeployment.to_json(
-                        response
-                    )
+                    response_payload = patch_deployments.PatchDeployment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2690,65 +2157,43 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
             return resp
 
     @property
-    def cancel_patch_job(
-        self,
-    ) -> Callable[[patch_jobs.CancelPatchJobRequest], patch_jobs.PatchJob]:
+    def cancel_patch_job(self) -> Callable[[patch_jobs.CancelPatchJobRequest], patch_jobs.PatchJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelPatchJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.CreatePatchDeploymentRequest],
-        patch_deployments.PatchDeployment,
-    ]:
+    def create_patch_deployment(self) -> Callable[[patch_deployments.CreatePatchDeploymentRequest], patch_deployments.PatchDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePatchDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_patch_deployment(
-        self,
-    ) -> Callable[[patch_deployments.DeletePatchDeploymentRequest], empty_pb2.Empty]:
+    def delete_patch_deployment(self) -> Callable[[patch_deployments.DeletePatchDeploymentRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePatchDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def execute_patch_job(
-        self,
-    ) -> Callable[[patch_jobs.ExecutePatchJobRequest], patch_jobs.PatchJob]:
+    def execute_patch_job(self) -> Callable[[patch_jobs.ExecutePatchJobRequest], patch_jobs.PatchJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExecutePatchJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.GetPatchDeploymentRequest], patch_deployments.PatchDeployment
-    ]:
+    def get_patch_deployment(self) -> Callable[[patch_deployments.GetPatchDeploymentRequest], patch_deployments.PatchDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPatchDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_patch_job(
-        self,
-    ) -> Callable[[patch_jobs.GetPatchJobRequest], patch_jobs.PatchJob]:
+    def get_patch_job(self) -> Callable[[patch_jobs.GetPatchJobRequest], patch_jobs.PatchJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPatchJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_patch_deployments(
-        self,
-    ) -> Callable[
-        [patch_deployments.ListPatchDeploymentsRequest],
-        patch_deployments.ListPatchDeploymentsResponse,
-    ]:
+    def list_patch_deployments(self) -> Callable[[patch_deployments.ListPatchDeploymentsRequest], patch_deployments.ListPatchDeploymentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPatchDeployments(self._session, self._host, self._interceptor)  # type: ignore
@@ -2756,51 +2201,31 @@ class OsConfigServiceRestTransport(_BaseOsConfigServiceRestTransport):
     @property
     def list_patch_job_instance_details(
         self,
-    ) -> Callable[
-        [patch_jobs.ListPatchJobInstanceDetailsRequest],
-        patch_jobs.ListPatchJobInstanceDetailsResponse,
-    ]:
+    ) -> Callable[[patch_jobs.ListPatchJobInstanceDetailsRequest], patch_jobs.ListPatchJobInstanceDetailsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPatchJobInstanceDetails(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_patch_jobs(
-        self,
-    ) -> Callable[[patch_jobs.ListPatchJobsRequest], patch_jobs.ListPatchJobsResponse]:
+    def list_patch_jobs(self) -> Callable[[patch_jobs.ListPatchJobsRequest], patch_jobs.ListPatchJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPatchJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pause_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.PausePatchDeploymentRequest],
-        patch_deployments.PatchDeployment,
-    ]:
+    def pause_patch_deployment(self) -> Callable[[patch_deployments.PausePatchDeploymentRequest], patch_deployments.PatchDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PausePatchDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.ResumePatchDeploymentRequest],
-        patch_deployments.PatchDeployment,
-    ]:
+    def resume_patch_deployment(self) -> Callable[[patch_deployments.ResumePatchDeploymentRequest], patch_deployments.PatchDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumePatchDeployment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_patch_deployment(
-        self,
-    ) -> Callable[
-        [patch_deployments.UpdatePatchDeploymentRequest],
-        patch_deployments.PatchDeployment,
-    ]:
+    def update_patch_deployment(self) -> Callable[[patch_deployments.UpdatePatchDeploymentRequest], patch_deployments.PatchDeployment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePatchDeployment(self._session, self._host, self._interceptor)  # type: ignore

@@ -21,15 +21,8 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import (
-    import_strategy,
-    page,
-    parameter_definition,
-    validation_message,
-)
-from google.cloud.dialogflowcx_v3beta1.types import (
-    advanced_settings as gcdc_advanced_settings,
-)
+from google.cloud.dialogflowcx_v3beta1.types import import_strategy, page, parameter_definition, validation_message
+from google.cloud.dialogflowcx_v3beta1.types import advanced_settings as gcdc_advanced_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
@@ -300,16 +293,12 @@ class Flow(proto.Message):
         number=18,
         message=page.KnowledgeConnectorSettings,
     )
-    input_parameter_definitions: MutableSequence[
-        parameter_definition.ParameterDefinition
-    ] = proto.RepeatedField(
+    input_parameter_definitions: MutableSequence[parameter_definition.ParameterDefinition] = proto.RepeatedField(
         proto.MESSAGE,
         number=26,
         message=parameter_definition.ParameterDefinition,
     )
-    output_parameter_definitions: MutableSequence[
-        parameter_definition.ParameterDefinition
-    ] = proto.RepeatedField(
+    output_parameter_definitions: MutableSequence[parameter_definition.ParameterDefinition] = proto.RepeatedField(
         proto.MESSAGE,
         number=27,
         message=parameter_definition.ParameterDefinition,
@@ -629,9 +618,7 @@ class FlowValidationResult(proto.Message):
         proto.STRING,
         number=1,
     )
-    validation_messages: MutableSequence[
-        validation_message.ValidationMessage
-    ] = proto.RepeatedField(
+    validation_messages: MutableSequence[validation_message.ValidationMessage] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=validation_message.ValidationMessage,

@@ -103,9 +103,7 @@ class PromotionsServiceRestInterceptor:
     """
 
     def pre_get_promotion(
-        self,
-        request: promotions.GetPromotionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: promotions.GetPromotionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[promotions.GetPromotionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_promotion
 
@@ -114,9 +112,7 @@ class PromotionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_promotion(
-        self, response: promotions.Promotion
-    ) -> promotions.Promotion:
+    def post_get_promotion(self, response: promotions.Promotion) -> promotions.Promotion:
         """Post-rpc interceptor for get_promotion
 
         DEPRECATED. Please use the `post_get_promotion_with_metadata`
@@ -130,9 +126,7 @@ class PromotionsServiceRestInterceptor:
         return response
 
     def post_get_promotion_with_metadata(
-        self,
-        response: promotions.Promotion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: promotions.Promotion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[promotions.Promotion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_promotion
 
@@ -149,12 +143,8 @@ class PromotionsServiceRestInterceptor:
         return response, metadata
 
     def pre_insert_promotion(
-        self,
-        request: promotions.InsertPromotionRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        promotions.InsertPromotionRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: promotions.InsertPromotionRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[promotions.InsertPromotionRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert_promotion
 
         Override in a subclass to manipulate the request or metadata
@@ -162,9 +152,7 @@ class PromotionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_insert_promotion(
-        self, response: promotions.Promotion
-    ) -> promotions.Promotion:
+    def post_insert_promotion(self, response: promotions.Promotion) -> promotions.Promotion:
         """Post-rpc interceptor for insert_promotion
 
         DEPRECATED. Please use the `post_insert_promotion_with_metadata`
@@ -178,9 +166,7 @@ class PromotionsServiceRestInterceptor:
         return response
 
     def post_insert_promotion_with_metadata(
-        self,
-        response: promotions.Promotion,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: promotions.Promotion, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[promotions.Promotion, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert_promotion
 
@@ -197,12 +183,8 @@ class PromotionsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_promotions(
-        self,
-        request: promotions.ListPromotionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        promotions.ListPromotionsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: promotions.ListPromotionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[promotions.ListPromotionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_promotions
 
         Override in a subclass to manipulate the request or metadata
@@ -210,9 +192,7 @@ class PromotionsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_promotions(
-        self, response: promotions.ListPromotionsResponse
-    ) -> promotions.ListPromotionsResponse:
+    def post_list_promotions(self, response: promotions.ListPromotionsResponse) -> promotions.ListPromotionsResponse:
         """Post-rpc interceptor for list_promotions
 
         DEPRECATED. Please use the `post_list_promotions_with_metadata`
@@ -226,12 +206,8 @@ class PromotionsServiceRestInterceptor:
         return response
 
     def post_list_promotions_with_metadata(
-        self,
-        response: promotions.ListPromotionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        promotions.ListPromotionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: promotions.ListPromotionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[promotions.ListPromotionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_promotions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -326,30 +302,18 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PromotionsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetPromotion(
-        _BasePromotionsServiceRestTransport._BaseGetPromotion, PromotionsServiceRestStub
-    ):
+    class _GetPromotion(_BasePromotionsServiceRestTransport._BaseGetPromotion, PromotionsServiceRestStub):
         def __hash__(self):
             return hash("PromotionsServiceRestTransport.GetPromotion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -402,26 +366,16 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePromotionsServiceRestTransport._BaseGetPromotion._get_http_options()
-            )
+            http_options = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_http_options()
 
             request, metadata = self._interceptor.pre_get_promotion(request, metadata)
-            transcoded_request = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePromotionsServiceRestTransport._BaseGetPromotion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -445,12 +399,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             # Send the request
             response = PromotionsServiceRestTransport._GetPromotion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -466,12 +415,8 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             resp = self._interceptor.post_get_promotion(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_promotion_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_promotion_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = promotions.Promotion.to_json(response)
                 except:
@@ -492,23 +437,12 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                 )
             return resp
 
-    class _InsertPromotion(
-        _BasePromotionsServiceRestTransport._BaseInsertPromotion,
-        PromotionsServiceRestStub,
-    ):
+    class _InsertPromotion(_BasePromotionsServiceRestTransport._BaseInsertPromotion, PromotionsServiceRestStub):
         def __hash__(self):
             return hash("PromotionsServiceRestTransport.InsertPromotion")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -562,32 +496,18 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_http_options()
-            )
+            http_options = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_http_options()
 
-            request, metadata = self._interceptor.pre_insert_promotion(
-                request, metadata
-            )
-            transcoded_request = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_insert_promotion(request, metadata)
+            transcoded_request = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_transcoded_request(http_options, request)
 
-            body = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePromotionsServiceRestTransport._BaseInsertPromotion._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -611,13 +531,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             # Send the request
             response = PromotionsServiceRestTransport._InsertPromotion._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -633,12 +547,8 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             resp = self._interceptor.post_insert_promotion(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_promotion_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_promotion_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = promotions.Promotion.to_json(response)
                 except:
@@ -659,23 +569,12 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                 )
             return resp
 
-    class _ListPromotions(
-        _BasePromotionsServiceRestTransport._BaseListPromotions,
-        PromotionsServiceRestStub,
-    ):
+    class _ListPromotions(_BasePromotionsServiceRestTransport._BaseListPromotions, PromotionsServiceRestStub):
         def __hash__(self):
             return hash("PromotionsServiceRestTransport.ListPromotions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -714,26 +613,16 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
                     Response message for the ``ListPromotions`` method.
             """
 
-            http_options = (
-                _BasePromotionsServiceRestTransport._BaseListPromotions._get_http_options()
-            )
+            http_options = _BasePromotionsServiceRestTransport._BaseListPromotions._get_http_options()
 
             request, metadata = self._interceptor.pre_list_promotions(request, metadata)
-            transcoded_request = _BasePromotionsServiceRestTransport._BaseListPromotions._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePromotionsServiceRestTransport._BaseListPromotions._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePromotionsServiceRestTransport._BaseListPromotions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePromotionsServiceRestTransport._BaseListPromotions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -757,12 +646,7 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             # Send the request
             response = PromotionsServiceRestTransport._ListPromotions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -778,16 +662,10 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
 
             resp = self._interceptor.post_list_promotions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_promotions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_promotions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = promotions.ListPromotionsResponse.to_json(
-                        response
-                    )
+                    response_payload = promotions.ListPromotionsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -807,27 +685,19 @@ class PromotionsServiceRestTransport(_BasePromotionsServiceRestTransport):
             return resp
 
     @property
-    def get_promotion(
-        self,
-    ) -> Callable[[promotions.GetPromotionRequest], promotions.Promotion]:
+    def get_promotion(self) -> Callable[[promotions.GetPromotionRequest], promotions.Promotion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPromotion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert_promotion(
-        self,
-    ) -> Callable[[promotions.InsertPromotionRequest], promotions.Promotion]:
+    def insert_promotion(self) -> Callable[[promotions.InsertPromotionRequest], promotions.Promotion]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InsertPromotion(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_promotions(
-        self,
-    ) -> Callable[
-        [promotions.ListPromotionsRequest], promotions.ListPromotionsResponse
-    ]:
+    def list_promotions(self) -> Callable[[promotions.ListPromotionsRequest], promotions.ListPromotionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPromotions(self._session, self._host, self._interceptor)  # type: ignore

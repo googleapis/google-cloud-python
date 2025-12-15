@@ -187,12 +187,10 @@ class DocumentSchema(proto.Message):
                 proto.STRING,
                 number=2,
             )
-            occurrence_type: "DocumentSchema.EntityType.Property.OccurrenceType" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=3,
-                    enum="DocumentSchema.EntityType.Property.OccurrenceType",
-                )
+            occurrence_type: "DocumentSchema.EntityType.Property.OccurrenceType" = proto.Field(
+                proto.ENUM,
+                number=3,
+                enum="DocumentSchema.EntityType.Property.OccurrenceType",
             )
             method: "DocumentSchema.EntityType.Property.Method" = proto.Field(
                 proto.ENUM,
@@ -218,9 +216,7 @@ class DocumentSchema(proto.Message):
             proto.STRING,
             number=2,
         )
-        properties: MutableSequence[
-            "DocumentSchema.EntityType.Property"
-        ] = proto.RepeatedField(
+        properties: MutableSequence["DocumentSchema.EntityType.Property"] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message="DocumentSchema.EntityType.Property",

@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    private_auction_deal_messages,
-    private_auction_deal_service,
-)
+from google.ads.admanager_v1.types import private_auction_deal_messages, private_auction_deal_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BasePrivateAuctionDealServiceRestTransport
@@ -115,13 +112,8 @@ class PrivateAuctionDealServiceRestInterceptor:
     """
 
     def pre_create_private_auction_deal(
-        self,
-        request: private_auction_deal_service.CreatePrivateAuctionDealRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_service.CreatePrivateAuctionDealRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: private_auction_deal_service.CreatePrivateAuctionDealRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_service.CreatePrivateAuctionDealRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_private_auction_deal
 
         Override in a subclass to manipulate the request or metadata
@@ -145,13 +137,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response
 
     def post_create_private_auction_deal_with_metadata(
-        self,
-        response: private_auction_deal_messages.PrivateAuctionDeal,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_messages.PrivateAuctionDeal,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: private_auction_deal_messages.PrivateAuctionDeal, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_messages.PrivateAuctionDeal, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_private_auction_deal
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -167,13 +154,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response, metadata
 
     def pre_get_private_auction_deal(
-        self,
-        request: private_auction_deal_service.GetPrivateAuctionDealRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_service.GetPrivateAuctionDealRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: private_auction_deal_service.GetPrivateAuctionDealRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_service.GetPrivateAuctionDealRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_private_auction_deal
 
         Override in a subclass to manipulate the request or metadata
@@ -197,13 +179,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response
 
     def post_get_private_auction_deal_with_metadata(
-        self,
-        response: private_auction_deal_messages.PrivateAuctionDeal,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_messages.PrivateAuctionDeal,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: private_auction_deal_messages.PrivateAuctionDeal, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_messages.PrivateAuctionDeal, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_private_auction_deal
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -219,13 +196,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response, metadata
 
     def pre_list_private_auction_deals(
-        self,
-        request: private_auction_deal_service.ListPrivateAuctionDealsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_service.ListPrivateAuctionDealsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: private_auction_deal_service.ListPrivateAuctionDealsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_service.ListPrivateAuctionDealsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_private_auction_deals
 
         Override in a subclass to manipulate the request or metadata
@@ -249,13 +221,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response
 
     def post_list_private_auction_deals_with_metadata(
-        self,
-        response: private_auction_deal_service.ListPrivateAuctionDealsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_service.ListPrivateAuctionDealsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: private_auction_deal_service.ListPrivateAuctionDealsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_service.ListPrivateAuctionDealsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_private_auction_deals
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -271,13 +238,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response, metadata
 
     def pre_update_private_auction_deal(
-        self,
-        request: private_auction_deal_service.UpdatePrivateAuctionDealRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_service.UpdatePrivateAuctionDealRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: private_auction_deal_service.UpdatePrivateAuctionDealRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_service.UpdatePrivateAuctionDealRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_private_auction_deal
 
         Override in a subclass to manipulate the request or metadata
@@ -301,13 +263,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response
 
     def post_update_private_auction_deal_with_metadata(
-        self,
-        response: private_auction_deal_messages.PrivateAuctionDeal,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        private_auction_deal_messages.PrivateAuctionDeal,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: private_auction_deal_messages.PrivateAuctionDeal, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[private_auction_deal_messages.PrivateAuctionDeal, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_private_auction_deal
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -323,12 +280,8 @@ class PrivateAuctionDealServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -336,9 +289,7 @@ class PrivateAuctionDealServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -355,9 +306,7 @@ class PrivateAuctionDealServiceRestStub:
     _interceptor: PrivateAuctionDealServiceRestInterceptor
 
 
-class PrivateAuctionDealServiceRestTransport(
-    _BasePrivateAuctionDealServiceRestTransport
-):
+class PrivateAuctionDealServiceRestTransport(_BasePrivateAuctionDealServiceRestTransport):
     """REST backend synchronous transport for PrivateAuctionDealService.
 
     Provides methods for handling ``PrivateAuctionDeal`` objects.
@@ -429,33 +378,18 @@ class PrivateAuctionDealServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PrivateAuctionDealServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreatePrivateAuctionDeal(
-        _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal,
-        PrivateAuctionDealServiceRestStub,
-    ):
+    class _CreatePrivateAuctionDeal(_BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal, PrivateAuctionDealServiceRestStub):
         def __hash__(self):
-            return hash(
-                "PrivateAuctionDealServiceRestTransport.CreatePrivateAuctionDeal"
-            )
+            return hash("PrivateAuctionDealServiceRestTransport.CreatePrivateAuctionDeal")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -496,32 +430,20 @@ class PrivateAuctionDealServiceRestTransport(
                         The ``PrivateAuctionDeal`` resource.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_private_auction_deal(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_private_auction_deal(request, metadata)
             transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseCreatePrivateAuctionDeal._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -545,13 +467,7 @@ class PrivateAuctionDealServiceRestTransport(
 
             # Send the request
             response = PrivateAuctionDealServiceRestTransport._CreatePrivateAuctionDeal._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -567,18 +483,10 @@ class PrivateAuctionDealServiceRestTransport(
 
             resp = self._interceptor.post_create_private_auction_deal(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_private_auction_deal_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_private_auction_deal_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        private_auction_deal_messages.PrivateAuctionDeal.to_json(
-                            response
-                        )
-                    )
+                    response_payload = private_auction_deal_messages.PrivateAuctionDeal.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -597,23 +505,12 @@ class PrivateAuctionDealServiceRestTransport(
                 )
             return resp
 
-    class _GetPrivateAuctionDeal(
-        _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal,
-        PrivateAuctionDealServiceRestStub,
-    ):
+    class _GetPrivateAuctionDeal(_BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal, PrivateAuctionDealServiceRestStub):
         def __hash__(self):
             return hash("PrivateAuctionDealServiceRestTransport.GetPrivateAuctionDeal")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -652,28 +549,16 @@ class PrivateAuctionDealServiceRestTransport(
                     The ``PrivateAuctionDeal`` resource.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_private_auction_deal(
-                request, metadata
-            )
-            transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_private_auction_deal(request, metadata)
+            transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseGetPrivateAuctionDeal._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -697,12 +582,7 @@ class PrivateAuctionDealServiceRestTransport(
 
             # Send the request
             response = PrivateAuctionDealServiceRestTransport._GetPrivateAuctionDeal._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -718,18 +598,10 @@ class PrivateAuctionDealServiceRestTransport(
 
             resp = self._interceptor.post_get_private_auction_deal(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_private_auction_deal_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_private_auction_deal_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        private_auction_deal_messages.PrivateAuctionDeal.to_json(
-                            response
-                        )
-                    )
+                    response_payload = private_auction_deal_messages.PrivateAuctionDeal.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -748,25 +620,12 @@ class PrivateAuctionDealServiceRestTransport(
                 )
             return resp
 
-    class _ListPrivateAuctionDeals(
-        _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals,
-        PrivateAuctionDealServiceRestStub,
-    ):
+    class _ListPrivateAuctionDeals(_BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals, PrivateAuctionDealServiceRestStub):
         def __hash__(self):
-            return hash(
-                "PrivateAuctionDealServiceRestTransport.ListPrivateAuctionDeals"
-            )
+            return hash("PrivateAuctionDealServiceRestTransport.ListPrivateAuctionDeals")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -808,28 +667,18 @@ class PrivateAuctionDealServiceRestTransport(
 
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_private_auction_deals(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_private_auction_deals(request, metadata)
             transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseListPrivateAuctionDeals._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -853,12 +702,7 @@ class PrivateAuctionDealServiceRestTransport(
 
             # Send the request
             response = PrivateAuctionDealServiceRestTransport._ListPrivateAuctionDeals._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -868,24 +712,16 @@ class PrivateAuctionDealServiceRestTransport(
 
             # Return the response
             resp = private_auction_deal_service.ListPrivateAuctionDealsResponse()
-            pb_resp = private_auction_deal_service.ListPrivateAuctionDealsResponse.pb(
-                resp
-            )
+            pb_resp = private_auction_deal_service.ListPrivateAuctionDealsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_private_auction_deals(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_private_auction_deals_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_private_auction_deals_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = private_auction_deal_service.ListPrivateAuctionDealsResponse.to_json(
-                        response
-                    )
+                    response_payload = private_auction_deal_service.ListPrivateAuctionDealsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -904,25 +740,12 @@ class PrivateAuctionDealServiceRestTransport(
                 )
             return resp
 
-    class _UpdatePrivateAuctionDeal(
-        _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal,
-        PrivateAuctionDealServiceRestStub,
-    ):
+    class _UpdatePrivateAuctionDeal(_BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal, PrivateAuctionDealServiceRestStub):
         def __hash__(self):
-            return hash(
-                "PrivateAuctionDealServiceRestTransport.UpdatePrivateAuctionDeal"
-            )
+            return hash("PrivateAuctionDealServiceRestTransport.UpdatePrivateAuctionDeal")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -963,32 +786,20 @@ class PrivateAuctionDealServiceRestTransport(
                         The ``PrivateAuctionDeal`` resource.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_private_auction_deal(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_private_auction_deal(request, metadata)
             transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseUpdatePrivateAuctionDeal._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1012,13 +823,7 @@ class PrivateAuctionDealServiceRestTransport(
 
             # Send the request
             response = PrivateAuctionDealServiceRestTransport._UpdatePrivateAuctionDeal._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1034,18 +839,10 @@ class PrivateAuctionDealServiceRestTransport(
 
             resp = self._interceptor.post_update_private_auction_deal(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_private_auction_deal_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_private_auction_deal_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        private_auction_deal_messages.PrivateAuctionDeal.to_json(
-                            response
-                        )
-                    )
+                    response_payload = private_auction_deal_messages.PrivateAuctionDeal.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1067,10 +864,7 @@ class PrivateAuctionDealServiceRestTransport(
     @property
     def create_private_auction_deal(
         self,
-    ) -> Callable[
-        [private_auction_deal_service.CreatePrivateAuctionDealRequest],
-        private_auction_deal_messages.PrivateAuctionDeal,
-    ]:
+    ) -> Callable[[private_auction_deal_service.CreatePrivateAuctionDealRequest], private_auction_deal_messages.PrivateAuctionDeal]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePrivateAuctionDeal(self._session, self._host, self._interceptor)  # type: ignore
@@ -1078,10 +872,7 @@ class PrivateAuctionDealServiceRestTransport(
     @property
     def get_private_auction_deal(
         self,
-    ) -> Callable[
-        [private_auction_deal_service.GetPrivateAuctionDealRequest],
-        private_auction_deal_messages.PrivateAuctionDeal,
-    ]:
+    ) -> Callable[[private_auction_deal_service.GetPrivateAuctionDealRequest], private_auction_deal_messages.PrivateAuctionDeal]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPrivateAuctionDeal(self._session, self._host, self._interceptor)  # type: ignore
@@ -1089,10 +880,7 @@ class PrivateAuctionDealServiceRestTransport(
     @property
     def list_private_auction_deals(
         self,
-    ) -> Callable[
-        [private_auction_deal_service.ListPrivateAuctionDealsRequest],
-        private_auction_deal_service.ListPrivateAuctionDealsResponse,
-    ]:
+    ) -> Callable[[private_auction_deal_service.ListPrivateAuctionDealsRequest], private_auction_deal_service.ListPrivateAuctionDealsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPrivateAuctionDeals(self._session, self._host, self._interceptor)  # type: ignore
@@ -1100,10 +888,7 @@ class PrivateAuctionDealServiceRestTransport(
     @property
     def update_private_auction_deal(
         self,
-    ) -> Callable[
-        [private_auction_deal_service.UpdatePrivateAuctionDealRequest],
-        private_auction_deal_messages.PrivateAuctionDeal,
-    ]:
+    ) -> Callable[[private_auction_deal_service.UpdatePrivateAuctionDealRequest], private_auction_deal_messages.PrivateAuctionDeal]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePrivateAuctionDeal(self._session, self._host, self._interceptor)  # type: ignore
@@ -1112,23 +897,12 @@ class PrivateAuctionDealServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation,
-        PrivateAuctionDealServiceRestStub,
-    ):
+    class _GetOperation(_BasePrivateAuctionDealServiceRestTransport._BaseGetOperation, PrivateAuctionDealServiceRestStub):
         def __hash__(self):
             return hash("PrivateAuctionDealServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1166,26 +940,16 @@ class PrivateAuctionDealServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrivateAuctionDealServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1208,15 +972,8 @@ class PrivateAuctionDealServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                PrivateAuctionDealServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = PrivateAuctionDealServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1228,9 +985,7 @@ class PrivateAuctionDealServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

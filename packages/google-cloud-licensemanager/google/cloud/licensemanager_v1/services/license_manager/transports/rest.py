@@ -185,12 +185,8 @@ class LicenseManagerRestInterceptor:
     """
 
     def pre_aggregate_usage(
-        self,
-        request: licensemanager.AggregateUsageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.AggregateUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: licensemanager.AggregateUsageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.AggregateUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregate_usage
 
         Override in a subclass to manipulate the request or metadata
@@ -198,9 +194,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregate_usage(
-        self, response: licensemanager.AggregateUsageResponse
-    ) -> licensemanager.AggregateUsageResponse:
+    def post_aggregate_usage(self, response: licensemanager.AggregateUsageResponse) -> licensemanager.AggregateUsageResponse:
         """Post-rpc interceptor for aggregate_usage
 
         DEPRECATED. Please use the `post_aggregate_usage_with_metadata`
@@ -214,12 +208,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_aggregate_usage_with_metadata(
-        self,
-        response: licensemanager.AggregateUsageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.AggregateUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: licensemanager.AggregateUsageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.AggregateUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregate_usage
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -235,13 +225,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_create_configuration(
-        self,
-        request: licensemanager.CreateConfigurationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.CreateConfigurationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.CreateConfigurationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.CreateConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_configuration
 
         Override in a subclass to manipulate the request or metadata
@@ -249,9 +234,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_configuration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_configuration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_configuration
 
         DEPRECATED. Please use the `post_create_configuration_with_metadata`
@@ -265,9 +248,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_create_configuration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_configuration
 
@@ -284,13 +265,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_deactivate_configuration(
-        self,
-        request: licensemanager.DeactivateConfigurationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.DeactivateConfigurationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.DeactivateConfigurationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.DeactivateConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for deactivate_configuration
 
         Override in a subclass to manipulate the request or metadata
@@ -298,9 +274,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_deactivate_configuration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_deactivate_configuration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for deactivate_configuration
 
         DEPRECATED. Please use the `post_deactivate_configuration_with_metadata`
@@ -314,9 +288,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_deactivate_configuration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for deactivate_configuration
 
@@ -333,13 +305,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_configuration(
-        self,
-        request: licensemanager.DeleteConfigurationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.DeleteConfigurationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.DeleteConfigurationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.DeleteConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_configuration
 
         Override in a subclass to manipulate the request or metadata
@@ -347,9 +314,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_configuration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_configuration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_configuration
 
         DEPRECATED. Please use the `post_delete_configuration_with_metadata`
@@ -363,9 +328,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_delete_configuration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_configuration
 
@@ -382,12 +345,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_get_configuration(
-        self,
-        request: licensemanager.GetConfigurationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.GetConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: licensemanager.GetConfigurationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.GetConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_configuration
 
         Override in a subclass to manipulate the request or metadata
@@ -395,9 +354,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_configuration(
-        self, response: api_entities.Configuration
-    ) -> api_entities.Configuration:
+    def post_get_configuration(self, response: api_entities.Configuration) -> api_entities.Configuration:
         """Post-rpc interceptor for get_configuration
 
         DEPRECATED. Please use the `post_get_configuration_with_metadata`
@@ -411,9 +368,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_get_configuration_with_metadata(
-        self,
-        response: api_entities.Configuration,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: api_entities.Configuration, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[api_entities.Configuration, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_configuration
 
@@ -430,12 +385,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: licensemanager.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: licensemanager.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -443,9 +394,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_instance(
-        self, response: api_entities.Instance
-    ) -> api_entities.Instance:
+    def post_get_instance(self, response: api_entities.Instance) -> api_entities.Instance:
         """Post-rpc interceptor for get_instance
 
         DEPRECATED. Please use the `post_get_instance_with_metadata`
@@ -459,9 +408,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: api_entities.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: api_entities.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[api_entities.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
@@ -478,12 +425,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_get_product(
-        self,
-        request: licensemanager.GetProductRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: licensemanager.GetProductRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_product
 
         Override in a subclass to manipulate the request or metadata
@@ -505,9 +448,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_get_product_with_metadata(
-        self,
-        response: api_entities.Product,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: api_entities.Product, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[api_entities.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_product
 
@@ -524,13 +465,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_list_configurations(
-        self,
-        request: licensemanager.ListConfigurationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ListConfigurationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.ListConfigurationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ListConfigurationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_configurations
 
         Override in a subclass to manipulate the request or metadata
@@ -538,9 +474,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_configurations(
-        self, response: licensemanager.ListConfigurationsResponse
-    ) -> licensemanager.ListConfigurationsResponse:
+    def post_list_configurations(self, response: licensemanager.ListConfigurationsResponse) -> licensemanager.ListConfigurationsResponse:
         """Post-rpc interceptor for list_configurations
 
         DEPRECATED. Please use the `post_list_configurations_with_metadata`
@@ -554,13 +488,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_list_configurations_with_metadata(
-        self,
-        response: licensemanager.ListConfigurationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ListConfigurationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: licensemanager.ListConfigurationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ListConfigurationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_configurations
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -576,12 +505,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: licensemanager.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: licensemanager.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -589,9 +514,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: licensemanager.ListInstancesResponse
-    ) -> licensemanager.ListInstancesResponse:
+    def post_list_instances(self, response: licensemanager.ListInstancesResponse) -> licensemanager.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -605,12 +528,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: licensemanager.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: licensemanager.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -626,12 +545,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_list_products(
-        self,
-        request: licensemanager.ListProductsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: licensemanager.ListProductsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_products
 
         Override in a subclass to manipulate the request or metadata
@@ -639,9 +554,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_products(
-        self, response: licensemanager.ListProductsResponse
-    ) -> licensemanager.ListProductsResponse:
+    def post_list_products(self, response: licensemanager.ListProductsResponse) -> licensemanager.ListProductsResponse:
         """Post-rpc interceptor for list_products
 
         DEPRECATED. Please use the `post_list_products_with_metadata`
@@ -655,12 +568,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_list_products_with_metadata(
-        self,
-        response: licensemanager.ListProductsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ListProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: licensemanager.ListProductsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ListProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_products
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -676,13 +585,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_query_configuration_license_usage(
-        self,
-        request: licensemanager.QueryConfigurationLicenseUsageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.QueryConfigurationLicenseUsageRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.QueryConfigurationLicenseUsageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.QueryConfigurationLicenseUsageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for query_configuration_license_usage
 
         Override in a subclass to manipulate the request or metadata
@@ -706,13 +610,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_query_configuration_license_usage_with_metadata(
-        self,
-        response: licensemanager.QueryConfigurationLicenseUsageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.QueryConfigurationLicenseUsageResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: licensemanager.QueryConfigurationLicenseUsageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.QueryConfigurationLicenseUsageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for query_configuration_license_usage
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -728,13 +627,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_reactivate_configuration(
-        self,
-        request: licensemanager.ReactivateConfigurationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.ReactivateConfigurationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.ReactivateConfigurationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.ReactivateConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reactivate_configuration
 
         Override in a subclass to manipulate the request or metadata
@@ -742,9 +636,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_reactivate_configuration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_reactivate_configuration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for reactivate_configuration
 
         DEPRECATED. Please use the `post_reactivate_configuration_with_metadata`
@@ -758,9 +650,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_reactivate_configuration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for reactivate_configuration
 
@@ -777,13 +667,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_update_configuration(
-        self,
-        request: licensemanager.UpdateConfigurationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        licensemanager.UpdateConfigurationRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: licensemanager.UpdateConfigurationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[licensemanager.UpdateConfigurationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_configuration
 
         Override in a subclass to manipulate the request or metadata
@@ -791,9 +676,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_configuration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_configuration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_configuration
 
         DEPRECATED. Please use the `post_update_configuration_with_metadata`
@@ -807,9 +690,7 @@ class LicenseManagerRestInterceptor:
         return response
 
     def post_update_configuration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_configuration
 
@@ -826,12 +707,8 @@ class LicenseManagerRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -839,9 +716,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -851,12 +726,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -864,9 +735,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -876,12 +745,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -899,12 +764,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -922,12 +783,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -935,9 +792,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -947,12 +802,8 @@ class LicenseManagerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -960,9 +811,7 @@ class LicenseManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1051,9 +900,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1106,29 +953,17 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AggregateUsage(
-        _BaseLicenseManagerRestTransport._BaseAggregateUsage, LicenseManagerRestStub
-    ):
+    class _AggregateUsage(_BaseLicenseManagerRestTransport._BaseAggregateUsage, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.AggregateUsage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1170,26 +1005,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseAggregateUsage._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseAggregateUsage._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregate_usage(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseAggregateUsage._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseAggregateUsage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseAggregateUsage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseAggregateUsage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1213,12 +1038,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._AggregateUsage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1234,16 +1054,10 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_aggregate_usage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregate_usage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregate_usage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = licensemanager.AggregateUsageResponse.to_json(
-                        response
-                    )
+                    response_payload = licensemanager.AggregateUsageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1262,23 +1076,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _CreateConfiguration(
-        _BaseLicenseManagerRestTransport._BaseCreateConfiguration,
-        LicenseManagerRestStub,
-    ):
+    class _CreateConfiguration(_BaseLicenseManagerRestTransport._BaseCreateConfiguration, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.CreateConfiguration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1321,32 +1124,18 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_configuration(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_configuration(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_transcoded_request(http_options, request)
 
-            body = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseCreateConfiguration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1370,13 +1159,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._CreateConfiguration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1390,12 +1173,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_create_configuration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_configuration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_configuration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1416,23 +1195,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _DeactivateConfiguration(
-        _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration,
-        LicenseManagerRestStub,
-    ):
+    class _DeactivateConfiguration(_BaseLicenseManagerRestTransport._BaseDeactivateConfiguration, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.DeactivateConfiguration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1476,32 +1244,18 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_http_options()
 
-            request, metadata = self._interceptor.pre_deactivate_configuration(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_deactivate_configuration(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_transcoded_request(http_options, request)
 
-            body = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseDeactivateConfiguration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1524,16 +1278,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                LicenseManagerRestTransport._DeactivateConfiguration._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = LicenseManagerRestTransport._DeactivateConfiguration._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1547,12 +1293,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_deactivate_configuration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_deactivate_configuration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_deactivate_configuration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1573,23 +1315,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _DeleteConfiguration(
-        _BaseLicenseManagerRestTransport._BaseDeleteConfiguration,
-        LicenseManagerRestStub,
-    ):
+    class _DeleteConfiguration(_BaseLicenseManagerRestTransport._BaseDeleteConfiguration, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.DeleteConfiguration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1631,28 +1362,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_configuration(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_configuration(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseDeleteConfiguration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1676,12 +1395,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._DeleteConfiguration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1695,12 +1409,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_delete_configuration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_configuration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_configuration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1721,22 +1431,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _GetConfiguration(
-        _BaseLicenseManagerRestTransport._BaseGetConfiguration, LicenseManagerRestStub
-    ):
+    class _GetConfiguration(_BaseLicenseManagerRestTransport._BaseGetConfiguration, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.GetConfiguration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1777,28 +1477,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_configuration(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_configuration(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseGetConfiguration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1822,12 +1510,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._GetConfiguration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1843,12 +1526,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_get_configuration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_configuration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_configuration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Configuration.to_json(response)
                 except:
@@ -1869,22 +1548,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _GetInstance(
-        _BaseLicenseManagerRestTransport._BaseGetInstance, LicenseManagerRestStub
-    ):
+    class _GetInstance(_BaseLicenseManagerRestTransport._BaseGetInstance, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1923,26 +1592,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     Message describing Instance object
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1966,12 +1625,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1987,12 +1641,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Instance.to_json(response)
                 except:
@@ -2013,22 +1663,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _GetProduct(
-        _BaseLicenseManagerRestTransport._BaseGetProduct, LicenseManagerRestStub
-    ):
+    class _GetProduct(_BaseLicenseManagerRestTransport._BaseGetProduct, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.GetProduct")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2067,28 +1707,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     Products for Google SPLA.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseGetProduct._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseGetProduct._get_http_options()
 
             request, metadata = self._interceptor.pre_get_product(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetProduct._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetProduct._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLicenseManagerRestTransport._BaseGetProduct._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseGetProduct._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2112,12 +1740,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._GetProduct._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2133,12 +1756,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_get_product(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_product_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_product_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = api_entities.Product.to_json(response)
                 except:
@@ -2159,22 +1778,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _ListConfigurations(
-        _BaseLicenseManagerRestTransport._BaseListConfigurations, LicenseManagerRestStub
-    ):
+    class _ListConfigurations(_BaseLicenseManagerRestTransport._BaseListConfigurations, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.ListConfigurations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2216,28 +1825,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseListConfigurations._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseListConfigurations._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_configurations(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseListConfigurations._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_configurations(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseListConfigurations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseListConfigurations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseListConfigurations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2261,12 +1858,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._ListConfigurations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2282,16 +1874,10 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_list_configurations(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_configurations_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_configurations_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        licensemanager.ListConfigurationsResponse.to_json(response)
-                    )
+                    response_payload = licensemanager.ListConfigurationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2310,22 +1896,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _ListInstances(
-        _BaseLicenseManagerRestTransport._BaseListInstances, LicenseManagerRestStub
-    ):
+    class _ListInstances(_BaseLicenseManagerRestTransport._BaseListInstances, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2367,26 +1943,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2410,12 +1976,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2431,16 +1992,10 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = licensemanager.ListInstancesResponse.to_json(
-                        response
-                    )
+                    response_payload = licensemanager.ListInstancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2459,22 +2014,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _ListProducts(
-        _BaseLicenseManagerRestTransport._BaseListProducts, LicenseManagerRestStub
-    ):
+    class _ListProducts(_BaseLicenseManagerRestTransport._BaseListProducts, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.ListProducts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2516,26 +2061,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseListProducts._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseListProducts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_products(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseListProducts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseListProducts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseListProducts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseListProducts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2559,12 +2094,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._ListProducts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2580,16 +2110,10 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_list_products(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_products_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_products_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = licensemanager.ListProductsResponse.to_json(
-                        response
-                    )
+                    response_payload = licensemanager.ListProductsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2608,23 +2132,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _QueryConfigurationLicenseUsage(
-        _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage,
-        LicenseManagerRestStub,
-    ):
+    class _QueryConfigurationLicenseUsage(_BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.QueryConfigurationLicenseUsage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2667,28 +2180,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_http_options()
 
-            request, metadata = self._interceptor.pre_query_configuration_license_usage(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_query_configuration_license_usage(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseQueryConfigurationLicenseUsage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2712,12 +2213,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._QueryConfigurationLicenseUsage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2733,21 +2229,10 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_query_configuration_license_usage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_query_configuration_license_usage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_query_configuration_license_usage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        licensemanager.QueryConfigurationLicenseUsageResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = licensemanager.QueryConfigurationLicenseUsageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2766,23 +2251,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _ReactivateConfiguration(
-        _BaseLicenseManagerRestTransport._BaseReactivateConfiguration,
-        LicenseManagerRestStub,
-    ):
+    class _ReactivateConfiguration(_BaseLicenseManagerRestTransport._BaseReactivateConfiguration, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.ReactivateConfiguration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2825,32 +2299,18 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_http_options()
 
-            request, metadata = self._interceptor.pre_reactivate_configuration(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reactivate_configuration(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_transcoded_request(http_options, request)
 
-            body = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseReactivateConfiguration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2873,16 +2333,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
 
             # Send the request
-            response = (
-                LicenseManagerRestTransport._ReactivateConfiguration._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = LicenseManagerRestTransport._ReactivateConfiguration._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2896,12 +2348,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_reactivate_configuration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_reactivate_configuration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_reactivate_configuration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2922,23 +2370,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 )
             return resp
 
-    class _UpdateConfiguration(
-        _BaseLicenseManagerRestTransport._BaseUpdateConfiguration,
-        LicenseManagerRestStub,
-    ):
+    class _UpdateConfiguration(_BaseLicenseManagerRestTransport._BaseUpdateConfiguration, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.UpdateConfiguration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2981,32 +2418,18 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_configuration(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_configuration(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_transcoded_request(http_options, request)
 
-            body = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseUpdateConfiguration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3030,13 +2453,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._UpdateConfiguration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3050,12 +2467,8 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             resp = self._interceptor.post_update_configuration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_configuration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_configuration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3077,96 +2490,61 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             return resp
 
     @property
-    def aggregate_usage(
-        self,
-    ) -> Callable[
-        [licensemanager.AggregateUsageRequest], licensemanager.AggregateUsageResponse
-    ]:
+    def aggregate_usage(self) -> Callable[[licensemanager.AggregateUsageRequest], licensemanager.AggregateUsageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregateUsage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_configuration(
-        self,
-    ) -> Callable[
-        [licensemanager.CreateConfigurationRequest], operations_pb2.Operation
-    ]:
+    def create_configuration(self) -> Callable[[licensemanager.CreateConfigurationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateConfiguration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def deactivate_configuration(
-        self,
-    ) -> Callable[
-        [licensemanager.DeactivateConfigurationRequest], operations_pb2.Operation
-    ]:
+    def deactivate_configuration(self) -> Callable[[licensemanager.DeactivateConfigurationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeactivateConfiguration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_configuration(
-        self,
-    ) -> Callable[
-        [licensemanager.DeleteConfigurationRequest], operations_pb2.Operation
-    ]:
+    def delete_configuration(self) -> Callable[[licensemanager.DeleteConfigurationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteConfiguration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_configuration(
-        self,
-    ) -> Callable[[licensemanager.GetConfigurationRequest], api_entities.Configuration]:
+    def get_configuration(self) -> Callable[[licensemanager.GetConfigurationRequest], api_entities.Configuration]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConfiguration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[[licensemanager.GetInstanceRequest], api_entities.Instance]:
+    def get_instance(self) -> Callable[[licensemanager.GetInstanceRequest], api_entities.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_product(
-        self,
-    ) -> Callable[[licensemanager.GetProductRequest], api_entities.Product]:
+    def get_product(self) -> Callable[[licensemanager.GetProductRequest], api_entities.Product]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetProduct(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_configurations(
-        self,
-    ) -> Callable[
-        [licensemanager.ListConfigurationsRequest],
-        licensemanager.ListConfigurationsResponse,
-    ]:
+    def list_configurations(self) -> Callable[[licensemanager.ListConfigurationsRequest], licensemanager.ListConfigurationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListConfigurations(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [licensemanager.ListInstancesRequest], licensemanager.ListInstancesResponse
-    ]:
+    def list_instances(self) -> Callable[[licensemanager.ListInstancesRequest], licensemanager.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[
-        [licensemanager.ListProductsRequest], licensemanager.ListProductsResponse
-    ]:
+    def list_products(self) -> Callable[[licensemanager.ListProductsRequest], licensemanager.ListProductsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProducts(self._session, self._host, self._interceptor)  # type: ignore
@@ -3174,30 +2552,19 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     @property
     def query_configuration_license_usage(
         self,
-    ) -> Callable[
-        [licensemanager.QueryConfigurationLicenseUsageRequest],
-        licensemanager.QueryConfigurationLicenseUsageResponse,
-    ]:
+    ) -> Callable[[licensemanager.QueryConfigurationLicenseUsageRequest], licensemanager.QueryConfigurationLicenseUsageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._QueryConfigurationLicenseUsage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reactivate_configuration(
-        self,
-    ) -> Callable[
-        [licensemanager.ReactivateConfigurationRequest], operations_pb2.Operation
-    ]:
+    def reactivate_configuration(self) -> Callable[[licensemanager.ReactivateConfigurationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReactivateConfiguration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_configuration(
-        self,
-    ) -> Callable[
-        [licensemanager.UpdateConfigurationRequest], operations_pb2.Operation
-    ]:
+    def update_configuration(self) -> Callable[[licensemanager.UpdateConfigurationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConfiguration(self._session, self._host, self._interceptor)  # type: ignore
@@ -3206,22 +2573,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseLicenseManagerRestTransport._BaseGetLocation, LicenseManagerRestStub
-    ):
+    class _GetLocation(_BaseLicenseManagerRestTransport._BaseGetLocation, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3259,26 +2616,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3302,12 +2649,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3319,9 +2661,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3346,22 +2686,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseLicenseManagerRestTransport._BaseListLocations, LicenseManagerRestStub
-    ):
+    class _ListLocations(_BaseLicenseManagerRestTransport._BaseListLocations, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3399,26 +2729,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3442,12 +2762,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3459,9 +2774,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3486,22 +2799,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseLicenseManagerRestTransport._BaseCancelOperation, LicenseManagerRestStub
-    ):
+    class _CancelOperation(_BaseLicenseManagerRestTransport._BaseCancelOperation, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3537,32 +2840,18 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3586,13 +2875,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3606,22 +2889,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseLicenseManagerRestTransport._BaseDeleteOperation, LicenseManagerRestStub
-    ):
+    class _DeleteOperation(_BaseLicenseManagerRestTransport._BaseDeleteOperation, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3656,28 +2929,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3701,12 +2962,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3720,22 +2976,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseLicenseManagerRestTransport._BaseGetOperation, LicenseManagerRestStub
-    ):
+    class _GetOperation(_BaseLicenseManagerRestTransport._BaseGetOperation, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3773,26 +3019,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3816,12 +3052,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3833,9 +3064,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3860,22 +3089,12 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseLicenseManagerRestTransport._BaseListOperations, LicenseManagerRestStub
-    ):
+    class _ListOperations(_BaseLicenseManagerRestTransport._BaseListOperations, LicenseManagerRestStub):
         def __hash__(self):
             return hash("LicenseManagerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3913,26 +3132,16 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseLicenseManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseLicenseManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseLicenseManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLicenseManagerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLicenseManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLicenseManagerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3956,12 +3165,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
 
             # Send the request
             response = LicenseManagerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3973,9 +3177,7 @@ class LicenseManagerRestTransport(_BaseLicenseManagerRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

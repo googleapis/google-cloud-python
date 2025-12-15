@@ -116,13 +116,8 @@ class AccountServicesServiceRestInterceptor:
     """
 
     def pre_approve_account_service(
-        self,
-        request: accountservices.ApproveAccountServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountservices.ApproveAccountServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountservices.ApproveAccountServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountservices.ApproveAccountServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_account_service
 
         Override in a subclass to manipulate the request or metadata
@@ -130,9 +125,7 @@ class AccountServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_approve_account_service(
-        self, response: accountservices.AccountService
-    ) -> accountservices.AccountService:
+    def post_approve_account_service(self, response: accountservices.AccountService) -> accountservices.AccountService:
         """Post-rpc interceptor for approve_account_service
 
         DEPRECATED. Please use the `post_approve_account_service_with_metadata`
@@ -146,9 +139,7 @@ class AccountServicesServiceRestInterceptor:
         return response
 
     def post_approve_account_service_with_metadata(
-        self,
-        response: accountservices.AccountService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accountservices.AccountService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accountservices.AccountService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for approve_account_service
 
@@ -165,13 +156,8 @@ class AccountServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_account_service(
-        self,
-        request: accountservices.GetAccountServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountservices.GetAccountServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountservices.GetAccountServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountservices.GetAccountServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account_service
 
         Override in a subclass to manipulate the request or metadata
@@ -179,9 +165,7 @@ class AccountServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_account_service(
-        self, response: accountservices.AccountService
-    ) -> accountservices.AccountService:
+    def post_get_account_service(self, response: accountservices.AccountService) -> accountservices.AccountService:
         """Post-rpc interceptor for get_account_service
 
         DEPRECATED. Please use the `post_get_account_service_with_metadata`
@@ -195,9 +179,7 @@ class AccountServicesServiceRestInterceptor:
         return response
 
     def post_get_account_service_with_metadata(
-        self,
-        response: accountservices.AccountService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accountservices.AccountService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accountservices.AccountService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_account_service
 
@@ -214,13 +196,8 @@ class AccountServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_account_services(
-        self,
-        request: accountservices.ListAccountServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountservices.ListAccountServicesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountservices.ListAccountServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountservices.ListAccountServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_account_services
 
         Override in a subclass to manipulate the request or metadata
@@ -228,9 +205,7 @@ class AccountServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_account_services(
-        self, response: accountservices.ListAccountServicesResponse
-    ) -> accountservices.ListAccountServicesResponse:
+    def post_list_account_services(self, response: accountservices.ListAccountServicesResponse) -> accountservices.ListAccountServicesResponse:
         """Post-rpc interceptor for list_account_services
 
         DEPRECATED. Please use the `post_list_account_services_with_metadata`
@@ -244,13 +219,8 @@ class AccountServicesServiceRestInterceptor:
         return response
 
     def post_list_account_services_with_metadata(
-        self,
-        response: accountservices.ListAccountServicesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountservices.ListAccountServicesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: accountservices.ListAccountServicesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountservices.ListAccountServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_account_services
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -266,13 +236,8 @@ class AccountServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_propose_account_service(
-        self,
-        request: accountservices.ProposeAccountServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountservices.ProposeAccountServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountservices.ProposeAccountServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountservices.ProposeAccountServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for propose_account_service
 
         Override in a subclass to manipulate the request or metadata
@@ -280,9 +245,7 @@ class AccountServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_propose_account_service(
-        self, response: accountservices.AccountService
-    ) -> accountservices.AccountService:
+    def post_propose_account_service(self, response: accountservices.AccountService) -> accountservices.AccountService:
         """Post-rpc interceptor for propose_account_service
 
         DEPRECATED. Please use the `post_propose_account_service_with_metadata`
@@ -296,9 +259,7 @@ class AccountServicesServiceRestInterceptor:
         return response
 
     def post_propose_account_service_with_metadata(
-        self,
-        response: accountservices.AccountService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accountservices.AccountService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accountservices.AccountService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for propose_account_service
 
@@ -315,13 +276,8 @@ class AccountServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_reject_account_service(
-        self,
-        request: accountservices.RejectAccountServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accountservices.RejectAccountServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: accountservices.RejectAccountServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accountservices.RejectAccountServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for reject_account_service
 
         Override in a subclass to manipulate the request or metadata
@@ -409,31 +365,18 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AccountServicesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ApproveAccountService(
-        _BaseAccountServicesServiceRestTransport._BaseApproveAccountService,
-        AccountServicesServiceRestStub,
-    ):
+    class _ApproveAccountService(_BaseAccountServicesServiceRestTransport._BaseApproveAccountService, AccountServicesServiceRestStub):
         def __hash__(self):
             return hash("AccountServicesServiceRestTransport.ApproveAccountService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -499,32 +442,18 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_http_options()
-            )
+            http_options = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_http_options()
 
-            request, metadata = self._interceptor.pre_approve_account_service(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_approve_account_service(request, metadata)
+            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_transcoded_request(http_options, request)
 
-            body = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountServicesServiceRestTransport._BaseApproveAccountService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -548,13 +477,7 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             # Send the request
             response = AccountServicesServiceRestTransport._ApproveAccountService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -570,12 +493,8 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             resp = self._interceptor.post_approve_account_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_approve_account_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_approve_account_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accountservices.AccountService.to_json(response)
                 except:
@@ -596,23 +515,12 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
             return resp
 
-    class _GetAccountService(
-        _BaseAccountServicesServiceRestTransport._BaseGetAccountService,
-        AccountServicesServiceRestStub,
-    ):
+    class _GetAccountService(_BaseAccountServicesServiceRestTransport._BaseGetAccountService, AccountServicesServiceRestStub):
         def __hash__(self):
             return hash("AccountServicesServiceRestTransport.GetAccountService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -676,28 +584,16 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseAccountServicesServiceRestTransport._BaseGetAccountService._get_http_options()
-            )
+            http_options = _BaseAccountServicesServiceRestTransport._BaseGetAccountService._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_account_service(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseGetAccountService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_account_service(request, metadata)
+            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseGetAccountService._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountServicesServiceRestTransport._BaseGetAccountService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountServicesServiceRestTransport._BaseGetAccountService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -720,15 +616,8 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                AccountServicesServiceRestTransport._GetAccountService._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AccountServicesServiceRestTransport._GetAccountService._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -744,12 +633,8 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             resp = self._interceptor.post_get_account_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_account_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_account_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accountservices.AccountService.to_json(response)
                 except:
@@ -770,23 +655,12 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
             return resp
 
-    class _ListAccountServices(
-        _BaseAccountServicesServiceRestTransport._BaseListAccountServices,
-        AccountServicesServiceRestStub,
-    ):
+    class _ListAccountServices(_BaseAccountServicesServiceRestTransport._BaseListAccountServices, AccountServicesServiceRestStub):
         def __hash__(self):
             return hash("AccountServicesServiceRestTransport.ListAccountServices")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -827,28 +701,16 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseAccountServicesServiceRestTransport._BaseListAccountServices._get_http_options()
-            )
+            http_options = _BaseAccountServicesServiceRestTransport._BaseListAccountServices._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_account_services(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseListAccountServices._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_account_services(request, metadata)
+            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseListAccountServices._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountServicesServiceRestTransport._BaseListAccountServices._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountServicesServiceRestTransport._BaseListAccountServices._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -871,15 +733,8 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                AccountServicesServiceRestTransport._ListAccountServices._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AccountServicesServiceRestTransport._ListAccountServices._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -895,16 +750,10 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             resp = self._interceptor.post_list_account_services(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_account_services_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_account_services_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        accountservices.ListAccountServicesResponse.to_json(response)
-                    )
+                    response_payload = accountservices.ListAccountServicesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -923,23 +772,12 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
             return resp
 
-    class _ProposeAccountService(
-        _BaseAccountServicesServiceRestTransport._BaseProposeAccountService,
-        AccountServicesServiceRestStub,
-    ):
+    class _ProposeAccountService(_BaseAccountServicesServiceRestTransport._BaseProposeAccountService, AccountServicesServiceRestStub):
         def __hash__(self):
             return hash("AccountServicesServiceRestTransport.ProposeAccountService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1005,32 +843,18 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_http_options()
-            )
+            http_options = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_http_options()
 
-            request, metadata = self._interceptor.pre_propose_account_service(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_propose_account_service(request, metadata)
+            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_transcoded_request(http_options, request)
 
-            body = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountServicesServiceRestTransport._BaseProposeAccountService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1054,13 +878,7 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             # Send the request
             response = AccountServicesServiceRestTransport._ProposeAccountService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1076,12 +894,8 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
 
             resp = self._interceptor.post_propose_account_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_propose_account_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_propose_account_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accountservices.AccountService.to_json(response)
                 except:
@@ -1102,23 +916,12 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
             return resp
 
-    class _RejectAccountService(
-        _BaseAccountServicesServiceRestTransport._BaseRejectAccountService,
-        AccountServicesServiceRestStub,
-    ):
+    class _RejectAccountService(_BaseAccountServicesServiceRestTransport._BaseRejectAccountService, AccountServicesServiceRestStub):
         def __hash__(self):
             return hash("AccountServicesServiceRestTransport.RejectAccountService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1154,32 +957,18 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_http_options()
-            )
+            http_options = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_http_options()
 
-            request, metadata = self._interceptor.pre_reject_account_service(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_reject_account_service(request, metadata)
+            transcoded_request = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_transcoded_request(http_options, request)
 
-            body = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountServicesServiceRestTransport._BaseRejectAccountService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1202,16 +991,8 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                AccountServicesServiceRestTransport._RejectAccountService._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AccountServicesServiceRestTransport._RejectAccountService._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1220,50 +1001,31 @@ class AccountServicesServiceRestTransport(_BaseAccountServicesServiceRestTranspo
                 raise core_exceptions.from_http_response(response)
 
     @property
-    def approve_account_service(
-        self,
-    ) -> Callable[
-        [accountservices.ApproveAccountServiceRequest], accountservices.AccountService
-    ]:
+    def approve_account_service(self) -> Callable[[accountservices.ApproveAccountServiceRequest], accountservices.AccountService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveAccountService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_account_service(
-        self,
-    ) -> Callable[
-        [accountservices.GetAccountServiceRequest], accountservices.AccountService
-    ]:
+    def get_account_service(self) -> Callable[[accountservices.GetAccountServiceRequest], accountservices.AccountService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAccountService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_account_services(
-        self,
-    ) -> Callable[
-        [accountservices.ListAccountServicesRequest],
-        accountservices.ListAccountServicesResponse,
-    ]:
+    def list_account_services(self) -> Callable[[accountservices.ListAccountServicesRequest], accountservices.ListAccountServicesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAccountServices(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def propose_account_service(
-        self,
-    ) -> Callable[
-        [accountservices.ProposeAccountServiceRequest], accountservices.AccountService
-    ]:
+    def propose_account_service(self) -> Callable[[accountservices.ProposeAccountServiceRequest], accountservices.AccountService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ProposeAccountService(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def reject_account_service(
-        self,
-    ) -> Callable[[accountservices.RejectAccountServiceRequest], empty_pb2.Empty]:
+    def reject_account_service(self) -> Callable[[accountservices.RejectAccountServiceRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RejectAccountService(self._session, self._host, self._interceptor)  # type: ignore

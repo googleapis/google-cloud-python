@@ -18,46 +18,19 @@ from google.cloud.contentwarehouse import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.contentwarehouse_v1.services.document_link_service.async_client import (
-    DocumentLinkServiceAsyncClient,
-)
-from google.cloud.contentwarehouse_v1.services.document_link_service.client import (
-    DocumentLinkServiceClient,
-)
-from google.cloud.contentwarehouse_v1.services.document_schema_service.async_client import (
-    DocumentSchemaServiceAsyncClient,
-)
-from google.cloud.contentwarehouse_v1.services.document_schema_service.client import (
-    DocumentSchemaServiceClient,
-)
-from google.cloud.contentwarehouse_v1.services.document_service.async_client import (
-    DocumentServiceAsyncClient,
-)
-from google.cloud.contentwarehouse_v1.services.document_service.client import (
-    DocumentServiceClient,
-)
-from google.cloud.contentwarehouse_v1.services.pipeline_service.async_client import (
-    PipelineServiceAsyncClient,
-)
-from google.cloud.contentwarehouse_v1.services.pipeline_service.client import (
-    PipelineServiceClient,
-)
-from google.cloud.contentwarehouse_v1.services.rule_set_service.async_client import (
-    RuleSetServiceAsyncClient,
-)
-from google.cloud.contentwarehouse_v1.services.rule_set_service.client import (
-    RuleSetServiceClient,
-)
-from google.cloud.contentwarehouse_v1.services.synonym_set_service.async_client import (
-    SynonymSetServiceAsyncClient,
-)
-from google.cloud.contentwarehouse_v1.services.synonym_set_service.client import (
-    SynonymSetServiceClient,
-)
-from google.cloud.contentwarehouse_v1.types.async_document_service_request import (
-    CreateDocumentMetadata,
-    UpdateDocumentMetadata,
-)
+from google.cloud.contentwarehouse_v1.services.document_link_service.async_client import DocumentLinkServiceAsyncClient
+from google.cloud.contentwarehouse_v1.services.document_link_service.client import DocumentLinkServiceClient
+from google.cloud.contentwarehouse_v1.services.document_schema_service.async_client import DocumentSchemaServiceAsyncClient
+from google.cloud.contentwarehouse_v1.services.document_schema_service.client import DocumentSchemaServiceClient
+from google.cloud.contentwarehouse_v1.services.document_service.async_client import DocumentServiceAsyncClient
+from google.cloud.contentwarehouse_v1.services.document_service.client import DocumentServiceClient
+from google.cloud.contentwarehouse_v1.services.pipeline_service.async_client import PipelineServiceAsyncClient
+from google.cloud.contentwarehouse_v1.services.pipeline_service.client import PipelineServiceClient
+from google.cloud.contentwarehouse_v1.services.rule_set_service.async_client import RuleSetServiceAsyncClient
+from google.cloud.contentwarehouse_v1.services.rule_set_service.client import RuleSetServiceClient
+from google.cloud.contentwarehouse_v1.services.synonym_set_service.async_client import SynonymSetServiceAsyncClient
+from google.cloud.contentwarehouse_v1.services.synonym_set_service.client import SynonymSetServiceClient
+from google.cloud.contentwarehouse_v1.types.async_document_service_request import CreateDocumentMetadata, UpdateDocumentMetadata
 from google.cloud.contentwarehouse_v1.types.common import (
     AccessControlMode,
     DatabaseType,
@@ -143,11 +116,7 @@ from google.cloud.contentwarehouse_v1.types.filters import (
     TimeFilter,
     WeightedSchemaProperty,
 )
-from google.cloud.contentwarehouse_v1.types.histogram import (
-    HistogramQuery,
-    HistogramQueryPropertyNameFilter,
-    HistogramQueryResult,
-)
+from google.cloud.contentwarehouse_v1.types.histogram import HistogramQuery, HistogramQueryPropertyNameFilter, HistogramQueryResult
 from google.cloud.contentwarehouse_v1.types.pipeline_service import RunPipelineRequest
 from google.cloud.contentwarehouse_v1.types.pipelines import (
     ExportToCdwPipeline,

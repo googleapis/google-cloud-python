@@ -26,9 +26,7 @@ from google.cloud.security.privateca_v1beta1.types import resources, service
 from .base import DEFAULT_CLIENT_INFO, CertificateAuthorityServiceTransport
 
 
-class _BaseCertificateAuthorityServiceRestTransport(
-    CertificateAuthorityServiceTransport
-):
+class _BaseCertificateAuthorityServiceRestTransport(CertificateAuthorityServiceTransport):
     """Base REST backend transport for CertificateAuthorityService.
 
     Note: This class is not meant to be used directly. Use its sync and
@@ -74,20 +72,14 @@ class _BaseCertificateAuthorityServiceRestTransport(
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseActivateCertificateAuthority:
@@ -98,11 +90,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -125,9 +113,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -139,9 +125,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseActivateCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -155,11 +139,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -182,9 +162,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -195,11 +173,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificate._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -214,11 +188,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -241,9 +211,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -255,9 +223,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseCreateCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -271,11 +237,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -298,9 +260,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -312,9 +272,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseDisableCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -328,11 +286,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -355,9 +309,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -369,9 +321,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseEnableCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -385,11 +335,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -416,9 +362,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseFetchCertificateAuthorityCsr._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -432,11 +376,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -462,11 +402,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseGetCertificate._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -479,11 +415,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -509,11 +441,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateAuthority._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -526,11 +454,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -557,9 +481,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseGetCertificateRevocationList._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -573,11 +495,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -603,11 +521,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseGetReusableConfig._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -620,11 +534,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -651,9 +561,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateAuthorities._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -667,11 +575,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -698,9 +602,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificateRevocationLists._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -714,11 +616,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -744,11 +642,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseListCertificates._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -761,11 +655,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -791,11 +681,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseListReusableConfigs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -808,11 +694,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -835,9 +717,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -849,9 +729,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseRestoreCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -865,11 +743,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -892,9 +766,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -905,11 +777,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseRevokeCertificate._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -922,11 +790,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -949,9 +813,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -963,9 +825,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseScheduleDeleteCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -981,11 +841,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1008,9 +864,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1021,11 +875,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificate._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1040,11 +890,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1067,9 +913,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1081,9 +925,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateAuthority._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"
@@ -1099,11 +941,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1126,9 +964,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1140,9 +976,7 @@ class _BaseCertificateAuthorityServiceRestTransport(
                 )
             )
             query_params.update(
-                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_unset_required_fields(
-                    query_params
-                )
+                _BaseCertificateAuthorityServiceRestTransport._BaseUpdateCertificateRevocationList._get_unset_required_fields(query_params)
             )
 
             query_params["$alt"] = "json;enum-encoding=int"

@@ -29,9 +29,7 @@ from google.cloud.compute_v1beta import gapic_version as package_version
 from google.cloud.compute_v1beta.services import global_operations
 from google.cloud.compute_v1beta.types import compute
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class BackendBucketsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -215,124 +205,65 @@ class BackendBucketsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def add_signed_url_key(
-        self,
-    ) -> Callable[
-        [compute.AddSignedUrlKeyBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def add_signed_url_key(self) -> Callable[[compute.AddSignedUrlKeyBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete(
-        self,
-    ) -> Callable[
-        [compute.DeleteBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def delete(self) -> Callable[[compute.DeleteBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_signed_url_key(
         self,
-    ) -> Callable[
-        [compute.DeleteSignedUrlKeyBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.DeleteSignedUrlKeyBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetBackendBucketRequest],
-        Union[compute.BackendBucket, Awaitable[compute.BackendBucket]],
-    ]:
+    def get(self) -> Callable[[compute.GetBackendBucketRequest], Union[compute.BackendBucket, Awaitable[compute.BackendBucket]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.GetIamPolicyBackendBucketRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[compute.GetIamPolicyBackendBucketRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def insert(
-        self,
-    ) -> Callable[
-        [compute.InsertBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def insert(self) -> Callable[[compute.InsertBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListBackendBucketsRequest],
-        Union[compute.BackendBucketList, Awaitable[compute.BackendBucketList]],
-    ]:
+    def list(self) -> Callable[[compute.ListBackendBucketsRequest], Union[compute.BackendBucketList, Awaitable[compute.BackendBucketList]]]:
         raise NotImplementedError()
 
     @property
     def list_usable(
         self,
-    ) -> Callable[
-        [compute.ListUsableBackendBucketsRequest],
-        Union[
-            compute.BackendBucketListUsable, Awaitable[compute.BackendBucketListUsable]
-        ],
-    ]:
+    ) -> Callable[[compute.ListUsableBackendBucketsRequest], Union[compute.BackendBucketListUsable, Awaitable[compute.BackendBucketListUsable]]]:
         raise NotImplementedError()
 
     @property
-    def patch(
-        self,
-    ) -> Callable[
-        [compute.PatchBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def patch(self) -> Callable[[compute.PatchBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
     def set_edge_security_policy(
         self,
-    ) -> Callable[
-        [compute.SetEdgeSecurityPolicyBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    ) -> Callable[[compute.SetEdgeSecurityPolicyBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [compute.SetIamPolicyBackendBucketRequest],
-        Union[compute.Policy, Awaitable[compute.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[compute.SetIamPolicyBackendBucketRequest], Union[compute.Policy, Awaitable[compute.Policy]]]:
         raise NotImplementedError()
 
     @property
     def test_iam_permissions(
         self,
     ) -> Callable[
-        [compute.TestIamPermissionsBackendBucketRequest],
-        Union[
-            compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]
-        ],
+        [compute.TestIamPermissionsBackendBucketRequest], Union[compute.TestPermissionsResponse, Awaitable[compute.TestPermissionsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
-    def update(
-        self,
-    ) -> Callable[
-        [compute.UpdateBackendBucketRequest],
-        Union[compute.Operation, Awaitable[compute.Operation]],
-    ]:
+    def update(self) -> Callable[[compute.UpdateBackendBucketRequest], Union[compute.Operation, Awaitable[compute.Operation]]]:
         raise NotImplementedError()
 
     @property

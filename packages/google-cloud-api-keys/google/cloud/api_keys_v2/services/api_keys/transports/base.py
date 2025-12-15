@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.api_keys_v2 import gapic_version as package_version
 from google.cloud.api_keys_v2.types import apikeys, resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -96,23 +94,15 @@ class ApiKeysTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -199,83 +189,41 @@ class ApiKeysTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_key(
-        self,
-    ) -> Callable[
-        [apikeys.CreateKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_key(self) -> Callable[[apikeys.CreateKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_keys(
-        self,
-    ) -> Callable[
-        [apikeys.ListKeysRequest],
-        Union[apikeys.ListKeysResponse, Awaitable[apikeys.ListKeysResponse]],
-    ]:
+    def list_keys(self) -> Callable[[apikeys.ListKeysRequest], Union[apikeys.ListKeysResponse, Awaitable[apikeys.ListKeysResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_key(
-        self,
-    ) -> Callable[
-        [apikeys.GetKeyRequest], Union[resources.Key, Awaitable[resources.Key]]
-    ]:
+    def get_key(self) -> Callable[[apikeys.GetKeyRequest], Union[resources.Key, Awaitable[resources.Key]]]:
         raise NotImplementedError()
 
     @property
-    def get_key_string(
-        self,
-    ) -> Callable[
-        [apikeys.GetKeyStringRequest],
-        Union[apikeys.GetKeyStringResponse, Awaitable[apikeys.GetKeyStringResponse]],
-    ]:
+    def get_key_string(self) -> Callable[[apikeys.GetKeyStringRequest], Union[apikeys.GetKeyStringResponse, Awaitable[apikeys.GetKeyStringResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_key(
-        self,
-    ) -> Callable[
-        [apikeys.UpdateKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_key(self) -> Callable[[apikeys.UpdateKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_key(
-        self,
-    ) -> Callable[
-        [apikeys.DeleteKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_key(self) -> Callable[[apikeys.DeleteKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def undelete_key(
-        self,
-    ) -> Callable[
-        [apikeys.UndeleteKeyRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def undelete_key(self) -> Callable[[apikeys.UndeleteKeyRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def lookup_key(
-        self,
-    ) -> Callable[
-        [apikeys.LookupKeyRequest],
-        Union[apikeys.LookupKeyResponse, Awaitable[apikeys.LookupKeyResponse]],
-    ]:
+    def lookup_key(self) -> Callable[[apikeys.LookupKeyRequest], Union[apikeys.LookupKeyResponse, Awaitable[apikeys.LookupKeyResponse]]]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

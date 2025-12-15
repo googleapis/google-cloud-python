@@ -50,9 +50,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +60,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +79,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -223,18 +214,14 @@ class RegistryGrpcTransport(RegistryTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -268,9 +255,7 @@ class RegistryGrpcTransport(RegistryTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -329,11 +314,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._grpc_channel
 
     @property
-    def list_apis(
-        self,
-    ) -> Callable[
-        [registry_service.ListApisRequest], registry_service.ListApisResponse
-    ]:
+    def list_apis(self) -> Callable[[registry_service.ListApisRequest], registry_service.ListApisResponse]:
         r"""Return a callable for the list apis method over gRPC.
 
         Returns matching APIs.
@@ -357,9 +338,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_apis"]
 
     @property
-    def get_api(
-        self,
-    ) -> Callable[[registry_service.GetApiRequest], registry_models.Api]:
+    def get_api(self) -> Callable[[registry_service.GetApiRequest], registry_models.Api]:
         r"""Return a callable for the get api method over gRPC.
 
         Returns a specified API.
@@ -383,9 +362,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_api"]
 
     @property
-    def create_api(
-        self,
-    ) -> Callable[[registry_service.CreateApiRequest], registry_models.Api]:
+    def create_api(self) -> Callable[[registry_service.CreateApiRequest], registry_models.Api]:
         r"""Return a callable for the create api method over gRPC.
 
         Creates a specified API.
@@ -409,9 +386,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["create_api"]
 
     @property
-    def update_api(
-        self,
-    ) -> Callable[[registry_service.UpdateApiRequest], registry_models.Api]:
+    def update_api(self) -> Callable[[registry_service.UpdateApiRequest], registry_models.Api]:
         r"""Return a callable for the update api method over gRPC.
 
         Used to modify a specified API.
@@ -435,9 +410,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["update_api"]
 
     @property
-    def delete_api(
-        self,
-    ) -> Callable[[registry_service.DeleteApiRequest], empty_pb2.Empty]:
+    def delete_api(self) -> Callable[[registry_service.DeleteApiRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api method over gRPC.
 
         Removes a specified API and all of the resources that
@@ -462,12 +435,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["delete_api"]
 
     @property
-    def list_api_versions(
-        self,
-    ) -> Callable[
-        [registry_service.ListApiVersionsRequest],
-        registry_service.ListApiVersionsResponse,
-    ]:
+    def list_api_versions(self) -> Callable[[registry_service.ListApiVersionsRequest], registry_service.ListApiVersionsResponse]:
         r"""Return a callable for the list api versions method over gRPC.
 
         Returns matching versions.
@@ -491,9 +459,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_api_versions"]
 
     @property
-    def get_api_version(
-        self,
-    ) -> Callable[[registry_service.GetApiVersionRequest], registry_models.ApiVersion]:
+    def get_api_version(self) -> Callable[[registry_service.GetApiVersionRequest], registry_models.ApiVersion]:
         r"""Return a callable for the get api version method over gRPC.
 
         Returns a specified version.
@@ -517,11 +483,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_api_version"]
 
     @property
-    def create_api_version(
-        self,
-    ) -> Callable[
-        [registry_service.CreateApiVersionRequest], registry_models.ApiVersion
-    ]:
+    def create_api_version(self) -> Callable[[registry_service.CreateApiVersionRequest], registry_models.ApiVersion]:
         r"""Return a callable for the create api version method over gRPC.
 
         Creates a specified version.
@@ -545,11 +507,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["create_api_version"]
 
     @property
-    def update_api_version(
-        self,
-    ) -> Callable[
-        [registry_service.UpdateApiVersionRequest], registry_models.ApiVersion
-    ]:
+    def update_api_version(self) -> Callable[[registry_service.UpdateApiVersionRequest], registry_models.ApiVersion]:
         r"""Return a callable for the update api version method over gRPC.
 
         Used to modify a specified version.
@@ -573,9 +531,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["update_api_version"]
 
     @property
-    def delete_api_version(
-        self,
-    ) -> Callable[[registry_service.DeleteApiVersionRequest], empty_pb2.Empty]:
+    def delete_api_version(self) -> Callable[[registry_service.DeleteApiVersionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api version method over gRPC.
 
         Removes a specified version and all of the resources
@@ -600,11 +556,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["delete_api_version"]
 
     @property
-    def list_api_specs(
-        self,
-    ) -> Callable[
-        [registry_service.ListApiSpecsRequest], registry_service.ListApiSpecsResponse
-    ]:
+    def list_api_specs(self) -> Callable[[registry_service.ListApiSpecsRequest], registry_service.ListApiSpecsResponse]:
         r"""Return a callable for the list api specs method over gRPC.
 
         Returns matching specs.
@@ -628,9 +580,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_api_specs"]
 
     @property
-    def get_api_spec(
-        self,
-    ) -> Callable[[registry_service.GetApiSpecRequest], registry_models.ApiSpec]:
+    def get_api_spec(self) -> Callable[[registry_service.GetApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the get api spec method over gRPC.
 
         Returns a specified spec.
@@ -654,9 +604,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_api_spec"]
 
     @property
-    def get_api_spec_contents(
-        self,
-    ) -> Callable[[registry_service.GetApiSpecContentsRequest], httpbody_pb2.HttpBody]:
+    def get_api_spec_contents(self) -> Callable[[registry_service.GetApiSpecContentsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the get api spec contents method over gRPC.
 
         Returns the contents of a specified spec. If specs are stored
@@ -683,9 +631,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_api_spec_contents"]
 
     @property
-    def create_api_spec(
-        self,
-    ) -> Callable[[registry_service.CreateApiSpecRequest], registry_models.ApiSpec]:
+    def create_api_spec(self) -> Callable[[registry_service.CreateApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the create api spec method over gRPC.
 
         Creates a specified spec.
@@ -709,9 +655,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["create_api_spec"]
 
     @property
-    def update_api_spec(
-        self,
-    ) -> Callable[[registry_service.UpdateApiSpecRequest], registry_models.ApiSpec]:
+    def update_api_spec(self) -> Callable[[registry_service.UpdateApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the update api spec method over gRPC.
 
         Used to modify a specified spec.
@@ -735,9 +679,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["update_api_spec"]
 
     @property
-    def delete_api_spec(
-        self,
-    ) -> Callable[[registry_service.DeleteApiSpecRequest], empty_pb2.Empty]:
+    def delete_api_spec(self) -> Callable[[registry_service.DeleteApiSpecRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api spec method over gRPC.
 
         Removes a specified spec, all revisions, and all
@@ -762,11 +704,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["delete_api_spec"]
 
     @property
-    def tag_api_spec_revision(
-        self,
-    ) -> Callable[
-        [registry_service.TagApiSpecRevisionRequest], registry_models.ApiSpec
-    ]:
+    def tag_api_spec_revision(self) -> Callable[[registry_service.TagApiSpecRevisionRequest], registry_models.ApiSpec]:
         r"""Return a callable for the tag api spec revision method over gRPC.
 
         Adds a tag to a specified revision of a spec.
@@ -790,12 +728,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["tag_api_spec_revision"]
 
     @property
-    def list_api_spec_revisions(
-        self,
-    ) -> Callable[
-        [registry_service.ListApiSpecRevisionsRequest],
-        registry_service.ListApiSpecRevisionsResponse,
-    ]:
+    def list_api_spec_revisions(self) -> Callable[[registry_service.ListApiSpecRevisionsRequest], registry_service.ListApiSpecRevisionsResponse]:
         r"""Return a callable for the list api spec revisions method over gRPC.
 
         Lists all revisions of a spec.
@@ -821,9 +754,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_api_spec_revisions"]
 
     @property
-    def rollback_api_spec(
-        self,
-    ) -> Callable[[registry_service.RollbackApiSpecRequest], registry_models.ApiSpec]:
+    def rollback_api_spec(self) -> Callable[[registry_service.RollbackApiSpecRequest], registry_models.ApiSpec]:
         r"""Return a callable for the rollback api spec method over gRPC.
 
         Sets the current revision to a specified prior
@@ -849,11 +780,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["rollback_api_spec"]
 
     @property
-    def delete_api_spec_revision(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteApiSpecRevisionRequest], registry_models.ApiSpec
-    ]:
+    def delete_api_spec_revision(self) -> Callable[[registry_service.DeleteApiSpecRevisionRequest], registry_models.ApiSpec]:
         r"""Return a callable for the delete api spec revision method over gRPC.
 
         Deletes a revision of a spec.
@@ -877,12 +804,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["delete_api_spec_revision"]
 
     @property
-    def list_api_deployments(
-        self,
-    ) -> Callable[
-        [registry_service.ListApiDeploymentsRequest],
-        registry_service.ListApiDeploymentsResponse,
-    ]:
+    def list_api_deployments(self) -> Callable[[registry_service.ListApiDeploymentsRequest], registry_service.ListApiDeploymentsResponse]:
         r"""Return a callable for the list api deployments method over gRPC.
 
         Returns matching deployments.
@@ -906,11 +828,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_api_deployments"]
 
     @property
-    def get_api_deployment(
-        self,
-    ) -> Callable[
-        [registry_service.GetApiDeploymentRequest], registry_models.ApiDeployment
-    ]:
+    def get_api_deployment(self) -> Callable[[registry_service.GetApiDeploymentRequest], registry_models.ApiDeployment]:
         r"""Return a callable for the get api deployment method over gRPC.
 
         Returns a specified deployment.
@@ -934,11 +852,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_api_deployment"]
 
     @property
-    def create_api_deployment(
-        self,
-    ) -> Callable[
-        [registry_service.CreateApiDeploymentRequest], registry_models.ApiDeployment
-    ]:
+    def create_api_deployment(self) -> Callable[[registry_service.CreateApiDeploymentRequest], registry_models.ApiDeployment]:
         r"""Return a callable for the create api deployment method over gRPC.
 
         Creates a specified deployment.
@@ -962,11 +876,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["create_api_deployment"]
 
     @property
-    def update_api_deployment(
-        self,
-    ) -> Callable[
-        [registry_service.UpdateApiDeploymentRequest], registry_models.ApiDeployment
-    ]:
+    def update_api_deployment(self) -> Callable[[registry_service.UpdateApiDeploymentRequest], registry_models.ApiDeployment]:
         r"""Return a callable for the update api deployment method over gRPC.
 
         Used to modify a specified deployment.
@@ -990,9 +900,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["update_api_deployment"]
 
     @property
-    def delete_api_deployment(
-        self,
-    ) -> Callable[[registry_service.DeleteApiDeploymentRequest], empty_pb2.Empty]:
+    def delete_api_deployment(self) -> Callable[[registry_service.DeleteApiDeploymentRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete api deployment method over gRPC.
 
         Removes a specified deployment, all revisions, and
@@ -1017,12 +925,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["delete_api_deployment"]
 
     @property
-    def tag_api_deployment_revision(
-        self,
-    ) -> Callable[
-        [registry_service.TagApiDeploymentRevisionRequest],
-        registry_models.ApiDeployment,
-    ]:
+    def tag_api_deployment_revision(self) -> Callable[[registry_service.TagApiDeploymentRevisionRequest], registry_models.ApiDeployment]:
         r"""Return a callable for the tag api deployment revision method over gRPC.
 
         Adds a tag to a specified revision of a
@@ -1039,9 +942,7 @@ class RegistryGrpcTransport(RegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "tag_api_deployment_revision" not in self._stubs:
-            self._stubs[
-                "tag_api_deployment_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["tag_api_deployment_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.apigeeregistry.v1.Registry/TagApiDeploymentRevision",
                 request_serializer=registry_service.TagApiDeploymentRevisionRequest.serialize,
                 response_deserializer=registry_models.ApiDeployment.deserialize,
@@ -1051,10 +952,7 @@ class RegistryGrpcTransport(RegistryTransport):
     @property
     def list_api_deployment_revisions(
         self,
-    ) -> Callable[
-        [registry_service.ListApiDeploymentRevisionsRequest],
-        registry_service.ListApiDeploymentRevisionsResponse,
-    ]:
+    ) -> Callable[[registry_service.ListApiDeploymentRevisionsRequest], registry_service.ListApiDeploymentRevisionsResponse]:
         r"""Return a callable for the list api deployment revisions method over gRPC.
 
         Lists all revisions of a deployment.
@@ -1072,9 +970,7 @@ class RegistryGrpcTransport(RegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_api_deployment_revisions" not in self._stubs:
-            self._stubs[
-                "list_api_deployment_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_api_deployment_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.apigeeregistry.v1.Registry/ListApiDeploymentRevisions",
                 request_serializer=registry_service.ListApiDeploymentRevisionsRequest.serialize,
                 response_deserializer=registry_service.ListApiDeploymentRevisionsResponse.deserialize,
@@ -1082,11 +978,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_api_deployment_revisions"]
 
     @property
-    def rollback_api_deployment(
-        self,
-    ) -> Callable[
-        [registry_service.RollbackApiDeploymentRequest], registry_models.ApiDeployment
-    ]:
+    def rollback_api_deployment(self) -> Callable[[registry_service.RollbackApiDeploymentRequest], registry_models.ApiDeployment]:
         r"""Return a callable for the rollback api deployment method over gRPC.
 
         Sets the current revision to a specified prior
@@ -1112,12 +1004,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["rollback_api_deployment"]
 
     @property
-    def delete_api_deployment_revision(
-        self,
-    ) -> Callable[
-        [registry_service.DeleteApiDeploymentRevisionRequest],
-        registry_models.ApiDeployment,
-    ]:
+    def delete_api_deployment_revision(self) -> Callable[[registry_service.DeleteApiDeploymentRevisionRequest], registry_models.ApiDeployment]:
         r"""Return a callable for the delete api deployment revision method over gRPC.
 
         Deletes a revision of a deployment.
@@ -1133,9 +1020,7 @@ class RegistryGrpcTransport(RegistryTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_api_deployment_revision" not in self._stubs:
-            self._stubs[
-                "delete_api_deployment_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_api_deployment_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.apigeeregistry.v1.Registry/DeleteApiDeploymentRevision",
                 request_serializer=registry_service.DeleteApiDeploymentRevisionRequest.serialize,
                 response_deserializer=registry_models.ApiDeployment.deserialize,
@@ -1143,11 +1028,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["delete_api_deployment_revision"]
 
     @property
-    def list_artifacts(
-        self,
-    ) -> Callable[
-        [registry_service.ListArtifactsRequest], registry_service.ListArtifactsResponse
-    ]:
+    def list_artifacts(self) -> Callable[[registry_service.ListArtifactsRequest], registry_service.ListArtifactsResponse]:
         r"""Return a callable for the list artifacts method over gRPC.
 
         Returns matching artifacts.
@@ -1171,9 +1052,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["list_artifacts"]
 
     @property
-    def get_artifact(
-        self,
-    ) -> Callable[[registry_service.GetArtifactRequest], registry_models.Artifact]:
+    def get_artifact(self) -> Callable[[registry_service.GetArtifactRequest], registry_models.Artifact]:
         r"""Return a callable for the get artifact method over gRPC.
 
         Returns a specified artifact.
@@ -1197,9 +1076,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_artifact"]
 
     @property
-    def get_artifact_contents(
-        self,
-    ) -> Callable[[registry_service.GetArtifactContentsRequest], httpbody_pb2.HttpBody]:
+    def get_artifact_contents(self) -> Callable[[registry_service.GetArtifactContentsRequest], httpbody_pb2.HttpBody]:
         r"""Return a callable for the get artifact contents method over gRPC.
 
         Returns the contents of a specified artifact. If artifacts are
@@ -1226,9 +1103,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["get_artifact_contents"]
 
     @property
-    def create_artifact(
-        self,
-    ) -> Callable[[registry_service.CreateArtifactRequest], registry_models.Artifact]:
+    def create_artifact(self) -> Callable[[registry_service.CreateArtifactRequest], registry_models.Artifact]:
         r"""Return a callable for the create artifact method over gRPC.
 
         Creates a specified artifact.
@@ -1252,9 +1127,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["create_artifact"]
 
     @property
-    def replace_artifact(
-        self,
-    ) -> Callable[[registry_service.ReplaceArtifactRequest], registry_models.Artifact]:
+    def replace_artifact(self) -> Callable[[registry_service.ReplaceArtifactRequest], registry_models.Artifact]:
         r"""Return a callable for the replace artifact method over gRPC.
 
         Used to replace a specified artifact.
@@ -1278,9 +1151,7 @@ class RegistryGrpcTransport(RegistryTransport):
         return self._stubs["replace_artifact"]
 
     @property
-    def delete_artifact(
-        self,
-    ) -> Callable[[registry_service.DeleteArtifactRequest], empty_pb2.Empty]:
+    def delete_artifact(self) -> Callable[[registry_service.DeleteArtifactRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete artifact method over gRPC.
 
         Removes a specified artifact.
@@ -1360,9 +1231,7 @@ class RegistryGrpcTransport(RegistryTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1379,9 +1248,7 @@ class RegistryGrpcTransport(RegistryTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1466,10 +1333,7 @@ class RegistryGrpcTransport(RegistryTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

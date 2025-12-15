@@ -393,9 +393,7 @@ class Channel(proto.Message):
         number=12,
         message=outputs.Manifest,
     )
-    distribution_streams: MutableSequence[
-        outputs.DistributionStream
-    ] = proto.RepeatedField(
+    distribution_streams: MutableSequence[outputs.DistributionStream] = proto.RepeatedField(
         proto.MESSAGE,
         number=28,
         message=outputs.DistributionStream,

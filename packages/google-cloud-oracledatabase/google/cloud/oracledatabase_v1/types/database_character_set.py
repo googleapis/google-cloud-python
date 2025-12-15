@@ -139,9 +139,7 @@ class ListDatabaseCharacterSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    database_character_sets: MutableSequence[
-        "DatabaseCharacterSet"
-    ] = proto.RepeatedField(
+    database_character_sets: MutableSequence["DatabaseCharacterSet"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DatabaseCharacterSet",

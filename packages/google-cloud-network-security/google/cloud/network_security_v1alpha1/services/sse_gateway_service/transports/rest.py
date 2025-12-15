@@ -139,13 +139,8 @@ class SSEGatewayServiceRestInterceptor:
     """
 
     def pre_create_partner_sse_gateway(
-        self,
-        request: sse_gateway.CreatePartnerSSEGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.CreatePartnerSSEGatewayRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sse_gateway.CreatePartnerSSEGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.CreatePartnerSSEGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_partner_sse_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -153,9 +148,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_partner_sse_gateway(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_partner_sse_gateway(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_partner_sse_gateway
 
         DEPRECATED. Please use the `post_create_partner_sse_gateway_with_metadata`
@@ -169,9 +162,7 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_create_partner_sse_gateway_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_partner_sse_gateway
 
@@ -188,13 +179,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_partner_sse_gateway(
-        self,
-        request: sse_gateway.DeletePartnerSSEGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.DeletePartnerSSEGatewayRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sse_gateway.DeletePartnerSSEGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.DeletePartnerSSEGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_partner_sse_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -202,9 +188,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_partner_sse_gateway(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_partner_sse_gateway(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_partner_sse_gateway
 
         DEPRECATED. Please use the `post_delete_partner_sse_gateway_with_metadata`
@@ -218,9 +202,7 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_delete_partner_sse_gateway_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_partner_sse_gateway
 
@@ -237,12 +219,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_get_partner_sse_gateway(
-        self,
-        request: sse_gateway.GetPartnerSSEGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.GetPartnerSSEGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: sse_gateway.GetPartnerSSEGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.GetPartnerSSEGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_partner_sse_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -250,9 +228,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_partner_sse_gateway(
-        self, response: sse_gateway.PartnerSSEGateway
-    ) -> sse_gateway.PartnerSSEGateway:
+    def post_get_partner_sse_gateway(self, response: sse_gateway.PartnerSSEGateway) -> sse_gateway.PartnerSSEGateway:
         """Post-rpc interceptor for get_partner_sse_gateway
 
         DEPRECATED. Please use the `post_get_partner_sse_gateway_with_metadata`
@@ -266,9 +242,7 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_get_partner_sse_gateway_with_metadata(
-        self,
-        response: sse_gateway.PartnerSSEGateway,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: sse_gateway.PartnerSSEGateway, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[sse_gateway.PartnerSSEGateway, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_partner_sse_gateway
 
@@ -285,13 +259,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_get_sse_gateway_reference(
-        self,
-        request: sse_gateway.GetSSEGatewayReferenceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.GetSSEGatewayReferenceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sse_gateway.GetSSEGatewayReferenceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.GetSSEGatewayReferenceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_sse_gateway_reference
 
         Override in a subclass to manipulate the request or metadata
@@ -299,9 +268,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_sse_gateway_reference(
-        self, response: sse_gateway.SSEGatewayReference
-    ) -> sse_gateway.SSEGatewayReference:
+    def post_get_sse_gateway_reference(self, response: sse_gateway.SSEGatewayReference) -> sse_gateway.SSEGatewayReference:
         """Post-rpc interceptor for get_sse_gateway_reference
 
         DEPRECATED. Please use the `post_get_sse_gateway_reference_with_metadata`
@@ -315,12 +282,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_get_sse_gateway_reference_with_metadata(
-        self,
-        response: sse_gateway.SSEGatewayReference,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.SSEGatewayReference, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: sse_gateway.SSEGatewayReference, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.SSEGatewayReference, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_sse_gateway_reference
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -336,13 +299,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_list_partner_sse_gateways(
-        self,
-        request: sse_gateway.ListPartnerSSEGatewaysRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.ListPartnerSSEGatewaysRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sse_gateway.ListPartnerSSEGatewaysRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.ListPartnerSSEGatewaysRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_partner_sse_gateways
 
         Override in a subclass to manipulate the request or metadata
@@ -350,9 +308,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_partner_sse_gateways(
-        self, response: sse_gateway.ListPartnerSSEGatewaysResponse
-    ) -> sse_gateway.ListPartnerSSEGatewaysResponse:
+    def post_list_partner_sse_gateways(self, response: sse_gateway.ListPartnerSSEGatewaysResponse) -> sse_gateway.ListPartnerSSEGatewaysResponse:
         """Post-rpc interceptor for list_partner_sse_gateways
 
         DEPRECATED. Please use the `post_list_partner_sse_gateways_with_metadata`
@@ -366,13 +322,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_list_partner_sse_gateways_with_metadata(
-        self,
-        response: sse_gateway.ListPartnerSSEGatewaysResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.ListPartnerSSEGatewaysResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: sse_gateway.ListPartnerSSEGatewaysResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.ListPartnerSSEGatewaysResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_partner_sse_gateways
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -388,13 +339,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_list_sse_gateway_references(
-        self,
-        request: sse_gateway.ListSSEGatewayReferencesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.ListSSEGatewayReferencesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sse_gateway.ListSSEGatewayReferencesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.ListSSEGatewayReferencesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sse_gateway_references
 
         Override in a subclass to manipulate the request or metadata
@@ -418,13 +364,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_list_sse_gateway_references_with_metadata(
-        self,
-        response: sse_gateway.ListSSEGatewayReferencesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.ListSSEGatewayReferencesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: sse_gateway.ListSSEGatewayReferencesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.ListSSEGatewayReferencesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sse_gateway_references
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -440,13 +381,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_update_partner_sse_gateway(
-        self,
-        request: sse_gateway.UpdatePartnerSSEGatewayRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        sse_gateway.UpdatePartnerSSEGatewayRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: sse_gateway.UpdatePartnerSSEGatewayRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[sse_gateway.UpdatePartnerSSEGatewayRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_partner_sse_gateway
 
         Override in a subclass to manipulate the request or metadata
@@ -454,9 +390,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_partner_sse_gateway(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_partner_sse_gateway(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_partner_sse_gateway
 
         DEPRECATED. Please use the `post_update_partner_sse_gateway_with_metadata`
@@ -470,9 +404,7 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def post_update_partner_sse_gateway_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_partner_sse_gateway
 
@@ -489,12 +421,8 @@ class SSEGatewayServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -502,9 +430,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -514,12 +440,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -527,9 +449,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -539,12 +459,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -562,12 +478,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -585,13 +497,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -599,9 +506,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -611,12 +516,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -634,12 +535,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -657,12 +554,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -670,9 +563,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -682,12 +573,8 @@ class SSEGatewayServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -695,9 +582,7 @@ class SSEGatewayServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -786,9 +671,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -858,30 +741,17 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 path_prefix="v1alpha1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreatePartnerSSEGateway(
-        _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway,
-        SSEGatewayServiceRestStub,
-    ):
+    class _CreatePartnerSSEGateway(_BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.CreatePartnerSSEGateway")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -926,32 +796,18 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_partner_sse_gateway(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_partner_sse_gateway(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_transcoded_request(http_options, request)
 
-            body = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseCreatePartnerSSEGateway._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -974,16 +830,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._CreatePartnerSSEGateway._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SSEGatewayServiceRestTransport._CreatePartnerSSEGateway._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -997,12 +845,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_create_partner_sse_gateway(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_partner_sse_gateway_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_partner_sse_gateway_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1023,23 +867,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
             return resp
 
-    class _DeletePartnerSSEGateway(
-        _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway,
-        SSEGatewayServiceRestStub,
-    ):
+    class _DeletePartnerSSEGateway(_BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.DeletePartnerSSEGateway")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1083,28 +916,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_partner_sse_gateway(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_partner_sse_gateway(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseDeletePartnerSSEGateway._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1127,15 +948,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._DeletePartnerSSEGateway._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SSEGatewayServiceRestTransport._DeletePartnerSSEGateway._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1149,12 +963,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_delete_partner_sse_gateway(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_partner_sse_gateway_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_partner_sse_gateway_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1175,23 +985,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
             return resp
 
-    class _GetPartnerSSEGateway(
-        _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway,
-        SSEGatewayServiceRestStub,
-    ):
+    class _GetPartnerSSEGateway(_BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.GetPartnerSSEGateway")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1233,28 +1032,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_partner_sse_gateway(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_partner_sse_gateway(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetPartnerSSEGateway._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1277,15 +1064,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._GetPartnerSSEGateway._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SSEGatewayServiceRestTransport._GetPartnerSSEGateway._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1301,12 +1081,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_get_partner_sse_gateway(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_partner_sse_gateway_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_partner_sse_gateway_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sse_gateway.PartnerSSEGateway.to_json(response)
                 except:
@@ -1327,23 +1103,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
             return resp
 
-    class _GetSSEGatewayReference(
-        _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference,
-        SSEGatewayServiceRestStub,
-    ):
+    class _GetSSEGatewayReference(_BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.GetSSEGatewayReference")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1385,28 +1150,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_sse_gateway_reference(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_sse_gateway_reference(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetSSEGatewayReference._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1429,15 +1182,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._GetSSEGatewayReference._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SSEGatewayServiceRestTransport._GetSSEGatewayReference._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1453,12 +1199,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_get_sse_gateway_reference(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_sse_gateway_reference_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_sse_gateway_reference_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = sse_gateway.SSEGatewayReference.to_json(response)
                 except:
@@ -1479,23 +1221,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
             return resp
 
-    class _ListPartnerSSEGateways(
-        _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways,
-        SSEGatewayServiceRestStub,
-    ):
+    class _ListPartnerSSEGateways(_BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.ListPartnerSSEGateways")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1537,28 +1268,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_partner_sse_gateways(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_partner_sse_gateways(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseListPartnerSSEGateways._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1581,15 +1300,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._ListPartnerSSEGateways._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SSEGatewayServiceRestTransport._ListPartnerSSEGateways._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1605,16 +1317,10 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_list_partner_sse_gateways(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_partner_sse_gateways_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_partner_sse_gateways_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        sse_gateway.ListPartnerSSEGatewaysResponse.to_json(response)
-                    )
+                    response_payload = sse_gateway.ListPartnerSSEGatewaysResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1633,23 +1339,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
             return resp
 
-    class _ListSSEGatewayReferences(
-        _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences,
-        SSEGatewayServiceRestStub,
-    ):
+    class _ListSSEGatewayReferences(_BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.ListSSEGatewayReferences")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1692,28 +1387,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_sse_gateway_references(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_sse_gateway_references(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseListSSEGatewayReferences._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1736,15 +1419,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._ListSSEGatewayReferences._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = SSEGatewayServiceRestTransport._ListSSEGatewayReferences._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1760,16 +1436,10 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_list_sse_gateway_references(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sse_gateway_references_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sse_gateway_references_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        sse_gateway.ListSSEGatewayReferencesResponse.to_json(response)
-                    )
+                    response_payload = sse_gateway.ListSSEGatewayReferencesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1788,23 +1458,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
             return resp
 
-    class _UpdatePartnerSSEGateway(
-        _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway,
-        SSEGatewayServiceRestStub,
-    ):
+    class _UpdatePartnerSSEGateway(_BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.UpdatePartnerSSEGateway")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1849,32 +1508,18 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_partner_sse_gateway(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_partner_sse_gateway(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_transcoded_request(http_options, request)
 
-            body = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseUpdatePartnerSSEGateway._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1897,16 +1542,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SSEGatewayServiceRestTransport._UpdatePartnerSSEGateway._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SSEGatewayServiceRestTransport._UpdatePartnerSSEGateway._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1920,12 +1557,8 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             resp = self._interceptor.post_update_partner_sse_gateway(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_partner_sse_gateway_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_partner_sse_gateway_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1947,73 +1580,43 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             return resp
 
     @property
-    def create_partner_sse_gateway(
-        self,
-    ) -> Callable[
-        [sse_gateway.CreatePartnerSSEGatewayRequest], operations_pb2.Operation
-    ]:
+    def create_partner_sse_gateway(self) -> Callable[[sse_gateway.CreatePartnerSSEGatewayRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePartnerSSEGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_partner_sse_gateway(
-        self,
-    ) -> Callable[
-        [sse_gateway.DeletePartnerSSEGatewayRequest], operations_pb2.Operation
-    ]:
+    def delete_partner_sse_gateway(self) -> Callable[[sse_gateway.DeletePartnerSSEGatewayRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePartnerSSEGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_partner_sse_gateway(
-        self,
-    ) -> Callable[
-        [sse_gateway.GetPartnerSSEGatewayRequest], sse_gateway.PartnerSSEGateway
-    ]:
+    def get_partner_sse_gateway(self) -> Callable[[sse_gateway.GetPartnerSSEGatewayRequest], sse_gateway.PartnerSSEGateway]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPartnerSSEGateway(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_sse_gateway_reference(
-        self,
-    ) -> Callable[
-        [sse_gateway.GetSSEGatewayReferenceRequest], sse_gateway.SSEGatewayReference
-    ]:
+    def get_sse_gateway_reference(self) -> Callable[[sse_gateway.GetSSEGatewayReferenceRequest], sse_gateway.SSEGatewayReference]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSSEGatewayReference(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_partner_sse_gateways(
-        self,
-    ) -> Callable[
-        [sse_gateway.ListPartnerSSEGatewaysRequest],
-        sse_gateway.ListPartnerSSEGatewaysResponse,
-    ]:
+    def list_partner_sse_gateways(self) -> Callable[[sse_gateway.ListPartnerSSEGatewaysRequest], sse_gateway.ListPartnerSSEGatewaysResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPartnerSSEGateways(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sse_gateway_references(
-        self,
-    ) -> Callable[
-        [sse_gateway.ListSSEGatewayReferencesRequest],
-        sse_gateway.ListSSEGatewayReferencesResponse,
-    ]:
+    def list_sse_gateway_references(self) -> Callable[[sse_gateway.ListSSEGatewayReferencesRequest], sse_gateway.ListSSEGatewayReferencesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSSEGatewayReferences(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_partner_sse_gateway(
-        self,
-    ) -> Callable[
-        [sse_gateway.UpdatePartnerSSEGatewayRequest], operations_pb2.Operation
-    ]:
+    def update_partner_sse_gateway(self) -> Callable[[sse_gateway.UpdatePartnerSSEGatewayRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePartnerSSEGateway(self._session, self._host, self._interceptor)  # type: ignore
@@ -2022,22 +1625,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseSSEGatewayServiceRestTransport._BaseGetLocation, SSEGatewayServiceRestStub
-    ):
+    class _GetLocation(_BaseSSEGatewayServiceRestTransport._BaseGetLocation, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2075,26 +1668,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2118,12 +1701,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2135,9 +1713,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2162,23 +1738,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSSEGatewayServiceRestTransport._BaseListLocations,
-        SSEGatewayServiceRestStub,
-    ):
+    class _ListLocations(_BaseSSEGatewayServiceRestTransport._BaseListLocations, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2216,26 +1781,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2259,12 +1814,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2276,9 +1826,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2303,22 +1851,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy, SSEGatewayServiceRestStub
-    ):
+    class _GetIamPolicy(_BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2356,26 +1894,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2399,12 +1927,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2416,9 +1939,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2443,22 +1964,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy, SSEGatewayServiceRestStub
-    ):
+    class _SetIamPolicy(_BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2497,30 +2008,18 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2544,13 +2043,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2562,9 +2055,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2589,23 +2080,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions,
-        SSEGatewayServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2644,32 +2124,18 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2693,13 +2159,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2711,9 +2171,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2738,23 +2196,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSSEGatewayServiceRestTransport._BaseCancelOperation,
-        SSEGatewayServiceRestStub,
-    ):
+    class _CancelOperation(_BaseSSEGatewayServiceRestTransport._BaseCancelOperation, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2790,32 +2237,18 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2839,13 +2272,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2859,23 +2286,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation,
-        SSEGatewayServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseSSEGatewayServiceRestTransport._BaseDeleteOperation, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2910,28 +2326,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2955,12 +2359,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2974,22 +2373,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSSEGatewayServiceRestTransport._BaseGetOperation, SSEGatewayServiceRestStub
-    ):
+    class _GetOperation(_BaseSSEGatewayServiceRestTransport._BaseGetOperation, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3027,26 +2416,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3070,12 +2449,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3087,9 +2461,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3114,23 +2486,12 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSSEGatewayServiceRestTransport._BaseListOperations,
-        SSEGatewayServiceRestStub,
-    ):
+    class _ListOperations(_BaseSSEGatewayServiceRestTransport._BaseListOperations, SSEGatewayServiceRestStub):
         def __hash__(self):
             return hash("SSEGatewayServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3168,26 +2529,16 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSSEGatewayServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSSEGatewayServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseSSEGatewayServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseSSEGatewayServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSSEGatewayServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3211,12 +2562,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
 
             # Send the request
             response = SSEGatewayServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3228,9 +2574,7 @@ class SSEGatewayServiceRestTransport(_BaseSSEGatewayServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

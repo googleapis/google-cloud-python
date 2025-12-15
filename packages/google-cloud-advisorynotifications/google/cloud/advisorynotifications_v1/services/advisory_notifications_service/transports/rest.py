@@ -111,9 +111,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
     """
 
     def pre_get_notification(
-        self,
-        request: service.GetNotificationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetNotificationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetNotificationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_notification
 
@@ -122,9 +120,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_notification(
-        self, response: service.Notification
-    ) -> service.Notification:
+    def post_get_notification(self, response: service.Notification) -> service.Notification:
         """Post-rpc interceptor for get_notification
 
         DEPRECATED. Please use the `post_get_notification_with_metadata`
@@ -138,9 +134,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response
 
     def post_get_notification_with_metadata(
-        self,
-        response: service.Notification,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Notification, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Notification, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_notification
 
@@ -157,9 +151,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_settings(
-        self,
-        request: service.GetSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.GetSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.GetSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_settings
 
@@ -182,9 +174,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response
 
     def post_get_settings_with_metadata(
-        self,
-        response: service.Settings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Settings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_settings
 
@@ -201,12 +191,8 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_notifications(
-        self,
-        request: service.ListNotificationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListNotificationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.ListNotificationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListNotificationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_notifications
 
         Override in a subclass to manipulate the request or metadata
@@ -214,9 +200,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_notifications(
-        self, response: service.ListNotificationsResponse
-    ) -> service.ListNotificationsResponse:
+    def post_list_notifications(self, response: service.ListNotificationsResponse) -> service.ListNotificationsResponse:
         """Post-rpc interceptor for list_notifications
 
         DEPRECATED. Please use the `post_list_notifications_with_metadata`
@@ -230,12 +214,8 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response
 
     def post_list_notifications_with_metadata(
-        self,
-        response: service.ListNotificationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.ListNotificationsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.ListNotificationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.ListNotificationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_notifications
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -251,9 +231,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_settings(
-        self,
-        request: service.UpdateSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.UpdateSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.UpdateSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_settings
 
@@ -276,9 +254,7 @@ class AdvisoryNotificationsServiceRestInterceptor:
         return response
 
     def post_update_settings_with_metadata(
-        self,
-        response: service.Settings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Settings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_settings
 
@@ -302,9 +278,7 @@ class AdvisoryNotificationsServiceRestStub:
     _interceptor: AdvisoryNotificationsServiceRestInterceptor
 
 
-class AdvisoryNotificationsServiceRestTransport(
-    _BaseAdvisoryNotificationsServiceRestTransport
-):
+class AdvisoryNotificationsServiceRestTransport(_BaseAdvisoryNotificationsServiceRestTransport):
     """REST backend synchronous transport for AdvisoryNotificationsService.
 
     Service to manage Security and Privacy Notifications.
@@ -376,31 +350,18 @@ class AdvisoryNotificationsServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AdvisoryNotificationsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetNotification(
-        _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification,
-        AdvisoryNotificationsServiceRestStub,
-    ):
+    class _GetNotification(_BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification, AdvisoryNotificationsServiceRestStub):
         def __hash__(self):
             return hash("AdvisoryNotificationsServiceRestTransport.GetNotification")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -442,28 +403,16 @@ class AdvisoryNotificationsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_http_options()
-            )
+            http_options = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_notification(
-                request, metadata
-            )
-            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_notification(request, metadata)
+            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetNotification._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -487,12 +436,7 @@ class AdvisoryNotificationsServiceRestTransport(
 
             # Send the request
             response = AdvisoryNotificationsServiceRestTransport._GetNotification._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -508,12 +452,8 @@ class AdvisoryNotificationsServiceRestTransport(
 
             resp = self._interceptor.post_get_notification(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_notification_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_notification_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Notification.to_json(response)
                 except:
@@ -534,23 +474,12 @@ class AdvisoryNotificationsServiceRestTransport(
                 )
             return resp
 
-    class _GetSettings(
-        _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings,
-        AdvisoryNotificationsServiceRestStub,
-    ):
+    class _GetSettings(_BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings, AdvisoryNotificationsServiceRestStub):
         def __hash__(self):
             return hash("AdvisoryNotificationsServiceRestTransport.GetSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -589,26 +518,16 @@ class AdvisoryNotificationsServiceRestTransport(
                     Settings for Advisory Notifications.
             """
 
-            http_options = (
-                _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_http_options()
-            )
+            http_options = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
-            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseGetSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -631,15 +550,8 @@ class AdvisoryNotificationsServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                AdvisoryNotificationsServiceRestTransport._GetSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AdvisoryNotificationsServiceRestTransport._GetSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -655,12 +567,8 @@ class AdvisoryNotificationsServiceRestTransport(
 
             resp = self._interceptor.post_get_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Settings.to_json(response)
                 except:
@@ -681,23 +589,12 @@ class AdvisoryNotificationsServiceRestTransport(
                 )
             return resp
 
-    class _ListNotifications(
-        _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications,
-        AdvisoryNotificationsServiceRestStub,
-    ):
+    class _ListNotifications(_BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications, AdvisoryNotificationsServiceRestStub):
         def __hash__(self):
             return hash("AdvisoryNotificationsServiceRestTransport.ListNotifications")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -739,28 +636,16 @@ class AdvisoryNotificationsServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_http_options()
-            )
+            http_options = _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_notifications(
-                request, metadata
-            )
-            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_notifications(request, metadata)
+            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseListNotifications._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -784,12 +669,7 @@ class AdvisoryNotificationsServiceRestTransport(
 
             # Send the request
             response = AdvisoryNotificationsServiceRestTransport._ListNotifications._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -805,16 +685,10 @@ class AdvisoryNotificationsServiceRestTransport(
 
             resp = self._interceptor.post_list_notifications(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_notifications_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_notifications_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.ListNotificationsResponse.to_json(
-                        response
-                    )
+                    response_payload = service.ListNotificationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -833,23 +707,12 @@ class AdvisoryNotificationsServiceRestTransport(
                 )
             return resp
 
-    class _UpdateSettings(
-        _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings,
-        AdvisoryNotificationsServiceRestStub,
-    ):
+    class _UpdateSettings(_BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings, AdvisoryNotificationsServiceRestStub):
         def __hash__(self):
             return hash("AdvisoryNotificationsServiceRestTransport.UpdateSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -889,30 +752,18 @@ class AdvisoryNotificationsServiceRestTransport(
                     Settings for Advisory Notifications.
             """
 
-            http_options = (
-                _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_http_options()
-            )
+            http_options = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
-            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdvisoryNotificationsServiceRestTransport._BaseUpdateSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -935,16 +786,8 @@ class AdvisoryNotificationsServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                AdvisoryNotificationsServiceRestTransport._UpdateSettings._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AdvisoryNotificationsServiceRestTransport._UpdateSettings._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -960,12 +803,8 @@ class AdvisoryNotificationsServiceRestTransport(
 
             resp = self._interceptor.post_update_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Settings.to_json(response)
                 except:
@@ -987,9 +826,7 @@ class AdvisoryNotificationsServiceRestTransport(
             return resp
 
     @property
-    def get_notification(
-        self,
-    ) -> Callable[[service.GetNotificationRequest], service.Notification]:
+    def get_notification(self) -> Callable[[service.GetNotificationRequest], service.Notification]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetNotification(self._session, self._host, self._interceptor)  # type: ignore
@@ -1001,19 +838,13 @@ class AdvisoryNotificationsServiceRestTransport(
         return self._GetSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_notifications(
-        self,
-    ) -> Callable[
-        [service.ListNotificationsRequest], service.ListNotificationsResponse
-    ]:
+    def list_notifications(self) -> Callable[[service.ListNotificationsRequest], service.ListNotificationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListNotifications(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[[service.UpdateSettingsRequest], service.Settings]:
+    def update_settings(self) -> Callable[[service.UpdateSettingsRequest], service.Settings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSettings(self._session, self._host, self._interceptor)  # type: ignore

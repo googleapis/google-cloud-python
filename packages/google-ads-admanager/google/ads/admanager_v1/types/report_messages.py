@@ -161,16 +161,12 @@ class ReportDataTable(proto.Message):
                 metric_value_groups represents the metrics for date y.
         """
 
-        dimension_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
+        dimension_values: MutableSequence[report_value.ReportValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=report_value.ReportValue,
         )
-        metric_value_groups: MutableSequence[
-            "ReportDataTable.MetricValueGroup"
-        ] = proto.RepeatedField(
+        metric_value_groups: MutableSequence["ReportDataTable.MetricValueGroup"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ReportDataTable.MetricValueGroup",
@@ -208,37 +204,27 @@ class ReportDataTable(proto.Message):
             number=1,
             message=report_value.ReportValue,
         )
-        primary_percent_of_total_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
+        primary_percent_of_total_values: MutableSequence[report_value.ReportValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=report_value.ReportValue,
         )
-        comparison_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
+        comparison_values: MutableSequence[report_value.ReportValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message=report_value.ReportValue,
         )
-        comparison_percent_of_total_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
+        comparison_percent_of_total_values: MutableSequence[report_value.ReportValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message=report_value.ReportValue,
         )
-        absolute_change_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
+        absolute_change_values: MutableSequence[report_value.ReportValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message=report_value.ReportValue,
         )
-        relative_change_values: MutableSequence[
-            report_value.ReportValue
-        ] = proto.RepeatedField(
+        relative_change_values: MutableSequence[report_value.ReportValue] = proto.RepeatedField(
             proto.MESSAGE,
             number=6,
             message=report_value.ReportValue,
@@ -360,9 +346,7 @@ class ScheduleOptions(proto.Message):
                     report.
             """
 
-            weekly_scheduled_days: MutableSequence[
-                dayofweek_pb2.DayOfWeek
-            ] = proto.RepeatedField(
+            weekly_scheduled_days: MutableSequence[dayofweek_pb2.DayOfWeek] = proto.RepeatedField(
                 proto.ENUM,
                 number=1,
                 enum=dayofweek_pb2.DayOfWeek,
@@ -426,9 +410,7 @@ class ScheduleOptions(proto.Message):
         number=2,
         enum=DeliveryCondition,
     )
-    flags: MutableSequence[
-        gaa_report_definition.ReportDefinition.Flag
-    ] = proto.RepeatedField(
+    flags: MutableSequence[gaa_report_definition.ReportDefinition.Flag] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=gaa_report_definition.ReportDefinition.Flag,

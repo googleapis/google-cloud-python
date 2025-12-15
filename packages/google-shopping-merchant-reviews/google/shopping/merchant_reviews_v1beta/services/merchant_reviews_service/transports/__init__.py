@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import MerchantReviewsServiceTransport
 from .grpc import MerchantReviewsServiceGrpcTransport
 from .grpc_asyncio import MerchantReviewsServiceGrpcAsyncIOTransport
-from .rest import (
-    MerchantReviewsServiceRestInterceptor,
-    MerchantReviewsServiceRestTransport,
-)
+from .rest import MerchantReviewsServiceRestInterceptor, MerchantReviewsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[MerchantReviewsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[MerchantReviewsServiceTransport]]
 _transport_registry["grpc"] = MerchantReviewsServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = MerchantReviewsServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = MerchantReviewsServiceRestTransport

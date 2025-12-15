@@ -18,12 +18,8 @@ from google.cloud.translate import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.translate_v3.services.translation_service.async_client import (
-    TranslationServiceAsyncClient,
-)
-from google.cloud.translate_v3.services.translation_service.client import (
-    TranslationServiceClient,
-)
+from google.cloud.translate_v3.services.translation_service.async_client import TranslationServiceAsyncClient
+from google.cloud.translate_v3.services.translation_service.client import TranslationServiceClient
 from google.cloud.translate_v3.types.adaptive_mt import (
     AdaptiveMtDataset,
     AdaptiveMtFile,
@@ -73,14 +69,7 @@ from google.cloud.translate_v3.types.automl_translation import (
     ListModelsResponse,
     Model,
 )
-from google.cloud.translate_v3.types.common import (
-    FileInputSource,
-    GcsInputSource,
-    GcsOutputDestination,
-    GlossaryEntry,
-    GlossaryTerm,
-    OperationState,
-)
+from google.cloud.translate_v3.types.common import FileInputSource, GcsInputSource, GcsOutputDestination, GlossaryEntry, GlossaryTerm, OperationState
 from google.cloud.translate_v3.types.translation_service import (
     BatchDocumentInputConfig,
     BatchDocumentOutputConfig,

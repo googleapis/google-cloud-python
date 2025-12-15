@@ -21,9 +21,7 @@ from .grpc import PolicyBasedRoutingServiceGrpcTransport
 from .grpc_asyncio import PolicyBasedRoutingServiceGrpcAsyncIOTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[PolicyBasedRoutingServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[PolicyBasedRoutingServiceTransport]]
 _transport_registry["grpc"] = PolicyBasedRoutingServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = PolicyBasedRoutingServiceGrpcAsyncIOTransport
 

@@ -374,9 +374,7 @@ class ListServiceLevelObjectivesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    service_level_objectives: MutableSequence[
-        gm_service.ServiceLevelObjective
-    ] = proto.RepeatedField(
+    service_level_objectives: MutableSequence[gm_service.ServiceLevelObjective] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gm_service.ServiceLevelObjective,

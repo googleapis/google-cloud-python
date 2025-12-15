@@ -21,9 +21,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.financialservices_v1.types import (
-    line_of_business as gcf_line_of_business,
-)
+from google.cloud.financialservices_v1.types import line_of_business as gcf_line_of_business
 from google.cloud.financialservices_v1.types import bigquery_destination
 
 __protobuf__ = proto.module(
@@ -515,12 +513,10 @@ class ExportEngineConfigMetadataRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    structured_metadata_destination: bigquery_destination.BigQueryDestination = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=bigquery_destination.BigQueryDestination,
-        )
+    structured_metadata_destination: bigquery_destination.BigQueryDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=bigquery_destination.BigQueryDestination,
     )
 
 

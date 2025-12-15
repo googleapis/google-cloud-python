@@ -20,50 +20,24 @@ __version__ = package_version.__version__
 
 from google.cloud.apihub_v1.services.api_hub.async_client import ApiHubAsyncClient
 from google.cloud.apihub_v1.services.api_hub.client import ApiHubClient
-from google.cloud.apihub_v1.services.api_hub_collect.async_client import (
-    ApiHubCollectAsyncClient,
-)
+from google.cloud.apihub_v1.services.api_hub_collect.async_client import ApiHubCollectAsyncClient
 from google.cloud.apihub_v1.services.api_hub_collect.client import ApiHubCollectClient
-from google.cloud.apihub_v1.services.api_hub_curate.async_client import (
-    ApiHubCurateAsyncClient,
-)
+from google.cloud.apihub_v1.services.api_hub_curate.async_client import ApiHubCurateAsyncClient
 from google.cloud.apihub_v1.services.api_hub_curate.client import ApiHubCurateClient
-from google.cloud.apihub_v1.services.api_hub_dependencies.async_client import (
-    ApiHubDependenciesAsyncClient,
-)
-from google.cloud.apihub_v1.services.api_hub_dependencies.client import (
-    ApiHubDependenciesClient,
-)
-from google.cloud.apihub_v1.services.api_hub_discovery.async_client import (
-    ApiHubDiscoveryAsyncClient,
-)
-from google.cloud.apihub_v1.services.api_hub_discovery.client import (
-    ApiHubDiscoveryClient,
-)
-from google.cloud.apihub_v1.services.api_hub_plugin.async_client import (
-    ApiHubPluginAsyncClient,
-)
+from google.cloud.apihub_v1.services.api_hub_dependencies.async_client import ApiHubDependenciesAsyncClient
+from google.cloud.apihub_v1.services.api_hub_dependencies.client import ApiHubDependenciesClient
+from google.cloud.apihub_v1.services.api_hub_discovery.async_client import ApiHubDiscoveryAsyncClient
+from google.cloud.apihub_v1.services.api_hub_discovery.client import ApiHubDiscoveryClient
+from google.cloud.apihub_v1.services.api_hub_plugin.async_client import ApiHubPluginAsyncClient
 from google.cloud.apihub_v1.services.api_hub_plugin.client import ApiHubPluginClient
-from google.cloud.apihub_v1.services.host_project_registration_service.async_client import (
-    HostProjectRegistrationServiceAsyncClient,
-)
-from google.cloud.apihub_v1.services.host_project_registration_service.client import (
-    HostProjectRegistrationServiceClient,
-)
-from google.cloud.apihub_v1.services.linting_service.async_client import (
-    LintingServiceAsyncClient,
-)
+from google.cloud.apihub_v1.services.host_project_registration_service.async_client import HostProjectRegistrationServiceAsyncClient
+from google.cloud.apihub_v1.services.host_project_registration_service.client import HostProjectRegistrationServiceClient
+from google.cloud.apihub_v1.services.linting_service.async_client import LintingServiceAsyncClient
 from google.cloud.apihub_v1.services.linting_service.client import LintingServiceClient
-from google.cloud.apihub_v1.services.provisioning.async_client import (
-    ProvisioningAsyncClient,
-)
+from google.cloud.apihub_v1.services.provisioning.async_client import ProvisioningAsyncClient
 from google.cloud.apihub_v1.services.provisioning.client import ProvisioningClient
-from google.cloud.apihub_v1.services.runtime_project_attachment_service.async_client import (
-    RuntimeProjectAttachmentServiceAsyncClient,
-)
-from google.cloud.apihub_v1.services.runtime_project_attachment_service.client import (
-    RuntimeProjectAttachmentServiceClient,
-)
+from google.cloud.apihub_v1.services.runtime_project_attachment_service.async_client import RuntimeProjectAttachmentServiceAsyncClient
+from google.cloud.apihub_v1.services.runtime_project_attachment_service.client import RuntimeProjectAttachmentServiceClient
 from google.cloud.apihub_v1.types.apihub_service import (
     ApiHubResource,
     CreateApiOperationRequest,

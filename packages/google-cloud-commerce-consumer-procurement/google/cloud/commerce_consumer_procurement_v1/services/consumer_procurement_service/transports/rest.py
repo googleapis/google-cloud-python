@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.commerce_consumer_procurement_v1.types import (
-    order,
-    procurement_service,
-)
+from google.cloud.commerce_consumer_procurement_v1.types import order, procurement_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseConsumerProcurementServiceRestTransport
@@ -123,12 +120,8 @@ class ConsumerProcurementServiceRestInterceptor:
     """
 
     def pre_cancel_order(
-        self,
-        request: procurement_service.CancelOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        procurement_service.CancelOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: procurement_service.CancelOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[procurement_service.CancelOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_order
 
         Override in a subclass to manipulate the request or metadata
@@ -136,9 +129,7 @@ class ConsumerProcurementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_cancel_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_order
 
         DEPRECATED. Please use the `post_cancel_order_with_metadata`
@@ -152,9 +143,7 @@ class ConsumerProcurementServiceRestInterceptor:
         return response
 
     def post_cancel_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_order
 
@@ -171,12 +160,8 @@ class ConsumerProcurementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_order(
-        self,
-        request: procurement_service.GetOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        procurement_service.GetOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: procurement_service.GetOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[procurement_service.GetOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_order
 
         Override in a subclass to manipulate the request or metadata
@@ -215,12 +200,8 @@ class ConsumerProcurementServiceRestInterceptor:
         return response, metadata
 
     def pre_list_orders(
-        self,
-        request: procurement_service.ListOrdersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        procurement_service.ListOrdersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: procurement_service.ListOrdersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[procurement_service.ListOrdersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_orders
 
         Override in a subclass to manipulate the request or metadata
@@ -228,9 +209,7 @@ class ConsumerProcurementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_orders(
-        self, response: procurement_service.ListOrdersResponse
-    ) -> procurement_service.ListOrdersResponse:
+    def post_list_orders(self, response: procurement_service.ListOrdersResponse) -> procurement_service.ListOrdersResponse:
         """Post-rpc interceptor for list_orders
 
         DEPRECATED. Please use the `post_list_orders_with_metadata`
@@ -244,12 +223,8 @@ class ConsumerProcurementServiceRestInterceptor:
         return response
 
     def post_list_orders_with_metadata(
-        self,
-        response: procurement_service.ListOrdersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        procurement_service.ListOrdersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: procurement_service.ListOrdersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[procurement_service.ListOrdersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_orders
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -265,12 +240,8 @@ class ConsumerProcurementServiceRestInterceptor:
         return response, metadata
 
     def pre_modify_order(
-        self,
-        request: procurement_service.ModifyOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        procurement_service.ModifyOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: procurement_service.ModifyOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[procurement_service.ModifyOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for modify_order
 
         Override in a subclass to manipulate the request or metadata
@@ -278,9 +249,7 @@ class ConsumerProcurementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_modify_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_modify_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for modify_order
 
         DEPRECATED. Please use the `post_modify_order_with_metadata`
@@ -294,9 +263,7 @@ class ConsumerProcurementServiceRestInterceptor:
         return response
 
     def post_modify_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for modify_order
 
@@ -313,12 +280,8 @@ class ConsumerProcurementServiceRestInterceptor:
         return response, metadata
 
     def pre_place_order(
-        self,
-        request: procurement_service.PlaceOrderRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        procurement_service.PlaceOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: procurement_service.PlaceOrderRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[procurement_service.PlaceOrderRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for place_order
 
         Override in a subclass to manipulate the request or metadata
@@ -326,9 +289,7 @@ class ConsumerProcurementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_place_order(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_place_order(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for place_order
 
         DEPRECATED. Please use the `post_place_order_with_metadata`
@@ -342,9 +303,7 @@ class ConsumerProcurementServiceRestInterceptor:
         return response
 
     def post_place_order_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for place_order
 
@@ -361,12 +320,8 @@ class ConsumerProcurementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -374,9 +329,7 @@ class ConsumerProcurementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -393,9 +346,7 @@ class ConsumerProcurementServiceRestStub:
     _interceptor: ConsumerProcurementServiceRestInterceptor
 
 
-class ConsumerProcurementServiceRestTransport(
-    _BaseConsumerProcurementServiceRestTransport
-):
+class ConsumerProcurementServiceRestTransport(_BaseConsumerProcurementServiceRestTransport):
     """REST backend synchronous transport for ConsumerProcurementService.
 
     ConsumerProcurementService allows customers to make purchases of
@@ -474,9 +425,7 @@ class ConsumerProcurementServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -510,30 +459,17 @@ class ConsumerProcurementServiceRestTransport(
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CancelOrder(
-        _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder,
-        ConsumerProcurementServiceRestStub,
-    ):
+    class _CancelOrder(_BaseConsumerProcurementServiceRestTransport._BaseCancelOrder, ConsumerProcurementServiceRestStub):
         def __hash__(self):
             return hash("ConsumerProcurementServiceRestTransport.CancelOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -577,30 +513,18 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_order(request, metadata)
-            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConsumerProcurementServiceRestTransport._BaseCancelOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -623,16 +547,8 @@ class ConsumerProcurementServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ConsumerProcurementServiceRestTransport._CancelOrder._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConsumerProcurementServiceRestTransport._CancelOrder._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -646,12 +562,8 @@ class ConsumerProcurementServiceRestTransport(
 
             resp = self._interceptor.post_cancel_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -672,23 +584,12 @@ class ConsumerProcurementServiceRestTransport(
                 )
             return resp
 
-    class _GetOrder(
-        _BaseConsumerProcurementServiceRestTransport._BaseGetOrder,
-        ConsumerProcurementServiceRestStub,
-    ):
+    class _GetOrder(_BaseConsumerProcurementServiceRestTransport._BaseGetOrder, ConsumerProcurementServiceRestStub):
         def __hash__(self):
             return hash("ConsumerProcurementServiceRestTransport.GetOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -746,26 +647,16 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_get_order(request, metadata)
-            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConsumerProcurementServiceRestTransport._BaseGetOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -789,12 +680,7 @@ class ConsumerProcurementServiceRestTransport(
 
             # Send the request
             response = ConsumerProcurementServiceRestTransport._GetOrder._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -810,12 +696,8 @@ class ConsumerProcurementServiceRestTransport(
 
             resp = self._interceptor.post_get_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = order.Order.to_json(response)
                 except:
@@ -836,23 +718,12 @@ class ConsumerProcurementServiceRestTransport(
                 )
             return resp
 
-    class _ListOrders(
-        _BaseConsumerProcurementServiceRestTransport._BaseListOrders,
-        ConsumerProcurementServiceRestStub,
-    ):
+    class _ListOrders(_BaseConsumerProcurementServiceRestTransport._BaseListOrders, ConsumerProcurementServiceRestStub):
         def __hash__(self):
             return hash("ConsumerProcurementServiceRestTransport.ListOrders")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -894,26 +765,16 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_http_options()
 
             request, metadata = self._interceptor.pre_list_orders(request, metadata)
-            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConsumerProcurementServiceRestTransport._BaseListOrders._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -936,15 +797,8 @@ class ConsumerProcurementServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ConsumerProcurementServiceRestTransport._ListOrders._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConsumerProcurementServiceRestTransport._ListOrders._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -960,16 +814,10 @@ class ConsumerProcurementServiceRestTransport(
 
             resp = self._interceptor.post_list_orders(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_orders_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_orders_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = procurement_service.ListOrdersResponse.to_json(
-                        response
-                    )
+                    response_payload = procurement_service.ListOrdersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -988,23 +836,12 @@ class ConsumerProcurementServiceRestTransport(
                 )
             return resp
 
-    class _ModifyOrder(
-        _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder,
-        ConsumerProcurementServiceRestStub,
-    ):
+    class _ModifyOrder(_BaseConsumerProcurementServiceRestTransport._BaseModifyOrder, ConsumerProcurementServiceRestStub):
         def __hash__(self):
             return hash("ConsumerProcurementServiceRestTransport.ModifyOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1048,30 +885,18 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_modify_order(request, metadata)
-            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConsumerProcurementServiceRestTransport._BaseModifyOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1094,16 +919,8 @@ class ConsumerProcurementServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ConsumerProcurementServiceRestTransport._ModifyOrder._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConsumerProcurementServiceRestTransport._ModifyOrder._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1117,12 +934,8 @@ class ConsumerProcurementServiceRestTransport(
 
             resp = self._interceptor.post_modify_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_modify_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_modify_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1143,23 +956,12 @@ class ConsumerProcurementServiceRestTransport(
                 )
             return resp
 
-    class _PlaceOrder(
-        _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder,
-        ConsumerProcurementServiceRestStub,
-    ):
+    class _PlaceOrder(_BaseConsumerProcurementServiceRestTransport._BasePlaceOrder, ConsumerProcurementServiceRestStub):
         def __hash__(self):
             return hash("ConsumerProcurementServiceRestTransport.PlaceOrder")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1203,30 +1005,18 @@ class ConsumerProcurementServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_http_options()
 
             request, metadata = self._interceptor.pre_place_order(request, metadata)
-            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_transcoded_request(http_options, request)
 
-            body = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConsumerProcurementServiceRestTransport._BasePlaceOrder._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1249,16 +1039,8 @@ class ConsumerProcurementServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ConsumerProcurementServiceRestTransport._PlaceOrder._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConsumerProcurementServiceRestTransport._PlaceOrder._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1272,12 +1054,8 @@ class ConsumerProcurementServiceRestTransport(
 
             resp = self._interceptor.post_place_order(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_place_order_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_place_order_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1299,9 +1077,7 @@ class ConsumerProcurementServiceRestTransport(
             return resp
 
     @property
-    def cancel_order(
-        self,
-    ) -> Callable[[procurement_service.CancelOrderRequest], operations_pb2.Operation]:
+    def cancel_order(self) -> Callable[[procurement_service.CancelOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelOrder(self._session, self._host, self._interceptor)  # type: ignore
@@ -1313,27 +1089,19 @@ class ConsumerProcurementServiceRestTransport(
         return self._GetOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_orders(
-        self,
-    ) -> Callable[
-        [procurement_service.ListOrdersRequest], procurement_service.ListOrdersResponse
-    ]:
+    def list_orders(self) -> Callable[[procurement_service.ListOrdersRequest], procurement_service.ListOrdersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOrders(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def modify_order(
-        self,
-    ) -> Callable[[procurement_service.ModifyOrderRequest], operations_pb2.Operation]:
+    def modify_order(self) -> Callable[[procurement_service.ModifyOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ModifyOrder(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def place_order(
-        self,
-    ) -> Callable[[procurement_service.PlaceOrderRequest], operations_pb2.Operation]:
+    def place_order(self) -> Callable[[procurement_service.PlaceOrderRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PlaceOrder(self._session, self._host, self._interceptor)  # type: ignore
@@ -1342,23 +1110,12 @@ class ConsumerProcurementServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseConsumerProcurementServiceRestTransport._BaseGetOperation,
-        ConsumerProcurementServiceRestStub,
-    ):
+    class _GetOperation(_BaseConsumerProcurementServiceRestTransport._BaseGetOperation, ConsumerProcurementServiceRestStub):
         def __hash__(self):
             return hash("ConsumerProcurementServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1396,26 +1153,16 @@ class ConsumerProcurementServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConsumerProcurementServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1438,15 +1185,8 @@ class ConsumerProcurementServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ConsumerProcurementServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ConsumerProcurementServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1458,9 +1198,7 @@ class ConsumerProcurementServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

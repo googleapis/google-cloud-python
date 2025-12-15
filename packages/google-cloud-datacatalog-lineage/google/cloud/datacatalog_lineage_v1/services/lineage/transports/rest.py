@@ -213,12 +213,8 @@ class LineageRestInterceptor:
     """
 
     def pre_batch_search_link_processes(
-        self,
-        request: lineage.BatchSearchLinkProcessesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.BatchSearchLinkProcessesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lineage.BatchSearchLinkProcessesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.BatchSearchLinkProcessesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_search_link_processes
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +222,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_search_link_processes(
-        self, response: lineage.BatchSearchLinkProcessesResponse
-    ) -> lineage.BatchSearchLinkProcessesResponse:
+    def post_batch_search_link_processes(self, response: lineage.BatchSearchLinkProcessesResponse) -> lineage.BatchSearchLinkProcessesResponse:
         """Post-rpc interceptor for batch_search_link_processes
 
         DEPRECATED. Please use the `post_batch_search_link_processes_with_metadata`
@@ -242,13 +236,8 @@ class LineageRestInterceptor:
         return response
 
     def post_batch_search_link_processes_with_metadata(
-        self,
-        response: lineage.BatchSearchLinkProcessesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.BatchSearchLinkProcessesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: lineage.BatchSearchLinkProcessesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.BatchSearchLinkProcessesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_search_link_processes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -264,12 +253,8 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_create_lineage_event(
-        self,
-        request: lineage.CreateLineageEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.CreateLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lineage.CreateLineageEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.CreateLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_lineage_event
 
         Override in a subclass to manipulate the request or metadata
@@ -277,9 +262,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_create_lineage_event(
-        self, response: lineage.LineageEvent
-    ) -> lineage.LineageEvent:
+    def post_create_lineage_event(self, response: lineage.LineageEvent) -> lineage.LineageEvent:
         """Post-rpc interceptor for create_lineage_event
 
         DEPRECATED. Please use the `post_create_lineage_event_with_metadata`
@@ -293,9 +276,7 @@ class LineageRestInterceptor:
         return response
 
     def post_create_lineage_event_with_metadata(
-        self,
-        response: lineage.LineageEvent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.LineageEvent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.LineageEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_lineage_event
 
@@ -312,9 +293,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_create_process(
-        self,
-        request: lineage.CreateProcessRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.CreateProcessRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.CreateProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_process
 
@@ -337,9 +316,7 @@ class LineageRestInterceptor:
         return response
 
     def post_create_process_with_metadata(
-        self,
-        response: lineage.Process,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.Process, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.Process, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_process
 
@@ -356,9 +333,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_create_run(
-        self,
-        request: lineage.CreateRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.CreateRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.CreateRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_run
 
@@ -398,12 +373,8 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_delete_lineage_event(
-        self,
-        request: lineage.DeleteLineageEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.DeleteLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lineage.DeleteLineageEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.DeleteLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_lineage_event
 
         Override in a subclass to manipulate the request or metadata
@@ -412,9 +383,7 @@ class LineageRestInterceptor:
         return request, metadata
 
     def pre_delete_process(
-        self,
-        request: lineage.DeleteProcessRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.DeleteProcessRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.DeleteProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_process
 
@@ -423,9 +392,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_process(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_process(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_process
 
         DEPRECATED. Please use the `post_delete_process_with_metadata`
@@ -439,9 +406,7 @@ class LineageRestInterceptor:
         return response
 
     def post_delete_process_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_process
 
@@ -458,9 +423,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_delete_run(
-        self,
-        request: lineage.DeleteRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.DeleteRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.DeleteRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_run
 
@@ -469,9 +432,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_run(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_run(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_run
 
         DEPRECATED. Please use the `post_delete_run_with_metadata`
@@ -485,9 +446,7 @@ class LineageRestInterceptor:
         return response
 
     def post_delete_run_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_run
 
@@ -504,9 +463,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_get_lineage_event(
-        self,
-        request: lineage.GetLineageEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.GetLineageEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.GetLineageEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_lineage_event
 
@@ -515,9 +472,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_get_lineage_event(
-        self, response: lineage.LineageEvent
-    ) -> lineage.LineageEvent:
+    def post_get_lineage_event(self, response: lineage.LineageEvent) -> lineage.LineageEvent:
         """Post-rpc interceptor for get_lineage_event
 
         DEPRECATED. Please use the `post_get_lineage_event_with_metadata`
@@ -531,9 +486,7 @@ class LineageRestInterceptor:
         return response
 
     def post_get_lineage_event_with_metadata(
-        self,
-        response: lineage.LineageEvent,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.LineageEvent, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.LineageEvent, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_lineage_event
 
@@ -550,9 +503,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_get_process(
-        self,
-        request: lineage.GetProcessRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.GetProcessRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.GetProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_process
 
@@ -575,9 +526,7 @@ class LineageRestInterceptor:
         return response
 
     def post_get_process_with_metadata(
-        self,
-        response: lineage.Process,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.Process, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.Process, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_process
 
@@ -594,9 +543,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_get_run(
-        self,
-        request: lineage.GetRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.GetRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.GetRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_run
 
@@ -636,12 +583,8 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_list_lineage_events(
-        self,
-        request: lineage.ListLineageEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.ListLineageEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: lineage.ListLineageEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.ListLineageEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_lineage_events
 
         Override in a subclass to manipulate the request or metadata
@@ -649,9 +592,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_list_lineage_events(
-        self, response: lineage.ListLineageEventsResponse
-    ) -> lineage.ListLineageEventsResponse:
+    def post_list_lineage_events(self, response: lineage.ListLineageEventsResponse) -> lineage.ListLineageEventsResponse:
         """Post-rpc interceptor for list_lineage_events
 
         DEPRECATED. Please use the `post_list_lineage_events_with_metadata`
@@ -665,12 +606,8 @@ class LineageRestInterceptor:
         return response
 
     def post_list_lineage_events_with_metadata(
-        self,
-        response: lineage.ListLineageEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.ListLineageEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: lineage.ListLineageEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.ListLineageEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_lineage_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -686,9 +623,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_list_processes(
-        self,
-        request: lineage.ListProcessesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.ListProcessesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.ListProcessesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_processes
 
@@ -697,9 +632,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_list_processes(
-        self, response: lineage.ListProcessesResponse
-    ) -> lineage.ListProcessesResponse:
+    def post_list_processes(self, response: lineage.ListProcessesResponse) -> lineage.ListProcessesResponse:
         """Post-rpc interceptor for list_processes
 
         DEPRECATED. Please use the `post_list_processes_with_metadata`
@@ -713,9 +646,7 @@ class LineageRestInterceptor:
         return response
 
     def post_list_processes_with_metadata(
-        self,
-        response: lineage.ListProcessesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.ListProcessesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.ListProcessesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_processes
 
@@ -732,9 +663,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_list_runs(
-        self,
-        request: lineage.ListRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.ListRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.ListRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_runs
 
@@ -743,9 +672,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_list_runs(
-        self, response: lineage.ListRunsResponse
-    ) -> lineage.ListRunsResponse:
+    def post_list_runs(self, response: lineage.ListRunsResponse) -> lineage.ListRunsResponse:
         """Post-rpc interceptor for list_runs
 
         DEPRECATED. Please use the `post_list_runs_with_metadata`
@@ -759,9 +686,7 @@ class LineageRestInterceptor:
         return response
 
     def post_list_runs_with_metadata(
-        self,
-        response: lineage.ListRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.ListRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.ListRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_runs
 
@@ -778,13 +703,8 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_process_open_lineage_run_event(
-        self,
-        request: lineage.ProcessOpenLineageRunEventRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.ProcessOpenLineageRunEventRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: lineage.ProcessOpenLineageRunEventRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.ProcessOpenLineageRunEventRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for process_open_lineage_run_event
 
         Override in a subclass to manipulate the request or metadata
@@ -792,9 +712,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_process_open_lineage_run_event(
-        self, response: lineage.ProcessOpenLineageRunEventResponse
-    ) -> lineage.ProcessOpenLineageRunEventResponse:
+    def post_process_open_lineage_run_event(self, response: lineage.ProcessOpenLineageRunEventResponse) -> lineage.ProcessOpenLineageRunEventResponse:
         """Post-rpc interceptor for process_open_lineage_run_event
 
         DEPRECATED. Please use the `post_process_open_lineage_run_event_with_metadata`
@@ -808,13 +726,8 @@ class LineageRestInterceptor:
         return response
 
     def post_process_open_lineage_run_event_with_metadata(
-        self,
-        response: lineage.ProcessOpenLineageRunEventResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        lineage.ProcessOpenLineageRunEventResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: lineage.ProcessOpenLineageRunEventResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[lineage.ProcessOpenLineageRunEventResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for process_open_lineage_run_event
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -830,9 +743,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_search_links(
-        self,
-        request: lineage.SearchLinksRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.SearchLinksRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.SearchLinksRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_links
 
@@ -841,9 +752,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_search_links(
-        self, response: lineage.SearchLinksResponse
-    ) -> lineage.SearchLinksResponse:
+    def post_search_links(self, response: lineage.SearchLinksResponse) -> lineage.SearchLinksResponse:
         """Post-rpc interceptor for search_links
 
         DEPRECATED. Please use the `post_search_links_with_metadata`
@@ -857,9 +766,7 @@ class LineageRestInterceptor:
         return response
 
     def post_search_links_with_metadata(
-        self,
-        response: lineage.SearchLinksResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.SearchLinksResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.SearchLinksResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_links
 
@@ -876,9 +783,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_update_process(
-        self,
-        request: lineage.UpdateProcessRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.UpdateProcessRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.UpdateProcessRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_process
 
@@ -901,9 +806,7 @@ class LineageRestInterceptor:
         return response
 
     def post_update_process_with_metadata(
-        self,
-        response: lineage.Process,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: lineage.Process, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.Process, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_process
 
@@ -920,9 +823,7 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_update_run(
-        self,
-        request: lineage.UpdateRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: lineage.UpdateRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[lineage.UpdateRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_run
 
@@ -962,12 +863,8 @@ class LineageRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -985,12 +882,8 @@ class LineageRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1008,12 +901,8 @@ class LineageRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1021,9 +910,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1033,12 +920,8 @@ class LineageRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1046,9 +929,7 @@ class LineageRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1141,9 +1022,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1196,29 +1075,17 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchSearchLinkProcesses(
-        _BaseLineageRestTransport._BaseBatchSearchLinkProcesses, LineageRestStub
-    ):
+    class _BatchSearchLinkProcesses(_BaseLineageRestTransport._BaseBatchSearchLinkProcesses, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.BatchSearchLinkProcesses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1262,32 +1129,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_search_link_processes(
-                request, metadata
-            )
-            transcoded_request = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_search_link_processes(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLineageRestTransport._BaseBatchSearchLinkProcesses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1311,13 +1164,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._BatchSearchLinkProcesses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1333,16 +1180,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_batch_search_link_processes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_search_link_processes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_search_link_processes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = lineage.BatchSearchLinkProcessesResponse.to_json(
-                        response
-                    )
+                    response_payload = lineage.BatchSearchLinkProcessesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1361,22 +1202,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
             return resp
 
-    class _CreateLineageEvent(
-        _BaseLineageRestTransport._BaseCreateLineageEvent, LineageRestStub
-    ):
+    class _CreateLineageEvent(_BaseLineageRestTransport._BaseCreateLineageEvent, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.CreateLineageEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1422,32 +1253,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseCreateLineageEvent._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseCreateLineageEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_lineage_event(
-                request, metadata
-            )
-            transcoded_request = _BaseLineageRestTransport._BaseCreateLineageEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_lineage_event(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseCreateLineageEvent._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseCreateLineageEvent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseCreateLineageEvent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLineageRestTransport._BaseCreateLineageEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLineageRestTransport._BaseCreateLineageEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1471,13 +1288,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._CreateLineageEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1493,12 +1304,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_create_lineage_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_lineage_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_lineage_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.LineageEvent.to_json(response)
                 except:
@@ -1524,15 +1331,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.CreateProcess")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1575,34 +1374,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseCreateProcess._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseCreateProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_create_process(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseCreateProcess._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseCreateProcess._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseCreateProcess._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseCreateProcess._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseCreateProcess._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseCreateProcess._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1626,13 +1409,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._CreateProcess._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1648,12 +1425,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_create_process(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_process_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_process_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.Process.to_json(response)
                 except:
@@ -1679,15 +1452,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.CreateRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1734,29 +1499,15 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = _BaseLineageRestTransport._BaseCreateRun._get_http_options()
 
             request, metadata = self._interceptor.pre_create_run(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseCreateRun._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseCreateRun._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseCreateRun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseCreateRun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseCreateRun._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseCreateRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1780,13 +1531,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._CreateRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1802,12 +1547,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_create_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.Run.to_json(response)
                 except:
@@ -1828,22 +1569,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
             return resp
 
-    class _DeleteLineageEvent(
-        _BaseLineageRestTransport._BaseDeleteLineageEvent, LineageRestStub
-    ):
+    class _DeleteLineageEvent(_BaseLineageRestTransport._BaseDeleteLineageEvent, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.DeleteLineageEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1879,28 +1610,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseDeleteLineageEvent._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseDeleteLineageEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_lineage_event(
-                request, metadata
-            )
-            transcoded_request = _BaseLineageRestTransport._BaseDeleteLineageEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_lineage_event(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseDeleteLineageEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLineageRestTransport._BaseDeleteLineageEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLineageRestTransport._BaseDeleteLineageEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1924,12 +1643,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._DeleteLineageEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1942,15 +1656,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.DeleteProcess")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1993,30 +1699,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseDeleteProcess._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseDeleteProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_process(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseDeleteProcess._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseDeleteProcess._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseDeleteProcess._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseDeleteProcess._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2040,12 +1732,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._DeleteProcess._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2059,12 +1746,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_delete_process(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_process_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_process_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2090,15 +1773,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.DeleteRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2144,25 +1819,13 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = _BaseLineageRestTransport._BaseDeleteRun._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_run(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseDeleteRun._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseDeleteRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseDeleteRun._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseDeleteRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2185,14 +1848,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
 
             # Send the request
-            response = LineageRestTransport._DeleteRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = LineageRestTransport._DeleteRun._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2205,12 +1861,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_delete_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2231,22 +1883,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
             return resp
 
-    class _GetLineageEvent(
-        _BaseLineageRestTransport._BaseGetLineageEvent, LineageRestStub
-    ):
+    class _GetLineageEvent(_BaseLineageRestTransport._BaseGetLineageEvent, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.GetLineageEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2291,32 +1933,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseGetLineageEvent._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseGetLineageEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_lineage_event(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseGetLineageEvent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_lineage_event(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseGetLineageEvent._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseGetLineageEvent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseGetLineageEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2340,12 +1966,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._GetLineageEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2361,12 +1982,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_get_lineage_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_lineage_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_lineage_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.LineageEvent.to_json(response)
                 except:
@@ -2392,15 +2009,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.GetProcess")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2445,25 +2054,13 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = _BaseLineageRestTransport._BaseGetProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_get_process(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseGetProcess._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseGetProcess._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseGetProcess._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseGetProcess._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2486,14 +2083,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
 
             # Send the request
-            response = LineageRestTransport._GetProcess._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = LineageRestTransport._GetProcess._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2508,12 +2098,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_get_process(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_process_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_process_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.Process.to_json(response)
                 except:
@@ -2539,15 +2125,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.GetRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2593,23 +2171,13 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = _BaseLineageRestTransport._BaseGetRun._get_http_options()
 
             request, metadata = self._interceptor.pre_get_run(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseGetRun._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseGetRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLineageRestTransport._BaseGetRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLineageRestTransport._BaseGetRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2632,14 +2200,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
 
             # Send the request
-            response = LineageRestTransport._GetRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = LineageRestTransport._GetRun._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2654,12 +2215,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_get_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.Run.to_json(response)
                 except:
@@ -2680,22 +2237,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
             return resp
 
-    class _ListLineageEvents(
-        _BaseLineageRestTransport._BaseListLineageEvents, LineageRestStub
-    ):
+    class _ListLineageEvents(_BaseLineageRestTransport._BaseListLineageEvents, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.ListLineageEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2737,30 +2284,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseListLineageEvents._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseListLineageEvents._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_lineage_events(
-                request, metadata
-            )
-            transcoded_request = _BaseLineageRestTransport._BaseListLineageEvents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_lineage_events(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseListLineageEvents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseListLineageEvents._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseListLineageEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2784,12 +2317,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._ListLineageEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2805,16 +2333,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_list_lineage_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_lineage_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_lineage_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = lineage.ListLineageEventsResponse.to_json(
-                        response
-                    )
+                    response_payload = lineage.ListLineageEventsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2838,15 +2360,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.ListProcesses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2888,30 +2402,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseListProcesses._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseListProcesses._get_http_options()
 
             request, metadata = self._interceptor.pre_list_processes(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseListProcesses._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseListProcesses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseListProcesses._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseListProcesses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2935,12 +2435,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._ListProcesses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2956,12 +2451,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_list_processes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_processes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_processes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.ListProcessesResponse.to_json(response)
                 except:
@@ -2987,15 +2478,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.ListRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3040,25 +2523,13 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = _BaseLineageRestTransport._BaseListRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_list_runs(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseListRuns._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseListRuns._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseListRuns._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseListRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3081,14 +2552,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
 
             # Send the request
-            response = LineageRestTransport._ListRuns._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = LineageRestTransport._ListRuns._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3103,12 +2567,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_list_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.ListRunsResponse.to_json(response)
                 except:
@@ -3129,22 +2589,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 )
             return resp
 
-    class _ProcessOpenLineageRunEvent(
-        _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent, LineageRestStub
-    ):
+    class _ProcessOpenLineageRunEvent(_BaseLineageRestTransport._BaseProcessOpenLineageRunEvent, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.ProcessOpenLineageRunEvent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3188,32 +2638,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_http_options()
 
-            request, metadata = self._interceptor.pre_process_open_lineage_run_event(
-                request, metadata
-            )
-            transcoded_request = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_process_open_lineage_run_event(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLineageRestTransport._BaseProcessOpenLineageRunEvent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3237,13 +2673,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._ProcessOpenLineageRunEvent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3259,19 +2689,10 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_process_open_lineage_run_event(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_process_open_lineage_run_event_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_process_open_lineage_run_event_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        lineage.ProcessOpenLineageRunEventResponse.to_json(response)
-                    )
+                    response_payload = lineage.ProcessOpenLineageRunEventResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3295,15 +2716,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.SearchLinks")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3346,34 +2759,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseSearchLinks._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseSearchLinks._get_http_options()
 
             request, metadata = self._interceptor.pre_search_links(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseSearchLinks._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseSearchLinks._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseSearchLinks._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseSearchLinks._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseSearchLinks._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseSearchLinks._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3397,13 +2794,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._SearchLinks._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3419,12 +2810,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_search_links(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_links_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_links_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.SearchLinksResponse.to_json(response)
                 except:
@@ -3450,15 +2837,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.UpdateProcess")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3501,34 +2880,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseUpdateProcess._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseUpdateProcess._get_http_options()
 
             request, metadata = self._interceptor.pre_update_process(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseUpdateProcess._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseUpdateProcess._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseUpdateProcess._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseUpdateProcess._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseUpdateProcess._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseUpdateProcess._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3552,13 +2915,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._UpdateProcess._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3574,12 +2931,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_update_process(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_process_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_process_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.Process.to_json(response)
                 except:
@@ -3605,15 +2958,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.UpdateRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3660,29 +3005,15 @@ class LineageRestTransport(_BaseLineageRestTransport):
             http_options = _BaseLineageRestTransport._BaseUpdateRun._get_http_options()
 
             request, metadata = self._interceptor.pre_update_run(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseUpdateRun._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseUpdateRun._get_transcoded_request(http_options, request)
 
-            body = _BaseLineageRestTransport._BaseUpdateRun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLineageRestTransport._BaseUpdateRun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseUpdateRun._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseUpdateRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3706,13 +3037,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._UpdateRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3728,12 +3053,8 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             resp = self._interceptor.post_update_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = lineage.Run.to_json(response)
                 except:
@@ -3755,28 +3076,19 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return resp
 
     @property
-    def batch_search_link_processes(
-        self,
-    ) -> Callable[
-        [lineage.BatchSearchLinkProcessesRequest],
-        lineage.BatchSearchLinkProcessesResponse,
-    ]:
+    def batch_search_link_processes(self) -> Callable[[lineage.BatchSearchLinkProcessesRequest], lineage.BatchSearchLinkProcessesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchSearchLinkProcesses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_lineage_event(
-        self,
-    ) -> Callable[[lineage.CreateLineageEventRequest], lineage.LineageEvent]:
+    def create_lineage_event(self) -> Callable[[lineage.CreateLineageEventRequest], lineage.LineageEvent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateLineageEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_process(
-        self,
-    ) -> Callable[[lineage.CreateProcessRequest], lineage.Process]:
+    def create_process(self) -> Callable[[lineage.CreateProcessRequest], lineage.Process]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateProcess(self._session, self._host, self._interceptor)  # type: ignore
@@ -3788,33 +3100,25 @@ class LineageRestTransport(_BaseLineageRestTransport):
         return self._CreateRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_lineage_event(
-        self,
-    ) -> Callable[[lineage.DeleteLineageEventRequest], empty_pb2.Empty]:
+    def delete_lineage_event(self) -> Callable[[lineage.DeleteLineageEventRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteLineageEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_process(
-        self,
-    ) -> Callable[[lineage.DeleteProcessRequest], operations_pb2.Operation]:
+    def delete_process(self) -> Callable[[lineage.DeleteProcessRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteProcess(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_run(
-        self,
-    ) -> Callable[[lineage.DeleteRunRequest], operations_pb2.Operation]:
+    def delete_run(self) -> Callable[[lineage.DeleteRunRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_lineage_event(
-        self,
-    ) -> Callable[[lineage.GetLineageEventRequest], lineage.LineageEvent]:
+    def get_lineage_event(self) -> Callable[[lineage.GetLineageEventRequest], lineage.LineageEvent]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetLineageEvent(self._session, self._host, self._interceptor)  # type: ignore
@@ -3832,54 +3136,37 @@ class LineageRestTransport(_BaseLineageRestTransport):
         return self._GetRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_lineage_events(
-        self,
-    ) -> Callable[
-        [lineage.ListLineageEventsRequest], lineage.ListLineageEventsResponse
-    ]:
+    def list_lineage_events(self) -> Callable[[lineage.ListLineageEventsRequest], lineage.ListLineageEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListLineageEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_processes(
-        self,
-    ) -> Callable[[lineage.ListProcessesRequest], lineage.ListProcessesResponse]:
+    def list_processes(self) -> Callable[[lineage.ListProcessesRequest], lineage.ListProcessesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProcesses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_runs(
-        self,
-    ) -> Callable[[lineage.ListRunsRequest], lineage.ListRunsResponse]:
+    def list_runs(self) -> Callable[[lineage.ListRunsRequest], lineage.ListRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def process_open_lineage_run_event(
-        self,
-    ) -> Callable[
-        [lineage.ProcessOpenLineageRunEventRequest],
-        lineage.ProcessOpenLineageRunEventResponse,
-    ]:
+    def process_open_lineage_run_event(self) -> Callable[[lineage.ProcessOpenLineageRunEventRequest], lineage.ProcessOpenLineageRunEventResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ProcessOpenLineageRunEvent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_links(
-        self,
-    ) -> Callable[[lineage.SearchLinksRequest], lineage.SearchLinksResponse]:
+    def search_links(self) -> Callable[[lineage.SearchLinksRequest], lineage.SearchLinksResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchLinks(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_process(
-        self,
-    ) -> Callable[[lineage.UpdateProcessRequest], lineage.Process]:
+    def update_process(self) -> Callable[[lineage.UpdateProcessRequest], lineage.Process]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateProcess(self._session, self._host, self._interceptor)  # type: ignore
@@ -3894,22 +3181,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseLineageRestTransport._BaseCancelOperation, LineageRestStub
-    ):
+    class _CancelOperation(_BaseLineageRestTransport._BaseCancelOperation, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3945,38 +3222,18 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseLineageRestTransport._BaseCancelOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseLineageRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4000,13 +3257,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4020,22 +3271,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseLineageRestTransport._BaseDeleteOperation, LineageRestStub
-    ):
+    class _DeleteOperation(_BaseLineageRestTransport._BaseDeleteOperation, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4070,32 +3311,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseLineageRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4119,12 +3344,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4143,15 +3363,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             return hash("LineageRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4189,30 +3401,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4236,12 +3434,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4253,9 +3446,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4280,22 +3471,12 @@ class LineageRestTransport(_BaseLineageRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseLineageRestTransport._BaseListOperations, LineageRestStub
-    ):
+    class _ListOperations(_BaseLineageRestTransport._BaseListOperations, LineageRestStub):
         def __hash__(self):
             return hash("LineageRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4333,30 +3514,16 @@ class LineageRestTransport(_BaseLineageRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseLineageRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseLineageRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseLineageRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLineageRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLineageRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLineageRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4380,12 +3547,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
 
             # Send the request
             response = LineageRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4397,9 +3559,7 @@ class LineageRestTransport(_BaseLineageRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

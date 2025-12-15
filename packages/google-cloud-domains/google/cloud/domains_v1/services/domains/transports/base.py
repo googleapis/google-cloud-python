@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.domains_v1 import gapic_version as package_version
 from google.cloud.domains_v1.types import domains
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class DomainsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -228,10 +218,7 @@ class DomainsTransport(abc.ABC):
     @property
     def search_domains(
         self,
-    ) -> Callable[
-        [domains.SearchDomainsRequest],
-        Union[domains.SearchDomainsResponse, Awaitable[domains.SearchDomainsResponse]],
-    ]:
+    ) -> Callable[[domains.SearchDomainsRequest], Union[domains.SearchDomainsResponse, Awaitable[domains.SearchDomainsResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -239,20 +226,12 @@ class DomainsTransport(abc.ABC):
         self,
     ) -> Callable[
         [domains.RetrieveRegisterParametersRequest],
-        Union[
-            domains.RetrieveRegisterParametersResponse,
-            Awaitable[domains.RetrieveRegisterParametersResponse],
-        ],
+        Union[domains.RetrieveRegisterParametersResponse, Awaitable[domains.RetrieveRegisterParametersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def register_domain(
-        self,
-    ) -> Callable[
-        [domains.RegisterDomainRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def register_domain(self) -> Callable[[domains.RegisterDomainRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -260,113 +239,70 @@ class DomainsTransport(abc.ABC):
         self,
     ) -> Callable[
         [domains.RetrieveTransferParametersRequest],
-        Union[
-            domains.RetrieveTransferParametersResponse,
-            Awaitable[domains.RetrieveTransferParametersResponse],
-        ],
+        Union[domains.RetrieveTransferParametersResponse, Awaitable[domains.RetrieveTransferParametersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def transfer_domain(
-        self,
-    ) -> Callable[
-        [domains.TransferDomainRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def transfer_domain(self) -> Callable[[domains.TransferDomainRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_registrations(
         self,
-    ) -> Callable[
-        [domains.ListRegistrationsRequest],
-        Union[
-            domains.ListRegistrationsResponse,
-            Awaitable[domains.ListRegistrationsResponse],
-        ],
-    ]:
+    ) -> Callable[[domains.ListRegistrationsRequest], Union[domains.ListRegistrationsResponse, Awaitable[domains.ListRegistrationsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_registration(
-        self,
-    ) -> Callable[
-        [domains.GetRegistrationRequest],
-        Union[domains.Registration, Awaitable[domains.Registration]],
-    ]:
+    def get_registration(self) -> Callable[[domains.GetRegistrationRequest], Union[domains.Registration, Awaitable[domains.Registration]]]:
         raise NotImplementedError()
 
     @property
     def update_registration(
         self,
-    ) -> Callable[
-        [domains.UpdateRegistrationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[domains.UpdateRegistrationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def configure_management_settings(
         self,
-    ) -> Callable[
-        [domains.ConfigureManagementSettingsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[domains.ConfigureManagementSettingsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def configure_dns_settings(
         self,
-    ) -> Callable[
-        [domains.ConfigureDnsSettingsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[domains.ConfigureDnsSettingsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def configure_contact_settings(
         self,
-    ) -> Callable[
-        [domains.ConfigureContactSettingsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[domains.ConfigureContactSettingsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_registration(
         self,
-    ) -> Callable[
-        [domains.ExportRegistrationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[domains.ExportRegistrationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_registration(
         self,
-    ) -> Callable[
-        [domains.DeleteRegistrationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[domains.DeleteRegistrationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def retrieve_authorization_code(
         self,
-    ) -> Callable[
-        [domains.RetrieveAuthorizationCodeRequest],
-        Union[domains.AuthorizationCode, Awaitable[domains.AuthorizationCode]],
-    ]:
+    ) -> Callable[[domains.RetrieveAuthorizationCodeRequest], Union[domains.AuthorizationCode, Awaitable[domains.AuthorizationCode]]]:
         raise NotImplementedError()
 
     @property
     def reset_authorization_code(
         self,
-    ) -> Callable[
-        [domains.ResetAuthorizationCodeRequest],
-        Union[domains.AuthorizationCode, Awaitable[domains.AuthorizationCode]],
-    ]:
+    ) -> Callable[[domains.ResetAuthorizationCodeRequest], Union[domains.AuthorizationCode, Awaitable[domains.AuthorizationCode]]]:
         raise NotImplementedError()
 
     @property

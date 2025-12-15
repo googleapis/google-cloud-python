@@ -372,9 +372,7 @@ class Attributes(proto.Message):
         number=5,
         enum="CouponValueType",
     )
-    promotion_destinations: MutableSequence[
-        types.Destination.DestinationEnum
-    ] = proto.RepeatedField(
+    promotion_destinations: MutableSequence[types.Destination.DestinationEnum] = proto.RepeatedField(
         proto.ENUM,
         number=6,
         enum=types.Destination.DestinationEnum,

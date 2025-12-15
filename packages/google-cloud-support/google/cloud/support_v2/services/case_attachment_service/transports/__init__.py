@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import CaseAttachmentServiceTransport
 from .grpc import CaseAttachmentServiceGrpcTransport
 from .grpc_asyncio import CaseAttachmentServiceGrpcAsyncIOTransport
-from .rest import (
-    CaseAttachmentServiceRestInterceptor,
-    CaseAttachmentServiceRestTransport,
-)
+from .rest import CaseAttachmentServiceRestInterceptor, CaseAttachmentServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[CaseAttachmentServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[CaseAttachmentServiceTransport]]
 _transport_registry["grpc"] = CaseAttachmentServiceGrpcTransport
 _transport_registry["grpc_asyncio"] = CaseAttachmentServiceGrpcAsyncIOTransport
 _transport_registry["rest"] = CaseAttachmentServiceRestTransport

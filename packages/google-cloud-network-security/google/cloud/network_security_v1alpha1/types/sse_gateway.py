@@ -613,9 +613,7 @@ class ListSSEGatewayReferencesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sse_gateway_references: MutableSequence[
-        "SSEGatewayReference"
-    ] = proto.RepeatedField(
+    sse_gateway_references: MutableSequence["SSEGatewayReference"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SSEGatewayReference",

@@ -18,15 +18,10 @@ from google.cloud.recommender import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.recommender_v1.services.recommender.async_client import (
-    RecommenderAsyncClient,
-)
+from google.cloud.recommender_v1.services.recommender.async_client import RecommenderAsyncClient
 from google.cloud.recommender_v1.services.recommender.client import RecommenderClient
 from google.cloud.recommender_v1.types.insight import Insight, InsightStateInfo
-from google.cloud.recommender_v1.types.insight_type_config import (
-    InsightTypeConfig,
-    InsightTypeGenerationConfig,
-)
+from google.cloud.recommender_v1.types.insight_type_config import InsightTypeConfig, InsightTypeGenerationConfig
 from google.cloud.recommender_v1.types.recommendation import (
     CostProjection,
     Impact,
@@ -40,10 +35,7 @@ from google.cloud.recommender_v1.types.recommendation import (
     SustainabilityProjection,
     ValueMatcher,
 )
-from google.cloud.recommender_v1.types.recommender_config import (
-    RecommenderConfig,
-    RecommenderGenerationConfig,
-)
+from google.cloud.recommender_v1.types.recommender_config import RecommenderConfig, RecommenderGenerationConfig
 from google.cloud.recommender_v1.types.recommender_service import (
     GetInsightRequest,
     GetInsightTypeConfigRequest,

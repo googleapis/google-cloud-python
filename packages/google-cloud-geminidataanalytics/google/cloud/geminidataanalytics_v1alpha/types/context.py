@@ -150,9 +150,7 @@ class Context(proto.Message):
             number=2,
             message="Context.SchemaRelationship.SchemaPaths",
         )
-        sources: MutableSequence[
-            "Context.SchemaRelationship.Source"
-        ] = proto.RepeatedField(
+        sources: MutableSequence["Context.SchemaRelationship.Source"] = proto.RepeatedField(
             proto.ENUM,
             number=3,
             enum="Context.SchemaRelationship.Source",

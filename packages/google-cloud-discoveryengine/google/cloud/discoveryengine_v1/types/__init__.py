@@ -16,11 +16,7 @@
 from .answer import Answer
 from .assist_answer import AssistAnswer, AssistantContent, AssistantGroundedContent
 from .assistant import Assistant
-from .assistant_service import (
-    AssistUserMetadata,
-    StreamAssistRequest,
-    StreamAssistResponse,
-)
+from .assistant_service import AssistUserMetadata, StreamAssistRequest, StreamAssistResponse
 from .chunk import Chunk
 from .cmek_config_service import (
     CmekConfig,
@@ -58,13 +54,7 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
-from .conversation import (
-    Conversation,
-    ConversationContext,
-    ConversationMessage,
-    Reply,
-    TextInput,
-)
+from .conversation import Conversation, ConversationContext, ConversationMessage, Reply, TextInput
 from .conversational_search_service import (
     AnswerQueryRequest,
     AnswerQueryResponse,
@@ -210,12 +200,7 @@ from .search_tuning_service import (
 from .serving_config import ServingConfig
 from .serving_config_service import UpdateServingConfigRequest
 from .session import Query, Session
-from .site_search_engine import (
-    Sitemap,
-    SiteSearchEngine,
-    SiteVerificationInfo,
-    TargetSite,
-)
+from .site_search_engine import Sitemap, SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
     BatchCreateTargetSitesRequest,
@@ -251,16 +236,7 @@ from .site_search_engine_service import (
     UpdateTargetSiteMetadata,
     UpdateTargetSiteRequest,
 )
-from .user_event import (
-    CompletionInfo,
-    DocumentInfo,
-    MediaInfo,
-    PageInfo,
-    PanelInfo,
-    SearchInfo,
-    TransactionInfo,
-    UserEvent,
-)
+from .user_event import CompletionInfo, DocumentInfo, MediaInfo, PageInfo, PanelInfo, SearchInfo, TransactionInfo, UserEvent
 from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 from .user_license import UserLicense
 from .user_license_service import (

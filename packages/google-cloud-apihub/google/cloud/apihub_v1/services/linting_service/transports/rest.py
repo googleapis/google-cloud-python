@@ -110,12 +110,8 @@ class LintingServiceRestInterceptor:
     """
 
     def pre_get_style_guide(
-        self,
-        request: linting_service.GetStyleGuideRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        linting_service.GetStyleGuideRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: linting_service.GetStyleGuideRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[linting_service.GetStyleGuideRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_style_guide
 
         Override in a subclass to manipulate the request or metadata
@@ -123,9 +119,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_style_guide(
-        self, response: linting_service.StyleGuide
-    ) -> linting_service.StyleGuide:
+    def post_get_style_guide(self, response: linting_service.StyleGuide) -> linting_service.StyleGuide:
         """Post-rpc interceptor for get_style_guide
 
         DEPRECATED. Please use the `post_get_style_guide_with_metadata`
@@ -139,9 +133,7 @@ class LintingServiceRestInterceptor:
         return response
 
     def post_get_style_guide_with_metadata(
-        self,
-        response: linting_service.StyleGuide,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: linting_service.StyleGuide, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[linting_service.StyleGuide, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_style_guide
 
@@ -158,13 +150,8 @@ class LintingServiceRestInterceptor:
         return response, metadata
 
     def pre_get_style_guide_contents(
-        self,
-        request: linting_service.GetStyleGuideContentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        linting_service.GetStyleGuideContentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: linting_service.GetStyleGuideContentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[linting_service.GetStyleGuideContentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_style_guide_contents
 
         Override in a subclass to manipulate the request or metadata
@@ -172,9 +159,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_style_guide_contents(
-        self, response: linting_service.StyleGuideContents
-    ) -> linting_service.StyleGuideContents:
+    def post_get_style_guide_contents(self, response: linting_service.StyleGuideContents) -> linting_service.StyleGuideContents:
         """Post-rpc interceptor for get_style_guide_contents
 
         DEPRECATED. Please use the `post_get_style_guide_contents_with_metadata`
@@ -188,12 +173,8 @@ class LintingServiceRestInterceptor:
         return response
 
     def post_get_style_guide_contents_with_metadata(
-        self,
-        response: linting_service.StyleGuideContents,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        linting_service.StyleGuideContents, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: linting_service.StyleGuideContents, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[linting_service.StyleGuideContents, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_style_guide_contents
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -209,12 +190,8 @@ class LintingServiceRestInterceptor:
         return response, metadata
 
     def pre_lint_spec(
-        self,
-        request: linting_service.LintSpecRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        linting_service.LintSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: linting_service.LintSpecRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[linting_service.LintSpecRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lint_spec
 
         Override in a subclass to manipulate the request or metadata
@@ -223,12 +200,8 @@ class LintingServiceRestInterceptor:
         return request, metadata
 
     def pre_update_style_guide(
-        self,
-        request: linting_service.UpdateStyleGuideRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        linting_service.UpdateStyleGuideRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: linting_service.UpdateStyleGuideRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[linting_service.UpdateStyleGuideRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_style_guide
 
         Override in a subclass to manipulate the request or metadata
@@ -236,9 +209,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_style_guide(
-        self, response: linting_service.StyleGuide
-    ) -> linting_service.StyleGuide:
+    def post_update_style_guide(self, response: linting_service.StyleGuide) -> linting_service.StyleGuide:
         """Post-rpc interceptor for update_style_guide
 
         DEPRECATED. Please use the `post_update_style_guide_with_metadata`
@@ -252,9 +223,7 @@ class LintingServiceRestInterceptor:
         return response
 
     def post_update_style_guide_with_metadata(
-        self,
-        response: linting_service.StyleGuide,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: linting_service.StyleGuide, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[linting_service.StyleGuide, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_style_guide
 
@@ -271,12 +240,8 @@ class LintingServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -284,9 +249,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -296,12 +259,8 @@ class LintingServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +268,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -321,12 +278,8 @@ class LintingServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -344,12 +297,8 @@ class LintingServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -367,12 +316,8 @@ class LintingServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -380,9 +325,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -392,12 +335,8 @@ class LintingServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -405,9 +344,7 @@ class LintingServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -496,30 +433,18 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or LintingServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetStyleGuide(
-        _BaseLintingServiceRestTransport._BaseGetStyleGuide, LintingServiceRestStub
-    ):
+    class _GetStyleGuide(_BaseLintingServiceRestTransport._BaseGetStyleGuide, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.GetStyleGuide")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -563,26 +488,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseGetStyleGuide._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseGetStyleGuide._get_http_options()
 
             request, metadata = self._interceptor.pre_get_style_guide(request, metadata)
-            transcoded_request = _BaseLintingServiceRestTransport._BaseGetStyleGuide._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLintingServiceRestTransport._BaseGetStyleGuide._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseGetStyleGuide._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseGetStyleGuide._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -606,12 +521,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._GetStyleGuide._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -627,12 +537,8 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             resp = self._interceptor.post_get_style_guide(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_style_guide_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_style_guide_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = linting_service.StyleGuide.to_json(response)
                 except:
@@ -653,23 +559,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                 )
             return resp
 
-    class _GetStyleGuideContents(
-        _BaseLintingServiceRestTransport._BaseGetStyleGuideContents,
-        LintingServiceRestStub,
-    ):
+    class _GetStyleGuideContents(_BaseLintingServiceRestTransport._BaseGetStyleGuideContents, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.GetStyleGuideContents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -710,28 +605,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                     The style guide contents.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseGetStyleGuideContents._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseGetStyleGuideContents._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_style_guide_contents(
-                request, metadata
-            )
-            transcoded_request = _BaseLintingServiceRestTransport._BaseGetStyleGuideContents._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_style_guide_contents(request, metadata)
+            transcoded_request = _BaseLintingServiceRestTransport._BaseGetStyleGuideContents._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseGetStyleGuideContents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseGetStyleGuideContents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -755,12 +638,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._GetStyleGuideContents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -776,16 +654,10 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             resp = self._interceptor.post_get_style_guide_contents(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_style_guide_contents_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_style_guide_contents_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = linting_service.StyleGuideContents.to_json(
-                        response
-                    )
+                    response_payload = linting_service.StyleGuideContents.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -804,22 +676,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                 )
             return resp
 
-    class _LintSpec(
-        _BaseLintingServiceRestTransport._BaseLintSpec, LintingServiceRestStub
-    ):
+    class _LintSpec(_BaseLintingServiceRestTransport._BaseLintSpec, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.LintSpec")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -857,36 +719,18 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseLintSpec._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseLintSpec._get_http_options()
 
             request, metadata = self._interceptor.pre_lint_spec(request, metadata)
-            transcoded_request = (
-                _BaseLintingServiceRestTransport._BaseLintSpec._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseLintingServiceRestTransport._BaseLintSpec._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseLintingServiceRestTransport._BaseLintSpec._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseLintingServiceRestTransport._BaseLintSpec._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseLintingServiceRestTransport._BaseLintSpec._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseLintSpec._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -910,13 +754,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._LintSpec._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -924,22 +762,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _UpdateStyleGuide(
-        _BaseLintingServiceRestTransport._BaseUpdateStyleGuide, LintingServiceRestStub
-    ):
+    class _UpdateStyleGuide(_BaseLintingServiceRestTransport._BaseUpdateStyleGuide, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.UpdateStyleGuide")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -984,32 +812,18 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_style_guide(
-                request, metadata
-            )
-            transcoded_request = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_style_guide(request, metadata)
+            transcoded_request = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_transcoded_request(http_options, request)
 
-            body = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseUpdateStyleGuide._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1033,13 +847,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._UpdateStyleGuide._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1055,12 +863,8 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             resp = self._interceptor.post_update_style_guide(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_style_guide_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_style_guide_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = linting_service.StyleGuide.to_json(response)
                 except:
@@ -1082,20 +886,13 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             return resp
 
     @property
-    def get_style_guide(
-        self,
-    ) -> Callable[[linting_service.GetStyleGuideRequest], linting_service.StyleGuide]:
+    def get_style_guide(self) -> Callable[[linting_service.GetStyleGuideRequest], linting_service.StyleGuide]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStyleGuide(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_style_guide_contents(
-        self,
-    ) -> Callable[
-        [linting_service.GetStyleGuideContentsRequest],
-        linting_service.StyleGuideContents,
-    ]:
+    def get_style_guide_contents(self) -> Callable[[linting_service.GetStyleGuideContentsRequest], linting_service.StyleGuideContents]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStyleGuideContents(self._session, self._host, self._interceptor)  # type: ignore
@@ -1107,11 +904,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
         return self._LintSpec(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_style_guide(
-        self,
-    ) -> Callable[
-        [linting_service.UpdateStyleGuideRequest], linting_service.StyleGuide
-    ]:
+    def update_style_guide(self) -> Callable[[linting_service.UpdateStyleGuideRequest], linting_service.StyleGuide]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateStyleGuide(self._session, self._host, self._interceptor)  # type: ignore
@@ -1120,22 +913,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseLintingServiceRestTransport._BaseGetLocation, LintingServiceRestStub
-    ):
+    class _GetLocation(_BaseLintingServiceRestTransport._BaseGetLocation, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1173,26 +956,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseLintingServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLintingServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1216,12 +989,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1233,9 +1001,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1260,22 +1026,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseLintingServiceRestTransport._BaseListLocations, LintingServiceRestStub
-    ):
+    class _ListLocations(_BaseLintingServiceRestTransport._BaseListLocations, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1313,26 +1069,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseLintingServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLintingServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1356,12 +1102,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1373,9 +1114,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1400,22 +1139,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseLintingServiceRestTransport._BaseCancelOperation, LintingServiceRestStub
-    ):
+    class _CancelOperation(_BaseLintingServiceRestTransport._BaseCancelOperation, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1451,32 +1180,18 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseLintingServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseLintingServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseLintingServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseLintingServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1500,13 +1215,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1520,22 +1229,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseLintingServiceRestTransport._BaseDeleteOperation, LintingServiceRestStub
-    ):
+    class _DeleteOperation(_BaseLintingServiceRestTransport._BaseDeleteOperation, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1570,28 +1269,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseLintingServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseLintingServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1615,12 +1302,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1634,22 +1316,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseLintingServiceRestTransport._BaseGetOperation, LintingServiceRestStub
-    ):
+    class _GetOperation(_BaseLintingServiceRestTransport._BaseGetOperation, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1687,26 +1359,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseLintingServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLintingServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1730,12 +1392,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1747,9 +1404,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1774,22 +1429,12 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseLintingServiceRestTransport._BaseListOperations, LintingServiceRestStub
-    ):
+    class _ListOperations(_BaseLintingServiceRestTransport._BaseListOperations, LintingServiceRestStub):
         def __hash__(self):
             return hash("LintingServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1827,26 +1472,16 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseLintingServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseLintingServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseLintingServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseLintingServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseLintingServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseLintingServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1870,12 +1505,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
 
             # Send the request
             response = LintingServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1887,9 +1517,7 @@ class LintingServiceRestTransport(_BaseLintingServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

@@ -660,9 +660,7 @@ class ListCertificateAuthoritiesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_authorities: MutableSequence[
-        resources.CertificateAuthority
-    ] = proto.RepeatedField(
+    certificate_authorities: MutableSequence[resources.CertificateAuthority] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateAuthority,
@@ -904,9 +902,7 @@ class ListCertificateRevocationListsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_revocation_lists: MutableSequence[
-        resources.CertificateRevocationList
-    ] = proto.RepeatedField(
+    certificate_revocation_lists: MutableSequence[resources.CertificateRevocationList] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=resources.CertificateRevocationList,

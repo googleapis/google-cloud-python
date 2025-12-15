@@ -1087,16 +1087,12 @@ class AnalyzeContentResponse(proto.Message):
         number=5,
         message="Message",
     )
-    human_agent_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
+    human_agent_suggestion_results: MutableSequence["SuggestionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message="SuggestionResult",
     )
-    end_user_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
+    end_user_suggestion_results: MutableSequence["SuggestionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="SuggestionResult",
@@ -1478,16 +1474,12 @@ class StreamingAnalyzeContentResponse(proto.Message):
         number=6,
         message="Message",
     )
-    human_agent_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
+    human_agent_suggestion_results: MutableSequence["SuggestionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message="SuggestionResult",
     )
-    end_user_suggestion_results: MutableSequence[
-        "SuggestionResult"
-    ] = proto.RepeatedField(
+    end_user_suggestion_results: MutableSequence["SuggestionResult"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="SuggestionResult",
@@ -1872,21 +1864,17 @@ class SuggestionResult(proto.Message):
         oneof="suggestion_response",
         message="SuggestSmartRepliesResponse",
     )
-    suggest_dialogflow_assists_response: "SuggestDialogflowAssistsResponse" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=5,
-            oneof="suggestion_response",
-            message="SuggestDialogflowAssistsResponse",
-        )
+    suggest_dialogflow_assists_response: "SuggestDialogflowAssistsResponse" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="suggestion_response",
+        message="SuggestDialogflowAssistsResponse",
     )
-    suggest_entity_extraction_response: "SuggestDialogflowAssistsResponse" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=7,
-            oneof="suggestion_response",
-            message="SuggestDialogflowAssistsResponse",
-        )
+    suggest_entity_extraction_response: "SuggestDialogflowAssistsResponse" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="suggestion_response",
+        message="SuggestDialogflowAssistsResponse",
     )
     generate_suggestions_response: "GenerateSuggestionsResponse" = proto.Field(
         proto.MESSAGE,
@@ -2195,9 +2183,7 @@ class GenerateSuggestionsResponse(proto.Message):
             number=3,
         )
 
-    generator_suggestion_answers: MutableSequence[
-        GeneratorSuggestionAnswer
-    ] = proto.RepeatedField(
+    generator_suggestion_answers: MutableSequence[GeneratorSuggestionAnswer] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=GeneratorSuggestionAnswer,
@@ -2232,9 +2218,7 @@ class SuggestDialogflowAssistsResponse(proto.Message):
             the conversation.
     """
 
-    dialogflow_assist_answers: MutableSequence[
-        "DialogflowAssistAnswer"
-    ] = proto.RepeatedField(
+    dialogflow_assist_answers: MutableSequence["DialogflowAssistAnswer"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="DialogflowAssistAnswer",
@@ -2692,9 +2676,7 @@ class ResponseMessage(proto.Message):
                 number=3,
             )
 
-        segments: MutableSequence[
-            "ResponseMessage.MixedAudio.Segment"
-        ] = proto.RepeatedField(
+        segments: MutableSequence["ResponseMessage.MixedAudio.Segment"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ResponseMessage.MixedAudio.Segment",
@@ -2962,9 +2944,7 @@ class KnowledgeAssistAnswer(proto.Message):
                     message=struct_pb2.Struct,
                 )
 
-            snippets: MutableSequence[
-                "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet"
-            ] = proto.RepeatedField(
+            snippets: MutableSequence["KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource.Snippet",
@@ -2980,13 +2960,11 @@ class KnowledgeAssistAnswer(proto.Message):
             oneof="source",
             message="KnowledgeAssistAnswer.KnowledgeAnswer.FaqSource",
         )
-        generative_source: "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                oneof="source",
-                message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource",
-            )
+        generative_source: "KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            oneof="source",
+            message="KnowledgeAssistAnswer.KnowledgeAnswer.GenerativeSource",
         )
 
     suggested_query: SuggestedQuery = proto.Field(

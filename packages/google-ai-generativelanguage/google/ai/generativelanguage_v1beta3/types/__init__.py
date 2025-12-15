@@ -47,13 +47,7 @@ from .permission_service import (
     TransferOwnershipResponse,
     UpdatePermissionRequest,
 )
-from .safety import (
-    ContentFilter,
-    HarmCategory,
-    SafetyFeedback,
-    SafetyRating,
-    SafetySetting,
-)
+from .safety import ContentFilter, HarmCategory, SafetyFeedback, SafetyRating, SafetySetting
 from .text_service import (
     BatchEmbedTextRequest,
     BatchEmbedTextResponse,
@@ -67,16 +61,7 @@ from .text_service import (
     TextCompletion,
     TextPrompt,
 )
-from .tuned_model import (
-    Dataset,
-    Hyperparameters,
-    TunedModel,
-    TunedModelSource,
-    TuningExample,
-    TuningExamples,
-    TuningSnapshot,
-    TuningTask,
-)
+from .tuned_model import Dataset, Hyperparameters, TunedModel, TunedModelSource, TuningExample, TuningExamples, TuningSnapshot, TuningTask
 
 __all__ = (
     "CitationMetadata",

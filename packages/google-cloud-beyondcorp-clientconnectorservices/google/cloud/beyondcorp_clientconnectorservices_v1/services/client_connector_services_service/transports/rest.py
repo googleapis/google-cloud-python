@@ -32,9 +32,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.beyondcorp_clientconnectorservices_v1.types import (
-    client_connector_services_service,
-)
+from google.cloud.beyondcorp_clientconnectorservices_v1.types import client_connector_services_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseClientConnectorServicesServiceRestTransport
@@ -125,13 +123,8 @@ class ClientConnectorServicesServiceRestInterceptor:
     """
 
     def pre_create_client_connector_service(
-        self,
-        request: client_connector_services_service.CreateClientConnectorServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.CreateClientConnectorServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_connector_services_service.CreateClientConnectorServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.CreateClientConnectorServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_client_connector_service
 
         Override in a subclass to manipulate the request or metadata
@@ -139,9 +132,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_client_connector_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_client_connector_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_client_connector_service
 
         DEPRECATED. Please use the `post_create_client_connector_service_with_metadata`
@@ -155,9 +146,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def post_create_client_connector_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_client_connector_service
 
@@ -174,13 +163,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_client_connector_service(
-        self,
-        request: client_connector_services_service.DeleteClientConnectorServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.DeleteClientConnectorServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_connector_services_service.DeleteClientConnectorServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.DeleteClientConnectorServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_client_connector_service
 
         Override in a subclass to manipulate the request or metadata
@@ -188,9 +172,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_client_connector_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_client_connector_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_client_connector_service
 
         DEPRECATED. Please use the `post_delete_client_connector_service_with_metadata`
@@ -204,9 +186,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def post_delete_client_connector_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_client_connector_service
 
@@ -223,13 +203,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_client_connector_service(
-        self,
-        request: client_connector_services_service.GetClientConnectorServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.GetClientConnectorServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_connector_services_service.GetClientConnectorServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.GetClientConnectorServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_client_connector_service
 
         Override in a subclass to manipulate the request or metadata
@@ -253,13 +228,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def post_get_client_connector_service_with_metadata(
-        self,
-        response: client_connector_services_service.ClientConnectorService,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.ClientConnectorService,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: client_connector_services_service.ClientConnectorService, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.ClientConnectorService, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_client_connector_service
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -275,13 +245,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_client_connector_services(
-        self,
-        request: client_connector_services_service.ListClientConnectorServicesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.ListClientConnectorServicesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_connector_services_service.ListClientConnectorServicesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.ListClientConnectorServicesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_client_connector_services
 
         Override in a subclass to manipulate the request or metadata
@@ -290,8 +255,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         return request, metadata
 
     def post_list_client_connector_services(
-        self,
-        response: client_connector_services_service.ListClientConnectorServicesResponse,
+        self, response: client_connector_services_service.ListClientConnectorServicesResponse
     ) -> client_connector_services_service.ListClientConnectorServicesResponse:
         """Post-rpc interceptor for list_client_connector_services
 
@@ -306,13 +270,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def post_list_client_connector_services_with_metadata(
-        self,
-        response: client_connector_services_service.ListClientConnectorServicesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.ListClientConnectorServicesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: client_connector_services_service.ListClientConnectorServicesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.ListClientConnectorServicesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_client_connector_services
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -328,13 +287,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_update_client_connector_service(
-        self,
-        request: client_connector_services_service.UpdateClientConnectorServiceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        client_connector_services_service.UpdateClientConnectorServiceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: client_connector_services_service.UpdateClientConnectorServiceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[client_connector_services_service.UpdateClientConnectorServiceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_client_connector_service
 
         Override in a subclass to manipulate the request or metadata
@@ -342,9 +296,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_client_connector_service(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_client_connector_service(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_client_connector_service
 
         DEPRECATED. Please use the `post_update_client_connector_service_with_metadata`
@@ -358,9 +310,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def post_update_client_connector_service_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_client_connector_service
 
@@ -377,12 +327,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -390,9 +336,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -402,12 +346,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -415,9 +355,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -427,12 +365,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -450,12 +384,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -473,13 +403,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -487,9 +412,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -499,12 +422,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -522,12 +441,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -545,12 +460,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -558,9 +469,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -570,12 +479,8 @@ class ClientConnectorServicesServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -583,9 +488,7 @@ class ClientConnectorServicesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -602,9 +505,7 @@ class ClientConnectorServicesServiceRestStub:
     _interceptor: ClientConnectorServicesServiceRestInterceptor
 
 
-class ClientConnectorServicesServiceRestTransport(
-    _BaseClientConnectorServicesServiceRestTransport
-):
+class ClientConnectorServicesServiceRestTransport(_BaseClientConnectorServicesServiceRestTransport):
     """REST backend synchronous transport for ClientConnectorServicesService.
 
     API Overview:
@@ -686,15 +587,11 @@ class ClientConnectorServicesServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or ClientConnectorServicesServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or ClientConnectorServicesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -743,32 +640,19 @@ class ClientConnectorServicesServiceRestTransport(
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
     class _CreateClientConnectorService(
-        _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService,
-        ClientConnectorServicesServiceRestStub,
+        _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService, ClientConnectorServicesServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "ClientConnectorServicesServiceRestTransport.CreateClientConnectorService"
-            )
+            return hash("ClientConnectorServicesServiceRestTransport.CreateClientConnectorService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -813,32 +697,22 @@ class ClientConnectorServicesServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_client_connector_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_client_connector_service(request, metadata)
             transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseClientConnectorServicesServiceRestTransport._BaseCreateClientConnectorService._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -862,13 +736,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._CreateClientConnectorService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -882,15 +750,8 @@ class ClientConnectorServicesServiceRestTransport(
 
             resp = self._interceptor.post_create_client_connector_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_client_connector_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_client_connector_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -912,24 +773,13 @@ class ClientConnectorServicesServiceRestTransport(
             return resp
 
     class _DeleteClientConnectorService(
-        _BaseClientConnectorServicesServiceRestTransport._BaseDeleteClientConnectorService,
-        ClientConnectorServicesServiceRestStub,
+        _BaseClientConnectorServicesServiceRestTransport._BaseDeleteClientConnectorService, ClientConnectorServicesServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "ClientConnectorServicesServiceRestTransport.DeleteClientConnectorService"
-            )
+            return hash("ClientConnectorServicesServiceRestTransport.DeleteClientConnectorService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -973,13 +823,9 @@ class ClientConnectorServicesServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseDeleteClientConnectorService._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteClientConnectorService._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_client_connector_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_client_connector_service(request, metadata)
             transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteClientConnectorService._get_transcoded_request(
                 http_options, request
             )
@@ -989,12 +835,8 @@ class ClientConnectorServicesServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1018,12 +860,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._DeleteClientConnectorService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1037,15 +874,8 @@ class ClientConnectorServicesServiceRestTransport(
 
             resp = self._interceptor.post_delete_client_connector_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_client_connector_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_client_connector_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1067,24 +897,13 @@ class ClientConnectorServicesServiceRestTransport(
             return resp
 
     class _GetClientConnectorService(
-        _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService,
-        ClientConnectorServicesServiceRestStub,
+        _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService, ClientConnectorServicesServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "ClientConnectorServicesServiceRestTransport.GetClientConnectorService"
-            )
+            return hash("ClientConnectorServicesServiceRestTransport.GetClientConnectorService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1127,28 +946,18 @@ class ClientConnectorServicesServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_client_connector_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_client_connector_service(request, metadata)
             transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetClientConnectorService._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1172,12 +981,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._GetClientConnectorService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1193,16 +997,10 @@ class ClientConnectorServicesServiceRestTransport(
 
             resp = self._interceptor.post_get_client_connector_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_client_connector_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_client_connector_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = client_connector_services_service.ClientConnectorService.to_json(
-                        response
-                    )
+                    response_payload = client_connector_services_service.ClientConnectorService.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1222,24 +1020,13 @@ class ClientConnectorServicesServiceRestTransport(
             return resp
 
     class _ListClientConnectorServices(
-        _BaseClientConnectorServicesServiceRestTransport._BaseListClientConnectorServices,
-        ClientConnectorServicesServiceRestStub,
+        _BaseClientConnectorServicesServiceRestTransport._BaseListClientConnectorServices, ClientConnectorServicesServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "ClientConnectorServicesServiceRestTransport.ListClientConnectorServices"
-            )
+            return hash("ClientConnectorServicesServiceRestTransport.ListClientConnectorServices")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1282,13 +1069,9 @@ class ClientConnectorServicesServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseListClientConnectorServices._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseListClientConnectorServices._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_client_connector_services(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_client_connector_services(request, metadata)
             transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseListClientConnectorServices._get_transcoded_request(
                 http_options, request
             )
@@ -1298,12 +1081,8 @@ class ClientConnectorServicesServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1327,12 +1106,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._ListClientConnectorServices._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1341,30 +1115,17 @@ class ClientConnectorServicesServiceRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                client_connector_services_service.ListClientConnectorServicesResponse()
-            )
-            pb_resp = client_connector_services_service.ListClientConnectorServicesResponse.pb(
-                resp
-            )
+            resp = client_connector_services_service.ListClientConnectorServicesResponse()
+            pb_resp = client_connector_services_service.ListClientConnectorServicesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_client_connector_services(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_client_connector_services_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_client_connector_services_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = client_connector_services_service.ListClientConnectorServicesResponse.to_json(
-                        response
-                    )
+                    response_payload = client_connector_services_service.ListClientConnectorServicesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1384,24 +1145,13 @@ class ClientConnectorServicesServiceRestTransport(
             return resp
 
     class _UpdateClientConnectorService(
-        _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService,
-        ClientConnectorServicesServiceRestStub,
+        _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService, ClientConnectorServicesServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "ClientConnectorServicesServiceRestTransport.UpdateClientConnectorService"
-            )
+            return hash("ClientConnectorServicesServiceRestTransport.UpdateClientConnectorService")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1446,32 +1196,22 @@ class ClientConnectorServicesServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_client_connector_service(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_client_connector_service(request, metadata)
             transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
             query_params = _BaseClientConnectorServicesServiceRestTransport._BaseUpdateClientConnectorService._get_query_params_json(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1495,13 +1235,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._UpdateClientConnectorService._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1515,15 +1249,8 @@ class ClientConnectorServicesServiceRestTransport(
 
             resp = self._interceptor.post_update_client_connector_service(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_client_connector_service_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_client_connector_service_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1547,10 +1274,7 @@ class ClientConnectorServicesServiceRestTransport(
     @property
     def create_client_connector_service(
         self,
-    ) -> Callable[
-        [client_connector_services_service.CreateClientConnectorServiceRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[client_connector_services_service.CreateClientConnectorServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateClientConnectorService(self._session, self._host, self._interceptor)  # type: ignore
@@ -1558,10 +1282,7 @@ class ClientConnectorServicesServiceRestTransport(
     @property
     def delete_client_connector_service(
         self,
-    ) -> Callable[
-        [client_connector_services_service.DeleteClientConnectorServiceRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[client_connector_services_service.DeleteClientConnectorServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteClientConnectorService(self._session, self._host, self._interceptor)  # type: ignore
@@ -1569,10 +1290,7 @@ class ClientConnectorServicesServiceRestTransport(
     @property
     def get_client_connector_service(
         self,
-    ) -> Callable[
-        [client_connector_services_service.GetClientConnectorServiceRequest],
-        client_connector_services_service.ClientConnectorService,
-    ]:
+    ) -> Callable[[client_connector_services_service.GetClientConnectorServiceRequest], client_connector_services_service.ClientConnectorService]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetClientConnectorService(self._session, self._host, self._interceptor)  # type: ignore
@@ -1581,8 +1299,7 @@ class ClientConnectorServicesServiceRestTransport(
     def list_client_connector_services(
         self,
     ) -> Callable[
-        [client_connector_services_service.ListClientConnectorServicesRequest],
-        client_connector_services_service.ListClientConnectorServicesResponse,
+        [client_connector_services_service.ListClientConnectorServicesRequest], client_connector_services_service.ListClientConnectorServicesResponse
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
@@ -1591,10 +1308,7 @@ class ClientConnectorServicesServiceRestTransport(
     @property
     def update_client_connector_service(
         self,
-    ) -> Callable[
-        [client_connector_services_service.UpdateClientConnectorServiceRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[client_connector_services_service.UpdateClientConnectorServiceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateClientConnectorService(self._session, self._host, self._interceptor)  # type: ignore
@@ -1603,23 +1317,12 @@ class ClientConnectorServicesServiceRestTransport(
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _GetLocation(_BaseClientConnectorServicesServiceRestTransport._BaseGetLocation, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1657,26 +1360,16 @@ class ClientConnectorServicesServiceRestTransport(
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1699,15 +1392,8 @@ class ClientConnectorServicesServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ClientConnectorServicesServiceRestTransport._GetLocation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ClientConnectorServicesServiceRestTransport._GetLocation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1719,9 +1405,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1746,23 +1430,12 @@ class ClientConnectorServicesServiceRestTransport(
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseClientConnectorServicesServiceRestTransport._BaseListLocations,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _ListLocations(_BaseClientConnectorServicesServiceRestTransport._BaseListLocations, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1800,26 +1473,16 @@ class ClientConnectorServicesServiceRestTransport(
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1843,12 +1506,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1860,9 +1518,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1887,23 +1543,12 @@ class ClientConnectorServicesServiceRestTransport(
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1941,26 +1586,16 @@ class ClientConnectorServicesServiceRestTransport(
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1983,15 +1618,8 @@ class ClientConnectorServicesServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ClientConnectorServicesServiceRestTransport._GetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ClientConnectorServicesServiceRestTransport._GetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2003,9 +1631,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2030,23 +1656,12 @@ class ClientConnectorServicesServiceRestTransport(
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2085,30 +1700,18 @@ class ClientConnectorServicesServiceRestTransport(
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2131,16 +1734,8 @@ class ClientConnectorServicesServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ClientConnectorServicesServiceRestTransport._SetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ClientConnectorServicesServiceRestTransport._SetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2152,9 +1747,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2179,25 +1772,12 @@ class ClientConnectorServicesServiceRestTransport(
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
-            return hash(
-                "ClientConnectorServicesServiceRestTransport.TestIamPermissions"
-            )
+            return hash("ClientConnectorServicesServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2236,32 +1816,20 @@ class ClientConnectorServicesServiceRestTransport(
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
             transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2285,13 +1853,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2303,9 +1865,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2330,23 +1890,12 @@ class ClientConnectorServicesServiceRestTransport(
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _CancelOperation(_BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2382,32 +1931,18 @@ class ClientConnectorServicesServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2431,13 +1966,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2451,23 +1980,12 @@ class ClientConnectorServicesServiceRestTransport(
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2502,28 +2020,16 @@ class ClientConnectorServicesServiceRestTransport(
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2547,12 +2053,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2566,23 +2067,12 @@ class ClientConnectorServicesServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _GetOperation(_BaseClientConnectorServicesServiceRestTransport._BaseGetOperation, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2620,26 +2110,16 @@ class ClientConnectorServicesServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2662,15 +2142,8 @@ class ClientConnectorServicesServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                ClientConnectorServicesServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = ClientConnectorServicesServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2682,9 +2155,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2709,23 +2180,12 @@ class ClientConnectorServicesServiceRestTransport(
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseClientConnectorServicesServiceRestTransport._BaseListOperations,
-        ClientConnectorServicesServiceRestStub,
-    ):
+    class _ListOperations(_BaseClientConnectorServicesServiceRestTransport._BaseListOperations, ClientConnectorServicesServiceRestStub):
         def __hash__(self):
             return hash("ClientConnectorServicesServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2763,26 +2223,16 @@ class ClientConnectorServicesServiceRestTransport(
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseClientConnectorServicesServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseClientConnectorServicesServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseClientConnectorServicesServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseClientConnectorServicesServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2806,12 +2256,7 @@ class ClientConnectorServicesServiceRestTransport(
 
             # Send the request
             response = ClientConnectorServicesServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2823,9 +2268,7 @@ class ClientConnectorServicesServiceRestTransport(
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

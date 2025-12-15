@@ -380,9 +380,7 @@ class ListAttachedClustersResponse(proto.Message):
     def raw_page(self):
         return self
 
-    attached_clusters: MutableSequence[
-        attached_resources.AttachedCluster
-    ] = proto.RepeatedField(
+    attached_clusters: MutableSequence[attached_resources.AttachedCluster] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=attached_resources.AttachedCluster,

@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import ProgrammaticBuyerServiceTransport
-from .rest import (
-    ProgrammaticBuyerServiceRestInterceptor,
-    ProgrammaticBuyerServiceRestTransport,
-)
+from .rest import ProgrammaticBuyerServiceRestInterceptor, ProgrammaticBuyerServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[ProgrammaticBuyerServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[ProgrammaticBuyerServiceTransport]]
 _transport_registry["rest"] = ProgrammaticBuyerServiceRestTransport
 
 __all__ = (

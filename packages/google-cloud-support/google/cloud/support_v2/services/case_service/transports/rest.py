@@ -145,9 +145,7 @@ class CaseServiceRestInterceptor:
     """
 
     def pre_close_case(
-        self,
-        request: case_service.CloseCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: case_service.CloseCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[case_service.CloseCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for close_case
 
@@ -187,9 +185,7 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_create_case(
-        self,
-        request: case_service.CreateCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: case_service.CreateCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[case_service.CreateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_case
 
@@ -229,12 +225,8 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_escalate_case(
-        self,
-        request: case_service.EscalateCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        case_service.EscalateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: case_service.EscalateCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case_service.EscalateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for escalate_case
 
         Override in a subclass to manipulate the request or metadata
@@ -273,9 +265,7 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_get_case(
-        self,
-        request: case_service.GetCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: case_service.GetCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[case_service.GetCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_case
 
@@ -315,9 +305,7 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_list_cases(
-        self,
-        request: case_service.ListCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: case_service.ListCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[case_service.ListCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cases
 
@@ -326,9 +314,7 @@ class CaseServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cases(
-        self, response: case_service.ListCasesResponse
-    ) -> case_service.ListCasesResponse:
+    def post_list_cases(self, response: case_service.ListCasesResponse) -> case_service.ListCasesResponse:
         """Post-rpc interceptor for list_cases
 
         DEPRECATED. Please use the `post_list_cases_with_metadata`
@@ -342,9 +328,7 @@ class CaseServiceRestInterceptor:
         return response
 
     def post_list_cases_with_metadata(
-        self,
-        response: case_service.ListCasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: case_service.ListCasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[case_service.ListCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cases
 
@@ -361,13 +345,8 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_search_case_classifications(
-        self,
-        request: case_service.SearchCaseClassificationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        case_service.SearchCaseClassificationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: case_service.SearchCaseClassificationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case_service.SearchCaseClassificationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_case_classifications
 
         Override in a subclass to manipulate the request or metadata
@@ -391,13 +370,8 @@ class CaseServiceRestInterceptor:
         return response
 
     def post_search_case_classifications_with_metadata(
-        self,
-        response: case_service.SearchCaseClassificationsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        case_service.SearchCaseClassificationsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: case_service.SearchCaseClassificationsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case_service.SearchCaseClassificationsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_case_classifications
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -413,12 +387,8 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_search_cases(
-        self,
-        request: case_service.SearchCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        case_service.SearchCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: case_service.SearchCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case_service.SearchCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -426,9 +396,7 @@ class CaseServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_cases(
-        self, response: case_service.SearchCasesResponse
-    ) -> case_service.SearchCasesResponse:
+    def post_search_cases(self, response: case_service.SearchCasesResponse) -> case_service.SearchCasesResponse:
         """Post-rpc interceptor for search_cases
 
         DEPRECATED. Please use the `post_search_cases_with_metadata`
@@ -442,12 +410,8 @@ class CaseServiceRestInterceptor:
         return response
 
     def post_search_cases_with_metadata(
-        self,
-        response: case_service.SearchCasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        case_service.SearchCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: case_service.SearchCasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[case_service.SearchCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_cases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -463,9 +427,7 @@ class CaseServiceRestInterceptor:
         return response, metadata
 
     def pre_update_case(
-        self,
-        request: case_service.UpdateCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: case_service.UpdateCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[case_service.UpdateCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_case
 
@@ -584,9 +546,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CaseServiceRestInterceptor()
@@ -597,15 +557,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             return hash("CaseServiceRestTransport.CloseCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -676,34 +628,18 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseCloseCase._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseCloseCase._get_http_options()
 
             request, metadata = self._interceptor.pre_close_case(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseCloseCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseCloseCase._get_transcoded_request(http_options, request)
 
-            body = _BaseCaseServiceRestTransport._BaseCloseCase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCaseServiceRestTransport._BaseCloseCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseCloseCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseCloseCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -727,13 +663,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             # Send the request
             response = CaseServiceRestTransport._CloseCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -749,12 +679,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_close_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_close_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_close_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = case.Case.to_json(response)
                 except:
@@ -775,22 +701,12 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
             return resp
 
-    class _CreateCase(
-        _BaseCaseServiceRestTransport._BaseCreateCase, CaseServiceRestStub
-    ):
+    class _CreateCase(_BaseCaseServiceRestTransport._BaseCreateCase, CaseServiceRestStub):
         def __hash__(self):
             return hash("CaseServiceRestTransport.CreateCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -861,34 +777,18 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseCreateCase._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseCreateCase._get_http_options()
 
             request, metadata = self._interceptor.pre_create_case(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseCreateCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseCreateCase._get_transcoded_request(http_options, request)
 
-            body = _BaseCaseServiceRestTransport._BaseCreateCase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCaseServiceRestTransport._BaseCreateCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseCreateCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseCreateCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -912,13 +812,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             # Send the request
             response = CaseServiceRestTransport._CreateCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -934,12 +828,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_create_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_case.Case.to_json(response)
                 except:
@@ -960,22 +850,12 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
             return resp
 
-    class _EscalateCase(
-        _BaseCaseServiceRestTransport._BaseEscalateCase, CaseServiceRestStub
-    ):
+    class _EscalateCase(_BaseCaseServiceRestTransport._BaseEscalateCase, CaseServiceRestStub):
         def __hash__(self):
             return hash("CaseServiceRestTransport.EscalateCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1046,36 +926,18 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseEscalateCase._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseEscalateCase._get_http_options()
 
             request, metadata = self._interceptor.pre_escalate_case(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseEscalateCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseEscalateCase._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCaseServiceRestTransport._BaseEscalateCase._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCaseServiceRestTransport._BaseEscalateCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseEscalateCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseEscalateCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1099,13 +961,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             # Send the request
             response = CaseServiceRestTransport._EscalateCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1121,12 +977,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_escalate_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_escalate_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_escalate_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = case.Case.to_json(response)
                 except:
@@ -1152,15 +1004,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             return hash("CaseServiceRestTransport.GetCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1230,30 +1074,16 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseGetCase._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseGetCase._get_http_options()
 
             request, metadata = self._interceptor.pre_get_case(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseGetCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseGetCase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseGetCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseGetCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1276,14 +1106,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
 
             # Send the request
-            response = CaseServiceRestTransport._GetCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CaseServiceRestTransport._GetCase._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1298,12 +1121,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_get_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = case.Case.to_json(response)
                 except:
@@ -1329,15 +1148,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
             return hash("CaseServiceRestTransport.ListCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1379,30 +1190,16 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseListCases._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseListCases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_cases(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseListCases._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseListCases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseListCases._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseListCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1426,12 +1223,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             # Send the request
             response = CaseServiceRestTransport._ListCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1447,12 +1239,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_list_cases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = case_service.ListCasesResponse.to_json(response)
                 except:
@@ -1473,23 +1261,12 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
             return resp
 
-    class _SearchCaseClassifications(
-        _BaseCaseServiceRestTransport._BaseSearchCaseClassifications,
-        CaseServiceRestStub,
-    ):
+    class _SearchCaseClassifications(_BaseCaseServiceRestTransport._BaseSearchCaseClassifications, CaseServiceRestStub):
         def __hash__(self):
             return hash("CaseServiceRestTransport.SearchCaseClassifications")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1532,28 +1309,16 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_http_options()
 
-            request, metadata = self._interceptor.pre_search_case_classifications(
-                request, metadata
-            )
-            transcoded_request = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_search_case_classifications(request, metadata)
+            transcoded_request = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseSearchCaseClassifications._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1576,15 +1341,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                CaseServiceRestTransport._SearchCaseClassifications._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CaseServiceRestTransport._SearchCaseClassifications._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1600,16 +1358,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_search_case_classifications(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_case_classifications_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_case_classifications_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        case_service.SearchCaseClassificationsResponse.to_json(response)
-                    )
+                    response_payload = case_service.SearchCaseClassificationsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1628,22 +1380,12 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
             return resp
 
-    class _SearchCases(
-        _BaseCaseServiceRestTransport._BaseSearchCases, CaseServiceRestStub
-    ):
+    class _SearchCases(_BaseCaseServiceRestTransport._BaseSearchCases, CaseServiceRestStub):
         def __hash__(self):
             return hash("CaseServiceRestTransport.SearchCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1685,30 +1427,16 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseSearchCases._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseSearchCases._get_http_options()
 
             request, metadata = self._interceptor.pre_search_cases(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseSearchCases._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseSearchCases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseSearchCases._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseSearchCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1732,12 +1460,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             # Send the request
             response = CaseServiceRestTransport._SearchCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1753,16 +1476,10 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_search_cases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_cases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_cases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = case_service.SearchCasesResponse.to_json(
-                        response
-                    )
+                    response_payload = case_service.SearchCasesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1781,22 +1498,12 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
                 )
             return resp
 
-    class _UpdateCase(
-        _BaseCaseServiceRestTransport._BaseUpdateCase, CaseServiceRestStub
-    ):
+    class _UpdateCase(_BaseCaseServiceRestTransport._BaseUpdateCase, CaseServiceRestStub):
         def __hash__(self):
             return hash("CaseServiceRestTransport.UpdateCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1867,34 +1574,18 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCaseServiceRestTransport._BaseUpdateCase._get_http_options()
-            )
+            http_options = _BaseCaseServiceRestTransport._BaseUpdateCase._get_http_options()
 
             request, metadata = self._interceptor.pre_update_case(request, metadata)
-            transcoded_request = (
-                _BaseCaseServiceRestTransport._BaseUpdateCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCaseServiceRestTransport._BaseUpdateCase._get_transcoded_request(http_options, request)
 
-            body = _BaseCaseServiceRestTransport._BaseUpdateCase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCaseServiceRestTransport._BaseUpdateCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCaseServiceRestTransport._BaseUpdateCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCaseServiceRestTransport._BaseUpdateCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1918,13 +1609,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             # Send the request
             response = CaseServiceRestTransport._UpdateCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1940,12 +1625,8 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
 
             resp = self._interceptor.post_update_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcs_case.Case.to_json(response)
                 except:
@@ -1991,9 +1672,7 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
         return self._GetCase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_cases(
-        self,
-    ) -> Callable[[case_service.ListCasesRequest], case_service.ListCasesResponse]:
+    def list_cases(self) -> Callable[[case_service.ListCasesRequest], case_service.ListCasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCases(self._session, self._host, self._interceptor)  # type: ignore
@@ -2001,18 +1680,13 @@ class CaseServiceRestTransport(_BaseCaseServiceRestTransport):
     @property
     def search_case_classifications(
         self,
-    ) -> Callable[
-        [case_service.SearchCaseClassificationsRequest],
-        case_service.SearchCaseClassificationsResponse,
-    ]:
+    ) -> Callable[[case_service.SearchCaseClassificationsRequest], case_service.SearchCaseClassificationsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchCaseClassifications(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_cases(
-        self,
-    ) -> Callable[[case_service.SearchCasesRequest], case_service.SearchCasesResponse]:
+    def search_cases(self) -> Callable[[case_service.SearchCasesRequest], case_service.SearchCasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchCases(self._session, self._host, self._interceptor)  # type: ignore

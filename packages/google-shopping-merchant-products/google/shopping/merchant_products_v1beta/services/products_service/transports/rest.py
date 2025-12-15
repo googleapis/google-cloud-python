@@ -95,9 +95,7 @@ class ProductsServiceRestInterceptor:
     """
 
     def pre_get_product(
-        self,
-        request: products.GetProductRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: products.GetProductRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[products.GetProductRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_product
 
@@ -120,9 +118,7 @@ class ProductsServiceRestInterceptor:
         return response
 
     def post_get_product_with_metadata(
-        self,
-        response: products.Product,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: products.Product, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[products.Product, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_product
 
@@ -139,9 +135,7 @@ class ProductsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_products(
-        self,
-        request: products.ListProductsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: products.ListProductsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[products.ListProductsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_products
 
@@ -150,9 +144,7 @@ class ProductsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_products(
-        self, response: products.ListProductsResponse
-    ) -> products.ListProductsResponse:
+    def post_list_products(self, response: products.ListProductsResponse) -> products.ListProductsResponse:
         """Post-rpc interceptor for list_products
 
         DEPRECATED. Please use the `post_list_products_with_metadata`
@@ -166,9 +158,7 @@ class ProductsServiceRestInterceptor:
         return response
 
     def post_list_products_with_metadata(
-        self,
-        response: products.ListProductsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: products.ListProductsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[products.ListProductsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_products
 
@@ -264,30 +254,18 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ProductsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetProduct(
-        _BaseProductsServiceRestTransport._BaseGetProduct, ProductsServiceRestStub
-    ):
+    class _GetProduct(_BaseProductsServiceRestTransport._BaseGetProduct, ProductsServiceRestStub):
         def __hash__(self):
             return hash("ProductsServiceRestTransport.GetProduct")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -343,26 +321,16 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductsServiceRestTransport._BaseGetProduct._get_http_options()
-            )
+            http_options = _BaseProductsServiceRestTransport._BaseGetProduct._get_http_options()
 
             request, metadata = self._interceptor.pre_get_product(request, metadata)
-            transcoded_request = _BaseProductsServiceRestTransport._BaseGetProduct._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductsServiceRestTransport._BaseGetProduct._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductsServiceRestTransport._BaseGetProduct._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductsServiceRestTransport._BaseGetProduct._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -386,12 +354,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             # Send the request
             response = ProductsServiceRestTransport._GetProduct._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -407,12 +370,8 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             resp = self._interceptor.post_get_product(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_product_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_product_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = products.Product.to_json(response)
                 except:
@@ -433,22 +392,12 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
                 )
             return resp
 
-    class _ListProducts(
-        _BaseProductsServiceRestTransport._BaseListProducts, ProductsServiceRestStub
-    ):
+    class _ListProducts(_BaseProductsServiceRestTransport._BaseListProducts, ProductsServiceRestStub):
         def __hash__(self):
             return hash("ProductsServiceRestTransport.ListProducts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -490,26 +439,16 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseProductsServiceRestTransport._BaseListProducts._get_http_options()
-            )
+            http_options = _BaseProductsServiceRestTransport._BaseListProducts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_products(request, metadata)
-            transcoded_request = _BaseProductsServiceRestTransport._BaseListProducts._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseProductsServiceRestTransport._BaseListProducts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseProductsServiceRestTransport._BaseListProducts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseProductsServiceRestTransport._BaseListProducts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -533,12 +472,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             # Send the request
             response = ProductsServiceRestTransport._ListProducts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -554,12 +488,8 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
 
             resp = self._interceptor.post_list_products(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_products_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_products_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = products.ListProductsResponse.to_json(response)
                 except:
@@ -587,9 +517,7 @@ class ProductsServiceRestTransport(_BaseProductsServiceRestTransport):
         return self._GetProduct(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_products(
-        self,
-    ) -> Callable[[products.ListProductsRequest], products.ListProductsResponse]:
+    def list_products(self) -> Callable[[products.ListProductsRequest], products.ListProductsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListProducts(self._session, self._host, self._interceptor)  # type: ignore

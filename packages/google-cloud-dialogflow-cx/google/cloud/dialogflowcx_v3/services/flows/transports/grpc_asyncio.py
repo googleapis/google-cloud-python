@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,17 +326,13 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_flow(
-        self,
-    ) -> Callable[[gcdc_flow.CreateFlowRequest], Awaitable[gcdc_flow.Flow]]:
+    def create_flow(self) -> Callable[[gcdc_flow.CreateFlowRequest], Awaitable[gcdc_flow.Flow]]:
         r"""Return a callable for the create flow method over gRPC.
 
         Creates a flow in the specified agent.
@@ -381,9 +360,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["create_flow"]
 
     @property
-    def delete_flow(
-        self,
-    ) -> Callable[[flow.DeleteFlowRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_flow(self) -> Callable[[flow.DeleteFlowRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete flow method over gRPC.
 
         Deletes a specified flow.
@@ -407,9 +384,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["delete_flow"]
 
     @property
-    def list_flows(
-        self,
-    ) -> Callable[[flow.ListFlowsRequest], Awaitable[flow.ListFlowsResponse]]:
+    def list_flows(self) -> Callable[[flow.ListFlowsRequest], Awaitable[flow.ListFlowsResponse]]:
         r"""Return a callable for the list flows method over gRPC.
 
         Returns the list of all flows in the specified agent.
@@ -457,9 +432,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["get_flow"]
 
     @property
-    def update_flow(
-        self,
-    ) -> Callable[[gcdc_flow.UpdateFlowRequest], Awaitable[gcdc_flow.Flow]]:
+    def update_flow(self) -> Callable[[gcdc_flow.UpdateFlowRequest], Awaitable[gcdc_flow.Flow]]:
         r"""Return a callable for the update flow method over gRPC.
 
         Updates the specified flow.
@@ -487,9 +460,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["update_flow"]
 
     @property
-    def train_flow(
-        self,
-    ) -> Callable[[flow.TrainFlowRequest], Awaitable[operations_pb2.Operation]]:
+    def train_flow(self) -> Callable[[flow.TrainFlowRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the train flow method over gRPC.
 
         Trains the specified flow. Note that only the flow in 'draft'
@@ -528,9 +499,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["train_flow"]
 
     @property
-    def validate_flow(
-        self,
-    ) -> Callable[[flow.ValidateFlowRequest], Awaitable[flow.FlowValidationResult]]:
+    def validate_flow(self) -> Callable[[flow.ValidateFlowRequest], Awaitable[flow.FlowValidationResult]]:
         r"""Return a callable for the validate flow method over gRPC.
 
         Validates the specified flow and creates or updates
@@ -557,11 +526,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["validate_flow"]
 
     @property
-    def get_flow_validation_result(
-        self,
-    ) -> Callable[
-        [flow.GetFlowValidationResultRequest], Awaitable[flow.FlowValidationResult]
-    ]:
+    def get_flow_validation_result(self) -> Callable[[flow.GetFlowValidationResultRequest], Awaitable[flow.FlowValidationResult]]:
         r"""Return a callable for the get flow validation result method over gRPC.
 
         Gets the latest flow validation result. Flow
@@ -578,9 +543,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_flow_validation_result" not in self._stubs:
-            self._stubs[
-                "get_flow_validation_result"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_flow_validation_result"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3.Flows/GetFlowValidationResult",
                 request_serializer=flow.GetFlowValidationResultRequest.serialize,
                 response_deserializer=flow.FlowValidationResult.deserialize,
@@ -588,9 +551,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["get_flow_validation_result"]
 
     @property
-    def import_flow(
-        self,
-    ) -> Callable[[flow.ImportFlowRequest], Awaitable[operations_pb2.Operation]]:
+    def import_flow(self) -> Callable[[flow.ImportFlowRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import flow method over gRPC.
 
         Imports the specified flow to the specified agent from a binary
@@ -629,9 +590,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
         return self._stubs["import_flow"]
 
     @property
-    def export_flow(
-        self,
-    ) -> Callable[[flow.ExportFlowRequest], Awaitable[operations_pb2.Operation]]:
+    def export_flow(self) -> Callable[[flow.ExportFlowRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export flow method over gRPC.
 
         Exports the specified flow to a binary file.
@@ -796,9 +755,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -815,9 +772,7 @@ class FlowsGrpcAsyncIOTransport(FlowsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

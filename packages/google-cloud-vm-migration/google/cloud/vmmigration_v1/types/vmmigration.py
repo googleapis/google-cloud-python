@@ -819,13 +819,11 @@ class MigratingVm(proto.Message):
         oneof="target_vm_defaults",
         message="ComputeEngineTargetDefaults",
     )
-    compute_engine_disks_target_defaults: "ComputeEngineDisksTargetDefaults" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=34,
-            oneof="target_vm_defaults",
-            message="ComputeEngineDisksTargetDefaults",
-        )
+    compute_engine_disks_target_defaults: "ComputeEngineDisksTargetDefaults" = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        oneof="target_vm_defaults",
+        message="ComputeEngineDisksTargetDefaults",
     )
     vmware_source_vm_details: "VmwareSourceVmDetails" = proto.Field(
         proto.MESSAGE,
@@ -1046,13 +1044,11 @@ class CloneJob(proto.Message):
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
     )
-    compute_engine_disks_target_details: "ComputeEngineDisksTargetDetails" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=25,
-            oneof="target_vm_details",
-            message="ComputeEngineDisksTargetDetails",
-        )
+    compute_engine_disks_target_details: "ComputeEngineDisksTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        oneof="target_vm_details",
+        message="ComputeEngineDisksTargetDetails",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -1251,13 +1247,11 @@ class CutoverJob(proto.Message):
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
     )
-    compute_engine_disks_target_details: "ComputeEngineDisksTargetDetails" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=20,
-            oneof="target_vm_details",
-            message="ComputeEngineDisksTargetDetails",
-        )
+    compute_engine_disks_target_details: "ComputeEngineDisksTargetDetails" = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        oneof="target_vm_details",
+        message="ComputeEngineDisksTargetDetails",
     )
     create_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,

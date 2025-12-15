@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionTargetHttpProxiesTransport
-from .rest import (
-    RegionTargetHttpProxiesRestInterceptor,
-    RegionTargetHttpProxiesRestTransport,
-)
+from .rest import RegionTargetHttpProxiesRestInterceptor, RegionTargetHttpProxiesRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[RegionTargetHttpProxiesTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[RegionTargetHttpProxiesTransport]]
 _transport_registry["rest"] = RegionTargetHttpProxiesRestTransport
 
 __all__ = (

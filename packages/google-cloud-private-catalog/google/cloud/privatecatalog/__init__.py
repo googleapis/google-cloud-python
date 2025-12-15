@@ -18,12 +18,8 @@ from google.cloud.privatecatalog import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.privatecatalog_v1beta1.services.private_catalog.async_client import (
-    PrivateCatalogAsyncClient,
-)
-from google.cloud.privatecatalog_v1beta1.services.private_catalog.client import (
-    PrivateCatalogClient,
-)
+from google.cloud.privatecatalog_v1beta1.services.private_catalog.async_client import PrivateCatalogAsyncClient
+from google.cloud.privatecatalog_v1beta1.services.private_catalog.client import PrivateCatalogClient
 from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
     AssetReference,
     Catalog,

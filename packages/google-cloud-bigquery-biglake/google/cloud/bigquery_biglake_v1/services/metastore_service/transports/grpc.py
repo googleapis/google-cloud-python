@@ -44,9 +44,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -56,10 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -78,11 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -226,18 +217,14 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -271,9 +258,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -332,9 +317,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_catalog(
-        self,
-    ) -> Callable[[metastore.CreateCatalogRequest], metastore.Catalog]:
+    def create_catalog(self) -> Callable[[metastore.CreateCatalogRequest], metastore.Catalog]:
         r"""Return a callable for the create catalog method over gRPC.
 
         Creates a new catalog.
@@ -358,9 +341,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["create_catalog"]
 
     @property
-    def delete_catalog(
-        self,
-    ) -> Callable[[metastore.DeleteCatalogRequest], metastore.Catalog]:
+    def delete_catalog(self) -> Callable[[metastore.DeleteCatalogRequest], metastore.Catalog]:
         r"""Return a callable for the delete catalog method over gRPC.
 
         Deletes an existing catalog specified by the catalog
@@ -409,9 +390,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["get_catalog"]
 
     @property
-    def list_catalogs(
-        self,
-    ) -> Callable[[metastore.ListCatalogsRequest], metastore.ListCatalogsResponse]:
+    def list_catalogs(self) -> Callable[[metastore.ListCatalogsRequest], metastore.ListCatalogsResponse]:
         r"""Return a callable for the list catalogs method over gRPC.
 
         List all catalogs in a specified project.
@@ -435,9 +414,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["list_catalogs"]
 
     @property
-    def create_database(
-        self,
-    ) -> Callable[[metastore.CreateDatabaseRequest], metastore.Database]:
+    def create_database(self) -> Callable[[metastore.CreateDatabaseRequest], metastore.Database]:
         r"""Return a callable for the create database method over gRPC.
 
         Creates a new database.
@@ -461,9 +438,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["create_database"]
 
     @property
-    def delete_database(
-        self,
-    ) -> Callable[[metastore.DeleteDatabaseRequest], metastore.Database]:
+    def delete_database(self) -> Callable[[metastore.DeleteDatabaseRequest], metastore.Database]:
         r"""Return a callable for the delete database method over gRPC.
 
         Deletes an existing database specified by the
@@ -488,9 +463,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["delete_database"]
 
     @property
-    def update_database(
-        self,
-    ) -> Callable[[metastore.UpdateDatabaseRequest], metastore.Database]:
+    def update_database(self) -> Callable[[metastore.UpdateDatabaseRequest], metastore.Database]:
         r"""Return a callable for the update database method over gRPC.
 
         Updates an existing database specified by the
@@ -515,9 +488,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["update_database"]
 
     @property
-    def get_database(
-        self,
-    ) -> Callable[[metastore.GetDatabaseRequest], metastore.Database]:
+    def get_database(self) -> Callable[[metastore.GetDatabaseRequest], metastore.Database]:
         r"""Return a callable for the get database method over gRPC.
 
         Gets the database specified by the resource name.
@@ -541,9 +512,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["get_database"]
 
     @property
-    def list_databases(
-        self,
-    ) -> Callable[[metastore.ListDatabasesRequest], metastore.ListDatabasesResponse]:
+    def list_databases(self) -> Callable[[metastore.ListDatabasesRequest], metastore.ListDatabasesResponse]:
         r"""Return a callable for the list databases method over gRPC.
 
         List all databases in a specified catalog.
@@ -687,9 +656,7 @@ class MetastoreServiceGrpcTransport(MetastoreServiceTransport):
         return self._stubs["get_table"]
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[[metastore.ListTablesRequest], metastore.ListTablesResponse]:
+    def list_tables(self) -> Callable[[metastore.ListTablesRequest], metastore.ListTablesResponse]:
         r"""Return a callable for the list tables method over gRPC.
 
         List all tables in a specified database.

@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import RegionSnapshotSettingsTransport
-from .rest import (
-    RegionSnapshotSettingsRestInterceptor,
-    RegionSnapshotSettingsRestTransport,
-)
+from .rest import RegionSnapshotSettingsRestInterceptor, RegionSnapshotSettingsRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[RegionSnapshotSettingsTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[RegionSnapshotSettingsTransport]]
 _transport_registry["rest"] = RegionSnapshotSettingsRestTransport
 
 __all__ = (

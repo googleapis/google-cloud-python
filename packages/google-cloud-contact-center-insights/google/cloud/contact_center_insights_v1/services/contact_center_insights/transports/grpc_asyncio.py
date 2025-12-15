@@ -35,10 +35,7 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.contact_center_insights_v1.types import (
-    contact_center_insights,
-    resources,
-)
+from google.cloud.contact_center_insights_v1.types import contact_center_insights, resources
 
 from .base import DEFAULT_CLIENT_INFO, ContactCenterInsightsTransport
 from .grpc import ContactCenterInsightsGrpcTransport
@@ -53,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -69,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -91,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -275,18 +261,14 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -322,9 +304,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -347,20 +327,13 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateConversationRequest],
-        Awaitable[resources.Conversation],
-    ]:
+    def create_conversation(self) -> Callable[[contact_center_insights.CreateConversationRequest], Awaitable[resources.Conversation]]:
         r"""Return a callable for the create conversation method over gRPC.
 
         Creates a conversation. Note that this method does not support
@@ -386,12 +359,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_conversation"]
 
     @property
-    def upload_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UploadConversationRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def upload_conversation(self) -> Callable[[contact_center_insights.UploadConversationRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the upload conversation method over gRPC.
 
         Create a long-running conversation upload operation. This method
@@ -417,12 +385,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["upload_conversation"]
 
     @property
-    def update_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateConversationRequest],
-        Awaitable[resources.Conversation],
-    ]:
+    def update_conversation(self) -> Callable[[contact_center_insights.UpdateConversationRequest], Awaitable[resources.Conversation]]:
         r"""Return a callable for the update conversation method over gRPC.
 
         Updates a conversation.
@@ -446,12 +409,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_conversation"]
 
     @property
-    def get_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetConversationRequest],
-        Awaitable[resources.Conversation],
-    ]:
+    def get_conversation(self) -> Callable[[contact_center_insights.GetConversationRequest], Awaitable[resources.Conversation]]:
         r"""Return a callable for the get conversation method over gRPC.
 
         Gets a conversation.
@@ -477,10 +435,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_conversations(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListConversationsRequest],
-        Awaitable[contact_center_insights.ListConversationsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListConversationsRequest], Awaitable[contact_center_insights.ListConversationsResponse]]:
         r"""Return a callable for the list conversations method over gRPC.
 
         Lists conversations.
@@ -504,11 +459,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_conversations"]
 
     @property
-    def delete_conversation(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteConversationRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_conversation(self) -> Callable[[contact_center_insights.DeleteConversationRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete conversation method over gRPC.
 
         Deletes a conversation.
@@ -532,12 +483,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_conversation"]
 
     @property
-    def create_analysis(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateAnalysisRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_analysis(self) -> Callable[[contact_center_insights.CreateAnalysisRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create analysis method over gRPC.
 
         Creates an analysis. The long running operation is
@@ -562,11 +508,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_analysis"]
 
     @property
-    def get_analysis(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetAnalysisRequest], Awaitable[resources.Analysis]
-    ]:
+    def get_analysis(self) -> Callable[[contact_center_insights.GetAnalysisRequest], Awaitable[resources.Analysis]]:
         r"""Return a callable for the get analysis method over gRPC.
 
         Gets an analysis.
@@ -590,12 +532,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_analysis"]
 
     @property
-    def list_analyses(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListAnalysesRequest],
-        Awaitable[contact_center_insights.ListAnalysesResponse],
-    ]:
+    def list_analyses(self) -> Callable[[contact_center_insights.ListAnalysesRequest], Awaitable[contact_center_insights.ListAnalysesResponse]]:
         r"""Return a callable for the list analyses method over gRPC.
 
         Lists analyses.
@@ -619,11 +556,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_analyses"]
 
     @property
-    def delete_analysis(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteAnalysisRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_analysis(self) -> Callable[[contact_center_insights.DeleteAnalysisRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete analysis method over gRPC.
 
         Deletes an analysis.
@@ -647,12 +580,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_analysis"]
 
     @property
-    def bulk_analyze_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkAnalyzeConversationsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def bulk_analyze_conversations(self) -> Callable[[contact_center_insights.BulkAnalyzeConversationsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the bulk analyze conversations method over gRPC.
 
         Analyzes multiple conversations in a single request.
@@ -668,9 +596,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "bulk_analyze_conversations" not in self._stubs:
-            self._stubs[
-                "bulk_analyze_conversations"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["bulk_analyze_conversations"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkAnalyzeConversations",
                 request_serializer=contact_center_insights.BulkAnalyzeConversationsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -678,12 +604,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["bulk_analyze_conversations"]
 
     @property
-    def bulk_delete_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkDeleteConversationsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def bulk_delete_conversations(self) -> Callable[[contact_center_insights.BulkDeleteConversationsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the bulk delete conversations method over gRPC.
 
         Deletes multiple conversations in a single request.
@@ -707,12 +628,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["bulk_delete_conversations"]
 
     @property
-    def ingest_conversations(
-        self,
-    ) -> Callable[
-        [contact_center_insights.IngestConversationsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def ingest_conversations(self) -> Callable[[contact_center_insights.IngestConversationsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the ingest conversations method over gRPC.
 
         Imports conversations and processes them according to
@@ -737,12 +653,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["ingest_conversations"]
 
     @property
-    def export_insights_data(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ExportInsightsDataRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def export_insights_data(self) -> Callable[[contact_center_insights.ExportInsightsDataRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export insights data method over gRPC.
 
         Export insights data to a destination defined in the
@@ -767,12 +678,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["export_insights_data"]
 
     @property
-    def create_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateIssueModelRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def create_issue_model(self) -> Callable[[contact_center_insights.CreateIssueModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create issue model method over gRPC.
 
         Creates an issue model.
@@ -796,12 +702,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_issue_model"]
 
     @property
-    def update_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateIssueModelRequest],
-        Awaitable[resources.IssueModel],
-    ]:
+    def update_issue_model(self) -> Callable[[contact_center_insights.UpdateIssueModelRequest], Awaitable[resources.IssueModel]]:
         r"""Return a callable for the update issue model method over gRPC.
 
         Updates an issue model.
@@ -825,11 +726,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_issue_model"]
 
     @property
-    def get_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetIssueModelRequest], Awaitable[resources.IssueModel]
-    ]:
+    def get_issue_model(self) -> Callable[[contact_center_insights.GetIssueModelRequest], Awaitable[resources.IssueModel]]:
         r"""Return a callable for the get issue model method over gRPC.
 
         Gets an issue model.
@@ -855,10 +752,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_issue_models(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListIssueModelsRequest],
-        Awaitable[contact_center_insights.ListIssueModelsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListIssueModelsRequest], Awaitable[contact_center_insights.ListIssueModelsResponse]]:
         r"""Return a callable for the list issue models method over gRPC.
 
         Lists issue models.
@@ -882,12 +776,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_issue_models"]
 
     @property
-    def delete_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteIssueModelRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def delete_issue_model(self) -> Callable[[contact_center_insights.DeleteIssueModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete issue model method over gRPC.
 
         Deletes an issue model.
@@ -911,12 +800,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_issue_model"]
 
     @property
-    def deploy_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeployIssueModelRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def deploy_issue_model(self) -> Callable[[contact_center_insights.DeployIssueModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the deploy issue model method over gRPC.
 
         Deploys an issue model. Returns an error if a model
@@ -942,12 +826,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["deploy_issue_model"]
 
     @property
-    def undeploy_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UndeployIssueModelRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def undeploy_issue_model(self) -> Callable[[contact_center_insights.UndeployIssueModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the undeploy issue model method over gRPC.
 
         Undeploys an issue model.
@@ -973,12 +852,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["undeploy_issue_model"]
 
     @property
-    def export_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ExportIssueModelRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def export_issue_model(self) -> Callable[[contact_center_insights.ExportIssueModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the export issue model method over gRPC.
 
         Exports an issue model to the provided destination.
@@ -1002,12 +876,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["export_issue_model"]
 
     @property
-    def import_issue_model(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ImportIssueModelRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def import_issue_model(self) -> Callable[[contact_center_insights.ImportIssueModelRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the import issue model method over gRPC.
 
         Imports an issue model from a Cloud Storage bucket.
@@ -1031,11 +900,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["import_issue_model"]
 
     @property
-    def get_issue(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetIssueRequest], Awaitable[resources.Issue]
-    ]:
+    def get_issue(self) -> Callable[[contact_center_insights.GetIssueRequest], Awaitable[resources.Issue]]:
         r"""Return a callable for the get issue method over gRPC.
 
         Gets an issue.
@@ -1059,12 +924,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_issue"]
 
     @property
-    def list_issues(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListIssuesRequest],
-        Awaitable[contact_center_insights.ListIssuesResponse],
-    ]:
+    def list_issues(self) -> Callable[[contact_center_insights.ListIssuesRequest], Awaitable[contact_center_insights.ListIssuesResponse]]:
         r"""Return a callable for the list issues method over gRPC.
 
         Lists issues.
@@ -1088,11 +948,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_issues"]
 
     @property
-    def update_issue(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateIssueRequest], Awaitable[resources.Issue]
-    ]:
+    def update_issue(self) -> Callable[[contact_center_insights.UpdateIssueRequest], Awaitable[resources.Issue]]:
         r"""Return a callable for the update issue method over gRPC.
 
         Updates an issue.
@@ -1116,11 +972,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_issue"]
 
     @property
-    def delete_issue(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteIssueRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_issue(self) -> Callable[[contact_center_insights.DeleteIssueRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete issue method over gRPC.
 
         Deletes an issue.
@@ -1146,10 +998,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def calculate_issue_model_stats(
         self,
-    ) -> Callable[
-        [contact_center_insights.CalculateIssueModelStatsRequest],
-        Awaitable[contact_center_insights.CalculateIssueModelStatsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.CalculateIssueModelStatsRequest], Awaitable[contact_center_insights.CalculateIssueModelStatsResponse]]:
         r"""Return a callable for the calculate issue model stats method over gRPC.
 
         Gets an issue model's statistics.
@@ -1165,9 +1014,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "calculate_issue_model_stats" not in self._stubs:
-            self._stubs[
-                "calculate_issue_model_stats"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["calculate_issue_model_stats"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CalculateIssueModelStats",
                 request_serializer=contact_center_insights.CalculateIssueModelStatsRequest.serialize,
                 response_deserializer=contact_center_insights.CalculateIssueModelStatsResponse.deserialize,
@@ -1175,12 +1022,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["calculate_issue_model_stats"]
 
     @property
-    def create_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreatePhraseMatcherRequest],
-        Awaitable[resources.PhraseMatcher],
-    ]:
+    def create_phrase_matcher(self) -> Callable[[contact_center_insights.CreatePhraseMatcherRequest], Awaitable[resources.PhraseMatcher]]:
         r"""Return a callable for the create phrase matcher method over gRPC.
 
         Creates a phrase matcher.
@@ -1204,12 +1046,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_phrase_matcher"]
 
     @property
-    def get_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetPhraseMatcherRequest],
-        Awaitable[resources.PhraseMatcher],
-    ]:
+    def get_phrase_matcher(self) -> Callable[[contact_center_insights.GetPhraseMatcherRequest], Awaitable[resources.PhraseMatcher]]:
         r"""Return a callable for the get phrase matcher method over gRPC.
 
         Gets a phrase matcher.
@@ -1235,10 +1072,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_phrase_matchers(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListPhraseMatchersRequest],
-        Awaitable[contact_center_insights.ListPhraseMatchersResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListPhraseMatchersRequest], Awaitable[contact_center_insights.ListPhraseMatchersResponse]]:
         r"""Return a callable for the list phrase matchers method over gRPC.
 
         Lists phrase matchers.
@@ -1262,11 +1096,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_phrase_matchers"]
 
     @property
-    def delete_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeletePhraseMatcherRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_phrase_matcher(self) -> Callable[[contact_center_insights.DeletePhraseMatcherRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete phrase matcher method over gRPC.
 
         Deletes a phrase matcher.
@@ -1290,12 +1120,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_phrase_matcher"]
 
     @property
-    def update_phrase_matcher(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdatePhraseMatcherRequest],
-        Awaitable[resources.PhraseMatcher],
-    ]:
+    def update_phrase_matcher(self) -> Callable[[contact_center_insights.UpdatePhraseMatcherRequest], Awaitable[resources.PhraseMatcher]]:
         r"""Return a callable for the update phrase matcher method over gRPC.
 
         Updates a phrase matcher.
@@ -1319,12 +1144,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_phrase_matcher"]
 
     @property
-    def calculate_stats(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CalculateStatsRequest],
-        Awaitable[contact_center_insights.CalculateStatsResponse],
-    ]:
+    def calculate_stats(self) -> Callable[[contact_center_insights.CalculateStatsRequest], Awaitable[contact_center_insights.CalculateStatsResponse]]:
         r"""Return a callable for the calculate stats method over gRPC.
 
         Gets conversation statistics.
@@ -1348,11 +1168,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["calculate_stats"]
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetSettingsRequest], Awaitable[resources.Settings]
-    ]:
+    def get_settings(self) -> Callable[[contact_center_insights.GetSettingsRequest], Awaitable[resources.Settings]]:
         r"""Return a callable for the get settings method over gRPC.
 
         Gets project-level settings.
@@ -1376,11 +1192,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_settings"]
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateSettingsRequest], Awaitable[resources.Settings]
-    ]:
+    def update_settings(self) -> Callable[[contact_center_insights.UpdateSettingsRequest], Awaitable[resources.Settings]]:
         r"""Return a callable for the update settings method over gRPC.
 
         Updates project-level settings.
@@ -1404,12 +1216,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_settings"]
 
     @property
-    def create_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateAnalysisRuleRequest],
-        Awaitable[resources.AnalysisRule],
-    ]:
+    def create_analysis_rule(self) -> Callable[[contact_center_insights.CreateAnalysisRuleRequest], Awaitable[resources.AnalysisRule]]:
         r"""Return a callable for the create analysis rule method over gRPC.
 
         Creates a analysis rule.
@@ -1433,12 +1240,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_analysis_rule"]
 
     @property
-    def get_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetAnalysisRuleRequest],
-        Awaitable[resources.AnalysisRule],
-    ]:
+    def get_analysis_rule(self) -> Callable[[contact_center_insights.GetAnalysisRuleRequest], Awaitable[resources.AnalysisRule]]:
         r"""Return a callable for the get analysis rule method over gRPC.
 
         Get a analysis rule.
@@ -1464,10 +1266,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_analysis_rules(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListAnalysisRulesRequest],
-        Awaitable[contact_center_insights.ListAnalysisRulesResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListAnalysisRulesRequest], Awaitable[contact_center_insights.ListAnalysisRulesResponse]]:
         r"""Return a callable for the list analysis rules method over gRPC.
 
         Lists analysis rules.
@@ -1491,12 +1290,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_analysis_rules"]
 
     @property
-    def update_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateAnalysisRuleRequest],
-        Awaitable[resources.AnalysisRule],
-    ]:
+    def update_analysis_rule(self) -> Callable[[contact_center_insights.UpdateAnalysisRuleRequest], Awaitable[resources.AnalysisRule]]:
         r"""Return a callable for the update analysis rule method over gRPC.
 
         Updates a analysis rule.
@@ -1520,11 +1314,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_analysis_rule"]
 
     @property
-    def delete_analysis_rule(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteAnalysisRuleRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_analysis_rule(self) -> Callable[[contact_center_insights.DeleteAnalysisRuleRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete analysis rule method over gRPC.
 
         Deletes a analysis rule.
@@ -1548,12 +1338,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_analysis_rule"]
 
     @property
-    def get_encryption_spec(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetEncryptionSpecRequest],
-        Awaitable[resources.EncryptionSpec],
-    ]:
+    def get_encryption_spec(self) -> Callable[[contact_center_insights.GetEncryptionSpecRequest], Awaitable[resources.EncryptionSpec]]:
         r"""Return a callable for the get encryption spec method over gRPC.
 
         Gets location-level encryption key specification.
@@ -1577,12 +1362,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_encryption_spec"]
 
     @property
-    def initialize_encryption_spec(
-        self,
-    ) -> Callable[
-        [contact_center_insights.InitializeEncryptionSpecRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def initialize_encryption_spec(self) -> Callable[[contact_center_insights.InitializeEncryptionSpecRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the initialize encryption spec method over gRPC.
 
         Initializes a location-level encryption key
@@ -1604,9 +1384,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "initialize_encryption_spec" not in self._stubs:
-            self._stubs[
-                "initialize_encryption_spec"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["initialize_encryption_spec"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/InitializeEncryptionSpec",
                 request_serializer=contact_center_insights.InitializeEncryptionSpecRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1614,11 +1392,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["initialize_encryption_spec"]
 
     @property
-    def create_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateViewRequest], Awaitable[resources.View]
-    ]:
+    def create_view(self) -> Callable[[contact_center_insights.CreateViewRequest], Awaitable[resources.View]]:
         r"""Return a callable for the create view method over gRPC.
 
         Creates a view.
@@ -1642,9 +1416,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_view"]
 
     @property
-    def get_view(
-        self,
-    ) -> Callable[[contact_center_insights.GetViewRequest], Awaitable[resources.View]]:
+    def get_view(self) -> Callable[[contact_center_insights.GetViewRequest], Awaitable[resources.View]]:
         r"""Return a callable for the get view method over gRPC.
 
         Gets a view.
@@ -1668,12 +1440,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_view"]
 
     @property
-    def list_views(
-        self,
-    ) -> Callable[
-        [contact_center_insights.ListViewsRequest],
-        Awaitable[contact_center_insights.ListViewsResponse],
-    ]:
+    def list_views(self) -> Callable[[contact_center_insights.ListViewsRequest], Awaitable[contact_center_insights.ListViewsResponse]]:
         r"""Return a callable for the list views method over gRPC.
 
         Lists views.
@@ -1697,11 +1464,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_views"]
 
     @property
-    def update_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateViewRequest], Awaitable[resources.View]
-    ]:
+    def update_view(self) -> Callable[[contact_center_insights.UpdateViewRequest], Awaitable[resources.View]]:
         r"""Return a callable for the update view method over gRPC.
 
         Updates a view.
@@ -1725,11 +1488,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_view"]
 
     @property
-    def delete_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteViewRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_view(self) -> Callable[[contact_center_insights.DeleteViewRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete view method over gRPC.
 
         Deletes a view.
@@ -1753,12 +1512,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["delete_view"]
 
     @property
-    def query_metrics(
-        self,
-    ) -> Callable[
-        [contact_center_insights.QueryMetricsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def query_metrics(self) -> Callable[[contact_center_insights.QueryMetricsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the query metrics method over gRPC.
 
         Query metrics.
@@ -1782,12 +1536,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["query_metrics"]
 
     @property
-    def create_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaQuestionRequest],
-        Awaitable[resources.QaQuestion],
-    ]:
+    def create_qa_question(self) -> Callable[[contact_center_insights.CreateQaQuestionRequest], Awaitable[resources.QaQuestion]]:
         r"""Return a callable for the create qa question method over gRPC.
 
         Create a QaQuestion.
@@ -1811,11 +1560,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_qa_question"]
 
     @property
-    def get_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetQaQuestionRequest], Awaitable[resources.QaQuestion]
-    ]:
+    def get_qa_question(self) -> Callable[[contact_center_insights.GetQaQuestionRequest], Awaitable[resources.QaQuestion]]:
         r"""Return a callable for the get qa question method over gRPC.
 
         Gets a QaQuestion.
@@ -1839,12 +1584,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_qa_question"]
 
     @property
-    def update_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateQaQuestionRequest],
-        Awaitable[resources.QaQuestion],
-    ]:
+    def update_qa_question(self) -> Callable[[contact_center_insights.UpdateQaQuestionRequest], Awaitable[resources.QaQuestion]]:
         r"""Return a callable for the update qa question method over gRPC.
 
         Updates a QaQuestion.
@@ -1868,11 +1608,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_qa_question"]
 
     @property
-    def delete_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaQuestionRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_qa_question(self) -> Callable[[contact_center_insights.DeleteQaQuestionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete qa question method over gRPC.
 
         Deletes a QaQuestion.
@@ -1898,10 +1634,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_qa_questions(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListQaQuestionsRequest],
-        Awaitable[contact_center_insights.ListQaQuestionsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListQaQuestionsRequest], Awaitable[contact_center_insights.ListQaQuestionsResponse]]:
         r"""Return a callable for the list qa questions method over gRPC.
 
         Lists QaQuestions.
@@ -1925,12 +1658,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_qa_questions"]
 
     @property
-    def create_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaScorecardRequest],
-        Awaitable[resources.QaScorecard],
-    ]:
+    def create_qa_scorecard(self) -> Callable[[contact_center_insights.CreateQaScorecardRequest], Awaitable[resources.QaScorecard]]:
         r"""Return a callable for the create qa scorecard method over gRPC.
 
         Create a QaScorecard.
@@ -1954,12 +1682,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["create_qa_scorecard"]
 
     @property
-    def get_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetQaScorecardRequest],
-        Awaitable[resources.QaScorecard],
-    ]:
+    def get_qa_scorecard(self) -> Callable[[contact_center_insights.GetQaScorecardRequest], Awaitable[resources.QaScorecard]]:
         r"""Return a callable for the get qa scorecard method over gRPC.
 
         Gets a QaScorecard.
@@ -1983,12 +1706,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_qa_scorecard"]
 
     @property
-    def update_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateQaScorecardRequest],
-        Awaitable[resources.QaScorecard],
-    ]:
+    def update_qa_scorecard(self) -> Callable[[contact_center_insights.UpdateQaScorecardRequest], Awaitable[resources.QaScorecard]]:
         r"""Return a callable for the update qa scorecard method over gRPC.
 
         Updates a QaScorecard.
@@ -2012,11 +1730,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_qa_scorecard"]
 
     @property
-    def delete_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaScorecardRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_qa_scorecard(self) -> Callable[[contact_center_insights.DeleteQaScorecardRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete qa scorecard method over gRPC.
 
         Deletes a QaScorecard.
@@ -2042,10 +1756,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_qa_scorecards(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListQaScorecardsRequest],
-        Awaitable[contact_center_insights.ListQaScorecardsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListQaScorecardsRequest], Awaitable[contact_center_insights.ListQaScorecardsResponse]]:
         r"""Return a callable for the list qa scorecards method over gRPC.
 
         Lists QaScorecards.
@@ -2071,10 +1782,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def create_qa_scorecard_revision(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaScorecardRevisionRequest],
-        Awaitable[resources.QaScorecardRevision],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateQaScorecardRevisionRequest], Awaitable[resources.QaScorecardRevision]]:
         r"""Return a callable for the create qa scorecard revision method over gRPC.
 
         Creates a QaScorecardRevision.
@@ -2090,9 +1798,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_qa_scorecard_revision" not in self._stubs:
-            self._stubs[
-                "create_qa_scorecard_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_qa_scorecard_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateQaScorecardRevision",
                 request_serializer=contact_center_insights.CreateQaScorecardRevisionRequest.serialize,
                 response_deserializer=resources.QaScorecardRevision.deserialize,
@@ -2102,10 +1808,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def get_qa_scorecard_revision(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetQaScorecardRevisionRequest],
-        Awaitable[resources.QaScorecardRevision],
-    ]:
+    ) -> Callable[[contact_center_insights.GetQaScorecardRevisionRequest], Awaitable[resources.QaScorecardRevision]]:
         r"""Return a callable for the get qa scorecard revision method over gRPC.
 
         Gets a QaScorecardRevision.
@@ -2129,12 +1832,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_qa_scorecard_revision"]
 
     @property
-    def tune_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.TuneQaScorecardRevisionRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def tune_qa_scorecard_revision(self) -> Callable[[contact_center_insights.TuneQaScorecardRevisionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the tune qa scorecard revision method over gRPC.
 
         Fine tune one or more QaModels.
@@ -2150,9 +1848,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "tune_qa_scorecard_revision" not in self._stubs:
-            self._stubs[
-                "tune_qa_scorecard_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["tune_qa_scorecard_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/TuneQaScorecardRevision",
                 request_serializer=contact_center_insights.TuneQaScorecardRevisionRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2162,10 +1858,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def deploy_qa_scorecard_revision(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeployQaScorecardRevisionRequest],
-        Awaitable[resources.QaScorecardRevision],
-    ]:
+    ) -> Callable[[contact_center_insights.DeployQaScorecardRevisionRequest], Awaitable[resources.QaScorecardRevision]]:
         r"""Return a callable for the deploy qa scorecard revision method over gRPC.
 
         Deploy a QaScorecardRevision.
@@ -2181,9 +1874,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "deploy_qa_scorecard_revision" not in self._stubs:
-            self._stubs[
-                "deploy_qa_scorecard_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["deploy_qa_scorecard_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeployQaScorecardRevision",
                 request_serializer=contact_center_insights.DeployQaScorecardRevisionRequest.serialize,
                 response_deserializer=resources.QaScorecardRevision.deserialize,
@@ -2193,10 +1884,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def undeploy_qa_scorecard_revision(
         self,
-    ) -> Callable[
-        [contact_center_insights.UndeployQaScorecardRevisionRequest],
-        Awaitable[resources.QaScorecardRevision],
-    ]:
+    ) -> Callable[[contact_center_insights.UndeployQaScorecardRevisionRequest], Awaitable[resources.QaScorecardRevision]]:
         r"""Return a callable for the undeploy qa scorecard revision method over gRPC.
 
         Undeploy a QaScorecardRevision.
@@ -2212,9 +1900,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "undeploy_qa_scorecard_revision" not in self._stubs:
-            self._stubs[
-                "undeploy_qa_scorecard_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["undeploy_qa_scorecard_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UndeployQaScorecardRevision",
                 request_serializer=contact_center_insights.UndeployQaScorecardRevisionRequest.serialize,
                 response_deserializer=resources.QaScorecardRevision.deserialize,
@@ -2222,12 +1908,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["undeploy_qa_scorecard_revision"]
 
     @property
-    def delete_qa_scorecard_revision(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaScorecardRevisionRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_qa_scorecard_revision(self) -> Callable[[contact_center_insights.DeleteQaScorecardRevisionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete qa scorecard revision method over gRPC.
 
         Deletes a QaScorecardRevision.
@@ -2243,9 +1924,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_qa_scorecard_revision" not in self._stubs:
-            self._stubs[
-                "delete_qa_scorecard_revision"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_qa_scorecard_revision"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteQaScorecardRevision",
                 request_serializer=contact_center_insights.DeleteQaScorecardRevisionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -2255,10 +1934,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_qa_scorecard_revisions(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListQaScorecardRevisionsRequest],
-        Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListQaScorecardRevisionsRequest], Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse]]:
         r"""Return a callable for the list qa scorecard revisions method over gRPC.
 
         Lists all revisions under the parent QaScorecard.
@@ -2274,9 +1950,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_qa_scorecard_revisions" not in self._stubs:
-            self._stubs[
-                "list_qa_scorecard_revisions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_qa_scorecard_revisions"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListQaScorecardRevisions",
                 request_serializer=contact_center_insights.ListQaScorecardRevisionsRequest.serialize,
                 response_deserializer=contact_center_insights.ListQaScorecardRevisionsResponse.deserialize,
@@ -2284,12 +1958,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_qa_scorecard_revisions"]
 
     @property
-    def create_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateFeedbackLabelRequest],
-        Awaitable[resources.FeedbackLabel],
-    ]:
+    def create_feedback_label(self) -> Callable[[contact_center_insights.CreateFeedbackLabelRequest], Awaitable[resources.FeedbackLabel]]:
         r"""Return a callable for the create feedback label method over gRPC.
 
         Create feedback label.
@@ -2315,10 +1984,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListFeedbackLabelsRequest],
-        Awaitable[contact_center_insights.ListFeedbackLabelsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListFeedbackLabelsRequest], Awaitable[contact_center_insights.ListFeedbackLabelsResponse]]:
         r"""Return a callable for the list feedback labels method over gRPC.
 
         List feedback labels.
@@ -2342,12 +2008,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_feedback_labels"]
 
     @property
-    def get_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetFeedbackLabelRequest],
-        Awaitable[resources.FeedbackLabel],
-    ]:
+    def get_feedback_label(self) -> Callable[[contact_center_insights.GetFeedbackLabelRequest], Awaitable[resources.FeedbackLabel]]:
         r"""Return a callable for the get feedback label method over gRPC.
 
         Get feedback label.
@@ -2371,12 +2032,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["get_feedback_label"]
 
     @property
-    def update_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateFeedbackLabelRequest],
-        Awaitable[resources.FeedbackLabel],
-    ]:
+    def update_feedback_label(self) -> Callable[[contact_center_insights.UpdateFeedbackLabelRequest], Awaitable[resources.FeedbackLabel]]:
         r"""Return a callable for the update feedback label method over gRPC.
 
         Update feedback label.
@@ -2400,11 +2056,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["update_feedback_label"]
 
     @property
-    def delete_feedback_label(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteFeedbackLabelRequest], Awaitable[empty_pb2.Empty]
-    ]:
+    def delete_feedback_label(self) -> Callable[[contact_center_insights.DeleteFeedbackLabelRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete feedback label method over gRPC.
 
         Delete feedback label.
@@ -2430,10 +2082,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_all_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.ListAllFeedbackLabelsRequest],
-        Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse],
-    ]:
+    ) -> Callable[[contact_center_insights.ListAllFeedbackLabelsRequest], Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse]]:
         r"""Return a callable for the list all feedback labels method over gRPC.
 
         List all feedback labels by project number.
@@ -2457,12 +2106,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         return self._stubs["list_all_feedback_labels"]
 
     @property
-    def bulk_upload_feedback_labels(
-        self,
-    ) -> Callable[
-        [contact_center_insights.BulkUploadFeedbackLabelsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def bulk_upload_feedback_labels(self) -> Callable[[contact_center_insights.BulkUploadFeedbackLabelsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the bulk upload feedback labels method over gRPC.
 
         Upload feedback labels in bulk.
@@ -2478,9 +2122,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "bulk_upload_feedback_labels" not in self._stubs:
-            self._stubs[
-                "bulk_upload_feedback_labels"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["bulk_upload_feedback_labels"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkUploadFeedbackLabels",
                 request_serializer=contact_center_insights.BulkUploadFeedbackLabelsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2490,10 +2132,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def bulk_download_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.BulkDownloadFeedbackLabelsRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    ) -> Callable[[contact_center_insights.BulkDownloadFeedbackLabelsRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the bulk download feedback labels method over gRPC.
 
         Download feedback labels in bulk.
@@ -2509,9 +2148,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "bulk_download_feedback_labels" not in self._stubs:
-            self._stubs[
-                "bulk_download_feedback_labels"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["bulk_download_feedback_labels"] = self._logged_channel.unary_unary(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkDownloadFeedbackLabels",
                 request_serializer=contact_center_insights.BulkDownloadFeedbackLabelsRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -2957,9 +2594,7 @@ class ContactCenterInsightsGrpcAsyncIOTransport(ContactCenterInsightsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -18,20 +18,10 @@ from google.cloud.bare_metal_solution import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.async_client import (
-    BareMetalSolutionAsyncClient,
-)
-from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.client import (
-    BareMetalSolutionClient,
-)
-from google.cloud.bare_metal_solution_v2.types.baremetalsolution import (
-    OperationMetadata,
-    ResetInstanceResponse,
-)
-from google.cloud.bare_metal_solution_v2.types.common import (
-    VolumePerformanceTier,
-    WorkloadProfile,
-)
+from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.async_client import BareMetalSolutionAsyncClient
+from google.cloud.bare_metal_solution_v2.services.bare_metal_solution.client import BareMetalSolutionClient
+from google.cloud.bare_metal_solution_v2.types.baremetalsolution import OperationMetadata, ResetInstanceResponse
+from google.cloud.bare_metal_solution_v2.types.common import VolumePerformanceTier, WorkloadProfile
 from google.cloud.bare_metal_solution_v2.types.instance import (
     DetachLunRequest,
     DisableInteractiveSerialConsoleRequest,
@@ -51,13 +41,7 @@ from google.cloud.bare_metal_solution_v2.types.instance import (
     StopInstanceResponse,
     UpdateInstanceRequest,
 )
-from google.cloud.bare_metal_solution_v2.types.lun import (
-    EvictLunRequest,
-    GetLunRequest,
-    ListLunsRequest,
-    ListLunsResponse,
-    Lun,
-)
+from google.cloud.bare_metal_solution_v2.types.lun import EvictLunRequest, GetLunRequest, ListLunsRequest, ListLunsResponse, Lun
 from google.cloud.bare_metal_solution_v2.types.network import (
     VRF,
     GetNetworkRequest,
@@ -83,11 +67,7 @@ from google.cloud.bare_metal_solution_v2.types.nfs_share import (
     RenameNfsShareRequest,
     UpdateNfsShareRequest,
 )
-from google.cloud.bare_metal_solution_v2.types.osimage import (
-    ListOSImagesRequest,
-    ListOSImagesResponse,
-    OSImage,
-)
+from google.cloud.bare_metal_solution_v2.types.osimage import ListOSImagesRequest, ListOSImagesResponse, OSImage
 from google.cloud.bare_metal_solution_v2.types.provisioning import (
     CreateProvisioningConfigRequest,
     GetProvisioningConfigRequest,

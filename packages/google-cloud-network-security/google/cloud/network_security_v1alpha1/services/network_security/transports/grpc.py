@@ -32,33 +32,17 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.network_security_v1alpha1.types import (
-    authorization_policy as gcn_authorization_policy,
-)
-from google.cloud.network_security_v1alpha1.types import (
-    authz_policy as gcn_authz_policy,
-)
+from google.cloud.network_security_v1alpha1.types import authorization_policy as gcn_authorization_policy
+from google.cloud.network_security_v1alpha1.types import authz_policy as gcn_authz_policy
 from google.cloud.network_security_v1alpha1.types import backend_authentication_config
-from google.cloud.network_security_v1alpha1.types import (
-    backend_authentication_config as gcn_backend_authentication_config,
-)
-from google.cloud.network_security_v1alpha1.types import (
-    client_tls_policy as gcn_client_tls_policy,
-)
+from google.cloud.network_security_v1alpha1.types import backend_authentication_config as gcn_backend_authentication_config
+from google.cloud.network_security_v1alpha1.types import client_tls_policy as gcn_client_tls_policy
 from google.cloud.network_security_v1alpha1.types import gateway_security_policy
-from google.cloud.network_security_v1alpha1.types import (
-    gateway_security_policy as gcn_gateway_security_policy,
-)
+from google.cloud.network_security_v1alpha1.types import gateway_security_policy as gcn_gateway_security_policy
 from google.cloud.network_security_v1alpha1.types import gateway_security_policy_rule
-from google.cloud.network_security_v1alpha1.types import (
-    gateway_security_policy_rule as gcn_gateway_security_policy_rule,
-)
-from google.cloud.network_security_v1alpha1.types import (
-    server_tls_policy as gcn_server_tls_policy,
-)
-from google.cloud.network_security_v1alpha1.types import (
-    tls_inspection_policy as gcn_tls_inspection_policy,
-)
+from google.cloud.network_security_v1alpha1.types import gateway_security_policy_rule as gcn_gateway_security_policy_rule
+from google.cloud.network_security_v1alpha1.types import server_tls_policy as gcn_server_tls_policy
+from google.cloud.network_security_v1alpha1.types import tls_inspection_policy as gcn_tls_inspection_policy
 from google.cloud.network_security_v1alpha1.types import url_list as gcn_url_list
 from google.cloud.network_security_v1alpha1.types import authorization_policy
 from google.cloud.network_security_v1alpha1.types import authz_policy
@@ -81,9 +65,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -93,10 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -115,11 +94,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -256,18 +231,14 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -301,9 +272,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -370,9 +339,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
@@ -380,10 +347,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def list_authorization_policies(
         self,
-    ) -> Callable[
-        [authorization_policy.ListAuthorizationPoliciesRequest],
-        authorization_policy.ListAuthorizationPoliciesResponse,
-    ]:
+    ) -> Callable[[authorization_policy.ListAuthorizationPoliciesRequest], authorization_policy.ListAuthorizationPoliciesResponse]:
         r"""Return a callable for the list authorization policies method over gRPC.
 
         Lists AuthorizationPolicies in a given project and
@@ -400,9 +364,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_authorization_policies" not in self._stubs:
-            self._stubs[
-                "list_authorization_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_authorization_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/ListAuthorizationPolicies",
                 request_serializer=authorization_policy.ListAuthorizationPoliciesRequest.serialize,
                 response_deserializer=authorization_policy.ListAuthorizationPoliciesResponse.deserialize,
@@ -410,12 +372,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["list_authorization_policies"]
 
     @property
-    def get_authorization_policy(
-        self,
-    ) -> Callable[
-        [authorization_policy.GetAuthorizationPolicyRequest],
-        authorization_policy.AuthorizationPolicy,
-    ]:
+    def get_authorization_policy(self) -> Callable[[authorization_policy.GetAuthorizationPolicyRequest], authorization_policy.AuthorizationPolicy]:
         r"""Return a callable for the get authorization policy method over gRPC.
 
         Gets details of a single AuthorizationPolicy.
@@ -439,12 +396,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_authorization_policy"]
 
     @property
-    def create_authorization_policy(
-        self,
-    ) -> Callable[
-        [gcn_authorization_policy.CreateAuthorizationPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_authorization_policy(self) -> Callable[[gcn_authorization_policy.CreateAuthorizationPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create authorization policy method over gRPC.
 
         Creates a new AuthorizationPolicy in a given project
@@ -461,9 +413,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_authorization_policy" not in self._stubs:
-            self._stubs[
-                "create_authorization_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_authorization_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/CreateAuthorizationPolicy",
                 request_serializer=gcn_authorization_policy.CreateAuthorizationPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -471,12 +421,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_authorization_policy"]
 
     @property
-    def update_authorization_policy(
-        self,
-    ) -> Callable[
-        [gcn_authorization_policy.UpdateAuthorizationPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_authorization_policy(self) -> Callable[[gcn_authorization_policy.UpdateAuthorizationPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update authorization policy method over gRPC.
 
         Updates the parameters of a single
@@ -493,9 +438,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_authorization_policy" not in self._stubs:
-            self._stubs[
-                "update_authorization_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_authorization_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/UpdateAuthorizationPolicy",
                 request_serializer=gcn_authorization_policy.UpdateAuthorizationPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -503,12 +446,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_authorization_policy"]
 
     @property
-    def delete_authorization_policy(
-        self,
-    ) -> Callable[
-        [authorization_policy.DeleteAuthorizationPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_authorization_policy(self) -> Callable[[authorization_policy.DeleteAuthorizationPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete authorization policy method over gRPC.
 
         Deletes a single AuthorizationPolicy.
@@ -524,9 +462,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_authorization_policy" not in self._stubs:
-            self._stubs[
-                "delete_authorization_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_authorization_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/DeleteAuthorizationPolicy",
                 request_serializer=authorization_policy.DeleteAuthorizationPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -557,9 +493,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_backend_authentication_configs" not in self._stubs:
-            self._stubs[
-                "list_backend_authentication_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_backend_authentication_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/ListBackendAuthenticationConfigs",
                 request_serializer=backend_authentication_config.ListBackendAuthenticationConfigsRequest.serialize,
                 response_deserializer=backend_authentication_config.ListBackendAuthenticationConfigsResponse.deserialize,
@@ -569,10 +503,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def get_backend_authentication_config(
         self,
-    ) -> Callable[
-        [backend_authentication_config.GetBackendAuthenticationConfigRequest],
-        backend_authentication_config.BackendAuthenticationConfig,
-    ]:
+    ) -> Callable[[backend_authentication_config.GetBackendAuthenticationConfigRequest], backend_authentication_config.BackendAuthenticationConfig]:
         r"""Return a callable for the get backend authentication
         config method over gRPC.
 
@@ -590,9 +521,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_backend_authentication_config" not in self._stubs:
-            self._stubs[
-                "get_backend_authentication_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_backend_authentication_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/GetBackendAuthenticationConfig",
                 request_serializer=backend_authentication_config.GetBackendAuthenticationConfigRequest.serialize,
                 response_deserializer=backend_authentication_config.BackendAuthenticationConfig.deserialize,
@@ -602,10 +531,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def create_backend_authentication_config(
         self,
-    ) -> Callable[
-        [gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the create backend authentication
         config method over gRPC.
 
@@ -623,9 +549,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_backend_authentication_config" not in self._stubs:
-            self._stubs[
-                "create_backend_authentication_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_backend_authentication_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/CreateBackendAuthenticationConfig",
                 request_serializer=gcn_backend_authentication_config.CreateBackendAuthenticationConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -635,10 +559,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def update_backend_authentication_config(
         self,
-    ) -> Callable[
-        [gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the update backend authentication
         config method over gRPC.
 
@@ -657,9 +578,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_backend_authentication_config" not in self._stubs:
-            self._stubs[
-                "update_backend_authentication_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_backend_authentication_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/UpdateBackendAuthenticationConfig",
                 request_serializer=gcn_backend_authentication_config.UpdateBackendAuthenticationConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -669,10 +588,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def delete_backend_authentication_config(
         self,
-    ) -> Callable[
-        [backend_authentication_config.DeleteBackendAuthenticationConfigRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[backend_authentication_config.DeleteBackendAuthenticationConfigRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete backend authentication
         config method over gRPC.
 
@@ -690,9 +606,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_backend_authentication_config" not in self._stubs:
-            self._stubs[
-                "delete_backend_authentication_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_backend_authentication_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/DeleteBackendAuthenticationConfig",
                 request_serializer=backend_authentication_config.DeleteBackendAuthenticationConfigRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -700,12 +614,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["delete_backend_authentication_config"]
 
     @property
-    def list_server_tls_policies(
-        self,
-    ) -> Callable[
-        [server_tls_policy.ListServerTlsPoliciesRequest],
-        server_tls_policy.ListServerTlsPoliciesResponse,
-    ]:
+    def list_server_tls_policies(self) -> Callable[[server_tls_policy.ListServerTlsPoliciesRequest], server_tls_policy.ListServerTlsPoliciesResponse]:
         r"""Return a callable for the list server tls policies method over gRPC.
 
         Lists ServerTlsPolicies in a given project and
@@ -730,11 +639,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["list_server_tls_policies"]
 
     @property
-    def get_server_tls_policy(
-        self,
-    ) -> Callable[
-        [server_tls_policy.GetServerTlsPolicyRequest], server_tls_policy.ServerTlsPolicy
-    ]:
+    def get_server_tls_policy(self) -> Callable[[server_tls_policy.GetServerTlsPolicyRequest], server_tls_policy.ServerTlsPolicy]:
         r"""Return a callable for the get server tls policy method over gRPC.
 
         Gets details of a single ServerTlsPolicy.
@@ -758,11 +663,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_server_tls_policy"]
 
     @property
-    def create_server_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_server_tls_policy.CreateServerTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_server_tls_policy(self) -> Callable[[gcn_server_tls_policy.CreateServerTlsPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create server tls policy method over gRPC.
 
         Creates a new ServerTlsPolicy in a given project and
@@ -787,11 +688,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_server_tls_policy"]
 
     @property
-    def update_server_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_server_tls_policy.UpdateServerTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_server_tls_policy(self) -> Callable[[gcn_server_tls_policy.UpdateServerTlsPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update server tls policy method over gRPC.
 
         Updates the parameters of a single ServerTlsPolicy.
@@ -815,11 +712,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_server_tls_policy"]
 
     @property
-    def delete_server_tls_policy(
-        self,
-    ) -> Callable[
-        [server_tls_policy.DeleteServerTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def delete_server_tls_policy(self) -> Callable[[server_tls_policy.DeleteServerTlsPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete server tls policy method over gRPC.
 
         Deletes a single ServerTlsPolicy.
@@ -843,12 +736,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["delete_server_tls_policy"]
 
     @property
-    def list_client_tls_policies(
-        self,
-    ) -> Callable[
-        [client_tls_policy.ListClientTlsPoliciesRequest],
-        client_tls_policy.ListClientTlsPoliciesResponse,
-    ]:
+    def list_client_tls_policies(self) -> Callable[[client_tls_policy.ListClientTlsPoliciesRequest], client_tls_policy.ListClientTlsPoliciesResponse]:
         r"""Return a callable for the list client tls policies method over gRPC.
 
         Lists ClientTlsPolicies in a given project and
@@ -873,11 +761,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["list_client_tls_policies"]
 
     @property
-    def get_client_tls_policy(
-        self,
-    ) -> Callable[
-        [client_tls_policy.GetClientTlsPolicyRequest], client_tls_policy.ClientTlsPolicy
-    ]:
+    def get_client_tls_policy(self) -> Callable[[client_tls_policy.GetClientTlsPolicyRequest], client_tls_policy.ClientTlsPolicy]:
         r"""Return a callable for the get client tls policy method over gRPC.
 
         Gets details of a single ClientTlsPolicy.
@@ -901,11 +785,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_client_tls_policy"]
 
     @property
-    def create_client_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_client_tls_policy.CreateClientTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_client_tls_policy(self) -> Callable[[gcn_client_tls_policy.CreateClientTlsPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create client tls policy method over gRPC.
 
         Creates a new ClientTlsPolicy in a given project and
@@ -930,11 +810,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_client_tls_policy"]
 
     @property
-    def update_client_tls_policy(
-        self,
-    ) -> Callable[
-        [gcn_client_tls_policy.UpdateClientTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_client_tls_policy(self) -> Callable[[gcn_client_tls_policy.UpdateClientTlsPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update client tls policy method over gRPC.
 
         Updates the parameters of a single ClientTlsPolicy.
@@ -958,11 +834,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_client_tls_policy"]
 
     @property
-    def delete_client_tls_policy(
-        self,
-    ) -> Callable[
-        [client_tls_policy.DeleteClientTlsPolicyRequest], operations_pb2.Operation
-    ]:
+    def delete_client_tls_policy(self) -> Callable[[client_tls_policy.DeleteClientTlsPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete client tls policy method over gRPC.
 
         Deletes a single ClientTlsPolicy.
@@ -988,10 +860,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def list_gateway_security_policies(
         self,
-    ) -> Callable[
-        [gateway_security_policy.ListGatewaySecurityPoliciesRequest],
-        gateway_security_policy.ListGatewaySecurityPoliciesResponse,
-    ]:
+    ) -> Callable[[gateway_security_policy.ListGatewaySecurityPoliciesRequest], gateway_security_policy.ListGatewaySecurityPoliciesResponse]:
         r"""Return a callable for the list gateway security policies method over gRPC.
 
         Lists GatewaySecurityPolicies in a given project and
@@ -1008,9 +877,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_gateway_security_policies" not in self._stubs:
-            self._stubs[
-                "list_gateway_security_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_gateway_security_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/ListGatewaySecurityPolicies",
                 request_serializer=gateway_security_policy.ListGatewaySecurityPoliciesRequest.serialize,
                 response_deserializer=gateway_security_policy.ListGatewaySecurityPoliciesResponse.deserialize,
@@ -1020,10 +887,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def get_gateway_security_policy(
         self,
-    ) -> Callable[
-        [gateway_security_policy.GetGatewaySecurityPolicyRequest],
-        gateway_security_policy.GatewaySecurityPolicy,
-    ]:
+    ) -> Callable[[gateway_security_policy.GetGatewaySecurityPolicyRequest], gateway_security_policy.GatewaySecurityPolicy]:
         r"""Return a callable for the get gateway security policy method over gRPC.
 
         Gets details of a single GatewaySecurityPolicy.
@@ -1039,9 +903,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_gateway_security_policy" not in self._stubs:
-            self._stubs[
-                "get_gateway_security_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_gateway_security_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/GetGatewaySecurityPolicy",
                 request_serializer=gateway_security_policy.GetGatewaySecurityPolicyRequest.serialize,
                 response_deserializer=gateway_security_policy.GatewaySecurityPolicy.deserialize,
@@ -1049,12 +911,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_gateway_security_policy"]
 
     @property
-    def create_gateway_security_policy(
-        self,
-    ) -> Callable[
-        [gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_gateway_security_policy(self) -> Callable[[gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create gateway security policy method over gRPC.
 
         Creates a new GatewaySecurityPolicy in a given
@@ -1071,9 +928,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_gateway_security_policy" not in self._stubs:
-            self._stubs[
-                "create_gateway_security_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_gateway_security_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/CreateGatewaySecurityPolicy",
                 request_serializer=gcn_gateway_security_policy.CreateGatewaySecurityPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1081,12 +936,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_gateway_security_policy"]
 
     @property
-    def update_gateway_security_policy(
-        self,
-    ) -> Callable[
-        [gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_gateway_security_policy(self) -> Callable[[gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update gateway security policy method over gRPC.
 
         Updates the parameters of a single
@@ -1103,9 +953,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_gateway_security_policy" not in self._stubs:
-            self._stubs[
-                "update_gateway_security_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_gateway_security_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/UpdateGatewaySecurityPolicy",
                 request_serializer=gcn_gateway_security_policy.UpdateGatewaySecurityPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1113,12 +961,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_gateway_security_policy"]
 
     @property
-    def delete_gateway_security_policy(
-        self,
-    ) -> Callable[
-        [gateway_security_policy.DeleteGatewaySecurityPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_gateway_security_policy(self) -> Callable[[gateway_security_policy.DeleteGatewaySecurityPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete gateway security policy method over gRPC.
 
         Deletes a single GatewaySecurityPolicy.
@@ -1134,9 +977,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_gateway_security_policy" not in self._stubs:
-            self._stubs[
-                "delete_gateway_security_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_gateway_security_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/DeleteGatewaySecurityPolicy",
                 request_serializer=gateway_security_policy.DeleteGatewaySecurityPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1147,8 +988,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     def list_gateway_security_policy_rules(
         self,
     ) -> Callable[
-        [gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest],
-        gateway_security_policy_rule.ListGatewaySecurityPolicyRulesResponse,
+        [gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest], gateway_security_policy_rule.ListGatewaySecurityPolicyRulesResponse
     ]:
         r"""Return a callable for the list gateway security policy
         rules method over gRPC.
@@ -1167,9 +1007,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_gateway_security_policy_rules" not in self._stubs:
-            self._stubs[
-                "list_gateway_security_policy_rules"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_gateway_security_policy_rules"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/ListGatewaySecurityPolicyRules",
                 request_serializer=gateway_security_policy_rule.ListGatewaySecurityPolicyRulesRequest.serialize,
                 response_deserializer=gateway_security_policy_rule.ListGatewaySecurityPolicyRulesResponse.deserialize,
@@ -1179,10 +1017,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def get_gateway_security_policy_rule(
         self,
-    ) -> Callable[
-        [gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest],
-        gateway_security_policy_rule.GatewaySecurityPolicyRule,
-    ]:
+    ) -> Callable[[gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest], gateway_security_policy_rule.GatewaySecurityPolicyRule]:
         r"""Return a callable for the get gateway security policy
         rule method over gRPC.
 
@@ -1199,9 +1034,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_gateway_security_policy_rule" not in self._stubs:
-            self._stubs[
-                "get_gateway_security_policy_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_gateway_security_policy_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/GetGatewaySecurityPolicyRule",
                 request_serializer=gateway_security_policy_rule.GetGatewaySecurityPolicyRuleRequest.serialize,
                 response_deserializer=gateway_security_policy_rule.GatewaySecurityPolicyRule.deserialize,
@@ -1211,10 +1044,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def create_gateway_security_policy_rule(
         self,
-    ) -> Callable[
-        [gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest], operations_pb2.Operation]:
         r"""Return a callable for the create gateway security policy
         rule method over gRPC.
 
@@ -1232,9 +1062,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_gateway_security_policy_rule" not in self._stubs:
-            self._stubs[
-                "create_gateway_security_policy_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_gateway_security_policy_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/CreateGatewaySecurityPolicyRule",
                 request_serializer=gcn_gateway_security_policy_rule.CreateGatewaySecurityPolicyRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1244,10 +1072,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def update_gateway_security_policy_rule(
         self,
-    ) -> Callable[
-        [gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest], operations_pb2.Operation]:
         r"""Return a callable for the update gateway security policy
         rule method over gRPC.
 
@@ -1265,9 +1090,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_gateway_security_policy_rule" not in self._stubs:
-            self._stubs[
-                "update_gateway_security_policy_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_gateway_security_policy_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/UpdateGatewaySecurityPolicyRule",
                 request_serializer=gcn_gateway_security_policy_rule.UpdateGatewaySecurityPolicyRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1277,10 +1100,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def delete_gateway_security_policy_rule(
         self,
-    ) -> Callable[
-        [gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete gateway security policy
         rule method over gRPC.
 
@@ -1297,9 +1117,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_gateway_security_policy_rule" not in self._stubs:
-            self._stubs[
-                "delete_gateway_security_policy_rule"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_gateway_security_policy_rule"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/DeleteGatewaySecurityPolicyRule",
                 request_serializer=gateway_security_policy_rule.DeleteGatewaySecurityPolicyRuleRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1307,9 +1125,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["delete_gateway_security_policy_rule"]
 
     @property
-    def list_url_lists(
-        self,
-    ) -> Callable[[url_list.ListUrlListsRequest], url_list.ListUrlListsResponse]:
+    def list_url_lists(self) -> Callable[[url_list.ListUrlListsRequest], url_list.ListUrlListsResponse]:
         r"""Return a callable for the list url lists method over gRPC.
 
         Lists UrlLists in a given project and location.
@@ -1357,9 +1173,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_url_list"]
 
     @property
-    def create_url_list(
-        self,
-    ) -> Callable[[gcn_url_list.CreateUrlListRequest], operations_pb2.Operation]:
+    def create_url_list(self) -> Callable[[gcn_url_list.CreateUrlListRequest], operations_pb2.Operation]:
         r"""Return a callable for the create url list method over gRPC.
 
         Creates a new UrlList in a given project and
@@ -1384,9 +1198,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_url_list"]
 
     @property
-    def update_url_list(
-        self,
-    ) -> Callable[[gcn_url_list.UpdateUrlListRequest], operations_pb2.Operation]:
+    def update_url_list(self) -> Callable[[gcn_url_list.UpdateUrlListRequest], operations_pb2.Operation]:
         r"""Return a callable for the update url list method over gRPC.
 
         Updates the parameters of a single UrlList.
@@ -1410,9 +1222,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_url_list"]
 
     @property
-    def delete_url_list(
-        self,
-    ) -> Callable[[url_list.DeleteUrlListRequest], operations_pb2.Operation]:
+    def delete_url_list(self) -> Callable[[url_list.DeleteUrlListRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete url list method over gRPC.
 
         Deletes a single UrlList.
@@ -1438,10 +1248,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def list_tls_inspection_policies(
         self,
-    ) -> Callable[
-        [tls_inspection_policy.ListTlsInspectionPoliciesRequest],
-        tls_inspection_policy.ListTlsInspectionPoliciesResponse,
-    ]:
+    ) -> Callable[[tls_inspection_policy.ListTlsInspectionPoliciesRequest], tls_inspection_policy.ListTlsInspectionPoliciesResponse]:
         r"""Return a callable for the list tls inspection policies method over gRPC.
 
         Lists TlsInspectionPolicies in a given project and
@@ -1458,9 +1265,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_tls_inspection_policies" not in self._stubs:
-            self._stubs[
-                "list_tls_inspection_policies"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_tls_inspection_policies"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/ListTlsInspectionPolicies",
                 request_serializer=tls_inspection_policy.ListTlsInspectionPoliciesRequest.serialize,
                 response_deserializer=tls_inspection_policy.ListTlsInspectionPoliciesResponse.deserialize,
@@ -1468,12 +1273,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["list_tls_inspection_policies"]
 
     @property
-    def get_tls_inspection_policy(
-        self,
-    ) -> Callable[
-        [tls_inspection_policy.GetTlsInspectionPolicyRequest],
-        tls_inspection_policy.TlsInspectionPolicy,
-    ]:
+    def get_tls_inspection_policy(self) -> Callable[[tls_inspection_policy.GetTlsInspectionPolicyRequest], tls_inspection_policy.TlsInspectionPolicy]:
         r"""Return a callable for the get tls inspection policy method over gRPC.
 
         Gets details of a single TlsInspectionPolicy.
@@ -1497,12 +1297,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_tls_inspection_policy"]
 
     @property
-    def create_tls_inspection_policy(
-        self,
-    ) -> Callable[
-        [gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def create_tls_inspection_policy(self) -> Callable[[gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create tls inspection policy method over gRPC.
 
         Creates a new TlsInspectionPolicy in a given project
@@ -1519,9 +1314,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_tls_inspection_policy" not in self._stubs:
-            self._stubs[
-                "create_tls_inspection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_tls_inspection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/CreateTlsInspectionPolicy",
                 request_serializer=gcn_tls_inspection_policy.CreateTlsInspectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1529,12 +1322,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_tls_inspection_policy"]
 
     @property
-    def update_tls_inspection_policy(
-        self,
-    ) -> Callable[
-        [gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def update_tls_inspection_policy(self) -> Callable[[gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update tls inspection policy method over gRPC.
 
         Updates the parameters of a single
@@ -1551,9 +1339,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_tls_inspection_policy" not in self._stubs:
-            self._stubs[
-                "update_tls_inspection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_tls_inspection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/UpdateTlsInspectionPolicy",
                 request_serializer=gcn_tls_inspection_policy.UpdateTlsInspectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1561,12 +1347,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_tls_inspection_policy"]
 
     @property
-    def delete_tls_inspection_policy(
-        self,
-    ) -> Callable[
-        [tls_inspection_policy.DeleteTlsInspectionPolicyRequest],
-        operations_pb2.Operation,
-    ]:
+    def delete_tls_inspection_policy(self) -> Callable[[tls_inspection_policy.DeleteTlsInspectionPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete tls inspection policy method over gRPC.
 
         Deletes a single TlsInspectionPolicy.
@@ -1582,9 +1363,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_tls_inspection_policy" not in self._stubs:
-            self._stubs[
-                "delete_tls_inspection_policy"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_tls_inspection_policy"] = self._logged_channel.unary_unary(
                 "/google.cloud.networksecurity.v1alpha1.NetworkSecurity/DeleteTlsInspectionPolicy",
                 request_serializer=tls_inspection_policy.DeleteTlsInspectionPolicyRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -1592,11 +1371,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["delete_tls_inspection_policy"]
 
     @property
-    def list_authz_policies(
-        self,
-    ) -> Callable[
-        [authz_policy.ListAuthzPoliciesRequest], authz_policy.ListAuthzPoliciesResponse
-    ]:
+    def list_authz_policies(self) -> Callable[[authz_policy.ListAuthzPoliciesRequest], authz_policy.ListAuthzPoliciesResponse]:
         r"""Return a callable for the list authz policies method over gRPC.
 
         Lists AuthzPolicies in a given project and location.
@@ -1620,9 +1395,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["list_authz_policies"]
 
     @property
-    def get_authz_policy(
-        self,
-    ) -> Callable[[authz_policy.GetAuthzPolicyRequest], authz_policy.AuthzPolicy]:
+    def get_authz_policy(self) -> Callable[[authz_policy.GetAuthzPolicyRequest], authz_policy.AuthzPolicy]:
         r"""Return a callable for the get authz policy method over gRPC.
 
         Gets details of a single AuthzPolicy.
@@ -1646,11 +1419,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["get_authz_policy"]
 
     @property
-    def create_authz_policy(
-        self,
-    ) -> Callable[
-        [gcn_authz_policy.CreateAuthzPolicyRequest], operations_pb2.Operation
-    ]:
+    def create_authz_policy(self) -> Callable[[gcn_authz_policy.CreateAuthzPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the create authz policy method over gRPC.
 
         Creates a new AuthzPolicy in a given project and
@@ -1675,11 +1444,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["create_authz_policy"]
 
     @property
-    def update_authz_policy(
-        self,
-    ) -> Callable[
-        [gcn_authz_policy.UpdateAuthzPolicyRequest], operations_pb2.Operation
-    ]:
+    def update_authz_policy(self) -> Callable[[gcn_authz_policy.UpdateAuthzPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the update authz policy method over gRPC.
 
         Updates the parameters of a single AuthzPolicy.
@@ -1703,9 +1468,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
         return self._stubs["update_authz_policy"]
 
     @property
-    def delete_authz_policy(
-        self,
-    ) -> Callable[[authz_policy.DeleteAuthzPolicyRequest], operations_pb2.Operation]:
+    def delete_authz_policy(self) -> Callable[[authz_policy.DeleteAuthzPolicyRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete authz policy method over gRPC.
 
         Deletes a single AuthzPolicy.
@@ -1785,9 +1548,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1804,9 +1565,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1891,10 +1650,7 @@ class NetworkSecurityGrpcTransport(NetworkSecurityTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

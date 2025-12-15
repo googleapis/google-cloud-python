@@ -689,9 +689,7 @@ class AddApplicationStreamInputRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_stream_inputs: MutableSequence[
-        "ApplicationStreamInput"
-    ] = proto.RepeatedField(
+    application_stream_inputs: MutableSequence["ApplicationStreamInput"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ApplicationStreamInput",
@@ -746,9 +744,7 @@ class UpdateApplicationStreamInputRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_stream_inputs: MutableSequence[
-        "ApplicationStreamInput"
-    ] = proto.RepeatedField(
+    application_stream_inputs: MutableSequence["ApplicationStreamInput"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ApplicationStreamInput",
@@ -1182,9 +1178,7 @@ class UpdateApplicationInstancesRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_instances: MutableSequence[
-        UpdateApplicationInstance
-    ] = proto.RepeatedField(
+    application_instances: MutableSequence[UpdateApplicationInstance] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=UpdateApplicationInstance,
@@ -1627,19 +1621,15 @@ class Application(proto.Message):
             number=1,
             message=timestamp_pb2.Timestamp,
         )
-        global_output_resources: MutableSequence[
-            "Application.ApplicationRuntimeInfo.GlobalOutputResource"
-        ] = proto.RepeatedField(
+        global_output_resources: MutableSequence["Application.ApplicationRuntimeInfo.GlobalOutputResource"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="Application.ApplicationRuntimeInfo.GlobalOutputResource",
         )
-        monitoring_config: "Application.ApplicationRuntimeInfo.MonitoringConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="Application.ApplicationRuntimeInfo.MonitoringConfig",
-            )
+        monitoring_config: "Application.ApplicationRuntimeInfo.MonitoringConfig" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="Application.ApplicationRuntimeInfo.MonitoringConfig",
         )
 
     name: str = proto.Field(
@@ -2287,9 +2277,7 @@ class Processor(proto.Message):
         proto.STRING,
         number=14,
     )
-    supported_annotation_types: MutableSequence[
-        gcv_annotations.StreamAnnotationType
-    ] = proto.RepeatedField(
+    supported_annotation_types: MutableSequence[gcv_annotations.StreamAnnotationType] = proto.RepeatedField(
         proto.ENUM,
         number=15,
         enum=gcv_annotations.StreamAnnotationType,
@@ -2494,30 +2482,22 @@ class ProcessorIOSpec(proto.Message):
             number=3,
         )
 
-    graph_input_channel_specs: MutableSequence[
-        GraphInputChannelSpec
-    ] = proto.RepeatedField(
+    graph_input_channel_specs: MutableSequence[GraphInputChannelSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=GraphInputChannelSpec,
     )
-    graph_output_channel_specs: MutableSequence[
-        GraphOutputChannelSpec
-    ] = proto.RepeatedField(
+    graph_output_channel_specs: MutableSequence[GraphOutputChannelSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message=GraphOutputChannelSpec,
     )
-    instance_resource_input_binding_specs: MutableSequence[
-        InstanceResourceInputBindingSpec
-    ] = proto.RepeatedField(
+    instance_resource_input_binding_specs: MutableSequence[InstanceResourceInputBindingSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=InstanceResourceInputBindingSpec,
     )
-    instance_resource_output_binding_specs: MutableSequence[
-        InstanceResourceOutputBindingSpec
-    ] = proto.RepeatedField(
+    instance_resource_output_binding_specs: MutableSequence[InstanceResourceOutputBindingSpec] = proto.RepeatedField(
         proto.MESSAGE,
         number=6,
         message=InstanceResourceOutputBindingSpec,
@@ -2800,9 +2780,7 @@ class StreamWithAnnotation(proto.Message):
             proto.STRING,
             number=1,
         )
-        annotations: MutableSequence[
-            gcv_annotations.StreamAnnotation
-        ] = proto.RepeatedField(
+        annotations: MutableSequence[gcv_annotations.StreamAnnotation] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=gcv_annotations.StreamAnnotation,
@@ -2812,9 +2790,7 @@ class StreamWithAnnotation(proto.Message):
         proto.STRING,
         number=1,
     )
-    application_annotations: MutableSequence[
-        gcv_annotations.StreamAnnotation
-    ] = proto.RepeatedField(
+    application_annotations: MutableSequence[gcv_annotations.StreamAnnotation] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gcv_annotations.StreamAnnotation,
@@ -2842,9 +2818,7 @@ class ApplicationNodeAnnotation(proto.Message):
         proto.STRING,
         number=1,
     )
-    annotations: MutableSequence[
-        gcv_annotations.StreamAnnotation
-    ] = proto.RepeatedField(
+    annotations: MutableSequence[gcv_annotations.StreamAnnotation] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=gcv_annotations.StreamAnnotation,
@@ -2872,16 +2846,12 @@ class ResourceAnnotations(proto.Message):
             processor will have two active zones defined.
     """
 
-    application_annotations: MutableSequence[
-        gcv_annotations.StreamAnnotation
-    ] = proto.RepeatedField(
+    application_annotations: MutableSequence[gcv_annotations.StreamAnnotation] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcv_annotations.StreamAnnotation,
     )
-    node_annotations: MutableSequence[
-        "ApplicationNodeAnnotation"
-    ] = proto.RepeatedField(
+    node_annotations: MutableSequence["ApplicationNodeAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="ApplicationNodeAnnotation",
@@ -2905,9 +2875,7 @@ class VideoStreamInputConfig(proto.Message):
         proto.STRING,
         number=1,
     )
-    streams_with_annotation: MutableSequence[
-        "StreamWithAnnotation"
-    ] = proto.RepeatedField(
+    streams_with_annotation: MutableSequence["StreamWithAnnotation"] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message="StreamWithAnnotation",
@@ -3429,9 +3397,7 @@ class DedicatedResources(proto.Message):
         proto.INT32,
         number=3,
     )
-    autoscaling_metric_specs: MutableSequence[
-        "AutoscalingMetricSpec"
-    ] = proto.RepeatedField(
+    autoscaling_metric_specs: MutableSequence["AutoscalingMetricSpec"] = proto.RepeatedField(
         proto.MESSAGE,
         number=4,
         message="AutoscalingMetricSpec",

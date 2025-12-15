@@ -29,9 +29,7 @@ import google.protobuf
 from google.cloud.managedidentities_v1 import gapic_version as package_version
 from google.cloud.managedidentities_v1.types import managed_identities_service, resource
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class ManagedIdentitiesServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -203,10 +193,7 @@ class ManagedIdentitiesServiceTransport(abc.ABC):
     @property
     def create_microsoft_ad_domain(
         self,
-    ) -> Callable[
-        [managed_identities_service.CreateMicrosoftAdDomainRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.CreateMicrosoftAdDomainRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -214,10 +201,7 @@ class ManagedIdentitiesServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_identities_service.ResetAdminPasswordRequest],
-        Union[
-            managed_identities_service.ResetAdminPasswordResponse,
-            Awaitable[managed_identities_service.ResetAdminPasswordResponse],
-        ],
+        Union[managed_identities_service.ResetAdminPasswordResponse, Awaitable[managed_identities_service.ResetAdminPasswordResponse]],
     ]:
         raise NotImplementedError()
 
@@ -226,74 +210,48 @@ class ManagedIdentitiesServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [managed_identities_service.ListDomainsRequest],
-        Union[
-            managed_identities_service.ListDomainsResponse,
-            Awaitable[managed_identities_service.ListDomainsResponse],
-        ],
+        Union[managed_identities_service.ListDomainsResponse, Awaitable[managed_identities_service.ListDomainsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_domain(
-        self,
-    ) -> Callable[
-        [managed_identities_service.GetDomainRequest],
-        Union[resource.Domain, Awaitable[resource.Domain]],
-    ]:
+    def get_domain(self) -> Callable[[managed_identities_service.GetDomainRequest], Union[resource.Domain, Awaitable[resource.Domain]]]:
         raise NotImplementedError()
 
     @property
     def update_domain(
         self,
-    ) -> Callable[
-        [managed_identities_service.UpdateDomainRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.UpdateDomainRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_domain(
         self,
-    ) -> Callable[
-        [managed_identities_service.DeleteDomainRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.DeleteDomainRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def attach_trust(
         self,
-    ) -> Callable[
-        [managed_identities_service.AttachTrustRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.AttachTrustRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def reconfigure_trust(
         self,
-    ) -> Callable[
-        [managed_identities_service.ReconfigureTrustRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.ReconfigureTrustRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def detach_trust(
         self,
-    ) -> Callable[
-        [managed_identities_service.DetachTrustRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.DetachTrustRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def validate_trust(
         self,
-    ) -> Callable[
-        [managed_identities_service.ValidateTrustRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[managed_identities_service.ValidateTrustRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property

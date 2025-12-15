@@ -44,9 +44,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -56,10 +54,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -78,11 +73,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,11 +310,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
         return self._grpc_channel
 
     @property
-    def fetch_models(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchModelsRequest], gkerecommender.FetchModelsResponse
-    ]:
+    def fetch_models(self) -> Callable[[gkerecommender.FetchModelsRequest], gkerecommender.FetchModelsResponse]:
         r"""Return a callable for the fetch models method over gRPC.
 
         Fetches available models. Open-source models follow the
@@ -354,12 +335,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
         return self._stubs["fetch_models"]
 
     @property
-    def fetch_model_servers(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchModelServersRequest],
-        gkerecommender.FetchModelServersResponse,
-    ]:
+    def fetch_model_servers(self) -> Callable[[gkerecommender.FetchModelServersRequest], gkerecommender.FetchModelServersResponse]:
         r"""Return a callable for the fetch model servers method over gRPC.
 
         Fetches available model servers. Open-source model servers use
@@ -386,10 +362,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
     @property
     def fetch_model_server_versions(
         self,
-    ) -> Callable[
-        [gkerecommender.FetchModelServerVersionsRequest],
-        gkerecommender.FetchModelServerVersionsResponse,
-    ]:
+    ) -> Callable[[gkerecommender.FetchModelServerVersionsRequest], gkerecommender.FetchModelServerVersionsResponse]:
         r"""Return a callable for the fetch model server versions method over gRPC.
 
         Fetches available model server versions. Open-source servers use
@@ -412,9 +385,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_model_server_versions" not in self._stubs:
-            self._stubs[
-                "fetch_model_server_versions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_model_server_versions"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/FetchModelServerVersions",
                 request_serializer=gkerecommender.FetchModelServerVersionsRequest.serialize,
                 response_deserializer=gkerecommender.FetchModelServerVersionsResponse.deserialize,
@@ -422,11 +393,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
         return self._stubs["fetch_model_server_versions"]
 
     @property
-    def fetch_profiles(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchProfilesRequest], gkerecommender.FetchProfilesResponse
-    ]:
+    def fetch_profiles(self) -> Callable[[gkerecommender.FetchProfilesRequest], gkerecommender.FetchProfilesResponse]:
         r"""Return a callable for the fetch profiles method over gRPC.
 
         Fetches available profiles. A profile contains performance
@@ -462,10 +429,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
     @property
     def generate_optimized_manifest(
         self,
-    ) -> Callable[
-        [gkerecommender.GenerateOptimizedManifestRequest],
-        gkerecommender.GenerateOptimizedManifestResponse,
-    ]:
+    ) -> Callable[[gkerecommender.GenerateOptimizedManifestRequest], gkerecommender.GenerateOptimizedManifestResponse]:
         r"""Return a callable for the generate optimized manifest method over gRPC.
 
         Generates an optimized deployment manifest for a given model and
@@ -486,9 +450,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "generate_optimized_manifest" not in self._stubs:
-            self._stubs[
-                "generate_optimized_manifest"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["generate_optimized_manifest"] = self._logged_channel.unary_unary(
                 "/google.cloud.gkerecommender.v1.GkeInferenceQuickstart/GenerateOptimizedManifest",
                 request_serializer=gkerecommender.GenerateOptimizedManifestRequest.serialize,
                 response_deserializer=gkerecommender.GenerateOptimizedManifestResponse.deserialize,
@@ -496,12 +458,7 @@ class GkeInferenceQuickstartGrpcTransport(GkeInferenceQuickstartTransport):
         return self._stubs["generate_optimized_manifest"]
 
     @property
-    def fetch_benchmarking_data(
-        self,
-    ) -> Callable[
-        [gkerecommender.FetchBenchmarkingDataRequest],
-        gkerecommender.FetchBenchmarkingDataResponse,
-    ]:
+    def fetch_benchmarking_data(self) -> Callable[[gkerecommender.FetchBenchmarkingDataRequest], gkerecommender.FetchBenchmarkingDataResponse]:
         r"""Return a callable for the fetch benchmarking data method over gRPC.
 
         Fetches all of the benchmarking data available for a

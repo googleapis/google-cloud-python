@@ -229,9 +229,7 @@ class CloudBuildRestInterceptor:
     """
 
     def pre_approve_build(
-        self,
-        request: cloudbuild.ApproveBuildRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudbuild.ApproveBuildRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.ApproveBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for approve_build
 
@@ -240,9 +238,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_approve_build(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_approve_build(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for approve_build
 
         DEPRECATED. Please use the `post_approve_build_with_metadata`
@@ -256,9 +252,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_approve_build_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for approve_build
 
@@ -275,9 +269,7 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_cancel_build(
-        self,
-        request: cloudbuild.CancelBuildRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudbuild.CancelBuildRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.CancelBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_build
 
@@ -300,9 +292,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_cancel_build_with_metadata(
-        self,
-        response: cloudbuild.Build,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.Build, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.Build, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_build
 
@@ -319,9 +309,7 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_create_build(
-        self,
-        request: cloudbuild.CreateBuildRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudbuild.CreateBuildRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.CreateBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_build
 
@@ -330,9 +318,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_create_build(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_build(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_build
 
         DEPRECATED. Please use the `post_create_build_with_metadata`
@@ -346,9 +332,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_create_build_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_build
 
@@ -365,12 +349,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_create_build_trigger(
-        self,
-        request: cloudbuild.CreateBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.CreateBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.CreateBuildTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.CreateBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -378,9 +358,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_create_build_trigger(
-        self, response: cloudbuild.BuildTrigger
-    ) -> cloudbuild.BuildTrigger:
+    def post_create_build_trigger(self, response: cloudbuild.BuildTrigger) -> cloudbuild.BuildTrigger:
         """Post-rpc interceptor for create_build_trigger
 
         DEPRECATED. Please use the `post_create_build_trigger_with_metadata`
@@ -394,9 +372,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_create_build_trigger_with_metadata(
-        self,
-        response: cloudbuild.BuildTrigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.BuildTrigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.BuildTrigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_build_trigger
 
@@ -413,12 +389,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_create_worker_pool(
-        self,
-        request: cloudbuild.CreateWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.CreateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.CreateWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.CreateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -426,9 +398,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_create_worker_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_worker_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_worker_pool
 
         DEPRECATED. Please use the `post_create_worker_pool_with_metadata`
@@ -442,9 +412,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_create_worker_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_worker_pool
 
@@ -461,12 +429,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_delete_build_trigger(
-        self,
-        request: cloudbuild.DeleteBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.DeleteBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.DeleteBuildTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.DeleteBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -475,12 +439,8 @@ class CloudBuildRestInterceptor:
         return request, metadata
 
     def pre_delete_worker_pool(
-        self,
-        request: cloudbuild.DeleteWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.DeleteWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.DeleteWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.DeleteWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -488,9 +448,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_worker_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_worker_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_worker_pool
 
         DEPRECATED. Please use the `post_delete_worker_pool_with_metadata`
@@ -504,9 +462,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_delete_worker_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_worker_pool
 
@@ -523,9 +479,7 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_get_build(
-        self,
-        request: cloudbuild.GetBuildRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudbuild.GetBuildRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.GetBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_build
 
@@ -548,9 +502,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_get_build_with_metadata(
-        self,
-        response: cloudbuild.Build,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.Build, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.Build, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_build
 
@@ -567,12 +519,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_get_build_trigger(
-        self,
-        request: cloudbuild.GetBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.GetBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.GetBuildTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.GetBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -580,9 +528,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_get_build_trigger(
-        self, response: cloudbuild.BuildTrigger
-    ) -> cloudbuild.BuildTrigger:
+    def post_get_build_trigger(self, response: cloudbuild.BuildTrigger) -> cloudbuild.BuildTrigger:
         """Post-rpc interceptor for get_build_trigger
 
         DEPRECATED. Please use the `post_get_build_trigger_with_metadata`
@@ -596,9 +542,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_get_build_trigger_with_metadata(
-        self,
-        response: cloudbuild.BuildTrigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.BuildTrigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.BuildTrigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_build_trigger
 
@@ -615,13 +559,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_get_default_service_account(
-        self,
-        request: cloudbuild.GetDefaultServiceAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.GetDefaultServiceAccountRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloudbuild.GetDefaultServiceAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.GetDefaultServiceAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_default_service_account
 
         Override in a subclass to manipulate the request or metadata
@@ -629,9 +568,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_get_default_service_account(
-        self, response: cloudbuild.DefaultServiceAccount
-    ) -> cloudbuild.DefaultServiceAccount:
+    def post_get_default_service_account(self, response: cloudbuild.DefaultServiceAccount) -> cloudbuild.DefaultServiceAccount:
         """Post-rpc interceptor for get_default_service_account
 
         DEPRECATED. Please use the `post_get_default_service_account_with_metadata`
@@ -645,12 +582,8 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_get_default_service_account_with_metadata(
-        self,
-        response: cloudbuild.DefaultServiceAccount,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.DefaultServiceAccount, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloudbuild.DefaultServiceAccount, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.DefaultServiceAccount, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_default_service_account
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -666,12 +599,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_get_worker_pool(
-        self,
-        request: cloudbuild.GetWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.GetWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.GetWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.GetWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -679,9 +608,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_get_worker_pool(
-        self, response: cloudbuild.WorkerPool
-    ) -> cloudbuild.WorkerPool:
+    def post_get_worker_pool(self, response: cloudbuild.WorkerPool) -> cloudbuild.WorkerPool:
         """Post-rpc interceptor for get_worker_pool
 
         DEPRECATED. Please use the `post_get_worker_pool_with_metadata`
@@ -695,9 +622,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_get_worker_pool_with_metadata(
-        self,
-        response: cloudbuild.WorkerPool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.WorkerPool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.WorkerPool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_worker_pool
 
@@ -714,9 +639,7 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_list_builds(
-        self,
-        request: cloudbuild.ListBuildsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudbuild.ListBuildsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.ListBuildsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_builds
 
@@ -725,9 +648,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_list_builds(
-        self, response: cloudbuild.ListBuildsResponse
-    ) -> cloudbuild.ListBuildsResponse:
+    def post_list_builds(self, response: cloudbuild.ListBuildsResponse) -> cloudbuild.ListBuildsResponse:
         """Post-rpc interceptor for list_builds
 
         DEPRECATED. Please use the `post_list_builds_with_metadata`
@@ -741,9 +662,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_list_builds_with_metadata(
-        self,
-        response: cloudbuild.ListBuildsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.ListBuildsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.ListBuildsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_builds
 
@@ -760,12 +679,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_list_build_triggers(
-        self,
-        request: cloudbuild.ListBuildTriggersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.ListBuildTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.ListBuildTriggersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.ListBuildTriggersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_build_triggers
 
         Override in a subclass to manipulate the request or metadata
@@ -773,9 +688,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_list_build_triggers(
-        self, response: cloudbuild.ListBuildTriggersResponse
-    ) -> cloudbuild.ListBuildTriggersResponse:
+    def post_list_build_triggers(self, response: cloudbuild.ListBuildTriggersResponse) -> cloudbuild.ListBuildTriggersResponse:
         """Post-rpc interceptor for list_build_triggers
 
         DEPRECATED. Please use the `post_list_build_triggers_with_metadata`
@@ -789,12 +702,8 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_list_build_triggers_with_metadata(
-        self,
-        response: cloudbuild.ListBuildTriggersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.ListBuildTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloudbuild.ListBuildTriggersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.ListBuildTriggersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_build_triggers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -810,12 +719,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_list_worker_pools(
-        self,
-        request: cloudbuild.ListWorkerPoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.ListWorkerPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.ListWorkerPoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.ListWorkerPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_worker_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -823,9 +728,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_list_worker_pools(
-        self, response: cloudbuild.ListWorkerPoolsResponse
-    ) -> cloudbuild.ListWorkerPoolsResponse:
+    def post_list_worker_pools(self, response: cloudbuild.ListWorkerPoolsResponse) -> cloudbuild.ListWorkerPoolsResponse:
         """Post-rpc interceptor for list_worker_pools
 
         DEPRECATED. Please use the `post_list_worker_pools_with_metadata`
@@ -839,12 +742,8 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_list_worker_pools_with_metadata(
-        self,
-        response: cloudbuild.ListWorkerPoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.ListWorkerPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloudbuild.ListWorkerPoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.ListWorkerPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_worker_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -860,12 +759,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_receive_trigger_webhook(
-        self,
-        request: cloudbuild.ReceiveTriggerWebhookRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.ReceiveTriggerWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.ReceiveTriggerWebhookRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.ReceiveTriggerWebhookRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for receive_trigger_webhook
 
         Override in a subclass to manipulate the request or metadata
@@ -873,9 +768,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_receive_trigger_webhook(
-        self, response: cloudbuild.ReceiveTriggerWebhookResponse
-    ) -> cloudbuild.ReceiveTriggerWebhookResponse:
+    def post_receive_trigger_webhook(self, response: cloudbuild.ReceiveTriggerWebhookResponse) -> cloudbuild.ReceiveTriggerWebhookResponse:
         """Post-rpc interceptor for receive_trigger_webhook
 
         DEPRECATED. Please use the `post_receive_trigger_webhook_with_metadata`
@@ -889,13 +782,8 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_receive_trigger_webhook_with_metadata(
-        self,
-        response: cloudbuild.ReceiveTriggerWebhookResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.ReceiveTriggerWebhookResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloudbuild.ReceiveTriggerWebhookResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.ReceiveTriggerWebhookResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for receive_trigger_webhook
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -911,9 +799,7 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_retry_build(
-        self,
-        request: cloudbuild.RetryBuildRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloudbuild.RetryBuildRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.RetryBuildRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retry_build
 
@@ -922,9 +808,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_retry_build(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_retry_build(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for retry_build
 
         DEPRECATED. Please use the `post_retry_build_with_metadata`
@@ -938,9 +822,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_retry_build_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retry_build
 
@@ -957,12 +839,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_run_build_trigger(
-        self,
-        request: cloudbuild.RunBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.RunBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.RunBuildTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.RunBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -970,9 +848,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_run_build_trigger(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_build_trigger(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_build_trigger
 
         DEPRECATED. Please use the `post_run_build_trigger_with_metadata`
@@ -986,9 +862,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_run_build_trigger_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_build_trigger
 
@@ -1005,12 +879,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_update_build_trigger(
-        self,
-        request: cloudbuild.UpdateBuildTriggerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.UpdateBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.UpdateBuildTriggerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.UpdateBuildTriggerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_build_trigger
 
         Override in a subclass to manipulate the request or metadata
@@ -1018,9 +888,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_update_build_trigger(
-        self, response: cloudbuild.BuildTrigger
-    ) -> cloudbuild.BuildTrigger:
+    def post_update_build_trigger(self, response: cloudbuild.BuildTrigger) -> cloudbuild.BuildTrigger:
         """Post-rpc interceptor for update_build_trigger
 
         DEPRECATED. Please use the `post_update_build_trigger_with_metadata`
@@ -1034,9 +902,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_update_build_trigger_with_metadata(
-        self,
-        response: cloudbuild.BuildTrigger,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloudbuild.BuildTrigger, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloudbuild.BuildTrigger, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_build_trigger
 
@@ -1053,12 +919,8 @@ class CloudBuildRestInterceptor:
         return response, metadata
 
     def pre_update_worker_pool(
-        self,
-        request: cloudbuild.UpdateWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloudbuild.UpdateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloudbuild.UpdateWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloudbuild.UpdateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -1066,9 +928,7 @@ class CloudBuildRestInterceptor:
         """
         return request, metadata
 
-    def post_update_worker_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_worker_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_worker_pool
 
         DEPRECATED. Please use the `post_update_worker_pool_with_metadata`
@@ -1082,9 +942,7 @@ class CloudBuildRestInterceptor:
         return response
 
     def post_update_worker_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_worker_pool
 
@@ -1187,9 +1045,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1239,29 +1095,17 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ApproveBuild(
-        _BaseCloudBuildRestTransport._BaseApproveBuild, CloudBuildRestStub
-    ):
+    class _ApproveBuild(_BaseCloudBuildRestTransport._BaseApproveBuild, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.ApproveBuild")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1305,36 +1149,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseApproveBuild._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseApproveBuild._get_http_options()
 
             request, metadata = self._interceptor.pre_approve_build(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseApproveBuild._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseApproveBuild._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseCloudBuildRestTransport._BaseApproveBuild._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseCloudBuildRestTransport._BaseApproveBuild._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseApproveBuild._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseApproveBuild._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1358,13 +1184,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._ApproveBuild._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1378,12 +1198,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_approve_build(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_approve_build_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_approve_build_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1404,22 +1220,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _CancelBuild(
-        _BaseCloudBuildRestTransport._BaseCancelBuild, CloudBuildRestStub
-    ):
+    class _CancelBuild(_BaseCloudBuildRestTransport._BaseCancelBuild, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.CancelBuild")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1482,34 +1288,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseCancelBuild._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseCancelBuild._get_http_options()
 
             request, metadata = self._interceptor.pre_cancel_build(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseCancelBuild._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseCancelBuild._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseCancelBuild._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseCancelBuild._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseCancelBuild._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseCancelBuild._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1533,13 +1323,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._CancelBuild._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1555,12 +1339,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_cancel_build(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_build_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_build_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.Build.to_json(response)
                 except:
@@ -1581,22 +1361,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _CreateBuild(
-        _BaseCloudBuildRestTransport._BaseCreateBuild, CloudBuildRestStub
-    ):
+    class _CreateBuild(_BaseCloudBuildRestTransport._BaseCreateBuild, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.CreateBuild")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1639,34 +1409,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseCreateBuild._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseCreateBuild._get_http_options()
 
             request, metadata = self._interceptor.pre_create_build(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseCreateBuild._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseCreateBuild._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseCreateBuild._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseCreateBuild._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseCreateBuild._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseCreateBuild._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1690,13 +1444,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._CreateBuild._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1710,12 +1458,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_create_build(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_build_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_build_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1736,22 +1480,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _CreateBuildTrigger(
-        _BaseCloudBuildRestTransport._BaseCreateBuildTrigger, CloudBuildRestStub
-    ):
+    class _CreateBuildTrigger(_BaseCloudBuildRestTransport._BaseCreateBuildTrigger, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.CreateBuildTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1794,32 +1528,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_build_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_build_trigger(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseCreateBuildTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1843,13 +1563,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._CreateBuildTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1865,12 +1579,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_create_build_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_build_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_build_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.BuildTrigger.to_json(response)
                 except:
@@ -1891,22 +1601,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _CreateWorkerPool(
-        _BaseCloudBuildRestTransport._BaseCreateWorkerPool, CloudBuildRestStub
-    ):
+    class _CreateWorkerPool(_BaseCloudBuildRestTransport._BaseCreateWorkerPool, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.CreateWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1949,32 +1649,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_worker_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_worker_pool(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseCreateWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1998,13 +1684,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._CreateWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2018,12 +1698,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_create_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2044,22 +1720,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _DeleteBuildTrigger(
-        _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger, CloudBuildRestStub
-    ):
+    class _DeleteBuildTrigger(_BaseCloudBuildRestTransport._BaseDeleteBuildTrigger, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.DeleteBuildTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2094,28 +1760,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_build_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_build_trigger(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseDeleteBuildTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2139,12 +1793,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._DeleteBuildTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2152,22 +1801,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteWorkerPool(
-        _BaseCloudBuildRestTransport._BaseDeleteWorkerPool, CloudBuildRestStub
-    ):
+    class _DeleteWorkerPool(_BaseCloudBuildRestTransport._BaseDeleteWorkerPool, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.DeleteWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2209,28 +1848,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_worker_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_worker_pool(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseDeleteWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2254,12 +1881,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._DeleteWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2273,12 +1895,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_delete_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2304,15 +1922,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             return hash("CloudBuildRestTransport.GetBuild")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2374,30 +1984,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseGetBuild._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseGetBuild._get_http_options()
 
             request, metadata = self._interceptor.pre_get_build(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseGetBuild._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseGetBuild._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseGetBuild._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseGetBuild._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2420,14 +2016,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
 
             # Send the request
-            response = CloudBuildRestTransport._GetBuild._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = CloudBuildRestTransport._GetBuild._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2442,12 +2031,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_get_build(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_build_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_build_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.Build.to_json(response)
                 except:
@@ -2468,22 +2053,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _GetBuildTrigger(
-        _BaseCloudBuildRestTransport._BaseGetBuildTrigger, CloudBuildRestStub
-    ):
+    class _GetBuildTrigger(_BaseCloudBuildRestTransport._BaseGetBuildTrigger, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.GetBuildTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2525,28 +2100,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_build_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_build_trigger(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseGetBuildTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2570,12 +2133,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._GetBuildTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2591,12 +2149,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_get_build_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_build_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_build_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.BuildTrigger.to_json(response)
                 except:
@@ -2617,22 +2171,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _GetDefaultServiceAccount(
-        _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount, CloudBuildRestStub
-    ):
+    class _GetDefaultServiceAccount(_BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.GetDefaultServiceAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2673,28 +2217,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                         The default service account used for ``Builds``.
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_default_service_account(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_default_service_account(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseGetDefaultServiceAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2718,12 +2250,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._GetDefaultServiceAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2739,16 +2266,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_get_default_service_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_default_service_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_default_service_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloudbuild.DefaultServiceAccount.to_json(
-                        response
-                    )
+                    response_payload = cloudbuild.DefaultServiceAccount.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2767,22 +2288,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _GetWorkerPool(
-        _BaseCloudBuildRestTransport._BaseGetWorkerPool, CloudBuildRestStub
-    ):
+    class _GetWorkerPool(_BaseCloudBuildRestTransport._BaseGetWorkerPool, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.GetWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2836,30 +2347,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_worker_pool(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseGetWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2883,12 +2380,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._GetWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2904,12 +2396,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_get_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.WorkerPool.to_json(response)
                 except:
@@ -2935,15 +2423,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             return hash("CloudBuildRestTransport.ListBuilds")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2982,30 +2462,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     Response including listed builds.
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseListBuilds._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseListBuilds._get_http_options()
 
             request, metadata = self._interceptor.pre_list_builds(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseListBuilds._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseListBuilds._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseListBuilds._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseListBuilds._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3029,12 +2495,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._ListBuilds._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3050,12 +2511,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_list_builds(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_builds_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_builds_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.ListBuildsResponse.to_json(response)
                 except:
@@ -3076,22 +2533,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _ListBuildTriggers(
-        _BaseCloudBuildRestTransport._BaseListBuildTriggers, CloudBuildRestStub
-    ):
+    class _ListBuildTriggers(_BaseCloudBuildRestTransport._BaseListBuildTriggers, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.ListBuildTriggers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3130,28 +2577,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     Response containing existing ``BuildTriggers``.
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_build_triggers(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_build_triggers(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseListBuildTriggers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3175,12 +2610,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._ListBuildTriggers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3196,16 +2626,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_list_build_triggers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_build_triggers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_build_triggers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloudbuild.ListBuildTriggersResponse.to_json(
-                        response
-                    )
+                    response_payload = cloudbuild.ListBuildTriggersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3224,22 +2648,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _ListWorkerPools(
-        _BaseCloudBuildRestTransport._BaseListWorkerPools, CloudBuildRestStub
-    ):
+    class _ListWorkerPools(_BaseCloudBuildRestTransport._BaseListWorkerPools, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.ListWorkerPools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3278,28 +2692,16 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                     Response containing existing ``WorkerPools``.
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseListWorkerPools._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseListWorkerPools._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_worker_pools(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseListWorkerPools._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_worker_pools(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseListWorkerPools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseListWorkerPools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseListWorkerPools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3323,12 +2725,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._ListWorkerPools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3344,16 +2741,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_list_worker_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_worker_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_worker_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloudbuild.ListWorkerPoolsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloudbuild.ListWorkerPoolsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3372,22 +2763,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _ReceiveTriggerWebhook(
-        _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook, CloudBuildRestStub
-    ):
+    class _ReceiveTriggerWebhook(_BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.ReceiveTriggerWebhook")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3431,32 +2812,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_http_options()
 
-            request, metadata = self._interceptor.pre_receive_trigger_webhook(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_receive_trigger_webhook(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseReceiveTriggerWebhook._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3480,13 +2847,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._ReceiveTriggerWebhook._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3502,16 +2863,10 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_receive_trigger_webhook(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_receive_trigger_webhook_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_receive_trigger_webhook_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloudbuild.ReceiveTriggerWebhookResponse.to_json(
-                        response
-                    )
+                    response_payload = cloudbuild.ReceiveTriggerWebhookResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3535,15 +2890,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             return hash("CloudBuildRestTransport.RetryBuild")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3586,34 +2933,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseRetryBuild._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseRetryBuild._get_http_options()
 
             request, metadata = self._interceptor.pre_retry_build(request, metadata)
-            transcoded_request = (
-                _BaseCloudBuildRestTransport._BaseRetryBuild._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCloudBuildRestTransport._BaseRetryBuild._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseRetryBuild._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseRetryBuild._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCloudBuildRestTransport._BaseRetryBuild._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseRetryBuild._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3637,13 +2968,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._RetryBuild._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3657,12 +2982,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_retry_build(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_retry_build_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retry_build_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3683,22 +3004,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _RunBuildTrigger(
-        _BaseCloudBuildRestTransport._BaseRunBuildTrigger, CloudBuildRestStub
-    ):
+    class _RunBuildTrigger(_BaseCloudBuildRestTransport._BaseRunBuildTrigger, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.RunBuildTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3742,32 +3053,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_build_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_build_trigger(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseRunBuildTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3791,13 +3088,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._RunBuildTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3811,12 +3102,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_run_build_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_build_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_build_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3837,22 +3124,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _UpdateBuildTrigger(
-        _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger, CloudBuildRestStub
-    ):
+    class _UpdateBuildTrigger(_BaseCloudBuildRestTransport._BaseUpdateBuildTrigger, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.UpdateBuildTrigger")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3895,32 +3172,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_build_trigger(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_build_trigger(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseUpdateBuildTrigger._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3944,13 +3207,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._UpdateBuildTrigger._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3966,12 +3223,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_update_build_trigger(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_build_trigger_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_build_trigger_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloudbuild.BuildTrigger.to_json(response)
                 except:
@@ -3992,22 +3245,12 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
                 )
             return resp
 
-    class _UpdateWorkerPool(
-        _BaseCloudBuildRestTransport._BaseUpdateWorkerPool, CloudBuildRestStub
-    ):
+    class _UpdateWorkerPool(_BaseCloudBuildRestTransport._BaseUpdateWorkerPool, CloudBuildRestStub):
         def __hash__(self):
             return hash("CloudBuildRestTransport.UpdateWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4050,32 +3293,18 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             """
 
-            http_options = (
-                _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_http_options()
-            )
+            http_options = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_worker_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_worker_pool(request, metadata)
+            transcoded_request = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudBuildRestTransport._BaseUpdateWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4099,13 +3328,7 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             # Send the request
             response = CloudBuildRestTransport._UpdateWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4119,12 +3342,8 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
 
             resp = self._interceptor.post_update_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4146,57 +3365,43 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
             return resp
 
     @property
-    def approve_build(
-        self,
-    ) -> Callable[[cloudbuild.ApproveBuildRequest], operations_pb2.Operation]:
+    def approve_build(self) -> Callable[[cloudbuild.ApproveBuildRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ApproveBuild(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_build(
-        self,
-    ) -> Callable[[cloudbuild.CancelBuildRequest], cloudbuild.Build]:
+    def cancel_build(self) -> Callable[[cloudbuild.CancelBuildRequest], cloudbuild.Build]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelBuild(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_build(
-        self,
-    ) -> Callable[[cloudbuild.CreateBuildRequest], operations_pb2.Operation]:
+    def create_build(self) -> Callable[[cloudbuild.CreateBuildRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBuild(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.CreateBuildTriggerRequest], cloudbuild.BuildTrigger]:
+    def create_build_trigger(self) -> Callable[[cloudbuild.CreateBuildTriggerRequest], cloudbuild.BuildTrigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBuildTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.CreateWorkerPoolRequest], operations_pb2.Operation]:
+    def create_worker_pool(self) -> Callable[[cloudbuild.CreateWorkerPoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], empty_pb2.Empty]:
+    def delete_build_trigger(self) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBuildTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], operations_pb2.Operation]:
+    def delete_worker_pool(self) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
@@ -4208,98 +3413,67 @@ class CloudBuildRestTransport(_BaseCloudBuildRestTransport):
         return self._GetBuild(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.GetBuildTriggerRequest], cloudbuild.BuildTrigger]:
+    def get_build_trigger(self) -> Callable[[cloudbuild.GetBuildTriggerRequest], cloudbuild.BuildTrigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBuildTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_default_service_account(
-        self,
-    ) -> Callable[
-        [cloudbuild.GetDefaultServiceAccountRequest], cloudbuild.DefaultServiceAccount
-    ]:
+    def get_default_service_account(self) -> Callable[[cloudbuild.GetDefaultServiceAccountRequest], cloudbuild.DefaultServiceAccount]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDefaultServiceAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.GetWorkerPoolRequest], cloudbuild.WorkerPool]:
+    def get_worker_pool(self) -> Callable[[cloudbuild.GetWorkerPoolRequest], cloudbuild.WorkerPool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_builds(
-        self,
-    ) -> Callable[[cloudbuild.ListBuildsRequest], cloudbuild.ListBuildsResponse]:
+    def list_builds(self) -> Callable[[cloudbuild.ListBuildsRequest], cloudbuild.ListBuildsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBuilds(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_build_triggers(
-        self,
-    ) -> Callable[
-        [cloudbuild.ListBuildTriggersRequest], cloudbuild.ListBuildTriggersResponse
-    ]:
+    def list_build_triggers(self) -> Callable[[cloudbuild.ListBuildTriggersRequest], cloudbuild.ListBuildTriggersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBuildTriggers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_worker_pools(
-        self,
-    ) -> Callable[
-        [cloudbuild.ListWorkerPoolsRequest], cloudbuild.ListWorkerPoolsResponse
-    ]:
+    def list_worker_pools(self) -> Callable[[cloudbuild.ListWorkerPoolsRequest], cloudbuild.ListWorkerPoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkerPools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def receive_trigger_webhook(
-        self,
-    ) -> Callable[
-        [cloudbuild.ReceiveTriggerWebhookRequest],
-        cloudbuild.ReceiveTriggerWebhookResponse,
-    ]:
+    def receive_trigger_webhook(self) -> Callable[[cloudbuild.ReceiveTriggerWebhookRequest], cloudbuild.ReceiveTriggerWebhookResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReceiveTriggerWebhook(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retry_build(
-        self,
-    ) -> Callable[[cloudbuild.RetryBuildRequest], operations_pb2.Operation]:
+    def retry_build(self) -> Callable[[cloudbuild.RetryBuildRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetryBuild(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.RunBuildTriggerRequest], operations_pb2.Operation]:
+    def run_build_trigger(self) -> Callable[[cloudbuild.RunBuildTriggerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunBuildTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.UpdateBuildTriggerRequest], cloudbuild.BuildTrigger]:
+    def update_build_trigger(self) -> Callable[[cloudbuild.UpdateBuildTriggerRequest], cloudbuild.BuildTrigger]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBuildTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.UpdateWorkerPoolRequest], operations_pb2.Operation]:
+    def update_worker_pool(self) -> Callable[[cloudbuild.UpdateWorkerPoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWorkerPool(self._session, self._host, self._interceptor)  # type: ignore

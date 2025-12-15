@@ -19,15 +19,10 @@ from typing import Dict, Type
 from .base import WorkflowsServiceV2BetaTransport
 from .grpc import WorkflowsServiceV2BetaGrpcTransport
 from .grpc_asyncio import WorkflowsServiceV2BetaGrpcAsyncIOTransport
-from .rest import (
-    WorkflowsServiceV2BetaRestInterceptor,
-    WorkflowsServiceV2BetaRestTransport,
-)
+from .rest import WorkflowsServiceV2BetaRestInterceptor, WorkflowsServiceV2BetaRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[WorkflowsServiceV2BetaTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[WorkflowsServiceV2BetaTransport]]
 _transport_registry["grpc"] = WorkflowsServiceV2BetaGrpcTransport
 _transport_registry["grpc_asyncio"] = WorkflowsServiceV2BetaGrpcAsyncIOTransport
 _transport_registry["rest"] = WorkflowsServiceV2BetaRestTransport

@@ -30,10 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.retail_v2.types import (
-    generative_question,
-    generative_question_service,
-)
+from google.cloud.retail_v2.types import generative_question, generative_question_service
 
 from .base import DEFAULT_CLIENT_INFO, GenerativeQuestionServiceTransport
 
@@ -49,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +210,14 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +251,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -330,10 +312,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
     @property
     def update_generative_questions_feature_config(
         self,
-    ) -> Callable[
-        [generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest],
-        generative_question.GenerativeQuestionsFeatureConfig,
-    ]:
+    ) -> Callable[[generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest], generative_question.GenerativeQuestionsFeatureConfig]:
         r"""Return a callable for the update generative questions
         feature config method over gRPC.
 
@@ -351,9 +330,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_generative_questions_feature_config" not in self._stubs:
-            self._stubs[
-                "update_generative_questions_feature_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_generative_questions_feature_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.retail.v2.GenerativeQuestionService/UpdateGenerativeQuestionsFeatureConfig",
                 request_serializer=generative_question_service.UpdateGenerativeQuestionsFeatureConfigRequest.serialize,
                 response_deserializer=generative_question.GenerativeQuestionsFeatureConfig.deserialize,
@@ -363,10 +340,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
     @property
     def get_generative_questions_feature_config(
         self,
-    ) -> Callable[
-        [generative_question_service.GetGenerativeQuestionsFeatureConfigRequest],
-        generative_question.GenerativeQuestionsFeatureConfig,
-    ]:
+    ) -> Callable[[generative_question_service.GetGenerativeQuestionsFeatureConfigRequest], generative_question.GenerativeQuestionsFeatureConfig]:
         r"""Return a callable for the get generative questions
         feature config method over gRPC.
 
@@ -384,9 +358,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_generative_questions_feature_config" not in self._stubs:
-            self._stubs[
-                "get_generative_questions_feature_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_generative_questions_feature_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.retail.v2.GenerativeQuestionService/GetGenerativeQuestionsFeatureConfig",
                 request_serializer=generative_question_service.GetGenerativeQuestionsFeatureConfigRequest.serialize,
                 response_deserializer=generative_question.GenerativeQuestionsFeatureConfig.deserialize,
@@ -397,8 +369,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
     def list_generative_question_configs(
         self,
     ) -> Callable[
-        [generative_question_service.ListGenerativeQuestionConfigsRequest],
-        generative_question_service.ListGenerativeQuestionConfigsResponse,
+        [generative_question_service.ListGenerativeQuestionConfigsRequest], generative_question_service.ListGenerativeQuestionConfigsResponse
     ]:
         r"""Return a callable for the list generative question
         configs method over gRPC.
@@ -416,9 +387,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_generative_question_configs" not in self._stubs:
-            self._stubs[
-                "list_generative_question_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_generative_question_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.retail.v2.GenerativeQuestionService/ListGenerativeQuestionConfigs",
                 request_serializer=generative_question_service.ListGenerativeQuestionConfigsRequest.serialize,
                 response_deserializer=generative_question_service.ListGenerativeQuestionConfigsResponse.deserialize,
@@ -428,10 +397,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
     @property
     def update_generative_question_config(
         self,
-    ) -> Callable[
-        [generative_question_service.UpdateGenerativeQuestionConfigRequest],
-        generative_question.GenerativeQuestionConfig,
-    ]:
+    ) -> Callable[[generative_question_service.UpdateGenerativeQuestionConfigRequest], generative_question.GenerativeQuestionConfig]:
         r"""Return a callable for the update generative question
         config method over gRPC.
 
@@ -448,9 +414,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_generative_question_config" not in self._stubs:
-            self._stubs[
-                "update_generative_question_config"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_generative_question_config"] = self._logged_channel.unary_unary(
                 "/google.cloud.retail.v2.GenerativeQuestionService/UpdateGenerativeQuestionConfig",
                 request_serializer=generative_question_service.UpdateGenerativeQuestionConfigRequest.serialize,
                 response_deserializer=generative_question.GenerativeQuestionConfig.deserialize,
@@ -480,9 +444,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "batch_update_generative_question_configs" not in self._stubs:
-            self._stubs[
-                "batch_update_generative_question_configs"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["batch_update_generative_question_configs"] = self._logged_channel.unary_unary(
                 "/google.cloud.retail.v2.GenerativeQuestionService/BatchUpdateGenerativeQuestionConfigs",
                 request_serializer=generative_question_service.BatchUpdateGenerativeQuestionConfigsRequest.serialize,
                 response_deserializer=generative_question_service.BatchUpdateGenerativeQuestionConfigsResponse.deserialize,
@@ -512,9 +474,7 @@ class GenerativeQuestionServiceGrpcTransport(GenerativeQuestionServiceTransport)
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

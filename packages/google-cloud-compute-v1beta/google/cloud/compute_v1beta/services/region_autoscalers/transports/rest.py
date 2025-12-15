@@ -135,12 +135,8 @@ class RegionAutoscalersRestInterceptor:
     """
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionAutoscalerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.DeleteRegionAutoscalerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -162,9 +158,7 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -181,12 +175,8 @@ class RegionAutoscalersRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionAutoscalerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRegionAutoscalerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -208,9 +198,7 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.Autoscaler,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Autoscaler, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Autoscaler, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -227,12 +215,8 @@ class RegionAutoscalersRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionAutoscalerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.InsertRegionAutoscalerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -254,9 +238,7 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -273,12 +255,8 @@ class RegionAutoscalersRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionAutoscalersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionAutoscalersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.ListRegionAutoscalersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionAutoscalersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -286,9 +264,7 @@ class RegionAutoscalersRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.RegionAutoscalerList
-    ) -> compute.RegionAutoscalerList:
+    def post_list(self, response: compute.RegionAutoscalerList) -> compute.RegionAutoscalerList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -302,9 +278,7 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.RegionAutoscalerList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.RegionAutoscalerList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.RegionAutoscalerList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -321,12 +295,8 @@ class RegionAutoscalersRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchRegionAutoscalerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchRegionAutoscalerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -348,9 +318,7 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -367,13 +335,8 @@ class RegionAutoscalersRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: compute.TestIamPermissionsRegionAutoscalerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestIamPermissionsRegionAutoscalerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.TestIamPermissionsRegionAutoscalerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestIamPermissionsRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -381,9 +344,7 @@ class RegionAutoscalersRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: compute.TestPermissionsResponse
-    ) -> compute.TestPermissionsResponse:
+    def post_test_iam_permissions(self, response: compute.TestPermissionsResponse) -> compute.TestPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -397,12 +358,8 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: compute.TestPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.TestPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.TestPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -418,12 +375,8 @@ class RegionAutoscalersRestInterceptor:
         return response, metadata
 
     def pre_update(
-        self,
-        request: compute.UpdateRegionAutoscalerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.UpdateRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.UpdateRegionAutoscalerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.UpdateRegionAutoscalerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update
 
         Override in a subclass to manipulate the request or metadata
@@ -445,9 +398,7 @@ class RegionAutoscalersRestInterceptor:
         return response
 
     def post_update_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update
 
@@ -547,30 +498,18 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionAutoscalersRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Delete(
-        _BaseRegionAutoscalersRestTransport._BaseDelete, RegionAutoscalersRestStub
-    ):
+    class _Delete(_BaseRegionAutoscalersRestTransport._BaseDelete, RegionAutoscalersRestStub):
         def __hash__(self):
             return hash("RegionAutoscalersRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -628,30 +567,16 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = (
-                _BaseRegionAutoscalersRestTransport._BaseDelete._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionAutoscalersRestTransport._BaseDelete._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -675,12 +600,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -696,12 +616,8 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -727,15 +643,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
             return hash("RegionAutoscalersRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -788,30 +696,16 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = (
-                _BaseRegionAutoscalersRestTransport._BaseGet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionAutoscalersRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -835,12 +729,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -857,9 +746,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Autoscaler.to_json(response)
                 except:
@@ -880,22 +767,12 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionAutoscalersRestTransport._BaseInsert, RegionAutoscalersRestStub
-    ):
+    class _Insert(_BaseRegionAutoscalersRestTransport._BaseInsert, RegionAutoscalersRestStub):
         def __hash__(self):
             return hash("RegionAutoscalersRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -954,36 +831,18 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = (
-                _BaseRegionAutoscalersRestTransport._BaseInsert._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionAutoscalersRestTransport._BaseInsert._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionAutoscalersRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionAutoscalersRestTransport._BaseInsert._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1007,13 +866,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1029,12 +882,8 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1055,22 +904,12 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
                 )
             return resp
 
-    class _List(
-        _BaseRegionAutoscalersRestTransport._BaseList, RegionAutoscalersRestStub
-    ):
+    class _List(_BaseRegionAutoscalersRestTransport._BaseList, RegionAutoscalersRestStub):
         def __hash__(self):
             return hash("RegionAutoscalersRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1111,30 +950,16 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
                     Contains a list of autoscalers.
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = (
-                _BaseRegionAutoscalersRestTransport._BaseList._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionAutoscalersRestTransport._BaseList._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1158,12 +983,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1180,9 +1000,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.RegionAutoscalerList.to_json(response)
                 except:
@@ -1203,22 +1021,12 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
                 )
             return resp
 
-    class _Patch(
-        _BaseRegionAutoscalersRestTransport._BasePatch, RegionAutoscalersRestStub
-    ):
+    class _Patch(_BaseRegionAutoscalersRestTransport._BasePatch, RegionAutoscalersRestStub):
         def __hash__(self):
             return hash("RegionAutoscalersRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1277,36 +1085,18 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = (
-                _BaseRegionAutoscalersRestTransport._BasePatch._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionAutoscalersRestTransport._BasePatch._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionAutoscalersRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionAutoscalersRestTransport._BasePatch._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1330,13 +1120,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1352,12 +1136,8 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1378,23 +1158,12 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions,
-        RegionAutoscalersRestStub,
-    ):
+    class _TestIamPermissions(_BaseRegionAutoscalersRestTransport._BaseTestIamPermissions, RegionAutoscalersRestStub):
         def __hash__(self):
             return hash("RegionAutoscalersRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1436,32 +1205,18 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1485,13 +1240,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1507,12 +1256,8 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.TestPermissionsResponse.to_json(response)
                 except:
@@ -1533,22 +1278,12 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
                 )
             return resp
 
-    class _Update(
-        _BaseRegionAutoscalersRestTransport._BaseUpdate, RegionAutoscalersRestStub
-    ):
+    class _Update(_BaseRegionAutoscalersRestTransport._BaseUpdate, RegionAutoscalersRestStub):
         def __hash__(self):
             return hash("RegionAutoscalersRestTransport.Update")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1607,36 +1342,18 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             """
 
-            http_options = (
-                _BaseRegionAutoscalersRestTransport._BaseUpdate._get_http_options()
-            )
+            http_options = _BaseRegionAutoscalersRestTransport._BaseUpdate._get_http_options()
 
             request, metadata = self._interceptor.pre_update(request, metadata)
-            transcoded_request = (
-                _BaseRegionAutoscalersRestTransport._BaseUpdate._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseRegionAutoscalersRestTransport._BaseUpdate._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseRegionAutoscalersRestTransport._BaseUpdate._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseRegionAutoscalersRestTransport._BaseUpdate._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionAutoscalersRestTransport._BaseUpdate._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionAutoscalersRestTransport._BaseUpdate._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1660,13 +1377,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             # Send the request
             response = RegionAutoscalersRestTransport._Update._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1682,12 +1393,8 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
 
             resp = self._interceptor.post_update(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1709,9 +1416,7 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
             return resp
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionAutoscalerRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionAutoscalerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
@@ -1723,44 +1428,31 @@ class RegionAutoscalersRestTransport(_BaseRegionAutoscalersRestTransport):
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionAutoscalerRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionAutoscalerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[[compute.ListRegionAutoscalersRequest], compute.RegionAutoscalerList]:
+    def list(self) -> Callable[[compute.ListRegionAutoscalersRequest], compute.RegionAutoscalerList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchRegionAutoscalerRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchRegionAutoscalerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [compute.TestIamPermissionsRegionAutoscalerRequest],
-        compute.TestPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[compute.TestIamPermissionsRegionAutoscalerRequest], compute.TestPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update(
-        self,
-    ) -> Callable[[compute.UpdateRegionAutoscalerRequest], compute.Operation]:
+    def update(self) -> Callable[[compute.UpdateRegionAutoscalerRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Update(self._session, self._host, self._interceptor)  # type: ignore

@@ -123,12 +123,8 @@ class ContextsRestInterceptor:
     """
 
     def pre_create_context(
-        self,
-        request: gcd_context.CreateContextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_context.CreateContextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_context.CreateContextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_context.CreateContextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_context
 
         Override in a subclass to manipulate the request or metadata
@@ -150,9 +146,7 @@ class ContextsRestInterceptor:
         return response
 
     def post_create_context_with_metadata(
-        self,
-        response: gcd_context.Context,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_context.Context, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_context.Context, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_context
 
@@ -169,12 +163,8 @@ class ContextsRestInterceptor:
         return response, metadata
 
     def pre_delete_all_contexts(
-        self,
-        request: context.DeleteAllContextsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        context.DeleteAllContextsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: context.DeleteAllContextsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[context.DeleteAllContextsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_all_contexts
 
         Override in a subclass to manipulate the request or metadata
@@ -183,9 +173,7 @@ class ContextsRestInterceptor:
         return request, metadata
 
     def pre_delete_context(
-        self,
-        request: context.DeleteContextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: context.DeleteContextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[context.DeleteContextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_context
 
@@ -195,9 +183,7 @@ class ContextsRestInterceptor:
         return request, metadata
 
     def pre_get_context(
-        self,
-        request: context.GetContextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: context.GetContextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[context.GetContextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_context
 
@@ -220,9 +206,7 @@ class ContextsRestInterceptor:
         return response
 
     def post_get_context_with_metadata(
-        self,
-        response: context.Context,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: context.Context, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[context.Context, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_context
 
@@ -239,9 +223,7 @@ class ContextsRestInterceptor:
         return response, metadata
 
     def pre_list_contexts(
-        self,
-        request: context.ListContextsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: context.ListContextsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[context.ListContextsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_contexts
 
@@ -250,9 +232,7 @@ class ContextsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_contexts(
-        self, response: context.ListContextsResponse
-    ) -> context.ListContextsResponse:
+    def post_list_contexts(self, response: context.ListContextsResponse) -> context.ListContextsResponse:
         """Post-rpc interceptor for list_contexts
 
         DEPRECATED. Please use the `post_list_contexts_with_metadata`
@@ -266,9 +246,7 @@ class ContextsRestInterceptor:
         return response
 
     def post_list_contexts_with_metadata(
-        self,
-        response: context.ListContextsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: context.ListContextsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[context.ListContextsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_contexts
 
@@ -285,12 +263,8 @@ class ContextsRestInterceptor:
         return response, metadata
 
     def pre_update_context(
-        self,
-        request: gcd_context.UpdateContextRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcd_context.UpdateContextRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcd_context.UpdateContextRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcd_context.UpdateContextRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_context
 
         Override in a subclass to manipulate the request or metadata
@@ -312,9 +286,7 @@ class ContextsRestInterceptor:
         return response
 
     def post_update_context_with_metadata(
-        self,
-        response: gcd_context.Context,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcd_context.Context, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcd_context.Context, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_context
 
@@ -331,12 +303,8 @@ class ContextsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -344,9 +312,7 @@ class ContextsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -356,12 +322,8 @@ class ContextsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -369,9 +331,7 @@ class ContextsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -381,12 +341,8 @@ class ContextsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -404,12 +360,8 @@ class ContextsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -417,9 +369,7 @@ class ContextsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -429,12 +379,8 @@ class ContextsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -442,9 +388,7 @@ class ContextsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -533,30 +477,18 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ContextsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateContext(
-        _BaseContextsRestTransport._BaseCreateContext, ContextsRestStub
-    ):
+    class _CreateContext(_BaseContextsRestTransport._BaseCreateContext, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.CreateContext")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -616,34 +548,18 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseCreateContext._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseCreateContext._get_http_options()
 
             request, metadata = self._interceptor.pre_create_context(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseCreateContext._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseCreateContext._get_transcoded_request(http_options, request)
 
-            body = _BaseContextsRestTransport._BaseCreateContext._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContextsRestTransport._BaseCreateContext._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseCreateContext._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseCreateContext._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -667,13 +583,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._CreateContext._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -689,12 +599,8 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             resp = self._interceptor.post_create_context(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_context_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_context_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_context.Context.to_json(response)
                 except:
@@ -715,22 +621,12 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 )
             return resp
 
-    class _DeleteAllContexts(
-        _BaseContextsRestTransport._BaseDeleteAllContexts, ContextsRestStub
-    ):
+    class _DeleteAllContexts(_BaseContextsRestTransport._BaseDeleteAllContexts, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.DeleteAllContexts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -766,28 +662,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseDeleteAllContexts._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseDeleteAllContexts._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_all_contexts(
-                request, metadata
-            )
-            transcoded_request = _BaseContextsRestTransport._BaseDeleteAllContexts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_all_contexts(request, metadata)
+            transcoded_request = _BaseContextsRestTransport._BaseDeleteAllContexts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseContextsRestTransport._BaseDeleteAllContexts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseContextsRestTransport._BaseDeleteAllContexts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -811,12 +695,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._DeleteAllContexts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -824,22 +703,12 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteContext(
-        _BaseContextsRestTransport._BaseDeleteContext, ContextsRestStub
-    ):
+    class _DeleteContext(_BaseContextsRestTransport._BaseDeleteContext, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.DeleteContext")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -875,30 +744,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseDeleteContext._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseDeleteContext._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_context(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseDeleteContext._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseDeleteContext._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseDeleteContext._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseDeleteContext._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -922,12 +777,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._DeleteContext._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -940,15 +790,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             return hash("ContextsRestTransport.GetContext")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1007,30 +849,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseGetContext._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseGetContext._get_http_options()
 
             request, metadata = self._interceptor.pre_get_context(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseGetContext._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseGetContext._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseGetContext._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseGetContext._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1053,14 +881,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 )
 
             # Send the request
-            response = ContextsRestTransport._GetContext._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ContextsRestTransport._GetContext._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1075,12 +896,8 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             resp = self._interceptor.post_get_context(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_context_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_context_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = context.Context.to_json(response)
                 except:
@@ -1106,15 +923,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             return hash("ContextsRestTransport.ListContexts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1156,30 +965,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseListContexts._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseListContexts._get_http_options()
 
             request, metadata = self._interceptor.pre_list_contexts(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseListContexts._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseListContexts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseListContexts._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseListContexts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1203,12 +998,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._ListContexts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1224,12 +1014,8 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             resp = self._interceptor.post_list_contexts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_contexts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_contexts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = context.ListContextsResponse.to_json(response)
                 except:
@@ -1250,22 +1036,12 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 )
             return resp
 
-    class _UpdateContext(
-        _BaseContextsRestTransport._BaseUpdateContext, ContextsRestStub
-    ):
+    class _UpdateContext(_BaseContextsRestTransport._BaseUpdateContext, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.UpdateContext")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1325,34 +1101,18 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseUpdateContext._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseUpdateContext._get_http_options()
 
             request, metadata = self._interceptor.pre_update_context(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseUpdateContext._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseUpdateContext._get_transcoded_request(http_options, request)
 
-            body = _BaseContextsRestTransport._BaseUpdateContext._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseContextsRestTransport._BaseUpdateContext._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseUpdateContext._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseUpdateContext._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1376,13 +1136,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._UpdateContext._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1398,12 +1152,8 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             resp = self._interceptor.post_update_context(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_context_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_context_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcd_context.Context.to_json(response)
                 except:
@@ -1425,25 +1175,19 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             return resp
 
     @property
-    def create_context(
-        self,
-    ) -> Callable[[gcd_context.CreateContextRequest], gcd_context.Context]:
+    def create_context(self) -> Callable[[gcd_context.CreateContextRequest], gcd_context.Context]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateContext(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_all_contexts(
-        self,
-    ) -> Callable[[context.DeleteAllContextsRequest], empty_pb2.Empty]:
+    def delete_all_contexts(self) -> Callable[[context.DeleteAllContextsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAllContexts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_context(
-        self,
-    ) -> Callable[[context.DeleteContextRequest], empty_pb2.Empty]:
+    def delete_context(self) -> Callable[[context.DeleteContextRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteContext(self._session, self._host, self._interceptor)  # type: ignore
@@ -1455,17 +1199,13 @@ class ContextsRestTransport(_BaseContextsRestTransport):
         return self._GetContext(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_contexts(
-        self,
-    ) -> Callable[[context.ListContextsRequest], context.ListContextsResponse]:
+    def list_contexts(self) -> Callable[[context.ListContextsRequest], context.ListContextsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListContexts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_context(
-        self,
-    ) -> Callable[[gcd_context.UpdateContextRequest], gcd_context.Context]:
+    def update_context(self) -> Callable[[gcd_context.UpdateContextRequest], gcd_context.Context]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateContext(self._session, self._host, self._interceptor)  # type: ignore
@@ -1479,15 +1219,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             return hash("ContextsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1525,30 +1257,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1572,12 +1290,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1589,9 +1302,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1616,22 +1327,12 @@ class ContextsRestTransport(_BaseContextsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseContextsRestTransport._BaseListLocations, ContextsRestStub
-    ):
+    class _ListLocations(_BaseContextsRestTransport._BaseListLocations, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1669,30 +1370,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1716,12 +1403,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1733,9 +1415,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1760,22 +1440,12 @@ class ContextsRestTransport(_BaseContextsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseContextsRestTransport._BaseCancelOperation, ContextsRestStub
-    ):
+    class _CancelOperation(_BaseContextsRestTransport._BaseCancelOperation, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1810,32 +1480,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseContextsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1859,12 +1513,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1883,15 +1532,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             return hash("ContextsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1929,30 +1570,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1976,12 +1603,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1993,9 +1615,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2020,22 +1640,12 @@ class ContextsRestTransport(_BaseContextsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseContextsRestTransport._BaseListOperations, ContextsRestStub
-    ):
+    class _ListOperations(_BaseContextsRestTransport._BaseListOperations, ContextsRestStub):
         def __hash__(self):
             return hash("ContextsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2073,30 +1683,16 @@ class ContextsRestTransport(_BaseContextsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseContextsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseContextsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseContextsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseContextsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseContextsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseContextsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2120,12 +1716,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
 
             # Send the request
             response = ContextsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2137,9 +1728,7 @@ class ContextsRestTransport(_BaseContextsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

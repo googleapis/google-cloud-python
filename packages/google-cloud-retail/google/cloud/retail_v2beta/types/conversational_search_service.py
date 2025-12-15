@@ -217,13 +217,11 @@ class ConversationalSearchRequest(proto.Message):
             number=1,
             oneof="type",
         )
-        selected_answer: "ConversationalSearchRequest.UserAnswer.SelectedAnswer" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="type",
-                message="ConversationalSearchRequest.UserAnswer.SelectedAnswer",
-            )
+        selected_answer: "ConversationalSearchRequest.UserAnswer.SelectedAnswer" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="type",
+            message="ConversationalSearchRequest.UserAnswer.SelectedAnswer",
         )
 
     class ConversationalFilteringSpec(proto.Message):
@@ -436,9 +434,7 @@ class ConversationalSearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        suggested_answers: MutableSequence[
-            "ConversationalSearchResponse.FollowupQuestion.SuggestedAnswer"
-        ] = proto.RepeatedField(
+        suggested_answers: MutableSequence["ConversationalSearchResponse.FollowupQuestion.SuggestedAnswer"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ConversationalSearchResponse.FollowupQuestion.SuggestedAnswer",
@@ -492,12 +488,10 @@ class ConversationalSearchResponse(proto.Message):
                 message=search_service.ProductAttributeValue,
             )
 
-        followup_question: "ConversationalSearchResponse.FollowupQuestion" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="ConversationalSearchResponse.FollowupQuestion",
-            )
+        followup_question: "ConversationalSearchResponse.FollowupQuestion" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="ConversationalSearchResponse.FollowupQuestion",
         )
         additional_filter: "ConversationalSearchResponse.ConversationalFilteringResult.AdditionalFilter" = proto.Field(
             proto.MESSAGE,

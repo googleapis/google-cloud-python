@@ -179,9 +179,7 @@ class Insight(proto.Message):
         proto.STRING,
         number=11,
     )
-    associated_recommendations: MutableSequence[
-        RecommendationReference
-    ] = proto.RepeatedField(
+    associated_recommendations: MutableSequence[RecommendationReference] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message=RecommendationReference,

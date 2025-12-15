@@ -312,9 +312,7 @@ class Conversation(proto.Message):
             proto.STRING,
             number=3,
         )
-        agent_info: MutableSequence[
-            "Conversation.QualityMetadata.AgentInfo"
-        ] = proto.RepeatedField(
+        agent_info: MutableSequence["Conversation.QualityMetadata.AgentInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="Conversation.QualityMetadata.AgentInfo",
@@ -433,9 +431,7 @@ class Conversation(proto.Message):
                 proto.FLOAT,
                 number=2,
             )
-            words: MutableSequence[
-                "Conversation.Transcript.TranscriptSegment.WordInfo"
-            ] = proto.RepeatedField(
+            words: MutableSequence["Conversation.Transcript.TranscriptSegment.WordInfo"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="Conversation.Transcript.TranscriptSegment.WordInfo",
@@ -464,9 +460,7 @@ class Conversation(proto.Message):
                 message="SentimentData",
             )
 
-        transcript_segments: MutableSequence[
-            "Conversation.Transcript.TranscriptSegment"
-        ] = proto.RepeatedField(
+        transcript_segments: MutableSequence["Conversation.Transcript.TranscriptSegment"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Conversation.Transcript.TranscriptSegment",
@@ -797,9 +791,7 @@ class AnalysisResult(proto.Message):
             number=8,
             message="IssueModelResult",
         )
-        qa_scorecard_results: MutableSequence[
-            "QaScorecardResult"
-        ] = proto.RepeatedField(
+        qa_scorecard_results: MutableSequence["QaScorecardResult"] = proto.RepeatedField(
             proto.MESSAGE,
             number=10,
             message="QaScorecardResult",
@@ -1793,9 +1785,7 @@ class PhraseMatcher(proto.Message):
         proto.BOOL,
         number=7,
     )
-    phrase_match_rule_groups: MutableSequence[
-        "PhraseMatchRuleGroup"
-    ] = proto.RepeatedField(
+    phrase_match_rule_groups: MutableSequence["PhraseMatchRuleGroup"] = proto.RepeatedField(
         proto.MESSAGE,
         number=8,
         message="PhraseMatchRuleGroup",
@@ -2367,13 +2357,11 @@ class RuntimeAnnotation(proto.Message):
         oneof="data",
         message="DialogflowInteractionData",
     )
-    conversation_summarization_suggestion: "ConversationSummarizationSuggestionData" = (
-        proto.Field(
-            proto.MESSAGE,
-            number=12,
-            oneof="data",
-            message="ConversationSummarizationSuggestionData",
-        )
+    conversation_summarization_suggestion: "ConversationSummarizationSuggestionData" = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="data",
+        message="ConversationSummarizationSuggestionData",
     )
     annotation_id: str = proto.Field(
         proto.STRING,
@@ -3180,9 +3168,7 @@ class QaQuestion(proto.Message):
             proto.INT64,
             number=1,
         )
-        dataset_validation_warnings: MutableSequence[
-            "DatasetValidationWarning"
-        ] = proto.RepeatedField(
+        dataset_validation_warnings: MutableSequence["DatasetValidationWarning"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="DatasetValidationWarning",
@@ -3712,9 +3698,7 @@ class QaScorecardResult(proto.Message):
             number=4,
             optional=True,
         )
-        qa_tag_results: MutableSequence[
-            "QaScorecardResult.QaTagResult"
-        ] = proto.RepeatedField(
+        qa_tag_results: MutableSequence["QaScorecardResult.QaTagResult"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="QaScorecardResult.QaTagResult",

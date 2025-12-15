@@ -53,13 +53,8 @@ from google.rpc import status_pb2  # type: ignore
 from google.cloud.videointelligence_v1p3beta1.types import video_intelligence
 
 from .client import StreamingVideoIntelligenceServiceClient
-from .transports.base import (
-    DEFAULT_CLIENT_INFO,
-    StreamingVideoIntelligenceServiceTransport,
-)
-from .transports.grpc_asyncio import (
-    StreamingVideoIntelligenceServiceGrpcAsyncIOTransport,
-)
+from .transports.base import DEFAULT_CLIENT_INFO, StreamingVideoIntelligenceServiceTransport
+from .transports.grpc_asyncio import StreamingVideoIntelligenceServiceGrpcAsyncIOTransport
 
 try:
     from google.api_core import client_logging  # type: ignore
@@ -79,44 +74,20 @@ class StreamingVideoIntelligenceServiceAsyncClient:
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = StreamingVideoIntelligenceServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = (
-        StreamingVideoIntelligenceServiceClient.DEFAULT_MTLS_ENDPOINT
-    )
-    _DEFAULT_ENDPOINT_TEMPLATE = (
-        StreamingVideoIntelligenceServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    DEFAULT_MTLS_ENDPOINT = StreamingVideoIntelligenceServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = StreamingVideoIntelligenceServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = StreamingVideoIntelligenceServiceClient._DEFAULT_UNIVERSE
 
-    common_billing_account_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.parse_common_billing_account_path
-    )
-    common_folder_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.common_folder_path
-    )
-    parse_common_folder_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.parse_common_organization_path
-    )
-    common_project_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.common_project_path
-    )
-    parse_common_project_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        StreamingVideoIntelligenceServiceClient.parse_common_location_path
-    )
+    common_billing_account_path = staticmethod(StreamingVideoIntelligenceServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(StreamingVideoIntelligenceServiceClient.parse_common_billing_account_path)
+    common_folder_path = staticmethod(StreamingVideoIntelligenceServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(StreamingVideoIntelligenceServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(StreamingVideoIntelligenceServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(StreamingVideoIntelligenceServiceClient.parse_common_organization_path)
+    common_project_path = staticmethod(StreamingVideoIntelligenceServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(StreamingVideoIntelligenceServiceClient.parse_common_project_path)
+    common_location_path = staticmethod(StreamingVideoIntelligenceServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(StreamingVideoIntelligenceServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -152,9 +123,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -222,11 +191,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
         transport: Optional[
-            Union[
-                str,
-                StreamingVideoIntelligenceServiceTransport,
-                Callable[..., StreamingVideoIntelligenceServiceTransport],
-            ]
+            Union[str, StreamingVideoIntelligenceServiceTransport, Callable[..., StreamingVideoIntelligenceServiceTransport]]
         ] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
@@ -287,20 +252,14 @@ class StreamingVideoIntelligenceServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.videointelligence_v1p3beta1.StreamingVideoIntelligenceServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -311,9 +270,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
 
     def streaming_annotate_video(
         self,
-        requests: Optional[
-            AsyncIterator[video_intelligence.StreamingAnnotateVideoRequest]
-        ] = None,
+        requests: Optional[AsyncIterator[video_intelligence.StreamingAnnotateVideoRequest]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -387,9 +344,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.streaming_annotate_video
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.streaming_annotate_video]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -412,9 +367,7 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

@@ -87,13 +87,8 @@ class AutoSuggestionServiceRestInterceptor:
     """
 
     def pre_suggest_queries(
-        self,
-        request: auto_suggestion_service.SuggestQueriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        auto_suggestion_service.SuggestQueriesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: auto_suggestion_service.SuggestQueriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[auto_suggestion_service.SuggestQueriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for suggest_queries
 
         Override in a subclass to manipulate the request or metadata
@@ -101,9 +96,7 @@ class AutoSuggestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_suggest_queries(
-        self, response: auto_suggestion_service.SuggestQueriesResponse
-    ) -> auto_suggestion_service.SuggestQueriesResponse:
+    def post_suggest_queries(self, response: auto_suggestion_service.SuggestQueriesResponse) -> auto_suggestion_service.SuggestQueriesResponse:
         """Post-rpc interceptor for suggest_queries
 
         DEPRECATED. Please use the `post_suggest_queries_with_metadata`
@@ -117,13 +110,8 @@ class AutoSuggestionServiceRestInterceptor:
         return response
 
     def post_suggest_queries_with_metadata(
-        self,
-        response: auto_suggestion_service.SuggestQueriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        auto_suggestion_service.SuggestQueriesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: auto_suggestion_service.SuggestQueriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[auto_suggestion_service.SuggestQueriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for suggest_queries
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -292,31 +280,18 @@ class AutoSuggestionServiceRestTransport(_BaseAutoSuggestionServiceRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AutoSuggestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _SuggestQueries(
-        _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries,
-        AutoSuggestionServiceRestStub,
-    ):
+    class _SuggestQueries(_BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries, AutoSuggestionServiceRestStub):
         def __hash__(self):
             return hash("AutoSuggestionServiceRestTransport.SuggestQueries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -356,30 +331,18 @@ class AutoSuggestionServiceRestTransport(_BaseAutoSuggestionServiceRestTransport
                     Response to SuggestQueries.
             """
 
-            http_options = (
-                _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_http_options()
-            )
+            http_options = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_http_options()
 
             request, metadata = self._interceptor.pre_suggest_queries(request, metadata)
-            transcoded_request = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_transcoded_request(http_options, request)
 
-            body = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoSuggestionServiceRestTransport._BaseSuggestQueries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -403,13 +366,7 @@ class AutoSuggestionServiceRestTransport(_BaseAutoSuggestionServiceRestTransport
 
             # Send the request
             response = AutoSuggestionServiceRestTransport._SuggestQueries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -425,16 +382,10 @@ class AutoSuggestionServiceRestTransport(_BaseAutoSuggestionServiceRestTransport
 
             resp = self._interceptor.post_suggest_queries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_suggest_queries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_suggest_queries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        auto_suggestion_service.SuggestQueriesResponse.to_json(response)
-                    )
+                    response_payload = auto_suggestion_service.SuggestQueriesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -454,12 +405,7 @@ class AutoSuggestionServiceRestTransport(_BaseAutoSuggestionServiceRestTransport
             return resp
 
     @property
-    def suggest_queries(
-        self,
-    ) -> Callable[
-        [auto_suggestion_service.SuggestQueriesRequest],
-        auto_suggestion_service.SuggestQueriesResponse,
-    ]:
+    def suggest_queries(self) -> Callable[[auto_suggestion_service.SuggestQueriesRequest], auto_suggestion_service.SuggestQueriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SuggestQueries(self._session, self._host, self._interceptor)  # type: ignore

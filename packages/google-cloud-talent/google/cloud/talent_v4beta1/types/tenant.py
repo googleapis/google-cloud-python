@@ -98,9 +98,7 @@ class Tenant(proto.Message):
         number=3,
         enum=DataUsageType,
     )
-    keyword_searchable_profile_custom_attributes: MutableSequence[
-        str
-    ] = proto.RepeatedField(
+    keyword_searchable_profile_custom_attributes: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=4,
     )

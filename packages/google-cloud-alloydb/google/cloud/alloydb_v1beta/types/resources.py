@@ -744,9 +744,7 @@ class MaintenanceUpdatePolicy(proto.Message):
         number=1,
         message=MaintenanceWindow,
     )
-    deny_maintenance_periods: MutableSequence[
-        DenyMaintenancePeriod
-    ] = proto.RepeatedField(
+    deny_maintenance_periods: MutableSequence[DenyMaintenancePeriod] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=DenyMaintenancePeriod,
@@ -1990,16 +1988,12 @@ class Instance(proto.Message):
             proto.STRING,
             number=7,
         )
-        psc_interface_configs: MutableSequence[
-            "Instance.PscInterfaceConfig"
-        ] = proto.RepeatedField(
+        psc_interface_configs: MutableSequence["Instance.PscInterfaceConfig"] = proto.RepeatedField(
             proto.MESSAGE,
             number=8,
             message="Instance.PscInterfaceConfig",
         )
-        psc_auto_connections: MutableSequence[
-            "Instance.PscAutoConnectionConfig"
-        ] = proto.RepeatedField(
+        psc_auto_connections: MutableSequence["Instance.PscAutoConnectionConfig"] = proto.RepeatedField(
             proto.MESSAGE,
             number=9,
             message="Instance.PscAutoConnectionConfig",
@@ -2053,9 +2047,7 @@ class Instance(proto.Message):
                 number=1,
             )
 
-        authorized_external_networks: MutableSequence[
-            "Instance.InstanceNetworkConfig.AuthorizedNetwork"
-        ] = proto.RepeatedField(
+        authorized_external_networks: MutableSequence["Instance.InstanceNetworkConfig.AuthorizedNetwork"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Instance.InstanceNetworkConfig.AuthorizedNetwork",

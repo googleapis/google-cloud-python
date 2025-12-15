@@ -30,9 +30,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.datacatalog_lineage_v1 import gapic_version as package_version
 from google.cloud.datacatalog_lineage_v1.types import lineage
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class LineageTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -261,143 +251,72 @@ class LineageTransport(abc.ABC):
         self,
     ) -> Callable[
         [lineage.ProcessOpenLineageRunEventRequest],
-        Union[
-            lineage.ProcessOpenLineageRunEventResponse,
-            Awaitable[lineage.ProcessOpenLineageRunEventResponse],
-        ],
+        Union[lineage.ProcessOpenLineageRunEventResponse, Awaitable[lineage.ProcessOpenLineageRunEventResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def create_process(
-        self,
-    ) -> Callable[
-        [lineage.CreateProcessRequest],
-        Union[lineage.Process, Awaitable[lineage.Process]],
-    ]:
+    def create_process(self) -> Callable[[lineage.CreateProcessRequest], Union[lineage.Process, Awaitable[lineage.Process]]]:
         raise NotImplementedError()
 
     @property
-    def update_process(
-        self,
-    ) -> Callable[
-        [lineage.UpdateProcessRequest],
-        Union[lineage.Process, Awaitable[lineage.Process]],
-    ]:
+    def update_process(self) -> Callable[[lineage.UpdateProcessRequest], Union[lineage.Process, Awaitable[lineage.Process]]]:
         raise NotImplementedError()
 
     @property
-    def get_process(
-        self,
-    ) -> Callable[
-        [lineage.GetProcessRequest], Union[lineage.Process, Awaitable[lineage.Process]]
-    ]:
+    def get_process(self) -> Callable[[lineage.GetProcessRequest], Union[lineage.Process, Awaitable[lineage.Process]]]:
         raise NotImplementedError()
 
     @property
     def list_processes(
         self,
-    ) -> Callable[
-        [lineage.ListProcessesRequest],
-        Union[lineage.ListProcessesResponse, Awaitable[lineage.ListProcessesResponse]],
-    ]:
+    ) -> Callable[[lineage.ListProcessesRequest], Union[lineage.ListProcessesResponse, Awaitable[lineage.ListProcessesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_process(
-        self,
-    ) -> Callable[
-        [lineage.DeleteProcessRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_process(self) -> Callable[[lineage.DeleteProcessRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_run(
-        self,
-    ) -> Callable[
-        [lineage.CreateRunRequest], Union[lineage.Run, Awaitable[lineage.Run]]
-    ]:
+    def create_run(self) -> Callable[[lineage.CreateRunRequest], Union[lineage.Run, Awaitable[lineage.Run]]]:
         raise NotImplementedError()
 
     @property
-    def update_run(
-        self,
-    ) -> Callable[
-        [lineage.UpdateRunRequest], Union[lineage.Run, Awaitable[lineage.Run]]
-    ]:
+    def update_run(self) -> Callable[[lineage.UpdateRunRequest], Union[lineage.Run, Awaitable[lineage.Run]]]:
         raise NotImplementedError()
 
     @property
-    def get_run(
-        self,
-    ) -> Callable[[lineage.GetRunRequest], Union[lineage.Run, Awaitable[lineage.Run]]]:
+    def get_run(self) -> Callable[[lineage.GetRunRequest], Union[lineage.Run, Awaitable[lineage.Run]]]:
         raise NotImplementedError()
 
     @property
-    def list_runs(
-        self,
-    ) -> Callable[
-        [lineage.ListRunsRequest],
-        Union[lineage.ListRunsResponse, Awaitable[lineage.ListRunsResponse]],
-    ]:
+    def list_runs(self) -> Callable[[lineage.ListRunsRequest], Union[lineage.ListRunsResponse, Awaitable[lineage.ListRunsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_run(
-        self,
-    ) -> Callable[
-        [lineage.DeleteRunRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_run(self) -> Callable[[lineage.DeleteRunRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_lineage_event(
-        self,
-    ) -> Callable[
-        [lineage.CreateLineageEventRequest],
-        Union[lineage.LineageEvent, Awaitable[lineage.LineageEvent]],
-    ]:
+    def create_lineage_event(self) -> Callable[[lineage.CreateLineageEventRequest], Union[lineage.LineageEvent, Awaitable[lineage.LineageEvent]]]:
         raise NotImplementedError()
 
     @property
-    def get_lineage_event(
-        self,
-    ) -> Callable[
-        [lineage.GetLineageEventRequest],
-        Union[lineage.LineageEvent, Awaitable[lineage.LineageEvent]],
-    ]:
+    def get_lineage_event(self) -> Callable[[lineage.GetLineageEventRequest], Union[lineage.LineageEvent, Awaitable[lineage.LineageEvent]]]:
         raise NotImplementedError()
 
     @property
     def list_lineage_events(
         self,
-    ) -> Callable[
-        [lineage.ListLineageEventsRequest],
-        Union[
-            lineage.ListLineageEventsResponse,
-            Awaitable[lineage.ListLineageEventsResponse],
-        ],
-    ]:
+    ) -> Callable[[lineage.ListLineageEventsRequest], Union[lineage.ListLineageEventsResponse, Awaitable[lineage.ListLineageEventsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_lineage_event(
-        self,
-    ) -> Callable[
-        [lineage.DeleteLineageEventRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_lineage_event(self) -> Callable[[lineage.DeleteLineageEventRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def search_links(
-        self,
-    ) -> Callable[
-        [lineage.SearchLinksRequest],
-        Union[lineage.SearchLinksResponse, Awaitable[lineage.SearchLinksResponse]],
-    ]:
+    def search_links(self) -> Callable[[lineage.SearchLinksRequest], Union[lineage.SearchLinksResponse, Awaitable[lineage.SearchLinksResponse]]]:
         raise NotImplementedError()
 
     @property
@@ -405,10 +324,7 @@ class LineageTransport(abc.ABC):
         self,
     ) -> Callable[
         [lineage.BatchSearchLinkProcessesRequest],
-        Union[
-            lineage.BatchSearchLinkProcessesResponse,
-            Awaitable[lineage.BatchSearchLinkProcessesResponse],
-        ],
+        Union[lineage.BatchSearchLinkProcessesResponse, Awaitable[lineage.BatchSearchLinkProcessesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -417,20 +333,14 @@ class LineageTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

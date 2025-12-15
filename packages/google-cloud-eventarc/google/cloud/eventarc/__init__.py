@@ -22,11 +22,7 @@ from google.cloud.eventarc_v1.services.eventarc.async_client import EventarcAsyn
 from google.cloud.eventarc_v1.services.eventarc.client import EventarcClient
 from google.cloud.eventarc_v1.types.channel import Channel
 from google.cloud.eventarc_v1.types.channel_connection import ChannelConnection
-from google.cloud.eventarc_v1.types.discovery import (
-    EventType,
-    FilteringAttribute,
-    Provider,
-)
+from google.cloud.eventarc_v1.types.discovery import EventType, FilteringAttribute, Provider
 from google.cloud.eventarc_v1.types.enrollment import Enrollment
 from google.cloud.eventarc_v1.types.eventarc import (
     CreateChannelConnectionRequest,
@@ -85,17 +81,7 @@ from google.cloud.eventarc_v1.types.logging_config import LoggingConfig
 from google.cloud.eventarc_v1.types.message_bus import MessageBus
 from google.cloud.eventarc_v1.types.network_config import NetworkConfig
 from google.cloud.eventarc_v1.types.pipeline import Pipeline
-from google.cloud.eventarc_v1.types.trigger import (
-    GKE,
-    CloudRun,
-    Destination,
-    EventFilter,
-    HttpEndpoint,
-    Pubsub,
-    StateCondition,
-    Transport,
-    Trigger,
-)
+from google.cloud.eventarc_v1.types.trigger import GKE, CloudRun, Destination, EventFilter, HttpEndpoint, Pubsub, StateCondition, Transport, Trigger
 
 __all__ = (
     "EventarcClient",

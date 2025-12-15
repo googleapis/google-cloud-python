@@ -538,12 +538,10 @@ class GrpcRoute(proto.Message):
             number=8,
             message="GrpcRoute.RetryPolicy",
         )
-        stateful_session_affinity: "GrpcRoute.StatefulSessionAffinityPolicy" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=11,
-                message="GrpcRoute.StatefulSessionAffinityPolicy",
-            )
+        stateful_session_affinity: "GrpcRoute.StatefulSessionAffinityPolicy" = proto.Field(
+            proto.MESSAGE,
+            number=11,
+            message="GrpcRoute.StatefulSessionAffinityPolicy",
         )
         idle_timeout: duration_pb2.Duration = proto.Field(
             proto.MESSAGE,

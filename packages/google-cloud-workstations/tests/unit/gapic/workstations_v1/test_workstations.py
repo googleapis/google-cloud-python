@@ -43,15 +43,7 @@ try:
 except ImportError:  # pragma: NO COVER
     HAS_GOOGLE_AUTH_AIO = False
 
-from google.api_core import (
-    future,
-    gapic_v1,
-    grpc_helpers,
-    grpc_helpers_async,
-    operation,
-    operations_v1,
-    path_template,
-)
+from google.api_core import future, gapic_v1, grpc_helpers, grpc_helpers_async, operation, operations_v1, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
@@ -71,12 +63,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 
-from google.cloud.workstations_v1.services.workstations import (
-    WorkstationsAsyncClient,
-    WorkstationsClient,
-    pagers,
-    transports,
-)
+from google.cloud.workstations_v1.services.workstations import WorkstationsAsyncClient, WorkstationsClient, pagers, transports
 from google.cloud.workstations_v1.types import workstations
 
 CRED_INFO_JSON = {
@@ -109,22 +96,14 @@ def async_anonymous_credentials():
 # This method modifies the default endpoint so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint(client):
-    return (
-        "foo.googleapis.com"
-        if ("localhost" in client.DEFAULT_ENDPOINT)
-        else client.DEFAULT_ENDPOINT
-    )
+    return "foo.googleapis.com" if ("localhost" in client.DEFAULT_ENDPOINT) else client.DEFAULT_ENDPOINT
 
 
 # If default endpoint template is localhost, then default mtls endpoint will be the same.
 # This method modifies the default endpoint template so the client can produce a different
 # mtls endpoint for endpoint testing purposes.
 def modify_default_endpoint_template(client):
-    return (
-        "test.{UNIVERSE_DOMAIN}"
-        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
-        else client._DEFAULT_ENDPOINT_TEMPLATE
-    )
+    return "test.{UNIVERSE_DOMAIN}" if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE) else client._DEFAULT_ENDPOINT_TEMPLATE
 
 
 def test__get_default_mtls_endpoint():
@@ -135,21 +114,10 @@ def test__get_default_mtls_endpoint():
     non_googleapi = "api.example.com"
 
     assert WorkstationsClient._get_default_mtls_endpoint(None) is None
-    assert (
-        WorkstationsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
-    )
-    assert (
-        WorkstationsClient._get_default_mtls_endpoint(api_mtls_endpoint)
-        == api_mtls_endpoint
-    )
-    assert (
-        WorkstationsClient._get_default_mtls_endpoint(sandbox_endpoint)
-        == sandbox_mtls_endpoint
-    )
-    assert (
-        WorkstationsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
-        == sandbox_mtls_endpoint
-    )
+    assert WorkstationsClient._get_default_mtls_endpoint(api_endpoint) == api_mtls_endpoint
+    assert WorkstationsClient._get_default_mtls_endpoint(api_mtls_endpoint) == api_mtls_endpoint
+    assert WorkstationsClient._get_default_mtls_endpoint(sandbox_endpoint) == sandbox_mtls_endpoint
+    assert WorkstationsClient._get_default_mtls_endpoint(sandbox_mtls_endpoint) == sandbox_mtls_endpoint
     assert WorkstationsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
@@ -162,29 +130,23 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         assert WorkstationsClient._read_environment_variables() == (False, "auto", None)
 
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            WorkstationsClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            with pytest.raises(ValueError) as excinfo:
+                WorkstationsClient._read_environment_variables()
+            assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        else:
+            assert WorkstationsClient._read_environment_variables() == (
+                False,
+                "auto",
+                None,
+            )
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        assert WorkstationsClient._read_environment_variables() == (
-            False,
-            "never",
-            None,
-        )
+        assert WorkstationsClient._read_environment_variables() == (False, "never", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        assert WorkstationsClient._read_environment_variables() == (
-            False,
-            "always",
-            None,
-        )
+        assert WorkstationsClient._read_environment_variables() == (False, "always", None)
 
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
         assert WorkstationsClient._read_environment_variables() == (False, "auto", None)
@@ -192,17 +154,95 @@ def test__read_environment_variables():
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             WorkstationsClient._read_environment_variables()
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
-        assert WorkstationsClient._read_environment_variables() == (
-            False,
-            "auto",
-            "foo.com",
-        )
+        assert WorkstationsClient._read_environment_variables() == (False, "auto", "foo.com")
+
+
+def test_use_client_cert_effective():
+    # Test case 1: Test when `should_use_client_cert` returns True.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=True):
+            assert WorkstationsClient._use_client_cert_effective() is True
+
+    # Test case 2: Test when `should_use_client_cert` returns False.
+    # We mock the `should_use_client_cert` function to simulate a scenario where
+    # the google-auth library supports automatic mTLS and determines that a
+    # client certificate should NOT be used.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch("google.auth.transport.mtls.should_use_client_cert", return_value=False):
+            assert WorkstationsClient._use_client_cert_effective() is False
+
+    # Test case 3: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+            assert WorkstationsClient._use_client_cert_effective() is True
+
+    # Test case 4: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+            assert WorkstationsClient._use_client_cert_effective() is False
+
+    # Test case 5: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "True".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "True"}):
+            assert WorkstationsClient._use_client_cert_effective() is True
+
+    # Test case 6: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "False".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "False"}):
+            assert WorkstationsClient._use_client_cert_effective() is False
+
+    # Test case 7: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "TRUE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "TRUE"}):
+            assert WorkstationsClient._use_client_cert_effective() is True
+
+    # Test case 8: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "FALSE".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "FALSE"}):
+            assert WorkstationsClient._use_client_cert_effective() is False
+
+    # Test case 9: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not set.
+    # In this case, the method should return False, which is the default value.
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, clear=True):
+            assert WorkstationsClient._use_client_cert_effective() is False
+
+    # Test case 10: Test when `should_use_client_cert` is unavailable and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should raise a ValueError as the environment variable must be either
+    # "true" or "false".
+    if not hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            with pytest.raises(ValueError):
+                WorkstationsClient._use_client_cert_effective()
+
+    # Test case 11: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to an invalid value.
+    # The method should return False as the environment variable is set to an invalid value.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "unsupported"}):
+            assert WorkstationsClient._use_client_cert_effective() is False
+
+    # Test case 12: Test when `should_use_client_cert` is available and the
+    # `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is unset. Also,
+    # the GOOGLE_API_CONFIG environment variable is unset.
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": ""}):
+            with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": ""}):
+                assert WorkstationsClient._use_client_cert_effective() is False
 
 
 def test__get_client_cert_source():
@@ -210,119 +250,45 @@ def test__get_client_cert_source():
     mock_default_cert_source = mock.Mock()
 
     assert WorkstationsClient._get_client_cert_source(None, False) is None
-    assert (
-        WorkstationsClient._get_client_cert_source(mock_provided_cert_source, False)
-        is None
-    )
-    assert (
-        WorkstationsClient._get_client_cert_source(mock_provided_cert_source, True)
-        == mock_provided_cert_source
-    )
+    assert WorkstationsClient._get_client_cert_source(mock_provided_cert_source, False) is None
+    assert WorkstationsClient._get_client_cert_source(mock_provided_cert_source, True) == mock_provided_cert_source
 
-    with mock.patch(
-        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
-    ):
-        with mock.patch(
-            "google.auth.transport.mtls.default_client_cert_source",
-            return_value=mock_default_cert_source,
-        ):
-            assert (
-                WorkstationsClient._get_client_cert_source(None, True)
-                is mock_default_cert_source
-            )
-            assert (
-                WorkstationsClient._get_client_cert_source(
-                    mock_provided_cert_source, "true"
-                )
-                is mock_provided_cert_source
-            )
+    with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+        with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_default_cert_source):
+            assert WorkstationsClient._get_client_cert_source(None, True) is mock_default_cert_source
+            assert WorkstationsClient._get_client_cert_source(mock_provided_cert_source, "true") is mock_provided_cert_source
 
 
-@mock.patch.object(
-    WorkstationsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsClient),
-)
-@mock.patch.object(
-    WorkstationsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsAsyncClient),
-)
+@mock.patch.object(WorkstationsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsClient))
+@mock.patch.object(WorkstationsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsAsyncClient))
 def test__get_api_endpoint():
     api_override = "foo.com"
     mock_client_cert_source = mock.Mock()
     default_universe = WorkstationsClient._DEFAULT_UNIVERSE
-    default_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
-    assert (
-        WorkstationsClient._get_api_endpoint(
-            api_override, mock_client_cert_source, default_universe, "always"
-        )
-        == api_override
-    )
-    assert (
-        WorkstationsClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "auto"
-        )
-        == WorkstationsClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        WorkstationsClient._get_api_endpoint(None, None, default_universe, "auto")
-        == default_endpoint
-    )
-    assert (
-        WorkstationsClient._get_api_endpoint(None, None, default_universe, "always")
-        == WorkstationsClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        WorkstationsClient._get_api_endpoint(
-            None, mock_client_cert_source, default_universe, "always"
-        )
-        == WorkstationsClient.DEFAULT_MTLS_ENDPOINT
-    )
-    assert (
-        WorkstationsClient._get_api_endpoint(None, None, mock_universe, "never")
-        == mock_endpoint
-    )
-    assert (
-        WorkstationsClient._get_api_endpoint(None, None, default_universe, "never")
-        == default_endpoint
-    )
+    assert WorkstationsClient._get_api_endpoint(api_override, mock_client_cert_source, default_universe, "always") == api_override
+    assert WorkstationsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "auto") == WorkstationsClient.DEFAULT_MTLS_ENDPOINT
+    assert WorkstationsClient._get_api_endpoint(None, None, default_universe, "auto") == default_endpoint
+    assert WorkstationsClient._get_api_endpoint(None, None, default_universe, "always") == WorkstationsClient.DEFAULT_MTLS_ENDPOINT
+    assert WorkstationsClient._get_api_endpoint(None, mock_client_cert_source, default_universe, "always") == WorkstationsClient.DEFAULT_MTLS_ENDPOINT
+    assert WorkstationsClient._get_api_endpoint(None, None, mock_universe, "never") == mock_endpoint
+    assert WorkstationsClient._get_api_endpoint(None, None, default_universe, "never") == default_endpoint
 
     with pytest.raises(MutualTLSChannelError) as excinfo:
-        WorkstationsClient._get_api_endpoint(
-            None, mock_client_cert_source, mock_universe, "auto"
-        )
-    assert (
-        str(excinfo.value)
-        == "mTLS is not supported in any universe other than googleapis.com."
-    )
+        WorkstationsClient._get_api_endpoint(None, mock_client_cert_source, mock_universe, "auto")
+    assert str(excinfo.value) == "mTLS is not supported in any universe other than googleapis.com."
 
 
 def test__get_universe_domain():
     client_universe_domain = "foo.com"
     universe_domain_env = "bar.com"
 
-    assert (
-        WorkstationsClient._get_universe_domain(
-            client_universe_domain, universe_domain_env
-        )
-        == client_universe_domain
-    )
-    assert (
-        WorkstationsClient._get_universe_domain(None, universe_domain_env)
-        == universe_domain_env
-    )
-    assert (
-        WorkstationsClient._get_universe_domain(None, None)
-        == WorkstationsClient._DEFAULT_UNIVERSE
-    )
+    assert WorkstationsClient._get_universe_domain(client_universe_domain, universe_domain_env) == client_universe_domain
+    assert WorkstationsClient._get_universe_domain(None, universe_domain_env) == universe_domain_env
+    assert WorkstationsClient._get_universe_domain(None, None) == WorkstationsClient._DEFAULT_UNIVERSE
 
     with pytest.raises(ValueError) as excinfo:
         WorkstationsClient._get_universe_domain("", None)
@@ -382,9 +348,7 @@ def test__add_cred_info_for_auth_errors_no_get_cred_info(error_code):
 )
 def test_workstations_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_info"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_info") as factory:
         factory.return_value = creds
         info = {"valid": True}
         client = client_class.from_service_account_info(info, transport=transport_name)
@@ -392,9 +356,7 @@ def test_workstations_client_from_service_account_info(client_class, transport_n
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "workstations.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://workstations.googleapis.com"
+            "workstations.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://workstations.googleapis.com"
         )
 
 
@@ -406,19 +368,13 @@ def test_workstations_client_from_service_account_info(client_class, transport_n
         (transports.WorkstationsRestTransport, "rest"),
     ],
 )
-def test_workstations_client_service_account_always_use_jwt(
-    transport_class, transport_name
-):
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+def test_workstations_client_service_account_always_use_jwt(transport_class, transport_name):
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=True)
         use_jwt.assert_called_once_with(True)
 
-    with mock.patch.object(
-        service_account.Credentials, "with_always_use_jwt_access", create=True
-    ) as use_jwt:
+    with mock.patch.object(service_account.Credentials, "with_always_use_jwt_access", create=True) as use_jwt:
         creds = service_account.Credentials(None, None, None)
         transport = transport_class(credentials=creds, always_use_jwt_access=False)
         use_jwt.assert_not_called()
@@ -434,26 +390,18 @@ def test_workstations_client_service_account_always_use_jwt(
 )
 def test_workstations_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
-    with mock.patch.object(
-        service_account.Credentials, "from_service_account_file"
-    ) as factory:
+    with mock.patch.object(service_account.Credentials, "from_service_account_file") as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_file("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json(
-            "dummy/file/path.json", transport=transport_name
-        )
+        client = client_class.from_service_account_json("dummy/file/path.json", transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "workstations.googleapis.com:443"
-            if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://workstations.googleapis.com"
+            "workstations.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://workstations.googleapis.com"
         )
 
 
@@ -473,27 +421,13 @@ def test_workstations_client_get_transport_class():
     "client_class,transport_class,transport_name",
     [
         (WorkstationsClient, transports.WorkstationsGrpcTransport, "grpc"),
-        (
-            WorkstationsAsyncClient,
-            transports.WorkstationsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (WorkstationsAsyncClient, transports.WorkstationsGrpcAsyncIOTransport, "grpc_asyncio"),
         (WorkstationsClient, transports.WorkstationsRestTransport, "rest"),
     ],
 )
-@mock.patch.object(
-    WorkstationsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsClient),
-)
-@mock.patch.object(
-    WorkstationsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsAsyncClient),
-)
-def test_workstations_client_client_options(
-    client_class, transport_class, transport_name
-):
+@mock.patch.object(WorkstationsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsClient))
+@mock.patch.object(WorkstationsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsAsyncClient))
+def test_workstations_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(WorkstationsClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
@@ -531,9 +465,7 @@ def test_workstations_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -565,21 +497,7 @@ def test_workstations_client_client_options(
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-    )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client = client_class(transport=transport_name)
-    assert (
-        str(excinfo.value)
-        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-    )
+    assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -589,9 +507,7 @@ def test_workstations_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -600,18 +516,14 @@ def test_workstations_client_client_options(
             api_audience=None,
         )
     # Check the case api_endpoint is provided
-    options = client_options.ClientOptions(
-        api_audience="https://language.googleapis.com"
-    )
+    options = client_options.ClientOptions(api_audience="https://language.googleapis.com")
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -625,57 +537,31 @@ def test_workstations_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (WorkstationsClient, transports.WorkstationsGrpcTransport, "grpc", "true"),
-        (
-            WorkstationsAsyncClient,
-            transports.WorkstationsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "true",
-        ),
+        (WorkstationsAsyncClient, transports.WorkstationsGrpcAsyncIOTransport, "grpc_asyncio", "true"),
         (WorkstationsClient, transports.WorkstationsGrpcTransport, "grpc", "false"),
-        (
-            WorkstationsAsyncClient,
-            transports.WorkstationsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            "false",
-        ),
+        (WorkstationsAsyncClient, transports.WorkstationsGrpcAsyncIOTransport, "grpc_asyncio", "false"),
         (WorkstationsClient, transports.WorkstationsRestTransport, "rest", "true"),
         (WorkstationsClient, transports.WorkstationsRestTransport, "rest", "false"),
     ],
 )
-@mock.patch.object(
-    WorkstationsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsClient),
-)
-@mock.patch.object(
-    WorkstationsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsAsyncClient),
-)
+@mock.patch.object(WorkstationsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsClient))
+@mock.patch.object(WorkstationsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsAsyncClient))
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_workstations_client_mtls_env_auto(
-    client_class, transport_class, transport_name, use_client_cert_env
-):
+def test_workstations_client_mtls_env_auto(client_class, transport_class, transport_name, use_client_cert_env):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
     # mtls endpoint, if GOOGLE_API_USE_CLIENT_CERTIFICATE is "true" and client cert exists.
 
     # Check the case client_cert_source is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
-        options = client_options.ClientOptions(
-            client_cert_source=client_cert_source_callback
-        )
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
+        options = client_options.ClientOptions(client_cert_source=client_cert_source_callback)
         with mock.patch.object(transport_class, "__init__") as patched:
             patched.return_value = None
             client = client_class(client_options=options, transport=transport_name)
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                )
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -694,22 +580,12 @@ def test_workstations_client_mtls_env_auto(
 
     # Check the case ADC client cert is provided. Whether client cert is used depends on
     # GOOGLE_API_USE_CLIENT_CERTIFICATE value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=True,
-            ):
-                with mock.patch(
-                    "google.auth.transport.mtls.default_client_cert_source",
-                    return_value=client_cert_source_callback,
-                ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+                with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=client_cert_source_callback):
                     if use_client_cert_env == "false":
-                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                        )
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE)
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -730,22 +606,15 @@ def test_workstations_client_mtls_env_auto(
                     )
 
     # Check the case client_cert_source and ADC client cert are not provided.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}
-    ):
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": use_client_cert_env}):
         with mock.patch.object(transport_class, "__init__") as patched:
-            with mock.patch(
-                "google.auth.transport.mtls.has_default_client_cert_source",
-                return_value=False,
-            ):
+            with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
                 patched.return_value = None
                 client = client_class(transport=transport_name)
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                    ),
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -756,26 +625,16 @@ def test_workstations_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize("client_class", [WorkstationsClient, WorkstationsAsyncClient])
-@mock.patch.object(
-    WorkstationsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(WorkstationsClient)
-)
-@mock.patch.object(
-    WorkstationsAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(WorkstationsAsyncClient),
-)
+@mock.patch.object(WorkstationsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(WorkstationsClient))
+@mock.patch.object(WorkstationsAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint(WorkstationsAsyncClient))
 def test_workstations_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source == mock_client_cert_source
 
@@ -783,14 +642,106 @@ def test_workstations_client_get_mtls_endpoint_and_cert_source(client_class):
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
         mock_client_cert_source = mock.Mock()
         mock_api_endpoint = "foo"
-        options = client_options.ClientOptions(
-            client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint
-        )
-        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(
-            options
-        )
+        options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
         assert api_endpoint == mock_api_endpoint
         assert cert_source is None
+
+    # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "Unsupported".
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}):
+        if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+            mock_client_cert_source = mock.Mock()
+            mock_api_endpoint = "foo"
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=mock_api_endpoint)
+            api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+            assert api_endpoint == mock_api_endpoint
+            assert cert_source is None
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset.
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", None)
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
+
+    # Test cases for mTLS enablement when GOOGLE_API_USE_CLIENT_CERTIFICATE is unset(empty).
+    test_cases = [
+        (
+            # With workloads present in config, mTLS is enabled.
+            {
+                "version": 1,
+                "cert_configs": {
+                    "workload": {
+                        "cert_path": "path/to/cert/file",
+                        "key_path": "path/to/key/file",
+                    }
+                },
+            },
+            mock_client_cert_source,
+        ),
+        (
+            # With workloads not present in config, mTLS is disabled.
+            {
+                "version": 1,
+                "cert_configs": {},
+            },
+            None,
+        ),
+    ]
+    if hasattr(google.auth.transport.mtls, "should_use_client_cert"):
+        for config_data, expected_cert_source in test_cases:
+            env = os.environ.copy()
+            env.pop("GOOGLE_API_USE_CLIENT_CERTIFICATE", "")
+            with mock.patch.dict(os.environ, env, clear=True):
+                config_filename = "mock_certificate_config.json"
+                config_file_content = json.dumps(config_data)
+                m = mock.mock_open(read_data=config_file_content)
+                with mock.patch("builtins.open", m):
+                    with mock.patch.dict(os.environ, {"GOOGLE_API_CERTIFICATE_CONFIG": config_filename}):
+                        mock_api_endpoint = "foo"
+                        options = client_options.ClientOptions(
+                            client_cert_source=mock_client_cert_source,
+                            api_endpoint=mock_api_endpoint,
+                        )
+                        api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source(options)
+                        assert api_endpoint == mock_api_endpoint
+                        assert cert_source is expected_cert_source
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "never".
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
@@ -806,28 +757,16 @@ def test_workstations_client_get_mtls_endpoint_and_cert_source(client_class):
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert doesn't exist.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=False,
-        ):
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=False):
             api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
             assert api_endpoint == client_class.DEFAULT_ENDPOINT
             assert cert_source is None
 
     # Test the case GOOGLE_API_USE_MTLS_ENDPOINT is "auto" and default cert exists.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.mtls.has_default_client_cert_source",
-            return_value=True,
-        ):
-            with mock.patch(
-                "google.auth.transport.mtls.default_client_cert_source",
-                return_value=mock_client_cert_source,
-            ):
-                (
-                    api_endpoint,
-                    cert_source,
-                ) = client_class.get_mtls_endpoint_and_cert_source()
+        with mock.patch("google.auth.transport.mtls.has_default_client_cert_source", return_value=True):
+            with mock.patch("google.auth.transport.mtls.default_client_cert_source", return_value=mock_client_cert_source):
+                api_endpoint, cert_source = client_class.get_mtls_endpoint_and_cert_source()
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
@@ -837,60 +776,26 @@ def test_workstations_client_get_mtls_endpoint_and_cert_source(client_class):
         with pytest.raises(MutualTLSChannelError) as excinfo:
             client_class.get_mtls_endpoint_and_cert_source()
 
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-        )
-
-    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
-    with mock.patch.dict(
-        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
-    ):
-        with pytest.raises(ValueError) as excinfo:
-            client_class.get_mtls_endpoint_and_cert_source()
-
-        assert (
-            str(excinfo.value)
-            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-        )
+        assert str(excinfo.value) == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
 
 
 @pytest.mark.parametrize("client_class", [WorkstationsClient, WorkstationsAsyncClient])
-@mock.patch.object(
-    WorkstationsClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsClient),
-)
-@mock.patch.object(
-    WorkstationsAsyncClient,
-    "_DEFAULT_ENDPOINT_TEMPLATE",
-    modify_default_endpoint_template(WorkstationsAsyncClient),
-)
+@mock.patch.object(WorkstationsClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsClient))
+@mock.patch.object(WorkstationsAsyncClient, "_DEFAULT_ENDPOINT_TEMPLATE", modify_default_endpoint_template(WorkstationsAsyncClient))
 def test_workstations_client_client_api_endpoint(client_class):
     mock_client_cert_source = client_cert_source_callback
     api_override = "foo.com"
     default_universe = WorkstationsClient._DEFAULT_UNIVERSE
-    default_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=default_universe
-    )
+    default_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=default_universe)
     mock_universe = "bar.com"
-    mock_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-        UNIVERSE_DOMAIN=mock_universe
-    )
+    mock_endpoint = WorkstationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=mock_universe)
 
     # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
     # use ClientOptions.api_endpoint as the api endpoint regardless.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
-        with mock.patch(
-            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-        ):
-            options = client_options.ClientOptions(
-                client_cert_source=mock_client_cert_source, api_endpoint=api_override
-            )
-            client = client_class(
-                client_options=options,
-                credentials=ga_credentials.AnonymousCredentials(),
-            )
+        with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"):
+            options = client_options.ClientOptions(client_cert_source=mock_client_cert_source, api_endpoint=api_override)
+            client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
@@ -913,19 +818,11 @@ def test_workstations_client_client_api_endpoint(client_class):
     universe_exists = hasattr(options, "universe_domain")
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
     else:
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
-    assert client.api_endpoint == (
-        mock_endpoint if universe_exists else default_endpoint
-    )
-    assert client.universe_domain == (
-        mock_universe if universe_exists else default_universe
-    )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
+    assert client.api_endpoint == (mock_endpoint if universe_exists else default_endpoint)
+    assert client.universe_domain == (mock_universe if universe_exists else default_universe)
 
     # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
@@ -933,9 +830,7 @@ def test_workstations_client_client_api_endpoint(client_class):
     if hasattr(options, "universe_domain"):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = client_class(client_options=options, credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
 
@@ -943,17 +838,11 @@ def test_workstations_client_client_api_endpoint(client_class):
     "client_class,transport_class,transport_name",
     [
         (WorkstationsClient, transports.WorkstationsGrpcTransport, "grpc"),
-        (
-            WorkstationsAsyncClient,
-            transports.WorkstationsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-        ),
+        (WorkstationsAsyncClient, transports.WorkstationsGrpcAsyncIOTransport, "grpc_asyncio"),
         (WorkstationsClient, transports.WorkstationsRestTransport, "rest"),
     ],
 )
-def test_workstations_client_client_options_scopes(
-    client_class, transport_class, transport_name
-):
+def test_workstations_client_client_options_scopes(client_class, transport_class, transport_name):
     # Check the case scopes are provided.
     options = client_options.ClientOptions(
         scopes=["1", "2"],
@@ -964,9 +853,7 @@ def test_workstations_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -979,24 +866,12 @@ def test_workstations_client_client_options_scopes(
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            WorkstationsClient,
-            transports.WorkstationsGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            WorkstationsAsyncClient,
-            transports.WorkstationsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (WorkstationsClient, transports.WorkstationsGrpcTransport, "grpc", grpc_helpers),
+        (WorkstationsAsyncClient, transports.WorkstationsGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
         (WorkstationsClient, transports.WorkstationsRestTransport, "rest", None),
     ],
 )
-def test_workstations_client_client_options_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_workstations_client_client_options_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1006,9 +881,7 @@ def test_workstations_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1019,9 +892,7 @@ def test_workstations_client_client_options_credentials_file(
 
 
 def test_workstations_client_client_options_from_dict():
-    with mock.patch(
-        "google.cloud.workstations_v1.services.workstations.transports.WorkstationsGrpcTransport.__init__"
-    ) as grpc_transport:
+    with mock.patch("google.cloud.workstations_v1.services.workstations.transports.WorkstationsGrpcTransport.__init__") as grpc_transport:
         grpc_transport.return_value = None
         client = WorkstationsClient(client_options={"api_endpoint": "squid.clam.whelk"})
         grpc_transport.assert_called_once_with(
@@ -1040,23 +911,11 @@ def test_workstations_client_client_options_from_dict():
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
-        (
-            WorkstationsClient,
-            transports.WorkstationsGrpcTransport,
-            "grpc",
-            grpc_helpers,
-        ),
-        (
-            WorkstationsAsyncClient,
-            transports.WorkstationsGrpcAsyncIOTransport,
-            "grpc_asyncio",
-            grpc_helpers_async,
-        ),
+        (WorkstationsClient, transports.WorkstationsGrpcTransport, "grpc", grpc_helpers),
+        (WorkstationsAsyncClient, transports.WorkstationsGrpcAsyncIOTransport, "grpc_asyncio", grpc_helpers_async),
     ],
 )
-def test_workstations_client_create_channel_credentials_file(
-    client_class, transport_class, transport_name, grpc_helpers
-):
+def test_workstations_client_create_channel_credentials_file(client_class, transport_class, transport_name, grpc_helpers):
     # Check the case credentials file is provided.
     options = client_options.ClientOptions(credentials_file="credentials.json")
 
@@ -1066,9 +925,7 @@ def test_workstations_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-            ),
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1078,13 +935,9 @@ def test_workstations_client_create_channel_credentials_file(
         )
 
     # test that the credentials from file are saved and used as the credentials.
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch.object(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch.object(
         google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
-        grpc_helpers, "create_channel"
-    ) as create_channel:
+    ) as adc, mock.patch.object(grpc_helpers, "create_channel") as create_channel:
         creds = ga_credentials.AnonymousCredentials()
         file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
@@ -1124,9 +977,7 @@ def test_get_workstation_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.WorkstationCluster(
             name="name_value",
@@ -1176,12 +1027,8 @@ def test_get_workstation_cluster_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1204,19 +1051,12 @@ def test_get_workstation_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_workstation_cluster] = mock_rpc
         request = {}
         client.get_workstation_cluster(request)
 
@@ -1231,9 +1071,7 @@ def test_get_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1247,17 +1085,12 @@ async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_workstation_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_workstation_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_workstation_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_workstation_cluster] = mock_rpc
 
         request = {}
         await client.get_workstation_cluster(request)
@@ -1273,10 +1106,7 @@ async def test_get_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.GetWorkstationClusterRequest,
-):
+async def test_get_workstation_cluster_async(transport: str = "grpc_asyncio", request_type=workstations.GetWorkstationClusterRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1287,9 +1117,7 @@ async def test_get_workstation_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.WorkstationCluster(
@@ -1342,9 +1170,7 @@ def test_get_workstation_cluster_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         call.return_value = workstations.WorkstationCluster()
         client.get_workstation_cluster(request)
 
@@ -1374,12 +1200,8 @@ async def test_get_workstation_cluster_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.WorkstationCluster()
-        )
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.WorkstationCluster())
         await client.get_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1401,9 +1223,7 @@ def test_get_workstation_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.WorkstationCluster()
         # Call the method with a truthy value for each flattened field,
@@ -1442,15 +1262,11 @@ async def test_get_workstation_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.WorkstationCluster()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.WorkstationCluster()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.WorkstationCluster())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_workstation_cluster(
@@ -1499,9 +1315,7 @@ def test_list_workstation_clusters(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationClustersResponse(
             next_page_token="next_page_token_value",
@@ -1538,12 +1352,8 @@ def test_list_workstation_clusters_non_empty_request_with_auto_populated_field()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_workstation_clusters(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -1567,19 +1377,12 @@ def test_list_workstation_clusters_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_workstation_clusters
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_workstation_clusters in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_workstation_clusters
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_workstation_clusters] = mock_rpc
         request = {}
         client.list_workstation_clusters(request)
 
@@ -1594,9 +1397,7 @@ def test_list_workstation_clusters_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -1610,17 +1411,12 @@ async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_workstation_clusters
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_workstation_clusters in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_workstation_clusters
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_workstation_clusters] = mock_rpc
 
         request = {}
         await client.list_workstation_clusters(request)
@@ -1636,10 +1432,7 @@ async def test_list_workstation_clusters_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workstation_clusters_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListWorkstationClustersRequest,
-):
+async def test_list_workstation_clusters_async(transport: str = "grpc_asyncio", request_type=workstations.ListWorkstationClustersRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -1650,9 +1443,7 @@ async def test_list_workstation_clusters_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListWorkstationClustersResponse(
@@ -1691,9 +1482,7 @@ def test_list_workstation_clusters_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         call.return_value = workstations.ListWorkstationClustersResponse()
         client.list_workstation_clusters(request)
 
@@ -1723,12 +1512,8 @@ async def test_list_workstation_clusters_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationClustersResponse()
-        )
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListWorkstationClustersResponse())
         await client.list_workstation_clusters(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1750,9 +1535,7 @@ def test_list_workstation_clusters_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationClustersResponse()
         # Call the method with a truthy value for each flattened field,
@@ -1791,15 +1574,11 @@ async def test_list_workstation_clusters_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationClustersResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationClustersResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListWorkstationClustersResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_workstation_clusters(
@@ -1837,9 +1616,7 @@ def test_list_workstation_clusters_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationClustersResponse(
@@ -1872,12 +1649,8 @@ def test_list_workstation_clusters_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_workstation_clusters(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_workstation_clusters(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -1895,9 +1668,7 @@ def test_list_workstation_clusters_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationClustersResponse(
@@ -1938,11 +1709,7 @@ async def test_list_workstation_clusters_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationClustersResponse(
@@ -1990,11 +1757,7 @@ async def test_list_workstation_clusters_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationClustersResponse(
@@ -2026,9 +1789,7 @@ async def test_list_workstation_clusters_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workstation_clusters(request={})
-        ).pages:
+        async for page_ in (await client.list_workstation_clusters(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2052,9 +1813,7 @@ def test_create_workstation_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_workstation_cluster(request)
@@ -2086,12 +1845,8 @@ def test_create_workstation_cluster_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2115,19 +1870,12 @@ def test_create_workstation_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_workstation_cluster] = mock_rpc
         request = {}
         client.create_workstation_cluster(request)
 
@@ -2147,9 +1895,7 @@ def test_create_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2163,17 +1909,12 @@ async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_workstation_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_workstation_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_workstation_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_workstation_cluster] = mock_rpc
 
         request = {}
         await client.create_workstation_cluster(request)
@@ -2194,10 +1935,7 @@ async def test_create_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.CreateWorkstationClusterRequest,
-):
+async def test_create_workstation_cluster_async(transport: str = "grpc_asyncio", request_type=workstations.CreateWorkstationClusterRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2208,13 +1946,9 @@ async def test_create_workstation_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2244,9 +1978,7 @@ def test_create_workstation_cluster_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_workstation_cluster(request)
 
@@ -2276,12 +2008,8 @@ async def test_create_workstation_cluster_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2303,9 +2031,7 @@ def test_create_workstation_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -2354,15 +2080,11 @@ async def test_create_workstation_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_workstation_cluster(
@@ -2421,9 +2143,7 @@ def test_update_workstation_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.update_workstation_cluster(request)
@@ -2452,12 +2172,8 @@ def test_update_workstation_cluster_non_empty_request_with_auto_populated_field(
     request = workstations.UpdateWorkstationClusterRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2478,19 +2194,12 @@ def test_update_workstation_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_workstation_cluster] = mock_rpc
         request = {}
         client.update_workstation_cluster(request)
 
@@ -2510,9 +2219,7 @@ def test_update_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2526,17 +2233,12 @@ async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_workstation_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_workstation_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_workstation_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_workstation_cluster] = mock_rpc
 
         request = {}
         await client.update_workstation_cluster(request)
@@ -2557,10 +2259,7 @@ async def test_update_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.UpdateWorkstationClusterRequest,
-):
+async def test_update_workstation_cluster_async(transport: str = "grpc_asyncio", request_type=workstations.UpdateWorkstationClusterRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2571,13 +2270,9 @@ async def test_update_workstation_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2607,9 +2302,7 @@ def test_update_workstation_cluster_field_headers():
     request.workstation_cluster.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_workstation_cluster(request)
 
@@ -2639,12 +2332,8 @@ async def test_update_workstation_cluster_field_headers_async():
     request.workstation_cluster.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2666,9 +2355,7 @@ def test_update_workstation_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -2712,15 +2399,11 @@ async def test_update_workstation_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_workstation_cluster(
@@ -2774,9 +2457,7 @@ def test_delete_workstation_cluster(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_workstation_cluster(request)
@@ -2808,12 +2489,8 @@ def test_delete_workstation_cluster_non_empty_request_with_auto_populated_field(
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_workstation_cluster(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -2837,19 +2514,12 @@ def test_delete_workstation_cluster_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_workstation_cluster] = mock_rpc
         request = {}
         client.delete_workstation_cluster(request)
 
@@ -2869,9 +2539,7 @@ def test_delete_workstation_cluster_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -2885,17 +2553,12 @@ async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_workstation_cluster
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_workstation_cluster in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_workstation_cluster
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_workstation_cluster] = mock_rpc
 
         request = {}
         await client.delete_workstation_cluster(request)
@@ -2916,10 +2579,7 @@ async def test_delete_workstation_cluster_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_cluster_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.DeleteWorkstationClusterRequest,
-):
+async def test_delete_workstation_cluster_async(transport: str = "grpc_asyncio", request_type=workstations.DeleteWorkstationClusterRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -2930,13 +2590,9 @@ async def test_delete_workstation_cluster_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2966,9 +2622,7 @@ def test_delete_workstation_cluster_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_workstation_cluster(request)
 
@@ -2998,12 +2652,8 @@ async def test_delete_workstation_cluster_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_workstation_cluster(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3025,9 +2675,7 @@ def test_delete_workstation_cluster_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -3066,15 +2714,11 @@ async def test_delete_workstation_cluster_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_workstation_cluster(
@@ -3123,9 +2767,7 @@ def test_get_workstation_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.WorkstationConfig(
             name="name_value",
@@ -3171,12 +2813,8 @@ def test_get_workstation_config_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3199,19 +2837,12 @@ def test_get_workstation_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_workstation_config] = mock_rpc
         request = {}
         client.get_workstation_config(request)
 
@@ -3226,9 +2857,7 @@ def test_get_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_workstation_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3242,17 +2871,12 @@ async def test_get_workstation_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_workstation_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_workstation_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_workstation_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_workstation_config] = mock_rpc
 
         request = {}
         await client.get_workstation_config(request)
@@ -3268,10 +2892,7 @@ async def test_get_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.GetWorkstationConfigRequest,
-):
+async def test_get_workstation_config_async(transport: str = "grpc_asyncio", request_type=workstations.GetWorkstationConfigRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3282,9 +2903,7 @@ async def test_get_workstation_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.WorkstationConfig(
@@ -3333,9 +2952,7 @@ def test_get_workstation_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         call.return_value = workstations.WorkstationConfig()
         client.get_workstation_config(request)
 
@@ -3365,12 +2982,8 @@ async def test_get_workstation_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.WorkstationConfig()
-        )
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.WorkstationConfig())
         await client.get_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3392,9 +3005,7 @@ def test_get_workstation_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.WorkstationConfig()
         # Call the method with a truthy value for each flattened field,
@@ -3433,15 +3044,11 @@ async def test_get_workstation_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.WorkstationConfig()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.WorkstationConfig()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.WorkstationConfig())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_workstation_config(
@@ -3490,9 +3097,7 @@ def test_list_workstation_configs(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationConfigsResponse(
             next_page_token="next_page_token_value",
@@ -3529,12 +3134,8 @@ def test_list_workstation_configs_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_workstation_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -3558,19 +3159,12 @@ def test_list_workstation_configs_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_workstation_configs
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_workstation_configs in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_workstation_configs
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_workstation_configs] = mock_rpc
         request = {}
         client.list_workstation_configs(request)
 
@@ -3585,9 +3179,7 @@ def test_list_workstation_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workstation_configs_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_workstation_configs_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -3601,17 +3193,12 @@ async def test_list_workstation_configs_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_workstation_configs
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_workstation_configs in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_workstation_configs
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_workstation_configs] = mock_rpc
 
         request = {}
         await client.list_workstation_configs(request)
@@ -3627,10 +3214,7 @@ async def test_list_workstation_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workstation_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListWorkstationConfigsRequest,
-):
+async def test_list_workstation_configs_async(transport: str = "grpc_asyncio", request_type=workstations.ListWorkstationConfigsRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -3641,9 +3225,7 @@ async def test_list_workstation_configs_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListWorkstationConfigsResponse(
@@ -3682,9 +3264,7 @@ def test_list_workstation_configs_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         call.return_value = workstations.ListWorkstationConfigsResponse()
         client.list_workstation_configs(request)
 
@@ -3714,12 +3294,8 @@ async def test_list_workstation_configs_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationConfigsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListWorkstationConfigsResponse())
         await client.list_workstation_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3741,9 +3317,7 @@ def test_list_workstation_configs_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationConfigsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -3782,15 +3356,11 @@ async def test_list_workstation_configs_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationConfigsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationConfigsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListWorkstationConfigsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_workstation_configs(
@@ -3828,9 +3398,7 @@ def test_list_workstation_configs_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationConfigsResponse(
@@ -3863,12 +3431,8 @@ def test_list_workstation_configs_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_workstation_configs(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_workstation_configs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -3886,9 +3450,7 @@ def test_list_workstation_configs_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationConfigsResponse(
@@ -3929,11 +3491,7 @@ async def test_list_workstation_configs_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationConfigsResponse(
@@ -3981,11 +3539,7 @@ async def test_list_workstation_configs_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationConfigsResponse(
@@ -4017,9 +3571,7 @@ async def test_list_workstation_configs_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workstation_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_workstation_configs(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4043,9 +3595,7 @@ def test_list_usable_workstation_configs(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListUsableWorkstationConfigsResponse(
             next_page_token="next_page_token_value",
@@ -4082,12 +3632,8 @@ def test_list_usable_workstation_configs_non_empty_request_with_auto_populated_f
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_usable_workstation_configs(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4111,19 +3657,12 @@ def test_list_usable_workstation_configs_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_usable_workstation_configs
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_usable_workstation_configs in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_usable_workstation_configs
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_usable_workstation_configs] = mock_rpc
         request = {}
         client.list_usable_workstation_configs(request)
 
@@ -4138,9 +3677,7 @@ def test_list_usable_workstation_configs_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4154,17 +3691,12 @@ async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_usable_workstation_configs
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_usable_workstation_configs in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_usable_workstation_configs
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_usable_workstation_configs] = mock_rpc
 
         request = {}
         await client.list_usable_workstation_configs(request)
@@ -4180,10 +3712,7 @@ async def test_list_usable_workstation_configs_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_usable_workstation_configs_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListUsableWorkstationConfigsRequest,
-):
+async def test_list_usable_workstation_configs_async(transport: str = "grpc_asyncio", request_type=workstations.ListUsableWorkstationConfigsRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4194,9 +3723,7 @@ async def test_list_usable_workstation_configs_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListUsableWorkstationConfigsResponse(
@@ -4235,9 +3762,7 @@ def test_list_usable_workstation_configs_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         call.return_value = workstations.ListUsableWorkstationConfigsResponse()
         client.list_usable_workstation_configs(request)
 
@@ -4267,12 +3792,8 @@ async def test_list_usable_workstation_configs_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListUsableWorkstationConfigsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListUsableWorkstationConfigsResponse())
         await client.list_usable_workstation_configs(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4294,9 +3815,7 @@ def test_list_usable_workstation_configs_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListUsableWorkstationConfigsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -4335,15 +3854,11 @@ async def test_list_usable_workstation_configs_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListUsableWorkstationConfigsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListUsableWorkstationConfigsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListUsableWorkstationConfigsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_usable_workstation_configs(
@@ -4381,9 +3896,7 @@ def test_list_usable_workstation_configs_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationConfigsResponse(
@@ -4416,12 +3929,8 @@ def test_list_usable_workstation_configs_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_usable_workstation_configs(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_usable_workstation_configs(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -4439,9 +3948,7 @@ def test_list_usable_workstation_configs_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationConfigsResponse(
@@ -4482,11 +3989,7 @@ async def test_list_usable_workstation_configs_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationConfigsResponse(
@@ -4534,11 +4037,7 @@ async def test_list_usable_workstation_configs_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationConfigsResponse(
@@ -4570,9 +4069,7 @@ async def test_list_usable_workstation_configs_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_usable_workstation_configs(request={})
-        ).pages:
+        async for page_ in (await client.list_usable_workstation_configs(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -4596,9 +4093,7 @@ def test_create_workstation_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_workstation_config(request)
@@ -4630,12 +4125,8 @@ def test_create_workstation_config_non_empty_request_with_auto_populated_field()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -4659,19 +4150,12 @@ def test_create_workstation_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_workstation_config] = mock_rpc
         request = {}
         client.create_workstation_config(request)
 
@@ -4691,9 +4175,7 @@ def test_create_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_workstation_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -4707,17 +4189,12 @@ async def test_create_workstation_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_workstation_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_workstation_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_workstation_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_workstation_config] = mock_rpc
 
         request = {}
         await client.create_workstation_config(request)
@@ -4738,10 +4215,7 @@ async def test_create_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.CreateWorkstationConfigRequest,
-):
+async def test_create_workstation_config_async(transport: str = "grpc_asyncio", request_type=workstations.CreateWorkstationConfigRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -4752,13 +4226,9 @@ async def test_create_workstation_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4788,9 +4258,7 @@ def test_create_workstation_config_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_workstation_config(request)
 
@@ -4820,12 +4288,8 @@ async def test_create_workstation_config_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4847,9 +4311,7 @@ def test_create_workstation_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -4898,15 +4360,11 @@ async def test_create_workstation_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_workstation_config(
@@ -4965,9 +4423,7 @@ def test_update_workstation_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.update_workstation_config(request)
@@ -4996,12 +4452,8 @@ def test_update_workstation_config_non_empty_request_with_auto_populated_field()
     request = workstations.UpdateWorkstationConfigRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5022,19 +4474,12 @@ def test_update_workstation_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_workstation_config] = mock_rpc
         request = {}
         client.update_workstation_config(request)
 
@@ -5054,9 +4499,7 @@ def test_update_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_workstation_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5070,17 +4513,12 @@ async def test_update_workstation_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_workstation_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_workstation_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_workstation_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_workstation_config] = mock_rpc
 
         request = {}
         await client.update_workstation_config(request)
@@ -5101,10 +4539,7 @@ async def test_update_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.UpdateWorkstationConfigRequest,
-):
+async def test_update_workstation_config_async(transport: str = "grpc_asyncio", request_type=workstations.UpdateWorkstationConfigRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5115,13 +4550,9 @@ async def test_update_workstation_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5151,9 +4582,7 @@ def test_update_workstation_config_field_headers():
     request.workstation_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_workstation_config(request)
 
@@ -5183,12 +4612,8 @@ async def test_update_workstation_config_field_headers_async():
     request.workstation_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5210,9 +4635,7 @@ def test_update_workstation_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -5256,15 +4679,11 @@ async def test_update_workstation_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_workstation_config(
@@ -5318,9 +4737,7 @@ def test_delete_workstation_config(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_workstation_config(request)
@@ -5352,12 +4769,8 @@ def test_delete_workstation_config_non_empty_request_with_auto_populated_field()
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_workstation_config(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5381,19 +4794,12 @@ def test_delete_workstation_config_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_workstation_config] = mock_rpc
         request = {}
         client.delete_workstation_config(request)
 
@@ -5413,9 +4819,7 @@ def test_delete_workstation_config_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_config_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_workstation_config_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5429,17 +4833,12 @@ async def test_delete_workstation_config_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_workstation_config
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_workstation_config in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_workstation_config
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_workstation_config] = mock_rpc
 
         request = {}
         await client.delete_workstation_config(request)
@@ -5460,10 +4859,7 @@ async def test_delete_workstation_config_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_config_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.DeleteWorkstationConfigRequest,
-):
+async def test_delete_workstation_config_async(transport: str = "grpc_asyncio", request_type=workstations.DeleteWorkstationConfigRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5474,13 +4870,9 @@ async def test_delete_workstation_config_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5510,9 +4902,7 @@ def test_delete_workstation_config_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_workstation_config(request)
 
@@ -5542,12 +4932,8 @@ async def test_delete_workstation_config_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_workstation_config(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5569,9 +4955,7 @@ def test_delete_workstation_config_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -5610,15 +4994,11 @@ async def test_delete_workstation_config_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_workstation_config(
@@ -5714,9 +5094,7 @@ def test_get_workstation_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.get_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -5743,9 +5121,7 @@ def test_get_workstation_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_workstation] = mock_rpc
         request = {}
         client.get_workstation(request)
@@ -5761,9 +5137,7 @@ def test_get_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_get_workstation_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -5777,17 +5151,12 @@ async def test_get_workstation_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.get_workstation
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.get_workstation in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.get_workstation
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.get_workstation] = mock_rpc
 
         request = {}
         await client.get_workstation(request)
@@ -5803,9 +5172,7 @@ async def test_get_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_get_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.GetWorkstationRequest
-):
+async def test_get_workstation_async(transport: str = "grpc_asyncio", request_type=workstations.GetWorkstationRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -5896,9 +5263,7 @@ async def test_get_workstation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workstation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.Workstation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.Workstation())
         await client.get_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5963,9 +5328,7 @@ async def test_get_workstation_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = workstations.Workstation()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.Workstation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.Workstation())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.get_workstation(
@@ -6014,9 +5377,7 @@ def test_list_workstations(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationsResponse(
             next_page_token="next_page_token_value",
@@ -6053,12 +5414,8 @@ def test_list_workstations_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_workstations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6086,12 +5443,8 @@ def test_list_workstations_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_workstations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_workstations] = mock_rpc
         request = {}
         client.list_workstations(request)
 
@@ -6106,9 +5459,7 @@ def test_list_workstations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_workstations_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_workstations_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6122,17 +5473,12 @@ async def test_list_workstations_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_workstations
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_workstations in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_workstations
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_workstations] = mock_rpc
 
         request = {}
         await client.list_workstations(request)
@@ -6148,9 +5494,7 @@ async def test_list_workstations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_workstations_async(
-    transport: str = "grpc_asyncio", request_type=workstations.ListWorkstationsRequest
-):
+async def test_list_workstations_async(transport: str = "grpc_asyncio", request_type=workstations.ListWorkstationsRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6161,9 +5505,7 @@ async def test_list_workstations_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListWorkstationsResponse(
@@ -6202,9 +5544,7 @@ def test_list_workstations_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         call.return_value = workstations.ListWorkstationsResponse()
         client.list_workstations(request)
 
@@ -6234,12 +5574,8 @@ async def test_list_workstations_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListWorkstationsResponse())
         await client.list_workstations(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6261,9 +5597,7 @@ def test_list_workstations_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -6302,15 +5636,11 @@ async def test_list_workstations_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListWorkstationsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListWorkstationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListWorkstationsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_workstations(
@@ -6348,9 +5678,7 @@ def test_list_workstations_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationsResponse(
@@ -6383,9 +5711,7 @@ def test_list_workstations_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
         pager = client.list_workstations(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
@@ -6404,9 +5730,7 @@ def test_list_workstations_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationsResponse(
@@ -6447,11 +5771,7 @@ async def test_list_workstations_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationsResponse(
@@ -6499,11 +5819,7 @@ async def test_list_workstations_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListWorkstationsResponse(
@@ -6535,9 +5851,7 @@ async def test_list_workstations_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_workstations(request={})
-        ).pages:
+        async for page_ in (await client.list_workstations(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -6561,9 +5875,7 @@ def test_list_usable_workstations(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListUsableWorkstationsResponse(
             next_page_token="next_page_token_value",
@@ -6600,12 +5912,8 @@ def test_list_usable_workstations_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.list_usable_workstations(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -6629,19 +5937,12 @@ def test_list_usable_workstations_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_usable_workstations
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_usable_workstations in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_usable_workstations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_usable_workstations] = mock_rpc
         request = {}
         client.list_usable_workstations(request)
 
@@ -6656,9 +5957,7 @@ def test_list_usable_workstations_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_list_usable_workstations_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_list_usable_workstations_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -6672,17 +5971,12 @@ async def test_list_usable_workstations_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.list_usable_workstations
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.list_usable_workstations in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.list_usable_workstations
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.list_usable_workstations] = mock_rpc
 
         request = {}
         await client.list_usable_workstations(request)
@@ -6698,10 +5992,7 @@ async def test_list_usable_workstations_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_list_usable_workstations_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.ListUsableWorkstationsRequest,
-):
+async def test_list_usable_workstations_async(transport: str = "grpc_asyncio", request_type=workstations.ListUsableWorkstationsRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -6712,9 +6003,7 @@ async def test_list_usable_workstations_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListUsableWorkstationsResponse(
@@ -6753,9 +6042,7 @@ def test_list_usable_workstations_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         call.return_value = workstations.ListUsableWorkstationsResponse()
         client.list_usable_workstations(request)
 
@@ -6785,12 +6072,8 @@ async def test_list_usable_workstations_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListUsableWorkstationsResponse()
-        )
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListUsableWorkstationsResponse())
         await client.list_usable_workstations(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -6812,9 +6095,7 @@ def test_list_usable_workstations_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListUsableWorkstationsResponse()
         # Call the method with a truthy value for each flattened field,
@@ -6853,15 +6134,11 @@ async def test_list_usable_workstations_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.ListUsableWorkstationsResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.ListUsableWorkstationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.ListUsableWorkstationsResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_usable_workstations(
@@ -6899,9 +6176,7 @@ def test_list_usable_workstations_pager(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationsResponse(
@@ -6934,12 +6209,8 @@ def test_list_usable_workstations_pager(transport_name: str = "grpc"):
         expected_metadata = ()
         retry = retries.Retry()
         timeout = 5
-        expected_metadata = tuple(expected_metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
-        )
-        pager = client.list_usable_workstations(
-            request={}, retry=retry, timeout=timeout
-        )
+        expected_metadata = tuple(expected_metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),)
+        pager = client.list_usable_workstations(request={}, retry=retry, timeout=timeout)
 
         assert pager._metadata == expected_metadata
         assert pager._retry == retry
@@ -6957,9 +6228,7 @@ def test_list_usable_workstations_pages(transport_name: str = "grpc"):
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationsResponse(
@@ -7000,11 +6269,7 @@ async def test_list_usable_workstations_async_pager():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationsResponse(
@@ -7052,11 +6317,7 @@ async def test_list_usable_workstations_async_pages():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations),
-        "__call__",
-        new_callable=mock.AsyncMock,
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__", new_callable=mock.AsyncMock) as call:
         # Set the response to a series of pages.
         call.side_effect = (
             workstations.ListUsableWorkstationsResponse(
@@ -7088,9 +6349,7 @@ async def test_list_usable_workstations_async_pages():
         pages = []
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
-        async for page_ in (  # pragma: no branch
-            await client.list_usable_workstations(request={})
-        ).pages:
+        async for page_ in (await client.list_usable_workstations(request={})).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -7114,9 +6373,7 @@ def test_create_workstation(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.create_workstation(request)
@@ -7148,12 +6405,8 @@ def test_create_workstation_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.create_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7177,18 +6430,12 @@ def test_create_workstation_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_workstation in client._transport._wrapped_methods
-        )
+        assert client._transport.create_workstation in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_workstation] = mock_rpc
         request = {}
         client.create_workstation(request)
 
@@ -7208,9 +6455,7 @@ def test_create_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_create_workstation_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7224,17 +6469,12 @@ async def test_create_workstation_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.create_workstation
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.create_workstation in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.create_workstation
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.create_workstation] = mock_rpc
 
         request = {}
         await client.create_workstation(request)
@@ -7255,9 +6495,7 @@ async def test_create_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_create_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.CreateWorkstationRequest
-):
+async def test_create_workstation_async(transport: str = "grpc_asyncio", request_type=workstations.CreateWorkstationRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7268,13 +6506,9 @@ async def test_create_workstation_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.create_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7304,9 +6538,7 @@ def test_create_workstation_field_headers():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_workstation(request)
 
@@ -7336,12 +6568,8 @@ async def test_create_workstation_field_headers_async():
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.create_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7363,9 +6591,7 @@ def test_create_workstation_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -7414,15 +6640,11 @@ async def test_create_workstation_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_workstation(
@@ -7481,9 +6703,7 @@ def test_update_workstation(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.update_workstation(request)
@@ -7512,12 +6732,8 @@ def test_update_workstation_non_empty_request_with_auto_populated_field():
     request = workstations.UpdateWorkstationRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.update_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7538,18 +6754,12 @@ def test_update_workstation_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_workstation in client._transport._wrapped_methods
-        )
+        assert client._transport.update_workstation in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_workstation] = mock_rpc
         request = {}
         client.update_workstation(request)
 
@@ -7569,9 +6779,7 @@ def test_update_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_update_workstation_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7585,17 +6793,12 @@ async def test_update_workstation_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.update_workstation
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.update_workstation in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.update_workstation
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.update_workstation] = mock_rpc
 
         request = {}
         await client.update_workstation(request)
@@ -7616,9 +6819,7 @@ async def test_update_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_update_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.UpdateWorkstationRequest
-):
+async def test_update_workstation_async(transport: str = "grpc_asyncio", request_type=workstations.UpdateWorkstationRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7629,13 +6830,9 @@ async def test_update_workstation_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.update_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7665,9 +6862,7 @@ def test_update_workstation_field_headers():
     request.workstation.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_workstation(request)
 
@@ -7697,12 +6892,8 @@ async def test_update_workstation_field_headers_async():
     request.workstation.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.update_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7724,9 +6915,7 @@ def test_update_workstation_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -7770,15 +6959,11 @@ async def test_update_workstation_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_workstation(
@@ -7832,9 +7017,7 @@ def test_delete_workstation(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.delete_workstation(request)
@@ -7866,12 +7049,8 @@ def test_delete_workstation_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.delete_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -7895,18 +7074,12 @@ def test_delete_workstation_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_workstation in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_workstation in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_workstation] = mock_rpc
         request = {}
         client.delete_workstation(request)
 
@@ -7926,9 +7099,7 @@ def test_delete_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_delete_workstation_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -7942,17 +7113,12 @@ async def test_delete_workstation_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.delete_workstation
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.delete_workstation in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.delete_workstation
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.delete_workstation] = mock_rpc
 
         request = {}
         await client.delete_workstation(request)
@@ -7973,9 +7139,7 @@ async def test_delete_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_delete_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.DeleteWorkstationRequest
-):
+async def test_delete_workstation_async(transport: str = "grpc_asyncio", request_type=workstations.DeleteWorkstationRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -7986,13 +7150,9 @@ async def test_delete_workstation_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.delete_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8022,9 +7182,7 @@ def test_delete_workstation_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_workstation(request)
 
@@ -8054,12 +7212,8 @@ async def test_delete_workstation_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.delete_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8081,9 +7235,7 @@ def test_delete_workstation_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -8122,15 +7274,11 @@ async def test_delete_workstation_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.delete_workstation(
@@ -8179,9 +7327,7 @@ def test_start_workstation(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
         response = client.start_workstation(request)
@@ -8213,12 +7359,8 @@ def test_start_workstation_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.start_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8246,12 +7388,8 @@ def test_start_workstation_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.start_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.start_workstation] = mock_rpc
         request = {}
         client.start_workstation(request)
 
@@ -8271,9 +7409,7 @@ def test_start_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_start_workstation_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_start_workstation_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8287,17 +7423,12 @@ async def test_start_workstation_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.start_workstation
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.start_workstation in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.start_workstation
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.start_workstation] = mock_rpc
 
         request = {}
         await client.start_workstation(request)
@@ -8318,9 +7449,7 @@ async def test_start_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_start_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.StartWorkstationRequest
-):
+async def test_start_workstation_async(transport: str = "grpc_asyncio", request_type=workstations.StartWorkstationRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8331,13 +7460,9 @@ async def test_start_workstation_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.start_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8367,9 +7492,7 @@ def test_start_workstation_field_headers():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.start_workstation(request)
 
@@ -8399,12 +7522,8 @@ async def test_start_workstation_field_headers_async():
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.start_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8426,9 +7545,7 @@ def test_start_workstation_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
@@ -8467,15 +7584,11 @@ async def test_start_workstation_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.start_workstation(
@@ -8557,9 +7670,7 @@ def test_stop_workstation_non_empty_request_with_auto_populated_field():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.stop_workstation(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8587,12 +7698,8 @@ def test_stop_workstation_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.stop_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.stop_workstation] = mock_rpc
         request = {}
         client.stop_workstation(request)
 
@@ -8612,9 +7719,7 @@ def test_stop_workstation_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_stop_workstation_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_stop_workstation_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8628,17 +7733,12 @@ async def test_stop_workstation_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.stop_workstation
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.stop_workstation in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.stop_workstation
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.stop_workstation] = mock_rpc
 
         request = {}
         await client.stop_workstation(request)
@@ -8659,9 +7759,7 @@ async def test_stop_workstation_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_stop_workstation_async(
-    transport: str = "grpc_asyncio", request_type=workstations.StopWorkstationRequest
-):
+async def test_stop_workstation_async(transport: str = "grpc_asyncio", request_type=workstations.StopWorkstationRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -8674,9 +7772,7 @@ async def test_stop_workstation_async(
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         response = await client.stop_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8737,9 +7833,7 @@ async def test_stop_workstation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/op")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/op"))
         await client.stop_workstation(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -8804,9 +7898,7 @@ async def test_stop_workstation_flattened_async():
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.stop_workstation(
@@ -8855,9 +7947,7 @@ def test_generate_access_token(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.GenerateAccessTokenResponse(
             access_token="access_token_value",
@@ -8891,12 +7981,8 @@ def test_generate_access_token_non_empty_request_with_auto_populated_field():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
-        call.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
+        call.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client.generate_access_token(request=request)
         call.assert_called()
         _, args, _ = call.mock_calls[0]
@@ -8919,19 +8005,12 @@ def test_generate_access_token_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_access_token
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_access_token in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_access_token
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
         request = {}
         client.generate_access_token(request)
 
@@ -8946,9 +8025,7 @@ def test_generate_access_token_use_cached_wrapped_rpc():
 
 
 @pytest.mark.asyncio
-async def test_generate_access_token_async_use_cached_wrapped_rpc(
-    transport: str = "grpc_asyncio",
-):
+async def test_generate_access_token_async_use_cached_wrapped_rpc(transport: str = "grpc_asyncio"):
     # Clients should use _prep_wrapped_messages to create cached wrapped rpcs,
     # instead of constructing them on each call
     with mock.patch("google.api_core.gapic_v1.method_async.wrap_method") as wrapper_fn:
@@ -8962,17 +8039,12 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._client._transport.generate_access_token
-            in client._client._transport._wrapped_methods
-        )
+        assert client._client._transport.generate_access_token in client._client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.AsyncMock()
         mock_rpc.return_value = mock.Mock()
-        client._client._transport._wrapped_methods[
-            client._client._transport.generate_access_token
-        ] = mock_rpc
+        client._client._transport._wrapped_methods[client._client._transport.generate_access_token] = mock_rpc
 
         request = {}
         await client.generate_access_token(request)
@@ -8988,10 +8060,7 @@ async def test_generate_access_token_async_use_cached_wrapped_rpc(
 
 
 @pytest.mark.asyncio
-async def test_generate_access_token_async(
-    transport: str = "grpc_asyncio",
-    request_type=workstations.GenerateAccessTokenRequest,
-):
+async def test_generate_access_token_async(transport: str = "grpc_asyncio", request_type=workstations.GenerateAccessTokenRequest):
     client = WorkstationsAsyncClient(
         credentials=async_anonymous_credentials(),
         transport=transport,
@@ -9002,9 +8071,7 @@ async def test_generate_access_token_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.GenerateAccessTokenResponse(
@@ -9041,9 +8108,7 @@ def test_generate_access_token_field_headers():
     request.workstation = "workstation_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         call.return_value = workstations.GenerateAccessTokenResponse()
         client.generate_access_token(request)
 
@@ -9073,12 +8138,8 @@ async def test_generate_access_token_field_headers_async():
     request.workstation = "workstation_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.GenerateAccessTokenResponse()
-        )
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.GenerateAccessTokenResponse())
         await client.generate_access_token(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -9100,9 +8161,7 @@ def test_generate_access_token_flattened():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.GenerateAccessTokenResponse()
         # Call the method with a truthy value for each flattened field,
@@ -9141,15 +8200,11 @@ async def test_generate_access_token_flattened_async():
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = workstations.GenerateAccessTokenResponse()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            workstations.GenerateAccessTokenResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(workstations.GenerateAccessTokenResponse())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.generate_access_token(
@@ -9194,19 +8249,12 @@ def test_get_workstation_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_workstation_cluster] = mock_rpc
 
         request = {}
         client.get_workstation_cluster(request)
@@ -9221,33 +8269,29 @@ def test_get_workstation_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_workstation_cluster_rest_required_fields(
-    request_type=workstations.GetWorkstationClusterRequest,
-):
+def test_get_workstation_cluster_rest_required_fields(request_type=workstations.GetWorkstationClusterRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -9297,9 +8341,7 @@ def test_get_workstation_cluster_rest_required_fields(
 
 
 def test_get_workstation_cluster_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_workstation_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -9317,9 +8359,7 @@ def test_get_workstation_cluster_rest_flattened():
         return_value = workstations.WorkstationCluster()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -9343,11 +8383,7 @@ def test_get_workstation_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/workstationClusters/*}" % client.transport._host, args[1])
 
 
 def test_get_workstation_cluster_rest_flattened_error(transport: str = "rest"):
@@ -9379,19 +8415,12 @@ def test_list_workstation_clusters_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_workstation_clusters
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_workstation_clusters in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_workstation_clusters
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_workstation_clusters] = mock_rpc
 
         request = {}
         client.list_workstation_clusters(request)
@@ -9406,33 +8435,29 @@ def test_list_workstation_clusters_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_workstation_clusters_rest_required_fields(
-    request_type=workstations.ListWorkstationClustersRequest,
-):
+def test_list_workstation_clusters_rest_required_fields(request_type=workstations.ListWorkstationClustersRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workstation_clusters._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_workstation_clusters._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workstation_clusters._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_workstation_clusters._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -9489,9 +8514,7 @@ def test_list_workstation_clusters_rest_required_fields(
 
 
 def test_list_workstation_clusters_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_workstation_clusters._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -9541,11 +8564,7 @@ def test_list_workstation_clusters_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/workstationClusters"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/workstationClusters" % client.transport._host, args[1])
 
 
 def test_list_workstation_clusters_rest_flattened_error(transport: str = "rest"):
@@ -9604,9 +8623,7 @@ def test_list_workstation_clusters_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            workstations.ListWorkstationClustersResponse.to_json(x) for x in response
-        )
+        response = tuple(workstations.ListWorkstationClustersResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -9640,19 +8657,12 @@ def test_create_workstation_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_workstation_cluster] = mock_rpc
 
         request = {}
         client.create_workstation_cluster(request)
@@ -9671,9 +8681,7 @@ def test_create_workstation_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_workstation_cluster_rest_required_fields(
-    request_type=workstations.CreateWorkstationClusterRequest,
-):
+def test_create_workstation_cluster_rest_required_fields(request_type=workstations.CreateWorkstationClusterRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
@@ -9681,31 +8689,26 @@ def test_create_workstation_cluster_rest_required_fields(
     request_init["workstation_cluster_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "workstationClusterId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
     assert "workstationClusterId" in jsonified_request
-    assert (
-        jsonified_request["workstationClusterId"]
-        == request_init["workstation_cluster_id"]
-    )
+    assert jsonified_request["workstationClusterId"] == request_init["workstation_cluster_id"]
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["workstationClusterId"] = "workstation_cluster_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -9768,9 +8771,7 @@ def test_create_workstation_cluster_rest_required_fields(
 
 
 def test_create_workstation_cluster_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_workstation_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -9826,11 +8827,7 @@ def test_create_workstation_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/workstationClusters"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{parent=projects/*/locations/*}/workstationClusters" % client.transport._host, args[1])
 
 
 def test_create_workstation_cluster_rest_flattened_error(transport: str = "rest"):
@@ -9864,19 +8861,12 @@ def test_update_workstation_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_workstation_cluster] = mock_rpc
 
         request = {}
         client.update_workstation_cluster(request)
@@ -9895,30 +8885,26 @@ def test_update_workstation_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_workstation_cluster_rest_required_fields(
-    request_type=workstations.UpdateWorkstationClusterRequest,
-):
+def test_update_workstation_cluster_rest_required_fields(request_type=workstations.UpdateWorkstationClusterRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -9972,9 +8958,7 @@ def test_update_workstation_cluster_rest_required_fields(
 
 
 def test_update_workstation_cluster_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_workstation_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -10006,11 +8990,7 @@ def test_update_workstation_cluster_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "workstation_cluster": {
-                "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-            }
-        }
+        sample_request = {"workstation_cluster": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -10034,9 +9014,7 @@ def test_update_workstation_cluster_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{workstation_cluster.name=projects/*/locations/*/workstationClusters/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{workstation_cluster.name=projects/*/locations/*/workstationClusters/*}" % client.transport._host, args[1]
         )
 
 
@@ -10070,19 +9048,12 @@ def test_delete_workstation_cluster_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_workstation_cluster
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_workstation_cluster in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_workstation_cluster
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_workstation_cluster] = mock_rpc
 
         request = {}
         client.delete_workstation_cluster(request)
@@ -10101,33 +9072,29 @@ def test_delete_workstation_cluster_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_workstation_cluster_rest_required_fields(
-    request_type=workstations.DeleteWorkstationClusterRequest,
-):
+def test_delete_workstation_cluster_rest_required_fields(request_type=workstations.DeleteWorkstationClusterRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workstation_cluster._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_workstation_cluster._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -10182,9 +9149,7 @@ def test_delete_workstation_cluster_rest_required_fields(
 
 
 def test_delete_workstation_cluster_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_workstation_cluster._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -10211,9 +9176,7 @@ def test_delete_workstation_cluster_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -10235,11 +9198,7 @@ def test_delete_workstation_cluster_rest_flattened():
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
-        assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*}"
-            % client.transport._host,
-            args[1],
-        )
+        assert path_template.validate("%s/v1/{name=projects/*/locations/*/workstationClusters/*}" % client.transport._host, args[1])
 
 
 def test_delete_workstation_cluster_rest_flattened_error(transport: str = "rest"):
@@ -10271,19 +9230,12 @@ def test_get_workstation_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.get_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.get_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.get_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.get_workstation_config] = mock_rpc
 
         request = {}
         client.get_workstation_config(request)
@@ -10298,33 +9250,29 @@ def test_get_workstation_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_workstation_config_rest_required_fields(
-    request_type=workstations.GetWorkstationConfigRequest,
-):
+def test_get_workstation_config_rest_required_fields(request_type=workstations.GetWorkstationConfigRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -10374,9 +9322,7 @@ def test_get_workstation_config_rest_required_fields(
 
 
 def test_get_workstation_config_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_workstation_config._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -10394,9 +9340,7 @@ def test_get_workstation_config_rest_flattened():
         return_value = workstations.WorkstationConfig()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -10421,9 +9365,7 @@ def test_get_workstation_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}" % client.transport._host, args[1]
         )
 
 
@@ -10456,19 +9398,12 @@ def test_list_workstation_configs_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_workstation_configs
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_workstation_configs in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_workstation_configs
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_workstation_configs] = mock_rpc
 
         request = {}
         client.list_workstation_configs(request)
@@ -10483,33 +9418,29 @@ def test_list_workstation_configs_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_workstation_configs_rest_required_fields(
-    request_type=workstations.ListWorkstationConfigsRequest,
-):
+def test_list_workstation_configs_rest_required_fields(request_type=workstations.ListWorkstationConfigsRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workstation_configs._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_workstation_configs._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workstation_configs._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_workstation_configs._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -10566,9 +9497,7 @@ def test_list_workstation_configs_rest_required_fields(
 
 
 def test_list_workstation_configs_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_workstation_configs._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -10594,9 +9523,7 @@ def test_list_workstation_configs_rest_flattened():
         return_value = workstations.ListWorkstationConfigsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -10621,9 +9548,7 @@ def test_list_workstation_configs_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*}/workstationConfigs"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*}/workstationConfigs" % client.transport._host, args[1]
         )
 
 
@@ -10683,18 +9608,14 @@ def test_list_workstation_configs_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            workstations.ListWorkstationConfigsResponse.to_json(x) for x in response
-        )
+        response = tuple(workstations.ListWorkstationConfigsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         pager = client.list_workstation_configs(request=sample_request)
 
@@ -10721,19 +9642,12 @@ def test_list_usable_workstation_configs_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_usable_workstation_configs
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_usable_workstation_configs in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_usable_workstation_configs
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_usable_workstation_configs] = mock_rpc
 
         request = {}
         client.list_usable_workstation_configs(request)
@@ -10748,33 +9662,29 @@ def test_list_usable_workstation_configs_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_usable_workstation_configs_rest_required_fields(
-    request_type=workstations.ListUsableWorkstationConfigsRequest,
-):
+def test_list_usable_workstation_configs_rest_required_fields(request_type=workstations.ListUsableWorkstationConfigsRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_usable_workstation_configs._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_usable_workstation_configs._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_usable_workstation_configs._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_usable_workstation_configs._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -10816,9 +9726,7 @@ def test_list_usable_workstation_configs_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
-                return_value
-            )
+            return_value = workstations.ListUsableWorkstationConfigsResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -10833,13 +9741,9 @@ def test_list_usable_workstation_configs_rest_required_fields(
 
 
 def test_list_usable_workstation_configs_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
-    unset_fields = transport.list_usable_workstation_configs._get_unset_required_fields(
-        {}
-    )
+    unset_fields = transport.list_usable_workstation_configs._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
@@ -10863,9 +9767,7 @@ def test_list_usable_workstation_configs_rest_flattened():
         return_value = workstations.ListUsableWorkstationConfigsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -10877,9 +9779,7 @@ def test_list_usable_workstation_configs_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
-            return_value
-        )
+        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -10892,9 +9792,7 @@ def test_list_usable_workstation_configs_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*}/workstationConfigs:listUsable"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*}/workstationConfigs:listUsable" % client.transport._host, args[1]
         )
 
 
@@ -10954,19 +9852,14 @@ def test_list_usable_workstation_configs_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            workstations.ListUsableWorkstationConfigsResponse.to_json(x)
-            for x in response
-        )
+        response = tuple(workstations.ListUsableWorkstationConfigsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         pager = client.list_usable_workstation_configs(request=sample_request)
 
@@ -10974,9 +9867,7 @@ def test_list_usable_workstation_configs_rest_pager(transport: str = "rest"):
         assert len(results) == 6
         assert all(isinstance(i, workstations.WorkstationConfig) for i in results)
 
-        pages = list(
-            client.list_usable_workstation_configs(request=sample_request).pages
-        )
+        pages = list(client.list_usable_workstation_configs(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -10995,19 +9886,12 @@ def test_create_workstation_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.create_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_workstation_config] = mock_rpc
 
         request = {}
         client.create_workstation_config(request)
@@ -11026,9 +9910,7 @@ def test_create_workstation_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_workstation_config_rest_required_fields(
-    request_type=workstations.CreateWorkstationConfigRequest,
-):
+def test_create_workstation_config_rest_required_fields(request_type=workstations.CreateWorkstationConfigRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
@@ -11036,31 +9918,26 @@ def test_create_workstation_config_rest_required_fields(
     request_init["workstation_config_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "workstationConfigId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
     assert "workstationConfigId" in jsonified_request
-    assert (
-        jsonified_request["workstationConfigId"]
-        == request_init["workstation_config_id"]
-    )
+    assert jsonified_request["workstationConfigId"] == request_init["workstation_config_id"]
 
     jsonified_request["parent"] = "parent_value"
     jsonified_request["workstationConfigId"] = "workstation_config_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11123,9 +10000,7 @@ def test_create_workstation_config_rest_required_fields(
 
 
 def test_create_workstation_config_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_workstation_config._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11157,9 +10032,7 @@ def test_create_workstation_config_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11184,9 +10057,7 @@ def test_create_workstation_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*}/workstationConfigs"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*}/workstationConfigs" % client.transport._host, args[1]
         )
 
 
@@ -11221,19 +10092,12 @@ def test_update_workstation_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.update_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_workstation_config] = mock_rpc
 
         request = {}
         client.update_workstation_config(request)
@@ -11252,30 +10116,26 @@ def test_update_workstation_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_workstation_config_rest_required_fields(
-    request_type=workstations.UpdateWorkstationConfigRequest,
-):
+def test_update_workstation_config_rest_required_fields(request_type=workstations.UpdateWorkstationConfigRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11329,9 +10189,7 @@ def test_update_workstation_config_rest_required_fields(
 
 
 def test_update_workstation_config_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_workstation_config._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11363,11 +10221,7 @@ def test_update_workstation_config_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "workstation_config": {
-                "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-            }
-        }
+        sample_request = {"workstation_config": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11391,9 +10245,7 @@ def test_update_workstation_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{workstation_config.name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{workstation_config.name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}" % client.transport._host, args[1]
         )
 
 
@@ -11427,19 +10279,12 @@ def test_delete_workstation_config_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_workstation_config
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_workstation_config in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_workstation_config
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_workstation_config] = mock_rpc
 
         request = {}
         client.delete_workstation_config(request)
@@ -11458,33 +10303,29 @@ def test_delete_workstation_config_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_workstation_config_rest_required_fields(
-    request_type=workstations.DeleteWorkstationConfigRequest,
-):
+def test_delete_workstation_config_rest_required_fields(request_type=workstations.DeleteWorkstationConfigRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workstation_config._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_workstation_config._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11539,9 +10380,7 @@ def test_delete_workstation_config_rest_required_fields(
 
 
 def test_delete_workstation_config_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_workstation_config._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11568,9 +10407,7 @@ def test_delete_workstation_config_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11593,9 +10430,7 @@ def test_delete_workstation_config_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}" % client.transport._host, args[1]
         )
 
 
@@ -11632,9 +10467,7 @@ def test_get_workstation_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
         client._transport._wrapped_methods[client._transport.get_workstation] = mock_rpc
 
         request = {}
@@ -11650,33 +10483,25 @@ def test_get_workstation_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_get_workstation_rest_required_fields(
-    request_type=workstations.GetWorkstationRequest,
-):
+def test_get_workstation_rest_required_fields(request_type=workstations.GetWorkstationRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).get_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).get_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -11726,9 +10551,7 @@ def test_get_workstation_rest_required_fields(
 
 
 def test_get_workstation_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.get_workstation._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -11746,9 +10569,7 @@ def test_get_workstation_rest_flattened():
         return_value = workstations.Workstation()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11773,9 +10594,7 @@ def test_get_workstation_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}" % client.transport._host, args[1]
         )
 
 
@@ -11812,12 +10631,8 @@ def test_list_workstations_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_workstations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_workstations] = mock_rpc
 
         request = {}
         client.list_workstations(request)
@@ -11832,33 +10647,25 @@ def test_list_workstations_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_workstations_rest_required_fields(
-    request_type=workstations.ListWorkstationsRequest,
-):
+def test_list_workstations_rest_required_fields(request_type=workstations.ListWorkstationsRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workstations._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_workstations._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_workstations._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_workstations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -11915,9 +10722,7 @@ def test_list_workstations_rest_required_fields(
 
 
 def test_list_workstations_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_workstations._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -11943,9 +10748,7 @@ def test_list_workstations_rest_flattened():
         return_value = workstations.ListWorkstationsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -11970,9 +10773,7 @@ def test_list_workstations_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}/workstations"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}/workstations" % client.transport._host, args[1]
         )
 
 
@@ -12032,18 +10833,14 @@ def test_list_workstations_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            workstations.ListWorkstationsResponse.to_json(x) for x in response
-        )
+        response = tuple(workstations.ListWorkstationsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         pager = client.list_workstations(request=sample_request)
 
@@ -12070,19 +10867,12 @@ def test_list_usable_workstations_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.list_usable_workstations
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.list_usable_workstations in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.list_usable_workstations
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.list_usable_workstations] = mock_rpc
 
         request = {}
         client.list_usable_workstations(request)
@@ -12097,33 +10887,29 @@ def test_list_usable_workstations_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_list_usable_workstations_rest_required_fields(
-    request_type=workstations.ListUsableWorkstationsRequest,
-):
+def test_list_usable_workstations_rest_required_fields(request_type=workstations.ListUsableWorkstationsRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["parent"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_usable_workstations._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_usable_workstations._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["parent"] = "parent_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).list_usable_workstations._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).list_usable_workstations._get_unset_required_fields(
+        jsonified_request
+    )
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12180,9 +10966,7 @@ def test_list_usable_workstations_rest_required_fields(
 
 
 def test_list_usable_workstations_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.list_usable_workstations._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12208,9 +10992,7 @@ def test_list_usable_workstations_rest_flattened():
         return_value = workstations.ListUsableWorkstationsResponse()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12235,8 +11017,7 @@ def test_list_usable_workstations_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}/workstations:listUsable"
-            % client.transport._host,
+            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}/workstations:listUsable" % client.transport._host,
             args[1],
         )
 
@@ -12297,18 +11078,14 @@ def test_list_usable_workstations_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(
-            workstations.ListUsableWorkstationsResponse.to_json(x) for x in response
-        )
+        response = tuple(workstations.ListUsableWorkstationsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
             return_val.status_code = 200
         req.side_effect = return_values
 
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         pager = client.list_usable_workstations(request=sample_request)
 
@@ -12335,18 +11112,12 @@ def test_create_workstation_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.create_workstation in client._transport._wrapped_methods
-        )
+        assert client._transport.create_workstation in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.create_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.create_workstation] = mock_rpc
 
         request = {}
         client.create_workstation(request)
@@ -12365,9 +11136,7 @@ def test_create_workstation_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_create_workstation_rest_required_fields(
-    request_type=workstations.CreateWorkstationRequest,
-):
+def test_create_workstation_rest_required_fields(request_type=workstations.CreateWorkstationRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
@@ -12375,16 +11144,12 @@ def test_create_workstation_rest_required_fields(
     request_init["workstation_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
     assert "workstationId" not in jsonified_request
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -12394,9 +11159,7 @@ def test_create_workstation_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
     jsonified_request["workstationId"] = "workstation_id_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).create_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).create_workstation._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12459,9 +11222,7 @@ def test_create_workstation_rest_required_fields(
 
 
 def test_create_workstation_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.create_workstation._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12493,9 +11254,7 @@ def test_create_workstation_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
+        sample_request = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12520,9 +11279,7 @@ def test_create_workstation_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}/workstations"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{parent=projects/*/locations/*/workstationClusters/*/workstationConfigs/*}/workstations" % client.transport._host, args[1]
         )
 
 
@@ -12557,18 +11314,12 @@ def test_update_workstation_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.update_workstation in client._transport._wrapped_methods
-        )
+        assert client._transport.update_workstation in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.update_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.update_workstation] = mock_rpc
 
         request = {}
         client.update_workstation(request)
@@ -12587,30 +11338,22 @@ def test_update_workstation_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_update_workstation_rest_required_fields(
-    request_type=workstations.UpdateWorkstationRequest,
-):
+def test_update_workstation_rest_required_fields(request_type=workstations.UpdateWorkstationRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).update_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).update_workstation._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12664,9 +11407,7 @@ def test_update_workstation_rest_required_fields(
 
 
 def test_update_workstation_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.update_workstation._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12699,9 +11440,7 @@ def test_update_workstation_rest_flattened():
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
-            "workstation": {
-                "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-            }
+            "workstation": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
         }
 
         # get truthy value for each flattened field
@@ -12726,8 +11465,7 @@ def test_update_workstation_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{workstation.name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}"
-            % client.transport._host,
+            "%s/v1/{workstation.name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}" % client.transport._host,
             args[1],
         )
 
@@ -12762,18 +11500,12 @@ def test_delete_workstation_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.delete_workstation in client._transport._wrapped_methods
-        )
+        assert client._transport.delete_workstation in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.delete_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.delete_workstation] = mock_rpc
 
         request = {}
         client.delete_workstation(request)
@@ -12792,33 +11524,25 @@ def test_delete_workstation_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_delete_workstation_rest_required_fields(
-    request_type=workstations.DeleteWorkstationRequest,
-):
+def test_delete_workstation_rest_required_fields(request_type=workstations.DeleteWorkstationRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).delete_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).delete_workstation._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
@@ -12872,9 +11596,7 @@ def test_delete_workstation_rest_required_fields(
 
 
 def test_delete_workstation_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.delete_workstation._get_unset_required_fields({})
     assert set(unset_fields) == (
@@ -12900,9 +11622,7 @@ def test_delete_workstation_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -12925,9 +11645,7 @@ def test_delete_workstation_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}" % client.transport._host, args[1]
         )
 
 
@@ -12964,12 +11682,8 @@ def test_start_workstation_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.start_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.start_workstation] = mock_rpc
 
         request = {}
         client.start_workstation(request)
@@ -12988,33 +11702,25 @@ def test_start_workstation_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_start_workstation_rest_required_fields(
-    request_type=workstations.StartWorkstationRequest,
-):
+def test_start_workstation_rest_required_fields(request_type=workstations.StartWorkstationRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).start_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).start_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).start_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).start_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13062,9 +11768,7 @@ def test_start_workstation_rest_required_fields(
 
 
 def test_start_workstation_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.start_workstation._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -13082,9 +11786,7 @@ def test_start_workstation_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13107,9 +11809,7 @@ def test_start_workstation_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}:start"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}:start" % client.transport._host, args[1]
         )
 
 
@@ -13146,12 +11846,8 @@ def test_stop_workstation_rest_use_cached_wrapped_rpc():
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.stop_workstation
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.stop_workstation] = mock_rpc
 
         request = {}
         client.stop_workstation(request)
@@ -13170,33 +11866,25 @@ def test_stop_workstation_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_stop_workstation_rest_required_fields(
-    request_type=workstations.StopWorkstationRequest,
-):
+def test_stop_workstation_rest_required_fields(request_type=workstations.StopWorkstationRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["name"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stop_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).stop_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["name"] = "name_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).stop_workstation._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).stop_workstation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13244,9 +11932,7 @@ def test_stop_workstation_rest_required_fields(
 
 
 def test_stop_workstation_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.stop_workstation._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
@@ -13264,9 +11950,7 @@ def test_stop_workstation_rest_flattened():
         return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
+        sample_request = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -13289,9 +11973,7 @@ def test_stop_workstation_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}:stop"
-            % client.transport._host,
-            args[1],
+            "%s/v1/{name=projects/*/locations/*/workstationClusters/*/workstationConfigs/*/workstations/*}:stop" % client.transport._host, args[1]
         )
 
 
@@ -13324,19 +12006,12 @@ def test_generate_access_token_rest_use_cached_wrapped_rpc():
         wrapper_fn.reset_mock()
 
         # Ensure method has been cached
-        assert (
-            client._transport.generate_access_token
-            in client._transport._wrapped_methods
-        )
+        assert client._transport.generate_access_token in client._transport._wrapped_methods
 
         # Replace cached wrapped function with mock
         mock_rpc = mock.Mock()
-        mock_rpc.return_value.name = (
-            "foo"  # operation_request.operation in compute client(s) expect a string.
-        )
-        client._transport._wrapped_methods[
-            client._transport.generate_access_token
-        ] = mock_rpc
+        mock_rpc.return_value.name = "foo"  # operation_request.operation in compute client(s) expect a string.
+        client._transport._wrapped_methods[client._transport.generate_access_token] = mock_rpc
 
         request = {}
         client.generate_access_token(request)
@@ -13351,33 +12026,29 @@ def test_generate_access_token_rest_use_cached_wrapped_rpc():
         assert mock_rpc.call_count == 2
 
 
-def test_generate_access_token_rest_required_fields(
-    request_type=workstations.GenerateAccessTokenRequest,
-):
+def test_generate_access_token_rest_required_fields(request_type=workstations.GenerateAccessTokenRequest):
     transport_class = transports.WorkstationsRestTransport
 
     request_init = {}
     request_init["workstation"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
-    jsonified_request = json.loads(
-        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
-    )
+    jsonified_request = json.loads(json_format.MessageToJson(pb_request, use_integers_for_enums=False))
 
     # verify fields with default values are dropped
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_access_token._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     jsonified_request["workstation"] = "workstation_value"
 
-    unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
-    ).generate_access_token._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).generate_access_token._get_unset_required_fields(
+        jsonified_request
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -13428,9 +12099,7 @@ def test_generate_access_token_rest_required_fields(
 
 
 def test_generate_access_token_rest_unset_required_fields():
-    transport = transports.WorkstationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
-    )
+    transport = transports.WorkstationsRestTransport(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.generate_access_token._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("workstation",)))
@@ -13533,9 +12202,7 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = WorkstationsClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
-        )
+        client = WorkstationsClient(client_options=options, credentials=ga_credentials.AnonymousCredentials())
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.WorkstationsGrpcTransport(
@@ -13589,16 +12256,12 @@ def test_transport_adc(transport_class):
 
 
 def test_transport_kind_grpc():
-    transport = WorkstationsClient.get_transport_class("grpc")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = WorkstationsClient.get_transport_class("grpc")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "grpc"
 
 
 def test_initialize_client_w_grpc():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
     assert client is not None
 
 
@@ -13611,9 +12274,7 @@ def test_get_workstation_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         call.return_value = workstations.WorkstationCluster()
         client.get_workstation_cluster(request=None)
 
@@ -13634,9 +12295,7 @@ def test_list_workstation_clusters_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         call.return_value = workstations.ListWorkstationClustersResponse()
         client.list_workstation_clusters(request=None)
 
@@ -13657,9 +12316,7 @@ def test_create_workstation_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_workstation_cluster(request=None)
 
@@ -13680,9 +12337,7 @@ def test_update_workstation_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_workstation_cluster(request=None)
 
@@ -13703,9 +12358,7 @@ def test_delete_workstation_cluster_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_workstation_cluster(request=None)
 
@@ -13726,9 +12379,7 @@ def test_get_workstation_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         call.return_value = workstations.WorkstationConfig()
         client.get_workstation_config(request=None)
 
@@ -13749,9 +12400,7 @@ def test_list_workstation_configs_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         call.return_value = workstations.ListWorkstationConfigsResponse()
         client.list_workstation_configs(request=None)
 
@@ -13772,9 +12421,7 @@ def test_list_usable_workstation_configs_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         call.return_value = workstations.ListUsableWorkstationConfigsResponse()
         client.list_usable_workstation_configs(request=None)
 
@@ -13795,9 +12442,7 @@ def test_create_workstation_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_workstation_config(request=None)
 
@@ -13818,9 +12463,7 @@ def test_update_workstation_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_workstation_config(request=None)
 
@@ -13841,9 +12484,7 @@ def test_delete_workstation_config_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_workstation_config(request=None)
 
@@ -13885,9 +12526,7 @@ def test_list_workstations_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         call.return_value = workstations.ListWorkstationsResponse()
         client.list_workstations(request=None)
 
@@ -13908,9 +12547,7 @@ def test_list_usable_workstations_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         call.return_value = workstations.ListUsableWorkstationsResponse()
         client.list_usable_workstations(request=None)
 
@@ -13931,9 +12568,7 @@ def test_create_workstation_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.create_workstation(request=None)
 
@@ -13954,9 +12589,7 @@ def test_update_workstation_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.update_workstation(request=None)
 
@@ -13977,9 +12610,7 @@ def test_delete_workstation_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.delete_workstation(request=None)
 
@@ -14000,9 +12631,7 @@ def test_start_workstation_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
         client.start_workstation(request=None)
 
@@ -14044,9 +12673,7 @@ def test_generate_access_token_empty_call_grpc():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         call.return_value = workstations.GenerateAccessTokenResponse()
         client.generate_access_token(request=None)
 
@@ -14059,16 +12686,12 @@ def test_generate_access_token_empty_call_grpc():
 
 
 def test_transport_kind_grpc_asyncio():
-    transport = WorkstationsAsyncClient.get_transport_class("grpc_asyncio")(
-        credentials=async_anonymous_credentials()
-    )
+    transport = WorkstationsAsyncClient.get_transport_class("grpc_asyncio")(credentials=async_anonymous_credentials())
     assert transport.kind == "grpc_asyncio"
 
 
 def test_initialize_client_w_grpc_asyncio():
-    client = WorkstationsAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
+    client = WorkstationsAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
     assert client is not None
 
 
@@ -14082,9 +12705,7 @@ async def test_get_workstation_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.WorkstationCluster(
@@ -14119,9 +12740,7 @@ async def test_list_workstation_clusters_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListWorkstationClustersResponse(
@@ -14149,13 +12768,9 @@ async def test_create_workstation_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14176,13 +12791,9 @@ async def test_update_workstation_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14203,13 +12814,9 @@ async def test_delete_workstation_cluster_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14230,9 +12837,7 @@ async def test_get_workstation_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.WorkstationConfig(
@@ -14265,9 +12870,7 @@ async def test_list_workstation_configs_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListWorkstationConfigsResponse(
@@ -14295,9 +12898,7 @@ async def test_list_usable_workstation_configs_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListUsableWorkstationConfigsResponse(
@@ -14325,13 +12926,9 @@ async def test_create_workstation_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14352,13 +12949,9 @@ async def test_update_workstation_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14379,13 +12972,9 @@ async def test_delete_workstation_config_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14439,9 +13028,7 @@ async def test_list_workstations_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListWorkstationsResponse(
@@ -14469,9 +13056,7 @@ async def test_list_usable_workstations_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.ListUsableWorkstationsResponse(
@@ -14499,13 +13084,9 @@ async def test_create_workstation_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.create_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14526,13 +13107,9 @@ async def test_update_workstation_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.update_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14553,13 +13130,9 @@ async def test_delete_workstation_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.delete_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14580,13 +13153,9 @@ async def test_start_workstation_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.start_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14609,9 +13178,7 @@ async def test_stop_workstation_empty_call_grpc_asyncio():
     # Mock the actual call, and fake the request.
     with mock.patch.object(type(client.transport.stop_workstation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation(name="operations/spam")
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation(name="operations/spam"))
         await client.stop_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -14632,9 +13199,7 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             workstations.GenerateAccessTokenResponse(
@@ -14652,28 +13217,18 @@ async def test_generate_access_token_empty_call_grpc_asyncio():
 
 
 def test_transport_kind_rest():
-    transport = WorkstationsClient.get_transport_class("rest")(
-        credentials=ga_credentials.AnonymousCredentials()
-    )
+    transport = WorkstationsClient.get_transport_class("rest")(credentials=ga_credentials.AnonymousCredentials())
     assert transport.kind == "rest"
 
 
-def test_get_workstation_cluster_rest_bad_request(
-    request_type=workstations.GetWorkstationClusterRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_workstation_cluster_rest_bad_request(request_type=workstations.GetWorkstationClusterRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -14693,14 +13248,10 @@ def test_get_workstation_cluster_rest_bad_request(
     ],
 )
 def test_get_workstation_cluster_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -14747,30 +13298,21 @@ def test_get_workstation_cluster_rest_call_success(request_type):
 def test_get_workstation_cluster_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_get_workstation_cluster"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_get_workstation_cluster_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_get_workstation_cluster") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_get_workstation_cluster_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_get_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.GetWorkstationClusterRequest.pb(
-            workstations.GetWorkstationClusterRequest()
-        )
+        pb_message = workstations.GetWorkstationClusterRequest.pb(workstations.GetWorkstationClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -14781,9 +13323,7 @@ def test_get_workstation_cluster_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.WorkstationCluster.to_json(
-            workstations.WorkstationCluster()
-        )
+        return_value = workstations.WorkstationCluster.to_json(workstations.WorkstationCluster())
         req.return_value.content = return_value
 
         request = workstations.GetWorkstationClusterRequest()
@@ -14808,20 +13348,14 @@ def test_get_workstation_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_workstation_clusters_rest_bad_request(
-    request_type=workstations.ListWorkstationClustersRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_workstation_clusters_rest_bad_request(request_type=workstations.ListWorkstationClustersRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -14841,9 +13375,7 @@ def test_list_workstation_clusters_rest_bad_request(
     ],
 )
 def test_list_workstation_clusters_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -14879,30 +13411,21 @@ def test_list_workstation_clusters_rest_call_success(request_type):
 def test_list_workstation_clusters_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_workstation_clusters"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_list_workstation_clusters_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_list_workstation_clusters") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_workstation_clusters_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_workstation_clusters"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.ListWorkstationClustersRequest.pb(
-            workstations.ListWorkstationClustersRequest()
-        )
+        pb_message = workstations.ListWorkstationClustersRequest.pb(workstations.ListWorkstationClustersRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -14913,9 +13436,7 @@ def test_list_workstation_clusters_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.ListWorkstationClustersResponse.to_json(
-            workstations.ListWorkstationClustersResponse()
-        )
+        return_value = workstations.ListWorkstationClustersResponse.to_json(workstations.ListWorkstationClustersResponse())
         req.return_value.content = return_value
 
         request = workstations.ListWorkstationClustersRequest()
@@ -14925,10 +13446,7 @@ def test_list_workstation_clusters_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListWorkstationClustersResponse()
-        post_with_metadata.return_value = (
-            workstations.ListWorkstationClustersResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = workstations.ListWorkstationClustersResponse(), metadata
 
         client.list_workstation_clusters(
             request,
@@ -14943,20 +13461,14 @@ def test_list_workstation_clusters_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_workstation_cluster_rest_bad_request(
-    request_type=workstations.CreateWorkstationClusterRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_workstation_cluster_rest_bad_request(request_type=workstations.CreateWorkstationClusterRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -14976,9 +13488,7 @@ def test_create_workstation_cluster_rest_bad_request(
     ],
 )
 def test_create_workstation_cluster_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
@@ -15007,12 +13517,7 @@ def test_create_workstation_cluster_rest_call_success(request_type):
             {
                 "code": 411,
                 "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
+                "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
             }
         ],
     }
@@ -15021,9 +13526,7 @@ def test_create_workstation_cluster_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.CreateWorkstationClusterRequest.meta.fields[
-        "workstation_cluster"
-    ]
+    test_field = workstations.CreateWorkstationClusterRequest.meta.fields["workstation_cluster"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -15042,9 +13545,7 @@ def test_create_workstation_cluster_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -15065,13 +13566,7 @@ def test_create_workstation_cluster_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -15109,32 +13604,23 @@ def test_create_workstation_cluster_rest_call_success(request_type):
 def test_create_workstation_cluster_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation_cluster"
     ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_create_workstation_cluster_with_metadata",
+        transports.WorkstationsRestInterceptor, "post_create_workstation_cluster_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_create_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.CreateWorkstationClusterRequest.pb(
-            workstations.CreateWorkstationClusterRequest()
-        )
+        pb_message = workstations.CreateWorkstationClusterRequest.pb(workstations.CreateWorkstationClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -15170,24 +13656,14 @@ def test_create_workstation_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_workstation_cluster_rest_bad_request(
-    request_type=workstations.UpdateWorkstationClusterRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_workstation_cluster_rest_bad_request(request_type=workstations.UpdateWorkstationClusterRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_cluster": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
-    }
+    request_init = {"workstation_cluster": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -15207,16 +13683,10 @@ def test_update_workstation_cluster_rest_bad_request(
     ],
 )
 def test_update_workstation_cluster_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_cluster": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-        }
-    }
+    request_init = {"workstation_cluster": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}}
     request_init["workstation_cluster"] = {
         "name": "projects/sample1/locations/sample2/workstationClusters/sample3",
         "display_name": "display_name_value",
@@ -15242,12 +13712,7 @@ def test_update_workstation_cluster_rest_call_success(request_type):
             {
                 "code": 411,
                 "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
+                "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
             }
         ],
     }
@@ -15256,9 +13721,7 @@ def test_update_workstation_cluster_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.UpdateWorkstationClusterRequest.meta.fields[
-        "workstation_cluster"
-    ]
+    test_field = workstations.UpdateWorkstationClusterRequest.meta.fields["workstation_cluster"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -15277,9 +13740,7 @@ def test_update_workstation_cluster_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -15300,13 +13761,7 @@ def test_update_workstation_cluster_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -15344,32 +13799,23 @@ def test_update_workstation_cluster_rest_call_success(request_type):
 def test_update_workstation_cluster_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation_cluster"
     ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_update_workstation_cluster_with_metadata",
+        transports.WorkstationsRestInterceptor, "post_update_workstation_cluster_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_update_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.UpdateWorkstationClusterRequest.pb(
-            workstations.UpdateWorkstationClusterRequest()
-        )
+        pb_message = workstations.UpdateWorkstationClusterRequest.pb(workstations.UpdateWorkstationClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -15405,22 +13851,14 @@ def test_update_workstation_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_workstation_cluster_rest_bad_request(
-    request_type=workstations.DeleteWorkstationClusterRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_workstation_cluster_rest_bad_request(request_type=workstations.DeleteWorkstationClusterRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -15440,14 +13878,10 @@ def test_delete_workstation_cluster_rest_bad_request(
     ],
 )
 def test_delete_workstation_cluster_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15472,32 +13906,23 @@ def test_delete_workstation_cluster_rest_call_success(request_type):
 def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation_cluster"
     ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_delete_workstation_cluster_with_metadata",
+        transports.WorkstationsRestInterceptor, "post_delete_workstation_cluster_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_delete_workstation_cluster"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.DeleteWorkstationClusterRequest.pb(
-            workstations.DeleteWorkstationClusterRequest()
-        )
+        pb_message = workstations.DeleteWorkstationClusterRequest.pb(workstations.DeleteWorkstationClusterRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -15533,22 +13958,14 @@ def test_delete_workstation_cluster_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_workstation_config_rest_bad_request(
-    request_type=workstations.GetWorkstationConfigRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_workstation_config_rest_bad_request(request_type=workstations.GetWorkstationConfigRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -15568,14 +13985,10 @@ def test_get_workstation_config_rest_bad_request(
     ],
 )
 def test_get_workstation_config_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15618,30 +14031,21 @@ def test_get_workstation_config_rest_call_success(request_type):
 def test_get_workstation_config_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_get_workstation_config"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_get_workstation_config_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_get_workstation_config") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_get_workstation_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_get_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.GetWorkstationConfigRequest.pb(
-            workstations.GetWorkstationConfigRequest()
-        )
+        pb_message = workstations.GetWorkstationConfigRequest.pb(workstations.GetWorkstationConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -15652,9 +14056,7 @@ def test_get_workstation_config_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.WorkstationConfig.to_json(
-            workstations.WorkstationConfig()
-        )
+        return_value = workstations.WorkstationConfig.to_json(workstations.WorkstationConfig())
         req.return_value.content = return_value
 
         request = workstations.GetWorkstationConfigRequest()
@@ -15679,22 +14081,14 @@ def test_get_workstation_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_workstation_configs_rest_bad_request(
-    request_type=workstations.ListWorkstationConfigsRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_workstation_configs_rest_bad_request(request_type=workstations.ListWorkstationConfigsRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -15714,14 +14108,10 @@ def test_list_workstation_configs_rest_bad_request(
     ],
 )
 def test_list_workstation_configs_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15754,30 +14144,21 @@ def test_list_workstation_configs_rest_call_success(request_type):
 def test_list_workstation_configs_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_workstation_configs"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_list_workstation_configs_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_list_workstation_configs") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_workstation_configs_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_workstation_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.ListWorkstationConfigsRequest.pb(
-            workstations.ListWorkstationConfigsRequest()
-        )
+        pb_message = workstations.ListWorkstationConfigsRequest.pb(workstations.ListWorkstationConfigsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -15788,9 +14169,7 @@ def test_list_workstation_configs_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.ListWorkstationConfigsResponse.to_json(
-            workstations.ListWorkstationConfigsResponse()
-        )
+        return_value = workstations.ListWorkstationConfigsResponse.to_json(workstations.ListWorkstationConfigsResponse())
         req.return_value.content = return_value
 
         request = workstations.ListWorkstationConfigsRequest()
@@ -15800,10 +14179,7 @@ def test_list_workstation_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListWorkstationConfigsResponse()
-        post_with_metadata.return_value = (
-            workstations.ListWorkstationConfigsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = workstations.ListWorkstationConfigsResponse(), metadata
 
         client.list_workstation_configs(
             request,
@@ -15818,22 +14194,14 @@ def test_list_workstation_configs_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_usable_workstation_configs_rest_bad_request(
-    request_type=workstations.ListUsableWorkstationConfigsRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_usable_workstation_configs_rest_bad_request(request_type=workstations.ListUsableWorkstationConfigsRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -15853,14 +14221,10 @@ def test_list_usable_workstation_configs_rest_bad_request(
     ],
 )
 def test_list_usable_workstation_configs_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -15876,9 +14240,7 @@ def test_list_usable_workstation_configs_rest_call_success(request_type):
         response_value.status_code = 200
 
         # Convert return value to protobuf type
-        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(
-            return_value
-        )
+        return_value = workstations.ListUsableWorkstationConfigsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value.content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -15895,30 +14257,21 @@ def test_list_usable_workstation_configs_rest_call_success(request_type):
 def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_usable_workstation_configs"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_list_usable_workstation_configs_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_list_usable_workstation_configs") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_usable_workstation_configs_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_usable_workstation_configs"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.ListUsableWorkstationConfigsRequest.pb(
-            workstations.ListUsableWorkstationConfigsRequest()
-        )
+        pb_message = workstations.ListUsableWorkstationConfigsRequest.pb(workstations.ListUsableWorkstationConfigsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -15929,9 +14282,7 @@ def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.ListUsableWorkstationConfigsResponse.to_json(
-            workstations.ListUsableWorkstationConfigsResponse()
-        )
+        return_value = workstations.ListUsableWorkstationConfigsResponse.to_json(workstations.ListUsableWorkstationConfigsResponse())
         req.return_value.content = return_value
 
         request = workstations.ListUsableWorkstationConfigsRequest()
@@ -15941,10 +14292,7 @@ def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListUsableWorkstationConfigsResponse()
-        post_with_metadata.return_value = (
-            workstations.ListUsableWorkstationConfigsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = workstations.ListUsableWorkstationConfigsResponse(), metadata
 
         client.list_usable_workstation_configs(
             request,
@@ -15959,22 +14307,14 @@ def test_list_usable_workstation_configs_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_workstation_config_rest_bad_request(
-    request_type=workstations.CreateWorkstationConfigRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_workstation_config_rest_bad_request(request_type=workstations.CreateWorkstationConfigRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -15994,14 +14334,10 @@ def test_create_workstation_config_rest_bad_request(
     ],
 )
 def test_create_workstation_config_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3"}
     request_init["workstation_config"] = {
         "name": "name_value",
         "display_name": "display_name_value",
@@ -16019,20 +14355,13 @@ def test_create_workstation_config_rest_call_success(request_type):
             "gce_instance": {
                 "machine_type": "machine_type_value",
                 "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
+                "service_account_scopes": ["service_account_scopes_value1", "service_account_scopes_value2"],
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
                 "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "enable_nested_virtualization": True,
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
+                "shielded_instance_config": {"enable_secure_boot": True, "enable_vtpm": True, "enable_integrity_monitoring": True},
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
             }
@@ -16057,10 +14386,7 @@ def test_create_workstation_config_rest_call_success(request_type):
             "working_dir": "working_dir_value",
             "run_as_user": 1190,
         },
-        "encryption_key": {
-            "kms_key": "kms_key_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-        },
+        "encryption_key": {"kms_key": "kms_key_value", "kms_key_service_account": "kms_key_service_account_value"},
         "readiness_checks": [{"path": "path_value", "port": 453}],
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "degraded": True,
@@ -16068,12 +14394,7 @@ def test_create_workstation_config_rest_call_success(request_type):
             {
                 "code": 411,
                 "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
+                "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
             }
         ],
     }
@@ -16082,9 +14403,7 @@ def test_create_workstation_config_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.CreateWorkstationConfigRequest.meta.fields[
-        "workstation_config"
-    ]
+    test_field = workstations.CreateWorkstationConfigRequest.meta.fields["workstation_config"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -16103,9 +14422,7 @@ def test_create_workstation_config_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -16126,13 +14443,7 @@ def test_create_workstation_config_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -16170,32 +14481,23 @@ def test_create_workstation_config_rest_call_success(request_type):
 def test_create_workstation_config_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation_config"
     ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_create_workstation_config_with_metadata",
+        transports.WorkstationsRestInterceptor, "post_create_workstation_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_create_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.CreateWorkstationConfigRequest.pb(
-            workstations.CreateWorkstationConfigRequest()
-        )
+        pb_message = workstations.CreateWorkstationConfigRequest.pb(workstations.CreateWorkstationConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -16231,24 +14533,14 @@ def test_create_workstation_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_workstation_config_rest_bad_request(
-    request_type=workstations.UpdateWorkstationConfigRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_workstation_config_rest_bad_request(request_type=workstations.UpdateWorkstationConfigRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_config": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
-    }
+    request_init = {"workstation_config": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -16268,16 +14560,10 @@ def test_update_workstation_config_rest_bad_request(
     ],
 )
 def test_update_workstation_config_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "workstation_config": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        }
-    }
+    request_init = {"workstation_config": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}}
     request_init["workstation_config"] = {
         "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4",
         "display_name": "display_name_value",
@@ -16295,20 +14581,13 @@ def test_update_workstation_config_rest_call_success(request_type):
             "gce_instance": {
                 "machine_type": "machine_type_value",
                 "service_account": "service_account_value",
-                "service_account_scopes": [
-                    "service_account_scopes_value1",
-                    "service_account_scopes_value2",
-                ],
+                "service_account_scopes": ["service_account_scopes_value1", "service_account_scopes_value2"],
                 "tags": ["tags_value1", "tags_value2"],
                 "pool_size": 980,
                 "pooled_instances": 1706,
                 "disable_public_ip_addresses": True,
                 "enable_nested_virtualization": True,
-                "shielded_instance_config": {
-                    "enable_secure_boot": True,
-                    "enable_vtpm": True,
-                    "enable_integrity_monitoring": True,
-                },
+                "shielded_instance_config": {"enable_secure_boot": True, "enable_vtpm": True, "enable_integrity_monitoring": True},
                 "confidential_instance_config": {"enable_confidential_compute": True},
                 "boot_disk_size_gb": 1792,
             }
@@ -16333,10 +14612,7 @@ def test_update_workstation_config_rest_call_success(request_type):
             "working_dir": "working_dir_value",
             "run_as_user": 1190,
         },
-        "encryption_key": {
-            "kms_key": "kms_key_value",
-            "kms_key_service_account": "kms_key_service_account_value",
-        },
+        "encryption_key": {"kms_key": "kms_key_value", "kms_key_service_account": "kms_key_service_account_value"},
         "readiness_checks": [{"path": "path_value", "port": 453}],
         "replica_zones": ["replica_zones_value1", "replica_zones_value2"],
         "degraded": True,
@@ -16344,12 +14620,7 @@ def test_update_workstation_config_rest_call_success(request_type):
             {
                 "code": 411,
                 "message": "message_value",
-                "details": [
-                    {
-                        "type_url": "type.googleapis.com/google.protobuf.Duration",
-                        "value": b"\x08\x0c\x10\xdb\x07",
-                    }
-                ],
+                "details": [{"type_url": "type.googleapis.com/google.protobuf.Duration", "value": b"\x08\x0c\x10\xdb\x07"}],
             }
         ],
     }
@@ -16358,9 +14629,7 @@ def test_update_workstation_config_rest_call_success(request_type):
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = workstations.UpdateWorkstationConfigRequest.meta.fields[
-        "workstation_config"
-    ]
+    test_field = workstations.UpdateWorkstationConfigRequest.meta.fields["workstation_config"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -16379,9 +14648,7 @@ def test_update_workstation_config_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -16402,13 +14669,7 @@ def test_update_workstation_config_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -16446,32 +14707,23 @@ def test_update_workstation_config_rest_call_success(request_type):
 def test_update_workstation_config_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation_config"
     ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_update_workstation_config_with_metadata",
+        transports.WorkstationsRestInterceptor, "post_update_workstation_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_update_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.UpdateWorkstationConfigRequest.pb(
-            workstations.UpdateWorkstationConfigRequest()
-        )
+        pb_message = workstations.UpdateWorkstationConfigRequest.pb(workstations.UpdateWorkstationConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -16507,22 +14759,14 @@ def test_update_workstation_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_workstation_config_rest_bad_request(
-    request_type=workstations.DeleteWorkstationConfigRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_workstation_config_rest_bad_request(request_type=workstations.DeleteWorkstationConfigRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -16542,14 +14786,10 @@ def test_delete_workstation_config_rest_bad_request(
     ],
 )
 def test_delete_workstation_config_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16574,32 +14814,23 @@ def test_delete_workstation_config_rest_call_success(request_type):
 def test_delete_workstation_config_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation_config"
     ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_delete_workstation_config_with_metadata",
+        transports.WorkstationsRestInterceptor, "post_delete_workstation_config_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_delete_workstation_config"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.DeleteWorkstationConfigRequest.pb(
-            workstations.DeleteWorkstationConfigRequest()
-        )
+        pb_message = workstations.DeleteWorkstationConfigRequest.pb(workstations.DeleteWorkstationConfigRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -16635,22 +14866,14 @@ def test_delete_workstation_config_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_workstation_rest_bad_request(
-    request_type=workstations.GetWorkstationRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_get_workstation_rest_bad_request(request_type=workstations.GetWorkstationRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -16670,14 +14893,10 @@ def test_get_workstation_rest_bad_request(
     ],
 )
 def test_get_workstation_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16720,19 +14939,13 @@ def test_get_workstation_rest_call_success(request_type):
 def test_get_workstation_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_get_workstation"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_get_workstation") as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_get_workstation_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_get_workstation"
@@ -16740,9 +14953,7 @@ def test_get_workstation_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.GetWorkstationRequest.pb(
-            workstations.GetWorkstationRequest()
-        )
+        pb_message = workstations.GetWorkstationRequest.pb(workstations.GetWorkstationRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -16778,22 +14989,14 @@ def test_get_workstation_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_workstations_rest_bad_request(
-    request_type=workstations.ListWorkstationsRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_workstations_rest_bad_request(request_type=workstations.ListWorkstationsRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -16813,14 +15016,10 @@ def test_list_workstations_rest_bad_request(
     ],
 )
 def test_list_workstations_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16853,19 +15052,13 @@ def test_list_workstations_rest_call_success(request_type):
 def test_list_workstations_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_workstations"
-    ) as post, mock.patch.object(
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_list_workstations") as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_list_workstations_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_workstations"
@@ -16873,9 +15066,7 @@ def test_list_workstations_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.ListWorkstationsRequest.pb(
-            workstations.ListWorkstationsRequest()
-        )
+        pb_message = workstations.ListWorkstationsRequest.pb(workstations.ListWorkstationsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -16886,9 +15077,7 @@ def test_list_workstations_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.ListWorkstationsResponse.to_json(
-            workstations.ListWorkstationsResponse()
-        )
+        return_value = workstations.ListWorkstationsResponse.to_json(workstations.ListWorkstationsResponse())
         req.return_value.content = return_value
 
         request = workstations.ListWorkstationsRequest()
@@ -16898,10 +15087,7 @@ def test_list_workstations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListWorkstationsResponse()
-        post_with_metadata.return_value = (
-            workstations.ListWorkstationsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = workstations.ListWorkstationsResponse(), metadata
 
         client.list_workstations(
             request,
@@ -16916,22 +15102,14 @@ def test_list_workstations_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_list_usable_workstations_rest_bad_request(
-    request_type=workstations.ListUsableWorkstationsRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_list_usable_workstations_rest_bad_request(request_type=workstations.ListUsableWorkstationsRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -16951,14 +15129,10 @@ def test_list_usable_workstations_rest_bad_request(
     ],
 )
 def test_list_usable_workstations_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -16991,30 +15165,21 @@ def test_list_usable_workstations_rest_call_success(request_type):
 def test_list_usable_workstations_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_list_usable_workstations"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_list_usable_workstations_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_list_usable_workstations") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_list_usable_workstations_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_list_usable_workstations"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.ListUsableWorkstationsRequest.pb(
-            workstations.ListUsableWorkstationsRequest()
-        )
+        pb_message = workstations.ListUsableWorkstationsRequest.pb(workstations.ListUsableWorkstationsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17025,9 +15190,7 @@ def test_list_usable_workstations_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.ListUsableWorkstationsResponse.to_json(
-            workstations.ListUsableWorkstationsResponse()
-        )
+        return_value = workstations.ListUsableWorkstationsResponse.to_json(workstations.ListUsableWorkstationsResponse())
         req.return_value.content = return_value
 
         request = workstations.ListUsableWorkstationsRequest()
@@ -17037,10 +15200,7 @@ def test_list_usable_workstations_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.ListUsableWorkstationsResponse()
-        post_with_metadata.return_value = (
-            workstations.ListUsableWorkstationsResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = workstations.ListUsableWorkstationsResponse(), metadata
 
         client.list_usable_workstations(
             request,
@@ -17055,22 +15215,14 @@ def test_list_usable_workstations_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_create_workstation_rest_bad_request(
-    request_type=workstations.CreateWorkstationRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_create_workstation_rest_bad_request(request_type=workstations.CreateWorkstationRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17090,14 +15242,10 @@ def test_create_workstation_rest_bad_request(
     ],
 )
 def test_create_workstation_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"parent": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request_init["workstation"] = {
         "name": "name_value",
         "display_name": "display_name_value",
@@ -17137,9 +15285,7 @@ def test_create_workstation_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -17160,13 +15306,7 @@ def test_create_workstation_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -17204,19 +15344,13 @@ def test_create_workstation_rest_call_success(request_type):
 def test_create_workstation_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation"
     ) as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_create_workstation_with_metadata"
@@ -17226,9 +15360,7 @@ def test_create_workstation_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.CreateWorkstationRequest.pb(
-            workstations.CreateWorkstationRequest()
-        )
+        pb_message = workstations.CreateWorkstationRequest.pb(workstations.CreateWorkstationRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17264,24 +15396,16 @@ def test_create_workstation_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_update_workstation_rest_bad_request(
-    request_type=workstations.UpdateWorkstationRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_update_workstation_rest_bad_request(request_type=workstations.UpdateWorkstationRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
     request_init = {
-        "workstation": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
+        "workstation": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     }
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17301,15 +15425,11 @@ def test_update_workstation_rest_bad_request(
     ],
 )
 def test_update_workstation_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
     request_init = {
-        "workstation": {
-            "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-        }
+        "workstation": {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     }
     request_init["workstation"] = {
         "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5",
@@ -17350,9 +15470,7 @@ def test_update_workstation_rest_call_success(request_type):
         return message_fields
 
     runtime_nested_fields = [
-        (field.name, nested_field.name)
-        for field in get_message_fields(test_field)
-        for nested_field in get_message_fields(field)
+        (field.name, nested_field.name) for field in get_message_fields(test_field) for nested_field in get_message_fields(field)
     ]
 
     subfields_not_in_runtime = []
@@ -17373,13 +15491,7 @@ def test_update_workstation_rest_call_success(request_type):
         if result and hasattr(result, "keys"):
             for subfield in result.keys():
                 if (field, subfield) not in runtime_nested_fields:
-                    subfields_not_in_runtime.append(
-                        {
-                            "field": field,
-                            "subfield": subfield,
-                            "is_repeated": is_repeated,
-                        }
-                    )
+                    subfields_not_in_runtime.append({"field": field, "subfield": subfield, "is_repeated": is_repeated})
 
     # Remove fields from the sample request which are not present in the runtime version of the dependency
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
@@ -17417,19 +15529,13 @@ def test_update_workstation_rest_call_success(request_type):
 def test_update_workstation_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation"
     ) as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_update_workstation_with_metadata"
@@ -17439,9 +15545,7 @@ def test_update_workstation_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.UpdateWorkstationRequest.pb(
-            workstations.UpdateWorkstationRequest()
-        )
+        pb_message = workstations.UpdateWorkstationRequest.pb(workstations.UpdateWorkstationRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17477,22 +15581,14 @@ def test_update_workstation_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_delete_workstation_rest_bad_request(
-    request_type=workstations.DeleteWorkstationRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_delete_workstation_rest_bad_request(request_type=workstations.DeleteWorkstationRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17512,14 +15608,10 @@ def test_delete_workstation_rest_bad_request(
     ],
 )
 def test_delete_workstation_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17544,19 +15636,13 @@ def test_delete_workstation_rest_call_success(request_type):
 def test_delete_workstation_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation"
     ) as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_delete_workstation_with_metadata"
@@ -17566,9 +15652,7 @@ def test_delete_workstation_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.DeleteWorkstationRequest.pb(
-            workstations.DeleteWorkstationRequest()
-        )
+        pb_message = workstations.DeleteWorkstationRequest.pb(workstations.DeleteWorkstationRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17604,22 +15688,14 @@ def test_delete_workstation_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_start_workstation_rest_bad_request(
-    request_type=workstations.StartWorkstationRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_start_workstation_rest_bad_request(request_type=workstations.StartWorkstationRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17639,14 +15715,10 @@ def test_start_workstation_rest_bad_request(
     ],
 )
 def test_start_workstation_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17671,19 +15743,13 @@ def test_start_workstation_rest_call_success(request_type):
 def test_start_workstation_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_start_workstation"
     ) as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_start_workstation_with_metadata"
@@ -17693,9 +15759,7 @@ def test_start_workstation_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.StartWorkstationRequest.pb(
-            workstations.StartWorkstationRequest()
-        )
+        pb_message = workstations.StartWorkstationRequest.pb(workstations.StartWorkstationRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17731,22 +15795,14 @@ def test_start_workstation_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_stop_workstation_rest_bad_request(
-    request_type=workstations.StopWorkstationRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_stop_workstation_rest_bad_request(request_type=workstations.StopWorkstationRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17766,14 +15822,10 @@ def test_stop_workstation_rest_bad_request(
     ],
 )
 def test_stop_workstation_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"name": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17798,19 +15850,13 @@ def test_stop_workstation_rest_call_success(request_type):
 def test_stop_workstation_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        operation.Operation, "_set_result_from_operation"
-    ), mock.patch.object(
+    ) as transcode, mock.patch.object(operation.Operation, "_set_result_from_operation"), mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_stop_workstation"
     ) as post, mock.patch.object(
         transports.WorkstationsRestInterceptor, "post_stop_workstation_with_metadata"
@@ -17820,9 +15866,7 @@ def test_stop_workstation_rest_interceptors(null_interceptor):
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.StopWorkstationRequest.pb(
-            workstations.StopWorkstationRequest()
-        )
+        pb_message = workstations.StopWorkstationRequest.pb(workstations.StopWorkstationRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17858,22 +15902,14 @@ def test_stop_workstation_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_generate_access_token_rest_bad_request(
-    request_type=workstations.GenerateAccessTokenRequest,
-):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+def test_generate_access_token_rest_bad_request(request_type=workstations.GenerateAccessTokenRequest):
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     # send a request that will satisfy transcoding
-    request_init = {
-        "workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = mock.Mock()
         json_return_value = ""
@@ -17893,14 +15929,10 @@ def test_generate_access_token_rest_bad_request(
     ],
 )
 def test_generate_access_token_rest_call_success(request_type):
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
 
     # send a request that will satisfy transcoding
-    request_init = {
-        "workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"
-    }
+    request_init = {"workstation": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4/workstations/sample5"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -17931,30 +15963,21 @@ def test_generate_access_token_rest_call_success(request_type):
 def test_generate_access_token_rest_interceptors(null_interceptor):
     transport = transports.WorkstationsRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
-        interceptor=None
-        if null_interceptor
-        else transports.WorkstationsRestInterceptor(),
+        interceptor=None if null_interceptor else transports.WorkstationsRestInterceptor(),
     )
     client = WorkstationsClient(transport=transport)
 
-    with mock.patch.object(
-        type(client.transport._session), "request"
-    ) as req, mock.patch.object(
+    with mock.patch.object(type(client.transport._session), "request") as req, mock.patch.object(
         path_template, "transcode"
-    ) as transcode, mock.patch.object(
-        transports.WorkstationsRestInterceptor, "post_generate_access_token"
-    ) as post, mock.patch.object(
-        transports.WorkstationsRestInterceptor,
-        "post_generate_access_token_with_metadata",
+    ) as transcode, mock.patch.object(transports.WorkstationsRestInterceptor, "post_generate_access_token") as post, mock.patch.object(
+        transports.WorkstationsRestInterceptor, "post_generate_access_token_with_metadata"
     ) as post_with_metadata, mock.patch.object(
         transports.WorkstationsRestInterceptor, "pre_generate_access_token"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
         post_with_metadata.assert_not_called()
-        pb_message = workstations.GenerateAccessTokenRequest.pb(
-            workstations.GenerateAccessTokenRequest()
-        )
+        pb_message = workstations.GenerateAccessTokenRequest.pb(workstations.GenerateAccessTokenRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -17965,9 +15988,7 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
         req.return_value = mock.Mock()
         req.return_value.status_code = 200
         req.return_value.headers = {"header-1": "value-1", "header-2": "value-2"}
-        return_value = workstations.GenerateAccessTokenResponse.to_json(
-            workstations.GenerateAccessTokenResponse()
-        )
+        return_value = workstations.GenerateAccessTokenResponse.to_json(workstations.GenerateAccessTokenResponse())
         req.return_value.content = return_value
 
         request = workstations.GenerateAccessTokenRequest()
@@ -17977,10 +15998,7 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
         ]
         pre.return_value = request, metadata
         post.return_value = workstations.GenerateAccessTokenResponse()
-        post_with_metadata.return_value = (
-            workstations.GenerateAccessTokenResponse(),
-            metadata,
-        )
+        post_with_metadata.return_value = workstations.GenerateAccessTokenResponse(), metadata
 
         client.generate_access_token(
             request,
@@ -17995,25 +16013,18 @@ def test_generate_access_token_rest_interceptors(null_interceptor):
         post_with_metadata.assert_called_once()
 
 
-def test_get_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.GetIamPolicyRequest,
-):
+def test_get_iam_policy_rest_bad_request(request_type=iam_policy_pb2.GetIamPolicyRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
     request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        },
-        request,
+        {"resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18038,9 +16049,7 @@ def test_get_iam_policy_rest(request_type):
         transport="rest",
     )
 
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -18062,25 +16071,18 @@ def test_get_iam_policy_rest(request_type):
     assert isinstance(response, policy_pb2.Policy)
 
 
-def test_set_iam_policy_rest_bad_request(
-    request_type=iam_policy_pb2.SetIamPolicyRequest,
-):
+def test_set_iam_policy_rest_bad_request(request_type=iam_policy_pb2.SetIamPolicyRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
     request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        },
-        request,
+        {"resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18105,9 +16107,7 @@ def test_set_iam_policy_rest(request_type):
         transport="rest",
     )
 
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -18129,25 +16129,18 @@ def test_set_iam_policy_rest(request_type):
     assert isinstance(response, policy_pb2.Policy)
 
 
-def test_test_iam_permissions_rest_bad_request(
-    request_type=iam_policy_pb2.TestIamPermissionsRequest,
-):
+def test_test_iam_permissions_rest_bad_request(request_type=iam_policy_pb2.TestIamPermissionsRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
     request = json_format.ParseDict(
-        {
-            "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-        },
-        request,
+        {"resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}, request
     )
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18172,9 +16165,7 @@ def test_test_iam_permissions_rest(request_type):
         transport="rest",
     )
 
-    request_init = {
-        "resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"
-    }
+    request_init = {"resource": "projects/sample1/locations/sample2/workstationClusters/sample3/workstationConfigs/sample4"}
     request = request_type(**request_init)
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
@@ -18196,22 +16187,16 @@ def test_test_iam_permissions_rest(request_type):
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
 
 
-def test_cancel_operation_rest_bad_request(
-    request_type=operations_pb2.CancelOperationRequest,
-):
+def test_cancel_operation_rest_bad_request(request_type=operations_pb2.CancelOperationRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18258,22 +16243,16 @@ def test_cancel_operation_rest(request_type):
     assert response is None
 
 
-def test_delete_operation_rest_bad_request(
-    request_type=operations_pb2.DeleteOperationRequest,
-):
+def test_delete_operation_rest_bad_request(request_type=operations_pb2.DeleteOperationRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18320,22 +16299,16 @@ def test_delete_operation_rest(request_type):
     assert response is None
 
 
-def test_get_operation_rest_bad_request(
-    request_type=operations_pb2.GetOperationRequest,
-):
+def test_get_operation_rest_bad_request(request_type=operations_pb2.GetOperationRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2/operations/sample3"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2/operations/sample3"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18382,22 +16355,16 @@ def test_get_operation_rest(request_type):
     assert isinstance(response, operations_pb2.Operation)
 
 
-def test_list_operations_rest_bad_request(
-    request_type=operations_pb2.ListOperationsRequest,
-):
+def test_list_operations_rest_bad_request(request_type=operations_pb2.ListOperationsRequest):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type()
-    request = json_format.ParseDict(
-        {"name": "projects/sample1/locations/sample2"}, request
-    )
+    request = json_format.ParseDict({"name": "projects/sample1/locations/sample2"}, request)
 
     # Mock the http request call within the method and fake a BadRequest error.
-    with mock.patch.object(Session, "request") as req, pytest.raises(
-        core_exceptions.BadRequest
-    ):
+    with mock.patch.object(Session, "request") as req, pytest.raises(core_exceptions.BadRequest):
         # Wrap the value into a proper Response obj
         response_value = Response()
         json_return_value = ""
@@ -18445,9 +16412,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_initialize_client_w_rest():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
     assert client is not None
 
 
@@ -18460,9 +16425,7 @@ def test_get_workstation_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_cluster), "__call__") as call:
         client.get_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18482,9 +16445,7 @@ def test_list_workstation_clusters_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_clusters), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_clusters), "__call__") as call:
         client.list_workstation_clusters(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18504,9 +16465,7 @@ def test_create_workstation_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_cluster), "__call__") as call:
         client.create_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18526,9 +16485,7 @@ def test_update_workstation_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_cluster), "__call__") as call:
         client.update_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18548,9 +16505,7 @@ def test_delete_workstation_cluster_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_cluster), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_cluster), "__call__") as call:
         client.delete_workstation_cluster(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18570,9 +16525,7 @@ def test_get_workstation_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.get_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.get_workstation_config), "__call__") as call:
         client.get_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18592,9 +16545,7 @@ def test_list_workstation_configs_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstation_configs), "__call__") as call:
         client.list_workstation_configs(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18614,9 +16565,7 @@ def test_list_usable_workstation_configs_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstation_configs), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstation_configs), "__call__") as call:
         client.list_usable_workstation_configs(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18636,9 +16585,7 @@ def test_create_workstation_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation_config), "__call__") as call:
         client.create_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18658,9 +16605,7 @@ def test_update_workstation_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation_config), "__call__") as call:
         client.update_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18680,9 +16625,7 @@ def test_delete_workstation_config_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation_config), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation_config), "__call__") as call:
         client.delete_workstation_config(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18722,9 +16665,7 @@ def test_list_workstations_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_workstations), "__call__") as call:
         client.list_workstations(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18744,9 +16685,7 @@ def test_list_usable_workstations_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.list_usable_workstations), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.list_usable_workstations), "__call__") as call:
         client.list_usable_workstations(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18766,9 +16705,7 @@ def test_create_workstation_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.create_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.create_workstation), "__call__") as call:
         client.create_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18788,9 +16725,7 @@ def test_update_workstation_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.update_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.update_workstation), "__call__") as call:
         client.update_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18810,9 +16745,7 @@ def test_delete_workstation_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.delete_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.delete_workstation), "__call__") as call:
         client.delete_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18832,9 +16765,7 @@ def test_start_workstation_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.start_workstation), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.start_workstation), "__call__") as call:
         client.start_workstation(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18874,9 +16805,7 @@ def test_generate_access_token_empty_call_rest():
     )
 
     # Mock the actual call, and fake the request.
-    with mock.patch.object(
-        type(client.transport.generate_access_token), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.generate_access_token), "__call__") as call:
         client.generate_access_token(request=None)
 
         # Establish that the underlying stub method was called.
@@ -18918,17 +16847,12 @@ def test_transport_grpc_default():
 def test_workstations_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.WorkstationsTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
-            credentials_file="credentials.json",
-        )
+        transport = transports.WorkstationsTransport(credentials=ga_credentials.AnonymousCredentials(), credentials_file="credentials.json")
 
 
 def test_workstations_base_transport():
     # Instantiate the base transport.
-    with mock.patch(
-        "google.cloud.workstations_v1.services.workstations.transports.WorkstationsTransport.__init__"
-    ) as Transport:
+    with mock.patch("google.cloud.workstations_v1.services.workstations.transports.WorkstationsTransport.__init__") as Transport:
         Transport.return_value = None
         transport = transports.WorkstationsTransport(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -18988,9 +16912,7 @@ def test_workstations_base_transport():
 
 def test_workstations_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
-    with mock.patch.object(
-        google.auth, "load_credentials_from_file", autospec=True
-    ) as load_creds, mock.patch(
+    with mock.patch.object(google.auth, "load_credentials_from_file", autospec=True) as load_creds, mock.patch(
         "google.cloud.workstations_v1.services.workstations.transports.WorkstationsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
@@ -19065,9 +16987,7 @@ def test_workstations_transport_auth_gdch_credentials(transport_class):
     for t, e in zip(api_audience_tests, api_audience_expect):
         with mock.patch.object(google.auth, "default", autospec=True) as adc:
             gdch_mock = mock.MagicMock()
-            type(gdch_mock).with_gdch_audience = mock.PropertyMock(
-                return_value=gdch_mock
-            )
+            type(gdch_mock).with_gdch_audience = mock.PropertyMock(return_value=gdch_mock)
             adc.return_value = (gdch_mock, None)
             transport_class(host=host, api_audience=t)
             gdch_mock.with_gdch_audience.assert_called_once_with(e)
@@ -19075,17 +16995,12 @@ def test_workstations_transport_auth_gdch_credentials(transport_class):
 
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
-    [
-        (transports.WorkstationsGrpcTransport, grpc_helpers),
-        (transports.WorkstationsGrpcAsyncIOTransport, grpc_helpers_async),
-    ],
+    [(transports.WorkstationsGrpcTransport, grpc_helpers), (transports.WorkstationsGrpcAsyncIOTransport, grpc_helpers_async)],
 )
 def test_workstations_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
-    with mock.patch.object(
-        google.auth, "default", autospec=True
-    ) as adc, mock.patch.object(
+    with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
         creds = ga_credentials.AnonymousCredentials()
@@ -19108,21 +17023,14 @@ def test_workstations_transport_create_channel(transport_class, grpc_helpers):
         )
 
 
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.WorkstationsGrpcTransport, transports.WorkstationsGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.WorkstationsGrpcTransport, transports.WorkstationsGrpcAsyncIOTransport])
 def test_workstations_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
         mock_ssl_channel_creds = mock.Mock()
-        transport_class(
-            host="squid.clam.whelk",
-            credentials=cred,
-            ssl_channel_credentials=mock_ssl_channel_creds,
-        )
+        transport_class(host="squid.clam.whelk", credentials=cred, ssl_channel_credentials=mock_ssl_channel_creds)
         mock_create_channel.assert_called_once_with(
             "squid.clam.whelk:443",
             credentials=cred,
@@ -19140,24 +17048,15 @@ def test_workstations_grpc_transport_client_cert_source_for_mtls(transport_class
     # is used.
     with mock.patch.object(transport_class, "create_channel", return_value=mock.Mock()):
         with mock.patch("grpc.ssl_channel_credentials") as mock_ssl_cred:
-            transport_class(
-                credentials=cred,
-                client_cert_source_for_mtls=client_cert_source_callback,
-            )
+            transport_class(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
             expected_cert, expected_key = client_cert_source_callback()
-            mock_ssl_cred.assert_called_once_with(
-                certificate_chain=expected_cert, private_key=expected_key
-            )
+            mock_ssl_cred.assert_called_once_with(certificate_chain=expected_cert, private_key=expected_key)
 
 
 def test_workstations_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
-    with mock.patch(
-        "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
-    ) as mock_configure_mtls_channel:
-        transports.WorkstationsRestTransport(
-            credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
-        )
+    with mock.patch("google.auth.transport.requests.AuthorizedSession.configure_mtls_channel") as mock_configure_mtls_channel:
+        transports.WorkstationsRestTransport(credentials=cred, client_cert_source_for_mtls=client_cert_source_callback)
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
@@ -19172,15 +17071,11 @@ def test_workstations_http_transport_client_cert_source_for_mtls():
 def test_workstations_host_no_port(transport_name):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="workstations.googleapis.com"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="workstations.googleapis.com"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "workstations.googleapis.com:443"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://workstations.googleapis.com"
+        "workstations.googleapis.com:443" if transport_name in ["grpc", "grpc_asyncio"] else "https://workstations.googleapis.com"
     )
 
 
@@ -19195,15 +17090,11 @@ def test_workstations_host_no_port(transport_name):
 def test_workstations_host_with_port(transport_name):
     client = WorkstationsClient(
         credentials=ga_credentials.AnonymousCredentials(),
-        client_options=client_options.ClientOptions(
-            api_endpoint="workstations.googleapis.com:8000"
-        ),
+        client_options=client_options.ClientOptions(api_endpoint="workstations.googleapis.com:8000"),
         transport=transport_name,
     )
     assert client.transport._host == (
-        "workstations.googleapis.com:8000"
-        if transport_name in ["grpc", "grpc_asyncio"]
-        else "https://workstations.googleapis.com:8000"
+        "workstations.googleapis.com:8000" if transport_name in ["grpc", "grpc_asyncio"] else "https://workstations.googleapis.com:8000"
     )
 
 
@@ -19314,17 +17205,11 @@ def test_workstations_grpc_asyncio_transport_channel():
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.WorkstationsGrpcTransport, transports.WorkstationsGrpcAsyncIOTransport],
-)
+@pytest.mark.filterwarnings("ignore::FutureWarning")
+@pytest.mark.parametrize("transport_class", [transports.WorkstationsGrpcTransport, transports.WorkstationsGrpcAsyncIOTransport])
 def test_workstations_transport_channel_mtls_with_client_cert_source(transport_class):
-    with mock.patch(
-        "grpc.ssl_channel_credentials", autospec=True
-    ) as grpc_ssl_channel_cred:
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+    with mock.patch("grpc.ssl_channel_credentials", autospec=True) as grpc_ssl_channel_cred:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_ssl_cred = mock.Mock()
             grpc_ssl_channel_cred.return_value = mock_ssl_cred
 
@@ -19342,9 +17227,7 @@ def test_workstations_transport_channel_mtls_with_client_cert_source(transport_c
                     )
                     adc.assert_called_once()
 
-            grpc_ssl_channel_cred.assert_called_once_with(
-                certificate_chain=b"cert bytes", private_key=b"key bytes"
-            )
+            grpc_ssl_channel_cred.assert_called_once_with(certificate_chain=b"cert bytes", private_key=b"key bytes")
             grpc_create_channel.assert_called_once_with(
                 "mtls.squid.clam.whelk:443",
                 credentials=cred,
@@ -19363,10 +17246,7 @@ def test_workstations_transport_channel_mtls_with_client_cert_source(transport_c
 
 # Remove this test when deprecated arguments (api_mtls_endpoint, client_cert_source) are
 # removed from grpc/grpc_asyncio transport constructor.
-@pytest.mark.parametrize(
-    "transport_class",
-    [transports.WorkstationsGrpcTransport, transports.WorkstationsGrpcAsyncIOTransport],
-)
+@pytest.mark.parametrize("transport_class", [transports.WorkstationsGrpcTransport, transports.WorkstationsGrpcAsyncIOTransport])
 def test_workstations_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
@@ -19374,9 +17254,7 @@ def test_workstations_transport_channel_mtls_with_adc(transport_class):
         __init__=mock.Mock(return_value=None),
         ssl_credentials=mock.PropertyMock(return_value=mock_ssl_cred),
     ):
-        with mock.patch.object(
-            transport_class, "create_channel"
-        ) as grpc_create_channel:
+        with mock.patch.object(transport_class, "create_channel") as grpc_create_channel:
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
             mock_cred = mock.Mock()
@@ -19451,9 +17329,7 @@ def test_workstation_path():
         workstation_config=workstation_config,
         workstation=workstation,
     )
-    actual = WorkstationsClient.workstation_path(
-        project, location, workstation_cluster, workstation_config, workstation
-    )
+    actual = WorkstationsClient.workstation_path(project, location, workstation_cluster, workstation_config, workstation)
     assert expected == actual
 
 
@@ -19481,9 +17357,7 @@ def test_workstation_cluster_path():
         location=location,
         workstation_cluster=workstation_cluster,
     )
-    actual = WorkstationsClient.workstation_cluster_path(
-        project, location, workstation_cluster
-    )
+    actual = WorkstationsClient.workstation_cluster_path(project, location, workstation_cluster)
     assert expected == actual
 
 
@@ -19511,9 +17385,7 @@ def test_workstation_config_path():
         workstation_cluster=workstation_cluster,
         workstation_config=workstation_config,
     )
-    actual = WorkstationsClient.workstation_config_path(
-        project, location, workstation_cluster, workstation_config
-    )
+    actual = WorkstationsClient.workstation_config_path(project, location, workstation_cluster, workstation_config)
     assert expected == actual
 
 
@@ -19637,18 +17509,14 @@ def test_parse_common_location_path():
 def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
-    with mock.patch.object(
-        transports.WorkstationsTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.WorkstationsTransport, "_prep_wrapped_messages") as prep:
         client = WorkstationsClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
-    with mock.patch.object(
-        transports.WorkstationsTransport, "_prep_wrapped_messages"
-    ) as prep:
+    with mock.patch.object(transports.WorkstationsTransport, "_prep_wrapped_messages") as prep:
         transport_class = WorkstationsClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
@@ -19973,9 +17841,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -20027,9 +17893,7 @@ async def test_get_operation_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         await client.get_operation(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -20069,9 +17933,7 @@ async def test_get_operation_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.Operation()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.Operation())
         response = await client.get_operation(
             request={
                 "name": "locations",
@@ -20118,9 +17980,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -20172,9 +18032,7 @@ async def test_list_operations_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         await client.list_operations(request)
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -20214,9 +18072,7 @@ async def test_list_operations_from_dict_async():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            operations_pb2.ListOperationsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(operations_pb2.ListOperationsResponse())
         response = await client.list_operations(
             request={
                 "name": "locations",
@@ -20567,9 +18423,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
             permissions=["permissions_value"],
@@ -20601,9 +18455,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     request = iam_policy_pb2.TestIamPermissionsRequest()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             iam_policy_pb2.TestIamPermissionsResponse(
@@ -20636,9 +18488,7 @@ def test_test_iam_permissions_field_headers():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
         client.test_iam_permissions(request)
@@ -20668,12 +18518,8 @@ async def test_test_iam_permissions_field_headers_async():
     request.resource = "resource/value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
 
         await client.test_iam_permissions(request)
 
@@ -20695,9 +18541,7 @@ def test_test_iam_permissions_from_dict():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
 
@@ -20716,13 +18560,9 @@ async def test_test_iam_permissions_from_dict_async():
         credentials=async_anonymous_credentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
+    with mock.patch.object(type(client.transport.test_iam_permissions), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            iam_policy_pb2.TestIamPermissionsResponse()
-        )
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(iam_policy_pb2.TestIamPermissionsResponse())
 
         response = await client.test_iam_permissions(
             request={
@@ -20734,12 +18574,8 @@ async def test_test_iam_permissions_from_dict_async():
 
 
 def test_transport_close_grpc():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="grpc")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -20747,24 +18583,16 @@ def test_transport_close_grpc():
 
 @pytest.mark.asyncio
 async def test_transport_close_grpc_asyncio():
-    client = WorkstationsAsyncClient(
-        credentials=async_anonymous_credentials(), transport="grpc_asyncio"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_grpc_channel")), "close"
-    ) as close:
+    client = WorkstationsAsyncClient(credentials=async_anonymous_credentials(), transport="grpc_asyncio")
+    with mock.patch.object(type(getattr(client.transport, "_grpc_channel")), "close") as close:
         async with client:
             close.assert_not_called()
         close.assert_called_once()
 
 
 def test_transport_close_rest():
-    client = WorkstationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
-    )
-    with mock.patch.object(
-        type(getattr(client.transport, "_session")), "close"
-    ) as close:
+    client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport="rest")
+    with mock.patch.object(type(getattr(client.transport, "_session")), "close") as close:
         with client:
             close.assert_not_called()
         close.assert_called_once()
@@ -20776,9 +18604,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = WorkstationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
-        )
+        client = WorkstationsClient(credentials=ga_credentials.AnonymousCredentials(), transport=transport)
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
             close.assert_not_called()
@@ -20795,9 +18621,7 @@ def test_client_ctx():
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
-    with mock.patch.object(
-        google.auth._default, "get_api_key_credentials", create=True
-    ) as get_api_key_credentials:
+    with mock.patch.object(google.auth._default, "get_api_key_credentials", create=True) as get_api_key_credentials:
         mock_cred = mock.Mock()
         get_api_key_credentials.return_value = mock_cred
         options = client_options.ClientOptions()
@@ -20808,9 +18632,7 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
-                ),
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

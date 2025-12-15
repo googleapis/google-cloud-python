@@ -87,12 +87,8 @@ class GatewayControlRestInterceptor:
     """
 
     def pre_generate_credentials(
-        self,
-        request: control.GenerateCredentialsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control.GenerateCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: control.GenerateCredentialsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control.GenerateCredentialsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for generate_credentials
 
         Override in a subclass to manipulate the request or metadata
@@ -100,9 +96,7 @@ class GatewayControlRestInterceptor:
         """
         return request, metadata
 
-    def post_generate_credentials(
-        self, response: control.GenerateCredentialsResponse
-    ) -> control.GenerateCredentialsResponse:
+    def post_generate_credentials(self, response: control.GenerateCredentialsResponse) -> control.GenerateCredentialsResponse:
         """Post-rpc interceptor for generate_credentials
 
         DEPRECATED. Please use the `post_generate_credentials_with_metadata`
@@ -116,12 +110,8 @@ class GatewayControlRestInterceptor:
         return response
 
     def post_generate_credentials_with_metadata(
-        self,
-        response: control.GenerateCredentialsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        control.GenerateCredentialsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: control.GenerateCredentialsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[control.GenerateCredentialsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for generate_credentials
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -220,31 +210,18 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GatewayControlRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GenerateCredentials(
-        _BaseGatewayControlRestTransport._BaseGenerateCredentials,
-        GatewayControlRestStub,
-    ):
+    class _GenerateCredentials(_BaseGatewayControlRestTransport._BaseGenerateCredentials, GatewayControlRestStub):
         def __hash__(self):
             return hash("GatewayControlRestTransport.GenerateCredentials")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -286,28 +263,16 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
 
             """
 
-            http_options = (
-                _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_http_options()
-            )
+            http_options = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_http_options()
 
-            request, metadata = self._interceptor.pre_generate_credentials(
-                request, metadata
-            )
-            transcoded_request = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_generate_credentials(request, metadata)
+            transcoded_request = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGatewayControlRestTransport._BaseGenerateCredentials._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -331,12 +296,7 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
 
             # Send the request
             response = GatewayControlRestTransport._GenerateCredentials._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -352,16 +312,10 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
 
             resp = self._interceptor.post_generate_credentials(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_generate_credentials_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_generate_credentials_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = control.GenerateCredentialsResponse.to_json(
-                        response
-                    )
+                    response_payload = control.GenerateCredentialsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -381,11 +335,7 @@ class GatewayControlRestTransport(_BaseGatewayControlRestTransport):
             return resp
 
     @property
-    def generate_credentials(
-        self,
-    ) -> Callable[
-        [control.GenerateCredentialsRequest], control.GenerateCredentialsResponse
-    ]:
+    def generate_credentials(self) -> Callable[[control.GenerateCredentialsRequest], control.GenerateCredentialsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GenerateCredentials(self._session, self._host, self._interceptor)  # type: ignore

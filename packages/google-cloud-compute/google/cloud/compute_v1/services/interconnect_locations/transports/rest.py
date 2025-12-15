@@ -95,12 +95,8 @@ class InterconnectLocationsRestInterceptor:
     """
 
     def pre_get(
-        self,
-        request: compute.GetInterconnectLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetInterconnectLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetInterconnectLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetInterconnectLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -108,9 +104,7 @@ class InterconnectLocationsRestInterceptor:
         """
         return request, metadata
 
-    def post_get(
-        self, response: compute.InterconnectLocation
-    ) -> compute.InterconnectLocation:
+    def post_get(self, response: compute.InterconnectLocation) -> compute.InterconnectLocation:
         """Post-rpc interceptor for get
 
         DEPRECATED. Please use the `post_get_with_metadata`
@@ -124,9 +118,7 @@ class InterconnectLocationsRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.InterconnectLocation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.InterconnectLocation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.InterconnectLocation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -143,13 +135,8 @@ class InterconnectLocationsRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListInterconnectLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListInterconnectLocationsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListInterconnectLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListInterconnectLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +144,7 @@ class InterconnectLocationsRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.InterconnectLocationList
-    ) -> compute.InterconnectLocationList:
+    def post_list(self, response: compute.InterconnectLocationList) -> compute.InterconnectLocationList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -173,12 +158,8 @@ class InterconnectLocationsRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.InterconnectLocationList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InterconnectLocationList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.InterconnectLocationList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InterconnectLocationList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -277,30 +258,18 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or InterconnectLocationsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _Get(
-        _BaseInterconnectLocationsRestTransport._BaseGet, InterconnectLocationsRestStub
-    ):
+    class _Get(_BaseInterconnectLocationsRestTransport._BaseGet, InterconnectLocationsRestStub):
         def __hash__(self):
             return hash("InterconnectLocationsRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -348,28 +317,16 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
 
             """
 
-            http_options = (
-                _BaseInterconnectLocationsRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseInterconnectLocationsRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseInterconnectLocationsRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectLocationsRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseInterconnectLocationsRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseInterconnectLocationsRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -393,12 +350,7 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
 
             # Send the request
             response = InterconnectLocationsRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -415,9 +367,7 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.InterconnectLocation.to_json(response)
                 except:
@@ -438,22 +388,12 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
                 )
             return resp
 
-    class _List(
-        _BaseInterconnectLocationsRestTransport._BaseList, InterconnectLocationsRestStub
-    ):
+    class _List(_BaseInterconnectLocationsRestTransport._BaseList, InterconnectLocationsRestStub):
         def __hash__(self):
             return hash("InterconnectLocationsRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -497,26 +437,16 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
 
             """
 
-            http_options = (
-                _BaseInterconnectLocationsRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseInterconnectLocationsRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseInterconnectLocationsRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseInterconnectLocationsRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseInterconnectLocationsRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseInterconnectLocationsRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -540,12 +470,7 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
 
             # Send the request
             response = InterconnectLocationsRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -562,13 +487,9 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.InterconnectLocationList.to_json(
-                        response
-                    )
+                    response_payload = compute.InterconnectLocationList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -588,21 +509,13 @@ class InterconnectLocationsRestTransport(_BaseInterconnectLocationsRestTransport
             return resp
 
     @property
-    def get(
-        self,
-    ) -> Callable[
-        [compute.GetInterconnectLocationRequest], compute.InterconnectLocation
-    ]:
+    def get(self) -> Callable[[compute.GetInterconnectLocationRequest], compute.InterconnectLocation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListInterconnectLocationsRequest], compute.InterconnectLocationList
-    ]:
+    def list(self) -> Callable[[compute.ListInterconnectLocationsRequest], compute.InterconnectLocationList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore

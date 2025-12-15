@@ -453,9 +453,7 @@ class Replication(proto.Message):
                 message="CustomerManagedEncryption",
             )
 
-        replicas: MutableSequence[
-            "Replication.UserManaged.Replica"
-        ] = proto.RepeatedField(
+        replicas: MutableSequence["Replication.UserManaged.Replica"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Replication.UserManaged.Replica",
@@ -594,17 +592,13 @@ class ReplicationStatus(proto.Message):
                 proto.STRING,
                 number=1,
             )
-            customer_managed_encryption: "CustomerManagedEncryptionStatus" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    message="CustomerManagedEncryptionStatus",
-                )
+            customer_managed_encryption: "CustomerManagedEncryptionStatus" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="CustomerManagedEncryptionStatus",
             )
 
-        replicas: MutableSequence[
-            "ReplicationStatus.UserManagedStatus.ReplicaStatus"
-        ] = proto.RepeatedField(
+        replicas: MutableSequence["ReplicationStatus.UserManagedStatus.ReplicaStatus"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="ReplicationStatus.UserManagedStatus.ReplicaStatus",

@@ -119,12 +119,8 @@ class GeneratorsRestInterceptor:
     """
 
     def pre_create_generator(
-        self,
-        request: gcdc_generator.CreateGeneratorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_generator.CreateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_generator.CreateGeneratorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_generator.CreateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_generator
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +128,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_generator(
-        self, response: gcdc_generator.Generator
-    ) -> gcdc_generator.Generator:
+    def post_create_generator(self, response: gcdc_generator.Generator) -> gcdc_generator.Generator:
         """Post-rpc interceptor for create_generator
 
         DEPRECATED. Please use the `post_create_generator_with_metadata`
@@ -148,9 +142,7 @@ class GeneratorsRestInterceptor:
         return response
 
     def post_create_generator_with_metadata(
-        self,
-        response: gcdc_generator.Generator,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_generator.Generator, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_generator
 
@@ -167,12 +159,8 @@ class GeneratorsRestInterceptor:
         return response, metadata
 
     def pre_delete_generator(
-        self,
-        request: generator.DeleteGeneratorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generator.DeleteGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: generator.DeleteGeneratorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generator.DeleteGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_generator
 
         Override in a subclass to manipulate the request or metadata
@@ -181,9 +169,7 @@ class GeneratorsRestInterceptor:
         return request, metadata
 
     def pre_get_generator(
-        self,
-        request: generator.GetGeneratorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: generator.GetGeneratorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[generator.GetGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_generator
 
@@ -206,9 +192,7 @@ class GeneratorsRestInterceptor:
         return response
 
     def post_get_generator_with_metadata(
-        self,
-        response: generator.Generator,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: generator.Generator, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_generator
 
@@ -225,12 +209,8 @@ class GeneratorsRestInterceptor:
         return response, metadata
 
     def pre_list_generators(
-        self,
-        request: generator.ListGeneratorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generator.ListGeneratorsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: generator.ListGeneratorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generator.ListGeneratorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_generators
 
         Override in a subclass to manipulate the request or metadata
@@ -238,9 +218,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_generators(
-        self, response: generator.ListGeneratorsResponse
-    ) -> generator.ListGeneratorsResponse:
+    def post_list_generators(self, response: generator.ListGeneratorsResponse) -> generator.ListGeneratorsResponse:
         """Post-rpc interceptor for list_generators
 
         DEPRECATED. Please use the `post_list_generators_with_metadata`
@@ -254,12 +232,8 @@ class GeneratorsRestInterceptor:
         return response
 
     def post_list_generators_with_metadata(
-        self,
-        response: generator.ListGeneratorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        generator.ListGeneratorsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: generator.ListGeneratorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[generator.ListGeneratorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_generators
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -275,12 +249,8 @@ class GeneratorsRestInterceptor:
         return response, metadata
 
     def pre_update_generator(
-        self,
-        request: gcdc_generator.UpdateGeneratorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_generator.UpdateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_generator.UpdateGeneratorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_generator.UpdateGeneratorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_generator
 
         Override in a subclass to manipulate the request or metadata
@@ -288,9 +258,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_generator(
-        self, response: gcdc_generator.Generator
-    ) -> gcdc_generator.Generator:
+    def post_update_generator(self, response: gcdc_generator.Generator) -> gcdc_generator.Generator:
         """Post-rpc interceptor for update_generator
 
         DEPRECATED. Please use the `post_update_generator_with_metadata`
@@ -304,9 +272,7 @@ class GeneratorsRestInterceptor:
         return response
 
     def post_update_generator_with_metadata(
-        self,
-        response: gcdc_generator.Generator,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_generator.Generator, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_generator.Generator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_generator
 
@@ -323,12 +289,8 @@ class GeneratorsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -336,9 +298,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -348,12 +308,8 @@ class GeneratorsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -361,9 +317,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -373,12 +327,8 @@ class GeneratorsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -396,12 +346,8 @@ class GeneratorsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -409,9 +355,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -421,12 +365,8 @@ class GeneratorsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -434,9 +374,7 @@ class GeneratorsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -526,30 +464,18 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GeneratorsRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateGenerator(
-        _BaseGeneratorsRestTransport._BaseCreateGenerator, GeneratorsRestStub
-    ):
+    class _CreateGenerator(_BaseGeneratorsRestTransport._BaseCreateGenerator, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.CreateGenerator")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -596,32 +522,18 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseCreateGenerator._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_generator(
-                request, metadata
-            )
-            transcoded_request = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_generator(request, metadata)
+            transcoded_request = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_transcoded_request(http_options, request)
 
-            body = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseCreateGenerator._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -645,13 +557,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._CreateGenerator._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -667,12 +573,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             resp = self._interceptor.post_create_generator(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_generator_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_generator_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_generator.Generator.to_json(response)
                 except:
@@ -693,22 +595,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 )
             return resp
 
-    class _DeleteGenerator(
-        _BaseGeneratorsRestTransport._BaseDeleteGenerator, GeneratorsRestStub
-    ):
+    class _DeleteGenerator(_BaseGeneratorsRestTransport._BaseDeleteGenerator, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.DeleteGenerator")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -744,28 +636,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_generator(
-                request, metadata
-            )
-            transcoded_request = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_generator(request, metadata)
+            transcoded_request = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseDeleteGenerator._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -789,12 +669,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._DeleteGenerator._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -802,22 +677,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetGenerator(
-        _BaseGeneratorsRestTransport._BaseGetGenerator, GeneratorsRestStub
-    ):
+    class _GetGenerator(_BaseGeneratorsRestTransport._BaseGetGenerator, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.GetGenerator")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -863,30 +728,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseGetGenerator._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseGetGenerator._get_http_options()
 
             request, metadata = self._interceptor.pre_get_generator(request, metadata)
-            transcoded_request = (
-                _BaseGeneratorsRestTransport._BaseGetGenerator._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGeneratorsRestTransport._BaseGetGenerator._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGeneratorsRestTransport._BaseGetGenerator._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseGetGenerator._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -910,12 +761,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._GetGenerator._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -931,12 +777,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             resp = self._interceptor.post_get_generator(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_generator_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_generator_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = generator.Generator.to_json(response)
                 except:
@@ -957,22 +799,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 )
             return resp
 
-    class _ListGenerators(
-        _BaseGeneratorsRestTransport._BaseListGenerators, GeneratorsRestStub
-    ):
+    class _ListGenerators(_BaseGeneratorsRestTransport._BaseListGenerators, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.ListGenerators")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1014,28 +846,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseListGenerators._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseListGenerators._get_http_options()
 
             request, metadata = self._interceptor.pre_list_generators(request, metadata)
-            transcoded_request = _BaseGeneratorsRestTransport._BaseListGenerators._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGeneratorsRestTransport._BaseListGenerators._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGeneratorsRestTransport._BaseListGenerators._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseListGenerators._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1059,12 +879,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._ListGenerators._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1080,16 +895,10 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             resp = self._interceptor.post_list_generators(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_generators_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_generators_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = generator.ListGeneratorsResponse.to_json(
-                        response
-                    )
+                    response_payload = generator.ListGeneratorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1108,22 +917,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 )
             return resp
 
-    class _UpdateGenerator(
-        _BaseGeneratorsRestTransport._BaseUpdateGenerator, GeneratorsRestStub
-    ):
+    class _UpdateGenerator(_BaseGeneratorsRestTransport._BaseUpdateGenerator, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.UpdateGenerator")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1170,32 +969,18 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_generator(
-                request, metadata
-            )
-            transcoded_request = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_generator(request, metadata)
+            transcoded_request = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_transcoded_request(http_options, request)
 
-            body = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseUpdateGenerator._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1219,13 +1004,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._UpdateGenerator._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1241,12 +1020,8 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             resp = self._interceptor.post_update_generator(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_generator_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_generator_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_generator.Generator.to_json(response)
                 except:
@@ -1268,41 +1043,31 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             return resp
 
     @property
-    def create_generator(
-        self,
-    ) -> Callable[[gcdc_generator.CreateGeneratorRequest], gcdc_generator.Generator]:
+    def create_generator(self) -> Callable[[gcdc_generator.CreateGeneratorRequest], gcdc_generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_generator(
-        self,
-    ) -> Callable[[generator.DeleteGeneratorRequest], empty_pb2.Empty]:
+    def delete_generator(self) -> Callable[[generator.DeleteGeneratorRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_generator(
-        self,
-    ) -> Callable[[generator.GetGeneratorRequest], generator.Generator]:
+    def get_generator(self) -> Callable[[generator.GetGeneratorRequest], generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGenerator(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_generators(
-        self,
-    ) -> Callable[[generator.ListGeneratorsRequest], generator.ListGeneratorsResponse]:
+    def list_generators(self) -> Callable[[generator.ListGeneratorsRequest], generator.ListGeneratorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGenerators(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_generator(
-        self,
-    ) -> Callable[[gcdc_generator.UpdateGeneratorRequest], gcdc_generator.Generator]:
+    def update_generator(self) -> Callable[[gcdc_generator.UpdateGeneratorRequest], gcdc_generator.Generator]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGenerator(self._session, self._host, self._interceptor)  # type: ignore
@@ -1311,22 +1076,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseGeneratorsRestTransport._BaseGetLocation, GeneratorsRestStub
-    ):
+    class _GetLocation(_BaseGeneratorsRestTransport._BaseGetLocation, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1364,30 +1119,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseGeneratorsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGeneratorsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGeneratorsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1411,12 +1152,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1428,9 +1164,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1455,22 +1189,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseGeneratorsRestTransport._BaseListLocations, GeneratorsRestStub
-    ):
+    class _ListLocations(_BaseGeneratorsRestTransport._BaseListLocations, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1508,30 +1232,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseGeneratorsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGeneratorsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGeneratorsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1555,12 +1265,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1572,9 +1277,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1599,22 +1302,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseGeneratorsRestTransport._BaseCancelOperation, GeneratorsRestStub
-    ):
+    class _CancelOperation(_BaseGeneratorsRestTransport._BaseCancelOperation, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1649,28 +1342,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseGeneratorsRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseGeneratorsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGeneratorsRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1694,12 +1375,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1713,22 +1389,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseGeneratorsRestTransport._BaseGetOperation, GeneratorsRestStub
-    ):
+    class _GetOperation(_BaseGeneratorsRestTransport._BaseGetOperation, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1766,30 +1432,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseGeneratorsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseGeneratorsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGeneratorsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1813,12 +1465,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1830,9 +1477,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1857,22 +1502,12 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseGeneratorsRestTransport._BaseListOperations, GeneratorsRestStub
-    ):
+    class _ListOperations(_BaseGeneratorsRestTransport._BaseListOperations, GeneratorsRestStub):
         def __hash__(self):
             return hash("GeneratorsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1910,28 +1545,16 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseGeneratorsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseGeneratorsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseGeneratorsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGeneratorsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseGeneratorsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseGeneratorsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1955,12 +1578,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
 
             # Send the request
             response = GeneratorsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1972,9 +1590,7 @@ class GeneratorsRestTransport(_BaseGeneratorsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

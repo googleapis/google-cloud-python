@@ -1016,9 +1016,7 @@ class Cluster(proto.Message):
         optional=True,
         message="ClusterMaintenanceSchedule",
     )
-    psc_service_attachments: MutableSequence[
-        "PscServiceAttachment"
-    ] = proto.RepeatedField(
+    psc_service_attachments: MutableSequence["PscServiceAttachment"] = proto.RepeatedField(
         proto.MESSAGE,
         number=30,
         message="PscServiceAttachment",
@@ -1493,9 +1491,7 @@ class CrossClusterReplicationConfig(proto.Message):
             number=1,
             message="CrossClusterReplicationConfig.RemoteCluster",
         )
-        secondary_clusters: MutableSequence[
-            "CrossClusterReplicationConfig.RemoteCluster"
-        ] = proto.RepeatedField(
+        secondary_clusters: MutableSequence["CrossClusterReplicationConfig.RemoteCluster"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CrossClusterReplicationConfig.RemoteCluster",
@@ -1557,9 +1553,7 @@ class ClusterMaintenancePolicy(proto.Message):
         number=2,
         message=timestamp_pb2.Timestamp,
     )
-    weekly_maintenance_window: MutableSequence[
-        "ClusterWeeklyMaintenanceWindow"
-    ] = proto.RepeatedField(
+    weekly_maintenance_window: MutableSequence["ClusterWeeklyMaintenanceWindow"] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message="ClusterWeeklyMaintenanceWindow",
@@ -1966,9 +1960,7 @@ class CertificateAuthority(proto.Message):
                 number=1,
             )
 
-        ca_certs: MutableSequence[
-            "CertificateAuthority.ManagedCertificateAuthority.CertChain"
-        ] = proto.RepeatedField(
+        ca_certs: MutableSequence["CertificateAuthority.ManagedCertificateAuthority.CertChain"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="CertificateAuthority.ManagedCertificateAuthority.CertChain",
@@ -2053,12 +2045,10 @@ class ClusterPersistenceConfig(proto.Message):
             TWELVE_HOURS = 3
             TWENTY_FOUR_HOURS = 4
 
-        rdb_snapshot_period: "ClusterPersistenceConfig.RDBConfig.SnapshotPeriod" = (
-            proto.Field(
-                proto.ENUM,
-                number=1,
-                enum="ClusterPersistenceConfig.RDBConfig.SnapshotPeriod",
-            )
+        rdb_snapshot_period: "ClusterPersistenceConfig.RDBConfig.SnapshotPeriod" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ClusterPersistenceConfig.RDBConfig.SnapshotPeriod",
         )
         rdb_snapshot_start_time: timestamp_pb2.Timestamp = proto.Field(
             proto.MESSAGE,

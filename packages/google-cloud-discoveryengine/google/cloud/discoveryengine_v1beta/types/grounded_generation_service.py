@@ -310,9 +310,7 @@ class GenerateGroundedContentRequest(proto.Message):
                     author of the content).
             """
 
-            grounding_facts: MutableSequence[
-                grounding.GroundingFact
-            ] = proto.RepeatedField(
+            grounding_facts: MutableSequence[grounding.GroundingFact] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message=grounding.GroundingFact,
@@ -379,21 +377,17 @@ class GenerateGroundedContentRequest(proto.Message):
                 message="GenerateGroundedContentRequest.DynamicRetrievalConfiguration",
             )
 
-        inline_source: "GenerateGroundedContentRequest.GroundingSource.InlineSource" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                oneof="source",
-                message="GenerateGroundedContentRequest.GroundingSource.InlineSource",
-            )
+        inline_source: "GenerateGroundedContentRequest.GroundingSource.InlineSource" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="source",
+            message="GenerateGroundedContentRequest.GroundingSource.InlineSource",
         )
-        search_source: "GenerateGroundedContentRequest.GroundingSource.SearchSource" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=2,
-                oneof="source",
-                message="GenerateGroundedContentRequest.GroundingSource.SearchSource",
-            )
+        search_source: "GenerateGroundedContentRequest.GroundingSource.SearchSource" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="source",
+            message="GenerateGroundedContentRequest.GroundingSource.SearchSource",
         )
         google_search_source: "GenerateGroundedContentRequest.GroundingSource.GoogleSearchSource" = proto.Field(
             proto.MESSAGE,
@@ -410,9 +404,7 @@ class GenerateGroundedContentRequest(proto.Message):
                 Grounding sources.
         """
 
-        grounding_sources: MutableSequence[
-            "GenerateGroundedContentRequest.GroundingSource"
-        ] = proto.RepeatedField(
+        grounding_sources: MutableSequence["GenerateGroundedContentRequest.GroundingSource"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="GenerateGroundedContentRequest.GroundingSource",
@@ -683,9 +675,7 @@ class GenerateGroundedContentResponse(proto.Message):
                 number=4,
                 message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.SearchEntryPoint",
             )
-            grounding_support: MutableSequence[
-                "GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport"
-            ] = proto.RepeatedField(
+            grounding_support: MutableSequence["GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
                 message="GenerateGroundedContentResponse.Candidate.GroundingMetadata.GroundingSupport",

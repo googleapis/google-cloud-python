@@ -22,13 +22,7 @@ from .apt_artifact import (
     ImportAptArtifactsResponse,
 )
 from .file import File, GetFileRequest, Hash, ListFilesRequest, ListFilesResponse
-from .package import (
-    DeletePackageRequest,
-    GetPackageRequest,
-    ListPackagesRequest,
-    ListPackagesResponse,
-    Package,
-)
+from .package import DeletePackageRequest, GetPackageRequest, ListPackagesRequest, ListPackagesResponse, Package
 from .repository import (
     CreateRepositoryRequest,
     DeleteRepositoryRequest,
@@ -39,28 +33,9 @@ from .repository import (
     UpdateRepositoryRequest,
 )
 from .service import OperationMetadata
-from .settings import (
-    GetProjectSettingsRequest,
-    ProjectSettings,
-    UpdateProjectSettingsRequest,
-)
-from .tag import (
-    CreateTagRequest,
-    DeleteTagRequest,
-    GetTagRequest,
-    ListTagsRequest,
-    ListTagsResponse,
-    Tag,
-    UpdateTagRequest,
-)
-from .version import (
-    DeleteVersionRequest,
-    GetVersionRequest,
-    ListVersionsRequest,
-    ListVersionsResponse,
-    Version,
-    VersionView,
-)
+from .settings import GetProjectSettingsRequest, ProjectSettings, UpdateProjectSettingsRequest
+from .tag import CreateTagRequest, DeleteTagRequest, GetTagRequest, ListTagsRequest, ListTagsResponse, Tag, UpdateTagRequest
+from .version import DeleteVersionRequest, GetVersionRequest, ListVersionsRequest, ListVersionsResponse, Version, VersionView
 from .yum_artifact import (
     ImportYumArtifactsErrorInfo,
     ImportYumArtifactsGcsSource,

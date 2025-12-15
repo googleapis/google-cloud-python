@@ -50,9 +50,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -62,10 +60,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -84,11 +79,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +213,14 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +254,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -328,11 +313,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.CreateSessionRequest], gcd_session.Session
-    ]:
+    def create_session(self) -> Callable[[conversational_search_service.CreateSessionRequest], gcd_session.Session]:
         r"""Return a callable for the create session method over gRPC.
 
         Creates a Session.
@@ -359,11 +340,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
         return self._stubs["create_session"]
 
     @property
-    def delete_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.DeleteSessionRequest], empty_pb2.Empty
-    ]:
+    def delete_session(self) -> Callable[[conversational_search_service.DeleteSessionRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete session method over gRPC.
 
         Deletes a Session.
@@ -390,11 +367,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
         return self._stubs["delete_session"]
 
     @property
-    def update_session(
-        self,
-    ) -> Callable[
-        [conversational_search_service.UpdateSessionRequest], gcd_session.Session
-    ]:
+    def update_session(self) -> Callable[[conversational_search_service.UpdateSessionRequest], gcd_session.Session]:
         r"""Return a callable for the update session method over gRPC.
 
         Updates a Session.
@@ -423,9 +396,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
         return self._stubs["update_session"]
 
     @property
-    def get_session(
-        self,
-    ) -> Callable[[conversational_search_service.GetSessionRequest], session.Session]:
+    def get_session(self) -> Callable[[conversational_search_service.GetSessionRequest], session.Session]:
         r"""Return a callable for the get session method over gRPC.
 
         Gets a Session.
@@ -449,12 +420,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
         return self._stubs["get_session"]
 
     @property
-    def list_sessions(
-        self,
-    ) -> Callable[
-        [conversational_search_service.ListSessionsRequest],
-        conversational_search_service.ListSessionsResponse,
-    ]:
+    def list_sessions(self) -> Callable[[conversational_search_service.ListSessionsRequest], conversational_search_service.ListSessionsResponse]:
         r"""Return a callable for the list sessions method over gRPC.
 
         Lists all Sessions by their parent
@@ -479,11 +445,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
         return self._stubs["list_sessions"]
 
     @property
-    def list_files(
-        self,
-    ) -> Callable[
-        [session_service.ListFilesRequest], session_service.ListFilesResponse
-    ]:
+    def list_files(self) -> Callable[[session_service.ListFilesRequest], session_service.ListFilesResponse]:
         r"""Return a callable for the list files method over gRPC.
 
         Lists metadata for all files in the current session.
@@ -546,9 +508,7 @@ class SessionServiceGrpcTransport(SessionServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

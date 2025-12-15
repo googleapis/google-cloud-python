@@ -29,12 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.websecurityscanner_v1.types import (
-    finding,
-    scan_config,
-    scan_run,
-    web_security_scanner,
-)
+from google.cloud.websecurityscanner_v1.types import finding, scan_config, scan_run, web_security_scanner
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseWebSecurityScannerRestTransport
@@ -185,13 +180,8 @@ class WebSecurityScannerRestInterceptor:
     """
 
     def pre_create_scan_config(
-        self,
-        request: web_security_scanner.CreateScanConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.CreateScanConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.CreateScanConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.CreateScanConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_scan_config
 
         Override in a subclass to manipulate the request or metadata
@@ -199,9 +189,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_scan_config(
-        self, response: scan_config.ScanConfig
-    ) -> scan_config.ScanConfig:
+    def post_create_scan_config(self, response: scan_config.ScanConfig) -> scan_config.ScanConfig:
         """Post-rpc interceptor for create_scan_config
 
         DEPRECATED. Please use the `post_create_scan_config_with_metadata`
@@ -215,9 +203,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_create_scan_config_with_metadata(
-        self,
-        response: scan_config.ScanConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: scan_config.ScanConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[scan_config.ScanConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_scan_config
 
@@ -234,13 +220,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_delete_scan_config(
-        self,
-        request: web_security_scanner.DeleteScanConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.DeleteScanConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.DeleteScanConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.DeleteScanConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_scan_config
 
         Override in a subclass to manipulate the request or metadata
@@ -249,12 +230,8 @@ class WebSecurityScannerRestInterceptor:
         return request, metadata
 
     def pre_get_finding(
-        self,
-        request: web_security_scanner.GetFindingRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.GetFindingRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: web_security_scanner.GetFindingRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.GetFindingRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_finding
 
         Override in a subclass to manipulate the request or metadata
@@ -276,9 +253,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_get_finding_with_metadata(
-        self,
-        response: finding.Finding,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: finding.Finding, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[finding.Finding, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_finding
 
@@ -295,13 +270,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_get_scan_config(
-        self,
-        request: web_security_scanner.GetScanConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.GetScanConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.GetScanConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.GetScanConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_scan_config
 
         Override in a subclass to manipulate the request or metadata
@@ -309,9 +279,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_scan_config(
-        self, response: scan_config.ScanConfig
-    ) -> scan_config.ScanConfig:
+    def post_get_scan_config(self, response: scan_config.ScanConfig) -> scan_config.ScanConfig:
         """Post-rpc interceptor for get_scan_config
 
         DEPRECATED. Please use the `post_get_scan_config_with_metadata`
@@ -325,9 +293,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_get_scan_config_with_metadata(
-        self,
-        response: scan_config.ScanConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: scan_config.ScanConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[scan_config.ScanConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_scan_config
 
@@ -344,12 +310,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_get_scan_run(
-        self,
-        request: web_security_scanner.GetScanRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.GetScanRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: web_security_scanner.GetScanRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.GetScanRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_scan_run
 
         Override in a subclass to manipulate the request or metadata
@@ -371,9 +333,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_get_scan_run_with_metadata(
-        self,
-        response: scan_run.ScanRun,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: scan_run.ScanRun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[scan_run.ScanRun, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_scan_run
 
@@ -390,13 +350,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_list_crawled_urls(
-        self,
-        request: web_security_scanner.ListCrawledUrlsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListCrawledUrlsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.ListCrawledUrlsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListCrawledUrlsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_crawled_urls
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +359,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_crawled_urls(
-        self, response: web_security_scanner.ListCrawledUrlsResponse
-    ) -> web_security_scanner.ListCrawledUrlsResponse:
+    def post_list_crawled_urls(self, response: web_security_scanner.ListCrawledUrlsResponse) -> web_security_scanner.ListCrawledUrlsResponse:
         """Post-rpc interceptor for list_crawled_urls
 
         DEPRECATED. Please use the `post_list_crawled_urls_with_metadata`
@@ -420,13 +373,8 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_list_crawled_urls_with_metadata(
-        self,
-        response: web_security_scanner.ListCrawledUrlsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListCrawledUrlsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: web_security_scanner.ListCrawledUrlsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListCrawledUrlsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_crawled_urls
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -442,13 +390,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_list_findings(
-        self,
-        request: web_security_scanner.ListFindingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListFindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.ListFindingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListFindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_findings
 
         Override in a subclass to manipulate the request or metadata
@@ -456,9 +399,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_findings(
-        self, response: web_security_scanner.ListFindingsResponse
-    ) -> web_security_scanner.ListFindingsResponse:
+    def post_list_findings(self, response: web_security_scanner.ListFindingsResponse) -> web_security_scanner.ListFindingsResponse:
         """Post-rpc interceptor for list_findings
 
         DEPRECATED. Please use the `post_list_findings_with_metadata`
@@ -472,13 +413,8 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_list_findings_with_metadata(
-        self,
-        response: web_security_scanner.ListFindingsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListFindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: web_security_scanner.ListFindingsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListFindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_findings
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -494,13 +430,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_list_finding_type_stats(
-        self,
-        request: web_security_scanner.ListFindingTypeStatsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListFindingTypeStatsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.ListFindingTypeStatsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListFindingTypeStatsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_finding_type_stats
 
         Override in a subclass to manipulate the request or metadata
@@ -524,13 +455,8 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_list_finding_type_stats_with_metadata(
-        self,
-        response: web_security_scanner.ListFindingTypeStatsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListFindingTypeStatsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: web_security_scanner.ListFindingTypeStatsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListFindingTypeStatsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_finding_type_stats
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -546,13 +472,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_list_scan_configs(
-        self,
-        request: web_security_scanner.ListScanConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListScanConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.ListScanConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListScanConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_scan_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -560,9 +481,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_scan_configs(
-        self, response: web_security_scanner.ListScanConfigsResponse
-    ) -> web_security_scanner.ListScanConfigsResponse:
+    def post_list_scan_configs(self, response: web_security_scanner.ListScanConfigsResponse) -> web_security_scanner.ListScanConfigsResponse:
         """Post-rpc interceptor for list_scan_configs
 
         DEPRECATED. Please use the `post_list_scan_configs_with_metadata`
@@ -576,13 +495,8 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_list_scan_configs_with_metadata(
-        self,
-        response: web_security_scanner.ListScanConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListScanConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: web_security_scanner.ListScanConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListScanConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_scan_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -598,13 +512,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_list_scan_runs(
-        self,
-        request: web_security_scanner.ListScanRunsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListScanRunsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.ListScanRunsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListScanRunsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_scan_runs
 
         Override in a subclass to manipulate the request or metadata
@@ -612,9 +521,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_scan_runs(
-        self, response: web_security_scanner.ListScanRunsResponse
-    ) -> web_security_scanner.ListScanRunsResponse:
+    def post_list_scan_runs(self, response: web_security_scanner.ListScanRunsResponse) -> web_security_scanner.ListScanRunsResponse:
         """Post-rpc interceptor for list_scan_runs
 
         DEPRECATED. Please use the `post_list_scan_runs_with_metadata`
@@ -628,13 +535,8 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_list_scan_runs_with_metadata(
-        self,
-        response: web_security_scanner.ListScanRunsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.ListScanRunsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: web_security_scanner.ListScanRunsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.ListScanRunsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_scan_runs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -650,13 +552,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_start_scan_run(
-        self,
-        request: web_security_scanner.StartScanRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.StartScanRunRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.StartScanRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.StartScanRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_scan_run
 
         Override in a subclass to manipulate the request or metadata
@@ -678,9 +575,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_start_scan_run_with_metadata(
-        self,
-        response: scan_run.ScanRun,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: scan_run.ScanRun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[scan_run.ScanRun, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_scan_run
 
@@ -697,12 +592,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_stop_scan_run(
-        self,
-        request: web_security_scanner.StopScanRunRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.StopScanRunRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: web_security_scanner.StopScanRunRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.StopScanRunRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for stop_scan_run
 
         Override in a subclass to manipulate the request or metadata
@@ -724,9 +615,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_stop_scan_run_with_metadata(
-        self,
-        response: scan_run.ScanRun,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: scan_run.ScanRun, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[scan_run.ScanRun, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for stop_scan_run
 
@@ -743,13 +632,8 @@ class WebSecurityScannerRestInterceptor:
         return response, metadata
 
     def pre_update_scan_config(
-        self,
-        request: web_security_scanner.UpdateScanConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        web_security_scanner.UpdateScanConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: web_security_scanner.UpdateScanConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[web_security_scanner.UpdateScanConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_scan_config
 
         Override in a subclass to manipulate the request or metadata
@@ -757,9 +641,7 @@ class WebSecurityScannerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_scan_config(
-        self, response: scan_config.ScanConfig
-    ) -> scan_config.ScanConfig:
+    def post_update_scan_config(self, response: scan_config.ScanConfig) -> scan_config.ScanConfig:
         """Post-rpc interceptor for update_scan_config
 
         DEPRECATED. Please use the `post_update_scan_config_with_metadata`
@@ -773,9 +655,7 @@ class WebSecurityScannerRestInterceptor:
         return response
 
     def post_update_scan_config_with_metadata(
-        self,
-        response: scan_config.ScanConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: scan_config.ScanConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[scan_config.ScanConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_scan_config
 
@@ -874,31 +754,18 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or WebSecurityScannerRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateScanConfig(
-        _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig,
-        WebSecurityScannerRestStub,
-    ):
+    class _CreateScanConfig(_BaseWebSecurityScannerRestTransport._BaseCreateScanConfig, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.CreateScanConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -940,32 +807,18 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_scan_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_scan_config(request, metadata)
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseCreateScanConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -989,13 +842,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._CreateScanConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1011,12 +858,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_create_scan_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_scan_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_scan_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = scan_config.ScanConfig.to_json(response)
                 except:
@@ -1037,23 +880,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _DeleteScanConfig(
-        _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig,
-        WebSecurityScannerRestStub,
-    ):
+    class _DeleteScanConfig(_BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.DeleteScanConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1088,28 +920,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_scan_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_scan_config(request, metadata)
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseDeleteScanConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1133,12 +953,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._DeleteScanConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1146,22 +961,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetFinding(
-        _BaseWebSecurityScannerRestTransport._BaseGetFinding, WebSecurityScannerRestStub
-    ):
+    class _GetFinding(_BaseWebSecurityScannerRestTransport._BaseGetFinding, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.GetFinding")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1203,26 +1008,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseGetFinding._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseGetFinding._get_http_options()
 
             request, metadata = self._interceptor.pre_get_finding(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseGetFinding._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseGetFinding._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseGetFinding._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseGetFinding._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1246,12 +1041,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._GetFinding._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1267,12 +1057,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_get_finding(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_finding_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_finding_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = finding.Finding.to_json(response)
                 except:
@@ -1293,23 +1079,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _GetScanConfig(
-        _BaseWebSecurityScannerRestTransport._BaseGetScanConfig,
-        WebSecurityScannerRestStub,
-    ):
+    class _GetScanConfig(_BaseWebSecurityScannerRestTransport._BaseGetScanConfig, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.GetScanConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1350,26 +1125,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseGetScanConfig._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseGetScanConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_scan_config(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseGetScanConfig._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseGetScanConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseGetScanConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseGetScanConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1393,12 +1158,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._GetScanConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1414,12 +1174,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_get_scan_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_scan_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_scan_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = scan_config.ScanConfig.to_json(response)
                 except:
@@ -1440,22 +1196,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _GetScanRun(
-        _BaseWebSecurityScannerRestTransport._BaseGetScanRun, WebSecurityScannerRestStub
-    ):
+    class _GetScanRun(_BaseWebSecurityScannerRestTransport._BaseGetScanRun, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.GetScanRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1497,26 +1243,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseGetScanRun._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseGetScanRun._get_http_options()
 
             request, metadata = self._interceptor.pre_get_scan_run(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseGetScanRun._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseGetScanRun._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseGetScanRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseGetScanRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1540,12 +1276,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._GetScanRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1561,12 +1292,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_get_scan_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_scan_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_scan_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = scan_run.ScanRun.to_json(response)
                 except:
@@ -1587,23 +1314,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _ListCrawledUrls(
-        _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls,
-        WebSecurityScannerRestStub,
-    ):
+    class _ListCrawledUrls(_BaseWebSecurityScannerRestTransport._BaseListCrawledUrls, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.ListCrawledUrls")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1642,28 +1358,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     Response for the ``ListCrawledUrls`` method.
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_crawled_urls(
-                request, metadata
-            )
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_crawled_urls(request, metadata)
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseListCrawledUrls._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1687,12 +1391,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._ListCrawledUrls._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1708,16 +1407,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_list_crawled_urls(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_crawled_urls_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_crawled_urls_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        web_security_scanner.ListCrawledUrlsResponse.to_json(response)
-                    )
+                    response_payload = web_security_scanner.ListCrawledUrlsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1736,23 +1429,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _ListFindings(
-        _BaseWebSecurityScannerRestTransport._BaseListFindings,
-        WebSecurityScannerRestStub,
-    ):
+    class _ListFindings(_BaseWebSecurityScannerRestTransport._BaseListFindings, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.ListFindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1791,26 +1473,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     Response for the ``ListFindings`` method.
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseListFindings._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseListFindings._get_http_options()
 
             request, metadata = self._interceptor.pre_list_findings(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListFindings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListFindings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseListFindings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseListFindings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1834,12 +1506,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._ListFindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1855,16 +1522,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_list_findings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_findings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_findings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        web_security_scanner.ListFindingsResponse.to_json(response)
-                    )
+                    response_payload = web_security_scanner.ListFindingsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1883,23 +1544,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _ListFindingTypeStats(
-        _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats,
-        WebSecurityScannerRestStub,
-    ):
+    class _ListFindingTypeStats(_BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.ListFindingTypeStats")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1938,28 +1588,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     Response for the ``ListFindingTypeStats`` method.
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_finding_type_stats(
-                request, metadata
-            )
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_finding_type_stats(request, metadata)
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseListFindingTypeStats._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1982,15 +1620,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
 
             # Send the request
-            response = (
-                WebSecurityScannerRestTransport._ListFindingTypeStats._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = WebSecurityScannerRestTransport._ListFindingTypeStats._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2006,18 +1637,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_list_finding_type_stats(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_finding_type_stats_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_finding_type_stats_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        web_security_scanner.ListFindingTypeStatsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = web_security_scanner.ListFindingTypeStatsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2036,23 +1659,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _ListScanConfigs(
-        _BaseWebSecurityScannerRestTransport._BaseListScanConfigs,
-        WebSecurityScannerRestStub,
-    ):
+    class _ListScanConfigs(_BaseWebSecurityScannerRestTransport._BaseListScanConfigs, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.ListScanConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2091,28 +1703,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     Response for the ``ListScanConfigs`` method.
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseListScanConfigs._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseListScanConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_scan_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListScanConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_scan_configs(request, metadata)
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListScanConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseListScanConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseListScanConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2136,12 +1736,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._ListScanConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2157,16 +1752,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_list_scan_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_scan_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_scan_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        web_security_scanner.ListScanConfigsResponse.to_json(response)
-                    )
+                    response_payload = web_security_scanner.ListScanConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2185,23 +1774,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _ListScanRuns(
-        _BaseWebSecurityScannerRestTransport._BaseListScanRuns,
-        WebSecurityScannerRestStub,
-    ):
+    class _ListScanRuns(_BaseWebSecurityScannerRestTransport._BaseListScanRuns, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.ListScanRuns")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2240,26 +1818,16 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                     Response for the ``ListScanRuns`` method.
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseListScanRuns._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseListScanRuns._get_http_options()
 
             request, metadata = self._interceptor.pre_list_scan_runs(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListScanRuns._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseListScanRuns._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseListScanRuns._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseListScanRuns._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2283,12 +1851,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._ListScanRuns._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2304,16 +1867,10 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_list_scan_runs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_scan_runs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_scan_runs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        web_security_scanner.ListScanRunsResponse.to_json(response)
-                    )
+                    response_payload = web_security_scanner.ListScanRunsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2332,23 +1889,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _StartScanRun(
-        _BaseWebSecurityScannerRestTransport._BaseStartScanRun,
-        WebSecurityScannerRestStub,
-    ):
+    class _StartScanRun(_BaseWebSecurityScannerRestTransport._BaseStartScanRun, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.StartScanRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2391,30 +1937,18 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_http_options()
 
             request, metadata = self._interceptor.pre_start_scan_run(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_transcoded_request(http_options, request)
 
-            body = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseStartScanRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2438,13 +1972,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._StartScanRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2460,12 +1988,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_start_scan_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_scan_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_scan_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = scan_run.ScanRun.to_json(response)
                 except:
@@ -2486,23 +2010,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _StopScanRun(
-        _BaseWebSecurityScannerRestTransport._BaseStopScanRun,
-        WebSecurityScannerRestStub,
-    ):
+    class _StopScanRun(_BaseWebSecurityScannerRestTransport._BaseStopScanRun, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.StopScanRun")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2545,30 +2058,18 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_http_options()
 
             request, metadata = self._interceptor.pre_stop_scan_run(request, metadata)
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_transcoded_request(http_options, request)
 
-            body = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseStopScanRun._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2592,13 +2093,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._StopScanRun._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2614,12 +2109,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_stop_scan_run(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_stop_scan_run_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_stop_scan_run_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = scan_run.ScanRun.to_json(response)
                 except:
@@ -2640,23 +2131,12 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
                 )
             return resp
 
-    class _UpdateScanConfig(
-        _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig,
-        WebSecurityScannerRestStub,
-    ):
+    class _UpdateScanConfig(_BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig, WebSecurityScannerRestStub):
         def __hash__(self):
             return hash("WebSecurityScannerRestTransport.UpdateScanConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2698,32 +2178,18 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             """
 
-            http_options = (
-                _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_http_options()
-            )
+            http_options = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_scan_config(
-                request, metadata
-            )
-            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_scan_config(request, metadata)
+            transcoded_request = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWebSecurityScannerRestTransport._BaseUpdateScanConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2747,13 +2213,7 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             # Send the request
             response = WebSecurityScannerRestTransport._UpdateScanConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2769,12 +2229,8 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
 
             resp = self._interceptor.post_update_scan_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_scan_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_scan_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = scan_config.ScanConfig.to_json(response)
                 except:
@@ -2796,65 +2252,43 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
             return resp
 
     @property
-    def create_scan_config(
-        self,
-    ) -> Callable[
-        [web_security_scanner.CreateScanConfigRequest], scan_config.ScanConfig
-    ]:
+    def create_scan_config(self) -> Callable[[web_security_scanner.CreateScanConfigRequest], scan_config.ScanConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateScanConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_scan_config(
-        self,
-    ) -> Callable[[web_security_scanner.DeleteScanConfigRequest], empty_pb2.Empty]:
+    def delete_scan_config(self) -> Callable[[web_security_scanner.DeleteScanConfigRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteScanConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_finding(
-        self,
-    ) -> Callable[[web_security_scanner.GetFindingRequest], finding.Finding]:
+    def get_finding(self) -> Callable[[web_security_scanner.GetFindingRequest], finding.Finding]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetFinding(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_scan_config(
-        self,
-    ) -> Callable[[web_security_scanner.GetScanConfigRequest], scan_config.ScanConfig]:
+    def get_scan_config(self) -> Callable[[web_security_scanner.GetScanConfigRequest], scan_config.ScanConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetScanConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_scan_run(
-        self,
-    ) -> Callable[[web_security_scanner.GetScanRunRequest], scan_run.ScanRun]:
+    def get_scan_run(self) -> Callable[[web_security_scanner.GetScanRunRequest], scan_run.ScanRun]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetScanRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_crawled_urls(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListCrawledUrlsRequest],
-        web_security_scanner.ListCrawledUrlsResponse,
-    ]:
+    def list_crawled_urls(self) -> Callable[[web_security_scanner.ListCrawledUrlsRequest], web_security_scanner.ListCrawledUrlsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCrawledUrls(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_findings(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListFindingsRequest],
-        web_security_scanner.ListFindingsResponse,
-    ]:
+    def list_findings(self) -> Callable[[web_security_scanner.ListFindingsRequest], web_security_scanner.ListFindingsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFindings(self._session, self._host, self._interceptor)  # type: ignore
@@ -2862,58 +2296,37 @@ class WebSecurityScannerRestTransport(_BaseWebSecurityScannerRestTransport):
     @property
     def list_finding_type_stats(
         self,
-    ) -> Callable[
-        [web_security_scanner.ListFindingTypeStatsRequest],
-        web_security_scanner.ListFindingTypeStatsResponse,
-    ]:
+    ) -> Callable[[web_security_scanner.ListFindingTypeStatsRequest], web_security_scanner.ListFindingTypeStatsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListFindingTypeStats(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_scan_configs(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListScanConfigsRequest],
-        web_security_scanner.ListScanConfigsResponse,
-    ]:
+    def list_scan_configs(self) -> Callable[[web_security_scanner.ListScanConfigsRequest], web_security_scanner.ListScanConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListScanConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_scan_runs(
-        self,
-    ) -> Callable[
-        [web_security_scanner.ListScanRunsRequest],
-        web_security_scanner.ListScanRunsResponse,
-    ]:
+    def list_scan_runs(self) -> Callable[[web_security_scanner.ListScanRunsRequest], web_security_scanner.ListScanRunsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListScanRuns(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_scan_run(
-        self,
-    ) -> Callable[[web_security_scanner.StartScanRunRequest], scan_run.ScanRun]:
+    def start_scan_run(self) -> Callable[[web_security_scanner.StartScanRunRequest], scan_run.ScanRun]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartScanRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def stop_scan_run(
-        self,
-    ) -> Callable[[web_security_scanner.StopScanRunRequest], scan_run.ScanRun]:
+    def stop_scan_run(self) -> Callable[[web_security_scanner.StopScanRunRequest], scan_run.ScanRun]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StopScanRun(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_scan_config(
-        self,
-    ) -> Callable[
-        [web_security_scanner.UpdateScanConfigRequest], scan_config.ScanConfig
-    ]:
+    def update_scan_config(self) -> Callable[[web_security_scanner.UpdateScanConfigRequest], scan_config.ScanConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateScanConfig(self._session, self._host, self._interceptor)  # type: ignore

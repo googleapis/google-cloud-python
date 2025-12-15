@@ -121,9 +121,7 @@ class SessionsRestInterceptor:
     """
 
     def pre_detect_intent(
-        self,
-        request: session.DetectIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: session.DetectIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.DetectIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for detect_intent
 
@@ -132,9 +130,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_detect_intent(
-        self, response: session.DetectIntentResponse
-    ) -> session.DetectIntentResponse:
+    def post_detect_intent(self, response: session.DetectIntentResponse) -> session.DetectIntentResponse:
         """Post-rpc interceptor for detect_intent
 
         DEPRECATED. Please use the `post_detect_intent_with_metadata`
@@ -148,9 +144,7 @@ class SessionsRestInterceptor:
         return response
 
     def post_detect_intent_with_metadata(
-        self,
-        response: session.DetectIntentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: session.DetectIntentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.DetectIntentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for detect_intent
 
@@ -167,9 +161,7 @@ class SessionsRestInterceptor:
         return response, metadata
 
     def pre_fulfill_intent(
-        self,
-        request: session.FulfillIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: session.FulfillIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.FulfillIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fulfill_intent
 
@@ -178,9 +170,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_fulfill_intent(
-        self, response: session.FulfillIntentResponse
-    ) -> session.FulfillIntentResponse:
+    def post_fulfill_intent(self, response: session.FulfillIntentResponse) -> session.FulfillIntentResponse:
         """Post-rpc interceptor for fulfill_intent
 
         DEPRECATED. Please use the `post_fulfill_intent_with_metadata`
@@ -194,9 +184,7 @@ class SessionsRestInterceptor:
         return response
 
     def post_fulfill_intent_with_metadata(
-        self,
-        response: session.FulfillIntentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: session.FulfillIntentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.FulfillIntentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fulfill_intent
 
@@ -213,9 +201,7 @@ class SessionsRestInterceptor:
         return response, metadata
 
     def pre_match_intent(
-        self,
-        request: session.MatchIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: session.MatchIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.MatchIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for match_intent
 
@@ -224,9 +210,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_match_intent(
-        self, response: session.MatchIntentResponse
-    ) -> session.MatchIntentResponse:
+    def post_match_intent(self, response: session.MatchIntentResponse) -> session.MatchIntentResponse:
         """Post-rpc interceptor for match_intent
 
         DEPRECATED. Please use the `post_match_intent_with_metadata`
@@ -240,9 +224,7 @@ class SessionsRestInterceptor:
         return response
 
     def post_match_intent_with_metadata(
-        self,
-        response: session.MatchIntentResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: session.MatchIntentResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.MatchIntentResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for match_intent
 
@@ -259,9 +241,7 @@ class SessionsRestInterceptor:
         return response, metadata
 
     def pre_server_streaming_detect_intent(
-        self,
-        request: session.DetectIntentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: session.DetectIntentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.DetectIntentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for server_streaming_detect_intent
 
@@ -270,9 +250,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_server_streaming_detect_intent(
-        self, response: rest_streaming.ResponseIterator
-    ) -> rest_streaming.ResponseIterator:
+    def post_server_streaming_detect_intent(self, response: rest_streaming.ResponseIterator) -> rest_streaming.ResponseIterator:
         """Post-rpc interceptor for server_streaming_detect_intent
 
         DEPRECATED. Please use the `post_server_streaming_detect_intent_with_metadata`
@@ -286,12 +264,8 @@ class SessionsRestInterceptor:
         return response
 
     def post_server_streaming_detect_intent_with_metadata(
-        self,
-        response: rest_streaming.ResponseIterator,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: rest_streaming.ResponseIterator, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[rest_streaming.ResponseIterator, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for server_streaming_detect_intent
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -307,12 +281,8 @@ class SessionsRestInterceptor:
         return response, metadata
 
     def pre_submit_answer_feedback(
-        self,
-        request: session.SubmitAnswerFeedbackRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        session.SubmitAnswerFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: session.SubmitAnswerFeedbackRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[session.SubmitAnswerFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for submit_answer_feedback
 
         Override in a subclass to manipulate the request or metadata
@@ -320,9 +290,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_submit_answer_feedback(
-        self, response: session.AnswerFeedback
-    ) -> session.AnswerFeedback:
+    def post_submit_answer_feedback(self, response: session.AnswerFeedback) -> session.AnswerFeedback:
         """Post-rpc interceptor for submit_answer_feedback
 
         DEPRECATED. Please use the `post_submit_answer_feedback_with_metadata`
@@ -336,9 +304,7 @@ class SessionsRestInterceptor:
         return response
 
     def post_submit_answer_feedback_with_metadata(
-        self,
-        response: session.AnswerFeedback,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: session.AnswerFeedback, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[session.AnswerFeedback, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for submit_answer_feedback
 
@@ -355,12 +321,8 @@ class SessionsRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -368,9 +330,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -380,12 +340,8 @@ class SessionsRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -393,9 +349,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -405,12 +359,8 @@ class SessionsRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -428,12 +378,8 @@ class SessionsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -441,9 +387,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -453,12 +397,8 @@ class SessionsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -466,9 +406,7 @@ class SessionsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -560,9 +498,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SessionsRestInterceptor()
@@ -573,15 +509,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             return hash("SessionsRestTransport.DetectIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -623,34 +551,18 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseDetectIntent._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseDetectIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_detect_intent(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseDetectIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseDetectIntent._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionsRestTransport._BaseDetectIntent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionsRestTransport._BaseDetectIntent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseDetectIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseDetectIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -674,13 +586,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._DetectIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -696,12 +602,8 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             resp = self._interceptor.post_detect_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_detect_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_detect_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = session.DetectIntentResponse.to_json(response)
                 except:
@@ -722,22 +624,12 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 )
             return resp
 
-    class _FulfillIntent(
-        _BaseSessionsRestTransport._BaseFulfillIntent, SessionsRestStub
-    ):
+    class _FulfillIntent(_BaseSessionsRestTransport._BaseFulfillIntent, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.FulfillIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -777,34 +669,18 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                     Response of [FulfillIntent][]
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseFulfillIntent._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseFulfillIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_fulfill_intent(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseFulfillIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseFulfillIntent._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionsRestTransport._BaseFulfillIntent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionsRestTransport._BaseFulfillIntent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseFulfillIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseFulfillIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -828,13 +704,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._FulfillIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -850,12 +720,8 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             resp = self._interceptor.post_fulfill_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fulfill_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fulfill_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = session.FulfillIntentResponse.to_json(response)
                 except:
@@ -881,15 +747,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             return hash("SessionsRestTransport.MatchIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -929,34 +787,18 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                     Response of [MatchIntent][].
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseMatchIntent._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseMatchIntent._get_http_options()
 
             request, metadata = self._interceptor.pre_match_intent(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseMatchIntent._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseMatchIntent._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionsRestTransport._BaseMatchIntent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionsRestTransport._BaseMatchIntent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseMatchIntent._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseMatchIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -980,13 +822,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._MatchIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1002,12 +838,8 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             resp = self._interceptor.post_match_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_match_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_match_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = session.MatchIntentResponse.to_json(response)
                 except:
@@ -1028,22 +860,12 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 )
             return resp
 
-    class _ServerStreamingDetectIntent(
-        _BaseSessionsRestTransport._BaseServerStreamingDetectIntent, SessionsRestStub
-    ):
+    class _ServerStreamingDetectIntent(_BaseSessionsRestTransport._BaseServerStreamingDetectIntent, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.ServerStreamingDetectIntent")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1087,32 +909,18 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_http_options()
 
-            request, metadata = self._interceptor.pre_server_streaming_detect_intent(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_server_streaming_detect_intent(request, metadata)
+            transcoded_request = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionsRestTransport._BaseServerStreamingDetectIntent._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1136,13 +944,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._ServerStreamingDetectIntent._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1151,21 +953,12 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = rest_streaming.ResponseIterator(
-                response, session.DetectIntentResponse
-            )
+            resp = rest_streaming.ResponseIterator(response, session.DetectIntentResponse)
 
             resp = self._interceptor.post_server_streaming_detect_intent(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_server_streaming_detect_intent_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_server_streaming_detect_intent_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 http_response = {
                     "headers": dict(response.headers),
                     "status": response.status_code,
@@ -1181,9 +974,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 )
             return resp
 
-    class _StreamingDetectIntent(
-        _BaseSessionsRestTransport._BaseStreamingDetectIntent, SessionsRestStub
-    ):
+    class _StreamingDetectIntent(_BaseSessionsRestTransport._BaseStreamingDetectIntent, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.StreamingDetectIntent")
 
@@ -1195,26 +986,14 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method StreamingDetectIntent is not available over REST transport"
-            )
+            raise NotImplementedError("Method StreamingDetectIntent is not available over REST transport")
 
-    class _SubmitAnswerFeedback(
-        _BaseSessionsRestTransport._BaseSubmitAnswerFeedback, SessionsRestStub
-    ):
+    class _SubmitAnswerFeedback(_BaseSessionsRestTransport._BaseSubmitAnswerFeedback, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.SubmitAnswerFeedback")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1257,32 +1036,18 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_http_options()
 
-            request, metadata = self._interceptor.pre_submit_answer_feedback(
-                request, metadata
-            )
-            transcoded_request = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_submit_answer_feedback(request, metadata)
+            transcoded_request = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_transcoded_request(http_options, request)
 
-            body = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSessionsRestTransport._BaseSubmitAnswerFeedback._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1306,13 +1071,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._SubmitAnswerFeedback._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1328,12 +1087,8 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             resp = self._interceptor.post_submit_answer_feedback(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_submit_answer_feedback_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_submit_answer_feedback_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = session.AnswerFeedback.to_json(response)
                 except:
@@ -1355,51 +1110,37 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             return resp
 
     @property
-    def detect_intent(
-        self,
-    ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
+    def detect_intent(self) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DetectIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fulfill_intent(
-        self,
-    ) -> Callable[[session.FulfillIntentRequest], session.FulfillIntentResponse]:
+    def fulfill_intent(self) -> Callable[[session.FulfillIntentRequest], session.FulfillIntentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FulfillIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def match_intent(
-        self,
-    ) -> Callable[[session.MatchIntentRequest], session.MatchIntentResponse]:
+    def match_intent(self) -> Callable[[session.MatchIntentRequest], session.MatchIntentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._MatchIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def server_streaming_detect_intent(
-        self,
-    ) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
+    def server_streaming_detect_intent(self) -> Callable[[session.DetectIntentRequest], session.DetectIntentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ServerStreamingDetectIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def streaming_detect_intent(
-        self,
-    ) -> Callable[
-        [session.StreamingDetectIntentRequest], session.StreamingDetectIntentResponse
-    ]:
+    def streaming_detect_intent(self) -> Callable[[session.StreamingDetectIntentRequest], session.StreamingDetectIntentResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StreamingDetectIntent(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def submit_answer_feedback(
-        self,
-    ) -> Callable[[session.SubmitAnswerFeedbackRequest], session.AnswerFeedback]:
+    def submit_answer_feedback(self) -> Callable[[session.SubmitAnswerFeedbackRequest], session.AnswerFeedback]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SubmitAnswerFeedback(self._session, self._host, self._interceptor)  # type: ignore
@@ -1413,15 +1154,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             return hash("SessionsRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1459,30 +1192,16 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1506,12 +1225,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1523,9 +1237,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1550,22 +1262,12 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseSessionsRestTransport._BaseListLocations, SessionsRestStub
-    ):
+    class _ListLocations(_BaseSessionsRestTransport._BaseListLocations, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1603,30 +1305,16 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1650,12 +1338,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1667,9 +1350,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1694,22 +1375,12 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSessionsRestTransport._BaseCancelOperation, SessionsRestStub
-    ):
+    class _CancelOperation(_BaseSessionsRestTransport._BaseCancelOperation, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1744,32 +1415,16 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSessionsRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1793,12 +1448,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1817,15 +1467,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             return hash("SessionsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1863,30 +1505,16 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1910,12 +1538,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1927,9 +1550,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1954,22 +1575,12 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseSessionsRestTransport._BaseListOperations, SessionsRestStub
-    ):
+    class _ListOperations(_BaseSessionsRestTransport._BaseListOperations, SessionsRestStub):
         def __hash__(self):
             return hash("SessionsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2007,30 +1618,16 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSessionsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSessionsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseSessionsRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSessionsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSessionsRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSessionsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2054,12 +1651,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
 
             # Send the request
             response = SessionsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2071,9 +1663,7 @@ class SessionsRestTransport(_BaseSessionsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

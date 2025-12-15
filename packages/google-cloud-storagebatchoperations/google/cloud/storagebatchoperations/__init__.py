@@ -18,12 +18,8 @@ from google.cloud.storagebatchoperations import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.storagebatchoperations_v1.services.storage_batch_operations.async_client import (
-    StorageBatchOperationsAsyncClient,
-)
-from google.cloud.storagebatchoperations_v1.services.storage_batch_operations.client import (
-    StorageBatchOperationsClient,
-)
+from google.cloud.storagebatchoperations_v1.services.storage_batch_operations.async_client import StorageBatchOperationsAsyncClient
+from google.cloud.storagebatchoperations_v1.services.storage_batch_operations.client import StorageBatchOperationsClient
 from google.cloud.storagebatchoperations_v1.types.storage_batch_operations import (
     CancelJobRequest,
     CancelJobResponse,

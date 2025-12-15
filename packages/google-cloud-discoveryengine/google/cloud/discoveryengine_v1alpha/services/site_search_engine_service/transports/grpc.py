@@ -30,10 +30,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1alpha.types import (
-    site_search_engine,
-    site_search_engine_service,
-)
+from google.cloud.discoveryengine_v1alpha.types import site_search_engine, site_search_engine_service
 
 from .base import DEFAULT_CLIENT_INFO, SiteSearchEngineServiceTransport
 
@@ -49,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -61,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -83,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -222,18 +210,14 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -267,9 +251,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -336,20 +318,13 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def get_site_search_engine(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetSiteSearchEngineRequest],
-        site_search_engine.SiteSearchEngine,
-    ]:
+    def get_site_search_engine(self) -> Callable[[site_search_engine_service.GetSiteSearchEngineRequest], site_search_engine.SiteSearchEngine]:
         r"""Return a callable for the get site search engine method over gRPC.
 
         Gets the
@@ -374,11 +349,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["get_site_search_engine"]
 
     @property
-    def create_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.CreateTargetSiteRequest], operations_pb2.Operation
-    ]:
+    def create_target_site(self) -> Callable[[site_search_engine_service.CreateTargetSiteRequest], operations_pb2.Operation]:
         r"""Return a callable for the create target site method over gRPC.
 
         Creates a
@@ -403,12 +374,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["create_target_site"]
 
     @property
-    def batch_create_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.BatchCreateTargetSitesRequest],
-        operations_pb2.Operation,
-    ]:
+    def batch_create_target_sites(self) -> Callable[[site_search_engine_service.BatchCreateTargetSitesRequest], operations_pb2.Operation]:
         r"""Return a callable for the batch create target sites method over gRPC.
 
         Creates
@@ -434,11 +400,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["batch_create_target_sites"]
 
     @property
-    def get_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.GetTargetSiteRequest], site_search_engine.TargetSite
-    ]:
+    def get_target_site(self) -> Callable[[site_search_engine_service.GetTargetSiteRequest], site_search_engine.TargetSite]:
         r"""Return a callable for the get target site method over gRPC.
 
         Gets a
@@ -463,11 +425,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["get_target_site"]
 
     @property
-    def update_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.UpdateTargetSiteRequest], operations_pb2.Operation
-    ]:
+    def update_target_site(self) -> Callable[[site_search_engine_service.UpdateTargetSiteRequest], operations_pb2.Operation]:
         r"""Return a callable for the update target site method over gRPC.
 
         Updates a
@@ -492,11 +450,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["update_target_site"]
 
     @property
-    def delete_target_site(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DeleteTargetSiteRequest], operations_pb2.Operation
-    ]:
+    def delete_target_site(self) -> Callable[[site_search_engine_service.DeleteTargetSiteRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete target site method over gRPC.
 
         Deletes a
@@ -521,12 +475,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["delete_target_site"]
 
     @property
-    def list_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.ListTargetSitesRequest],
-        site_search_engine_service.ListTargetSitesResponse,
-    ]:
+    def list_target_sites(self) -> Callable[[site_search_engine_service.ListTargetSitesRequest], site_search_engine_service.ListTargetSitesResponse]:
         r"""Return a callable for the list target sites method over gRPC.
 
         Gets a list of
@@ -551,12 +500,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["list_target_sites"]
 
     @property
-    def enable_advanced_site_search(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.EnableAdvancedSiteSearchRequest],
-        operations_pb2.Operation,
-    ]:
+    def enable_advanced_site_search(self) -> Callable[[site_search_engine_service.EnableAdvancedSiteSearchRequest], operations_pb2.Operation]:
         r"""Return a callable for the enable advanced site search method over gRPC.
 
         Upgrade from basic site search to advanced site
@@ -573,9 +517,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "enable_advanced_site_search" not in self._stubs:
-            self._stubs[
-                "enable_advanced_site_search"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["enable_advanced_site_search"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/EnableAdvancedSiteSearch",
                 request_serializer=site_search_engine_service.EnableAdvancedSiteSearchRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -583,12 +525,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["enable_advanced_site_search"]
 
     @property
-    def disable_advanced_site_search(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.DisableAdvancedSiteSearchRequest],
-        operations_pb2.Operation,
-    ]:
+    def disable_advanced_site_search(self) -> Callable[[site_search_engine_service.DisableAdvancedSiteSearchRequest], operations_pb2.Operation]:
         r"""Return a callable for the disable advanced site search method over gRPC.
 
         Downgrade from advanced site search to basic site
@@ -605,9 +542,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "disable_advanced_site_search" not in self._stubs:
-            self._stubs[
-                "disable_advanced_site_search"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["disable_advanced_site_search"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/DisableAdvancedSiteSearch",
                 request_serializer=site_search_engine_service.DisableAdvancedSiteSearchRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -615,11 +550,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["disable_advanced_site_search"]
 
     @property
-    def recrawl_uris(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.RecrawlUrisRequest], operations_pb2.Operation
-    ]:
+    def recrawl_uris(self) -> Callable[[site_search_engine_service.RecrawlUrisRequest], operations_pb2.Operation]:
         r"""Return a callable for the recrawl uris method over gRPC.
 
         Request on-demand recrawl for a list of URIs.
@@ -643,12 +574,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["recrawl_uris"]
 
     @property
-    def batch_verify_target_sites(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.BatchVerifyTargetSitesRequest],
-        operations_pb2.Operation,
-    ]:
+    def batch_verify_target_sites(self) -> Callable[[site_search_engine_service.BatchVerifyTargetSitesRequest], operations_pb2.Operation]:
         r"""Return a callable for the batch verify target sites method over gRPC.
 
         Verify target sites' ownership and validity.
@@ -677,8 +603,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     def fetch_domain_verification_status(
         self,
     ) -> Callable[
-        [site_search_engine_service.FetchDomainVerificationStatusRequest],
-        site_search_engine_service.FetchDomainVerificationStatusResponse,
+        [site_search_engine_service.FetchDomainVerificationStatusRequest], site_search_engine_service.FetchDomainVerificationStatusResponse
     ]:
         r"""Return a callable for the fetch domain verification
         status method over gRPC.
@@ -698,9 +623,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_domain_verification_status" not in self._stubs:
-            self._stubs[
-                "fetch_domain_verification_status"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_domain_verification_status"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/FetchDomainVerificationStatus",
                 request_serializer=site_search_engine_service.FetchDomainVerificationStatusRequest.serialize,
                 response_deserializer=site_search_engine_service.FetchDomainVerificationStatusResponse.deserialize,
@@ -708,12 +631,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         return self._stubs["fetch_domain_verification_status"]
 
     @property
-    def set_uri_pattern_document_data(
-        self,
-    ) -> Callable[
-        [site_search_engine_service.SetUriPatternDocumentDataRequest],
-        operations_pb2.Operation,
-    ]:
+    def set_uri_pattern_document_data(self) -> Callable[[site_search_engine_service.SetUriPatternDocumentDataRequest], operations_pb2.Operation]:
         r"""Return a callable for the set uri pattern document data method over gRPC.
 
         Sets the URI Pattern to Document data mapping for an
@@ -730,9 +648,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "set_uri_pattern_document_data" not in self._stubs:
-            self._stubs[
-                "set_uri_pattern_document_data"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["set_uri_pattern_document_data"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/SetUriPatternDocumentData",
                 request_serializer=site_search_engine_service.SetUriPatternDocumentDataRequest.serialize,
                 response_deserializer=operations_pb2.Operation.FromString,
@@ -742,10 +658,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     @property
     def get_uri_pattern_document_data(
         self,
-    ) -> Callable[
-        [site_search_engine_service.GetUriPatternDocumentDataRequest],
-        site_search_engine_service.GetUriPatternDocumentDataResponse,
-    ]:
+    ) -> Callable[[site_search_engine_service.GetUriPatternDocumentDataRequest], site_search_engine_service.GetUriPatternDocumentDataResponse]:
         r"""Return a callable for the get uri pattern document data method over gRPC.
 
         Gets the URI Pattern to Document data mapping for an
@@ -762,9 +675,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_uri_pattern_document_data" not in self._stubs:
-            self._stubs[
-                "get_uri_pattern_document_data"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_uri_pattern_document_data"] = self._logged_channel.unary_unary(
                 "/google.cloud.discoveryengine.v1alpha.SiteSearchEngineService/GetUriPatternDocumentData",
                 request_serializer=site_search_engine_service.GetUriPatternDocumentDataRequest.serialize,
                 response_deserializer=site_search_engine_service.GetUriPatternDocumentDataResponse.deserialize,
@@ -811,9 +722,7 @@ class SiteSearchEngineServiceGrpcTransport(SiteSearchEngineServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

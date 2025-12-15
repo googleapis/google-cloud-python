@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .autokey import (
-    CreateKeyHandleMetadata,
-    CreateKeyHandleRequest,
-    GetKeyHandleRequest,
-    KeyHandle,
-    ListKeyHandlesRequest,
-    ListKeyHandlesResponse,
-)
+from .autokey import CreateKeyHandleMetadata, CreateKeyHandleRequest, GetKeyHandleRequest, KeyHandle, ListKeyHandlesRequest, ListKeyHandlesResponse
 from .autokey_admin import (
     AutokeyConfig,
     GetAutokeyConfigRequest,

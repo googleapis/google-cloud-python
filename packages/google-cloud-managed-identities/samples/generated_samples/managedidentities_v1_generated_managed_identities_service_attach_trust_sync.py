@@ -43,10 +43,7 @@ def sample_attach_trust():
     trust.target_domain_name = "target_domain_name_value"
     trust.trust_type = "EXTERNAL"
     trust.trust_direction = "BIDIRECTIONAL"
-    trust.target_dns_ip_addresses = [
-        "target_dns_ip_addresses_value1",
-        "target_dns_ip_addresses_value2",
-    ]
+    trust.target_dns_ip_addresses = ["target_dns_ip_addresses_value1", "target_dns_ip_addresses_value2"]
     trust.trust_handshake_secret = "trust_handshake_secret_value"
 
     request = managedidentities_v1.AttachTrustRequest(

@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -51,11 +40,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 
 from google.cloud.documentai_v1beta3.services.document_service import pagers
-from google.cloud.documentai_v1beta3.types import (
-    document,
-    document_schema,
-    document_service,
-)
+from google.cloud.documentai_v1beta3.types import document, document_schema, document_service
 from google.cloud.documentai_v1beta3.types import dataset
 from google.cloud.documentai_v1beta3.types import dataset as gcd_dataset
 
@@ -90,35 +75,19 @@ class DocumentServiceAsyncClient:
     dataset_path = staticmethod(DocumentServiceClient.dataset_path)
     parse_dataset_path = staticmethod(DocumentServiceClient.parse_dataset_path)
     dataset_schema_path = staticmethod(DocumentServiceClient.dataset_schema_path)
-    parse_dataset_schema_path = staticmethod(
-        DocumentServiceClient.parse_dataset_schema_path
-    )
+    parse_dataset_schema_path = staticmethod(DocumentServiceClient.parse_dataset_schema_path)
     schema_path = staticmethod(DocumentServiceClient.schema_path)
     parse_schema_path = staticmethod(DocumentServiceClient.parse_schema_path)
-    common_billing_account_path = staticmethod(
-        DocumentServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        DocumentServiceClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(DocumentServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(DocumentServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(DocumentServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        DocumentServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        DocumentServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        DocumentServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(DocumentServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(DocumentServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(DocumentServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(DocumentServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        DocumentServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(DocumentServiceClient.parse_common_project_path)
     common_location_path = staticmethod(DocumentServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        DocumentServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(DocumentServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -154,9 +123,7 @@ class DocumentServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -223,11 +190,7 @@ class DocumentServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str, DocumentServiceTransport, Callable[..., DocumentServiceTransport]
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, DocumentServiceTransport, Callable[..., DocumentServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -287,20 +250,14 @@ class DocumentServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.documentai_v1beta3.DocumentServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.documentai.v1beta3.DocumentService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -397,14 +354,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -420,17 +372,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_dataset
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_dataset]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("dataset.name", request.dataset.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset.name", request.dataset.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -532,14 +478,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -553,15 +494,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -656,14 +593,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -677,15 +609,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_document
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_document]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -770,14 +698,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -791,15 +714,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -828,9 +747,7 @@ class DocumentServiceAsyncClient:
 
     async def batch_delete_documents(
         self,
-        request: Optional[
-            Union[document_service.BatchDeleteDocumentsRequest, dict]
-        ] = None,
+        request: Optional[Union[document_service.BatchDeleteDocumentsRequest, dict]] = None,
         *,
         dataset: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -906,14 +823,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -927,15 +839,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.batch_delete_documents
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.batch_delete_documents]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset", request.dataset),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1024,14 +932,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1045,15 +948,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_dataset_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_dataset_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1071,9 +970,7 @@ class DocumentServiceAsyncClient:
 
     async def update_dataset_schema(
         self,
-        request: Optional[
-            Union[document_service.UpdateDatasetSchemaRequest, dict]
-        ] = None,
+        request: Optional[Union[document_service.UpdateDatasetSchemaRequest, dict]] = None,
         *,
         dataset_schema: Optional[dataset.DatasetSchema] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -1141,14 +1038,9 @@ class DocumentServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [dataset_schema, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1164,17 +1056,11 @@ class DocumentServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_dataset_schema
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_dataset_schema]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("dataset_schema.name", request.dataset_schema.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("dataset_schema.name", request.dataset_schema.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1227,9 +1113,7 @@ class DocumentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1282,9 +1166,7 @@ class DocumentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1340,9 +1222,7 @@ class DocumentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1392,9 +1272,7 @@ class DocumentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1447,9 +1325,7 @@ class DocumentServiceAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1472,9 +1348,7 @@ class DocumentServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

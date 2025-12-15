@@ -18,12 +18,8 @@ from google.cloud.oracledatabase import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.oracledatabase_v1.services.oracle_database.async_client import (
-    OracleDatabaseAsyncClient,
-)
-from google.cloud.oracledatabase_v1.services.oracle_database.client import (
-    OracleDatabaseClient,
-)
+from google.cloud.oracledatabase_v1.services.oracle_database.async_client import OracleDatabaseAsyncClient
+from google.cloud.oracledatabase_v1.services.oracle_database.client import OracleDatabaseClient
 from google.cloud.oracledatabase_v1.types.autonomous_database import (
     AllConnectionStrings,
     AutonomousDatabase,
@@ -42,22 +38,10 @@ from google.cloud.oracledatabase_v1.types.autonomous_database import (
     SourceConfig,
     State,
 )
-from google.cloud.oracledatabase_v1.types.autonomous_database_character_set import (
-    AutonomousDatabaseCharacterSet,
-)
-from google.cloud.oracledatabase_v1.types.autonomous_db_backup import (
-    AutonomousDatabaseBackup,
-    AutonomousDatabaseBackupProperties,
-)
-from google.cloud.oracledatabase_v1.types.autonomous_db_version import (
-    AutonomousDbVersion,
-)
-from google.cloud.oracledatabase_v1.types.common import (
-    ComputeModel,
-    CustomerContact,
-    DataCollectionOptionsCommon,
-    IdentityConnector,
-)
+from google.cloud.oracledatabase_v1.types.autonomous_database_character_set import AutonomousDatabaseCharacterSet
+from google.cloud.oracledatabase_v1.types.autonomous_db_backup import AutonomousDatabaseBackup, AutonomousDatabaseBackupProperties
+from google.cloud.oracledatabase_v1.types.autonomous_db_version import AutonomousDbVersion
+from google.cloud.oracledatabase_v1.types.common import ComputeModel, CustomerContact, DataCollectionOptionsCommon, IdentityConnector
 from google.cloud.oracledatabase_v1.types.database import (
     Database,
     DatabaseProperties,
@@ -93,26 +77,10 @@ from google.cloud.oracledatabase_v1.types.db_system_initial_storage_size import 
     StorageSizeDetails,
 )
 from google.cloud.oracledatabase_v1.types.db_system_shape import DbSystemShape
-from google.cloud.oracledatabase_v1.types.db_version import (
-    DbVersion,
-    DbVersionProperties,
-    ListDbVersionsRequest,
-    ListDbVersionsResponse,
-)
-from google.cloud.oracledatabase_v1.types.entitlement import (
-    CloudAccountDetails,
-    Entitlement,
-)
-from google.cloud.oracledatabase_v1.types.exadata_infra import (
-    CloudExadataInfrastructure,
-    CloudExadataInfrastructureProperties,
-    MaintenanceWindow,
-)
-from google.cloud.oracledatabase_v1.types.exadb_vm_cluster import (
-    ExadbVmCluster,
-    ExadbVmClusterProperties,
-    ExadbVmClusterStorageDetails,
-)
+from google.cloud.oracledatabase_v1.types.db_version import DbVersion, DbVersionProperties, ListDbVersionsRequest, ListDbVersionsResponse
+from google.cloud.oracledatabase_v1.types.entitlement import CloudAccountDetails, Entitlement
+from google.cloud.oracledatabase_v1.types.exadata_infra import CloudExadataInfrastructure, CloudExadataInfrastructureProperties, MaintenanceWindow
+from google.cloud.oracledatabase_v1.types.exadb_vm_cluster import ExadbVmCluster, ExadbVmClusterProperties, ExadbVmClusterStorageDetails
 from google.cloud.oracledatabase_v1.types.exascale_db_storage_vault import (
     CreateExascaleDbStorageVaultRequest,
     DeleteExascaleDbStorageVaultRequest,
@@ -125,11 +93,7 @@ from google.cloud.oracledatabase_v1.types.exascale_db_storage_vault import (
 )
 from google.cloud.oracledatabase_v1.types.gi_version import GiVersion
 from google.cloud.oracledatabase_v1.types.location_metadata import LocationMetadata
-from google.cloud.oracledatabase_v1.types.minor_version import (
-    ListMinorVersionsRequest,
-    ListMinorVersionsResponse,
-    MinorVersion,
-)
+from google.cloud.oracledatabase_v1.types.minor_version import ListMinorVersionsRequest, ListMinorVersionsResponse, MinorVersion
 from google.cloud.oracledatabase_v1.types.odb_network import (
     CreateOdbNetworkRequest,
     DeleteOdbNetworkRequest,
@@ -206,11 +170,7 @@ from google.cloud.oracledatabase_v1.types.pluggable_database import (
     PluggableDatabaseNodeLevelDetails,
     PluggableDatabaseProperties,
 )
-from google.cloud.oracledatabase_v1.types.vm_cluster import (
-    CloudVmCluster,
-    CloudVmClusterProperties,
-    DataCollectionOptions,
-)
+from google.cloud.oracledatabase_v1.types.vm_cluster import CloudVmCluster, CloudVmClusterProperties, DataCollectionOptions
 
 __all__ = (
     "OracleDatabaseClient",

@@ -273,16 +273,12 @@ class Evaluation(proto.Message):
             METRICS_TYPE_UNSPECIFIED = 0
             AGGREGATE = 1
 
-        confidence_level_metrics: MutableSequence[
-            "Evaluation.ConfidenceLevelMetrics"
-        ] = proto.RepeatedField(
+        confidence_level_metrics: MutableSequence["Evaluation.ConfidenceLevelMetrics"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Evaluation.ConfidenceLevelMetrics",
         )
-        confidence_level_metrics_exact: MutableSequence[
-            "Evaluation.ConfidenceLevelMetrics"
-        ] = proto.RepeatedField(
+        confidence_level_metrics_exact: MutableSequence["Evaluation.ConfidenceLevelMetrics"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="Evaluation.ConfidenceLevelMetrics",

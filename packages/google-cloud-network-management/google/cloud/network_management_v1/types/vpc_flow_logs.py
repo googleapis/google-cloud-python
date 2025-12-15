@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.network_management_v1.types import (
-    vpc_flow_logs_config as gcn_vpc_flow_logs_config,
-)
+from google.cloud.network_management_v1.types import vpc_flow_logs_config as gcn_vpc_flow_logs_config
 
 __protobuf__ = proto.module(
     package="google.cloud.networkmanagement.v1",
@@ -108,9 +106,7 @@ class ListVpcFlowLogsConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vpc_flow_logs_configs: MutableSequence[
-        gcn_vpc_flow_logs_config.VpcFlowLogsConfig
-    ] = proto.RepeatedField(
+    vpc_flow_logs_configs: MutableSequence[gcn_vpc_flow_logs_config.VpcFlowLogsConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_vpc_flow_logs_config.VpcFlowLogsConfig,
@@ -283,9 +279,7 @@ class QueryOrgVpcFlowLogsConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    vpc_flow_logs_configs: MutableSequence[
-        gcn_vpc_flow_logs_config.VpcFlowLogsConfig
-    ] = proto.RepeatedField(
+    vpc_flow_logs_configs: MutableSequence[gcn_vpc_flow_logs_config.VpcFlowLogsConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_vpc_flow_logs_config.VpcFlowLogsConfig,
@@ -369,9 +363,7 @@ class ShowEffectiveFlowLogsConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    effective_flow_logs_configs: MutableSequence[
-        gcn_vpc_flow_logs_config.EffectiveVpcFlowLogsConfig
-    ] = proto.RepeatedField(
+    effective_flow_logs_configs: MutableSequence[gcn_vpc_flow_logs_config.EffectiveVpcFlowLogsConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcn_vpc_flow_logs_config.EffectiveVpcFlowLogsConfig,

@@ -30,14 +30,9 @@ import google.protobuf
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.contact_center_insights_v1 import gapic_version as package_version
-from google.cloud.contact_center_insights_v1.types import (
-    contact_center_insights,
-    resources,
-)
+from google.cloud.contact_center_insights_v1.types import contact_center_insights, resources
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -99,23 +94,15 @@ class ContactCenterInsightsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -544,37 +531,25 @@ class ContactCenterInsightsTransport(abc.ABC):
     @property
     def create_conversation(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateConversationRequest],
-        Union[resources.Conversation, Awaitable[resources.Conversation]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateConversationRequest], Union[resources.Conversation, Awaitable[resources.Conversation]]]:
         raise NotImplementedError()
 
     @property
     def upload_conversation(
         self,
-    ) -> Callable[
-        [contact_center_insights.UploadConversationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.UploadConversationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_conversation(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdateConversationRequest],
-        Union[resources.Conversation, Awaitable[resources.Conversation]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdateConversationRequest], Union[resources.Conversation, Awaitable[resources.Conversation]]]:
         raise NotImplementedError()
 
     @property
     def get_conversation(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetConversationRequest],
-        Union[resources.Conversation, Awaitable[resources.Conversation]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetConversationRequest], Union[resources.Conversation, Awaitable[resources.Conversation]]]:
         raise NotImplementedError()
 
     @property
@@ -582,38 +557,24 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListConversationsRequest],
-        Union[
-            contact_center_insights.ListConversationsResponse,
-            Awaitable[contact_center_insights.ListConversationsResponse],
-        ],
+        Union[contact_center_insights.ListConversationsResponse, Awaitable[contact_center_insights.ListConversationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_conversation(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeleteConversationRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeleteConversationRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def create_analysis(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateAnalysisRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateAnalysisRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_analysis(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetAnalysisRequest],
-        Union[resources.Analysis, Awaitable[resources.Analysis]],
-    ]:
+    def get_analysis(self) -> Callable[[contact_center_insights.GetAnalysisRequest], Union[resources.Analysis, Awaitable[resources.Analysis]]]:
         raise NotImplementedError()
 
     @property
@@ -621,83 +582,54 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListAnalysesRequest],
-        Union[
-            contact_center_insights.ListAnalysesResponse,
-            Awaitable[contact_center_insights.ListAnalysesResponse],
-        ],
+        Union[contact_center_insights.ListAnalysesResponse, Awaitable[contact_center_insights.ListAnalysesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_analysis(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteAnalysisRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_analysis(self) -> Callable[[contact_center_insights.DeleteAnalysisRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def bulk_analyze_conversations(
         self,
-    ) -> Callable[
-        [contact_center_insights.BulkAnalyzeConversationsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.BulkAnalyzeConversationsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def bulk_delete_conversations(
         self,
-    ) -> Callable[
-        [contact_center_insights.BulkDeleteConversationsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.BulkDeleteConversationsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def ingest_conversations(
         self,
-    ) -> Callable[
-        [contact_center_insights.IngestConversationsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.IngestConversationsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_insights_data(
         self,
-    ) -> Callable[
-        [contact_center_insights.ExportInsightsDataRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.ExportInsightsDataRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateIssueModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateIssueModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdateIssueModelRequest],
-        Union[resources.IssueModel, Awaitable[resources.IssueModel]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdateIssueModelRequest], Union[resources.IssueModel, Awaitable[resources.IssueModel]]]:
         raise NotImplementedError()
 
     @property
     def get_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetIssueModelRequest],
-        Union[resources.IssueModel, Awaitable[resources.IssueModel]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetIssueModelRequest], Union[resources.IssueModel, Awaitable[resources.IssueModel]]]:
         raise NotImplementedError()
 
     @property
@@ -705,65 +637,42 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListIssueModelsRequest],
-        Union[
-            contact_center_insights.ListIssueModelsResponse,
-            Awaitable[contact_center_insights.ListIssueModelsResponse],
-        ],
+        Union[contact_center_insights.ListIssueModelsResponse, Awaitable[contact_center_insights.ListIssueModelsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeleteIssueModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeleteIssueModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def deploy_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeployIssueModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeployIssueModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def undeploy_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.UndeployIssueModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.UndeployIssueModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def export_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.ExportIssueModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.ExportIssueModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def import_issue_model(
         self,
-    ) -> Callable[
-        [contact_center_insights.ImportIssueModelRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.ImportIssueModelRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_issue(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetIssueRequest],
-        Union[resources.Issue, Awaitable[resources.Issue]],
-    ]:
+    def get_issue(self) -> Callable[[contact_center_insights.GetIssueRequest], Union[resources.Issue, Awaitable[resources.Issue]]]:
         raise NotImplementedError()
 
     @property
@@ -771,29 +680,16 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListIssuesRequest],
-        Union[
-            contact_center_insights.ListIssuesResponse,
-            Awaitable[contact_center_insights.ListIssuesResponse],
-        ],
+        Union[contact_center_insights.ListIssuesResponse, Awaitable[contact_center_insights.ListIssuesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_issue(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateIssueRequest],
-        Union[resources.Issue, Awaitable[resources.Issue]],
-    ]:
+    def update_issue(self) -> Callable[[contact_center_insights.UpdateIssueRequest], Union[resources.Issue, Awaitable[resources.Issue]]]:
         raise NotImplementedError()
 
     @property
-    def delete_issue(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteIssueRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_issue(self) -> Callable[[contact_center_insights.DeleteIssueRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -801,29 +697,20 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.CalculateIssueModelStatsRequest],
-        Union[
-            contact_center_insights.CalculateIssueModelStatsResponse,
-            Awaitable[contact_center_insights.CalculateIssueModelStatsResponse],
-        ],
+        Union[contact_center_insights.CalculateIssueModelStatsResponse, Awaitable[contact_center_insights.CalculateIssueModelStatsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_phrase_matcher(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreatePhraseMatcherRequest],
-        Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreatePhraseMatcherRequest], Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]]]:
         raise NotImplementedError()
 
     @property
     def get_phrase_matcher(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetPhraseMatcherRequest],
-        Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetPhraseMatcherRequest], Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]]]:
         raise NotImplementedError()
 
     @property
@@ -831,29 +718,20 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListPhraseMatchersRequest],
-        Union[
-            contact_center_insights.ListPhraseMatchersResponse,
-            Awaitable[contact_center_insights.ListPhraseMatchersResponse],
-        ],
+        Union[contact_center_insights.ListPhraseMatchersResponse, Awaitable[contact_center_insights.ListPhraseMatchersResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_phrase_matcher(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeletePhraseMatcherRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeletePhraseMatcherRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def update_phrase_matcher(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdatePhraseMatcherRequest],
-        Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdatePhraseMatcherRequest], Union[resources.PhraseMatcher, Awaitable[resources.PhraseMatcher]]]:
         raise NotImplementedError()
 
     @property
@@ -861,47 +739,28 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.CalculateStatsRequest],
-        Union[
-            contact_center_insights.CalculateStatsResponse,
-            Awaitable[contact_center_insights.CalculateStatsResponse],
-        ],
+        Union[contact_center_insights.CalculateStatsResponse, Awaitable[contact_center_insights.CalculateStatsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetSettingsRequest],
-        Union[resources.Settings, Awaitable[resources.Settings]],
-    ]:
+    def get_settings(self) -> Callable[[contact_center_insights.GetSettingsRequest], Union[resources.Settings, Awaitable[resources.Settings]]]:
         raise NotImplementedError()
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateSettingsRequest],
-        Union[resources.Settings, Awaitable[resources.Settings]],
-    ]:
+    def update_settings(self) -> Callable[[contact_center_insights.UpdateSettingsRequest], Union[resources.Settings, Awaitable[resources.Settings]]]:
         raise NotImplementedError()
 
     @property
     def create_analysis_rule(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateAnalysisRuleRequest],
-        Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateAnalysisRuleRequest], Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]]]:
         raise NotImplementedError()
 
     @property
     def get_analysis_rule(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetAnalysisRuleRequest],
-        Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetAnalysisRuleRequest], Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]]]:
         raise NotImplementedError()
 
     @property
@@ -909,65 +768,40 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListAnalysisRulesRequest],
-        Union[
-            contact_center_insights.ListAnalysisRulesResponse,
-            Awaitable[contact_center_insights.ListAnalysisRulesResponse],
-        ],
+        Union[contact_center_insights.ListAnalysisRulesResponse, Awaitable[contact_center_insights.ListAnalysisRulesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def update_analysis_rule(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdateAnalysisRuleRequest],
-        Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdateAnalysisRuleRequest], Union[resources.AnalysisRule, Awaitable[resources.AnalysisRule]]]:
         raise NotImplementedError()
 
     @property
     def delete_analysis_rule(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeleteAnalysisRuleRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeleteAnalysisRuleRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_encryption_spec(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetEncryptionSpecRequest],
-        Union[resources.EncryptionSpec, Awaitable[resources.EncryptionSpec]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetEncryptionSpecRequest], Union[resources.EncryptionSpec, Awaitable[resources.EncryptionSpec]]]:
         raise NotImplementedError()
 
     @property
     def initialize_encryption_spec(
         self,
-    ) -> Callable[
-        [contact_center_insights.InitializeEncryptionSpecRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.InitializeEncryptionSpecRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.CreateViewRequest],
-        Union[resources.View, Awaitable[resources.View]],
-    ]:
+    def create_view(self) -> Callable[[contact_center_insights.CreateViewRequest], Union[resources.View, Awaitable[resources.View]]]:
         raise NotImplementedError()
 
     @property
-    def get_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.GetViewRequest],
-        Union[resources.View, Awaitable[resources.View]],
-    ]:
+    def get_view(self) -> Callable[[contact_center_insights.GetViewRequest], Union[resources.View, Awaitable[resources.View]]]:
         raise NotImplementedError()
 
     @property
@@ -975,74 +809,44 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListViewsRequest],
-        Union[
-            contact_center_insights.ListViewsResponse,
-            Awaitable[contact_center_insights.ListViewsResponse],
-        ],
+        Union[contact_center_insights.ListViewsResponse, Awaitable[contact_center_insights.ListViewsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def update_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.UpdateViewRequest],
-        Union[resources.View, Awaitable[resources.View]],
-    ]:
+    def update_view(self) -> Callable[[contact_center_insights.UpdateViewRequest], Union[resources.View, Awaitable[resources.View]]]:
         raise NotImplementedError()
 
     @property
-    def delete_view(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteViewRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_view(self) -> Callable[[contact_center_insights.DeleteViewRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def query_metrics(
         self,
-    ) -> Callable[
-        [contact_center_insights.QueryMetricsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.QueryMetricsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_qa_question(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaQuestionRequest],
-        Union[resources.QaQuestion, Awaitable[resources.QaQuestion]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateQaQuestionRequest], Union[resources.QaQuestion, Awaitable[resources.QaQuestion]]]:
         raise NotImplementedError()
 
     @property
     def get_qa_question(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetQaQuestionRequest],
-        Union[resources.QaQuestion, Awaitable[resources.QaQuestion]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetQaQuestionRequest], Union[resources.QaQuestion, Awaitable[resources.QaQuestion]]]:
         raise NotImplementedError()
 
     @property
     def update_qa_question(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdateQaQuestionRequest],
-        Union[resources.QaQuestion, Awaitable[resources.QaQuestion]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdateQaQuestionRequest], Union[resources.QaQuestion, Awaitable[resources.QaQuestion]]]:
         raise NotImplementedError()
 
     @property
-    def delete_qa_question(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaQuestionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_qa_question(self) -> Callable[[contact_center_insights.DeleteQaQuestionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1050,47 +854,30 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListQaQuestionsRequest],
-        Union[
-            contact_center_insights.ListQaQuestionsResponse,
-            Awaitable[contact_center_insights.ListQaQuestionsResponse],
-        ],
+        Union[contact_center_insights.ListQaQuestionsResponse, Awaitable[contact_center_insights.ListQaQuestionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_qa_scorecard(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateQaScorecardRequest],
-        Union[resources.QaScorecard, Awaitable[resources.QaScorecard]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateQaScorecardRequest], Union[resources.QaScorecard, Awaitable[resources.QaScorecard]]]:
         raise NotImplementedError()
 
     @property
     def get_qa_scorecard(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetQaScorecardRequest],
-        Union[resources.QaScorecard, Awaitable[resources.QaScorecard]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetQaScorecardRequest], Union[resources.QaScorecard, Awaitable[resources.QaScorecard]]]:
         raise NotImplementedError()
 
     @property
     def update_qa_scorecard(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdateQaScorecardRequest],
-        Union[resources.QaScorecard, Awaitable[resources.QaScorecard]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdateQaScorecardRequest], Union[resources.QaScorecard, Awaitable[resources.QaScorecard]]]:
         raise NotImplementedError()
 
     @property
-    def delete_qa_scorecard(
-        self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaScorecardRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_qa_scorecard(self) -> Callable[[contact_center_insights.DeleteQaScorecardRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1098,10 +885,7 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListQaScorecardsRequest],
-        Union[
-            contact_center_insights.ListQaScorecardsResponse,
-            Awaitable[contact_center_insights.ListQaScorecardsResponse],
-        ],
+        Union[contact_center_insights.ListQaScorecardsResponse, Awaitable[contact_center_insights.ListQaScorecardsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -1109,8 +893,7 @@ class ContactCenterInsightsTransport(abc.ABC):
     def create_qa_scorecard_revision(
         self,
     ) -> Callable[
-        [contact_center_insights.CreateQaScorecardRevisionRequest],
-        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+        [contact_center_insights.CreateQaScorecardRevisionRequest], Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]]
     ]:
         raise NotImplementedError()
 
@@ -1118,26 +901,21 @@ class ContactCenterInsightsTransport(abc.ABC):
     def get_qa_scorecard_revision(
         self,
     ) -> Callable[
-        [contact_center_insights.GetQaScorecardRevisionRequest],
-        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+        [contact_center_insights.GetQaScorecardRevisionRequest], Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]]
     ]:
         raise NotImplementedError()
 
     @property
     def tune_qa_scorecard_revision(
         self,
-    ) -> Callable[
-        [contact_center_insights.TuneQaScorecardRevisionRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.TuneQaScorecardRevisionRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def deploy_qa_scorecard_revision(
         self,
     ) -> Callable[
-        [contact_center_insights.DeployQaScorecardRevisionRequest],
-        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+        [contact_center_insights.DeployQaScorecardRevisionRequest], Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]]
     ]:
         raise NotImplementedError()
 
@@ -1145,18 +923,14 @@ class ContactCenterInsightsTransport(abc.ABC):
     def undeploy_qa_scorecard_revision(
         self,
     ) -> Callable[
-        [contact_center_insights.UndeployQaScorecardRevisionRequest],
-        Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]],
+        [contact_center_insights.UndeployQaScorecardRevisionRequest], Union[resources.QaScorecardRevision, Awaitable[resources.QaScorecardRevision]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_qa_scorecard_revision(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeleteQaScorecardRevisionRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeleteQaScorecardRevisionRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1164,20 +938,14 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListQaScorecardRevisionsRequest],
-        Union[
-            contact_center_insights.ListQaScorecardRevisionsResponse,
-            Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse],
-        ],
+        Union[contact_center_insights.ListQaScorecardRevisionsResponse, Awaitable[contact_center_insights.ListQaScorecardRevisionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_feedback_label(
         self,
-    ) -> Callable[
-        [contact_center_insights.CreateFeedbackLabelRequest],
-        Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]],
-    ]:
+    ) -> Callable[[contact_center_insights.CreateFeedbackLabelRequest], Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]]]:
         raise NotImplementedError()
 
     @property
@@ -1185,38 +953,26 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListFeedbackLabelsRequest],
-        Union[
-            contact_center_insights.ListFeedbackLabelsResponse,
-            Awaitable[contact_center_insights.ListFeedbackLabelsResponse],
-        ],
+        Union[contact_center_insights.ListFeedbackLabelsResponse, Awaitable[contact_center_insights.ListFeedbackLabelsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_feedback_label(
         self,
-    ) -> Callable[
-        [contact_center_insights.GetFeedbackLabelRequest],
-        Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]],
-    ]:
+    ) -> Callable[[contact_center_insights.GetFeedbackLabelRequest], Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]]]:
         raise NotImplementedError()
 
     @property
     def update_feedback_label(
         self,
-    ) -> Callable[
-        [contact_center_insights.UpdateFeedbackLabelRequest],
-        Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]],
-    ]:
+    ) -> Callable[[contact_center_insights.UpdateFeedbackLabelRequest], Union[resources.FeedbackLabel, Awaitable[resources.FeedbackLabel]]]:
         raise NotImplementedError()
 
     @property
     def delete_feedback_label(
         self,
-    ) -> Callable[
-        [contact_center_insights.DeleteFeedbackLabelRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[contact_center_insights.DeleteFeedbackLabelRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -1224,29 +980,20 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [contact_center_insights.ListAllFeedbackLabelsRequest],
-        Union[
-            contact_center_insights.ListAllFeedbackLabelsResponse,
-            Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse],
-        ],
+        Union[contact_center_insights.ListAllFeedbackLabelsResponse, Awaitable[contact_center_insights.ListAllFeedbackLabelsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def bulk_upload_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.BulkUploadFeedbackLabelsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.BulkUploadFeedbackLabelsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def bulk_download_feedback_labels(
         self,
-    ) -> Callable[
-        [contact_center_insights.BulkDownloadFeedbackLabelsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[contact_center_insights.BulkDownloadFeedbackLabelsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -1254,20 +1001,14 @@ class ContactCenterInsightsTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

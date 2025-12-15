@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -87,51 +76,27 @@ class InterceptAsyncClient:
     _DEFAULT_UNIVERSE = InterceptClient._DEFAULT_UNIVERSE
 
     forwarding_rule_path = staticmethod(InterceptClient.forwarding_rule_path)
-    parse_forwarding_rule_path = staticmethod(
-        InterceptClient.parse_forwarding_rule_path
-    )
+    parse_forwarding_rule_path = staticmethod(InterceptClient.parse_forwarding_rule_path)
     intercept_deployment_path = staticmethod(InterceptClient.intercept_deployment_path)
-    parse_intercept_deployment_path = staticmethod(
-        InterceptClient.parse_intercept_deployment_path
-    )
-    intercept_deployment_group_path = staticmethod(
-        InterceptClient.intercept_deployment_group_path
-    )
-    parse_intercept_deployment_group_path = staticmethod(
-        InterceptClient.parse_intercept_deployment_group_path
-    )
-    intercept_endpoint_group_path = staticmethod(
-        InterceptClient.intercept_endpoint_group_path
-    )
-    parse_intercept_endpoint_group_path = staticmethod(
-        InterceptClient.parse_intercept_endpoint_group_path
-    )
-    intercept_endpoint_group_association_path = staticmethod(
-        InterceptClient.intercept_endpoint_group_association_path
-    )
-    parse_intercept_endpoint_group_association_path = staticmethod(
-        InterceptClient.parse_intercept_endpoint_group_association_path
-    )
+    parse_intercept_deployment_path = staticmethod(InterceptClient.parse_intercept_deployment_path)
+    intercept_deployment_group_path = staticmethod(InterceptClient.intercept_deployment_group_path)
+    parse_intercept_deployment_group_path = staticmethod(InterceptClient.parse_intercept_deployment_group_path)
+    intercept_endpoint_group_path = staticmethod(InterceptClient.intercept_endpoint_group_path)
+    parse_intercept_endpoint_group_path = staticmethod(InterceptClient.parse_intercept_endpoint_group_path)
+    intercept_endpoint_group_association_path = staticmethod(InterceptClient.intercept_endpoint_group_association_path)
+    parse_intercept_endpoint_group_association_path = staticmethod(InterceptClient.parse_intercept_endpoint_group_association_path)
     network_path = staticmethod(InterceptClient.network_path)
     parse_network_path = staticmethod(InterceptClient.parse_network_path)
-    common_billing_account_path = staticmethod(
-        InterceptClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        InterceptClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(InterceptClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(InterceptClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(InterceptClient.common_folder_path)
     parse_common_folder_path = staticmethod(InterceptClient.parse_common_folder_path)
     common_organization_path = staticmethod(InterceptClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        InterceptClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(InterceptClient.parse_common_organization_path)
     common_project_path = staticmethod(InterceptClient.common_project_path)
     parse_common_project_path = staticmethod(InterceptClient.parse_common_project_path)
     common_location_path = staticmethod(InterceptClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        InterceptClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(InterceptClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -167,9 +132,7 @@ class InterceptAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -236,9 +199,7 @@ class InterceptAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, InterceptTransport, Callable[..., InterceptTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, InterceptTransport, Callable[..., InterceptTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -298,20 +259,14 @@ class InterceptAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.networksecurity_v1alpha1.InterceptAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.networksecurity.v1alpha1.Intercept",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -322,9 +277,7 @@ class InterceptAsyncClient:
 
     async def list_intercept_endpoint_groups(
         self,
-        request: Optional[
-            Union[intercept.ListInterceptEndpointGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.ListInterceptEndpointGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -395,14 +348,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -416,15 +364,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_intercept_endpoint_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_intercept_endpoint_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -453,9 +397,7 @@ class InterceptAsyncClient:
 
     async def get_intercept_endpoint_group(
         self,
-        request: Optional[
-            Union[intercept.GetInterceptEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.GetInterceptEndpointGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -531,14 +473,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -552,15 +489,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_intercept_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_intercept_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -578,9 +511,7 @@ class InterceptAsyncClient:
 
     async def create_intercept_endpoint_group(
         self,
-        request: Optional[
-            Union[intercept.CreateInterceptEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.CreateInterceptEndpointGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         intercept_endpoint_group: Optional[intercept.InterceptEndpointGroup] = None,
@@ -679,19 +610,10 @@ class InterceptAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            intercept_endpoint_group,
-            intercept_endpoint_group_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, intercept_endpoint_group, intercept_endpoint_group_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -709,15 +631,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_intercept_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_intercept_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -743,9 +661,7 @@ class InterceptAsyncClient:
 
     async def update_intercept_endpoint_group(
         self,
-        request: Optional[
-            Union[intercept.UpdateInterceptEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.UpdateInterceptEndpointGroupRequest, dict]] = None,
         *,
         intercept_endpoint_group: Optional[intercept.InterceptEndpointGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -834,14 +750,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intercept_endpoint_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -857,21 +768,12 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_intercept_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_intercept_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "intercept_endpoint_group.name",
-                        request.intercept_endpoint_group.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("intercept_endpoint_group.name", request.intercept_endpoint_group.name),)),
         )
 
         # Validate the universe domain.
@@ -898,9 +800,7 @@ class InterceptAsyncClient:
 
     async def delete_intercept_endpoint_group(
         self,
-        request: Optional[
-            Union[intercept.DeleteInterceptEndpointGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.DeleteInterceptEndpointGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -979,14 +879,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1000,15 +895,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_intercept_endpoint_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_intercept_endpoint_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1034,9 +925,7 @@ class InterceptAsyncClient:
 
     async def list_intercept_endpoint_group_associations(
         self,
-        request: Optional[
-            Union[intercept.ListInterceptEndpointGroupAssociationsRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.ListInterceptEndpointGroupAssociationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1107,20 +996,13 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, intercept.ListInterceptEndpointGroupAssociationsRequest
-        ):
+        if not isinstance(request, intercept.ListInterceptEndpointGroupAssociationsRequest):
             request = intercept.ListInterceptEndpointGroupAssociationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1130,15 +1012,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_intercept_endpoint_group_associations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_intercept_endpoint_group_associations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1167,9 +1045,7 @@ class InterceptAsyncClient:
 
     async def get_intercept_endpoint_group_association(
         self,
-        request: Optional[
-            Union[intercept.GetInterceptEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.GetInterceptEndpointGroupAssociationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1245,20 +1121,13 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, intercept.GetInterceptEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, intercept.GetInterceptEndpointGroupAssociationRequest):
             request = intercept.GetInterceptEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1268,15 +1137,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_intercept_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_intercept_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1294,14 +1159,10 @@ class InterceptAsyncClient:
 
     async def create_intercept_endpoint_group_association(
         self,
-        request: Optional[
-            Union[intercept.CreateInterceptEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.CreateInterceptEndpointGroupAssociationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        intercept_endpoint_group_association: Optional[
-            intercept.InterceptEndpointGroupAssociation
-        ] = None,
+        intercept_endpoint_group_association: Optional[intercept.InterceptEndpointGroupAssociation] = None,
         intercept_endpoint_group_association_id: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1399,25 +1260,14 @@ class InterceptAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            intercept_endpoint_group_association,
-            intercept_endpoint_group_association_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, intercept_endpoint_group_association, intercept_endpoint_group_association_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, intercept.CreateInterceptEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, intercept.CreateInterceptEndpointGroupAssociationRequest):
             request = intercept.CreateInterceptEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1425,25 +1275,17 @@ class InterceptAsyncClient:
         if parent is not None:
             request.parent = parent
         if intercept_endpoint_group_association is not None:
-            request.intercept_endpoint_group_association = (
-                intercept_endpoint_group_association
-            )
+            request.intercept_endpoint_group_association = intercept_endpoint_group_association
         if intercept_endpoint_group_association_id is not None:
-            request.intercept_endpoint_group_association_id = (
-                intercept_endpoint_group_association_id
-            )
+            request.intercept_endpoint_group_association_id = intercept_endpoint_group_association_id
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_intercept_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_intercept_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1469,13 +1311,9 @@ class InterceptAsyncClient:
 
     async def update_intercept_endpoint_group_association(
         self,
-        request: Optional[
-            Union[intercept.UpdateInterceptEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.UpdateInterceptEndpointGroupAssociationRequest, dict]] = None,
         *,
-        intercept_endpoint_group_association: Optional[
-            intercept.InterceptEndpointGroupAssociation
-        ] = None,
+        intercept_endpoint_group_association: Optional[intercept.InterceptEndpointGroupAssociation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1564,47 +1402,31 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intercept_endpoint_group_association, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, intercept.UpdateInterceptEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, intercept.UpdateInterceptEndpointGroupAssociationRequest):
             request = intercept.UpdateInterceptEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
         # request, apply these.
         if intercept_endpoint_group_association is not None:
-            request.intercept_endpoint_group_association = (
-                intercept_endpoint_group_association
-            )
+            request.intercept_endpoint_group_association = intercept_endpoint_group_association
         if update_mask is not None:
             request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_intercept_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_intercept_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "intercept_endpoint_group_association.name",
-                        request.intercept_endpoint_group_association.name,
-                    ),
-                )
+                (("intercept_endpoint_group_association.name", request.intercept_endpoint_group_association.name),)
             ),
         )
 
@@ -1632,9 +1454,7 @@ class InterceptAsyncClient:
 
     async def delete_intercept_endpoint_group_association(
         self,
-        request: Optional[
-            Union[intercept.DeleteInterceptEndpointGroupAssociationRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.DeleteInterceptEndpointGroupAssociationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1711,20 +1531,13 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, intercept.DeleteInterceptEndpointGroupAssociationRequest
-        ):
+        if not isinstance(request, intercept.DeleteInterceptEndpointGroupAssociationRequest):
             request = intercept.DeleteInterceptEndpointGroupAssociationRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1734,15 +1547,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_intercept_endpoint_group_association
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_intercept_endpoint_group_association]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1768,9 +1577,7 @@ class InterceptAsyncClient:
 
     async def list_intercept_deployment_groups(
         self,
-        request: Optional[
-            Union[intercept.ListInterceptDeploymentGroupsRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.ListInterceptDeploymentGroupsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1841,14 +1648,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1862,15 +1664,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_intercept_deployment_groups
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_intercept_deployment_groups]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1899,9 +1697,7 @@ class InterceptAsyncClient:
 
     async def get_intercept_deployment_group(
         self,
-        request: Optional[
-            Union[intercept.GetInterceptDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.GetInterceptDeploymentGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1970,14 +1766,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1991,15 +1782,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_intercept_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_intercept_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2017,9 +1804,7 @@ class InterceptAsyncClient:
 
     async def create_intercept_deployment_group(
         self,
-        request: Optional[
-            Union[intercept.CreateInterceptDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.CreateInterceptDeploymentGroupRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         intercept_deployment_group: Optional[intercept.InterceptDeploymentGroup] = None,
@@ -2115,19 +1900,10 @@ class InterceptAsyncClient:
         # Create or coerce a protobuf request object.
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
-        flattened_params = [
-            parent,
-            intercept_deployment_group,
-            intercept_deployment_group_id,
-        ]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        flattened_params = [parent, intercept_deployment_group, intercept_deployment_group_id]
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2145,15 +1921,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_intercept_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_intercept_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2179,9 +1951,7 @@ class InterceptAsyncClient:
 
     async def update_intercept_deployment_group(
         self,
-        request: Optional[
-            Union[intercept.UpdateInterceptDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.UpdateInterceptDeploymentGroupRequest, dict]] = None,
         *,
         intercept_deployment_group: Optional[intercept.InterceptDeploymentGroup] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2267,14 +2037,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intercept_deployment_group, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2290,21 +2055,12 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_intercept_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_intercept_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
         metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (
-                    (
-                        "intercept_deployment_group.name",
-                        request.intercept_deployment_group.name,
-                    ),
-                )
-            ),
+            gapic_v1.routing_header.to_grpc_metadata((("intercept_deployment_group.name", request.intercept_deployment_group.name),)),
         )
 
         # Validate the universe domain.
@@ -2331,9 +2087,7 @@ class InterceptAsyncClient:
 
     async def delete_intercept_deployment_group(
         self,
-        request: Optional[
-            Union[intercept.DeleteInterceptDeploymentGroupRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.DeleteInterceptDeploymentGroupRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2412,14 +2166,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2433,15 +2182,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_intercept_deployment_group
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_intercept_deployment_group]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2467,9 +2212,7 @@ class InterceptAsyncClient:
 
     async def list_intercept_deployments(
         self,
-        request: Optional[
-            Union[intercept.ListInterceptDeploymentsRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.ListInterceptDeploymentsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2540,14 +2283,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2561,15 +2299,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_intercept_deployments
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_intercept_deployments]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2670,14 +2404,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2691,15 +2420,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_intercept_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_intercept_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2717,9 +2442,7 @@ class InterceptAsyncClient:
 
     async def create_intercept_deployment(
         self,
-        request: Optional[
-            Union[intercept.CreateInterceptDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.CreateInterceptDeploymentRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         intercept_deployment: Optional[intercept.InterceptDeployment] = None,
@@ -2817,14 +2540,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, intercept_deployment, intercept_deployment_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2842,15 +2560,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_intercept_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_intercept_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2876,9 +2590,7 @@ class InterceptAsyncClient:
 
     async def update_intercept_deployment(
         self,
-        request: Optional[
-            Union[intercept.UpdateInterceptDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.UpdateInterceptDeploymentRequest, dict]] = None,
         *,
         intercept_deployment: Optional[intercept.InterceptDeployment] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2966,14 +2678,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [intercept_deployment, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2989,17 +2696,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_intercept_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_intercept_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("intercept_deployment.name", request.intercept_deployment.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("intercept_deployment.name", request.intercept_deployment.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3025,9 +2726,7 @@ class InterceptAsyncClient:
 
     async def delete_intercept_deployment(
         self,
-        request: Optional[
-            Union[intercept.DeleteInterceptDeploymentRequest, dict]
-        ] = None,
+        request: Optional[Union[intercept.DeleteInterceptDeploymentRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3104,14 +2803,9 @@ class InterceptAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3125,15 +2819,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_intercept_deployment
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_intercept_deployment]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3194,9 +2884,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3249,9 +2937,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3308,9 +2994,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3363,9 +3047,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3481,9 +3163,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3603,9 +3283,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3659,15 +3337,11 @@ class InterceptAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self.transport._wrapped_methods[
-            self._client._transport.test_iam_permissions
-        ]
+        rpc = self.transport._wrapped_methods[self._client._transport.test_iam_permissions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("resource", request.resource),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3720,9 +3394,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3775,9 +3447,7 @@ class InterceptAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3800,9 +3470,7 @@ class InterceptAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

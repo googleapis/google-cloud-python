@@ -13,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .migration_entities import (
-    MigrationSubtask,
-    MigrationTask,
-    MigrationTaskResult,
-    MigrationWorkflow,
-    TranslationTaskResult,
-)
+from .migration_entities import MigrationSubtask, MigrationTask, MigrationTaskResult, MigrationWorkflow, TranslationTaskResult
 from .migration_error_details import ErrorDetail, ErrorLocation, ResourceErrorDetail
 from .migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
 from .migration_service import (
@@ -59,14 +53,7 @@ from .translation_config import (
     TranslationConfigDetails,
     VerticaDialect,
 )
-from .translation_details import (
-    Literal,
-    SourceEnvironment,
-    SourceSpec,
-    SourceTargetMapping,
-    TargetSpec,
-    TranslationDetails,
-)
+from .translation_details import Literal, SourceEnvironment, SourceSpec, SourceTargetMapping, TargetSpec, TranslationDetails
 from .translation_suggestion import TranslationReportRecord
 from .translation_usability import GcsReportLogMessage
 

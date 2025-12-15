@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.memorystore_v1 import gapic_version as package_version
 from google.cloud.memorystore_v1.types import memorystore
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class MemorystoreTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -281,70 +271,35 @@ class MemorystoreTransport(abc.ABC):
     @property
     def list_instances(
         self,
-    ) -> Callable[
-        [memorystore.ListInstancesRequest],
-        Union[
-            memorystore.ListInstancesResponse,
-            Awaitable[memorystore.ListInstancesResponse],
-        ],
-    ]:
+    ) -> Callable[[memorystore.ListInstancesRequest], Union[memorystore.ListInstancesResponse, Awaitable[memorystore.ListInstancesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [memorystore.GetInstanceRequest],
-        Union[memorystore.Instance, Awaitable[memorystore.Instance]],
-    ]:
+    def get_instance(self) -> Callable[[memorystore.GetInstanceRequest], Union[memorystore.Instance, Awaitable[memorystore.Instance]]]:
         raise NotImplementedError()
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[
-        [memorystore.CreateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_instance(self) -> Callable[[memorystore.CreateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [memorystore.UpdateInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_instance(self) -> Callable[[memorystore.UpdateInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[
-        [memorystore.DeleteInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_instance(self) -> Callable[[memorystore.DeleteInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_certificate_authority(
         self,
-    ) -> Callable[
-        [memorystore.GetCertificateAuthorityRequest],
-        Union[
-            memorystore.CertificateAuthority,
-            Awaitable[memorystore.CertificateAuthority],
-        ],
-    ]:
+    ) -> Callable[[memorystore.GetCertificateAuthorityRequest], Union[memorystore.CertificateAuthority, Awaitable[memorystore.CertificateAuthority]]]:
         raise NotImplementedError()
 
     @property
     def reschedule_maintenance(
         self,
-    ) -> Callable[
-        [memorystore.RescheduleMaintenanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[memorystore.RescheduleMaintenanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -352,67 +307,36 @@ class MemorystoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [memorystore.ListBackupCollectionsRequest],
-        Union[
-            memorystore.ListBackupCollectionsResponse,
-            Awaitable[memorystore.ListBackupCollectionsResponse],
-        ],
+        Union[memorystore.ListBackupCollectionsResponse, Awaitable[memorystore.ListBackupCollectionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_backup_collection(
         self,
-    ) -> Callable[
-        [memorystore.GetBackupCollectionRequest],
-        Union[memorystore.BackupCollection, Awaitable[memorystore.BackupCollection]],
-    ]:
+    ) -> Callable[[memorystore.GetBackupCollectionRequest], Union[memorystore.BackupCollection, Awaitable[memorystore.BackupCollection]]]:
         raise NotImplementedError()
 
     @property
     def list_backups(
         self,
-    ) -> Callable[
-        [memorystore.ListBackupsRequest],
-        Union[
-            memorystore.ListBackupsResponse, Awaitable[memorystore.ListBackupsResponse]
-        ],
-    ]:
+    ) -> Callable[[memorystore.ListBackupsRequest], Union[memorystore.ListBackupsResponse, Awaitable[memorystore.ListBackupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [memorystore.GetBackupRequest],
-        Union[memorystore.Backup, Awaitable[memorystore.Backup]],
-    ]:
+    def get_backup(self) -> Callable[[memorystore.GetBackupRequest], Union[memorystore.Backup, Awaitable[memorystore.Backup]]]:
         raise NotImplementedError()
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [memorystore.DeleteBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_backup(self) -> Callable[[memorystore.DeleteBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def export_backup(
-        self,
-    ) -> Callable[
-        [memorystore.ExportBackupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def export_backup(self) -> Callable[[memorystore.ExportBackupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def backup_instance(
-        self,
-    ) -> Callable[
-        [memorystore.BackupInstanceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def backup_instance(self) -> Callable[[memorystore.BackupInstanceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -420,20 +344,14 @@ class MemorystoreTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -451,22 +369,13 @@ class MemorystoreTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

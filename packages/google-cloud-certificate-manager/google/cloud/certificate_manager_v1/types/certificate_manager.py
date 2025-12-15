@@ -486,9 +486,7 @@ class ListCertificateMapEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    certificate_map_entries: MutableSequence[
-        "CertificateMapEntry"
-    ] = proto.RepeatedField(
+    certificate_map_entries: MutableSequence["CertificateMapEntry"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="CertificateMapEntry",
@@ -1012,12 +1010,10 @@ class Certificate(proto.Message):
                 AUTHORIZATION_ISSUE = 1
                 RATE_LIMITED = 2
 
-            reason: "Certificate.ManagedCertificate.ProvisioningIssue.Reason" = (
-                proto.Field(
-                    proto.ENUM,
-                    number=1,
-                    enum="Certificate.ManagedCertificate.ProvisioningIssue.Reason",
-                )
+            reason: "Certificate.ManagedCertificate.ProvisioningIssue.Reason" = proto.Field(
+                proto.ENUM,
+                number=1,
+                enum="Certificate.ManagedCertificate.ProvisioningIssue.Reason",
             )
             details: str = proto.Field(
                 proto.STRING,
@@ -1129,16 +1125,12 @@ class Certificate(proto.Message):
             number=4,
             enum="Certificate.ManagedCertificate.State",
         )
-        provisioning_issue: "Certificate.ManagedCertificate.ProvisioningIssue" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=3,
-                message="Certificate.ManagedCertificate.ProvisioningIssue",
-            )
+        provisioning_issue: "Certificate.ManagedCertificate.ProvisioningIssue" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="Certificate.ManagedCertificate.ProvisioningIssue",
         )
-        authorization_attempt_info: MutableSequence[
-            "Certificate.ManagedCertificate.AuthorizationAttemptInfo"
-        ] = proto.RepeatedField(
+        authorization_attempt_info: MutableSequence["Certificate.ManagedCertificate.AuthorizationAttemptInfo"] = proto.RepeatedField(
             proto.MESSAGE,
             number=5,
             message="Certificate.ManagedCertificate.AuthorizationAttemptInfo",
@@ -1285,9 +1277,7 @@ class CertificateMap(proto.Message):
             number=3,
             oneof="target_proxy",
         )
-        ip_configs: MutableSequence[
-            "CertificateMap.GclbTarget.IpConfig"
-        ] = proto.RepeatedField(
+        ip_configs: MutableSequence["CertificateMap.GclbTarget.IpConfig"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="CertificateMap.GclbTarget.IpConfig",

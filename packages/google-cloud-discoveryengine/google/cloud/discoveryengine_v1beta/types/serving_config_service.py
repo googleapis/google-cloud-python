@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    serving_config as gcd_serving_config,
-)
+from google.cloud.discoveryengine_v1beta.types import serving_config as gcd_serving_config
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1beta",
@@ -126,9 +124,7 @@ class ListServingConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    serving_configs: MutableSequence[
-        gcd_serving_config.ServingConfig
-    ] = proto.RepeatedField(
+    serving_configs: MutableSequence[gcd_serving_config.ServingConfig] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gcd_serving_config.ServingConfig,

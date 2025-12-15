@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -53,13 +42,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.run_v2.services.revisions import pagers
-from google.cloud.run_v2.types import (
-    condition,
-    k8s_min,
-    revision,
-    status,
-    vendor_settings,
-)
+from google.cloud.run_v2.types import condition, k8s_min, revision, status, vendor_settings
 
 from .client import RevisionsClient
 from .transports.base import DEFAULT_CLIENT_INFO, RevisionsTransport
@@ -101,24 +84,16 @@ class RevisionsAsyncClient:
     parse_secret_version_path = staticmethod(RevisionsClient.parse_secret_version_path)
     service_path = staticmethod(RevisionsClient.service_path)
     parse_service_path = staticmethod(RevisionsClient.parse_service_path)
-    common_billing_account_path = staticmethod(
-        RevisionsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        RevisionsClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(RevisionsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(RevisionsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(RevisionsClient.common_folder_path)
     parse_common_folder_path = staticmethod(RevisionsClient.parse_common_folder_path)
     common_organization_path = staticmethod(RevisionsClient.common_organization_path)
-    parse_common_organization_path = staticmethod(
-        RevisionsClient.parse_common_organization_path
-    )
+    parse_common_organization_path = staticmethod(RevisionsClient.parse_common_organization_path)
     common_project_path = staticmethod(RevisionsClient.common_project_path)
     parse_common_project_path = staticmethod(RevisionsClient.parse_common_project_path)
     common_location_path = staticmethod(RevisionsClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        RevisionsClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(RevisionsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -154,9 +129,7 @@ class RevisionsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -223,9 +196,7 @@ class RevisionsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, RevisionsTransport, Callable[..., RevisionsTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, RevisionsTransport, Callable[..., RevisionsTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -285,20 +256,14 @@ class RevisionsAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.run_v2.RevisionsAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.run.v2.Revisions",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -378,14 +343,9 @@ class RevisionsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -399,23 +359,17 @@ class RevisionsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_revision]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -507,14 +461,9 @@ class RevisionsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -528,23 +477,17 @@ class RevisionsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_revisions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_revisions]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.parent)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -649,14 +592,9 @@ class RevisionsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -670,23 +608,17 @@ class RevisionsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_revision]
 
         header_params = {}
 
-        routing_param_regex = re.compile(
-            "^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$"
-        )
+        routing_param_regex = re.compile("^projects/[^/]+/locations/(?P<location>[^/]+)(?:/.*)?$")
         regex_match = routing_param_regex.match(request.name)
         if regex_match and regex_match.group("location"):
             header_params["location"] = regex_match.group("location")
 
         if header_params:
-            metadata = tuple(metadata) + (
-                gapic_v1.routing_header.to_grpc_metadata(header_params),
-            )
+            metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata(header_params),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -747,9 +679,7 @@ class RevisionsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -802,9 +732,7 @@ class RevisionsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -861,9 +789,7 @@ class RevisionsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -919,9 +845,7 @@ class RevisionsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -944,9 +868,7 @@ class RevisionsAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

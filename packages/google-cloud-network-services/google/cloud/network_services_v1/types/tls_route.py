@@ -159,9 +159,7 @@ class TlsRoute(proto.Message):
                 disabled.
         """
 
-        destinations: MutableSequence[
-            "TlsRoute.RouteDestination"
-        ] = proto.RepeatedField(
+        destinations: MutableSequence["TlsRoute.RouteDestination"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="TlsRoute.RouteDestination",

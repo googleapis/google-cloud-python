@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -54,13 +43,8 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
-from google.cloud.contact_center_insights_v1.services.contact_center_insights import (
-    pagers,
-)
-from google.cloud.contact_center_insights_v1.types import (
-    contact_center_insights,
-    resources,
-)
+from google.cloud.contact_center_insights_v1.services.contact_center_insights import pagers
+from google.cloud.contact_center_insights_v1.types import contact_center_insights, resources
 
 from .client import ContactCenterInsightsClient
 from .transports.base import DEFAULT_CLIENT_INFO, ContactCenterInsightsTransport
@@ -93,97 +77,47 @@ class ContactCenterInsightsAsyncClient:
     analysis_path = staticmethod(ContactCenterInsightsClient.analysis_path)
     parse_analysis_path = staticmethod(ContactCenterInsightsClient.parse_analysis_path)
     analysis_rule_path = staticmethod(ContactCenterInsightsClient.analysis_rule_path)
-    parse_analysis_rule_path = staticmethod(
-        ContactCenterInsightsClient.parse_analysis_rule_path
-    )
+    parse_analysis_rule_path = staticmethod(ContactCenterInsightsClient.parse_analysis_rule_path)
     conversation_path = staticmethod(ContactCenterInsightsClient.conversation_path)
-    parse_conversation_path = staticmethod(
-        ContactCenterInsightsClient.parse_conversation_path
-    )
-    conversation_profile_path = staticmethod(
-        ContactCenterInsightsClient.conversation_profile_path
-    )
-    parse_conversation_profile_path = staticmethod(
-        ContactCenterInsightsClient.parse_conversation_profile_path
-    )
-    encryption_spec_path = staticmethod(
-        ContactCenterInsightsClient.encryption_spec_path
-    )
-    parse_encryption_spec_path = staticmethod(
-        ContactCenterInsightsClient.parse_encryption_spec_path
-    )
+    parse_conversation_path = staticmethod(ContactCenterInsightsClient.parse_conversation_path)
+    conversation_profile_path = staticmethod(ContactCenterInsightsClient.conversation_profile_path)
+    parse_conversation_profile_path = staticmethod(ContactCenterInsightsClient.parse_conversation_profile_path)
+    encryption_spec_path = staticmethod(ContactCenterInsightsClient.encryption_spec_path)
+    parse_encryption_spec_path = staticmethod(ContactCenterInsightsClient.parse_encryption_spec_path)
     feedback_label_path = staticmethod(ContactCenterInsightsClient.feedback_label_path)
-    parse_feedback_label_path = staticmethod(
-        ContactCenterInsightsClient.parse_feedback_label_path
-    )
+    parse_feedback_label_path = staticmethod(ContactCenterInsightsClient.parse_feedback_label_path)
     issue_path = staticmethod(ContactCenterInsightsClient.issue_path)
     parse_issue_path = staticmethod(ContactCenterInsightsClient.parse_issue_path)
     issue_model_path = staticmethod(ContactCenterInsightsClient.issue_model_path)
-    parse_issue_model_path = staticmethod(
-        ContactCenterInsightsClient.parse_issue_model_path
-    )
+    parse_issue_model_path = staticmethod(ContactCenterInsightsClient.parse_issue_model_path)
     participant_path = staticmethod(ContactCenterInsightsClient.participant_path)
-    parse_participant_path = staticmethod(
-        ContactCenterInsightsClient.parse_participant_path
-    )
+    parse_participant_path = staticmethod(ContactCenterInsightsClient.parse_participant_path)
     phrase_matcher_path = staticmethod(ContactCenterInsightsClient.phrase_matcher_path)
-    parse_phrase_matcher_path = staticmethod(
-        ContactCenterInsightsClient.parse_phrase_matcher_path
-    )
+    parse_phrase_matcher_path = staticmethod(ContactCenterInsightsClient.parse_phrase_matcher_path)
     qa_question_path = staticmethod(ContactCenterInsightsClient.qa_question_path)
-    parse_qa_question_path = staticmethod(
-        ContactCenterInsightsClient.parse_qa_question_path
-    )
+    parse_qa_question_path = staticmethod(ContactCenterInsightsClient.parse_qa_question_path)
     qa_scorecard_path = staticmethod(ContactCenterInsightsClient.qa_scorecard_path)
-    parse_qa_scorecard_path = staticmethod(
-        ContactCenterInsightsClient.parse_qa_scorecard_path
-    )
-    qa_scorecard_result_path = staticmethod(
-        ContactCenterInsightsClient.qa_scorecard_result_path
-    )
-    parse_qa_scorecard_result_path = staticmethod(
-        ContactCenterInsightsClient.parse_qa_scorecard_result_path
-    )
-    qa_scorecard_revision_path = staticmethod(
-        ContactCenterInsightsClient.qa_scorecard_revision_path
-    )
-    parse_qa_scorecard_revision_path = staticmethod(
-        ContactCenterInsightsClient.parse_qa_scorecard_revision_path
-    )
+    parse_qa_scorecard_path = staticmethod(ContactCenterInsightsClient.parse_qa_scorecard_path)
+    qa_scorecard_result_path = staticmethod(ContactCenterInsightsClient.qa_scorecard_result_path)
+    parse_qa_scorecard_result_path = staticmethod(ContactCenterInsightsClient.parse_qa_scorecard_result_path)
+    qa_scorecard_revision_path = staticmethod(ContactCenterInsightsClient.qa_scorecard_revision_path)
+    parse_qa_scorecard_revision_path = staticmethod(ContactCenterInsightsClient.parse_qa_scorecard_revision_path)
     recognizer_path = staticmethod(ContactCenterInsightsClient.recognizer_path)
-    parse_recognizer_path = staticmethod(
-        ContactCenterInsightsClient.parse_recognizer_path
-    )
+    parse_recognizer_path = staticmethod(ContactCenterInsightsClient.parse_recognizer_path)
     settings_path = staticmethod(ContactCenterInsightsClient.settings_path)
     parse_settings_path = staticmethod(ContactCenterInsightsClient.parse_settings_path)
     view_path = staticmethod(ContactCenterInsightsClient.view_path)
     parse_view_path = staticmethod(ContactCenterInsightsClient.parse_view_path)
-    common_billing_account_path = staticmethod(
-        ContactCenterInsightsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        ContactCenterInsightsClient.parse_common_billing_account_path
-    )
+    common_billing_account_path = staticmethod(ContactCenterInsightsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(ContactCenterInsightsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(ContactCenterInsightsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        ContactCenterInsightsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        ContactCenterInsightsClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        ContactCenterInsightsClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(ContactCenterInsightsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(ContactCenterInsightsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(ContactCenterInsightsClient.parse_common_organization_path)
     common_project_path = staticmethod(ContactCenterInsightsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        ContactCenterInsightsClient.parse_common_project_path
-    )
-    common_location_path = staticmethod(
-        ContactCenterInsightsClient.common_location_path
-    )
-    parse_common_location_path = staticmethod(
-        ContactCenterInsightsClient.parse_common_location_path
-    )
+    parse_common_project_path = staticmethod(ContactCenterInsightsClient.parse_common_project_path)
+    common_location_path = staticmethod(ContactCenterInsightsClient.common_location_path)
+    parse_common_location_path = staticmethod(ContactCenterInsightsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -219,9 +153,7 @@ class ContactCenterInsightsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -288,13 +220,7 @@ class ContactCenterInsightsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                ContactCenterInsightsTransport,
-                Callable[..., ContactCenterInsightsTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, ContactCenterInsightsTransport, Callable[..., ContactCenterInsightsTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -354,20 +280,14 @@ class ContactCenterInsightsAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.cloud.contactcenterinsights_v1.ContactCenterInsightsAsyncClient`.",
                 extra={
                     "serviceName": "google.cloud.contactcenterinsights.v1.ContactCenterInsights",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -378,9 +298,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_conversation(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateConversationRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         conversation: Optional[resources.Conversation] = None,
@@ -465,14 +383,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, conversation, conversation_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -490,15 +403,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -516,9 +425,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def upload_conversation(
         self,
-        request: Optional[
-            Union[contact_center_insights.UploadConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UploadConversationRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -586,15 +493,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.upload_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.upload_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -620,9 +523,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_conversation(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateConversationRequest, dict]] = None,
         *,
         conversation: Optional[resources.Conversation] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -702,14 +603,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [conversation, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -725,17 +621,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("conversation.name", request.conversation.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("conversation.name", request.conversation.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -753,9 +643,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_conversation(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -816,14 +704,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -837,15 +720,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -863,9 +742,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_conversations(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListConversationsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListConversationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -932,14 +809,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -953,15 +825,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_conversations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_conversations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -990,9 +858,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_conversation(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteConversationRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteConversationRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1046,14 +912,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1067,15 +928,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_conversation
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_conversation]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1090,9 +947,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_analysis(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateAnalysisRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateAnalysisRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         analysis: Optional[resources.Analysis] = None,
@@ -1169,14 +1024,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, analysis]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1192,15 +1042,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_analysis
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_analysis]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1226,9 +1072,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_analysis(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetAnalysisRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetAnalysisRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1289,14 +1133,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1310,15 +1149,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_analysis
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_analysis]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1336,9 +1171,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_analyses(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListAnalysesRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListAnalysesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1405,14 +1238,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1426,15 +1254,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_analyses
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_analyses]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1463,9 +1287,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_analysis(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteAnalysisRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteAnalysisRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1519,14 +1341,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1540,15 +1357,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_analysis
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_analysis]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1563,9 +1376,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def bulk_analyze_conversations(
         self,
-        request: Optional[
-            Union[contact_center_insights.BulkAnalyzeConversationsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.BulkAnalyzeConversationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         filter: Optional[str] = None,
@@ -1654,20 +1465,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, filter, analysis_percentage]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.BulkAnalyzeConversationsRequest
-        ):
+        if not isinstance(request, contact_center_insights.BulkAnalyzeConversationsRequest):
             request = contact_center_insights.BulkAnalyzeConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1681,15 +1485,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.bulk_analyze_conversations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.bulk_analyze_conversations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1715,9 +1515,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def bulk_delete_conversations(
         self,
-        request: Optional[
-            Union[contact_center_insights.BulkDeleteConversationsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.BulkDeleteConversationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         filter: Optional[str] = None,
@@ -1798,20 +1596,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, filter]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.BulkDeleteConversationsRequest
-        ):
+        if not isinstance(request, contact_center_insights.BulkDeleteConversationsRequest):
             request = contact_center_insights.BulkDeleteConversationsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1823,15 +1614,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.bulk_delete_conversations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.bulk_delete_conversations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1857,9 +1644,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def ingest_conversations(
         self,
-        request: Optional[
-            Union[contact_center_insights.IngestConversationsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.IngestConversationsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1938,14 +1723,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -1959,15 +1739,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.ingest_conversations
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.ingest_conversations]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1993,9 +1769,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def export_insights_data(
         self,
-        request: Optional[
-            Union[contact_center_insights.ExportInsightsDataRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ExportInsightsDataRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2070,14 +1844,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2091,15 +1860,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.export_insights_data
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.export_insights_data]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2125,9 +1890,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateIssueModelRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         issue_model: Optional[resources.IssueModel] = None,
@@ -2203,14 +1966,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, issue_model]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2226,15 +1984,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2260,9 +2014,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateIssueModelRequest, dict]] = None,
         *,
         issue_model: Optional[resources.IssueModel] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -2328,14 +2080,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [issue_model, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2351,17 +2098,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("issue_model.name", request.issue_model.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("issue_model.name", request.issue_model.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2379,9 +2120,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetIssueModelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2442,14 +2181,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2463,15 +2197,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2489,9 +2219,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_issue_models(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListIssueModelsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListIssueModelsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2552,14 +2280,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2573,15 +2296,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_issue_models
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_issue_models]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2599,9 +2318,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteIssueModelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2678,14 +2395,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2699,15 +2411,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2733,9 +2441,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def deploy_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeployIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeployIssueModelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2805,14 +2511,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2826,15 +2527,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.deploy_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.deploy_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2860,9 +2557,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def undeploy_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.UndeployIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UndeployIssueModelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -2935,14 +2630,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -2956,15 +2646,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.undeploy_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.undeploy_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -2990,9 +2676,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def export_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.ExportIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ExportIssueModelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3064,14 +2748,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3085,15 +2764,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.export_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.export_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3119,9 +2794,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def import_issue_model(
         self,
-        request: Optional[
-            Union[contact_center_insights.ImportIssueModelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ImportIssueModelRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3195,14 +2868,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3216,15 +2884,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.import_issue_model
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.import_issue_model]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3311,14 +2975,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3332,15 +2991,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3358,9 +3013,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_issues(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListIssuesRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListIssuesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3421,14 +3074,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3442,15 +3090,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_issues
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_issues]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3468,9 +3112,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_issue(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateIssueRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateIssueRequest, dict]] = None,
         *,
         issue: Optional[resources.Issue] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -3536,14 +3178,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [issue, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3559,17 +3196,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("issue.name", request.issue.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("issue.name", request.issue.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3587,9 +3218,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_issue(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteIssueRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteIssueRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3643,14 +3272,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3664,15 +3288,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_issue
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_issue]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3687,9 +3307,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def calculate_issue_model_stats(
         self,
-        request: Optional[
-            Union[contact_center_insights.CalculateIssueModelStatsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CalculateIssueModelStatsRequest, dict]] = None,
         *,
         issue_model: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3753,20 +3371,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [issue_model]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.CalculateIssueModelStatsRequest
-        ):
+        if not isinstance(request, contact_center_insights.CalculateIssueModelStatsRequest):
             request = contact_center_insights.CalculateIssueModelStatsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -3776,17 +3387,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.calculate_issue_model_stats
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.calculate_issue_model_stats]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("issue_model", request.issue_model),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("issue_model", request.issue_model),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3804,9 +3409,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_phrase_matcher(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreatePhraseMatcherRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreatePhraseMatcherRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         phrase_matcher: Optional[resources.PhraseMatcher] = None,
@@ -3882,14 +3485,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, phrase_matcher]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -3905,15 +3503,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_phrase_matcher
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_phrase_matcher]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -3931,9 +3525,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_phrase_matcher(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetPhraseMatcherRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetPhraseMatcherRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -3995,14 +3587,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4016,15 +3603,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_phrase_matcher
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_phrase_matcher]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4042,9 +3625,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_phrase_matchers(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListPhraseMatchersRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListPhraseMatchersRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4111,14 +3692,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4132,15 +3708,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_phrase_matchers
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_phrase_matchers]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4169,9 +3741,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_phrase_matcher(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeletePhraseMatcherRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeletePhraseMatcherRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4226,14 +3796,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4247,15 +3812,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_phrase_matcher
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_phrase_matcher]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4270,9 +3831,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_phrase_matcher(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdatePhraseMatcherRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdatePhraseMatcherRequest, dict]] = None,
         *,
         phrase_matcher: Optional[resources.PhraseMatcher] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -4343,14 +3902,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [phrase_matcher, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4366,17 +3920,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_phrase_matcher
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_phrase_matcher]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("phrase_matcher.name", request.phrase_matcher.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("phrase_matcher.name", request.phrase_matcher.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4394,9 +3942,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def calculate_stats(
         self,
-        request: Optional[
-            Union[contact_center_insights.CalculateStatsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CalculateStatsRequest, dict]] = None,
         *,
         location: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4460,14 +4006,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [location]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4481,15 +4022,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.calculate_stats
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.calculate_stats]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4507,9 +4044,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_settings(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetSettingsRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4577,14 +4112,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4598,15 +4128,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4624,9 +4150,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_settings(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateSettingsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateSettingsRequest, dict]] = None,
         *,
         settings: Optional[resources.Settings] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -4699,14 +4223,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [settings, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4722,17 +4241,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_settings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_settings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("settings.name", request.settings.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("settings.name", request.settings.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4750,9 +4263,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_analysis_rule(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateAnalysisRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateAnalysisRuleRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         analysis_rule: Optional[resources.AnalysisRule] = None,
@@ -4835,14 +4346,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, analysis_rule]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4858,15 +4364,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_analysis_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_analysis_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -4884,9 +4386,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_analysis_rule(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetAnalysisRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetAnalysisRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -4958,14 +4458,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -4979,15 +4474,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_analysis_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_analysis_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5005,9 +4496,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_analysis_rules(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListAnalysisRulesRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListAnalysisRulesRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5074,14 +4563,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5095,15 +4579,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_analysis_rules
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_analysis_rules]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5132,9 +4612,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_analysis_rule(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateAnalysisRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateAnalysisRuleRequest, dict]] = None,
         *,
         analysis_rule: Optional[resources.AnalysisRule] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -5212,14 +4690,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [analysis_rule, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5235,17 +4708,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_analysis_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_analysis_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("analysis_rule.name", request.analysis_rule.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("analysis_rule.name", request.analysis_rule.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5263,9 +4730,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_analysis_rule(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteAnalysisRuleRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteAnalysisRuleRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5320,14 +4785,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5341,15 +4801,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_analysis_rule
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_analysis_rule]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5364,9 +4820,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_encryption_spec(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetEncryptionSpecRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetEncryptionSpecRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5430,14 +4884,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5451,15 +4900,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_encryption_spec
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_encryption_spec]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5477,9 +4922,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def initialize_encryption_spec(
         self,
-        request: Optional[
-            Union[contact_center_insights.InitializeEncryptionSpecRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.InitializeEncryptionSpecRequest, dict]] = None,
         *,
         encryption_spec: Optional[resources.EncryptionSpec] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -5564,20 +5007,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [encryption_spec]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.InitializeEncryptionSpecRequest
-        ):
+        if not isinstance(request, contact_center_insights.InitializeEncryptionSpecRequest):
             request = contact_center_insights.InitializeEncryptionSpecRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -5587,17 +5023,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.initialize_encryption_spec
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.initialize_encryption_spec]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("encryption_spec.name", request.encryption_spec.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("encryption_spec.name", request.encryption_spec.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5623,9 +5053,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_view(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateViewRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateViewRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         view: Optional[resources.View] = None,
@@ -5696,14 +5124,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, view]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5719,15 +5142,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_view
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5806,14 +5225,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5831,9 +5245,7 @@ class ContactCenterInsightsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5918,14 +5330,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -5939,15 +5346,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_views
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_views]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -5976,9 +5379,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_view(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateViewRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateViewRequest, dict]] = None,
         *,
         view: Optional[resources.View] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -6042,14 +5443,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [view, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6065,17 +5461,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_view
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("view.name", request.view.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("view.name", request.view.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6093,9 +5483,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_view(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteViewRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteViewRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6149,14 +5537,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6170,15 +5553,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_view
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_view]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6193,9 +5572,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def query_metrics(
         self,
-        request: Optional[
-            Union[contact_center_insights.QueryMetricsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.QueryMetricsRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -6262,15 +5639,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.query_metrics
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.query_metrics]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("location", request.location),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6296,9 +5669,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_qa_question(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateQaQuestionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateQaQuestionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         qa_question: Optional[resources.QaQuestion] = None,
@@ -6382,14 +5753,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, qa_question, qa_question_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6407,15 +5773,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_qa_question
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_qa_question]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6433,9 +5795,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_qa_question(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetQaQuestionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetQaQuestionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6498,14 +5858,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6519,15 +5874,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_qa_question
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_qa_question]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6545,9 +5896,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_qa_question(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateQaQuestionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateQaQuestionRequest, dict]] = None,
         *,
         qa_question: Optional[resources.QaQuestion] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -6624,14 +5973,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [qa_question, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6647,17 +5991,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_qa_question
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_qa_question]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("qa_question.name", request.qa_question.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("qa_question.name", request.qa_question.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6675,9 +6013,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_qa_question(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteQaQuestionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteQaQuestionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6732,14 +6068,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6753,15 +6084,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_qa_question
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_qa_question]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6776,9 +6103,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_qa_questions(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListQaQuestionsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListQaQuestionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -6845,14 +6170,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -6866,15 +6186,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_qa_questions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_qa_questions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -6903,9 +6219,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_qa_scorecard(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateQaScorecardRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateQaScorecardRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         qa_scorecard: Optional[resources.QaScorecard] = None,
@@ -6990,14 +6304,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, qa_scorecard, qa_scorecard_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7015,15 +6324,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_qa_scorecard
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_qa_scorecard]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7041,9 +6346,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_qa_scorecard(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetQaScorecardRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetQaScorecardRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7108,14 +6411,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7129,15 +6427,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_qa_scorecard
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_qa_scorecard]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7155,9 +6449,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_qa_scorecard(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateQaScorecardRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateQaScorecardRequest, dict]] = None,
         *,
         qa_scorecard: Optional[resources.QaScorecard] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -7231,14 +6523,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [qa_scorecard, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7254,17 +6541,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_qa_scorecard
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_qa_scorecard]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("qa_scorecard.name", request.qa_scorecard.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("qa_scorecard.name", request.qa_scorecard.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7282,9 +6563,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_qa_scorecard(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteQaScorecardRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteQaScorecardRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7339,14 +6618,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7360,15 +6634,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_qa_scorecard
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_qa_scorecard]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7383,9 +6653,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_qa_scorecards(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListQaScorecardsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListQaScorecardsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7452,14 +6720,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -7473,15 +6736,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_qa_scorecards
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_qa_scorecards]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7510,9 +6769,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_qa_scorecard_revision(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateQaScorecardRevisionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateQaScorecardRevisionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         qa_scorecard_revision: Optional[resources.QaScorecardRevision] = None,
@@ -7606,20 +6863,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, qa_scorecard_revision, qa_scorecard_revision_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.CreateQaScorecardRevisionRequest
-        ):
+        if not isinstance(request, contact_center_insights.CreateQaScorecardRevisionRequest):
             request = contact_center_insights.CreateQaScorecardRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -7633,15 +6883,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_qa_scorecard_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_qa_scorecard_revision]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7659,9 +6905,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_qa_scorecard_revision(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetQaScorecardRevisionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetQaScorecardRevisionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -7733,20 +6977,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.GetQaScorecardRevisionRequest
-        ):
+        if not isinstance(request, contact_center_insights.GetQaScorecardRevisionRequest):
             request = contact_center_insights.GetQaScorecardRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -7756,15 +6993,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_qa_scorecard_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_qa_scorecard_revision]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7782,9 +7015,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def tune_qa_scorecard_revision(
         self,
-        request: Optional[
-            Union[contact_center_insights.TuneQaScorecardRevisionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.TuneQaScorecardRevisionRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         filter: Optional[str] = None,
@@ -7882,20 +7113,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, filter, validate_only]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.TuneQaScorecardRevisionRequest
-        ):
+        if not isinstance(request, contact_center_insights.TuneQaScorecardRevisionRequest):
             request = contact_center_insights.TuneQaScorecardRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -7909,15 +7133,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.tune_qa_scorecard_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.tune_qa_scorecard_revision]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -7943,9 +7163,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def deploy_qa_scorecard_revision(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeployQaScorecardRevisionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeployQaScorecardRevisionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8008,22 +7226,16 @@ class ContactCenterInsightsAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.DeployQaScorecardRevisionRequest
-        ):
+        if not isinstance(request, contact_center_insights.DeployQaScorecardRevisionRequest):
             request = contact_center_insights.DeployQaScorecardRevisionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.deploy_qa_scorecard_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.deploy_qa_scorecard_revision]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8041,9 +7253,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def undeploy_qa_scorecard_revision(
         self,
-        request: Optional[
-            Union[contact_center_insights.UndeployQaScorecardRevisionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UndeployQaScorecardRevisionRequest, dict]] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -8106,24 +7316,16 @@ class ContactCenterInsightsAsyncClient:
         # Create or coerce a protobuf request object.
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.UndeployQaScorecardRevisionRequest
-        ):
-            request = contact_center_insights.UndeployQaScorecardRevisionRequest(
-                request
-            )
+        if not isinstance(request, contact_center_insights.UndeployQaScorecardRevisionRequest):
+            request = contact_center_insights.UndeployQaScorecardRevisionRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.undeploy_qa_scorecard_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.undeploy_qa_scorecard_revision]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8141,9 +7343,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_qa_scorecard_revision(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteQaScorecardRevisionRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteQaScorecardRevisionRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8198,20 +7398,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.DeleteQaScorecardRevisionRequest
-        ):
+        if not isinstance(request, contact_center_insights.DeleteQaScorecardRevisionRequest):
             request = contact_center_insights.DeleteQaScorecardRevisionRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -8221,15 +7414,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_qa_scorecard_revision
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_qa_scorecard_revision]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8244,9 +7433,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_qa_scorecard_revisions(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListQaScorecardRevisionsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListQaScorecardRevisionsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8315,20 +7502,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.ListQaScorecardRevisionsRequest
-        ):
+        if not isinstance(request, contact_center_insights.ListQaScorecardRevisionsRequest):
             request = contact_center_insights.ListQaScorecardRevisionsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -8338,15 +7518,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_qa_scorecard_revisions
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_qa_scorecard_revisions]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8375,9 +7551,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def create_feedback_label(
         self,
-        request: Optional[
-            Union[contact_center_insights.CreateFeedbackLabelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.CreateFeedbackLabelRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         feedback_label: Optional[resources.FeedbackLabel] = None,
@@ -8462,14 +7636,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, feedback_label, feedback_label_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8487,15 +7656,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_feedback_label
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_feedback_label]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8513,9 +7678,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_feedback_labels(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListFeedbackLabelsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListFeedbackLabelsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8583,14 +7746,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8604,15 +7762,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_feedback_labels
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_feedback_labels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8641,9 +7795,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def get_feedback_label(
         self,
-        request: Optional[
-            Union[contact_center_insights.GetFeedbackLabelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.GetFeedbackLabelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8707,14 +7859,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8728,15 +7875,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_feedback_label
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_feedback_label]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8754,9 +7897,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def update_feedback_label(
         self,
-        request: Optional[
-            Union[contact_center_insights.UpdateFeedbackLabelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.UpdateFeedbackLabelRequest, dict]] = None,
         *,
         feedback_label: Optional[resources.FeedbackLabel] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -8831,14 +7972,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [feedback_label, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8854,17 +7990,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_feedback_label
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_feedback_label]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("feedback_label.name", request.feedback_label.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("feedback_label.name", request.feedback_label.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8882,9 +8012,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def delete_feedback_label(
         self,
-        request: Optional[
-            Union[contact_center_insights.DeleteFeedbackLabelRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.DeleteFeedbackLabelRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -8939,14 +8067,9 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -8960,15 +8083,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_feedback_label
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_feedback_label]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -8983,9 +8102,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def list_all_feedback_labels(
         self,
-        request: Optional[
-            Union[contact_center_insights.ListAllFeedbackLabelsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.ListAllFeedbackLabelsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9053,20 +8170,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.ListAllFeedbackLabelsRequest
-        ):
+        if not isinstance(request, contact_center_insights.ListAllFeedbackLabelsRequest):
             request = contact_center_insights.ListAllFeedbackLabelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -9076,15 +8186,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_all_feedback_labels
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_all_feedback_labels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9113,9 +8219,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def bulk_upload_feedback_labels(
         self,
-        request: Optional[
-            Union[contact_center_insights.BulkUploadFeedbackLabelsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.BulkUploadFeedbackLabelsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9191,20 +8295,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.BulkUploadFeedbackLabelsRequest
-        ):
+        if not isinstance(request, contact_center_insights.BulkUploadFeedbackLabelsRequest):
             request = contact_center_insights.BulkUploadFeedbackLabelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -9214,15 +8311,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.bulk_upload_feedback_labels
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.bulk_upload_feedback_labels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9248,9 +8341,7 @@ class ContactCenterInsightsAsyncClient:
 
     async def bulk_download_feedback_labels(
         self,
-        request: Optional[
-            Union[contact_center_insights.BulkDownloadFeedbackLabelsRequest, dict]
-        ] = None,
+        request: Optional[Union[contact_center_insights.BulkDownloadFeedbackLabelsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -9326,20 +8417,13 @@ class ContactCenterInsightsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, contact_center_insights.BulkDownloadFeedbackLabelsRequest
-        ):
+        if not isinstance(request, contact_center_insights.BulkDownloadFeedbackLabelsRequest):
             request = contact_center_insights.BulkDownloadFeedbackLabelsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -9349,15 +8433,11 @@ class ContactCenterInsightsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.bulk_download_feedback_labels
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.bulk_download_feedback_labels]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9418,9 +8498,7 @@ class ContactCenterInsightsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9473,9 +8551,7 @@ class ContactCenterInsightsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9531,9 +8607,7 @@ class ContactCenterInsightsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -9553,9 +8627,7 @@ class ContactCenterInsightsAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

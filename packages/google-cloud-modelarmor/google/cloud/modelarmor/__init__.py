@@ -18,9 +18,7 @@ from google.cloud.modelarmor import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.modelarmor_v1.services.model_armor.async_client import (
-    ModelArmorAsyncClient,
-)
+from google.cloud.modelarmor_v1.services.model_armor.async_client import ModelArmorAsyncClient
 from google.cloud.modelarmor_v1.services.model_armor.client import ModelArmorClient
 from google.cloud.modelarmor_v1.types.service import (
     AiPlatformFloorSetting,

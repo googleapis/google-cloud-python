@@ -47,13 +47,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -63,10 +59,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -85,11 +78,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -267,18 +256,14 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -314,9 +299,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -333,10 +316,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
     @property
     def get_notification_subscription(
         self,
-    ) -> Callable[
-        [notificationsapi.GetNotificationSubscriptionRequest],
-        Awaitable[notificationsapi.NotificationSubscription],
-    ]:
+    ) -> Callable[[notificationsapi.GetNotificationSubscriptionRequest], Awaitable[notificationsapi.NotificationSubscription]]:
         r"""Return a callable for the get notification subscription method over gRPC.
 
         Gets notification subscriptions for an account.
@@ -352,9 +332,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_notification_subscription" not in self._stubs:
-            self._stubs[
-                "get_notification_subscription"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_notification_subscription"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.notifications.v1.NotificationsApiService/GetNotificationSubscription",
                 request_serializer=notificationsapi.GetNotificationSubscriptionRequest.serialize,
                 response_deserializer=notificationsapi.NotificationSubscription.deserialize,
@@ -364,10 +342,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
     @property
     def create_notification_subscription(
         self,
-    ) -> Callable[
-        [notificationsapi.CreateNotificationSubscriptionRequest],
-        Awaitable[notificationsapi.NotificationSubscription],
-    ]:
+    ) -> Callable[[notificationsapi.CreateNotificationSubscriptionRequest], Awaitable[notificationsapi.NotificationSubscription]]:
         r"""Return a callable for the create notification
         subscription method over gRPC.
 
@@ -411,9 +386,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "create_notification_subscription" not in self._stubs:
-            self._stubs[
-                "create_notification_subscription"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["create_notification_subscription"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.notifications.v1.NotificationsApiService/CreateNotificationSubscription",
                 request_serializer=notificationsapi.CreateNotificationSubscriptionRequest.serialize,
                 response_deserializer=notificationsapi.NotificationSubscription.deserialize,
@@ -423,10 +396,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
     @property
     def update_notification_subscription(
         self,
-    ) -> Callable[
-        [notificationsapi.UpdateNotificationSubscriptionRequest],
-        Awaitable[notificationsapi.NotificationSubscription],
-    ]:
+    ) -> Callable[[notificationsapi.UpdateNotificationSubscriptionRequest], Awaitable[notificationsapi.NotificationSubscription]]:
         r"""Return a callable for the update notification
         subscription method over gRPC.
 
@@ -444,9 +414,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_notification_subscription" not in self._stubs:
-            self._stubs[
-                "update_notification_subscription"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_notification_subscription"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.notifications.v1.NotificationsApiService/UpdateNotificationSubscription",
                 request_serializer=notificationsapi.UpdateNotificationSubscriptionRequest.serialize,
                 response_deserializer=notificationsapi.NotificationSubscription.deserialize,
@@ -454,12 +422,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         return self._stubs["update_notification_subscription"]
 
     @property
-    def delete_notification_subscription(
-        self,
-    ) -> Callable[
-        [notificationsapi.DeleteNotificationSubscriptionRequest],
-        Awaitable[empty_pb2.Empty],
-    ]:
+    def delete_notification_subscription(self) -> Callable[[notificationsapi.DeleteNotificationSubscriptionRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete notification
         subscription method over gRPC.
 
@@ -476,9 +439,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "delete_notification_subscription" not in self._stubs:
-            self._stubs[
-                "delete_notification_subscription"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["delete_notification_subscription"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.notifications.v1.NotificationsApiService/DeleteNotificationSubscription",
                 request_serializer=notificationsapi.DeleteNotificationSubscriptionRequest.serialize,
                 response_deserializer=empty_pb2.Empty.FromString,
@@ -488,10 +449,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
     @property
     def list_notification_subscriptions(
         self,
-    ) -> Callable[
-        [notificationsapi.ListNotificationSubscriptionsRequest],
-        Awaitable[notificationsapi.ListNotificationSubscriptionsResponse],
-    ]:
+    ) -> Callable[[notificationsapi.ListNotificationSubscriptionsRequest], Awaitable[notificationsapi.ListNotificationSubscriptionsResponse]]:
         r"""Return a callable for the list notification
         subscriptions method over gRPC.
 
@@ -509,9 +467,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "list_notification_subscriptions" not in self._stubs:
-            self._stubs[
-                "list_notification_subscriptions"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["list_notification_subscriptions"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.notifications.v1.NotificationsApiService/ListNotificationSubscriptions",
                 request_serializer=notificationsapi.ListNotificationSubscriptionsRequest.serialize,
                 response_deserializer=notificationsapi.ListNotificationSubscriptionsResponse.deserialize,
@@ -522,8 +478,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
     def get_notification_subscription_health_metrics(
         self,
     ) -> Callable[
-        [notificationsapi.GetNotificationSubscriptionHealthMetricsRequest],
-        Awaitable[notificationsapi.NotificationSubscriptionHealthMetrics],
+        [notificationsapi.GetNotificationSubscriptionHealthMetricsRequest], Awaitable[notificationsapi.NotificationSubscriptionHealthMetrics]
     ]:
         r"""Return a callable for the get notification subscription
         health metrics method over gRPC.
@@ -544,9 +499,7 @@ class NotificationsApiServiceGrpcAsyncIOTransport(NotificationsApiServiceTranspo
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_notification_subscription_health_metrics" not in self._stubs:
-            self._stubs[
-                "get_notification_subscription_health_metrics"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_notification_subscription_health_metrics"] = self._logged_channel.unary_unary(
                 "/google.shopping.merchant.notifications.v1.NotificationsApiService/GetNotificationSubscriptionHealthMetrics",
                 request_serializer=notificationsapi.GetNotificationSubscriptionHealthMetricsRequest.serialize,
                 response_deserializer=notificationsapi.NotificationSubscriptionHealthMetrics.deserialize,

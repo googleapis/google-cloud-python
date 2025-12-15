@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -226,18 +217,14 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -271,9 +258,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -340,17 +325,13 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_build(
-        self,
-    ) -> Callable[[cloudbuild.CreateBuildRequest], operations_pb2.Operation]:
+    def create_build(self) -> Callable[[cloudbuild.CreateBuildRequest], operations_pb2.Operation]:
         r"""Return a callable for the create build method over gRPC.
 
         Starts a build with the specified configuration.
@@ -406,9 +387,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["get_build"]
 
     @property
-    def list_builds(
-        self,
-    ) -> Callable[[cloudbuild.ListBuildsRequest], cloudbuild.ListBuildsResponse]:
+    def list_builds(self) -> Callable[[cloudbuild.ListBuildsRequest], cloudbuild.ListBuildsResponse]:
         r"""Return a callable for the list builds method over gRPC.
 
         Lists previously requested builds.
@@ -435,9 +414,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["list_builds"]
 
     @property
-    def cancel_build(
-        self,
-    ) -> Callable[[cloudbuild.CancelBuildRequest], cloudbuild.Build]:
+    def cancel_build(self) -> Callable[[cloudbuild.CancelBuildRequest], cloudbuild.Build]:
         r"""Return a callable for the cancel build method over gRPC.
 
         Cancels a build in progress.
@@ -461,9 +438,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["cancel_build"]
 
     @property
-    def retry_build(
-        self,
-    ) -> Callable[[cloudbuild.RetryBuildRequest], operations_pb2.Operation]:
+    def retry_build(self) -> Callable[[cloudbuild.RetryBuildRequest], operations_pb2.Operation]:
         r"""Return a callable for the retry build method over gRPC.
 
         Creates a new build based on the specified build.
@@ -516,9 +491,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["retry_build"]
 
     @property
-    def approve_build(
-        self,
-    ) -> Callable[[cloudbuild.ApproveBuildRequest], operations_pb2.Operation]:
+    def approve_build(self) -> Callable[[cloudbuild.ApproveBuildRequest], operations_pb2.Operation]:
         r"""Return a callable for the approve build method over gRPC.
 
         Approves or rejects a pending build.
@@ -548,9 +521,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["approve_build"]
 
     @property
-    def create_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.CreateBuildTriggerRequest], cloudbuild.BuildTrigger]:
+    def create_build_trigger(self) -> Callable[[cloudbuild.CreateBuildTriggerRequest], cloudbuild.BuildTrigger]:
         r"""Return a callable for the create build trigger method over gRPC.
 
         Creates a new ``BuildTrigger``.
@@ -574,9 +545,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["create_build_trigger"]
 
     @property
-    def get_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.GetBuildTriggerRequest], cloudbuild.BuildTrigger]:
+    def get_build_trigger(self) -> Callable[[cloudbuild.GetBuildTriggerRequest], cloudbuild.BuildTrigger]:
         r"""Return a callable for the get build trigger method over gRPC.
 
         Returns information about a ``BuildTrigger``.
@@ -600,11 +569,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["get_build_trigger"]
 
     @property
-    def list_build_triggers(
-        self,
-    ) -> Callable[
-        [cloudbuild.ListBuildTriggersRequest], cloudbuild.ListBuildTriggersResponse
-    ]:
+    def list_build_triggers(self) -> Callable[[cloudbuild.ListBuildTriggersRequest], cloudbuild.ListBuildTriggersResponse]:
         r"""Return a callable for the list build triggers method over gRPC.
 
         Lists existing ``BuildTrigger``\ s.
@@ -628,9 +593,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["list_build_triggers"]
 
     @property
-    def delete_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], empty_pb2.Empty]:
+    def delete_build_trigger(self) -> Callable[[cloudbuild.DeleteBuildTriggerRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete build trigger method over gRPC.
 
         Deletes a ``BuildTrigger`` by its project ID and trigger ID.
@@ -654,9 +617,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["delete_build_trigger"]
 
     @property
-    def update_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.UpdateBuildTriggerRequest], cloudbuild.BuildTrigger]:
+    def update_build_trigger(self) -> Callable[[cloudbuild.UpdateBuildTriggerRequest], cloudbuild.BuildTrigger]:
         r"""Return a callable for the update build trigger method over gRPC.
 
         Updates a ``BuildTrigger`` by its project ID and trigger ID.
@@ -680,9 +641,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["update_build_trigger"]
 
     @property
-    def run_build_trigger(
-        self,
-    ) -> Callable[[cloudbuild.RunBuildTriggerRequest], operations_pb2.Operation]:
+    def run_build_trigger(self) -> Callable[[cloudbuild.RunBuildTriggerRequest], operations_pb2.Operation]:
         r"""Return a callable for the run build trigger method over gRPC.
 
         Runs a ``BuildTrigger`` at a particular source revision.
@@ -712,12 +671,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["run_build_trigger"]
 
     @property
-    def receive_trigger_webhook(
-        self,
-    ) -> Callable[
-        [cloudbuild.ReceiveTriggerWebhookRequest],
-        cloudbuild.ReceiveTriggerWebhookResponse,
-    ]:
+    def receive_trigger_webhook(self) -> Callable[[cloudbuild.ReceiveTriggerWebhookRequest], cloudbuild.ReceiveTriggerWebhookResponse]:
         r"""Return a callable for the receive trigger webhook method over gRPC.
 
         ReceiveTriggerWebhook [Experimental] is called when the API
@@ -742,9 +696,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["receive_trigger_webhook"]
 
     @property
-    def create_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.CreateWorkerPoolRequest], operations_pb2.Operation]:
+    def create_worker_pool(self) -> Callable[[cloudbuild.CreateWorkerPoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the create worker pool method over gRPC.
 
         Creates a ``WorkerPool``.
@@ -768,9 +720,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["create_worker_pool"]
 
     @property
-    def get_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.GetWorkerPoolRequest], cloudbuild.WorkerPool]:
+    def get_worker_pool(self) -> Callable[[cloudbuild.GetWorkerPoolRequest], cloudbuild.WorkerPool]:
         r"""Return a callable for the get worker pool method over gRPC.
 
         Returns details of a ``WorkerPool``.
@@ -794,9 +744,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["get_worker_pool"]
 
     @property
-    def delete_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], operations_pb2.Operation]:
+    def delete_worker_pool(self) -> Callable[[cloudbuild.DeleteWorkerPoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the delete worker pool method over gRPC.
 
         Deletes a ``WorkerPool``.
@@ -820,9 +768,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["delete_worker_pool"]
 
     @property
-    def update_worker_pool(
-        self,
-    ) -> Callable[[cloudbuild.UpdateWorkerPoolRequest], operations_pb2.Operation]:
+    def update_worker_pool(self) -> Callable[[cloudbuild.UpdateWorkerPoolRequest], operations_pb2.Operation]:
         r"""Return a callable for the update worker pool method over gRPC.
 
         Updates a ``WorkerPool``.
@@ -846,11 +792,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["update_worker_pool"]
 
     @property
-    def list_worker_pools(
-        self,
-    ) -> Callable[
-        [cloudbuild.ListWorkerPoolsRequest], cloudbuild.ListWorkerPoolsResponse
-    ]:
+    def list_worker_pools(self) -> Callable[[cloudbuild.ListWorkerPoolsRequest], cloudbuild.ListWorkerPoolsResponse]:
         r"""Return a callable for the list worker pools method over gRPC.
 
         Lists ``WorkerPool``\ s.
@@ -874,11 +816,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         return self._stubs["list_worker_pools"]
 
     @property
-    def get_default_service_account(
-        self,
-    ) -> Callable[
-        [cloudbuild.GetDefaultServiceAccountRequest], cloudbuild.DefaultServiceAccount
-    ]:
+    def get_default_service_account(self) -> Callable[[cloudbuild.GetDefaultServiceAccountRequest], cloudbuild.DefaultServiceAccount]:
         r"""Return a callable for the get default service account method over gRPC.
 
         Returns the ``DefaultServiceAccount`` used by the project.
@@ -894,9 +832,7 @@ class CloudBuildGrpcTransport(CloudBuildTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_default_service_account" not in self._stubs:
-            self._stubs[
-                "get_default_service_account"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_default_service_account"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v1.CloudBuild/GetDefaultServiceAccount",
                 request_serializer=cloudbuild.GetDefaultServiceAccountRequest.serialize,
                 response_deserializer=cloudbuild.DefaultServiceAccount.deserialize,

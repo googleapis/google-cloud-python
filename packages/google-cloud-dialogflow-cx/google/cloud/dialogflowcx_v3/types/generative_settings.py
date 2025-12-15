@@ -91,9 +91,7 @@ class GenerativeSettings(proto.Message):
             proto.STRING,
             number=3,
         )
-        prompt_templates: MutableSequence[
-            "GenerativeSettings.FallbackSettings.PromptTemplate"
-        ] = proto.RepeatedField(
+        prompt_templates: MutableSequence["GenerativeSettings.FallbackSettings.PromptTemplate"] = proto.RepeatedField(
             proto.MESSAGE,
             number=4,
             message="GenerativeSettings.FallbackSettings.PromptTemplate",

@@ -89,13 +89,8 @@ class AnalyticsServiceRestInterceptor:
     """
 
     def pre_export_analytics_metrics(
-        self,
-        request: export_config.ExportAnalyticsMetricsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        export_config.ExportAnalyticsMetricsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: export_config.ExportAnalyticsMetricsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[export_config.ExportAnalyticsMetricsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_analytics_metrics
 
         Override in a subclass to manipulate the request or metadata
@@ -103,9 +98,7 @@ class AnalyticsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_export_analytics_metrics(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_analytics_metrics(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_analytics_metrics
 
         DEPRECATED. Please use the `post_export_analytics_metrics_with_metadata`
@@ -119,9 +112,7 @@ class AnalyticsServiceRestInterceptor:
         return response
 
     def post_export_analytics_metrics_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_analytics_metrics
 
@@ -138,12 +129,8 @@ class AnalyticsServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -151,9 +138,7 @@ class AnalyticsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -163,12 +148,8 @@ class AnalyticsServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -176,9 +157,7 @@ class AnalyticsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -269,9 +248,7 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -335,30 +312,17 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
                 path_prefix="v2alpha",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _ExportAnalyticsMetrics(
-        _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics,
-        AnalyticsServiceRestStub,
-    ):
+    class _ExportAnalyticsMetrics(_BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics, AnalyticsServiceRestStub):
         def __hash__(self):
             return hash("AnalyticsServiceRestTransport.ExportAnalyticsMetrics")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -402,32 +366,18 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_http_options()
-            )
+            http_options = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_analytics_metrics(
-                request, metadata
-            )
-            transcoded_request = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_analytics_metrics(request, metadata)
+            transcoded_request = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_transcoded_request(http_options, request)
 
-            body = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnalyticsServiceRestTransport._BaseExportAnalyticsMetrics._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -450,16 +400,8 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                AnalyticsServiceRestTransport._ExportAnalyticsMetrics._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AnalyticsServiceRestTransport._ExportAnalyticsMetrics._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -473,12 +415,8 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
 
             resp = self._interceptor.post_export_analytics_metrics(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_analytics_metrics_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_analytics_metrics_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -500,11 +438,7 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
             return resp
 
     @property
-    def export_analytics_metrics(
-        self,
-    ) -> Callable[
-        [export_config.ExportAnalyticsMetricsRequest], operations_pb2.Operation
-    ]:
+    def export_analytics_metrics(self) -> Callable[[export_config.ExportAnalyticsMetricsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportAnalyticsMetrics(self._session, self._host, self._interceptor)  # type: ignore
@@ -513,22 +447,12 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAnalyticsServiceRestTransport._BaseGetOperation, AnalyticsServiceRestStub
-    ):
+    class _GetOperation(_BaseAnalyticsServiceRestTransport._BaseGetOperation, AnalyticsServiceRestStub):
         def __hash__(self):
             return hash("AnalyticsServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -566,26 +490,16 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAnalyticsServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAnalyticsServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAnalyticsServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAnalyticsServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnalyticsServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnalyticsServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -609,12 +523,7 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
 
             # Send the request
             response = AnalyticsServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -626,9 +535,7 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -653,22 +560,12 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAnalyticsServiceRestTransport._BaseListOperations, AnalyticsServiceRestStub
-    ):
+    class _ListOperations(_BaseAnalyticsServiceRestTransport._BaseListOperations, AnalyticsServiceRestStub):
         def __hash__(self):
             return hash("AnalyticsServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -706,26 +603,16 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAnalyticsServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAnalyticsServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAnalyticsServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAnalyticsServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAnalyticsServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAnalyticsServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -749,12 +636,7 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
 
             # Send the request
             response = AnalyticsServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -766,9 +648,7 @@ class AnalyticsServiceRestTransport(_BaseAnalyticsServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

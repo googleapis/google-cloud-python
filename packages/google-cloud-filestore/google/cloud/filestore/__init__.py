@@ -18,12 +18,8 @@ from google.cloud.filestore import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.filestore_v1.services.cloud_filestore_manager.async_client import (
-    CloudFilestoreManagerAsyncClient,
-)
-from google.cloud.filestore_v1.services.cloud_filestore_manager.client import (
-    CloudFilestoreManagerClient,
-)
+from google.cloud.filestore_v1.services.cloud_filestore_manager.async_client import CloudFilestoreManagerAsyncClient
+from google.cloud.filestore_v1.services.cloud_filestore_manager.client import CloudFilestoreManagerClient
 from google.cloud.filestore_v1.types.cloud_filestore_service import (
     Backup,
     CreateBackupRequest,

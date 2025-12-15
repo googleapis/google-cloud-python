@@ -19,19 +19,7 @@ import json
 import logging as std_logging
 import os
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union, cast
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -88,9 +76,7 @@ class PrivateAuctionDealServiceClientMeta(type):
     objects.
     """
 
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[PrivateAuctionDealServiceTransport]]
+    _transport_registry = OrderedDict()  # type: Dict[str, Type[PrivateAuctionDealServiceTransport]]
     _transport_registry["rest"] = PrivateAuctionDealServiceRestTransport
 
     def get_transport_class(
@@ -132,9 +118,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         if not api_endpoint:
             return api_endpoint
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
+        mtls_endpoint_re = re.compile(r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?")
 
         m = mtls_endpoint_re.match(api_endpoint)
         name, mtls, sandbox, googledomain = m.groups()
@@ -142,20 +126,39 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
             return api_endpoint
 
         if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
+            return api_endpoint.replace("sandbox.googleapis.com", "mtls.sandbox.googleapis.com")
 
         return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
 
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = "admanager.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
-    )
+    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(DEFAULT_ENDPOINT)  # type: ignore
 
     _DEFAULT_ENDPOINT_TEMPLATE = "admanager.{UNIVERSE_DOMAIN}"
     _DEFAULT_UNIVERSE = "googleapis.com"
+
+    @staticmethod
+    def _use_client_cert_effective():
+        """Returns whether client certificate should be used for mTLS if the
+        google-auth version supports should_use_client_cert automatic mTLS enablement.
+
+        Alternatively, read from the GOOGLE_API_USE_CLIENT_CERTIFICATE env var.
+
+        Returns:
+            bool: whether client certificate should be used for mTLS
+        Raises:
+            ValueError: (If using a version of google-auth without should_use_client_cert and
+            GOOGLE_API_USE_CLIENT_CERTIFICATE is set to an unexpected value.)
+        """
+        # check if google-auth version supports should_use_client_cert for automatic mTLS enablement
+        if hasattr(mtls, "should_use_client_cert"):  # pragma: NO COVER
+            return mtls.should_use_client_cert()
+        else:  # pragma: NO COVER
+            # if unsupported, fallback to reading from env var
+            use_client_cert_str = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false").lower()
+            if use_client_cert_str not in ("true", "false"):
+                raise ValueError("Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be" " either `true` or `false`")
+            return use_client_cert_str == "true"
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -235,9 +238,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_application_path(path: str) -> Dict[str, str]:
         """Parses a application path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/applications/(?P<application>.+?)$", path
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/applications/(?P<application>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -254,10 +255,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_audience_segment_path(path: str) -> Dict[str, str]:
         """Parses a audience_segment path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/audienceSegments/(?P<audience_segment>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/audienceSegments/(?P<audience_segment>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -274,10 +272,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_bandwidth_group_path(path: str) -> Dict[str, str]:
         """Parses a bandwidth_group path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/bandwidthGroups/(?P<bandwidth_group>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/bandwidthGroups/(?P<bandwidth_group>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -294,9 +289,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_browser_path(path: str) -> Dict[str, str]:
         """Parses a browser path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/browsers/(?P<browser>.+?)$", path
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/browsers/(?P<browser>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -313,10 +306,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_browser_language_path(path: str) -> Dict[str, str]:
         """Parses a browser_language path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/browserLanguages/(?P<browser_language>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/browserLanguages/(?P<browser_language>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -333,10 +323,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_cms_metadata_value_path(path: str) -> Dict[str, str]:
         """Parses a cms_metadata_value path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/cmsMetadataValues/(?P<cms_metadata_value>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/cmsMetadataValues/(?P<cms_metadata_value>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -370,10 +357,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_content_bundle_path(path: str) -> Dict[str, str]:
         """Parses a content_bundle path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/contentBundles/(?P<content_bundle>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/contentBundles/(?P<content_bundle>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -382,20 +366,15 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         custom_targeting_key: str,
     ) -> str:
         """Returns a fully-qualified custom_targeting_key string."""
-        return (
-            "networks/{network_code}/customTargetingKeys/{custom_targeting_key}".format(
-                network_code=network_code,
-                custom_targeting_key=custom_targeting_key,
-            )
+        return "networks/{network_code}/customTargetingKeys/{custom_targeting_key}".format(
+            network_code=network_code,
+            custom_targeting_key=custom_targeting_key,
         )
 
     @staticmethod
     def parse_custom_targeting_key_path(path: str) -> Dict[str, str]:
         """Parses a custom_targeting_key path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/customTargetingKeys/(?P<custom_targeting_key>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/customTargetingKeys/(?P<custom_targeting_key>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -412,10 +391,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_custom_targeting_value_path(path: str) -> Dict[str, str]:
         """Parses a custom_targeting_value path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/customTargetingValues/(?P<custom_targeting_value>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/customTargetingValues/(?P<custom_targeting_value>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -432,10 +408,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_device_capability_path(path: str) -> Dict[str, str]:
         """Parses a device_capability path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/deviceCapabilities/(?P<device_capability>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/deviceCapabilities/(?P<device_capability>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -452,10 +425,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_device_category_path(path: str) -> Dict[str, str]:
         """Parses a device_category path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/deviceCategories/(?P<device_category>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/deviceCategories/(?P<device_category>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -464,20 +434,15 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         device_manufacturer: str,
     ) -> str:
         """Returns a fully-qualified device_manufacturer string."""
-        return (
-            "networks/{network_code}/deviceManufacturers/{device_manufacturer}".format(
-                network_code=network_code,
-                device_manufacturer=device_manufacturer,
-            )
+        return "networks/{network_code}/deviceManufacturers/{device_manufacturer}".format(
+            network_code=network_code,
+            device_manufacturer=device_manufacturer,
         )
 
     @staticmethod
     def parse_device_manufacturer_path(path: str) -> Dict[str, str]:
         """Parses a device_manufacturer path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/deviceManufacturers/(?P<device_manufacturer>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/deviceManufacturers/(?P<device_manufacturer>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -494,9 +459,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_geo_target_path(path: str) -> Dict[str, str]:
         """Parses a geo_target path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/geoTargets/(?P<geo_target>.+?)$", path
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/geoTargets/(?P<geo_target>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -513,10 +476,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_mobile_carrier_path(path: str) -> Dict[str, str]:
         """Parses a mobile_carrier path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/mobileCarriers/(?P<mobile_carrier>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/mobileCarriers/(?P<mobile_carrier>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -533,10 +493,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_mobile_device_path(path: str) -> Dict[str, str]:
         """Parses a mobile_device path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/mobileDevices/(?P<mobile_device>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/mobileDevices/(?P<mobile_device>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -553,10 +510,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_mobile_device_submodel_path(path: str) -> Dict[str, str]:
         """Parses a mobile_device_submodel path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/mobileDeviceSubmodels/(?P<mobile_device_submodel>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/mobileDeviceSubmodels/(?P<mobile_device_submodel>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -588,10 +542,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_operating_system_path(path: str) -> Dict[str, str]:
         """Parses a operating_system path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/operatingSystems/(?P<operating_system>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/operatingSystems/(?P<operating_system>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -608,10 +559,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_operating_system_version_path(path: str) -> Dict[str, str]:
         """Parses a operating_system_version path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/operatingSystemVersions/(?P<operating_system_version>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/operatingSystemVersions/(?P<operating_system_version>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -628,9 +576,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
     @staticmethod
     def parse_placement_path(path: str) -> Dict[str, str]:
         """Parses a placement path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/placements/(?P<placement>.+?)$", path
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/placements/(?P<placement>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -639,20 +585,15 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         private_auction_deal: str,
     ) -> str:
         """Returns a fully-qualified private_auction_deal string."""
-        return (
-            "networks/{network_code}/privateAuctionDeals/{private_auction_deal}".format(
-                network_code=network_code,
-                private_auction_deal=private_auction_deal,
-            )
+        return "networks/{network_code}/privateAuctionDeals/{private_auction_deal}".format(
+            network_code=network_code,
+            private_auction_deal=private_auction_deal,
         )
 
     @staticmethod
     def parse_private_auction_deal_path(path: str) -> Dict[str, str]:
         """Parses a private_auction_deal path into its component segments."""
-        m = re.match(
-            r"^networks/(?P<network_code>.+?)/privateAuctionDeals/(?P<private_auction_deal>.+?)$",
-            path,
-        )
+        m = re.match(r"^networks/(?P<network_code>.+?)/privateAuctionDeals/(?P<private_auction_deal>.+?)$", path)
         return m.groupdict() if m else {}
 
     @staticmethod
@@ -733,9 +674,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         return m.groupdict() if m else {}
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[client_options_lib.ClientOptions] = None):
         """Deprecated. Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -767,26 +706,17 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
 
-        warnings.warn(
-            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
-            DeprecationWarning,
-        )
+        warnings.warn("get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.", DeprecationWarning)
         if client_options is None:
             client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
+        use_client_cert = PrivateAuctionDealServiceClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
 
         # Figure out the client cert source to use.
         client_cert_source = None
-        if use_client_cert == "true":
+        if use_client_cert:
             if client_options.client_cert_source:
                 client_cert_source = client_options.client_cert_source
             elif mtls.has_default_client_cert_source():
@@ -795,9 +725,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         # Figure out which api endpoint to use.
         if client_options.api_endpoint is not None:
             api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
         else:
             api_endpoint = cls.DEFAULT_ENDPOINT
@@ -818,20 +746,12 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
             google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
                 is not any of ["auto", "never", "always"].
         """
-        use_client_cert = os.getenv(
-            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
-        ).lower()
+        use_client_cert = PrivateAuctionDealServiceClient._use_client_cert_effective()
         use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto").lower()
         universe_domain_env = os.getenv("GOOGLE_CLOUD_UNIVERSE_DOMAIN")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
         if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
-        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+            raise MutualTLSChannelError("Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`")
+        return use_client_cert, use_mtls_endpoint, universe_domain_env
 
     @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
@@ -853,9 +773,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         return client_cert_source
 
     @staticmethod
-    def _get_api_endpoint(
-        api_override, client_cert_source, universe_domain, use_mtls_endpoint
-    ):
+    def _get_api_endpoint(api_override, client_cert_source, universe_domain, use_mtls_endpoint):
         """Return the API endpoint used by the client.
 
         Args:
@@ -871,27 +789,17 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         """
         if api_override is not None:
             api_endpoint = api_override
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
+        elif use_mtls_endpoint == "always" or (use_mtls_endpoint == "auto" and client_cert_source):
             _default_universe = PrivateAuctionDealServiceClient._DEFAULT_UNIVERSE
             if universe_domain != _default_universe:
-                raise MutualTLSChannelError(
-                    f"mTLS is not supported in any universe other than {_default_universe}."
-                )
+                raise MutualTLSChannelError(f"mTLS is not supported in any universe other than {_default_universe}.")
             api_endpoint = PrivateAuctionDealServiceClient.DEFAULT_MTLS_ENDPOINT
         else:
-            api_endpoint = (
-                PrivateAuctionDealServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
-                    UNIVERSE_DOMAIN=universe_domain
-                )
-            )
+            api_endpoint = PrivateAuctionDealServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(UNIVERSE_DOMAIN=universe_domain)
         return api_endpoint
 
     @staticmethod
-    def _get_universe_domain(
-        client_universe_domain: Optional[str], universe_domain_env: Optional[str]
-    ) -> str:
+    def _get_universe_domain(client_universe_domain: Optional[str], universe_domain_env: Optional[str]) -> str:
         """Return the universe domain used by the client.
 
         Args:
@@ -926,19 +834,13 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         # NOTE (b/349488459): universe validation is disabled until further notice.
         return True
 
-    def _add_cred_info_for_auth_errors(
-        self, error: core_exceptions.GoogleAPICallError
-    ) -> None:
+    def _add_cred_info_for_auth_errors(self, error: core_exceptions.GoogleAPICallError) -> None:
         """Adds credential info string to error details for 401/403/404 errors.
 
         Args:
             error (google.api_core.exceptions.GoogleAPICallError): The error to add the cred info.
         """
-        if error.code not in [
-            HTTPStatus.UNAUTHORIZED,
-            HTTPStatus.FORBIDDEN,
-            HTTPStatus.NOT_FOUND,
-        ]:
+        if error.code not in [HTTPStatus.UNAUTHORIZED, HTTPStatus.FORBIDDEN, HTTPStatus.NOT_FOUND]:
             return
 
         cred = self._transport._credentials
@@ -975,13 +877,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                PrivateAuctionDealServiceTransport,
-                Callable[..., PrivateAuctionDealServiceTransport],
-            ]
-        ] = None,
+        transport: Optional[Union[str, PrivateAuctionDealServiceTransport, Callable[..., PrivateAuctionDealServiceTransport]]] = None,
         client_options: Optional[Union[client_options_lib.ClientOptions, dict]] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -1039,25 +935,15 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
             self._client_options = client_options_lib.from_dict(self._client_options)
         if self._client_options is None:
             self._client_options = client_options_lib.ClientOptions()
-        self._client_options = cast(
-            client_options_lib.ClientOptions, self._client_options
-        )
+        self._client_options = cast(client_options_lib.ClientOptions, self._client_options)
 
         universe_domain_opt = getattr(self._client_options, "universe_domain", None)
 
-        (
-            self._use_client_cert,
-            self._use_mtls_endpoint,
-            self._universe_domain_env,
-        ) = PrivateAuctionDealServiceClient._read_environment_variables()
-        self._client_cert_source = (
-            PrivateAuctionDealServiceClient._get_client_cert_source(
-                self._client_options.client_cert_source, self._use_client_cert
-            )
+        self._use_client_cert, self._use_mtls_endpoint, self._universe_domain_env = PrivateAuctionDealServiceClient._read_environment_variables()
+        self._client_cert_source = PrivateAuctionDealServiceClient._get_client_cert_source(
+            self._client_options.client_cert_source, self._use_client_cert
         )
-        self._universe_domain = PrivateAuctionDealServiceClient._get_universe_domain(
-            universe_domain_opt, self._universe_domain_env
-        )
+        self._universe_domain = PrivateAuctionDealServiceClient._get_universe_domain(universe_domain_opt, self._universe_domain_env)
         self._api_endpoint = None  # updated below, depending on `transport`
 
         # Initialize the universe domain validation.
@@ -1069,9 +955,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
         api_key_value = getattr(self._client_options, "api_key", None)
         if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
+            raise ValueError("client_options.api_key and credentials are mutually exclusive")
 
         # Save or instantiate the transport.
         # Ordinarily, we provide the transport, but allowing a custom transport
@@ -1080,42 +964,23 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         if transport_provided:
             # transport is a PrivateAuctionDealServiceTransport instance.
             if credentials or self._client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
+                raise ValueError("When providing a transport instance, " "provide its credentials directly.")
             if self._client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
+                raise ValueError("When providing a transport instance, provide its scopes " "directly.")
             self._transport = cast(PrivateAuctionDealServiceTransport, transport)
             self._api_endpoint = self._transport.host
 
-        self._api_endpoint = (
-            self._api_endpoint
-            or PrivateAuctionDealServiceClient._get_api_endpoint(
-                self._client_options.api_endpoint,
-                self._client_cert_source,
-                self._universe_domain,
-                self._use_mtls_endpoint,
-            )
+        self._api_endpoint = self._api_endpoint or PrivateAuctionDealServiceClient._get_api_endpoint(
+            self._client_options.api_endpoint, self._client_cert_source, self._universe_domain, self._use_mtls_endpoint
         )
 
         if not transport_provided:
             import google.auth._default  # type: ignore
 
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
+            if api_key_value and hasattr(google.auth._default, "get_api_key_credentials"):
+                credentials = google.auth._default.get_api_key_credentials(api_key_value)
 
-            transport_init: Union[
-                Type[PrivateAuctionDealServiceTransport],
-                Callable[..., PrivateAuctionDealServiceTransport],
-            ] = (
+            transport_init: Union[Type[PrivateAuctionDealServiceTransport], Callable[..., PrivateAuctionDealServiceTransport]] = (
                 PrivateAuctionDealServiceClient.get_transport_class(transport)
                 if isinstance(transport, str) or transport is None
                 else cast(Callable[..., PrivateAuctionDealServiceTransport], transport)
@@ -1134,20 +999,14 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
             )
 
         if "async" not in str(self._transport):
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                std_logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
                 _LOGGER.debug(
                     "Created client `google.ads.admanager_v1.PrivateAuctionDealServiceClient`.",
                     extra={
                         "serviceName": "google.ads.admanager.v1.PrivateAuctionDealService",
-                        "universeDomain": getattr(
-                            self._transport._credentials, "universe_domain", ""
-                        ),
+                        "universeDomain": getattr(self._transport._credentials, "universe_domain", ""),
                         "credentialsType": f"{type(self._transport._credentials).__module__}.{type(self._transport._credentials).__qualname__}",
-                        "credentialsInfo": getattr(
-                            self.transport._credentials, "get_cred_info", lambda: None
-                        )(),
+                        "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                     }
                     if hasattr(self._transport, "_credentials")
                     else {
@@ -1158,9 +1017,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
     def get_private_auction_deal(
         self,
-        request: Optional[
-            Union[private_auction_deal_service.GetPrivateAuctionDealRequest, dict]
-        ] = None,
+        request: Optional[Union[private_auction_deal_service.GetPrivateAuctionDealRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1222,20 +1079,13 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, private_auction_deal_service.GetPrivateAuctionDealRequest
-        ):
+        if not isinstance(request, private_auction_deal_service.GetPrivateAuctionDealRequest):
             request = private_auction_deal_service.GetPrivateAuctionDealRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
@@ -1248,9 +1098,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1268,9 +1116,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
     def list_private_auction_deals(
         self,
-        request: Optional[
-            Union[private_auction_deal_service.ListPrivateAuctionDealsRequest, dict]
-        ] = None,
+        request: Optional[Union[private_auction_deal_service.ListPrivateAuctionDealsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -1337,23 +1183,14 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, private_auction_deal_service.ListPrivateAuctionDealsRequest
-        ):
-            request = private_auction_deal_service.ListPrivateAuctionDealsRequest(
-                request
-            )
+        if not isinstance(request, private_auction_deal_service.ListPrivateAuctionDealsRequest):
+            request = private_auction_deal_service.ListPrivateAuctionDealsRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1361,15 +1198,11 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.list_private_auction_deals
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.list_private_auction_deals]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1398,14 +1231,10 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
     def create_private_auction_deal(
         self,
-        request: Optional[
-            Union[private_auction_deal_service.CreatePrivateAuctionDealRequest, dict]
-        ] = None,
+        request: Optional[Union[private_auction_deal_service.CreatePrivateAuctionDealRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
-        private_auction_deal: Optional[
-            private_auction_deal_messages.PrivateAuctionDeal
-        ] = None,
+        private_auction_deal: Optional[private_auction_deal_messages.PrivateAuctionDeal] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
@@ -1470,23 +1299,14 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, private_auction_deal]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, private_auction_deal_service.CreatePrivateAuctionDealRequest
-        ):
-            request = private_auction_deal_service.CreatePrivateAuctionDealRequest(
-                request
-            )
+        if not isinstance(request, private_auction_deal_service.CreatePrivateAuctionDealRequest):
+            request = private_auction_deal_service.CreatePrivateAuctionDealRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if parent is not None:
@@ -1496,15 +1316,11 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.create_private_auction_deal
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.create_private_auction_deal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1522,13 +1338,9 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
     def update_private_auction_deal(
         self,
-        request: Optional[
-            Union[private_auction_deal_service.UpdatePrivateAuctionDealRequest, dict]
-        ] = None,
+        request: Optional[Union[private_auction_deal_service.UpdatePrivateAuctionDealRequest, dict]] = None,
         *,
-        private_auction_deal: Optional[
-            private_auction_deal_messages.PrivateAuctionDeal
-        ] = None,
+        private_auction_deal: Optional[private_auction_deal_messages.PrivateAuctionDeal] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
@@ -1596,23 +1408,14 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [private_auction_deal, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, private_auction_deal_service.UpdatePrivateAuctionDealRequest
-        ):
-            request = private_auction_deal_service.UpdatePrivateAuctionDealRequest(
-                request
-            )
+        if not isinstance(request, private_auction_deal_service.UpdatePrivateAuctionDealRequest):
+            request = private_auction_deal_service.UpdatePrivateAuctionDealRequest(request)
             # If we have keyword arguments corresponding to fields on the
             # request, apply these.
             if private_auction_deal is not None:
@@ -1622,17 +1425,11 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[
-            self._transport.update_private_auction_deal
-        ]
+        rpc = self._transport._wrapped_methods[self._transport.update_private_auction_deal]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("private_auction_deal.name", request.private_auction_deal.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("private_auction_deal.name", request.private_auction_deal.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1698,9 +1495,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1721,9 +1516,7 @@ class PrivateAuctionDealServiceClient(metaclass=PrivateAuctionDealServiceClientM
             raise e
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

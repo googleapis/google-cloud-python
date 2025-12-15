@@ -19,18 +19,8 @@ from .http_request import HttpRequest
 from .log_entry import LogEntry, LogEntryOperation, LogEntrySourceLocation
 from .metric_value import MetricValue, MetricValueSet
 from .operation import Operation
-from .quota_controller import (
-    AllocateQuotaRequest,
-    AllocateQuotaResponse,
-    QuotaError,
-    QuotaOperation,
-)
-from .service_controller import (
-    CheckRequest,
-    CheckResponse,
-    ReportRequest,
-    ReportResponse,
-)
+from .quota_controller import AllocateQuotaRequest, AllocateQuotaResponse, QuotaError, QuotaOperation
+from .service_controller import CheckRequest, CheckResponse, ReportRequest, ReportResponse
 
 __all__ = (
     "CheckError",

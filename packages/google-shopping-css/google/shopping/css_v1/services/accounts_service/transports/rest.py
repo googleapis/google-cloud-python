@@ -103,9 +103,7 @@ class AccountsServiceRestInterceptor:
     """
 
     def pre_get_account(
-        self,
-        request: accounts.GetAccountRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: accounts.GetAccountRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accounts.GetAccountRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_account
 
@@ -128,9 +126,7 @@ class AccountsServiceRestInterceptor:
         return response
 
     def post_get_account_with_metadata(
-        self,
-        response: accounts.Account,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accounts.Account, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accounts.Account, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_account
 
@@ -147,12 +143,8 @@ class AccountsServiceRestInterceptor:
         return response, metadata
 
     def pre_list_child_accounts(
-        self,
-        request: accounts.ListChildAccountsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accounts.ListChildAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: accounts.ListChildAccountsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accounts.ListChildAccountsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_child_accounts
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +152,7 @@ class AccountsServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_child_accounts(
-        self, response: accounts.ListChildAccountsResponse
-    ) -> accounts.ListChildAccountsResponse:
+    def post_list_child_accounts(self, response: accounts.ListChildAccountsResponse) -> accounts.ListChildAccountsResponse:
         """Post-rpc interceptor for list_child_accounts
 
         DEPRECATED. Please use the `post_list_child_accounts_with_metadata`
@@ -176,12 +166,8 @@ class AccountsServiceRestInterceptor:
         return response
 
     def post_list_child_accounts_with_metadata(
-        self,
-        response: accounts.ListChildAccountsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accounts.ListChildAccountsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: accounts.ListChildAccountsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accounts.ListChildAccountsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_child_accounts
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -197,12 +183,8 @@ class AccountsServiceRestInterceptor:
         return response, metadata
 
     def pre_update_labels(
-        self,
-        request: accounts.UpdateAccountLabelsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        accounts.UpdateAccountLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: accounts.UpdateAccountLabelsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[accounts.UpdateAccountLabelsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_labels
 
         Override in a subclass to manipulate the request or metadata
@@ -224,9 +206,7 @@ class AccountsServiceRestInterceptor:
         return response
 
     def post_update_labels_with_metadata(
-        self,
-        response: accounts.Account,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: accounts.Account, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[accounts.Account, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_labels
 
@@ -322,30 +302,18 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AccountsServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetAccount(
-        _BaseAccountsServiceRestTransport._BaseGetAccount, AccountsServiceRestStub
-    ):
+    class _GetAccount(_BaseAccountsServiceRestTransport._BaseGetAccount, AccountsServiceRestStub):
         def __hash__(self):
             return hash("AccountsServiceRestTransport.GetAccount")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -384,26 +352,16 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                     Information about CSS/MC account.
             """
 
-            http_options = (
-                _BaseAccountsServiceRestTransport._BaseGetAccount._get_http_options()
-            )
+            http_options = _BaseAccountsServiceRestTransport._BaseGetAccount._get_http_options()
 
             request, metadata = self._interceptor.pre_get_account(request, metadata)
-            transcoded_request = _BaseAccountsServiceRestTransport._BaseGetAccount._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAccountsServiceRestTransport._BaseGetAccount._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountsServiceRestTransport._BaseGetAccount._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountsServiceRestTransport._BaseGetAccount._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -427,12 +385,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
 
             # Send the request
             response = AccountsServiceRestTransport._GetAccount._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -448,12 +401,8 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
 
             resp = self._interceptor.post_get_account(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_account_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_account_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accounts.Account.to_json(response)
                 except:
@@ -474,23 +423,12 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 )
             return resp
 
-    class _ListChildAccounts(
-        _BaseAccountsServiceRestTransport._BaseListChildAccounts,
-        AccountsServiceRestStub,
-    ):
+    class _ListChildAccounts(_BaseAccountsServiceRestTransport._BaseListChildAccounts, AccountsServiceRestStub):
         def __hash__(self):
             return hash("AccountsServiceRestTransport.ListChildAccounts")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -530,28 +468,16 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                     Response message for the ``ListChildAccounts`` method.
             """
 
-            http_options = (
-                _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_http_options()
-            )
+            http_options = _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_child_accounts(
-                request, metadata
-            )
-            transcoded_request = _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_child_accounts(request, metadata)
+            transcoded_request = _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountsServiceRestTransport._BaseListChildAccounts._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -575,12 +501,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
 
             # Send the request
             response = AccountsServiceRestTransport._ListChildAccounts._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -596,16 +517,10 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
 
             resp = self._interceptor.post_list_child_accounts(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_child_accounts_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_child_accounts_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = accounts.ListChildAccountsResponse.to_json(
-                        response
-                    )
+                    response_payload = accounts.ListChildAccountsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -624,22 +539,12 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                 )
             return resp
 
-    class _UpdateLabels(
-        _BaseAccountsServiceRestTransport._BaseUpdateLabels, AccountsServiceRestStub
-    ):
+    class _UpdateLabels(_BaseAccountsServiceRestTransport._BaseUpdateLabels, AccountsServiceRestStub):
         def __hash__(self):
             return hash("AccountsServiceRestTransport.UpdateLabels")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -679,30 +584,18 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
                     Information about CSS/MC account.
             """
 
-            http_options = (
-                _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_http_options()
-            )
+            http_options = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_http_options()
 
             request, metadata = self._interceptor.pre_update_labels(request, metadata)
-            transcoded_request = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_transcoded_request(http_options, request)
 
-            body = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAccountsServiceRestTransport._BaseUpdateLabels._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -726,13 +619,7 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
 
             # Send the request
             response = AccountsServiceRestTransport._UpdateLabels._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -748,12 +635,8 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
 
             resp = self._interceptor.post_update_labels(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_labels_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_labels_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = accounts.Account.to_json(response)
                 except:
@@ -781,19 +664,13 @@ class AccountsServiceRestTransport(_BaseAccountsServiceRestTransport):
         return self._GetAccount(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_child_accounts(
-        self,
-    ) -> Callable[
-        [accounts.ListChildAccountsRequest], accounts.ListChildAccountsResponse
-    ]:
+    def list_child_accounts(self) -> Callable[[accounts.ListChildAccountsRequest], accounts.ListChildAccountsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListChildAccounts(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_labels(
-        self,
-    ) -> Callable[[accounts.UpdateAccountLabelsRequest], accounts.Account]:
+    def update_labels(self) -> Callable[[accounts.UpdateAccountLabelsRequest], accounts.Account]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateLabels(self._session, self._host, self._interceptor)  # type: ignore

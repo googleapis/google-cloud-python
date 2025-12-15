@@ -131,9 +131,7 @@ class ListOSPolicyAssignmentReportsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    os_policy_assignment_reports: MutableSequence[
-        "OSPolicyAssignmentReport"
-    ] = proto.RepeatedField(
+    os_policy_assignment_reports: MutableSequence["OSPolicyAssignmentReport"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="OSPolicyAssignmentReport",

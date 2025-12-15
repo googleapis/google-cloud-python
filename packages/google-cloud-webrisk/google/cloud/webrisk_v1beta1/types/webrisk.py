@@ -118,9 +118,7 @@ class ComputeThreatListDiffRequest(proto.Message):
             proto.INT32,
             number=2,
         )
-        supported_compressions: MutableSequence[
-            "CompressionType"
-        ] = proto.RepeatedField(
+        supported_compressions: MutableSequence["CompressionType"] = proto.RepeatedField(
             proto.ENUM,
             number=3,
             enum="CompressionType",

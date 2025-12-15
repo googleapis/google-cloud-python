@@ -257,12 +257,8 @@ class SpeechRestInterceptor:
     """
 
     def pre_batch_recognize(
-        self,
-        request: cloud_speech.BatchRecognizeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.BatchRecognizeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.BatchRecognizeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.BatchRecognizeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_recognize
 
         Override in a subclass to manipulate the request or metadata
@@ -270,9 +266,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_recognize(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_recognize(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_recognize
 
         DEPRECATED. Please use the `post_batch_recognize_with_metadata`
@@ -286,9 +280,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_batch_recognize_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_recognize
 
@@ -305,12 +297,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_create_custom_class(
-        self,
-        request: cloud_speech.CreateCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.CreateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.CreateCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.CreateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -318,9 +306,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_create_custom_class(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_custom_class(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_custom_class
 
         DEPRECATED. Please use the `post_create_custom_class_with_metadata`
@@ -334,9 +320,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_create_custom_class_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_custom_class
 
@@ -353,12 +337,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_create_phrase_set(
-        self,
-        request: cloud_speech.CreatePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.CreatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.CreatePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.CreatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -366,9 +346,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_create_phrase_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_phrase_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_phrase_set
 
         DEPRECATED. Please use the `post_create_phrase_set_with_metadata`
@@ -382,9 +360,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_create_phrase_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_phrase_set
 
@@ -401,12 +377,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_create_recognizer(
-        self,
-        request: cloud_speech.CreateRecognizerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.CreateRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.CreateRecognizerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.CreateRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -414,9 +386,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_create_recognizer(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_recognizer(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_recognizer
 
         DEPRECATED. Please use the `post_create_recognizer_with_metadata`
@@ -430,9 +400,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_create_recognizer_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_recognizer
 
@@ -449,12 +417,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_delete_custom_class(
-        self,
-        request: cloud_speech.DeleteCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.DeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.DeleteCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.DeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -462,9 +426,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_custom_class(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_custom_class(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_custom_class
 
         DEPRECATED. Please use the `post_delete_custom_class_with_metadata`
@@ -478,9 +440,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_delete_custom_class_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_custom_class
 
@@ -497,12 +457,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_delete_phrase_set(
-        self,
-        request: cloud_speech.DeletePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.DeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.DeletePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.DeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -510,9 +466,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_phrase_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_phrase_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_phrase_set
 
         DEPRECATED. Please use the `post_delete_phrase_set_with_metadata`
@@ -526,9 +480,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_delete_phrase_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_phrase_set
 
@@ -545,12 +497,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_delete_recognizer(
-        self,
-        request: cloud_speech.DeleteRecognizerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.DeleteRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.DeleteRecognizerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.DeleteRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -558,9 +506,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_recognizer(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_recognizer(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_recognizer
 
         DEPRECATED. Please use the `post_delete_recognizer_with_metadata`
@@ -574,9 +520,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_delete_recognizer_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_recognizer
 
@@ -593,9 +537,7 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_get_config(
-        self,
-        request: cloud_speech.GetConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_speech.GetConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.GetConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_config
 
@@ -618,9 +560,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_get_config_with_metadata(
-        self,
-        response: cloud_speech.Config,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_speech.Config, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_config
 
@@ -637,12 +577,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_get_custom_class(
-        self,
-        request: cloud_speech.GetCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.GetCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.GetCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.GetCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -650,9 +586,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_get_custom_class(
-        self, response: cloud_speech.CustomClass
-    ) -> cloud_speech.CustomClass:
+    def post_get_custom_class(self, response: cloud_speech.CustomClass) -> cloud_speech.CustomClass:
         """Post-rpc interceptor for get_custom_class
 
         DEPRECATED. Please use the `post_get_custom_class_with_metadata`
@@ -666,9 +600,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_get_custom_class_with_metadata(
-        self,
-        response: cloud_speech.CustomClass,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_speech.CustomClass, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.CustomClass, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_custom_class
 
@@ -685,12 +617,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_get_phrase_set(
-        self,
-        request: cloud_speech.GetPhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.GetPhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.GetPhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.GetPhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -698,9 +626,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_get_phrase_set(
-        self, response: cloud_speech.PhraseSet
-    ) -> cloud_speech.PhraseSet:
+    def post_get_phrase_set(self, response: cloud_speech.PhraseSet) -> cloud_speech.PhraseSet:
         """Post-rpc interceptor for get_phrase_set
 
         DEPRECATED. Please use the `post_get_phrase_set_with_metadata`
@@ -714,9 +640,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_get_phrase_set_with_metadata(
-        self,
-        response: cloud_speech.PhraseSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_speech.PhraseSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.PhraseSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_phrase_set
 
@@ -733,12 +657,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_get_recognizer(
-        self,
-        request: cloud_speech.GetRecognizerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.GetRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.GetRecognizerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.GetRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -746,9 +666,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_get_recognizer(
-        self, response: cloud_speech.Recognizer
-    ) -> cloud_speech.Recognizer:
+    def post_get_recognizer(self, response: cloud_speech.Recognizer) -> cloud_speech.Recognizer:
         """Post-rpc interceptor for get_recognizer
 
         DEPRECATED. Please use the `post_get_recognizer_with_metadata`
@@ -762,9 +680,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_get_recognizer_with_metadata(
-        self,
-        response: cloud_speech.Recognizer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_speech.Recognizer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.Recognizer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_recognizer
 
@@ -781,12 +697,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_list_custom_classes(
-        self,
-        request: cloud_speech.ListCustomClassesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.ListCustomClassesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.ListCustomClassesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.ListCustomClassesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_custom_classes
 
         Override in a subclass to manipulate the request or metadata
@@ -794,9 +706,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_custom_classes(
-        self, response: cloud_speech.ListCustomClassesResponse
-    ) -> cloud_speech.ListCustomClassesResponse:
+    def post_list_custom_classes(self, response: cloud_speech.ListCustomClassesResponse) -> cloud_speech.ListCustomClassesResponse:
         """Post-rpc interceptor for list_custom_classes
 
         DEPRECATED. Please use the `post_list_custom_classes_with_metadata`
@@ -810,12 +720,8 @@ class SpeechRestInterceptor:
         return response
 
     def post_list_custom_classes_with_metadata(
-        self,
-        response: cloud_speech.ListCustomClassesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.ListCustomClassesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_speech.ListCustomClassesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.ListCustomClassesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_custom_classes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -831,12 +737,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_list_phrase_sets(
-        self,
-        request: cloud_speech.ListPhraseSetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.ListPhraseSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.ListPhraseSetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.ListPhraseSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_phrase_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -844,9 +746,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_phrase_sets(
-        self, response: cloud_speech.ListPhraseSetsResponse
-    ) -> cloud_speech.ListPhraseSetsResponse:
+    def post_list_phrase_sets(self, response: cloud_speech.ListPhraseSetsResponse) -> cloud_speech.ListPhraseSetsResponse:
         """Post-rpc interceptor for list_phrase_sets
 
         DEPRECATED. Please use the `post_list_phrase_sets_with_metadata`
@@ -860,12 +760,8 @@ class SpeechRestInterceptor:
         return response
 
     def post_list_phrase_sets_with_metadata(
-        self,
-        response: cloud_speech.ListPhraseSetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.ListPhraseSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_speech.ListPhraseSetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.ListPhraseSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_phrase_sets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -881,12 +777,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_list_recognizers(
-        self,
-        request: cloud_speech.ListRecognizersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.ListRecognizersRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.ListRecognizersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.ListRecognizersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_recognizers
 
         Override in a subclass to manipulate the request or metadata
@@ -894,9 +786,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_recognizers(
-        self, response: cloud_speech.ListRecognizersResponse
-    ) -> cloud_speech.ListRecognizersResponse:
+    def post_list_recognizers(self, response: cloud_speech.ListRecognizersResponse) -> cloud_speech.ListRecognizersResponse:
         """Post-rpc interceptor for list_recognizers
 
         DEPRECATED. Please use the `post_list_recognizers_with_metadata`
@@ -910,12 +800,8 @@ class SpeechRestInterceptor:
         return response
 
     def post_list_recognizers_with_metadata(
-        self,
-        response: cloud_speech.ListRecognizersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.ListRecognizersResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_speech.ListRecognizersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.ListRecognizersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_recognizers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -931,9 +817,7 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_recognize(
-        self,
-        request: cloud_speech.RecognizeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: cloud_speech.RecognizeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.RecognizeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for recognize
 
@@ -942,9 +826,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_recognize(
-        self, response: cloud_speech.RecognizeResponse
-    ) -> cloud_speech.RecognizeResponse:
+    def post_recognize(self, response: cloud_speech.RecognizeResponse) -> cloud_speech.RecognizeResponse:
         """Post-rpc interceptor for recognize
 
         DEPRECATED. Please use the `post_recognize_with_metadata`
@@ -958,9 +840,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_recognize_with_metadata(
-        self,
-        response: cloud_speech.RecognizeResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_speech.RecognizeResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.RecognizeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for recognize
 
@@ -977,12 +857,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_undelete_custom_class(
-        self,
-        request: cloud_speech.UndeleteCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UndeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UndeleteCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UndeleteCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -990,9 +866,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_custom_class(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_custom_class(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_custom_class
 
         DEPRECATED. Please use the `post_undelete_custom_class_with_metadata`
@@ -1006,9 +880,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_undelete_custom_class_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_custom_class
 
@@ -1025,12 +897,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_undelete_phrase_set(
-        self,
-        request: cloud_speech.UndeletePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UndeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UndeletePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UndeletePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -1038,9 +906,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_phrase_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_phrase_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_phrase_set
 
         DEPRECATED. Please use the `post_undelete_phrase_set_with_metadata`
@@ -1054,9 +920,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_undelete_phrase_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_phrase_set
 
@@ -1073,12 +937,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_undelete_recognizer(
-        self,
-        request: cloud_speech.UndeleteRecognizerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UndeleteRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UndeleteRecognizerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UndeleteRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for undelete_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -1086,9 +946,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_undelete_recognizer(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_undelete_recognizer(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for undelete_recognizer
 
         DEPRECATED. Please use the `post_undelete_recognizer_with_metadata`
@@ -1102,9 +960,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_undelete_recognizer_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for undelete_recognizer
 
@@ -1121,12 +977,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_update_config(
-        self,
-        request: cloud_speech.UpdateConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UpdateConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UpdateConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UpdateConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1148,9 +1000,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_update_config_with_metadata(
-        self,
-        response: cloud_speech.Config,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_speech.Config, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_speech.Config, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_config
 
@@ -1167,12 +1017,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_update_custom_class(
-        self,
-        request: cloud_speech.UpdateCustomClassRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UpdateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UpdateCustomClassRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UpdateCustomClassRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_custom_class
 
         Override in a subclass to manipulate the request or metadata
@@ -1180,9 +1026,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_update_custom_class(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_custom_class(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_custom_class
 
         DEPRECATED. Please use the `post_update_custom_class_with_metadata`
@@ -1196,9 +1040,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_update_custom_class_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_custom_class
 
@@ -1215,12 +1057,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_update_phrase_set(
-        self,
-        request: cloud_speech.UpdatePhraseSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UpdatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UpdatePhraseSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UpdatePhraseSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_phrase_set
 
         Override in a subclass to manipulate the request or metadata
@@ -1228,9 +1066,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_update_phrase_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_phrase_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_phrase_set
 
         DEPRECATED. Please use the `post_update_phrase_set_with_metadata`
@@ -1244,9 +1080,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_update_phrase_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_phrase_set
 
@@ -1263,12 +1097,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_update_recognizer(
-        self,
-        request: cloud_speech.UpdateRecognizerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_speech.UpdateRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: cloud_speech.UpdateRecognizerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_speech.UpdateRecognizerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_recognizer
 
         Override in a subclass to manipulate the request or metadata
@@ -1276,9 +1106,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_update_recognizer(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_recognizer(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_recognizer
 
         DEPRECATED. Please use the `post_update_recognizer_with_metadata`
@@ -1292,9 +1120,7 @@ class SpeechRestInterceptor:
         return response
 
     def post_update_recognizer_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_recognizer
 
@@ -1311,12 +1137,8 @@ class SpeechRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1324,9 +1146,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1336,12 +1156,8 @@ class SpeechRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1349,9 +1165,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1361,12 +1175,8 @@ class SpeechRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1384,12 +1194,8 @@ class SpeechRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1407,12 +1213,8 @@ class SpeechRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1420,9 +1222,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1432,12 +1232,8 @@ class SpeechRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1445,9 +1241,7 @@ class SpeechRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1536,9 +1330,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1591,9 +1383,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
@@ -1603,15 +1393,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.BatchRecognize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1656,34 +1438,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseBatchRecognize._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseBatchRecognize._get_http_options()
 
             request, metadata = self._interceptor.pre_batch_recognize(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseBatchRecognize._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseBatchRecognize._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseBatchRecognize._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseBatchRecognize._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseBatchRecognize._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseBatchRecognize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1707,13 +1473,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._BatchRecognize._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1727,12 +1487,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_batch_recognize(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_recognize_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_recognize_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1753,22 +1509,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _CreateCustomClass(
-        _BaseSpeechRestTransport._BaseCreateCustomClass, SpeechRestStub
-    ):
+    class _CreateCustomClass(_BaseSpeechRestTransport._BaseCreateCustomClass, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.CreateCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1813,38 +1559,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseCreateCustomClass._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseCreateCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_custom_class(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseCreateCustomClass._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_custom_class(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseCreateCustomClass._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpeechRestTransport._BaseCreateCustomClass._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpeechRestTransport._BaseCreateCustomClass._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseCreateCustomClass._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseCreateCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1868,13 +1594,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._CreateCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1888,12 +1608,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_create_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1914,22 +1630,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _CreatePhraseSet(
-        _BaseSpeechRestTransport._BaseCreatePhraseSet, SpeechRestStub
-    ):
+    class _CreatePhraseSet(_BaseSpeechRestTransport._BaseCreatePhraseSet, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.CreatePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1974,36 +1680,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseCreatePhraseSet._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseCreatePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_phrase_set(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseCreatePhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_phrase_set(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseCreatePhraseSet._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseCreatePhraseSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseCreatePhraseSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseCreatePhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseCreatePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2027,13 +1715,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._CreatePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2047,12 +1729,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_create_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2073,22 +1751,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _CreateRecognizer(
-        _BaseSpeechRestTransport._BaseCreateRecognizer, SpeechRestStub
-    ):
+    class _CreateRecognizer(_BaseSpeechRestTransport._BaseCreateRecognizer, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.CreateRecognizer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2133,38 +1801,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseCreateRecognizer._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseCreateRecognizer._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_recognizer(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseCreateRecognizer._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_recognizer(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseCreateRecognizer._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpeechRestTransport._BaseCreateRecognizer._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpeechRestTransport._BaseCreateRecognizer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseCreateRecognizer._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseCreateRecognizer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2188,13 +1836,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._CreateRecognizer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2208,12 +1850,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_create_recognizer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_recognizer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_recognizer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2234,22 +1872,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _DeleteCustomClass(
-        _BaseSpeechRestTransport._BaseDeleteCustomClass, SpeechRestStub
-    ):
+    class _DeleteCustomClass(_BaseSpeechRestTransport._BaseDeleteCustomClass, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.DeleteCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2293,32 +1921,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseDeleteCustomClass._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseDeleteCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_custom_class(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseDeleteCustomClass._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_custom_class(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseDeleteCustomClass._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseDeleteCustomClass._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseDeleteCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2342,12 +1954,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._DeleteCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2361,12 +1968,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_delete_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2387,22 +1990,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _DeletePhraseSet(
-        _BaseSpeechRestTransport._BaseDeletePhraseSet, SpeechRestStub
-    ):
+    class _DeletePhraseSet(_BaseSpeechRestTransport._BaseDeletePhraseSet, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.DeletePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2446,32 +2039,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseDeletePhraseSet._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseDeletePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_phrase_set(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseDeletePhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_phrase_set(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseDeletePhraseSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseDeletePhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseDeletePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2495,12 +2072,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._DeletePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2514,12 +2086,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_delete_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2540,22 +2108,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _DeleteRecognizer(
-        _BaseSpeechRestTransport._BaseDeleteRecognizer, SpeechRestStub
-    ):
+    class _DeleteRecognizer(_BaseSpeechRestTransport._BaseDeleteRecognizer, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.DeleteRecognizer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2599,32 +2157,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseDeleteRecognizer._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseDeleteRecognizer._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_recognizer(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseDeleteRecognizer._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_recognizer(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseDeleteRecognizer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseDeleteRecognizer._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseDeleteRecognizer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2648,12 +2190,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._DeleteRecognizer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2667,12 +2204,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_delete_recognizer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_recognizer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_recognizer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2698,15 +2231,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.GetConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2754,25 +2279,13 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = _BaseSpeechRestTransport._BaseGetConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_get_config(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseGetConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseGetConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseGetConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseGetConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2795,14 +2308,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
 
             # Send the request
-            response = SpeechRestTransport._GetConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SpeechRestTransport._GetConfig._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -2817,12 +2323,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_get_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_speech.Config.to_json(response)
                 except:
@@ -2848,15 +2350,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.GetCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2903,32 +2397,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseGetCustomClass._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseGetCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_custom_class(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseGetCustomClass._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_get_custom_class(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseGetCustomClass._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseGetCustomClass._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseGetCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2952,12 +2430,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._GetCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2973,12 +2446,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_get_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_speech.CustomClass.to_json(response)
                 except:
@@ -3004,15 +2473,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.GetPhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3058,30 +2519,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseGetPhraseSet._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseGetPhraseSet._get_http_options()
 
             request, metadata = self._interceptor.pre_get_phrase_set(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseGetPhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseGetPhraseSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseGetPhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseGetPhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3104,14 +2551,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
 
             # Send the request
-            response = SpeechRestTransport._GetPhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SpeechRestTransport._GetPhraseSet._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -3126,12 +2566,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_get_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_speech.PhraseSet.to_json(response)
                 except:
@@ -3157,15 +2593,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.GetRecognizer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3208,30 +2636,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseGetRecognizer._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseGetRecognizer._get_http_options()
 
             request, metadata = self._interceptor.pre_get_recognizer(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseGetRecognizer._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseGetRecognizer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseGetRecognizer._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseGetRecognizer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3255,12 +2669,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._GetRecognizer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3276,12 +2685,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_get_recognizer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_recognizer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_recognizer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_speech.Recognizer.to_json(response)
                 except:
@@ -3302,22 +2707,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _ListCustomClasses(
-        _BaseSpeechRestTransport._BaseListCustomClasses, SpeechRestStub
-    ):
+    class _ListCustomClasses(_BaseSpeechRestTransport._BaseListCustomClasses, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.ListCustomClasses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3361,32 +2756,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseListCustomClasses._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseListCustomClasses._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_custom_classes(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseListCustomClasses._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_custom_classes(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseListCustomClasses._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseListCustomClasses._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseListCustomClasses._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3410,12 +2789,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._ListCustomClasses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3431,16 +2805,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_list_custom_classes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_custom_classes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_custom_classes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_speech.ListCustomClassesResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_speech.ListCustomClassesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3464,15 +2832,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.ListPhraseSets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3516,32 +2876,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseListPhraseSets._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseListPhraseSets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_phrase_sets(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseListPhraseSets._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_phrase_sets(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseListPhraseSets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseListPhraseSets._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseListPhraseSets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3565,12 +2909,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._ListPhraseSets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3586,16 +2925,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_list_phrase_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_phrase_sets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_phrase_sets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_speech.ListPhraseSetsResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_speech.ListPhraseSetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3614,22 +2947,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _ListRecognizers(
-        _BaseSpeechRestTransport._BaseListRecognizers, SpeechRestStub
-    ):
+    class _ListRecognizers(_BaseSpeechRestTransport._BaseListRecognizers, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.ListRecognizers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3673,32 +2996,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseListRecognizers._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseListRecognizers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_recognizers(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseListRecognizers._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_list_recognizers(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseListRecognizers._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseListRecognizers._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseListRecognizers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3722,12 +3029,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._ListRecognizers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3743,16 +3045,10 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_list_recognizers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_recognizers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_recognizers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_speech.ListRecognizersResponse.to_json(
-                        response
-                    )
+                    response_payload = cloud_speech.ListRecognizersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3776,15 +3072,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.Recognize")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3836,29 +3124,15 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = _BaseSpeechRestTransport._BaseRecognize._get_http_options()
 
             request, metadata = self._interceptor.pre_recognize(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseRecognize._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseRecognize._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseRecognize._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseRecognize._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseRecognize._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseRecognize._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3882,13 +3156,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._Recognize._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3904,12 +3172,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_recognize(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_recognize_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_recognize_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_speech.RecognizeResponse.to_json(response)
                 except:
@@ -3930,9 +3194,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _StreamingRecognize(
-        _BaseSpeechRestTransport._BaseStreamingRecognize, SpeechRestStub
-    ):
+    class _StreamingRecognize(_BaseSpeechRestTransport._BaseStreamingRecognize, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.StreamingRecognize")
 
@@ -3944,26 +3206,14 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
         ) -> rest_streaming.ResponseIterator:
-            raise NotImplementedError(
-                "Method StreamingRecognize is not available over REST transport"
-            )
+            raise NotImplementedError("Method StreamingRecognize is not available over REST transport")
 
-    class _UndeleteCustomClass(
-        _BaseSpeechRestTransport._BaseUndeleteCustomClass, SpeechRestStub
-    ):
+    class _UndeleteCustomClass(_BaseSpeechRestTransport._BaseUndeleteCustomClass, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.UndeleteCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4008,32 +3258,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_custom_class(
-                request, metadata
-            )
-            transcoded_request = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undelete_custom_class(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSpeechRestTransport._BaseUndeleteCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4057,13 +3293,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UndeleteCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4077,12 +3307,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_undelete_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4103,22 +3329,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _UndeletePhraseSet(
-        _BaseSpeechRestTransport._BaseUndeletePhraseSet, SpeechRestStub
-    ):
+    class _UndeletePhraseSet(_BaseSpeechRestTransport._BaseUndeletePhraseSet, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.UndeletePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4163,38 +3379,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_phrase_set(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_undelete_phrase_set(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseUndeletePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4218,13 +3414,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UndeletePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4238,12 +3428,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_undelete_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4264,22 +3450,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _UndeleteRecognizer(
-        _BaseSpeechRestTransport._BaseUndeleteRecognizer, SpeechRestStub
-    ):
+    class _UndeleteRecognizer(_BaseSpeechRestTransport._BaseUndeleteRecognizer, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.UndeleteRecognizer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4324,36 +3500,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_http_options()
 
-            request, metadata = self._interceptor.pre_undelete_recognizer(
-                request, metadata
-            )
-            transcoded_request = _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_undelete_recognizer(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseUndeleteRecognizer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4377,13 +3535,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UndeleteRecognizer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4397,12 +3549,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_undelete_recognizer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_undelete_recognizer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_undelete_recognizer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4428,15 +3576,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.UpdateConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4482,34 +3622,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUpdateConfig._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUpdateConfig._get_http_options()
 
             request, metadata = self._interceptor.pre_update_config(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseUpdateConfig._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseUpdateConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseUpdateConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseUpdateConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseUpdateConfig._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseUpdateConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4533,13 +3657,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UpdateConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4555,12 +3673,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_update_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_speech.Config.to_json(response)
                 except:
@@ -4581,22 +3695,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _UpdateCustomClass(
-        _BaseSpeechRestTransport._BaseUpdateCustomClass, SpeechRestStub
-    ):
+    class _UpdateCustomClass(_BaseSpeechRestTransport._BaseUpdateCustomClass, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.UpdateCustomClass")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4641,38 +3745,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUpdateCustomClass._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUpdateCustomClass._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_custom_class(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseUpdateCustomClass._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_custom_class(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseUpdateCustomClass._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpeechRestTransport._BaseUpdateCustomClass._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpeechRestTransport._BaseUpdateCustomClass._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseUpdateCustomClass._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseUpdateCustomClass._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4696,13 +3780,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UpdateCustomClass._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4716,12 +3794,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_update_custom_class(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_custom_class_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_custom_class_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4742,22 +3816,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _UpdatePhraseSet(
-        _BaseSpeechRestTransport._BaseUpdatePhraseSet, SpeechRestStub
-    ):
+    class _UpdatePhraseSet(_BaseSpeechRestTransport._BaseUpdatePhraseSet, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.UpdatePhraseSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4802,36 +3866,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_phrase_set(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_phrase_set(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseUpdatePhraseSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4855,13 +3901,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UpdatePhraseSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4875,12 +3915,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_update_phrase_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_phrase_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_phrase_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4901,22 +3937,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
             return resp
 
-    class _UpdateRecognizer(
-        _BaseSpeechRestTransport._BaseUpdateRecognizer, SpeechRestStub
-    ):
+    class _UpdateRecognizer(_BaseSpeechRestTransport._BaseUpdateRecognizer, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.UpdateRecognizer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4961,38 +3987,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseUpdateRecognizer._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseUpdateRecognizer._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_recognizer(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseUpdateRecognizer._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_recognizer(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseUpdateRecognizer._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseSpeechRestTransport._BaseUpdateRecognizer._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseSpeechRestTransport._BaseUpdateRecognizer._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseUpdateRecognizer._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseUpdateRecognizer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5016,13 +4022,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._UpdateRecognizer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5036,12 +4036,8 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             resp = self._interceptor.post_update_recognizer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_recognizer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_recognizer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5063,194 +4059,139 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return resp
 
     @property
-    def batch_recognize(
-        self,
-    ) -> Callable[[cloud_speech.BatchRecognizeRequest], operations_pb2.Operation]:
+    def batch_recognize(self) -> Callable[[cloud_speech.BatchRecognizeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchRecognize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.CreateCustomClassRequest], operations_pb2.Operation]:
+    def create_custom_class(self) -> Callable[[cloud_speech.CreateCustomClassRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.CreatePhraseSetRequest], operations_pb2.Operation]:
+    def create_phrase_set(self) -> Callable[[cloud_speech.CreatePhraseSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.CreateRecognizerRequest], operations_pb2.Operation]:
+    def create_recognizer(self) -> Callable[[cloud_speech.CreateRecognizerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateRecognizer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.DeleteCustomClassRequest], operations_pb2.Operation]:
+    def delete_custom_class(self) -> Callable[[cloud_speech.DeleteCustomClassRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.DeletePhraseSetRequest], operations_pb2.Operation]:
+    def delete_phrase_set(self) -> Callable[[cloud_speech.DeletePhraseSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.DeleteRecognizerRequest], operations_pb2.Operation]:
+    def delete_recognizer(self) -> Callable[[cloud_speech.DeleteRecognizerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteRecognizer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_config(
-        self,
-    ) -> Callable[[cloud_speech.GetConfigRequest], cloud_speech.Config]:
+    def get_config(self) -> Callable[[cloud_speech.GetConfigRequest], cloud_speech.Config]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.GetCustomClassRequest], cloud_speech.CustomClass]:
+    def get_custom_class(self) -> Callable[[cloud_speech.GetCustomClassRequest], cloud_speech.CustomClass]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.GetPhraseSetRequest], cloud_speech.PhraseSet]:
+    def get_phrase_set(self) -> Callable[[cloud_speech.GetPhraseSetRequest], cloud_speech.PhraseSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.GetRecognizerRequest], cloud_speech.Recognizer]:
+    def get_recognizer(self) -> Callable[[cloud_speech.GetRecognizerRequest], cloud_speech.Recognizer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetRecognizer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_custom_classes(
-        self,
-    ) -> Callable[
-        [cloud_speech.ListCustomClassesRequest], cloud_speech.ListCustomClassesResponse
-    ]:
+    def list_custom_classes(self) -> Callable[[cloud_speech.ListCustomClassesRequest], cloud_speech.ListCustomClassesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCustomClasses(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_phrase_sets(
-        self,
-    ) -> Callable[
-        [cloud_speech.ListPhraseSetsRequest], cloud_speech.ListPhraseSetsResponse
-    ]:
+    def list_phrase_sets(self) -> Callable[[cloud_speech.ListPhraseSetsRequest], cloud_speech.ListPhraseSetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPhraseSets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_recognizers(
-        self,
-    ) -> Callable[
-        [cloud_speech.ListRecognizersRequest], cloud_speech.ListRecognizersResponse
-    ]:
+    def list_recognizers(self) -> Callable[[cloud_speech.ListRecognizersRequest], cloud_speech.ListRecognizersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListRecognizers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def recognize(
-        self,
-    ) -> Callable[[cloud_speech.RecognizeRequest], cloud_speech.RecognizeResponse]:
+    def recognize(self) -> Callable[[cloud_speech.RecognizeRequest], cloud_speech.RecognizeResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Recognize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def streaming_recognize(
-        self,
-    ) -> Callable[
-        [cloud_speech.StreamingRecognizeRequest],
-        cloud_speech.StreamingRecognizeResponse,
-    ]:
+    def streaming_recognize(self) -> Callable[[cloud_speech.StreamingRecognizeRequest], cloud_speech.StreamingRecognizeResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StreamingRecognize(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.UndeleteCustomClassRequest], operations_pb2.Operation]:
+    def undelete_custom_class(self) -> Callable[[cloud_speech.UndeleteCustomClassRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.UndeletePhraseSetRequest], operations_pb2.Operation]:
+    def undelete_phrase_set(self) -> Callable[[cloud_speech.UndeletePhraseSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeletePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def undelete_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.UndeleteRecognizerRequest], operations_pb2.Operation]:
+    def undelete_recognizer(self) -> Callable[[cloud_speech.UndeleteRecognizerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UndeleteRecognizer(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_config(
-        self,
-    ) -> Callable[[cloud_speech.UpdateConfigRequest], cloud_speech.Config]:
+    def update_config(self) -> Callable[[cloud_speech.UpdateConfigRequest], cloud_speech.Config]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_custom_class(
-        self,
-    ) -> Callable[[cloud_speech.UpdateCustomClassRequest], operations_pb2.Operation]:
+    def update_custom_class(self) -> Callable[[cloud_speech.UpdateCustomClassRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateCustomClass(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_phrase_set(
-        self,
-    ) -> Callable[[cloud_speech.UpdatePhraseSetRequest], operations_pb2.Operation]:
+    def update_phrase_set(self) -> Callable[[cloud_speech.UpdatePhraseSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePhraseSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_recognizer(
-        self,
-    ) -> Callable[[cloud_speech.UpdateRecognizerRequest], operations_pb2.Operation]:
+    def update_recognizer(self) -> Callable[[cloud_speech.UpdateRecognizerRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateRecognizer(self._session, self._host, self._interceptor)  # type: ignore
@@ -5264,15 +4205,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5313,25 +4246,13 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             http_options = _BaseSpeechRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5354,14 +4275,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
 
             # Send the request
-            response = SpeechRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SpeechRestTransport._GetLocation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5372,9 +4286,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5404,15 +4316,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5450,30 +4354,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5497,12 +4387,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5514,9 +4399,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5541,22 +4424,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseSpeechRestTransport._BaseCancelOperation, SpeechRestStub
-    ):
+    class _CancelOperation(_BaseSpeechRestTransport._BaseCancelOperation, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5592,36 +4465,18 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseSpeechRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSpeechRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5645,13 +4500,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5665,22 +4514,12 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseSpeechRestTransport._BaseDeleteOperation, SpeechRestStub
-    ):
+    class _DeleteOperation(_BaseSpeechRestTransport._BaseDeleteOperation, SpeechRestStub):
         def __hash__(self):
             return hash("SpeechRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5715,32 +4554,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseDeleteOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseSpeechRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseDeleteOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5764,12 +4587,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5788,15 +4606,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5834,30 +4644,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5880,14 +4676,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 )
 
             # Send the request
-            response = SpeechRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SpeechRestTransport._GetOperation._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -5898,9 +4687,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5930,15 +4717,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             return hash("SpeechRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5976,30 +4755,16 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseSpeechRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseSpeechRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseSpeechRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSpeechRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSpeechRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSpeechRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6023,12 +4788,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
 
             # Send the request
             response = SpeechRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6040,9 +4800,7 @@ class SpeechRestTransport(_BaseSpeechRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

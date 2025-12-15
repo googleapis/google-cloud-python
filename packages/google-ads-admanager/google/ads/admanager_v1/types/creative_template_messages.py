@@ -19,10 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    creative_template_enums,
-    creative_template_variable_url_type_enum,
-)
+from google.ads.admanager_v1.types import creative_template_enums, creative_template_variable_url_type_enum
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -121,13 +118,11 @@ class CreativeTemplate(proto.Message):
         optional=True,
         enum=creative_template_enums.CreativeTemplateStatusEnum.CreativeTemplateStatus,
     )
-    type_: creative_template_enums.CreativeTemplateTypeEnum.CreativeTemplateType = (
-        proto.Field(
-            proto.ENUM,
-            number=7,
-            optional=True,
-            enum=creative_template_enums.CreativeTemplateTypeEnum.CreativeTemplateType,
-        )
+    type_: creative_template_enums.CreativeTemplateTypeEnum.CreativeTemplateType = proto.Field(
+        proto.ENUM,
+        number=7,
+        optional=True,
+        enum=creative_template_enums.CreativeTemplateTypeEnum.CreativeTemplateType,
     )
     interstitial: bool = proto.Field(
         proto.BOOL,
@@ -250,9 +245,7 @@ class CreativeTemplateVariable(proto.Message):
             PNG = 2
             GIF = 3
 
-        mime_types: MutableSequence[
-            "CreativeTemplateVariable.AssetCreativeTemplateVariable.MimeType"
-        ] = proto.RepeatedField(
+        mime_types: MutableSequence["CreativeTemplateVariable.AssetCreativeTemplateVariable.MimeType"] = proto.RepeatedField(
             proto.ENUM,
             number=1,
             enum="CreativeTemplateVariable.AssetCreativeTemplateVariable.MimeType",
@@ -338,9 +331,7 @@ class CreativeTemplateVariable(proto.Message):
             number=2,
             optional=True,
         )
-        choices: MutableSequence[
-            "CreativeTemplateVariable.ListStringCreativeTemplateVariable.VariableChoice"
-        ] = proto.RepeatedField(
+        choices: MutableSequence["CreativeTemplateVariable.ListStringCreativeTemplateVariable.VariableChoice"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="CreativeTemplateVariable.ListStringCreativeTemplateVariable.VariableChoice",

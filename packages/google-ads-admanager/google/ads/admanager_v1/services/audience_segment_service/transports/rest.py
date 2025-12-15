@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    audience_segment_messages,
-    audience_segment_service,
-)
+from google.ads.admanager_v1.types import audience_segment_messages, audience_segment_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseAudienceSegmentServiceRestTransport
@@ -99,13 +96,8 @@ class AudienceSegmentServiceRestInterceptor:
     """
 
     def pre_get_audience_segment(
-        self,
-        request: audience_segment_service.GetAudienceSegmentRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        audience_segment_service.GetAudienceSegmentRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: audience_segment_service.GetAudienceSegmentRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[audience_segment_service.GetAudienceSegmentRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_audience_segment
 
         Override in a subclass to manipulate the request or metadata
@@ -113,9 +105,7 @@ class AudienceSegmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_audience_segment(
-        self, response: audience_segment_messages.AudienceSegment
-    ) -> audience_segment_messages.AudienceSegment:
+    def post_get_audience_segment(self, response: audience_segment_messages.AudienceSegment) -> audience_segment_messages.AudienceSegment:
         """Post-rpc interceptor for get_audience_segment
 
         DEPRECATED. Please use the `post_get_audience_segment_with_metadata`
@@ -129,13 +119,8 @@ class AudienceSegmentServiceRestInterceptor:
         return response
 
     def post_get_audience_segment_with_metadata(
-        self,
-        response: audience_segment_messages.AudienceSegment,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        audience_segment_messages.AudienceSegment,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: audience_segment_messages.AudienceSegment, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[audience_segment_messages.AudienceSegment, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_audience_segment
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +136,8 @@ class AudienceSegmentServiceRestInterceptor:
         return response, metadata
 
     def pre_list_audience_segments(
-        self,
-        request: audience_segment_service.ListAudienceSegmentsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        audience_segment_service.ListAudienceSegmentsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: audience_segment_service.ListAudienceSegmentsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[audience_segment_service.ListAudienceSegmentsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_audience_segments
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +161,8 @@ class AudienceSegmentServiceRestInterceptor:
         return response
 
     def post_list_audience_segments_with_metadata(
-        self,
-        response: audience_segment_service.ListAudienceSegmentsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        audience_segment_service.ListAudienceSegmentsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: audience_segment_service.ListAudienceSegmentsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[audience_segment_service.ListAudienceSegmentsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_audience_segments
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +178,8 @@ class AudienceSegmentServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +187,7 @@ class AudienceSegmentServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -307,31 +276,18 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AudienceSegmentServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetAudienceSegment(
-        _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment,
-        AudienceSegmentServiceRestStub,
-    ):
+    class _GetAudienceSegment(_BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment, AudienceSegmentServiceRestStub):
         def __hash__(self):
             return hash("AudienceSegmentServiceRestTransport.GetAudienceSegment")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -370,28 +326,16 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
                     The ``AudienceSegment`` resource.
             """
 
-            http_options = (
-                _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment._get_http_options()
-            )
+            http_options = _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_audience_segment(
-                request, metadata
-            )
-            transcoded_request = _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_audience_segment(request, metadata)
+            transcoded_request = _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAudienceSegmentServiceRestTransport._BaseGetAudienceSegment._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -414,15 +358,8 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                AudienceSegmentServiceRestTransport._GetAudienceSegment._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AudienceSegmentServiceRestTransport._GetAudienceSegment._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -438,16 +375,10 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
 
             resp = self._interceptor.post_get_audience_segment(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_audience_segment_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_audience_segment_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        audience_segment_messages.AudienceSegment.to_json(response)
-                    )
+                    response_payload = audience_segment_messages.AudienceSegment.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -466,23 +397,12 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
                 )
             return resp
 
-    class _ListAudienceSegments(
-        _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments,
-        AudienceSegmentServiceRestStub,
-    ):
+    class _ListAudienceSegments(_BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments, AudienceSegmentServiceRestStub):
         def __hash__(self):
             return hash("AudienceSegmentServiceRestTransport.ListAudienceSegments")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -523,28 +443,16 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
 
             """
 
-            http_options = (
-                _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments._get_http_options()
-            )
+            http_options = _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_audience_segments(
-                request, metadata
-            )
-            transcoded_request = _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_audience_segments(request, metadata)
+            transcoded_request = _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAudienceSegmentServiceRestTransport._BaseListAudienceSegments._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -567,15 +475,8 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
                 )
 
             # Send the request
-            response = (
-                AudienceSegmentServiceRestTransport._ListAudienceSegments._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AudienceSegmentServiceRestTransport._ListAudienceSegments._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -591,18 +492,10 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
 
             resp = self._interceptor.post_list_audience_segments(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_audience_segments_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_audience_segments_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        audience_segment_service.ListAudienceSegmentsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = audience_segment_service.ListAudienceSegmentsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -622,12 +515,7 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
             return resp
 
     @property
-    def get_audience_segment(
-        self,
-    ) -> Callable[
-        [audience_segment_service.GetAudienceSegmentRequest],
-        audience_segment_messages.AudienceSegment,
-    ]:
+    def get_audience_segment(self) -> Callable[[audience_segment_service.GetAudienceSegmentRequest], audience_segment_messages.AudienceSegment]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAudienceSegment(self._session, self._host, self._interceptor)  # type: ignore
@@ -635,10 +523,7 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
     @property
     def list_audience_segments(
         self,
-    ) -> Callable[
-        [audience_segment_service.ListAudienceSegmentsRequest],
-        audience_segment_service.ListAudienceSegmentsResponse,
-    ]:
+    ) -> Callable[[audience_segment_service.ListAudienceSegmentsRequest], audience_segment_service.ListAudienceSegmentsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAudienceSegments(self._session, self._host, self._interceptor)  # type: ignore
@@ -647,23 +532,12 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAudienceSegmentServiceRestTransport._BaseGetOperation,
-        AudienceSegmentServiceRestStub,
-    ):
+    class _GetOperation(_BaseAudienceSegmentServiceRestTransport._BaseGetOperation, AudienceSegmentServiceRestStub):
         def __hash__(self):
             return hash("AudienceSegmentServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -701,26 +575,16 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAudienceSegmentServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAudienceSegmentServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAudienceSegmentServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAudienceSegmentServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAudienceSegmentServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAudienceSegmentServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -744,12 +608,7 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
 
             # Send the request
             response = AudienceSegmentServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -761,9 +620,7 @@ class AudienceSegmentServiceRestTransport(_BaseAudienceSegmentServiceRestTranspo
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

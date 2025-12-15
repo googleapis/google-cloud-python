@@ -30,10 +30,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.cloud.iam_v3.types import (
-    principal_access_boundary_policies_service,
-    principal_access_boundary_policy_resources,
-)
+from google.cloud.iam_v3.types import principal_access_boundary_policies_service, principal_access_boundary_policy_resources
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BasePrincipalAccessBoundaryPoliciesRestTransport
@@ -135,10 +132,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         self,
         request: principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_principal_access_boundary_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -146,9 +140,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_principal_access_boundary_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_principal_access_boundary_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_principal_access_boundary_policy
 
         DEPRECATED. Please use the `post_create_principal_access_boundary_policy_with_metadata`
@@ -162,9 +154,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return response
 
     def post_create_principal_access_boundary_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_principal_access_boundary_policy
 
@@ -184,10 +174,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         self,
         request: principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_principal_access_boundary_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -195,9 +182,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_principal_access_boundary_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_principal_access_boundary_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_principal_access_boundary_policy
 
         DEPRECATED. Please use the `post_delete_principal_access_boundary_policy_with_metadata`
@@ -211,9 +196,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return response
 
     def post_delete_principal_access_boundary_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_principal_access_boundary_policy
 
@@ -233,10 +216,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         self,
         request: principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_principal_access_boundary_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -245,8 +225,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return request, metadata
 
     def post_get_principal_access_boundary_policy(
-        self,
-        response: principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy,
+        self, response: principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy
     ) -> principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy:
         """Post-rpc interceptor for get_principal_access_boundary_policy
 
@@ -261,13 +240,8 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return response
 
     def post_get_principal_access_boundary_policy_with_metadata(
-        self,
-        response: principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_principal_access_boundary_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -286,10 +260,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         self,
         request: principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_principal_access_boundary_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -298,11 +269,8 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return request, metadata
 
     def post_list_principal_access_boundary_policies(
-        self,
-        response: principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse,
-    ) -> (
-        principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse
-    ):
+        self, response: principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse
+    ) -> principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse:
         """Post-rpc interceptor for list_principal_access_boundary_policies
 
         DEPRECATED. Please use the `post_list_principal_access_boundary_policies_with_metadata`
@@ -319,10 +287,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         self,
         response: principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_principal_access_boundary_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -342,8 +307,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         request: principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Pre-rpc interceptor for search_principal_access_boundary_policy_bindings
 
@@ -353,11 +317,8 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return request, metadata
 
     def post_search_principal_access_boundary_policy_bindings(
-        self,
-        response: principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse,
-    ) -> (
-        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse
-    ):
+        self, response: principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse
+    ) -> principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse:
         """Post-rpc interceptor for search_principal_access_boundary_policy_bindings
 
         DEPRECATED. Please use the `post_search_principal_access_boundary_policy_bindings_with_metadata`
@@ -375,8 +336,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         response: principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
     ) -> Tuple[
-        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
+        principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse, Sequence[Tuple[str, Union[str, bytes]]]
     ]:
         """Post-rpc interceptor for search_principal_access_boundary_policy_bindings
 
@@ -396,10 +356,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         self,
         request: principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest,
         metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+    ) -> Tuple[principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_principal_access_boundary_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -407,9 +364,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_principal_access_boundary_policy(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_principal_access_boundary_policy(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_principal_access_boundary_policy
 
         DEPRECATED. Please use the `post_update_principal_access_boundary_policy_with_metadata`
@@ -423,9 +378,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return response
 
     def post_update_principal_access_boundary_policy_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_principal_access_boundary_policy
 
@@ -442,12 +395,8 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -455,9 +404,7 @@ class PrincipalAccessBoundaryPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -474,9 +421,7 @@ class PrincipalAccessBoundaryPoliciesRestStub:
     _interceptor: PrincipalAccessBoundaryPoliciesRestInterceptor
 
 
-class PrincipalAccessBoundaryPoliciesRestTransport(
-    _BasePrincipalAccessBoundaryPoliciesRestTransport
-):
+class PrincipalAccessBoundaryPoliciesRestTransport(_BasePrincipalAccessBoundaryPoliciesRestTransport):
     """REST backend synchronous transport for PrincipalAccessBoundaryPolicies.
 
     Manages Identity and Access Management (IAM) principal access
@@ -549,15 +494,11 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or PrincipalAccessBoundaryPoliciesRestInterceptor()
-        )
+        self._interceptor = interceptor or PrincipalAccessBoundaryPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     @property
@@ -595,32 +536,19 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 path_prefix="v3",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
     class _CreatePrincipalAccessBoundaryPolicy(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseCreatePrincipalAccessBoundaryPolicy,
-        PrincipalAccessBoundaryPoliciesRestStub,
+        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseCreatePrincipalAccessBoundaryPolicy, PrincipalAccessBoundaryPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PrincipalAccessBoundaryPoliciesRestTransport.CreatePrincipalAccessBoundaryPolicy"
-            )
+            return hash("PrincipalAccessBoundaryPoliciesRestTransport.CreatePrincipalAccessBoundaryPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -666,16 +594,9 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseCreatePrincipalAccessBoundaryPolicy._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseCreatePrincipalAccessBoundaryPolicy._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_create_principal_access_boundary_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_principal_access_boundary_policy(request, metadata)
             transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseCreatePrincipalAccessBoundaryPolicy._get_transcoded_request(
                 http_options, request
             )
@@ -689,12 +610,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -718,13 +635,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._CreatePrincipalAccessBoundaryPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -738,15 +649,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             resp = self._interceptor.post_create_principal_access_boundary_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_create_principal_access_boundary_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_principal_access_boundary_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -768,24 +672,13 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             return resp
 
     class _DeletePrincipalAccessBoundaryPolicy(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseDeletePrincipalAccessBoundaryPolicy,
-        PrincipalAccessBoundaryPoliciesRestStub,
+        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseDeletePrincipalAccessBoundaryPolicy, PrincipalAccessBoundaryPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PrincipalAccessBoundaryPoliciesRestTransport.DeletePrincipalAccessBoundaryPolicy"
-            )
+            return hash("PrincipalAccessBoundaryPoliciesRestTransport.DeletePrincipalAccessBoundaryPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -830,16 +723,9 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseDeletePrincipalAccessBoundaryPolicy._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseDeletePrincipalAccessBoundaryPolicy._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_delete_principal_access_boundary_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_principal_access_boundary_policy(request, metadata)
             transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseDeletePrincipalAccessBoundaryPolicy._get_transcoded_request(
                 http_options, request
             )
@@ -849,12 +735,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -878,12 +760,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._DeletePrincipalAccessBoundaryPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -897,15 +774,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             resp = self._interceptor.post_delete_principal_access_boundary_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_delete_principal_access_boundary_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_principal_access_boundary_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -927,24 +797,13 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             return resp
 
     class _GetPrincipalAccessBoundaryPolicy(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetPrincipalAccessBoundaryPolicy,
-        PrincipalAccessBoundaryPoliciesRestStub,
+        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetPrincipalAccessBoundaryPolicy, PrincipalAccessBoundaryPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PrincipalAccessBoundaryPoliciesRestTransport.GetPrincipalAccessBoundaryPolicy"
-            )
+            return hash("PrincipalAccessBoundaryPoliciesRestTransport.GetPrincipalAccessBoundaryPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -987,16 +846,9 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetPrincipalAccessBoundaryPolicy._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetPrincipalAccessBoundaryPolicy._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_get_principal_access_boundary_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_principal_access_boundary_policy(request, metadata)
             transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetPrincipalAccessBoundaryPolicy._get_transcoded_request(
                 http_options, request
             )
@@ -1006,12 +858,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1035,12 +883,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._GetPrincipalAccessBoundaryPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1049,30 +892,17 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy()
-            )
-            pb_resp = principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy.pb(
-                resp
-            )
+            resp = principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy()
+            pb_resp = principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_get_principal_access_boundary_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_principal_access_boundary_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_principal_access_boundary_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy.to_json(
-                        response
-                    )
+                    response_payload = principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1092,24 +922,13 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             return resp
 
     class _ListPrincipalAccessBoundaryPolicies(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseListPrincipalAccessBoundaryPolicies,
-        PrincipalAccessBoundaryPoliciesRestStub,
+        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseListPrincipalAccessBoundaryPolicies, PrincipalAccessBoundaryPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PrincipalAccessBoundaryPoliciesRestTransport.ListPrincipalAccessBoundaryPolicies"
-            )
+            return hash("PrincipalAccessBoundaryPoliciesRestTransport.ListPrincipalAccessBoundaryPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1129,9 +948,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse
-        ):
+        ) -> principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse:
             r"""Call the list principal access
             boundary policies method over HTTP.
 
@@ -1156,16 +973,9 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseListPrincipalAccessBoundaryPolicies._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseListPrincipalAccessBoundaryPolicies._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_list_principal_access_boundary_policies(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_principal_access_boundary_policies(request, metadata)
             transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseListPrincipalAccessBoundaryPolicies._get_transcoded_request(
                 http_options, request
             )
@@ -1175,12 +985,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1204,12 +1010,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._ListPrincipalAccessBoundaryPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1218,30 +1019,17 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse()
-            )
-            pb_resp = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse.pb(
-                resp
-            )
+            resp = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse()
+            pb_resp = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_principal_access_boundary_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_principal_access_boundary_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_principal_access_boundary_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse.to_json(
-                        response
-                    )
+                    response_payload = principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1261,24 +1049,13 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             return resp
 
     class _SearchPrincipalAccessBoundaryPolicyBindings(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseSearchPrincipalAccessBoundaryPolicyBindings,
-        PrincipalAccessBoundaryPoliciesRestStub,
+        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseSearchPrincipalAccessBoundaryPolicyBindings, PrincipalAccessBoundaryPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PrincipalAccessBoundaryPoliciesRestTransport.SearchPrincipalAccessBoundaryPolicyBindings"
-            )
+            return hash("PrincipalAccessBoundaryPoliciesRestTransport.SearchPrincipalAccessBoundaryPolicyBindings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1298,9 +1075,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, Union[str, bytes]]] = (),
-        ) -> (
-            principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse
-        ):
+        ) -> principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse:
             r"""Call the search principal access
             boundary policy bindings method over HTTP.
 
@@ -1325,18 +1100,13 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseSearchPrincipalAccessBoundaryPolicyBindings._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseSearchPrincipalAccessBoundaryPolicyBindings._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_search_principal_access_boundary_policy_bindings(
-                request, metadata
-            )
-            transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseSearchPrincipalAccessBoundaryPolicyBindings._get_transcoded_request(
-                http_options, request
+            request, metadata = self._interceptor.pre_search_principal_access_boundary_policy_bindings(request, metadata)
+            transcoded_request = (
+                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseSearchPrincipalAccessBoundaryPolicyBindings._get_transcoded_request(
+                    http_options, request
+                )
             )
 
             # Jsonify the query params
@@ -1344,12 +1114,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1373,12 +1139,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._SearchPrincipalAccessBoundaryPolicyBindings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1387,30 +1148,15 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = (
-                principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse()
-            )
-            pb_resp = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse.pb(
-                resp
-            )
+            resp = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse()
+            pb_resp = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
-            resp = (
-                self._interceptor.post_search_principal_access_boundary_policy_bindings(
-                    resp
-                )
-            )
+            resp = self._interceptor.post_search_principal_access_boundary_policy_bindings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_search_principal_access_boundary_policy_bindings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_principal_access_boundary_policy_bindings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse.to_json(
                         response
@@ -1434,24 +1180,13 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             return resp
 
     class _UpdatePrincipalAccessBoundaryPolicy(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseUpdatePrincipalAccessBoundaryPolicy,
-        PrincipalAccessBoundaryPoliciesRestStub,
+        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseUpdatePrincipalAccessBoundaryPolicy, PrincipalAccessBoundaryPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "PrincipalAccessBoundaryPoliciesRestTransport.UpdatePrincipalAccessBoundaryPolicy"
-            )
+            return hash("PrincipalAccessBoundaryPoliciesRestTransport.UpdatePrincipalAccessBoundaryPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1497,16 +1232,9 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseUpdatePrincipalAccessBoundaryPolicy._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseUpdatePrincipalAccessBoundaryPolicy._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_update_principal_access_boundary_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_principal_access_boundary_policy(request, metadata)
             transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseUpdatePrincipalAccessBoundaryPolicy._get_transcoded_request(
                 http_options, request
             )
@@ -1520,12 +1248,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1549,13 +1273,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._UpdatePrincipalAccessBoundaryPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1569,15 +1287,8 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             resp = self._interceptor.post_update_principal_access_boundary_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_update_principal_access_boundary_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_principal_access_boundary_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1601,12 +1312,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     @property
     def create_principal_access_boundary_policy(
         self,
-    ) -> Callable[
-        [
-            principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest
-        ],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[principal_access_boundary_policies_service.CreatePrincipalAccessBoundaryPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePrincipalAccessBoundaryPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1614,12 +1320,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     @property
     def delete_principal_access_boundary_policy(
         self,
-    ) -> Callable[
-        [
-            principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest
-        ],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[principal_access_boundary_policies_service.DeletePrincipalAccessBoundaryPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePrincipalAccessBoundaryPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1628,9 +1329,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     def get_principal_access_boundary_policy(
         self,
     ) -> Callable[
-        [
-            principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest
-        ],
+        [principal_access_boundary_policies_service.GetPrincipalAccessBoundaryPolicyRequest],
         principal_access_boundary_policy_resources.PrincipalAccessBoundaryPolicy,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -1641,9 +1340,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     def list_principal_access_boundary_policies(
         self,
     ) -> Callable[
-        [
-            principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest
-        ],
+        [principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesRequest],
         principal_access_boundary_policies_service.ListPrincipalAccessBoundaryPoliciesResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -1654,9 +1351,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     def search_principal_access_boundary_policy_bindings(
         self,
     ) -> Callable[
-        [
-            principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest
-        ],
+        [principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsRequest],
         principal_access_boundary_policies_service.SearchPrincipalAccessBoundaryPolicyBindingsResponse,
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
@@ -1666,12 +1361,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     @property
     def update_principal_access_boundary_policy(
         self,
-    ) -> Callable[
-        [
-            principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest
-        ],
-        operations_pb2.Operation,
-    ]:
+    ) -> Callable[[principal_access_boundary_policies_service.UpdatePrincipalAccessBoundaryPolicyRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePrincipalAccessBoundaryPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1680,23 +1370,12 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation,
-        PrincipalAccessBoundaryPoliciesRestStub,
-    ):
+    class _GetOperation(_BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation, PrincipalAccessBoundaryPoliciesRestStub):
         def __hash__(self):
             return hash("PrincipalAccessBoundaryPoliciesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1734,26 +1413,16 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePrincipalAccessBoundaryPoliciesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1777,12 +1446,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
 
             # Send the request
             response = PrincipalAccessBoundaryPoliciesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1794,9 +1458,7 @@ class PrincipalAccessBoundaryPoliciesRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

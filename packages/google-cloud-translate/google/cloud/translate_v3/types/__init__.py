@@ -62,14 +62,7 @@ from .automl_translation import (
     ListModelsResponse,
     Model,
 )
-from .common import (
-    FileInputSource,
-    GcsInputSource,
-    GcsOutputDestination,
-    GlossaryEntry,
-    GlossaryTerm,
-    OperationState,
-)
+from .common import FileInputSource, GcsInputSource, GcsOutputDestination, GlossaryEntry, GlossaryTerm, OperationState
 from .translation_service import (
     BatchDocumentInputConfig,
     BatchDocumentOutputConfig,

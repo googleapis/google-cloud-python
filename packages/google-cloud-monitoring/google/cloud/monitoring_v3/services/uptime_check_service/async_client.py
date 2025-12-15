@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -87,36 +76,18 @@ class UptimeCheckServiceAsyncClient:
 
     function_path = staticmethod(UptimeCheckServiceClient.function_path)
     parse_function_path = staticmethod(UptimeCheckServiceClient.parse_function_path)
-    uptime_check_config_path = staticmethod(
-        UptimeCheckServiceClient.uptime_check_config_path
-    )
-    parse_uptime_check_config_path = staticmethod(
-        UptimeCheckServiceClient.parse_uptime_check_config_path
-    )
-    common_billing_account_path = staticmethod(
-        UptimeCheckServiceClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_billing_account_path
-    )
+    uptime_check_config_path = staticmethod(UptimeCheckServiceClient.uptime_check_config_path)
+    parse_uptime_check_config_path = staticmethod(UptimeCheckServiceClient.parse_uptime_check_config_path)
+    common_billing_account_path = staticmethod(UptimeCheckServiceClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(UptimeCheckServiceClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(UptimeCheckServiceClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        UptimeCheckServiceClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(UptimeCheckServiceClient.parse_common_folder_path)
+    common_organization_path = staticmethod(UptimeCheckServiceClient.common_organization_path)
+    parse_common_organization_path = staticmethod(UptimeCheckServiceClient.parse_common_organization_path)
     common_project_path = staticmethod(UptimeCheckServiceClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(UptimeCheckServiceClient.parse_common_project_path)
     common_location_path = staticmethod(UptimeCheckServiceClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        UptimeCheckServiceClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(UptimeCheckServiceClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -152,9 +123,7 @@ class UptimeCheckServiceAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -221,13 +190,7 @@ class UptimeCheckServiceAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[
-                str,
-                UptimeCheckServiceTransport,
-                Callable[..., UptimeCheckServiceTransport],
-            ]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, UptimeCheckServiceTransport, Callable[..., UptimeCheckServiceTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -287,20 +250,14 @@ class UptimeCheckServiceAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.monitoring_v3.UptimeCheckServiceAsyncClient`.",
                 extra={
                     "serviceName": "google.monitoring.v3.UptimeCheckService",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -311,9 +268,7 @@ class UptimeCheckServiceAsyncClient:
 
     async def list_uptime_check_configs(
         self,
-        request: Optional[
-            Union[uptime_service.ListUptimeCheckConfigsRequest, dict]
-        ] = None,
+        request: Optional[Union[uptime_service.ListUptimeCheckConfigsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -387,14 +342,9 @@ class UptimeCheckServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -408,15 +358,11 @@ class UptimeCheckServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_uptime_check_configs
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_uptime_check_configs]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -445,9 +391,7 @@ class UptimeCheckServiceAsyncClient:
 
     async def get_uptime_check_config(
         self,
-        request: Optional[
-            Union[uptime_service.GetUptimeCheckConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[uptime_service.GetUptimeCheckConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -515,14 +459,9 @@ class UptimeCheckServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -536,15 +475,11 @@ class UptimeCheckServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_uptime_check_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_uptime_check_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -562,9 +497,7 @@ class UptimeCheckServiceAsyncClient:
 
     async def create_uptime_check_config(
         self,
-        request: Optional[
-            Union[uptime_service.CreateUptimeCheckConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[uptime_service.CreateUptimeCheckConfigRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         uptime_check_config: Optional[uptime.UptimeCheckConfig] = None,
@@ -642,14 +575,9 @@ class UptimeCheckServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, uptime_check_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -665,15 +593,11 @@ class UptimeCheckServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_uptime_check_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_uptime_check_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -691,9 +615,7 @@ class UptimeCheckServiceAsyncClient:
 
     async def update_uptime_check_config(
         self,
-        request: Optional[
-            Union[uptime_service.UpdateUptimeCheckConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[uptime_service.UpdateUptimeCheckConfigRequest, dict]] = None,
         *,
         uptime_check_config: Optional[uptime.UptimeCheckConfig] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -772,14 +694,9 @@ class UptimeCheckServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [uptime_check_config]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -793,17 +710,11 @@ class UptimeCheckServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_uptime_check_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_uptime_check_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("uptime_check_config.name", request.uptime_check_config.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("uptime_check_config.name", request.uptime_check_config.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -821,9 +732,7 @@ class UptimeCheckServiceAsyncClient:
 
     async def delete_uptime_check_config(
         self,
-        request: Optional[
-            Union[uptime_service.DeleteUptimeCheckConfigRequest, dict]
-        ] = None,
+        request: Optional[Union[uptime_service.DeleteUptimeCheckConfigRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -885,14 +794,9 @@ class UptimeCheckServiceAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -906,15 +810,11 @@ class UptimeCheckServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_uptime_check_config
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_uptime_check_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -991,9 +891,7 @@ class UptimeCheckServiceAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_uptime_check_ips
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_uptime_check_ips]
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1027,9 +925,7 @@ class UptimeCheckServiceAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

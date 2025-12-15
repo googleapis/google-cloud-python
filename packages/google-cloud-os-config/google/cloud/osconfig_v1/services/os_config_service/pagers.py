@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,9 +21,7 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
@@ -101,12 +89,7 @@ class ListPatchJobsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[patch_jobs.PatchJob]:
@@ -177,12 +160,7 @@ class ListPatchJobsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[patch_jobs.PatchJob]:
@@ -257,12 +235,7 @@ class ListPatchJobInstanceDetailsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[patch_jobs.PatchJobInstanceDetails]:
@@ -293,9 +266,7 @@ class ListPatchJobInstanceDetailsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse]
-        ],
+        method: Callable[..., Awaitable[patch_jobs.ListPatchJobInstanceDetailsResponse]],
         request: patch_jobs.ListPatchJobInstanceDetailsRequest,
         response: patch_jobs.ListPatchJobInstanceDetailsResponse,
         *,
@@ -331,18 +302,11 @@ class ListPatchJobInstanceDetailsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[patch_jobs.ListPatchJobInstanceDetailsResponse]:
+    async def pages(self) -> AsyncIterator[patch_jobs.ListPatchJobInstanceDetailsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[patch_jobs.PatchJobInstanceDetails]:
@@ -417,12 +381,7 @@ class ListPatchDeploymentsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[patch_deployments.PatchDeployment]:
@@ -453,9 +412,7 @@ class ListPatchDeploymentsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[patch_deployments.ListPatchDeploymentsResponse]
-        ],
+        method: Callable[..., Awaitable[patch_deployments.ListPatchDeploymentsResponse]],
         request: patch_deployments.ListPatchDeploymentsRequest,
         response: patch_deployments.ListPatchDeploymentsResponse,
         *,
@@ -491,18 +448,11 @@ class ListPatchDeploymentsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[patch_deployments.ListPatchDeploymentsResponse]:
+    async def pages(self) -> AsyncIterator[patch_deployments.ListPatchDeploymentsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[patch_deployments.PatchDeployment]:

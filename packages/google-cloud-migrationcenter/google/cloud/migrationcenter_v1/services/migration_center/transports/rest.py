@@ -458,12 +458,8 @@ class MigrationCenterRestInterceptor:
     """
 
     def pre_add_assets_to_group(
-        self,
-        request: migrationcenter.AddAssetsToGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.AddAssetsToGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.AddAssetsToGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.AddAssetsToGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_assets_to_group
 
         Override in a subclass to manipulate the request or metadata
@@ -471,9 +467,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_add_assets_to_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_assets_to_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_assets_to_group
 
         DEPRECATED. Please use the `post_add_assets_to_group_with_metadata`
@@ -487,9 +481,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_add_assets_to_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_assets_to_group
 
@@ -506,13 +498,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_aggregate_assets_values(
-        self,
-        request: migrationcenter.AggregateAssetsValuesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.AggregateAssetsValuesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.AggregateAssetsValuesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.AggregateAssetsValuesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregate_assets_values
 
         Override in a subclass to manipulate the request or metadata
@@ -520,9 +507,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregate_assets_values(
-        self, response: migrationcenter.AggregateAssetsValuesResponse
-    ) -> migrationcenter.AggregateAssetsValuesResponse:
+    def post_aggregate_assets_values(self, response: migrationcenter.AggregateAssetsValuesResponse) -> migrationcenter.AggregateAssetsValuesResponse:
         """Post-rpc interceptor for aggregate_assets_values
 
         DEPRECATED. Please use the `post_aggregate_assets_values_with_metadata`
@@ -536,13 +521,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_aggregate_assets_values_with_metadata(
-        self,
-        response: migrationcenter.AggregateAssetsValuesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.AggregateAssetsValuesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: migrationcenter.AggregateAssetsValuesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.AggregateAssetsValuesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregate_assets_values
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -558,13 +538,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_batch_delete_assets(
-        self,
-        request: migrationcenter.BatchDeleteAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.BatchDeleteAssetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.BatchDeleteAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.BatchDeleteAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -573,13 +548,8 @@ class MigrationCenterRestInterceptor:
         return request, metadata
 
     def pre_batch_update_assets(
-        self,
-        request: migrationcenter.BatchUpdateAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.BatchUpdateAssetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.BatchUpdateAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.BatchUpdateAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -587,9 +557,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_assets(
-        self, response: migrationcenter.BatchUpdateAssetsResponse
-    ) -> migrationcenter.BatchUpdateAssetsResponse:
+    def post_batch_update_assets(self, response: migrationcenter.BatchUpdateAssetsResponse) -> migrationcenter.BatchUpdateAssetsResponse:
         """Post-rpc interceptor for batch_update_assets
 
         DEPRECATED. Please use the `post_batch_update_assets_with_metadata`
@@ -603,13 +571,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_batch_update_assets_with_metadata(
-        self,
-        response: migrationcenter.BatchUpdateAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.BatchUpdateAssetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: migrationcenter.BatchUpdateAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.BatchUpdateAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -625,12 +588,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_group(
-        self,
-        request: migrationcenter.CreateGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.CreateGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_group
 
         Override in a subclass to manipulate the request or metadata
@@ -638,9 +597,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_group
 
         DEPRECATED. Please use the `post_create_group_with_metadata`
@@ -654,9 +611,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_group
 
@@ -673,13 +628,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_import_data_file(
-        self,
-        request: migrationcenter.CreateImportDataFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreateImportDataFileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.CreateImportDataFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreateImportDataFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_import_data_file
 
         Override in a subclass to manipulate the request or metadata
@@ -687,9 +637,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_import_data_file(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_import_data_file(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_import_data_file
 
         DEPRECATED. Please use the `post_create_import_data_file_with_metadata`
@@ -703,9 +651,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_import_data_file_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_import_data_file
 
@@ -722,12 +668,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_import_job(
-        self,
-        request: migrationcenter.CreateImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.CreateImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -735,9 +677,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_import_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_import_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_import_job
 
         DEPRECATED. Please use the `post_create_import_job_with_metadata`
@@ -751,9 +691,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_import_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_import_job
 
@@ -770,13 +708,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_preference_set(
-        self,
-        request: migrationcenter.CreatePreferenceSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreatePreferenceSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.CreatePreferenceSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreatePreferenceSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -784,9 +717,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_preference_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_preference_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_preference_set
 
         DEPRECATED. Please use the `post_create_preference_set_with_metadata`
@@ -800,9 +731,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_preference_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_preference_set
 
@@ -819,12 +748,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_report(
-        self,
-        request: migrationcenter.CreateReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.CreateReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreateReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_report
 
         Override in a subclass to manipulate the request or metadata
@@ -832,9 +757,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_report(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_report(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_report
 
         DEPRECATED. Please use the `post_create_report_with_metadata`
@@ -848,9 +771,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_report_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_report
 
@@ -867,13 +788,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_report_config(
-        self,
-        request: migrationcenter.CreateReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreateReportConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.CreateReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreateReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -881,9 +797,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_report_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_report_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_report_config
 
         DEPRECATED. Please use the `post_create_report_config_with_metadata`
@@ -897,9 +811,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_report_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_report_config
 
@@ -916,12 +828,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_create_source(
-        self,
-        request: migrationcenter.CreateSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.CreateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.CreateSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.CreateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_source
 
         Override in a subclass to manipulate the request or metadata
@@ -929,9 +837,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_create_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_source
 
         DEPRECATED. Please use the `post_create_source_with_metadata`
@@ -945,9 +851,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_create_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_source
 
@@ -964,12 +868,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_asset(
-        self,
-        request: migrationcenter.DeleteAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.DeleteAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -978,12 +878,8 @@ class MigrationCenterRestInterceptor:
         return request, metadata
 
     def pre_delete_group(
-        self,
-        request: migrationcenter.DeleteGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.DeleteGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_group
 
         Override in a subclass to manipulate the request or metadata
@@ -991,9 +887,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_group
 
         DEPRECATED. Please use the `post_delete_group_with_metadata`
@@ -1007,9 +901,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_group
 
@@ -1026,13 +918,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_import_data_file(
-        self,
-        request: migrationcenter.DeleteImportDataFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteImportDataFileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.DeleteImportDataFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteImportDataFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_import_data_file
 
         Override in a subclass to manipulate the request or metadata
@@ -1040,9 +927,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_import_data_file(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_import_data_file(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_import_data_file
 
         DEPRECATED. Please use the `post_delete_import_data_file_with_metadata`
@@ -1056,9 +941,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_import_data_file_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_import_data_file
 
@@ -1075,12 +958,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_import_job(
-        self,
-        request: migrationcenter.DeleteImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.DeleteImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1088,9 +967,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_import_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_import_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_import_job
 
         DEPRECATED. Please use the `post_delete_import_job_with_metadata`
@@ -1104,9 +981,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_import_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_import_job
 
@@ -1123,13 +998,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_preference_set(
-        self,
-        request: migrationcenter.DeletePreferenceSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeletePreferenceSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.DeletePreferenceSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeletePreferenceSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -1137,9 +1007,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_preference_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_preference_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_preference_set
 
         DEPRECATED. Please use the `post_delete_preference_set_with_metadata`
@@ -1153,9 +1021,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_preference_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_preference_set
 
@@ -1172,12 +1038,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_report(
-        self,
-        request: migrationcenter.DeleteReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.DeleteReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_report
 
         Override in a subclass to manipulate the request or metadata
@@ -1185,9 +1047,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_report(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_report(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_report
 
         DEPRECATED. Please use the `post_delete_report_with_metadata`
@@ -1201,9 +1061,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_report_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_report
 
@@ -1220,13 +1078,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_report_config(
-        self,
-        request: migrationcenter.DeleteReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteReportConfigRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.DeleteReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1234,9 +1087,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_report_config(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_report_config(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_report_config
 
         DEPRECATED. Please use the `post_delete_report_config_with_metadata`
@@ -1250,9 +1101,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_report_config_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_report_config
 
@@ -1269,12 +1118,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_delete_source(
-        self,
-        request: migrationcenter.DeleteSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.DeleteSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.DeleteSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.DeleteSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1282,9 +1127,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_source
 
         DEPRECATED. Please use the `post_delete_source_with_metadata`
@@ -1298,9 +1141,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_delete_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_source
 
@@ -1317,12 +1158,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_asset(
-        self,
-        request: migrationcenter.GetAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -1344,9 +1181,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_asset_with_metadata(
-        self,
-        response: migrationcenter.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_asset
 
@@ -1363,12 +1198,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_error_frame(
-        self,
-        request: migrationcenter.GetErrorFrameRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetErrorFrameRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetErrorFrameRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetErrorFrameRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_error_frame
 
         Override in a subclass to manipulate the request or metadata
@@ -1376,9 +1207,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_error_frame(
-        self, response: migrationcenter.ErrorFrame
-    ) -> migrationcenter.ErrorFrame:
+    def post_get_error_frame(self, response: migrationcenter.ErrorFrame) -> migrationcenter.ErrorFrame:
         """Post-rpc interceptor for get_error_frame
 
         DEPRECATED. Please use the `post_get_error_frame_with_metadata`
@@ -1392,9 +1221,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_error_frame_with_metadata(
-        self,
-        response: migrationcenter.ErrorFrame,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.ErrorFrame, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.ErrorFrame, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_error_frame
 
@@ -1411,12 +1238,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_group(
-        self,
-        request: migrationcenter.GetGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1438,9 +1261,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_group_with_metadata(
-        self,
-        response: migrationcenter.Group,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.Group, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.Group, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_group
 
@@ -1457,13 +1278,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_import_data_file(
-        self,
-        request: migrationcenter.GetImportDataFileRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetImportDataFileRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.GetImportDataFileRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetImportDataFileRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_import_data_file
 
         Override in a subclass to manipulate the request or metadata
@@ -1471,9 +1287,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_import_data_file(
-        self, response: migrationcenter.ImportDataFile
-    ) -> migrationcenter.ImportDataFile:
+    def post_get_import_data_file(self, response: migrationcenter.ImportDataFile) -> migrationcenter.ImportDataFile:
         """Post-rpc interceptor for get_import_data_file
 
         DEPRECATED. Please use the `post_get_import_data_file_with_metadata`
@@ -1487,9 +1301,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_import_data_file_with_metadata(
-        self,
-        response: migrationcenter.ImportDataFile,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.ImportDataFile, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.ImportDataFile, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_import_data_file
 
@@ -1506,12 +1318,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_import_job(
-        self,
-        request: migrationcenter.GetImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1519,9 +1327,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_import_job(
-        self, response: migrationcenter.ImportJob
-    ) -> migrationcenter.ImportJob:
+    def post_get_import_job(self, response: migrationcenter.ImportJob) -> migrationcenter.ImportJob:
         """Post-rpc interceptor for get_import_job
 
         DEPRECATED. Please use the `post_get_import_job_with_metadata`
@@ -1535,9 +1341,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_import_job_with_metadata(
-        self,
-        response: migrationcenter.ImportJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.ImportJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.ImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_import_job
 
@@ -1554,12 +1358,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_preference_set(
-        self,
-        request: migrationcenter.GetPreferenceSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetPreferenceSetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetPreferenceSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetPreferenceSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -1567,9 +1367,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_preference_set(
-        self, response: migrationcenter.PreferenceSet
-    ) -> migrationcenter.PreferenceSet:
+    def post_get_preference_set(self, response: migrationcenter.PreferenceSet) -> migrationcenter.PreferenceSet:
         """Post-rpc interceptor for get_preference_set
 
         DEPRECATED. Please use the `post_get_preference_set_with_metadata`
@@ -1583,9 +1381,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_preference_set_with_metadata(
-        self,
-        response: migrationcenter.PreferenceSet,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.PreferenceSet, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.PreferenceSet, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_preference_set
 
@@ -1602,12 +1398,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_report(
-        self,
-        request: migrationcenter.GetReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_report
 
         Override in a subclass to manipulate the request or metadata
@@ -1615,9 +1407,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report(
-        self, response: migrationcenter.Report
-    ) -> migrationcenter.Report:
+    def post_get_report(self, response: migrationcenter.Report) -> migrationcenter.Report:
         """Post-rpc interceptor for get_report
 
         DEPRECATED. Please use the `post_get_report_with_metadata`
@@ -1631,9 +1421,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_report_with_metadata(
-        self,
-        response: migrationcenter.Report,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.Report, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.Report, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report
 
@@ -1650,12 +1438,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_report_config(
-        self,
-        request: migrationcenter.GetReportConfigRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetReportConfigRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetReportConfigRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_report_config
 
         Override in a subclass to manipulate the request or metadata
@@ -1663,9 +1447,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_report_config(
-        self, response: migrationcenter.ReportConfig
-    ) -> migrationcenter.ReportConfig:
+    def post_get_report_config(self, response: migrationcenter.ReportConfig) -> migrationcenter.ReportConfig:
         """Post-rpc interceptor for get_report_config
 
         DEPRECATED. Please use the `post_get_report_config_with_metadata`
@@ -1679,9 +1461,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_report_config_with_metadata(
-        self,
-        response: migrationcenter.ReportConfig,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.ReportConfig, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.ReportConfig, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_report_config
 
@@ -1698,12 +1478,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_settings(
-        self,
-        request: migrationcenter.GetSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -1711,9 +1487,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_settings(
-        self, response: migrationcenter.Settings
-    ) -> migrationcenter.Settings:
+    def post_get_settings(self, response: migrationcenter.Settings) -> migrationcenter.Settings:
         """Post-rpc interceptor for get_settings
 
         DEPRECATED. Please use the `post_get_settings_with_metadata`
@@ -1727,9 +1501,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_settings_with_metadata(
-        self,
-        response: migrationcenter.Settings,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.Settings, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.Settings, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_settings
 
@@ -1746,12 +1518,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_source(
-        self,
-        request: migrationcenter.GetSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.GetSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1759,9 +1527,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_source(
-        self, response: migrationcenter.Source
-    ) -> migrationcenter.Source:
+    def post_get_source(self, response: migrationcenter.Source) -> migrationcenter.Source:
         """Post-rpc interceptor for get_source
 
         DEPRECATED. Please use the `post_get_source_with_metadata`
@@ -1775,9 +1541,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_get_source_with_metadata(
-        self,
-        response: migrationcenter.Source,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.Source, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.Source, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_source
 
@@ -1794,12 +1558,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_assets(
-        self,
-        request: migrationcenter.ListAssetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.ListAssetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListAssetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_assets
 
         Override in a subclass to manipulate the request or metadata
@@ -1807,9 +1567,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_assets(
-        self, response: migrationcenter.ListAssetsResponse
-    ) -> migrationcenter.ListAssetsResponse:
+    def post_list_assets(self, response: migrationcenter.ListAssetsResponse) -> migrationcenter.ListAssetsResponse:
         """Post-rpc interceptor for list_assets
 
         DEPRECATED. Please use the `post_list_assets_with_metadata`
@@ -1823,12 +1581,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_assets_with_metadata(
-        self,
-        response: migrationcenter.ListAssetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: migrationcenter.ListAssetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListAssetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_assets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1844,12 +1598,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_error_frames(
-        self,
-        request: migrationcenter.ListErrorFramesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListErrorFramesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.ListErrorFramesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListErrorFramesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_error_frames
 
         Override in a subclass to manipulate the request or metadata
@@ -1857,9 +1607,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_error_frames(
-        self, response: migrationcenter.ListErrorFramesResponse
-    ) -> migrationcenter.ListErrorFramesResponse:
+    def post_list_error_frames(self, response: migrationcenter.ListErrorFramesResponse) -> migrationcenter.ListErrorFramesResponse:
         """Post-rpc interceptor for list_error_frames
 
         DEPRECATED. Please use the `post_list_error_frames_with_metadata`
@@ -1873,12 +1621,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_error_frames_with_metadata(
-        self,
-        response: migrationcenter.ListErrorFramesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListErrorFramesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: migrationcenter.ListErrorFramesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListErrorFramesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_error_frames
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1894,12 +1638,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_groups(
-        self,
-        request: migrationcenter.ListGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.ListGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_groups
 
         Override in a subclass to manipulate the request or metadata
@@ -1907,9 +1647,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_groups(
-        self, response: migrationcenter.ListGroupsResponse
-    ) -> migrationcenter.ListGroupsResponse:
+    def post_list_groups(self, response: migrationcenter.ListGroupsResponse) -> migrationcenter.ListGroupsResponse:
         """Post-rpc interceptor for list_groups
 
         DEPRECATED. Please use the `post_list_groups_with_metadata`
@@ -1923,12 +1661,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_groups_with_metadata(
-        self,
-        response: migrationcenter.ListGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: migrationcenter.ListGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1944,13 +1678,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_import_data_files(
-        self,
-        request: migrationcenter.ListImportDataFilesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListImportDataFilesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.ListImportDataFilesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListImportDataFilesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_import_data_files
 
         Override in a subclass to manipulate the request or metadata
@@ -1958,9 +1687,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_import_data_files(
-        self, response: migrationcenter.ListImportDataFilesResponse
-    ) -> migrationcenter.ListImportDataFilesResponse:
+    def post_list_import_data_files(self, response: migrationcenter.ListImportDataFilesResponse) -> migrationcenter.ListImportDataFilesResponse:
         """Post-rpc interceptor for list_import_data_files
 
         DEPRECATED. Please use the `post_list_import_data_files_with_metadata`
@@ -1974,13 +1701,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_import_data_files_with_metadata(
-        self,
-        response: migrationcenter.ListImportDataFilesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListImportDataFilesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: migrationcenter.ListImportDataFilesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListImportDataFilesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_import_data_files
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1996,12 +1718,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_import_jobs(
-        self,
-        request: migrationcenter.ListImportJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListImportJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.ListImportJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListImportJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_import_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -2009,9 +1727,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_import_jobs(
-        self, response: migrationcenter.ListImportJobsResponse
-    ) -> migrationcenter.ListImportJobsResponse:
+    def post_list_import_jobs(self, response: migrationcenter.ListImportJobsResponse) -> migrationcenter.ListImportJobsResponse:
         """Post-rpc interceptor for list_import_jobs
 
         DEPRECATED. Please use the `post_list_import_jobs_with_metadata`
@@ -2025,12 +1741,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_import_jobs_with_metadata(
-        self,
-        response: migrationcenter.ListImportJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: migrationcenter.ListImportJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_import_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2046,13 +1758,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_preference_sets(
-        self,
-        request: migrationcenter.ListPreferenceSetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListPreferenceSetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.ListPreferenceSetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListPreferenceSetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_preference_sets
 
         Override in a subclass to manipulate the request or metadata
@@ -2060,9 +1767,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_preference_sets(
-        self, response: migrationcenter.ListPreferenceSetsResponse
-    ) -> migrationcenter.ListPreferenceSetsResponse:
+    def post_list_preference_sets(self, response: migrationcenter.ListPreferenceSetsResponse) -> migrationcenter.ListPreferenceSetsResponse:
         """Post-rpc interceptor for list_preference_sets
 
         DEPRECATED. Please use the `post_list_preference_sets_with_metadata`
@@ -2076,13 +1781,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_preference_sets_with_metadata(
-        self,
-        response: migrationcenter.ListPreferenceSetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListPreferenceSetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: migrationcenter.ListPreferenceSetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListPreferenceSetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_preference_sets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2098,13 +1798,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_report_configs(
-        self,
-        request: migrationcenter.ListReportConfigsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListReportConfigsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.ListReportConfigsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListReportConfigsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_report_configs
 
         Override in a subclass to manipulate the request or metadata
@@ -2112,9 +1807,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_report_configs(
-        self, response: migrationcenter.ListReportConfigsResponse
-    ) -> migrationcenter.ListReportConfigsResponse:
+    def post_list_report_configs(self, response: migrationcenter.ListReportConfigsResponse) -> migrationcenter.ListReportConfigsResponse:
         """Post-rpc interceptor for list_report_configs
 
         DEPRECATED. Please use the `post_list_report_configs_with_metadata`
@@ -2128,13 +1821,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_report_configs_with_metadata(
-        self,
-        response: migrationcenter.ListReportConfigsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListReportConfigsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: migrationcenter.ListReportConfigsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListReportConfigsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_report_configs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2150,12 +1838,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_reports(
-        self,
-        request: migrationcenter.ListReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.ListReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -2163,9 +1847,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_reports(
-        self, response: migrationcenter.ListReportsResponse
-    ) -> migrationcenter.ListReportsResponse:
+    def post_list_reports(self, response: migrationcenter.ListReportsResponse) -> migrationcenter.ListReportsResponse:
         """Post-rpc interceptor for list_reports
 
         DEPRECATED. Please use the `post_list_reports_with_metadata`
@@ -2179,12 +1861,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_reports_with_metadata(
-        self,
-        response: migrationcenter.ListReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: migrationcenter.ListReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2200,12 +1878,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_list_sources(
-        self,
-        request: migrationcenter.ListSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.ListSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sources
 
         Override in a subclass to manipulate the request or metadata
@@ -2213,9 +1887,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sources(
-        self, response: migrationcenter.ListSourcesResponse
-    ) -> migrationcenter.ListSourcesResponse:
+    def post_list_sources(self, response: migrationcenter.ListSourcesResponse) -> migrationcenter.ListSourcesResponse:
         """Post-rpc interceptor for list_sources
 
         DEPRECATED. Please use the `post_list_sources_with_metadata`
@@ -2229,12 +1901,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_list_sources_with_metadata(
-        self,
-        response: migrationcenter.ListSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: migrationcenter.ListSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2250,13 +1918,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_remove_assets_from_group(
-        self,
-        request: migrationcenter.RemoveAssetsFromGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.RemoveAssetsFromGroupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.RemoveAssetsFromGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.RemoveAssetsFromGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_assets_from_group
 
         Override in a subclass to manipulate the request or metadata
@@ -2264,9 +1927,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_assets_from_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_assets_from_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_assets_from_group
 
         DEPRECATED. Please use the `post_remove_assets_from_group_with_metadata`
@@ -2280,9 +1941,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_remove_assets_from_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_assets_from_group
 
@@ -2299,13 +1958,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_report_asset_frames(
-        self,
-        request: migrationcenter.ReportAssetFramesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ReportAssetFramesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.ReportAssetFramesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ReportAssetFramesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for report_asset_frames
 
         Override in a subclass to manipulate the request or metadata
@@ -2313,9 +1967,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_report_asset_frames(
-        self, response: migrationcenter.ReportAssetFramesResponse
-    ) -> migrationcenter.ReportAssetFramesResponse:
+    def post_report_asset_frames(self, response: migrationcenter.ReportAssetFramesResponse) -> migrationcenter.ReportAssetFramesResponse:
         """Post-rpc interceptor for report_asset_frames
 
         DEPRECATED. Please use the `post_report_asset_frames_with_metadata`
@@ -2329,13 +1981,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_report_asset_frames_with_metadata(
-        self,
-        response: migrationcenter.ReportAssetFramesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ReportAssetFramesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: migrationcenter.ReportAssetFramesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ReportAssetFramesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for report_asset_frames
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2351,12 +1998,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_run_import_job(
-        self,
-        request: migrationcenter.RunImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.RunImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.RunImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.RunImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -2364,9 +2007,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_run_import_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_import_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_import_job
 
         DEPRECATED. Please use the `post_run_import_job_with_metadata`
@@ -2380,9 +2021,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_run_import_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_import_job
 
@@ -2399,12 +2038,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_update_asset(
-        self,
-        request: migrationcenter.UpdateAssetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.UpdateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.UpdateAssetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.UpdateAssetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_asset
 
         Override in a subclass to manipulate the request or metadata
@@ -2412,9 +2047,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_asset(
-        self, response: migrationcenter.Asset
-    ) -> migrationcenter.Asset:
+    def post_update_asset(self, response: migrationcenter.Asset) -> migrationcenter.Asset:
         """Post-rpc interceptor for update_asset
 
         DEPRECATED. Please use the `post_update_asset_with_metadata`
@@ -2428,9 +2061,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_update_asset_with_metadata(
-        self,
-        response: migrationcenter.Asset,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: migrationcenter.Asset, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[migrationcenter.Asset, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_asset
 
@@ -2447,12 +2078,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_update_group(
-        self,
-        request: migrationcenter.UpdateGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.UpdateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.UpdateGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.UpdateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_group
 
         Override in a subclass to manipulate the request or metadata
@@ -2460,9 +2087,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_group
 
         DEPRECATED. Please use the `post_update_group_with_metadata`
@@ -2476,9 +2101,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_update_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_group
 
@@ -2495,12 +2118,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_update_import_job(
-        self,
-        request: migrationcenter.UpdateImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.UpdateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.UpdateImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.UpdateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -2508,9 +2127,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_import_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_import_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_import_job
 
         DEPRECATED. Please use the `post_update_import_job_with_metadata`
@@ -2524,9 +2141,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_update_import_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_import_job
 
@@ -2543,13 +2158,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_update_preference_set(
-        self,
-        request: migrationcenter.UpdatePreferenceSetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.UpdatePreferenceSetRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.UpdatePreferenceSetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.UpdatePreferenceSetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_preference_set
 
         Override in a subclass to manipulate the request or metadata
@@ -2557,9 +2167,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_preference_set(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_preference_set(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_preference_set
 
         DEPRECATED. Please use the `post_update_preference_set_with_metadata`
@@ -2573,9 +2181,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_update_preference_set_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_preference_set
 
@@ -2592,12 +2198,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_update_settings(
-        self,
-        request: migrationcenter.UpdateSettingsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.UpdateSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.UpdateSettingsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.UpdateSettingsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_settings
 
         Override in a subclass to manipulate the request or metadata
@@ -2605,9 +2207,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_settings(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_settings(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_settings
 
         DEPRECATED. Please use the `post_update_settings_with_metadata`
@@ -2621,9 +2221,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_update_settings_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_settings
 
@@ -2640,12 +2238,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_update_source(
-        self,
-        request: migrationcenter.UpdateSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.UpdateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: migrationcenter.UpdateSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.UpdateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_source
 
         Override in a subclass to manipulate the request or metadata
@@ -2653,9 +2247,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_update_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_source
 
         DEPRECATED. Please use the `post_update_source_with_metadata`
@@ -2669,9 +2261,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_update_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_source
 
@@ -2688,13 +2278,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_validate_import_job(
-        self,
-        request: migrationcenter.ValidateImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        migrationcenter.ValidateImportJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: migrationcenter.ValidateImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[migrationcenter.ValidateImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -2702,9 +2287,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_validate_import_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_validate_import_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for validate_import_job
 
         DEPRECATED. Please use the `post_validate_import_job_with_metadata`
@@ -2718,9 +2301,7 @@ class MigrationCenterRestInterceptor:
         return response
 
     def post_validate_import_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for validate_import_job
 
@@ -2737,12 +2318,8 @@ class MigrationCenterRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -2750,9 +2327,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -2762,12 +2337,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -2775,9 +2346,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -2787,12 +2356,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2810,12 +2375,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2833,12 +2394,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -2846,9 +2403,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -2858,12 +2413,8 @@ class MigrationCenterRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -2871,9 +2422,7 @@ class MigrationCenterRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -2962,9 +2511,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -3017,29 +2564,17 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddAssetsToGroup(
-        _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup, MigrationCenterRestStub
-    ):
+    class _AddAssetsToGroup(_BaseMigrationCenterRestTransport._BaseAddAssetsToGroup, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.AddAssetsToGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3082,32 +2617,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_assets_to_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_assets_to_group(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseAddAssetsToGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3131,13 +2652,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._AddAssetsToGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3151,12 +2666,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_add_assets_to_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_assets_to_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_assets_to_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3177,23 +2688,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _AggregateAssetsValues(
-        _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues,
-        MigrationCenterRestStub,
-    ):
+    class _AggregateAssetsValues(_BaseMigrationCenterRestTransport._BaseAggregateAssetsValues, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.AggregateAssetsValues")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3236,32 +2736,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_http_options()
 
-            request, metadata = self._interceptor.pre_aggregate_assets_values(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_aggregate_assets_values(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseAggregateAssetsValues._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3284,16 +2770,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
 
             # Send the request
-            response = (
-                MigrationCenterRestTransport._AggregateAssetsValues._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MigrationCenterRestTransport._AggregateAssetsValues._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3309,16 +2787,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_aggregate_assets_values(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregate_assets_values_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregate_assets_values_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        migrationcenter.AggregateAssetsValuesResponse.to_json(response)
-                    )
+                    response_payload = migrationcenter.AggregateAssetsValuesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3337,23 +2809,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _BatchDeleteAssets(
-        _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets,
-        MigrationCenterRestStub,
-    ):
+    class _BatchDeleteAssets(_BaseMigrationCenterRestTransport._BaseBatchDeleteAssets, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.BatchDeleteAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3389,32 +2850,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_assets(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_assets(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseBatchDeleteAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3438,13 +2885,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._BatchDeleteAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3452,23 +2893,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchUpdateAssets(
-        _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets,
-        MigrationCenterRestStub,
-    ):
+    class _BatchUpdateAssets(_BaseMigrationCenterRestTransport._BaseBatchUpdateAssets, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.BatchUpdateAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3510,32 +2940,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_assets(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_assets(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseBatchUpdateAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3559,13 +2975,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._BatchUpdateAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3581,16 +2991,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_batch_update_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        migrationcenter.BatchUpdateAssetsResponse.to_json(response)
-                    )
+                    response_payload = migrationcenter.BatchUpdateAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3609,22 +3013,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreateGroup(
-        _BaseMigrationCenterRestTransport._BaseCreateGroup, MigrationCenterRestStub
-    ):
+    class _CreateGroup(_BaseMigrationCenterRestTransport._BaseCreateGroup, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreateGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3667,30 +3061,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_group(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreateGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3714,13 +3096,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreateGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3734,12 +3110,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3760,23 +3132,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreateImportDataFile(
-        _BaseMigrationCenterRestTransport._BaseCreateImportDataFile,
-        MigrationCenterRestStub,
-    ):
+    class _CreateImportDataFile(_BaseMigrationCenterRestTransport._BaseCreateImportDataFile, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreateImportDataFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3819,32 +3180,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_import_data_file(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_import_data_file(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreateImportDataFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3868,13 +3215,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreateImportDataFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3888,12 +3229,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_import_data_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_import_data_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_import_data_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3914,22 +3251,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreateImportJob(
-        _BaseMigrationCenterRestTransport._BaseCreateImportJob, MigrationCenterRestStub
-    ):
+    class _CreateImportJob(_BaseMigrationCenterRestTransport._BaseCreateImportJob, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreateImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3972,32 +3299,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_import_job(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreateImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4021,13 +3334,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreateImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4041,12 +3348,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4067,23 +3370,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreatePreferenceSet(
-        _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet,
-        MigrationCenterRestStub,
-    ):
+    class _CreatePreferenceSet(_BaseMigrationCenterRestTransport._BaseCreatePreferenceSet, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreatePreferenceSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4126,32 +3418,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_preference_set(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_preference_set(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreatePreferenceSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4175,13 +3453,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreatePreferenceSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4195,12 +3467,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_preference_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_preference_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_preference_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4221,22 +3489,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreateReport(
-        _BaseMigrationCenterRestTransport._BaseCreateReport, MigrationCenterRestStub
-    ):
+    class _CreateReport(_BaseMigrationCenterRestTransport._BaseCreateReport, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreateReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4279,30 +3537,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateReport._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateReport._get_http_options()
 
             request, metadata = self._interceptor.pre_create_report(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateReport._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateReport._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreateReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreateReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreateReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreateReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4326,13 +3572,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreateReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4346,12 +3586,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4372,23 +3608,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreateReportConfig(
-        _BaseMigrationCenterRestTransport._BaseCreateReportConfig,
-        MigrationCenterRestStub,
-    ):
+    class _CreateReportConfig(_BaseMigrationCenterRestTransport._BaseCreateReportConfig, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreateReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4431,32 +3656,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_report_config(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreateReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4480,13 +3691,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreateReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4500,12 +3705,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_report_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_report_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_report_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4526,22 +3727,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _CreateSource(
-        _BaseMigrationCenterRestTransport._BaseCreateSource, MigrationCenterRestStub
-    ):
+    class _CreateSource(_BaseMigrationCenterRestTransport._BaseCreateSource, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CreateSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4584,30 +3775,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCreateSource._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCreateSource._get_http_options()
 
             request, metadata = self._interceptor.pre_create_source(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCreateSource._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCreateSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCreateSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCreateSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCreateSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4631,13 +3810,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CreateSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4651,12 +3824,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_create_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4677,22 +3846,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeleteAsset(
-        _BaseMigrationCenterRestTransport._BaseDeleteAsset, MigrationCenterRestStub
-    ):
+    class _DeleteAsset(_BaseMigrationCenterRestTransport._BaseDeleteAsset, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4727,26 +3886,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_asset(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4770,12 +3919,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4783,22 +3927,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _DeleteGroup(
-        _BaseMigrationCenterRestTransport._BaseDeleteGroup, MigrationCenterRestStub
-    ):
+    class _DeleteGroup(_BaseMigrationCenterRestTransport._BaseDeleteGroup, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4840,26 +3974,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_group(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4883,12 +4007,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4902,12 +4021,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4928,23 +4043,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeleteImportDataFile(
-        _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile,
-        MigrationCenterRestStub,
-    ):
+    class _DeleteImportDataFile(_BaseMigrationCenterRestTransport._BaseDeleteImportDataFile, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteImportDataFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4986,28 +4090,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_import_data_file(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_import_data_file(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteImportDataFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5031,12 +4123,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteImportDataFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5050,12 +4137,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_import_data_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_import_data_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_import_data_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5076,22 +4159,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeleteImportJob(
-        _BaseMigrationCenterRestTransport._BaseDeleteImportJob, MigrationCenterRestStub
-    ):
+    class _DeleteImportJob(_BaseMigrationCenterRestTransport._BaseDeleteImportJob, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5133,28 +4206,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_import_job(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5178,12 +4239,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5197,12 +4253,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5223,23 +4275,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeletePreferenceSet(
-        _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet,
-        MigrationCenterRestStub,
-    ):
+    class _DeletePreferenceSet(_BaseMigrationCenterRestTransport._BaseDeletePreferenceSet, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeletePreferenceSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5281,28 +4322,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_preference_set(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_preference_set(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeletePreferenceSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5326,12 +4355,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeletePreferenceSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5345,12 +4369,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_preference_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_preference_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_preference_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5371,22 +4391,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeleteReport(
-        _BaseMigrationCenterRestTransport._BaseDeleteReport, MigrationCenterRestStub
-    ):
+    class _DeleteReport(_BaseMigrationCenterRestTransport._BaseDeleteReport, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5428,26 +4438,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteReport._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_report(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5471,12 +4471,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5490,12 +4485,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5516,23 +4507,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeleteReportConfig(
-        _BaseMigrationCenterRestTransport._BaseDeleteReportConfig,
-        MigrationCenterRestStub,
-    ):
+    class _DeleteReportConfig(_BaseMigrationCenterRestTransport._BaseDeleteReportConfig, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5574,28 +4554,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_report_config(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5619,12 +4587,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5638,12 +4601,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_report_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_report_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_report_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5664,22 +4623,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _DeleteSource(
-        _BaseMigrationCenterRestTransport._BaseDeleteSource, MigrationCenterRestStub
-    ):
+    class _DeleteSource(_BaseMigrationCenterRestTransport._BaseDeleteSource, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5721,26 +4670,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteSource._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_source(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5764,12 +4703,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5783,12 +4717,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_delete_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5809,22 +4739,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetAsset(
-        _BaseMigrationCenterRestTransport._BaseGetAsset, MigrationCenterRestStub
-    ):
+    class _GetAsset(_BaseMigrationCenterRestTransport._BaseGetAsset, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5866,30 +4786,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetAsset._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_get_asset(request, metadata)
-            transcoded_request = (
-                _BaseMigrationCenterRestTransport._BaseGetAsset._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetAsset._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMigrationCenterRestTransport._BaseGetAsset._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5913,12 +4819,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5934,12 +4835,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Asset.to_json(response)
                 except:
@@ -5960,22 +4857,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetErrorFrame(
-        _BaseMigrationCenterRestTransport._BaseGetErrorFrame, MigrationCenterRestStub
-    ):
+    class _GetErrorFrame(_BaseMigrationCenterRestTransport._BaseGetErrorFrame, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetErrorFrame")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6016,26 +4903,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_http_options()
 
             request, metadata = self._interceptor.pre_get_error_frame(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetErrorFrame._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6059,12 +4936,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetErrorFrame._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6080,12 +4952,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_error_frame(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_error_frame_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_error_frame_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ErrorFrame.to_json(response)
                 except:
@@ -6106,22 +4974,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetGroup(
-        _BaseMigrationCenterRestTransport._BaseGetGroup, MigrationCenterRestStub
-    ):
+    class _GetGroup(_BaseMigrationCenterRestTransport._BaseGetGroup, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6166,30 +5024,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_group(request, metadata)
-            transcoded_request = (
-                _BaseMigrationCenterRestTransport._BaseGetGroup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMigrationCenterRestTransport._BaseGetGroup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6213,12 +5057,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6234,12 +5073,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Group.to_json(response)
                 except:
@@ -6260,23 +5095,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetImportDataFile(
-        _BaseMigrationCenterRestTransport._BaseGetImportDataFile,
-        MigrationCenterRestStub,
-    ):
+    class _GetImportDataFile(_BaseMigrationCenterRestTransport._BaseGetImportDataFile, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetImportDataFile")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6317,28 +5141,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_import_data_file(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_import_data_file(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetImportDataFile._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6362,12 +5174,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetImportDataFile._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6383,12 +5190,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_import_data_file(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_import_data_file_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_import_data_file_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ImportDataFile.to_json(response)
                 except:
@@ -6409,22 +5212,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetImportJob(
-        _BaseMigrationCenterRestTransport._BaseGetImportJob, MigrationCenterRestStub
-    ):
+    class _GetImportJob(_BaseMigrationCenterRestTransport._BaseGetImportJob, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6466,26 +5259,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_import_job(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6509,12 +5292,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6530,12 +5308,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ImportJob.to_json(response)
                 except:
@@ -6556,22 +5330,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetPreferenceSet(
-        _BaseMigrationCenterRestTransport._BaseGetPreferenceSet, MigrationCenterRestStub
-    ):
+    class _GetPreferenceSet(_BaseMigrationCenterRestTransport._BaseGetPreferenceSet, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetPreferenceSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6612,28 +5376,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_preference_set(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_preference_set(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetPreferenceSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6657,12 +5409,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetPreferenceSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6678,12 +5425,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_preference_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_preference_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_preference_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.PreferenceSet.to_json(response)
                 except:
@@ -6704,22 +5447,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetReport(
-        _BaseMigrationCenterRestTransport._BaseGetReport, MigrationCenterRestStub
-    ):
+    class _GetReport(_BaseMigrationCenterRestTransport._BaseGetReport, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6760,28 +5493,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetReport._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetReport._get_http_options()
 
             request, metadata = self._interceptor.pre_get_report(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetReport._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMigrationCenterRestTransport._BaseGetReport._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6805,12 +5526,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6826,12 +5542,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Report.to_json(response)
                 except:
@@ -6852,22 +5564,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetReportConfig(
-        _BaseMigrationCenterRestTransport._BaseGetReportConfig, MigrationCenterRestStub
-    ):
+    class _GetReportConfig(_BaseMigrationCenterRestTransport._BaseGetReportConfig, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetReportConfig")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6908,28 +5610,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_report_config(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_report_config(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetReportConfig._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -6953,12 +5643,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetReportConfig._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6974,12 +5659,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_report_config(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_report_config_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_report_config_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.ReportConfig.to_json(response)
                 except:
@@ -7000,22 +5681,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetSettings(
-        _BaseMigrationCenterRestTransport._BaseGetSettings, MigrationCenterRestStub
-    ):
+    class _GetSettings(_BaseMigrationCenterRestTransport._BaseGetSettings, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7056,26 +5727,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetSettings._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_get_settings(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetSettings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetSettings._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7099,12 +5760,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7120,12 +5776,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Settings.to_json(response)
                 except:
@@ -7146,22 +5798,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _GetSource(
-        _BaseMigrationCenterRestTransport._BaseGetSource, MigrationCenterRestStub
-    ):
+    class _GetSource(_BaseMigrationCenterRestTransport._BaseGetSource, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7203,28 +5845,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetSource._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_source(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseMigrationCenterRestTransport._BaseGetSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7248,12 +5878,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7269,12 +5894,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_get_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Source.to_json(response)
                 except:
@@ -7295,22 +5916,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListAssets(
-        _BaseMigrationCenterRestTransport._BaseListAssets, MigrationCenterRestStub
-    ):
+    class _ListAssets(_BaseMigrationCenterRestTransport._BaseListAssets, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListAssets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7350,26 +5961,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     Response message for listing assets.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListAssets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListAssets._get_http_options()
 
             request, metadata = self._interceptor.pre_list_assets(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListAssets._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListAssets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListAssets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListAssets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7393,12 +5994,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListAssets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7414,16 +6010,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_assets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_assets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_assets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = migrationcenter.ListAssetsResponse.to_json(
-                        response
-                    )
+                    response_payload = migrationcenter.ListAssetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7442,22 +6032,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListErrorFrames(
-        _BaseMigrationCenterRestTransport._BaseListErrorFrames, MigrationCenterRestStub
-    ):
+    class _ListErrorFrames(_BaseMigrationCenterRestTransport._BaseListErrorFrames, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListErrorFrames")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7497,28 +6077,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response for listing error frames.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_error_frames(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_error_frames(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListErrorFrames._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7542,12 +6110,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListErrorFrames._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7563,16 +6126,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_error_frames(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_error_frames_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_error_frames_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = migrationcenter.ListErrorFramesResponse.to_json(
-                        response
-                    )
+                    response_payload = migrationcenter.ListErrorFramesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7591,22 +6148,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListGroups(
-        _BaseMigrationCenterRestTransport._BaseListGroups, MigrationCenterRestStub
-    ):
+    class _ListGroups(_BaseMigrationCenterRestTransport._BaseListGroups, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7645,26 +6192,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response for listing groups.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListGroups._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_groups(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListGroups._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7688,12 +6225,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListGroups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7709,16 +6241,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = migrationcenter.ListGroupsResponse.to_json(
-                        response
-                    )
+                    response_payload = migrationcenter.ListGroupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7737,23 +6263,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListImportDataFiles(
-        _BaseMigrationCenterRestTransport._BaseListImportDataFiles,
-        MigrationCenterRestStub,
-    ):
+    class _ListImportDataFiles(_BaseMigrationCenterRestTransport._BaseListImportDataFiles, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListImportDataFiles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7795,28 +6310,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_import_data_files(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_import_data_files(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListImportDataFiles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7840,12 +6343,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListImportDataFiles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7861,16 +6359,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_import_data_files(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_import_data_files_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_import_data_files_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        migrationcenter.ListImportDataFilesResponse.to_json(response)
-                    )
+                    response_payload = migrationcenter.ListImportDataFilesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7889,22 +6381,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListImportJobs(
-        _BaseMigrationCenterRestTransport._BaseListImportJobs, MigrationCenterRestStub
-    ):
+    class _ListImportJobs(_BaseMigrationCenterRestTransport._BaseListImportJobs, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListImportJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7943,28 +6425,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response for listing import jobs.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListImportJobs._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_import_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_import_jobs(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListImportJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7988,12 +6458,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListImportJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8009,16 +6474,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_import_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_import_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_import_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = migrationcenter.ListImportJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = migrationcenter.ListImportJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8037,23 +6496,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListPreferenceSets(
-        _BaseMigrationCenterRestTransport._BaseListPreferenceSets,
-        MigrationCenterRestStub,
-    ):
+    class _ListPreferenceSets(_BaseMigrationCenterRestTransport._BaseListPreferenceSets, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListPreferenceSets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8094,28 +6542,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_preference_sets(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_preference_sets(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListPreferenceSets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8139,12 +6575,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListPreferenceSets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8160,16 +6591,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_preference_sets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_preference_sets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_preference_sets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        migrationcenter.ListPreferenceSetsResponse.to_json(response)
-                    )
+                    response_payload = migrationcenter.ListPreferenceSetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8188,23 +6613,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListReportConfigs(
-        _BaseMigrationCenterRestTransport._BaseListReportConfigs,
-        MigrationCenterRestStub,
-    ):
+    class _ListReportConfigs(_BaseMigrationCenterRestTransport._BaseListReportConfigs, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListReportConfigs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8245,28 +6659,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_report_configs(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_report_configs(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListReportConfigs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8290,12 +6692,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListReportConfigs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8311,16 +6708,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_report_configs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_report_configs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_report_configs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        migrationcenter.ListReportConfigsResponse.to_json(response)
-                    )
+                    response_payload = migrationcenter.ListReportConfigsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8339,22 +6730,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListReports(
-        _BaseMigrationCenterRestTransport._BaseListReports, MigrationCenterRestStub
-    ):
+    class _ListReports(_BaseMigrationCenterRestTransport._BaseListReports, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8393,26 +6774,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     Response message for listing Reports.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListReports._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListReports._get_http_options()
 
             request, metadata = self._interceptor.pre_list_reports(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListReports._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListReports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListReports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8436,12 +6807,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListReports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8457,16 +6823,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = migrationcenter.ListReportsResponse.to_json(
-                        response
-                    )
+                    response_payload = migrationcenter.ListReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8485,22 +6845,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ListSources(
-        _BaseMigrationCenterRestTransport._BaseListSources, MigrationCenterRestStub
-    ):
+    class _ListSources(_BaseMigrationCenterRestTransport._BaseListSources, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8539,26 +6889,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     Response message for listing sources.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListSources._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListSources._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sources(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListSources._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListSources._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8582,12 +6922,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8603,16 +6938,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_list_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = migrationcenter.ListSourcesResponse.to_json(
-                        response
-                    )
+                    response_payload = migrationcenter.ListSourcesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8631,23 +6960,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _RemoveAssetsFromGroup(
-        _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup,
-        MigrationCenterRestStub,
-    ):
+    class _RemoveAssetsFromGroup(_BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.RemoveAssetsFromGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8691,32 +7009,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_assets_from_group(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_assets_from_group(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseRemoveAssetsFromGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -8739,16 +7043,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
 
             # Send the request
-            response = (
-                MigrationCenterRestTransport._RemoveAssetsFromGroup._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = MigrationCenterRestTransport._RemoveAssetsFromGroup._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8762,12 +7058,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_remove_assets_from_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_assets_from_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_assets_from_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -8788,23 +7080,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ReportAssetFrames(
-        _BaseMigrationCenterRestTransport._BaseReportAssetFrames,
-        MigrationCenterRestStub,
-    ):
+    class _ReportAssetFrames(_BaseMigrationCenterRestTransport._BaseReportAssetFrames, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ReportAssetFrames")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8845,32 +7126,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     A response to a call to ``ReportAssetFrame``.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_http_options()
 
-            request, metadata = self._interceptor.pre_report_asset_frames(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_report_asset_frames(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseReportAssetFrames._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8894,13 +7161,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ReportAssetFrames._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8916,16 +7177,10 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_report_asset_frames(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_report_asset_frames_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_report_asset_frames_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        migrationcenter.ReportAssetFramesResponse.to_json(response)
-                    )
+                    response_payload = migrationcenter.ReportAssetFramesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -8944,22 +7199,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _RunImportJob(
-        _BaseMigrationCenterRestTransport._BaseRunImportJob, MigrationCenterRestStub
-    ):
+    class _RunImportJob(_BaseMigrationCenterRestTransport._BaseRunImportJob, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.RunImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9002,30 +7247,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseRunImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_http_options()
 
             request, metadata = self._interceptor.pre_run_import_job(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseRunImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9049,13 +7282,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._RunImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9069,12 +7296,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_run_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9095,22 +7318,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _UpdateAsset(
-        _BaseMigrationCenterRestTransport._BaseUpdateAsset, MigrationCenterRestStub
-    ):
+    class _UpdateAsset(_BaseMigrationCenterRestTransport._BaseUpdateAsset, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.UpdateAsset")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9153,30 +7366,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_http_options()
 
             request, metadata = self._interceptor.pre_update_asset(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseUpdateAsset._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9200,13 +7401,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateAsset._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9222,12 +7417,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_update_asset(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_asset_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_asset_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = migrationcenter.Asset.to_json(response)
                 except:
@@ -9248,22 +7439,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _UpdateGroup(
-        _BaseMigrationCenterRestTransport._BaseUpdateGroup, MigrationCenterRestStub
-    ):
+    class _UpdateGroup(_BaseMigrationCenterRestTransport._BaseUpdateGroup, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.UpdateGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9306,30 +7487,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_group(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseUpdateGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9353,13 +7522,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9373,12 +7536,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_update_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9399,22 +7558,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _UpdateImportJob(
-        _BaseMigrationCenterRestTransport._BaseUpdateImportJob, MigrationCenterRestStub
-    ):
+    class _UpdateImportJob(_BaseMigrationCenterRestTransport._BaseUpdateImportJob, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.UpdateImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9457,32 +7606,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_import_job(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseUpdateImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9506,13 +7641,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9526,12 +7655,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_update_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9552,23 +7677,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _UpdatePreferenceSet(
-        _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet,
-        MigrationCenterRestStub,
-    ):
+    class _UpdatePreferenceSet(_BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.UpdatePreferenceSet")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9611,32 +7725,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_preference_set(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_preference_set(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseUpdatePreferenceSet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9660,13 +7760,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._UpdatePreferenceSet._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9680,12 +7774,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_update_preference_set(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_preference_set_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_preference_set_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9706,22 +7796,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _UpdateSettings(
-        _BaseMigrationCenterRestTransport._BaseUpdateSettings, MigrationCenterRestStub
-    ):
+    class _UpdateSettings(_BaseMigrationCenterRestTransport._BaseUpdateSettings, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.UpdateSettings")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9764,30 +7844,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_http_options()
 
             request, metadata = self._interceptor.pre_update_settings(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseUpdateSettings._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9811,13 +7879,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateSettings._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9831,12 +7893,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_update_settings(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_settings_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_settings_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -9857,22 +7915,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _UpdateSource(
-        _BaseMigrationCenterRestTransport._BaseUpdateSource, MigrationCenterRestStub
-    ):
+    class _UpdateSource(_BaseMigrationCenterRestTransport._BaseUpdateSource, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.UpdateSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9915,30 +7963,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseUpdateSource._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_http_options()
 
             request, metadata = self._interceptor.pre_update_source(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseUpdateSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -9962,13 +7998,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._UpdateSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9982,12 +8012,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_update_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10008,23 +8034,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 )
             return resp
 
-    class _ValidateImportJob(
-        _BaseMigrationCenterRestTransport._BaseValidateImportJob,
-        MigrationCenterRestStub,
-    ):
+    class _ValidateImportJob(_BaseMigrationCenterRestTransport._BaseValidateImportJob, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ValidateImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10067,32 +8082,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_validate_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_validate_import_job(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseValidateImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10116,13 +8117,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ValidateImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10136,12 +8131,8 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             resp = self._interceptor.post_validate_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_validate_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_validate_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10163,438 +8154,289 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             return resp
 
     @property
-    def add_assets_to_group(
-        self,
-    ) -> Callable[[migrationcenter.AddAssetsToGroupRequest], operations_pb2.Operation]:
+    def add_assets_to_group(self) -> Callable[[migrationcenter.AddAssetsToGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddAssetsToGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def aggregate_assets_values(
-        self,
-    ) -> Callable[
-        [migrationcenter.AggregateAssetsValuesRequest],
-        migrationcenter.AggregateAssetsValuesResponse,
-    ]:
+    def aggregate_assets_values(self) -> Callable[[migrationcenter.AggregateAssetsValuesRequest], migrationcenter.AggregateAssetsValuesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregateAssetsValues(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_delete_assets(
-        self,
-    ) -> Callable[[migrationcenter.BatchDeleteAssetsRequest], empty_pb2.Empty]:
+    def batch_delete_assets(self) -> Callable[[migrationcenter.BatchDeleteAssetsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_assets(
-        self,
-    ) -> Callable[
-        [migrationcenter.BatchUpdateAssetsRequest],
-        migrationcenter.BatchUpdateAssetsResponse,
-    ]:
+    def batch_update_assets(self) -> Callable[[migrationcenter.BatchUpdateAssetsRequest], migrationcenter.BatchUpdateAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_group(
-        self,
-    ) -> Callable[[migrationcenter.CreateGroupRequest], operations_pb2.Operation]:
+    def create_group(self) -> Callable[[migrationcenter.CreateGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_import_data_file(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateImportDataFileRequest], operations_pb2.Operation
-    ]:
+    def create_import_data_file(self) -> Callable[[migrationcenter.CreateImportDataFileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateImportDataFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_import_job(
-        self,
-    ) -> Callable[[migrationcenter.CreateImportJobRequest], operations_pb2.Operation]:
+    def create_import_job(self) -> Callable[[migrationcenter.CreateImportJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreatePreferenceSetRequest], operations_pb2.Operation
-    ]:
+    def create_preference_set(self) -> Callable[[migrationcenter.CreatePreferenceSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePreferenceSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_report(
-        self,
-    ) -> Callable[[migrationcenter.CreateReportRequest], operations_pb2.Operation]:
+    def create_report(self) -> Callable[[migrationcenter.CreateReportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_report_config(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateReportConfigRequest], operations_pb2.Operation
-    ]:
+    def create_report_config(self) -> Callable[[migrationcenter.CreateReportConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[[migrationcenter.CreateSourceRequest], operations_pb2.Operation]:
+    def create_source(self) -> Callable[[migrationcenter.CreateSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[[migrationcenter.DeleteAssetRequest], empty_pb2.Empty]:
+    def delete_asset(self) -> Callable[[migrationcenter.DeleteAssetRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_group(
-        self,
-    ) -> Callable[[migrationcenter.DeleteGroupRequest], operations_pb2.Operation]:
+    def delete_group(self) -> Callable[[migrationcenter.DeleteGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_import_data_file(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteImportDataFileRequest], operations_pb2.Operation
-    ]:
+    def delete_import_data_file(self) -> Callable[[migrationcenter.DeleteImportDataFileRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteImportDataFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_import_job(
-        self,
-    ) -> Callable[[migrationcenter.DeleteImportJobRequest], operations_pb2.Operation]:
+    def delete_import_job(self) -> Callable[[migrationcenter.DeleteImportJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeletePreferenceSetRequest], operations_pb2.Operation
-    ]:
+    def delete_preference_set(self) -> Callable[[migrationcenter.DeletePreferenceSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeletePreferenceSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_report(
-        self,
-    ) -> Callable[[migrationcenter.DeleteReportRequest], operations_pb2.Operation]:
+    def delete_report(self) -> Callable[[migrationcenter.DeleteReportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_report_config(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteReportConfigRequest], operations_pb2.Operation
-    ]:
+    def delete_report_config(self) -> Callable[[migrationcenter.DeleteReportConfigRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_source(
-        self,
-    ) -> Callable[[migrationcenter.DeleteSourceRequest], operations_pb2.Operation]:
+    def delete_source(self) -> Callable[[migrationcenter.DeleteSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[[migrationcenter.GetAssetRequest], migrationcenter.Asset]:
+    def get_asset(self) -> Callable[[migrationcenter.GetAssetRequest], migrationcenter.Asset]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_error_frame(
-        self,
-    ) -> Callable[[migrationcenter.GetErrorFrameRequest], migrationcenter.ErrorFrame]:
+    def get_error_frame(self) -> Callable[[migrationcenter.GetErrorFrameRequest], migrationcenter.ErrorFrame]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetErrorFrame(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_group(
-        self,
-    ) -> Callable[[migrationcenter.GetGroupRequest], migrationcenter.Group]:
+    def get_group(self) -> Callable[[migrationcenter.GetGroupRequest], migrationcenter.Group]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_import_data_file(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetImportDataFileRequest], migrationcenter.ImportDataFile
-    ]:
+    def get_import_data_file(self) -> Callable[[migrationcenter.GetImportDataFileRequest], migrationcenter.ImportDataFile]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetImportDataFile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_import_job(
-        self,
-    ) -> Callable[[migrationcenter.GetImportJobRequest], migrationcenter.ImportJob]:
+    def get_import_job(self) -> Callable[[migrationcenter.GetImportJobRequest], migrationcenter.ImportJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetPreferenceSetRequest], migrationcenter.PreferenceSet
-    ]:
+    def get_preference_set(self) -> Callable[[migrationcenter.GetPreferenceSetRequest], migrationcenter.PreferenceSet]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPreferenceSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_report(
-        self,
-    ) -> Callable[[migrationcenter.GetReportRequest], migrationcenter.Report]:
+    def get_report(self) -> Callable[[migrationcenter.GetReportRequest], migrationcenter.Report]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_report_config(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetReportConfigRequest], migrationcenter.ReportConfig
-    ]:
+    def get_report_config(self) -> Callable[[migrationcenter.GetReportConfigRequest], migrationcenter.ReportConfig]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReportConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[[migrationcenter.GetSettingsRequest], migrationcenter.Settings]:
+    def get_settings(self) -> Callable[[migrationcenter.GetSettingsRequest], migrationcenter.Settings]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[migrationcenter.GetSourceRequest], migrationcenter.Source]:
+    def get_source(self) -> Callable[[migrationcenter.GetSourceRequest], migrationcenter.Source]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_assets(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListAssetsRequest], migrationcenter.ListAssetsResponse
-    ]:
+    def list_assets(self) -> Callable[[migrationcenter.ListAssetsRequest], migrationcenter.ListAssetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAssets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_error_frames(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListErrorFramesRequest],
-        migrationcenter.ListErrorFramesResponse,
-    ]:
+    def list_error_frames(self) -> Callable[[migrationcenter.ListErrorFramesRequest], migrationcenter.ListErrorFramesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListErrorFrames(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_groups(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListGroupsRequest], migrationcenter.ListGroupsResponse
-    ]:
+    def list_groups(self) -> Callable[[migrationcenter.ListGroupsRequest], migrationcenter.ListGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_import_data_files(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListImportDataFilesRequest],
-        migrationcenter.ListImportDataFilesResponse,
-    ]:
+    def list_import_data_files(self) -> Callable[[migrationcenter.ListImportDataFilesRequest], migrationcenter.ListImportDataFilesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListImportDataFiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_import_jobs(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListImportJobsRequest], migrationcenter.ListImportJobsResponse
-    ]:
+    def list_import_jobs(self) -> Callable[[migrationcenter.ListImportJobsRequest], migrationcenter.ListImportJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListImportJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_preference_sets(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListPreferenceSetsRequest],
-        migrationcenter.ListPreferenceSetsResponse,
-    ]:
+    def list_preference_sets(self) -> Callable[[migrationcenter.ListPreferenceSetsRequest], migrationcenter.ListPreferenceSetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPreferenceSets(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_report_configs(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListReportConfigsRequest],
-        migrationcenter.ListReportConfigsResponse,
-    ]:
+    def list_report_configs(self) -> Callable[[migrationcenter.ListReportConfigsRequest], migrationcenter.ListReportConfigsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReportConfigs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_reports(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListReportsRequest], migrationcenter.ListReportsResponse
-    ]:
+    def list_reports(self) -> Callable[[migrationcenter.ListReportsRequest], migrationcenter.ListReportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[
-        [migrationcenter.ListSourcesRequest], migrationcenter.ListSourcesResponse
-    ]:
+    def list_sources(self) -> Callable[[migrationcenter.ListSourcesRequest], migrationcenter.ListSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_assets_from_group(
-        self,
-    ) -> Callable[
-        [migrationcenter.RemoveAssetsFromGroupRequest], operations_pb2.Operation
-    ]:
+    def remove_assets_from_group(self) -> Callable[[migrationcenter.RemoveAssetsFromGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveAssetsFromGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def report_asset_frames(
-        self,
-    ) -> Callable[
-        [migrationcenter.ReportAssetFramesRequest],
-        migrationcenter.ReportAssetFramesResponse,
-    ]:
+    def report_asset_frames(self) -> Callable[[migrationcenter.ReportAssetFramesRequest], migrationcenter.ReportAssetFramesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ReportAssetFrames(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_import_job(
-        self,
-    ) -> Callable[[migrationcenter.RunImportJobRequest], operations_pb2.Operation]:
+    def run_import_job(self) -> Callable[[migrationcenter.RunImportJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[[migrationcenter.UpdateAssetRequest], migrationcenter.Asset]:
+    def update_asset(self) -> Callable[[migrationcenter.UpdateAssetRequest], migrationcenter.Asset]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAsset(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[[migrationcenter.UpdateGroupRequest], operations_pb2.Operation]:
+    def update_group(self) -> Callable[[migrationcenter.UpdateGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_import_job(
-        self,
-    ) -> Callable[[migrationcenter.UpdateImportJobRequest], operations_pb2.Operation]:
+    def update_import_job(self) -> Callable[[migrationcenter.UpdateImportJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_preference_set(
-        self,
-    ) -> Callable[
-        [migrationcenter.UpdatePreferenceSetRequest], operations_pb2.Operation
-    ]:
+    def update_preference_set(self) -> Callable[[migrationcenter.UpdatePreferenceSetRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePreferenceSet(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_settings(
-        self,
-    ) -> Callable[[migrationcenter.UpdateSettingsRequest], operations_pb2.Operation]:
+    def update_settings(self) -> Callable[[migrationcenter.UpdateSettingsRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSettings(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[[migrationcenter.UpdateSourceRequest], operations_pb2.Operation]:
+    def update_source(self) -> Callable[[migrationcenter.UpdateSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def validate_import_job(
-        self,
-    ) -> Callable[[migrationcenter.ValidateImportJobRequest], operations_pb2.Operation]:
+    def validate_import_job(self) -> Callable[[migrationcenter.ValidateImportJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ValidateImportJob(self._session, self._host, self._interceptor)  # type: ignore
@@ -10603,22 +8445,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseMigrationCenterRestTransport._BaseGetLocation, MigrationCenterRestStub
-    ):
+    class _GetLocation(_BaseMigrationCenterRestTransport._BaseGetLocation, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10656,26 +8488,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10699,12 +8521,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10716,9 +8533,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10743,22 +8558,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseMigrationCenterRestTransport._BaseListLocations, MigrationCenterRestStub
-    ):
+    class _ListLocations(_BaseMigrationCenterRestTransport._BaseListLocations, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10796,26 +8601,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10839,12 +8634,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10856,9 +8646,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -10883,22 +8671,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseMigrationCenterRestTransport._BaseCancelOperation, MigrationCenterRestStub
-    ):
+    class _CancelOperation(_BaseMigrationCenterRestTransport._BaseCancelOperation, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10934,32 +8712,18 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -10983,13 +8747,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11003,22 +8761,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseMigrationCenterRestTransport._BaseDeleteOperation, MigrationCenterRestStub
-    ):
+    class _DeleteOperation(_BaseMigrationCenterRestTransport._BaseDeleteOperation, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11053,28 +8801,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11098,12 +8834,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11117,22 +8848,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseMigrationCenterRestTransport._BaseGetOperation, MigrationCenterRestStub
-    ):
+    class _GetOperation(_BaseMigrationCenterRestTransport._BaseGetOperation, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11170,26 +8891,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11213,12 +8924,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11230,9 +8936,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11257,22 +8961,12 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseMigrationCenterRestTransport._BaseListOperations, MigrationCenterRestStub
-    ):
+    class _ListOperations(_BaseMigrationCenterRestTransport._BaseListOperations, MigrationCenterRestStub):
         def __hash__(self):
             return hash("MigrationCenterRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11310,26 +9004,16 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseMigrationCenterRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseMigrationCenterRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseMigrationCenterRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseMigrationCenterRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseMigrationCenterRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseMigrationCenterRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11353,12 +9037,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
 
             # Send the request
             response = MigrationCenterRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11370,9 +9049,7 @@ class MigrationCenterRestTransport(_BaseMigrationCenterRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

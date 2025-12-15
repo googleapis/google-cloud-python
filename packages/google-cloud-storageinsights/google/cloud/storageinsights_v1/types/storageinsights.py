@@ -1030,9 +1030,7 @@ class DatasetConfig(proto.Message):
                 oneof="cloud_storage_bucket",
             )
 
-        cloud_storage_buckets: MutableSequence[
-            "DatasetConfig.CloudStorageBuckets.CloudStorageBucket"
-        ] = proto.RepeatedField(
+        cloud_storage_buckets: MutableSequence["DatasetConfig.CloudStorageBuckets.CloudStorageBucket"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="DatasetConfig.CloudStorageBuckets.CloudStorageBucket",
@@ -1110,9 +1108,7 @@ class DatasetConfig(proto.Message):
             proto.INT64,
             number=7,
         )
-        non_storage_intelligence_entitled_bucket_ids: MutableSequence[
-            str
-        ] = proto.RepeatedField(
+        non_storage_intelligence_entitled_bucket_ids: MutableSequence[str] = proto.RepeatedField(
             proto.STRING,
             number=8,
         )
@@ -1196,9 +1192,7 @@ class DatasetConfig(proto.Message):
             number=7,
             optional=True,
         )
-        non_management_hub_entitled_project_numbers: MutableSequence[
-            int
-        ] = proto.RepeatedField(
+        non_management_hub_entitled_project_numbers: MutableSequence[int] = proto.RepeatedField(
             proto.INT64,
             number=8,
         )
@@ -1207,9 +1201,7 @@ class DatasetConfig(proto.Message):
             number=9,
             optional=True,
         )
-        non_storage_intelligence_entitled_project_numbers: MutableSequence[
-            int
-        ] = proto.RepeatedField(
+        non_storage_intelligence_entitled_project_numbers: MutableSequence[int] = proto.RepeatedField(
             proto.INT64,
             number=10,
         )

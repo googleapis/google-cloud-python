@@ -305,9 +305,7 @@ class SummarizationSectionList(proto.Message):
             Optional. Summarization sections.
     """
 
-    summarization_sections: MutableSequence[
-        "SummarizationSection"
-    ] = proto.RepeatedField(
+    summarization_sections: MutableSequence["SummarizationSection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SummarizationSection",
@@ -532,9 +530,7 @@ class SummarizationContext(proto.Message):
             empty. Supported 2.0 and later versions.
     """
 
-    summarization_sections: MutableSequence[
-        "SummarizationSection"
-    ] = proto.RepeatedField(
+    summarization_sections: MutableSequence["SummarizationSection"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="SummarizationSection",

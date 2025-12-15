@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.shopping.merchant_accounts_v1.types import (
-    online_return_policy as gsma_online_return_policy,
-)
+from google.shopping.merchant_accounts_v1.types import online_return_policy as gsma_online_return_policy
 from google.shopping.merchant_accounts_v1.types import online_return_policy
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -111,13 +109,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
     """
 
     def pre_create_online_return_policy(
-        self,
-        request: gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsma_online_return_policy.CreateOnlineReturnPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: gsma_online_return_policy.CreateOnlineReturnPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsma_online_return_policy.CreateOnlineReturnPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_online_return_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -141,13 +134,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return response
 
     def post_create_online_return_policy_with_metadata(
-        self,
-        response: gsma_online_return_policy.OnlineReturnPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gsma_online_return_policy.OnlineReturnPolicy,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: gsma_online_return_policy.OnlineReturnPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gsma_online_return_policy.OnlineReturnPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_online_return_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -163,13 +151,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_online_return_policy(
-        self,
-        request: online_return_policy.DeleteOnlineReturnPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        online_return_policy.DeleteOnlineReturnPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: online_return_policy.DeleteOnlineReturnPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[online_return_policy.DeleteOnlineReturnPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_online_return_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -178,13 +161,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return request, metadata
 
     def pre_get_online_return_policy(
-        self,
-        request: online_return_policy.GetOnlineReturnPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        online_return_policy.GetOnlineReturnPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: online_return_policy.GetOnlineReturnPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[online_return_policy.GetOnlineReturnPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_online_return_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -192,9 +170,7 @@ class OnlineReturnPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_online_return_policy(
-        self, response: online_return_policy.OnlineReturnPolicy
-    ) -> online_return_policy.OnlineReturnPolicy:
+    def post_get_online_return_policy(self, response: online_return_policy.OnlineReturnPolicy) -> online_return_policy.OnlineReturnPolicy:
         """Post-rpc interceptor for get_online_return_policy
 
         DEPRECATED. Please use the `post_get_online_return_policy_with_metadata`
@@ -208,12 +184,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return response
 
     def post_get_online_return_policy_with_metadata(
-        self,
-        response: online_return_policy.OnlineReturnPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        online_return_policy.OnlineReturnPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: online_return_policy.OnlineReturnPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[online_return_policy.OnlineReturnPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_online_return_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -229,13 +201,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return response, metadata
 
     def pre_list_online_return_policies(
-        self,
-        request: online_return_policy.ListOnlineReturnPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        online_return_policy.ListOnlineReturnPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: online_return_policy.ListOnlineReturnPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[online_return_policy.ListOnlineReturnPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_online_return_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -259,13 +226,8 @@ class OnlineReturnPolicyServiceRestInterceptor:
         return response
 
     def post_list_online_return_policies_with_metadata(
-        self,
-        response: online_return_policy.ListOnlineReturnPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        online_return_policy.ListOnlineReturnPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: online_return_policy.ListOnlineReturnPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[online_return_policy.ListOnlineReturnPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_online_return_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -288,9 +250,7 @@ class OnlineReturnPolicyServiceRestStub:
     _interceptor: OnlineReturnPolicyServiceRestInterceptor
 
 
-class OnlineReturnPolicyServiceRestTransport(
-    _BaseOnlineReturnPolicyServiceRestTransport
-):
+class OnlineReturnPolicyServiceRestTransport(_BaseOnlineReturnPolicyServiceRestTransport):
     """REST backend synchronous transport for OnlineReturnPolicyService.
 
     The service facilitates the management of a business's remorse
@@ -369,33 +329,18 @@ class OnlineReturnPolicyServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or OnlineReturnPolicyServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateOnlineReturnPolicy(
-        _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy,
-        OnlineReturnPolicyServiceRestStub,
-    ):
+    class _CreateOnlineReturnPolicy(_BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy, OnlineReturnPolicyServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OnlineReturnPolicyServiceRestTransport.CreateOnlineReturnPolicy"
-            )
+            return hash("OnlineReturnPolicyServiceRestTransport.CreateOnlineReturnPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -441,32 +386,20 @@ class OnlineReturnPolicyServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_online_return_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_online_return_policy(request, metadata)
             transcoded_request = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseCreateOnlineReturnPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -490,13 +423,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             # Send the request
             response = OnlineReturnPolicyServiceRestTransport._CreateOnlineReturnPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -512,16 +439,10 @@ class OnlineReturnPolicyServiceRestTransport(
 
             resp = self._interceptor.post_create_online_return_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_online_return_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_online_return_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        gsma_online_return_policy.OnlineReturnPolicy.to_json(response)
-                    )
+                    response_payload = gsma_online_return_policy.OnlineReturnPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -540,25 +461,12 @@ class OnlineReturnPolicyServiceRestTransport(
                 )
             return resp
 
-    class _DeleteOnlineReturnPolicy(
-        _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy,
-        OnlineReturnPolicyServiceRestStub,
-    ):
+    class _DeleteOnlineReturnPolicy(_BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy, OnlineReturnPolicyServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OnlineReturnPolicyServiceRestTransport.DeleteOnlineReturnPolicy"
-            )
+            return hash("OnlineReturnPolicyServiceRestTransport.DeleteOnlineReturnPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -595,28 +503,18 @@ class OnlineReturnPolicyServiceRestTransport(
                         be of type `bytes`.
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_online_return_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_online_return_policy(request, metadata)
             transcoded_request = _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseDeleteOnlineReturnPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -640,12 +538,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             # Send the request
             response = OnlineReturnPolicyServiceRestTransport._DeleteOnlineReturnPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -653,23 +546,12 @@ class OnlineReturnPolicyServiceRestTransport(
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetOnlineReturnPolicy(
-        _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy,
-        OnlineReturnPolicyServiceRestStub,
-    ):
+    class _GetOnlineReturnPolicy(_BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy, OnlineReturnPolicyServiceRestStub):
         def __hash__(self):
             return hash("OnlineReturnPolicyServiceRestTransport.GetOnlineReturnPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -713,28 +595,16 @@ class OnlineReturnPolicyServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_online_return_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_online_return_policy(request, metadata)
+            transcoded_request = _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseGetOnlineReturnPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -758,12 +628,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             # Send the request
             response = OnlineReturnPolicyServiceRestTransport._GetOnlineReturnPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -779,16 +644,10 @@ class OnlineReturnPolicyServiceRestTransport(
 
             resp = self._interceptor.post_get_online_return_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_online_return_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_online_return_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = online_return_policy.OnlineReturnPolicy.to_json(
-                        response
-                    )
+                    response_payload = online_return_policy.OnlineReturnPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -807,25 +666,12 @@ class OnlineReturnPolicyServiceRestTransport(
                 )
             return resp
 
-    class _ListOnlineReturnPolicies(
-        _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies,
-        OnlineReturnPolicyServiceRestStub,
-    ):
+    class _ListOnlineReturnPolicies(_BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies, OnlineReturnPolicyServiceRestStub):
         def __hash__(self):
-            return hash(
-                "OnlineReturnPolicyServiceRestTransport.ListOnlineReturnPolicies"
-            )
+            return hash("OnlineReturnPolicyServiceRestTransport.ListOnlineReturnPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -868,28 +714,18 @@ class OnlineReturnPolicyServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_http_options()
-            )
+            http_options = _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_online_return_policies(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_online_return_policies(request, metadata)
             transcoded_request = _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseOnlineReturnPolicyServiceRestTransport._BaseListOnlineReturnPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -913,12 +749,7 @@ class OnlineReturnPolicyServiceRestTransport(
 
             # Send the request
             response = OnlineReturnPolicyServiceRestTransport._ListOnlineReturnPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -934,18 +765,10 @@ class OnlineReturnPolicyServiceRestTransport(
 
             resp = self._interceptor.post_list_online_return_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_online_return_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_online_return_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        online_return_policy.ListOnlineReturnPoliciesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = online_return_policy.ListOnlineReturnPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -967,31 +790,19 @@ class OnlineReturnPolicyServiceRestTransport(
     @property
     def create_online_return_policy(
         self,
-    ) -> Callable[
-        [gsma_online_return_policy.CreateOnlineReturnPolicyRequest],
-        gsma_online_return_policy.OnlineReturnPolicy,
-    ]:
+    ) -> Callable[[gsma_online_return_policy.CreateOnlineReturnPolicyRequest], gsma_online_return_policy.OnlineReturnPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateOnlineReturnPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_online_return_policy(
-        self,
-    ) -> Callable[
-        [online_return_policy.DeleteOnlineReturnPolicyRequest], empty_pb2.Empty
-    ]:
+    def delete_online_return_policy(self) -> Callable[[online_return_policy.DeleteOnlineReturnPolicyRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteOnlineReturnPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_online_return_policy(
-        self,
-    ) -> Callable[
-        [online_return_policy.GetOnlineReturnPolicyRequest],
-        online_return_policy.OnlineReturnPolicy,
-    ]:
+    def get_online_return_policy(self) -> Callable[[online_return_policy.GetOnlineReturnPolicyRequest], online_return_policy.OnlineReturnPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetOnlineReturnPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -999,10 +810,7 @@ class OnlineReturnPolicyServiceRestTransport(
     @property
     def list_online_return_policies(
         self,
-    ) -> Callable[
-        [online_return_policy.ListOnlineReturnPoliciesRequest],
-        online_return_policy.ListOnlineReturnPoliciesResponse,
-    ]:
+    ) -> Callable[[online_return_policy.ListOnlineReturnPoliciesRequest], online_return_policy.ListOnlineReturnPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListOnlineReturnPolicies(self._session, self._host, self._interceptor)  # type: ignore

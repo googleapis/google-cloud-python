@@ -74,12 +74,10 @@ class RegionalInventory(proto.Message):
         proto.STRING,
         number=3,
     )
-    regional_inventory_attributes: inventories_common.RegionalInventoryAttributes = (
-        proto.Field(
-            proto.MESSAGE,
-            number=9,
-            message=inventories_common.RegionalInventoryAttributes,
-        )
+    regional_inventory_attributes: inventories_common.RegionalInventoryAttributes = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=inventories_common.RegionalInventoryAttributes,
     )
 
 

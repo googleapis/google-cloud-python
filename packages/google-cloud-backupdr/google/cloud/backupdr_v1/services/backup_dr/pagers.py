@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,20 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.backupdr_v1.types import (
-    backupdr,
-    backupplan,
-    backupplanassociation,
-    backupvault,
-    datasourcereference,
-)
+from google.cloud.backupdr_v1.types import backupdr, backupplan, backupplanassociation, backupvault, datasourcereference
 
 
 class ListManagementServersPager:
@@ -107,12 +89,7 @@ class ListManagementServersPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupdr.ManagementServer]:
@@ -183,12 +160,7 @@ class ListManagementServersAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupdr.ManagementServer]:
@@ -263,12 +235,7 @@ class ListBackupVaultsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupvault.BackupVault]:
@@ -339,12 +306,7 @@ class ListBackupVaultsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupvault.BackupVault]:
@@ -419,12 +381,7 @@ class FetchUsableBackupVaultsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupvault.BackupVault]:
@@ -495,12 +452,7 @@ class FetchUsableBackupVaultsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupvault.BackupVault]:
@@ -575,12 +527,7 @@ class ListDataSourcesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupvault.DataSource]:
@@ -651,12 +598,7 @@ class ListDataSourcesAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupvault.DataSource]:
@@ -731,12 +673,7 @@ class ListBackupsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupvault.Backup]:
@@ -807,12 +744,7 @@ class ListBackupsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupvault.Backup]:
@@ -887,12 +819,7 @@ class FetchBackupsForResourceTypePager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupvault.Backup]:
@@ -923,9 +850,7 @@ class FetchBackupsForResourceTypeAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[backupvault.FetchBackupsForResourceTypeResponse]
-        ],
+        method: Callable[..., Awaitable[backupvault.FetchBackupsForResourceTypeResponse]],
         request: backupvault.FetchBackupsForResourceTypeRequest,
         response: backupvault.FetchBackupsForResourceTypeResponse,
         *,
@@ -961,18 +886,11 @@ class FetchBackupsForResourceTypeAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[backupvault.FetchBackupsForResourceTypeResponse]:
+    async def pages(self) -> AsyncIterator[backupvault.FetchBackupsForResourceTypeResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupvault.Backup]:
@@ -1047,12 +965,7 @@ class ListBackupPlansPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupplan.BackupPlan]:
@@ -1123,12 +1036,7 @@ class ListBackupPlansAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupplan.BackupPlan]:
@@ -1203,12 +1111,7 @@ class ListBackupPlanRevisionsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupplan.BackupPlanRevision]:
@@ -1279,12 +1182,7 @@ class ListBackupPlanRevisionsAsyncPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupplan.BackupPlanRevision]:
@@ -1355,18 +1253,11 @@ class ListBackupPlanAssociationsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[backupplanassociation.ListBackupPlanAssociationsResponse]:
+    def pages(self) -> Iterator[backupplanassociation.ListBackupPlanAssociationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupplanassociation.BackupPlanAssociation]:
@@ -1397,9 +1288,7 @@ class ListBackupPlanAssociationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse]
-        ],
+        method: Callable[..., Awaitable[backupplanassociation.ListBackupPlanAssociationsResponse]],
         request: backupplanassociation.ListBackupPlanAssociationsRequest,
         response: backupplanassociation.ListBackupPlanAssociationsResponse,
         *,
@@ -1435,18 +1324,11 @@ class ListBackupPlanAssociationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[backupplanassociation.ListBackupPlanAssociationsResponse]:
+    async def pages(self) -> AsyncIterator[backupplanassociation.ListBackupPlanAssociationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupplanassociation.BackupPlanAssociation]:
@@ -1481,10 +1363,7 @@ class FetchBackupPlanAssociationsForResourceTypePager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
-        ],
+        method: Callable[..., backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse],
         request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
         response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
         *,
@@ -1510,11 +1389,7 @@ class FetchBackupPlanAssociationsForResourceTypePager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest(
-                request
-            )
-        )
+        self._request = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1524,20 +1399,11 @@ class FetchBackupPlanAssociationsForResourceTypePager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[
-        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
-    ]:
+    def pages(self) -> Iterator[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[backupplanassociation.BackupPlanAssociation]:
@@ -1568,12 +1434,7 @@ class FetchBackupPlanAssociationsForResourceTypeAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse]],
         request: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest,
         response: backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse,
         *,
@@ -1599,11 +1460,7 @@ class FetchBackupPlanAssociationsForResourceTypeAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest(
-                request
-            )
-        )
+        self._request = backupplanassociation.FetchBackupPlanAssociationsForResourceTypeRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1613,20 +1470,11 @@ class FetchBackupPlanAssociationsForResourceTypeAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse
-    ]:
+    async def pages(self) -> AsyncIterator[backupplanassociation.FetchBackupPlanAssociationsForResourceTypeResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[backupplanassociation.BackupPlanAssociation]:
@@ -1701,12 +1549,7 @@ class ListDataSourceReferencesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[datasourcereference.DataSourceReference]:
@@ -1737,9 +1580,7 @@ class ListDataSourceReferencesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[datasourcereference.ListDataSourceReferencesResponse]
-        ],
+        method: Callable[..., Awaitable[datasourcereference.ListDataSourceReferencesResponse]],
         request: datasourcereference.ListDataSourceReferencesRequest,
         response: datasourcereference.ListDataSourceReferencesResponse,
         *,
@@ -1775,18 +1616,11 @@ class ListDataSourceReferencesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[datasourcereference.ListDataSourceReferencesResponse]:
+    async def pages(self) -> AsyncIterator[datasourcereference.ListDataSourceReferencesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[datasourcereference.DataSourceReference]:
@@ -1821,9 +1655,7 @@ class FetchDataSourceReferencesForResourceTypePager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
-        ],
+        method: Callable[..., datasourcereference.FetchDataSourceReferencesForResourceTypeResponse],
         request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
         response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
         *,
@@ -1849,9 +1681,7 @@ class FetchDataSourceReferencesForResourceTypePager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            datasourcereference.FetchDataSourceReferencesForResourceTypeRequest(request)
-        )
+        self._request = datasourcereference.FetchDataSourceReferencesForResourceTypeRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1861,18 +1691,11 @@ class FetchDataSourceReferencesForResourceTypePager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse]:
+    def pages(self) -> Iterator[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[datasourcereference.DataSourceReference]:
@@ -1903,12 +1726,7 @@ class FetchDataSourceReferencesForResourceTypeAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ...,
-            Awaitable[
-                datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
-            ],
-        ],
+        method: Callable[..., Awaitable[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse]],
         request: datasourcereference.FetchDataSourceReferencesForResourceTypeRequest,
         response: datasourcereference.FetchDataSourceReferencesForResourceTypeResponse,
         *,
@@ -1934,9 +1752,7 @@ class FetchDataSourceReferencesForResourceTypeAsyncPager:
                 be of type `bytes`.
         """
         self._method = method
-        self._request = (
-            datasourcereference.FetchDataSourceReferencesForResourceTypeRequest(request)
-        )
+        self._request = datasourcereference.FetchDataSourceReferencesForResourceTypeRequest(request)
         self._response = response
         self._retry = retry
         self._timeout = timeout
@@ -1946,20 +1762,11 @@ class FetchDataSourceReferencesForResourceTypeAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[
-        datasourcereference.FetchDataSourceReferencesForResourceTypeResponse
-    ]:
+    async def pages(self) -> AsyncIterator[datasourcereference.FetchDataSourceReferencesForResourceTypeResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[datasourcereference.DataSourceReference]:

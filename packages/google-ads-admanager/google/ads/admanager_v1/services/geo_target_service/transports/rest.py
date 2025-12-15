@@ -96,12 +96,8 @@ class GeoTargetServiceRestInterceptor:
     """
 
     def pre_get_geo_target(
-        self,
-        request: geo_target_service.GetGeoTargetRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        geo_target_service.GetGeoTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: geo_target_service.GetGeoTargetRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[geo_target_service.GetGeoTargetRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_geo_target
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +105,7 @@ class GeoTargetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_geo_target(
-        self, response: geo_target_messages.GeoTarget
-    ) -> geo_target_messages.GeoTarget:
+    def post_get_geo_target(self, response: geo_target_messages.GeoTarget) -> geo_target_messages.GeoTarget:
         """Post-rpc interceptor for get_geo_target
 
         DEPRECATED. Please use the `post_get_geo_target_with_metadata`
@@ -125,9 +119,7 @@ class GeoTargetServiceRestInterceptor:
         return response
 
     def post_get_geo_target_with_metadata(
-        self,
-        response: geo_target_messages.GeoTarget,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: geo_target_messages.GeoTarget, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[geo_target_messages.GeoTarget, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_geo_target
 
@@ -144,13 +136,8 @@ class GeoTargetServiceRestInterceptor:
         return response, metadata
 
     def pre_list_geo_targets(
-        self,
-        request: geo_target_service.ListGeoTargetsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        geo_target_service.ListGeoTargetsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: geo_target_service.ListGeoTargetsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[geo_target_service.ListGeoTargetsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_geo_targets
 
         Override in a subclass to manipulate the request or metadata
@@ -158,9 +145,7 @@ class GeoTargetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_geo_targets(
-        self, response: geo_target_service.ListGeoTargetsResponse
-    ) -> geo_target_service.ListGeoTargetsResponse:
+    def post_list_geo_targets(self, response: geo_target_service.ListGeoTargetsResponse) -> geo_target_service.ListGeoTargetsResponse:
         """Post-rpc interceptor for list_geo_targets
 
         DEPRECATED. Please use the `post_list_geo_targets_with_metadata`
@@ -174,13 +159,8 @@ class GeoTargetServiceRestInterceptor:
         return response
 
     def post_list_geo_targets_with_metadata(
-        self,
-        response: geo_target_service.ListGeoTargetsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        geo_target_service.ListGeoTargetsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: geo_target_service.ListGeoTargetsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[geo_target_service.ListGeoTargetsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_geo_targets
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -196,12 +176,8 @@ class GeoTargetServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +185,7 @@ class GeoTargetServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -300,30 +274,18 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or GeoTargetServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetGeoTarget(
-        _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget, GeoTargetServiceRestStub
-    ):
+    class _GetGeoTarget(_BaseGeoTargetServiceRestTransport._BaseGetGeoTarget, GeoTargetServiceRestStub):
         def __hash__(self):
             return hash("GeoTargetServiceRestTransport.GetGeoTarget")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -364,26 +326,16 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget._get_http_options()
-            )
+            http_options = _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget._get_http_options()
 
             request, metadata = self._interceptor.pre_get_geo_target(request, metadata)
-            transcoded_request = _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeoTargetServiceRestTransport._BaseGetGeoTarget._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -407,12 +359,7 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             # Send the request
             response = GeoTargetServiceRestTransport._GetGeoTarget._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -428,12 +375,8 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             resp = self._interceptor.post_get_geo_target(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_geo_target_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_geo_target_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = geo_target_messages.GeoTarget.to_json(response)
                 except:
@@ -454,22 +397,12 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
                 )
             return resp
 
-    class _ListGeoTargets(
-        _BaseGeoTargetServiceRestTransport._BaseListGeoTargets, GeoTargetServiceRestStub
-    ):
+    class _ListGeoTargets(_BaseGeoTargetServiceRestTransport._BaseListGeoTargets, GeoTargetServiceRestStub):
         def __hash__(self):
             return hash("GeoTargetServiceRestTransport.ListGeoTargets")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -510,28 +443,16 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseGeoTargetServiceRestTransport._BaseListGeoTargets._get_http_options()
-            )
+            http_options = _BaseGeoTargetServiceRestTransport._BaseListGeoTargets._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_geo_targets(
-                request, metadata
-            )
-            transcoded_request = _BaseGeoTargetServiceRestTransport._BaseListGeoTargets._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_geo_targets(request, metadata)
+            transcoded_request = _BaseGeoTargetServiceRestTransport._BaseListGeoTargets._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGeoTargetServiceRestTransport._BaseListGeoTargets._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeoTargetServiceRestTransport._BaseListGeoTargets._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -555,12 +476,7 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             # Send the request
             response = GeoTargetServiceRestTransport._ListGeoTargets._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -576,16 +492,10 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             resp = self._interceptor.post_list_geo_targets(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_geo_targets_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_geo_targets_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        geo_target_service.ListGeoTargetsResponse.to_json(response)
-                    )
+                    response_payload = geo_target_service.ListGeoTargetsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -605,22 +515,13 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
             return resp
 
     @property
-    def get_geo_target(
-        self,
-    ) -> Callable[
-        [geo_target_service.GetGeoTargetRequest], geo_target_messages.GeoTarget
-    ]:
+    def get_geo_target(self) -> Callable[[geo_target_service.GetGeoTargetRequest], geo_target_messages.GeoTarget]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetGeoTarget(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_geo_targets(
-        self,
-    ) -> Callable[
-        [geo_target_service.ListGeoTargetsRequest],
-        geo_target_service.ListGeoTargetsResponse,
-    ]:
+    def list_geo_targets(self) -> Callable[[geo_target_service.ListGeoTargetsRequest], geo_target_service.ListGeoTargetsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGeoTargets(self._session, self._host, self._interceptor)  # type: ignore
@@ -629,22 +530,12 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseGeoTargetServiceRestTransport._BaseGetOperation, GeoTargetServiceRestStub
-    ):
+    class _GetOperation(_BaseGeoTargetServiceRestTransport._BaseGetOperation, GeoTargetServiceRestStub):
         def __hash__(self):
             return hash("GeoTargetServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -682,26 +573,16 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseGeoTargetServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseGeoTargetServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseGeoTargetServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseGeoTargetServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseGeoTargetServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseGeoTargetServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -725,12 +606,7 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
 
             # Send the request
             response = GeoTargetServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -742,9 +618,7 @@ class GeoTargetServiceRestTransport(_BaseGeoTargetServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

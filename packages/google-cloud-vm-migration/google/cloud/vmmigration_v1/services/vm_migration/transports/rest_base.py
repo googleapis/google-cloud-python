@@ -73,20 +73,14 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseAddGroupMigration:
@@ -97,11 +91,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -124,9 +114,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -137,11 +125,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseAddGroupMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -154,11 +138,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -181,9 +161,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -194,11 +172,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCancelCloneJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -211,11 +185,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -238,9 +208,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -251,11 +219,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -268,11 +232,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -295,9 +255,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -308,11 +266,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -325,11 +279,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -352,9 +302,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -365,11 +313,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -384,11 +328,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -411,9 +351,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -424,11 +362,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateCloneJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -443,11 +377,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -470,9 +400,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -483,11 +411,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -502,11 +426,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -529,9 +449,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -542,11 +460,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -561,11 +475,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -588,9 +498,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -601,11 +509,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -620,11 +524,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -647,9 +547,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -660,11 +558,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -679,11 +573,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -706,9 +596,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -719,11 +607,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateImageImport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateImageImport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -738,11 +622,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -765,9 +645,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -778,11 +656,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -797,11 +671,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -824,9 +694,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -837,11 +705,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -856,11 +720,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -883,9 +743,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -896,11 +754,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateTargetProject._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -915,11 +769,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -942,9 +792,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -955,11 +803,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -972,11 +816,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1002,11 +842,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1019,11 +855,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1049,11 +881,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1066,11 +894,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1096,11 +920,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1113,11 +933,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1143,11 +959,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteImageImport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1160,11 +972,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1190,11 +998,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1207,11 +1011,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1237,11 +1037,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1254,11 +1050,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1284,11 +1076,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1301,11 +1089,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1331,11 +1115,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1348,11 +1128,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1375,9 +1151,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1388,11 +1162,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseExtendMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseExtendMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1405,11 +1175,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1435,11 +1201,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseFetchInventory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseFetchInventory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1454,11 +1216,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1484,11 +1242,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1501,11 +1255,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1528,9 +1278,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1541,11 +1289,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseFinalizeMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1558,11 +1302,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1588,11 +1328,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetCloneJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetCloneJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1605,11 +1341,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1635,11 +1367,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetCutoverJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1652,11 +1380,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1682,11 +1406,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1699,11 +1419,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1729,11 +1445,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1746,11 +1458,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1776,11 +1484,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1793,11 +1497,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1823,11 +1523,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetImageImport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetImageImport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1840,11 +1536,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1870,11 +1562,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetImageImportJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1887,11 +1575,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1917,11 +1601,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetMigratingVm._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1934,11 +1614,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1964,11 +1640,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1981,11 +1653,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2011,11 +1679,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2028,11 +1692,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2058,11 +1718,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetTargetProject._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetTargetProject._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2075,11 +1731,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2105,11 +1757,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2124,11 +1772,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2154,11 +1798,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListCloneJobs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListCloneJobs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2173,11 +1813,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2203,11 +1839,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListCutoverJobs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2222,11 +1854,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2252,11 +1880,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2269,11 +1893,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2299,11 +1919,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2318,11 +1934,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2348,11 +1960,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListGroups._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListGroups._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2365,11 +1973,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2395,11 +1999,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListImageImportJobs._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2412,11 +2012,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2442,11 +2038,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListImageImports._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListImageImports._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2461,11 +2053,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2491,11 +2079,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListMigratingVms._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListMigratingVms._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2510,11 +2094,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2540,11 +2120,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListReplicationCycles._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2559,11 +2135,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2589,11 +2161,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListSources._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListSources._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2608,11 +2176,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2638,11 +2202,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListTargetProjects._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListTargetProjects._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2657,11 +2217,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2687,11 +2243,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseListUtilizationReports._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2704,11 +2256,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2731,9 +2279,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2744,11 +2290,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BasePauseMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BasePauseMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2761,11 +2303,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2788,9 +2326,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2801,11 +2337,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2818,11 +2350,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2845,9 +2373,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2858,11 +2384,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseResumeMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseResumeMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2875,11 +2397,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2902,9 +2420,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2915,11 +2431,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2932,11 +2444,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2959,9 +2467,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2972,11 +2478,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseStartMigration._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseStartMigration._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2989,11 +2491,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3016,9 +2514,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3029,11 +2525,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3046,11 +2538,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3073,9 +2561,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3086,11 +2572,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseUpdateGroup._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseUpdateGroup._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3103,11 +2585,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3130,9 +2608,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3143,11 +2619,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3160,11 +2632,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3187,9 +2655,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3200,11 +2666,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseUpdateSource._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseUpdateSource._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3217,11 +2679,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3244,9 +2702,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3257,11 +2713,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3274,11 +2726,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3301,9 +2749,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3314,11 +2760,7 @@ class _BaseVmMigrationRestTransport(VmMigrationTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

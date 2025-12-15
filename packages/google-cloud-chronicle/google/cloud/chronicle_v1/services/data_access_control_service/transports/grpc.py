@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -219,18 +210,14 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -264,9 +251,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -325,12 +310,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._grpc_channel
 
     @property
-    def create_data_access_label(
-        self,
-    ) -> Callable[
-        [data_access_control.CreateDataAccessLabelRequest],
-        data_access_control.DataAccessLabel,
-    ]:
+    def create_data_access_label(self) -> Callable[[data_access_control.CreateDataAccessLabelRequest], data_access_control.DataAccessLabel]:
         r"""Return a callable for the create data access label method over gRPC.
 
         Creates a data access label.
@@ -360,12 +340,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["create_data_access_label"]
 
     @property
-    def get_data_access_label(
-        self,
-    ) -> Callable[
-        [data_access_control.GetDataAccessLabelRequest],
-        data_access_control.DataAccessLabel,
-    ]:
+    def get_data_access_label(self) -> Callable[[data_access_control.GetDataAccessLabelRequest], data_access_control.DataAccessLabel]:
         r"""Return a callable for the get data access label method over gRPC.
 
         Gets a data access label.
@@ -391,10 +366,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
     @property
     def list_data_access_labels(
         self,
-    ) -> Callable[
-        [data_access_control.ListDataAccessLabelsRequest],
-        data_access_control.ListDataAccessLabelsResponse,
-    ]:
+    ) -> Callable[[data_access_control.ListDataAccessLabelsRequest], data_access_control.ListDataAccessLabelsResponse]:
         r"""Return a callable for the list data access labels method over gRPC.
 
         Lists all data access labels for the customer.
@@ -418,12 +390,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["list_data_access_labels"]
 
     @property
-    def update_data_access_label(
-        self,
-    ) -> Callable[
-        [data_access_control.UpdateDataAccessLabelRequest],
-        data_access_control.DataAccessLabel,
-    ]:
+    def update_data_access_label(self) -> Callable[[data_access_control.UpdateDataAccessLabelRequest], data_access_control.DataAccessLabel]:
         r"""Return a callable for the update data access label method over gRPC.
 
         Updates a data access label.
@@ -447,9 +414,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["update_data_access_label"]
 
     @property
-    def delete_data_access_label(
-        self,
-    ) -> Callable[[data_access_control.DeleteDataAccessLabelRequest], empty_pb2.Empty]:
+    def delete_data_access_label(self) -> Callable[[data_access_control.DeleteDataAccessLabelRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete data access label method over gRPC.
 
         Deletes a data access label. When a label is deleted,
@@ -476,12 +441,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["delete_data_access_label"]
 
     @property
-    def create_data_access_scope(
-        self,
-    ) -> Callable[
-        [data_access_control.CreateDataAccessScopeRequest],
-        data_access_control.DataAccessScope,
-    ]:
+    def create_data_access_scope(self) -> Callable[[data_access_control.CreateDataAccessScopeRequest], data_access_control.DataAccessScope]:
         r"""Return a callable for the create data access scope method over gRPC.
 
         Creates a data access scope.
@@ -511,12 +471,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["create_data_access_scope"]
 
     @property
-    def get_data_access_scope(
-        self,
-    ) -> Callable[
-        [data_access_control.GetDataAccessScopeRequest],
-        data_access_control.DataAccessScope,
-    ]:
+    def get_data_access_scope(self) -> Callable[[data_access_control.GetDataAccessScopeRequest], data_access_control.DataAccessScope]:
         r"""Return a callable for the get data access scope method over gRPC.
 
         Retrieves an existing data access scope.
@@ -542,10 +497,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
     @property
     def list_data_access_scopes(
         self,
-    ) -> Callable[
-        [data_access_control.ListDataAccessScopesRequest],
-        data_access_control.ListDataAccessScopesResponse,
-    ]:
+    ) -> Callable[[data_access_control.ListDataAccessScopesRequest], data_access_control.ListDataAccessScopesResponse]:
         r"""Return a callable for the list data access scopes method over gRPC.
 
         Lists all existing data access scopes for the
@@ -570,12 +522,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["list_data_access_scopes"]
 
     @property
-    def update_data_access_scope(
-        self,
-    ) -> Callable[
-        [data_access_control.UpdateDataAccessScopeRequest],
-        data_access_control.DataAccessScope,
-    ]:
+    def update_data_access_scope(self) -> Callable[[data_access_control.UpdateDataAccessScopeRequest], data_access_control.DataAccessScope]:
         r"""Return a callable for the update data access scope method over gRPC.
 
         Updates a data access scope.
@@ -599,9 +546,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
         return self._stubs["update_data_access_scope"]
 
     @property
-    def delete_data_access_scope(
-        self,
-    ) -> Callable[[data_access_control.DeleteDataAccessScopeRequest], empty_pb2.Empty]:
+    def delete_data_access_scope(self) -> Callable[[data_access_control.DeleteDataAccessScopeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete data access scope method over gRPC.
 
         Deletes a data access scope.
@@ -681,9 +626,7 @@ class DataAccessControlServiceGrpcTransport(DataAccessControlServiceTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

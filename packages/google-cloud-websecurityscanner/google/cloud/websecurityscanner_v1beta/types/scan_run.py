@@ -20,10 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.websecurityscanner_v1beta.types import (
-    scan_run_error_trace,
-    scan_run_warning_trace,
-)
+from google.cloud.websecurityscanner_v1beta.types import scan_run_error_trace, scan_run_warning_trace
 
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1beta",
@@ -170,9 +167,7 @@ class ScanRun(proto.Message):
         number=10,
         message=scan_run_error_trace.ScanRunErrorTrace,
     )
-    warning_traces: MutableSequence[
-        scan_run_warning_trace.ScanRunWarningTrace
-    ] = proto.RepeatedField(
+    warning_traces: MutableSequence[scan_run_warning_trace.ScanRunWarningTrace] = proto.RepeatedField(
         proto.MESSAGE,
         number=11,
         message=scan_run_warning_trace.ScanRunWarningTrace,

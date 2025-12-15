@@ -112,9 +112,7 @@ class ConfidentialComputingRestInterceptor:
     """
 
     def pre_create_challenge(
-        self,
-        request: service.CreateChallengeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: service.CreateChallengeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.CreateChallengeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_challenge
 
@@ -137,9 +135,7 @@ class ConfidentialComputingRestInterceptor:
         return response
 
     def post_create_challenge_with_metadata(
-        self,
-        response: service.Challenge,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: service.Challenge, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[service.Challenge, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_challenge
 
@@ -156,12 +152,8 @@ class ConfidentialComputingRestInterceptor:
         return response, metadata
 
     def pre_verify_attestation(
-        self,
-        request: service.VerifyAttestationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.VerifyAttestationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.VerifyAttestationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.VerifyAttestationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for verify_attestation
 
         Override in a subclass to manipulate the request or metadata
@@ -169,9 +161,7 @@ class ConfidentialComputingRestInterceptor:
         """
         return request, metadata
 
-    def post_verify_attestation(
-        self, response: service.VerifyAttestationResponse
-    ) -> service.VerifyAttestationResponse:
+    def post_verify_attestation(self, response: service.VerifyAttestationResponse) -> service.VerifyAttestationResponse:
         """Post-rpc interceptor for verify_attestation
 
         DEPRECATED. Please use the `post_verify_attestation_with_metadata`
@@ -185,12 +175,8 @@ class ConfidentialComputingRestInterceptor:
         return response
 
     def post_verify_attestation_with_metadata(
-        self,
-        response: service.VerifyAttestationResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.VerifyAttestationResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.VerifyAttestationResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.VerifyAttestationResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for verify_attestation
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -206,12 +192,8 @@ class ConfidentialComputingRestInterceptor:
         return response, metadata
 
     def pre_verify_confidential_gke(
-        self,
-        request: service.VerifyConfidentialGkeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.VerifyConfidentialGkeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.VerifyConfidentialGkeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.VerifyConfidentialGkeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for verify_confidential_gke
 
         Override in a subclass to manipulate the request or metadata
@@ -219,9 +201,7 @@ class ConfidentialComputingRestInterceptor:
         """
         return request, metadata
 
-    def post_verify_confidential_gke(
-        self, response: service.VerifyConfidentialGkeResponse
-    ) -> service.VerifyConfidentialGkeResponse:
+    def post_verify_confidential_gke(self, response: service.VerifyConfidentialGkeResponse) -> service.VerifyConfidentialGkeResponse:
         """Post-rpc interceptor for verify_confidential_gke
 
         DEPRECATED. Please use the `post_verify_confidential_gke_with_metadata`
@@ -235,12 +215,8 @@ class ConfidentialComputingRestInterceptor:
         return response
 
     def post_verify_confidential_gke_with_metadata(
-        self,
-        response: service.VerifyConfidentialGkeResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.VerifyConfidentialGkeResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.VerifyConfidentialGkeResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.VerifyConfidentialGkeResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for verify_confidential_gke
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -256,12 +232,8 @@ class ConfidentialComputingRestInterceptor:
         return response, metadata
 
     def pre_verify_confidential_space(
-        self,
-        request: service.VerifyConfidentialSpaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.VerifyConfidentialSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: service.VerifyConfidentialSpaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.VerifyConfidentialSpaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for verify_confidential_space
 
         Override in a subclass to manipulate the request or metadata
@@ -269,9 +241,7 @@ class ConfidentialComputingRestInterceptor:
         """
         return request, metadata
 
-    def post_verify_confidential_space(
-        self, response: service.VerifyConfidentialSpaceResponse
-    ) -> service.VerifyConfidentialSpaceResponse:
+    def post_verify_confidential_space(self, response: service.VerifyConfidentialSpaceResponse) -> service.VerifyConfidentialSpaceResponse:
         """Post-rpc interceptor for verify_confidential_space
 
         DEPRECATED. Please use the `post_verify_confidential_space_with_metadata`
@@ -285,12 +255,8 @@ class ConfidentialComputingRestInterceptor:
         return response
 
     def post_verify_confidential_space_with_metadata(
-        self,
-        response: service.VerifyConfidentialSpaceResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        service.VerifyConfidentialSpaceResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: service.VerifyConfidentialSpaceResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[service.VerifyConfidentialSpaceResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for verify_confidential_space
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -306,12 +272,8 @@ class ConfidentialComputingRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -319,9 +281,7 @@ class ConfidentialComputingRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -331,12 +291,8 @@ class ConfidentialComputingRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -344,9 +300,7 @@ class ConfidentialComputingRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -435,31 +389,18 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ConfidentialComputingRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateChallenge(
-        _BaseConfidentialComputingRestTransport._BaseCreateChallenge,
-        ConfidentialComputingRestStub,
-    ):
+    class _CreateChallenge(_BaseConfidentialComputingRestTransport._BaseCreateChallenge, ConfidentialComputingRestStub):
         def __hash__(self):
             return hash("ConfidentialComputingRestTransport.CreateChallenge")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -501,32 +442,18 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             """
 
-            http_options = (
-                _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_http_options()
-            )
+            http_options = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_challenge(
-                request, metadata
-            )
-            transcoded_request = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_challenge(request, metadata)
+            transcoded_request = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_transcoded_request(http_options, request)
 
-            body = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfidentialComputingRestTransport._BaseCreateChallenge._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -549,16 +476,8 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 )
 
             # Send the request
-            response = (
-                ConfidentialComputingRestTransport._CreateChallenge._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConfidentialComputingRestTransport._CreateChallenge._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -574,12 +493,8 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             resp = self._interceptor.post_create_challenge(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_challenge_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_challenge_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = service.Challenge.to_json(response)
                 except:
@@ -600,23 +515,12 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 )
             return resp
 
-    class _VerifyAttestation(
-        _BaseConfidentialComputingRestTransport._BaseVerifyAttestation,
-        ConfidentialComputingRestStub,
-    ):
+    class _VerifyAttestation(_BaseConfidentialComputingRestTransport._BaseVerifyAttestation, ConfidentialComputingRestStub):
         def __hash__(self):
             return hash("ConfidentialComputingRestTransport.VerifyAttestation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -662,32 +566,18 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             """
 
-            http_options = (
-                _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_http_options()
-            )
+            http_options = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_http_options()
 
-            request, metadata = self._interceptor.pre_verify_attestation(
-                request, metadata
-            )
-            transcoded_request = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_verify_attestation(request, metadata)
+            transcoded_request = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_transcoded_request(http_options, request)
 
-            body = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfidentialComputingRestTransport._BaseVerifyAttestation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -710,16 +600,8 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 )
 
             # Send the request
-            response = (
-                ConfidentialComputingRestTransport._VerifyAttestation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConfidentialComputingRestTransport._VerifyAttestation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -735,16 +617,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             resp = self._interceptor.post_verify_attestation(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_verify_attestation_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_verify_attestation_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.VerifyAttestationResponse.to_json(
-                        response
-                    )
+                    response_payload = service.VerifyAttestationResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -763,23 +639,12 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 )
             return resp
 
-    class _VerifyConfidentialGke(
-        _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke,
-        ConfidentialComputingRestStub,
-    ):
+    class _VerifyConfidentialGke(_BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke, ConfidentialComputingRestStub):
         def __hash__(self):
             return hash("ConfidentialComputingRestTransport.VerifyConfidentialGke")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -828,32 +693,18 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             """
 
-            http_options = (
-                _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_http_options()
-            )
+            http_options = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_http_options()
 
-            request, metadata = self._interceptor.pre_verify_confidential_gke(
-                request, metadata
-            )
-            transcoded_request = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_verify_confidential_gke(request, metadata)
+            transcoded_request = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_transcoded_request(http_options, request)
 
-            body = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialGke._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -876,16 +727,8 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 )
 
             # Send the request
-            response = (
-                ConfidentialComputingRestTransport._VerifyConfidentialGke._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = ConfidentialComputingRestTransport._VerifyConfidentialGke._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -901,16 +744,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             resp = self._interceptor.post_verify_confidential_gke(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_verify_confidential_gke_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_verify_confidential_gke_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.VerifyConfidentialGkeResponse.to_json(
-                        response
-                    )
+                    response_payload = service.VerifyConfidentialGkeResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -929,23 +766,12 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 )
             return resp
 
-    class _VerifyConfidentialSpace(
-        _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace,
-        ConfidentialComputingRestStub,
-    ):
+    class _VerifyConfidentialSpace(_BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace, ConfidentialComputingRestStub):
         def __hash__(self):
             return hash("ConfidentialComputingRestTransport.VerifyConfidentialSpace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -992,32 +818,18 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             """
 
-            http_options = (
-                _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_http_options()
-            )
+            http_options = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_http_options()
 
-            request, metadata = self._interceptor.pre_verify_confidential_space(
-                request, metadata
-            )
-            transcoded_request = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_verify_confidential_space(request, metadata)
+            transcoded_request = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_transcoded_request(http_options, request)
 
-            body = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfidentialComputingRestTransport._BaseVerifyConfidentialSpace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1041,13 +853,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             # Send the request
             response = ConfidentialComputingRestTransport._VerifyConfidentialSpace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1063,16 +869,10 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             resp = self._interceptor.post_verify_confidential_space(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_verify_confidential_space_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_verify_confidential_space_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = service.VerifyConfidentialSpaceResponse.to_json(
-                        response
-                    )
+                    response_payload = service.VerifyConfidentialSpaceResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1092,40 +892,25 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             return resp
 
     @property
-    def create_challenge(
-        self,
-    ) -> Callable[[service.CreateChallengeRequest], service.Challenge]:
+    def create_challenge(self) -> Callable[[service.CreateChallengeRequest], service.Challenge]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateChallenge(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def verify_attestation(
-        self,
-    ) -> Callable[
-        [service.VerifyAttestationRequest], service.VerifyAttestationResponse
-    ]:
+    def verify_attestation(self) -> Callable[[service.VerifyAttestationRequest], service.VerifyAttestationResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._VerifyAttestation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def verify_confidential_gke(
-        self,
-    ) -> Callable[
-        [service.VerifyConfidentialGkeRequest], service.VerifyConfidentialGkeResponse
-    ]:
+    def verify_confidential_gke(self) -> Callable[[service.VerifyConfidentialGkeRequest], service.VerifyConfidentialGkeResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._VerifyConfidentialGke(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def verify_confidential_space(
-        self,
-    ) -> Callable[
-        [service.VerifyConfidentialSpaceRequest],
-        service.VerifyConfidentialSpaceResponse,
-    ]:
+    def verify_confidential_space(self) -> Callable[[service.VerifyConfidentialSpaceRequest], service.VerifyConfidentialSpaceResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._VerifyConfidentialSpace(self._session, self._host, self._interceptor)  # type: ignore
@@ -1134,23 +919,12 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseConfidentialComputingRestTransport._BaseGetLocation,
-        ConfidentialComputingRestStub,
-    ):
+    class _GetLocation(_BaseConfidentialComputingRestTransport._BaseGetLocation, ConfidentialComputingRestStub):
         def __hash__(self):
             return hash("ConfidentialComputingRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1188,26 +962,16 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseConfidentialComputingRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfidentialComputingRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1231,12 +995,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             # Send the request
             response = ConfidentialComputingRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1248,9 +1007,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1275,23 +1032,12 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseConfidentialComputingRestTransport._BaseListLocations,
-        ConfidentialComputingRestStub,
-    ):
+    class _ListLocations(_BaseConfidentialComputingRestTransport._BaseListLocations, ConfidentialComputingRestStub):
         def __hash__(self):
             return hash("ConfidentialComputingRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1329,26 +1075,16 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseConfidentialComputingRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseConfidentialComputingRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseConfidentialComputingRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseConfidentialComputingRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseConfidentialComputingRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseConfidentialComputingRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1372,12 +1108,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
 
             # Send the request
             response = ConfidentialComputingRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1389,9 +1120,7 @@ class ConfidentialComputingRestTransport(_BaseConfidentialComputingRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

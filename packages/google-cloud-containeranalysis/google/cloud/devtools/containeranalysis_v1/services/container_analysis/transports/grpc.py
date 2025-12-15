@@ -46,9 +46,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -58,10 +56,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -80,11 +75,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -232,18 +223,14 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -277,9 +264,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -338,9 +323,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
         return self._grpc_channel
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the access control policy on the specified note or
@@ -372,9 +355,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
         return self._stubs["set_iam_policy"]
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the access control policy for a note or an occurrence
@@ -406,12 +387,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
         return self._stubs["get_iam_policy"]
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Returns the permissions that a caller has on the specified note
@@ -444,10 +420,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
     @property
     def get_vulnerability_occurrences_summary(
         self,
-    ) -> Callable[
-        [containeranalysis.GetVulnerabilityOccurrencesSummaryRequest],
-        containeranalysis.VulnerabilityOccurrencesSummary,
-    ]:
+    ) -> Callable[[containeranalysis.GetVulnerabilityOccurrencesSummaryRequest], containeranalysis.VulnerabilityOccurrencesSummary]:
         r"""Return a callable for the get vulnerability occurrences
         summary method over gRPC.
 
@@ -465,9 +438,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_vulnerability_occurrences_summary" not in self._stubs:
-            self._stubs[
-                "get_vulnerability_occurrences_summary"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_vulnerability_occurrences_summary"] = self._logged_channel.unary_unary(
                 "/google.devtools.containeranalysis.v1.ContainerAnalysis/GetVulnerabilityOccurrencesSummary",
                 request_serializer=containeranalysis.GetVulnerabilityOccurrencesSummaryRequest.serialize,
                 response_deserializer=containeranalysis.VulnerabilityOccurrencesSummary.deserialize,
@@ -475,11 +446,7 @@ class ContainerAnalysisGrpcTransport(ContainerAnalysisTransport):
         return self._stubs["get_vulnerability_occurrences_summary"]
 
     @property
-    def export_sbom(
-        self,
-    ) -> Callable[
-        [containeranalysis.ExportSBOMRequest], containeranalysis.ExportSBOMResponse
-    ]:
+    def export_sbom(self) -> Callable[[containeranalysis.ExportSBOMRequest], containeranalysis.ExportSBOMResponse]:
         r"""Return a callable for the export sbom method over gRPC.
 
         Generates an SBOM for the given resource.

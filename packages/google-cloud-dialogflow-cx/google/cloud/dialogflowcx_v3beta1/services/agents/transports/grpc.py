@@ -31,9 +31,7 @@ import google.protobuf.message
 import grpc  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dialogflowcx_v3beta1.types import (
-    generative_settings as gcdc_generative_settings,
-)
+from google.cloud.dialogflowcx_v3beta1.types import generative_settings as gcdc_generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import agent
 from google.cloud.dialogflowcx_v3beta1.types import agent as gcdc_agent
 from google.cloud.dialogflowcx_v3beta1.types import generative_settings
@@ -52,9 +50,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -64,10 +60,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -86,11 +79,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -226,18 +215,14 @@ class AgentsGrpcTransport(AgentsTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -271,9 +256,7 @@ class AgentsGrpcTransport(AgentsTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -340,17 +323,13 @@ class AgentsGrpcTransport(AgentsTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_agents(
-        self,
-    ) -> Callable[[agent.ListAgentsRequest], agent.ListAgentsResponse]:
+    def list_agents(self) -> Callable[[agent.ListAgentsRequest], agent.ListAgentsResponse]:
         r"""Return a callable for the list agents method over gRPC.
 
         Returns the list of all agents in the specified
@@ -399,9 +378,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["get_agent"]
 
     @property
-    def create_agent(
-        self,
-    ) -> Callable[[gcdc_agent.CreateAgentRequest], gcdc_agent.Agent]:
+    def create_agent(self) -> Callable[[gcdc_agent.CreateAgentRequest], gcdc_agent.Agent]:
         r"""Return a callable for the create agent method over gRPC.
 
         Creates an agent in the specified location.
@@ -429,9 +406,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["create_agent"]
 
     @property
-    def update_agent(
-        self,
-    ) -> Callable[[gcdc_agent.UpdateAgentRequest], gcdc_agent.Agent]:
+    def update_agent(self) -> Callable[[gcdc_agent.UpdateAgentRequest], gcdc_agent.Agent]:
         r"""Return a callable for the update agent method over gRPC.
 
         Updates the specified agent.
@@ -483,9 +458,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["delete_agent"]
 
     @property
-    def export_agent(
-        self,
-    ) -> Callable[[agent.ExportAgentRequest], operations_pb2.Operation]:
+    def export_agent(self) -> Callable[[agent.ExportAgentRequest], operations_pb2.Operation]:
         r"""Return a callable for the export agent method over gRPC.
 
         Exports the specified agent to a binary file.
@@ -519,9 +492,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["export_agent"]
 
     @property
-    def restore_agent(
-        self,
-    ) -> Callable[[agent.RestoreAgentRequest], operations_pb2.Operation]:
+    def restore_agent(self) -> Callable[[agent.RestoreAgentRequest], operations_pb2.Operation]:
         r"""Return a callable for the restore agent method over gRPC.
 
         Restores the specified agent from a binary file.
@@ -563,9 +534,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["restore_agent"]
 
     @property
-    def validate_agent(
-        self,
-    ) -> Callable[[agent.ValidateAgentRequest], agent.AgentValidationResult]:
+    def validate_agent(self) -> Callable[[agent.ValidateAgentRequest], agent.AgentValidationResult]:
         r"""Return a callable for the validate agent method over gRPC.
 
         Validates the specified agent and creates or updates
@@ -592,9 +561,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["validate_agent"]
 
     @property
-    def get_agent_validation_result(
-        self,
-    ) -> Callable[[agent.GetAgentValidationResultRequest], agent.AgentValidationResult]:
+    def get_agent_validation_result(self) -> Callable[[agent.GetAgentValidationResultRequest], agent.AgentValidationResult]:
         r"""Return a callable for the get agent validation result method over gRPC.
 
         Gets the latest agent validation result. Agent
@@ -611,9 +578,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "get_agent_validation_result" not in self._stubs:
-            self._stubs[
-                "get_agent_validation_result"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["get_agent_validation_result"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/GetAgentValidationResult",
                 request_serializer=agent.GetAgentValidationResultRequest.serialize,
                 response_deserializer=agent.AgentValidationResult.deserialize,
@@ -621,11 +586,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["get_agent_validation_result"]
 
     @property
-    def get_generative_settings(
-        self,
-    ) -> Callable[
-        [agent.GetGenerativeSettingsRequest], generative_settings.GenerativeSettings
-    ]:
+    def get_generative_settings(self) -> Callable[[agent.GetGenerativeSettingsRequest], generative_settings.GenerativeSettings]:
         r"""Return a callable for the get generative settings method over gRPC.
 
         Gets the generative settings for the agent.
@@ -649,12 +610,7 @@ class AgentsGrpcTransport(AgentsTransport):
         return self._stubs["get_generative_settings"]
 
     @property
-    def update_generative_settings(
-        self,
-    ) -> Callable[
-        [agent.UpdateGenerativeSettingsRequest],
-        gcdc_generative_settings.GenerativeSettings,
-    ]:
+    def update_generative_settings(self) -> Callable[[agent.UpdateGenerativeSettingsRequest], gcdc_generative_settings.GenerativeSettings]:
         r"""Return a callable for the update generative settings method over gRPC.
 
         Updates the generative settings for the agent.
@@ -670,9 +626,7 @@ class AgentsGrpcTransport(AgentsTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "update_generative_settings" not in self._stubs:
-            self._stubs[
-                "update_generative_settings"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["update_generative_settings"] = self._logged_channel.unary_unary(
                 "/google.cloud.dialogflow.cx.v3beta1.Agents/UpdateGenerativeSettings",
                 request_serializer=agent.UpdateGenerativeSettingsRequest.serialize,
                 response_deserializer=gcdc_generative_settings.GenerativeSettings.deserialize,
@@ -719,9 +673,7 @@ class AgentsGrpcTransport(AgentsTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -738,9 +690,7 @@ class AgentsGrpcTransport(AgentsTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.

@@ -95,13 +95,8 @@ class AddressValidationRestInterceptor:
     """
 
     def pre_provide_validation_feedback(
-        self,
-        request: address_validation_service.ProvideValidationFeedbackRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_validation_service.ProvideValidationFeedbackRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: address_validation_service.ProvideValidationFeedbackRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_validation_service.ProvideValidationFeedbackRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for provide_validation_feedback
 
         Override in a subclass to manipulate the request or metadata
@@ -125,13 +120,8 @@ class AddressValidationRestInterceptor:
         return response
 
     def post_provide_validation_feedback_with_metadata(
-        self,
-        response: address_validation_service.ProvideValidationFeedbackResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_validation_service.ProvideValidationFeedbackResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: address_validation_service.ProvideValidationFeedbackResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_validation_service.ProvideValidationFeedbackResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for provide_validation_feedback
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -147,13 +137,8 @@ class AddressValidationRestInterceptor:
         return response, metadata
 
     def pre_validate_address(
-        self,
-        request: address_validation_service.ValidateAddressRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_validation_service.ValidateAddressRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: address_validation_service.ValidateAddressRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_validation_service.ValidateAddressRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for validate_address
 
         Override in a subclass to manipulate the request or metadata
@@ -177,13 +162,8 @@ class AddressValidationRestInterceptor:
         return response
 
     def post_validate_address_with_metadata(
-        self,
-        response: address_validation_service.ValidateAddressResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        address_validation_service.ValidateAddressResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: address_validation_service.ValidateAddressResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[address_validation_service.ValidateAddressResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for validate_address
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -278,31 +258,18 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AddressValidationRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _ProvideValidationFeedback(
-        _BaseAddressValidationRestTransport._BaseProvideValidationFeedback,
-        AddressValidationRestStub,
-    ):
+    class _ProvideValidationFeedback(_BaseAddressValidationRestTransport._BaseProvideValidationFeedback, AddressValidationRestStub):
         def __hash__(self):
             return hash("AddressValidationRestTransport.ProvideValidationFeedback")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -348,32 +315,18 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_http_options()
-            )
+            http_options = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_http_options()
 
-            request, metadata = self._interceptor.pre_provide_validation_feedback(
-                request, metadata
-            )
-            transcoded_request = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_provide_validation_feedback(request, metadata)
+            transcoded_request = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_transcoded_request(http_options, request)
 
-            body = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAddressValidationRestTransport._BaseProvideValidationFeedback._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -396,16 +349,8 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
                 )
 
             # Send the request
-            response = (
-                AddressValidationRestTransport._ProvideValidationFeedback._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AddressValidationRestTransport._ProvideValidationFeedback._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -415,24 +360,16 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
 
             # Return the response
             resp = address_validation_service.ProvideValidationFeedbackResponse()
-            pb_resp = address_validation_service.ProvideValidationFeedbackResponse.pb(
-                resp
-            )
+            pb_resp = address_validation_service.ProvideValidationFeedbackResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_provide_validation_feedback(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_provide_validation_feedback_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_provide_validation_feedback_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = address_validation_service.ProvideValidationFeedbackResponse.to_json(
-                        response
-                    )
+                    response_payload = address_validation_service.ProvideValidationFeedbackResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -451,23 +388,12 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
                 )
             return resp
 
-    class _ValidateAddress(
-        _BaseAddressValidationRestTransport._BaseValidateAddress,
-        AddressValidationRestStub,
-    ):
+    class _ValidateAddress(_BaseAddressValidationRestTransport._BaseValidateAddress, AddressValidationRestStub):
         def __hash__(self):
             return hash("AddressValidationRestTransport.ValidateAddress")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -510,32 +436,18 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
 
             """
 
-            http_options = (
-                _BaseAddressValidationRestTransport._BaseValidateAddress._get_http_options()
-            )
+            http_options = _BaseAddressValidationRestTransport._BaseValidateAddress._get_http_options()
 
-            request, metadata = self._interceptor.pre_validate_address(
-                request, metadata
-            )
-            transcoded_request = _BaseAddressValidationRestTransport._BaseValidateAddress._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_validate_address(request, metadata)
+            transcoded_request = _BaseAddressValidationRestTransport._BaseValidateAddress._get_transcoded_request(http_options, request)
 
-            body = _BaseAddressValidationRestTransport._BaseValidateAddress._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAddressValidationRestTransport._BaseValidateAddress._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAddressValidationRestTransport._BaseValidateAddress._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAddressValidationRestTransport._BaseValidateAddress._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -559,13 +471,7 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
 
             # Send the request
             response = AddressValidationRestTransport._ValidateAddress._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -581,18 +487,10 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
 
             resp = self._interceptor.post_validate_address(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_validate_address_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_validate_address_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        address_validation_service.ValidateAddressResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = address_validation_service.ValidateAddressResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -614,21 +512,13 @@ class AddressValidationRestTransport(_BaseAddressValidationRestTransport):
     @property
     def provide_validation_feedback(
         self,
-    ) -> Callable[
-        [address_validation_service.ProvideValidationFeedbackRequest],
-        address_validation_service.ProvideValidationFeedbackResponse,
-    ]:
+    ) -> Callable[[address_validation_service.ProvideValidationFeedbackRequest], address_validation_service.ProvideValidationFeedbackResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ProvideValidationFeedback(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def validate_address(
-        self,
-    ) -> Callable[
-        [address_validation_service.ValidateAddressRequest],
-        address_validation_service.ValidateAddressResponse,
-    ]:
+    def validate_address(self) -> Callable[[address_validation_service.ValidateAddressRequest], address_validation_service.ValidateAddressResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ValidateAddress(self._session, self._host, self._interceptor)  # type: ignore

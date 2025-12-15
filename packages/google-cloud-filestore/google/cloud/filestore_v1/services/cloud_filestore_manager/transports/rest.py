@@ -225,13 +225,8 @@ class CloudFilestoreManagerRestInterceptor:
     """
 
     def pre_create_backup(
-        self,
-        request: cloud_filestore_service.CreateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.CreateBackupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.CreateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.CreateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -239,9 +234,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_backup
 
         DEPRECATED. Please use the `post_create_backup_with_metadata`
@@ -255,9 +248,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_create_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_backup
 
@@ -274,13 +265,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_create_instance(
-        self,
-        request: cloud_filestore_service.CreateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.CreateInstanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.CreateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.CreateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -288,9 +274,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_instance
 
         DEPRECATED. Please use the `post_create_instance_with_metadata`
@@ -304,9 +288,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_create_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_instance
 
@@ -323,13 +305,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_create_snapshot(
-        self,
-        request: cloud_filestore_service.CreateSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.CreateSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.CreateSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.CreateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -337,9 +314,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_create_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_snapshot
 
         DEPRECATED. Please use the `post_create_snapshot_with_metadata`
@@ -353,9 +328,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_create_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_snapshot
 
@@ -372,13 +345,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_backup(
-        self,
-        request: cloud_filestore_service.DeleteBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.DeleteBackupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.DeleteBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.DeleteBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -386,9 +354,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_backup
 
         DEPRECATED. Please use the `post_delete_backup_with_metadata`
@@ -402,9 +368,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_delete_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_backup
 
@@ -421,13 +385,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_instance(
-        self,
-        request: cloud_filestore_service.DeleteInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.DeleteInstanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.DeleteInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.DeleteInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -435,9 +394,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_instance
 
         DEPRECATED. Please use the `post_delete_instance_with_metadata`
@@ -451,9 +408,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_delete_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_instance
 
@@ -470,13 +425,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_delete_snapshot(
-        self,
-        request: cloud_filestore_service.DeleteSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.DeleteSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.DeleteSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.DeleteSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -484,9 +434,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_snapshot
 
         DEPRECATED. Please use the `post_delete_snapshot_with_metadata`
@@ -500,9 +448,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_delete_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_snapshot
 
@@ -519,13 +465,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_get_backup(
-        self,
-        request: cloud_filestore_service.GetBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.GetBackupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.GetBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.GetBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -533,9 +474,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_backup(
-        self, response: cloud_filestore_service.Backup
-    ) -> cloud_filestore_service.Backup:
+    def post_get_backup(self, response: cloud_filestore_service.Backup) -> cloud_filestore_service.Backup:
         """Post-rpc interceptor for get_backup
 
         DEPRECATED. Please use the `post_get_backup_with_metadata`
@@ -549,9 +488,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_get_backup_with_metadata(
-        self,
-        response: cloud_filestore_service.Backup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: cloud_filestore_service.Backup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[cloud_filestore_service.Backup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_backup
 
@@ -568,13 +505,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_get_instance(
-        self,
-        request: cloud_filestore_service.GetInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.GetInstanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.GetInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.GetInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -582,9 +514,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_instance(
-        self, response: cloud_filestore_service.Instance
-    ) -> cloud_filestore_service.Instance:
+    def post_get_instance(self, response: cloud_filestore_service.Instance) -> cloud_filestore_service.Instance:
         """Post-rpc interceptor for get_instance
 
         DEPRECATED. Please use the `post_get_instance_with_metadata`
@@ -598,12 +528,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_get_instance_with_metadata(
-        self,
-        response: cloud_filestore_service.Instance,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.Instance, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_filestore_service.Instance, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.Instance, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_instance
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -619,13 +545,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_get_snapshot(
-        self,
-        request: cloud_filestore_service.GetSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.GetSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.GetSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.GetSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -633,9 +554,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_snapshot(
-        self, response: cloud_filestore_service.Snapshot
-    ) -> cloud_filestore_service.Snapshot:
+    def post_get_snapshot(self, response: cloud_filestore_service.Snapshot) -> cloud_filestore_service.Snapshot:
         """Post-rpc interceptor for get_snapshot
 
         DEPRECATED. Please use the `post_get_snapshot_with_metadata`
@@ -649,12 +568,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_get_snapshot_with_metadata(
-        self,
-        response: cloud_filestore_service.Snapshot,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.Snapshot, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: cloud_filestore_service.Snapshot, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.Snapshot, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_snapshot
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -670,13 +585,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_list_backups(
-        self,
-        request: cloud_filestore_service.ListBackupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.ListBackupsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.ListBackupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.ListBackupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_backups
 
         Override in a subclass to manipulate the request or metadata
@@ -684,9 +594,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_backups(
-        self, response: cloud_filestore_service.ListBackupsResponse
-    ) -> cloud_filestore_service.ListBackupsResponse:
+    def post_list_backups(self, response: cloud_filestore_service.ListBackupsResponse) -> cloud_filestore_service.ListBackupsResponse:
         """Post-rpc interceptor for list_backups
 
         DEPRECATED. Please use the `post_list_backups_with_metadata`
@@ -700,13 +608,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_list_backups_with_metadata(
-        self,
-        response: cloud_filestore_service.ListBackupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.ListBackupsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_filestore_service.ListBackupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.ListBackupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_backups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -722,13 +625,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_list_instances(
-        self,
-        request: cloud_filestore_service.ListInstancesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.ListInstancesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.ListInstancesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.ListInstancesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_instances
 
         Override in a subclass to manipulate the request or metadata
@@ -736,9 +634,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_instances(
-        self, response: cloud_filestore_service.ListInstancesResponse
-    ) -> cloud_filestore_service.ListInstancesResponse:
+    def post_list_instances(self, response: cloud_filestore_service.ListInstancesResponse) -> cloud_filestore_service.ListInstancesResponse:
         """Post-rpc interceptor for list_instances
 
         DEPRECATED. Please use the `post_list_instances_with_metadata`
@@ -752,13 +648,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_list_instances_with_metadata(
-        self,
-        response: cloud_filestore_service.ListInstancesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.ListInstancesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_filestore_service.ListInstancesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.ListInstancesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_instances
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -774,13 +665,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_list_snapshots(
-        self,
-        request: cloud_filestore_service.ListSnapshotsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.ListSnapshotsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.ListSnapshotsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.ListSnapshotsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_snapshots
 
         Override in a subclass to manipulate the request or metadata
@@ -788,9 +674,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_snapshots(
-        self, response: cloud_filestore_service.ListSnapshotsResponse
-    ) -> cloud_filestore_service.ListSnapshotsResponse:
+    def post_list_snapshots(self, response: cloud_filestore_service.ListSnapshotsResponse) -> cloud_filestore_service.ListSnapshotsResponse:
         """Post-rpc interceptor for list_snapshots
 
         DEPRECATED. Please use the `post_list_snapshots_with_metadata`
@@ -804,13 +688,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_list_snapshots_with_metadata(
-        self,
-        response: cloud_filestore_service.ListSnapshotsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.ListSnapshotsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: cloud_filestore_service.ListSnapshotsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.ListSnapshotsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_snapshots
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -826,13 +705,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_promote_replica(
-        self,
-        request: cloud_filestore_service.PromoteReplicaRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.PromoteReplicaRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.PromoteReplicaRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.PromoteReplicaRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for promote_replica
 
         Override in a subclass to manipulate the request or metadata
@@ -840,9 +714,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_promote_replica(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_promote_replica(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for promote_replica
 
         DEPRECATED. Please use the `post_promote_replica_with_metadata`
@@ -856,9 +728,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_promote_replica_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for promote_replica
 
@@ -875,13 +745,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_restore_instance(
-        self,
-        request: cloud_filestore_service.RestoreInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.RestoreInstanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.RestoreInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.RestoreInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for restore_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -889,9 +754,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_restore_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_restore_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for restore_instance
 
         DEPRECATED. Please use the `post_restore_instance_with_metadata`
@@ -905,9 +768,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_restore_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for restore_instance
 
@@ -924,13 +785,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_revert_instance(
-        self,
-        request: cloud_filestore_service.RevertInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.RevertInstanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.RevertInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.RevertInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for revert_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -938,9 +794,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_revert_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_revert_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for revert_instance
 
         DEPRECATED. Please use the `post_revert_instance_with_metadata`
@@ -954,9 +808,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_revert_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for revert_instance
 
@@ -973,13 +825,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_update_backup(
-        self,
-        request: cloud_filestore_service.UpdateBackupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.UpdateBackupRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.UpdateBackupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.UpdateBackupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_backup
 
         Override in a subclass to manipulate the request or metadata
@@ -987,9 +834,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_backup(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_backup(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_backup
 
         DEPRECATED. Please use the `post_update_backup_with_metadata`
@@ -1003,9 +848,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_update_backup_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_backup
 
@@ -1022,13 +865,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_update_instance(
-        self,
-        request: cloud_filestore_service.UpdateInstanceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.UpdateInstanceRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.UpdateInstanceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.UpdateInstanceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_instance
 
         Override in a subclass to manipulate the request or metadata
@@ -1036,9 +874,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_instance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_instance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_instance
 
         DEPRECATED. Please use the `post_update_instance_with_metadata`
@@ -1052,9 +888,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_update_instance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_instance
 
@@ -1071,13 +905,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_update_snapshot(
-        self,
-        request: cloud_filestore_service.UpdateSnapshotRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        cloud_filestore_service.UpdateSnapshotRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: cloud_filestore_service.UpdateSnapshotRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[cloud_filestore_service.UpdateSnapshotRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_snapshot
 
         Override in a subclass to manipulate the request or metadata
@@ -1085,9 +914,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_update_snapshot(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_snapshot(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_snapshot
 
         DEPRECATED. Please use the `post_update_snapshot_with_metadata`
@@ -1101,9 +928,7 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def post_update_snapshot_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_snapshot
 
@@ -1120,12 +945,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1133,9 +954,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1145,12 +964,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1158,9 +973,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1170,12 +983,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1193,12 +1002,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1216,12 +1021,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1229,9 +1030,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1241,12 +1040,8 @@ class CloudFilestoreManagerRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1254,9 +1049,7 @@ class CloudFilestoreManagerRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1367,9 +1160,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1422,30 +1213,17 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateBackup(
-        _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _CreateBackup(_BaseCloudFilestoreManagerRestTransport._BaseCreateBackup, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.CreateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1488,30 +1266,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1535,13 +1301,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._CreateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1555,12 +1315,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_create_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1581,23 +1337,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _CreateInstance(
-        _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _CreateInstance(_BaseCloudFilestoreManagerRestTransport._BaseCreateInstance, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.CreateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1641,30 +1386,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_create_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1688,13 +1421,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._CreateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1708,12 +1435,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_create_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1734,23 +1457,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _CreateSnapshot(
-        _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _CreateSnapshot(_BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.CreateSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1794,30 +1506,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_create_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCreateSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1841,13 +1541,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._CreateSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1861,12 +1555,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_create_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1887,23 +1577,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _DeleteBackup(
-        _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _DeleteBackup(_BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.DeleteBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1945,26 +1624,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1988,12 +1657,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._DeleteBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2007,12 +1671,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_delete_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2033,23 +1693,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _DeleteInstance(
-        _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _DeleteInstance(_BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.DeleteInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2092,26 +1741,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2135,12 +1774,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._DeleteInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2154,12 +1788,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_delete_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2180,23 +1810,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _DeleteSnapshot(
-        _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _DeleteSnapshot(_BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.DeleteSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2239,26 +1858,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2282,12 +1891,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._DeleteSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2301,12 +1905,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_delete_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2327,23 +1927,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _GetBackup(
-        _BaseCloudFilestoreManagerRestTransport._BaseGetBackup,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _GetBackup(_BaseCloudFilestoreManagerRestTransport._BaseGetBackup, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.GetBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2383,26 +1972,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     A Filestore backup.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2426,12 +2005,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2447,12 +2021,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_get_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = cloud_filestore_service.Backup.to_json(response)
                 except:
@@ -2473,23 +2043,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _GetInstance(
-        _BaseCloudFilestoreManagerRestTransport._BaseGetInstance,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _GetInstance(_BaseCloudFilestoreManagerRestTransport._BaseGetInstance, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.GetInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2529,26 +2088,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     A Filestore instance.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_get_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2572,12 +2121,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2593,16 +2137,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_get_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_filestore_service.Instance.to_json(
-                        response
-                    )
+                    response_payload = cloud_filestore_service.Instance.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2621,23 +2159,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _GetSnapshot(
-        _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _GetSnapshot(_BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.GetSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2677,26 +2204,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     A Filestore snapshot.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_get_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2720,12 +2237,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2741,16 +2253,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_get_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = cloud_filestore_service.Snapshot.to_json(
-                        response
-                    )
+                    response_payload = cloud_filestore_service.Snapshot.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2769,23 +2275,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _ListBackups(
-        _BaseCloudFilestoreManagerRestTransport._BaseListBackups,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _ListBackups(_BaseCloudFilestoreManagerRestTransport._BaseListBackups, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.ListBackups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2826,26 +2321,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_backups(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListBackups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2869,12 +2354,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListBackups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2890,16 +2370,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_list_backups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_backups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_backups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_filestore_service.ListBackupsResponse.to_json(response)
-                    )
+                    response_payload = cloud_filestore_service.ListBackupsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2918,23 +2392,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _ListInstances(
-        _BaseCloudFilestoreManagerRestTransport._BaseListInstances,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _ListInstances(_BaseCloudFilestoreManagerRestTransport._BaseListInstances, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.ListInstances")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2975,26 +2438,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_http_options()
 
             request, metadata = self._interceptor.pre_list_instances(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListInstances._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3018,12 +2471,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListInstances._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3039,16 +2487,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_list_instances(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_instances_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_instances_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_filestore_service.ListInstancesResponse.to_json(response)
-                    )
+                    response_payload = cloud_filestore_service.ListInstancesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3067,23 +2509,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _ListSnapshots(
-        _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _ListSnapshots(_BaseCloudFilestoreManagerRestTransport._BaseListSnapshots, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.ListSnapshots")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3124,26 +2555,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_http_options()
 
             request, metadata = self._interceptor.pre_list_snapshots(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListSnapshots._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3167,12 +2588,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListSnapshots._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3188,16 +2604,10 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_list_snapshots(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_snapshots_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_snapshots_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        cloud_filestore_service.ListSnapshotsResponse.to_json(response)
-                    )
+                    response_payload = cloud_filestore_service.ListSnapshotsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -3216,23 +2626,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _PromoteReplica(
-        _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _PromoteReplica(_BaseCloudFilestoreManagerRestTransport._BasePromoteReplica, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.PromoteReplica")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3276,30 +2675,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_http_options()
 
             request, metadata = self._interceptor.pre_promote_replica(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BasePromoteReplica._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3323,13 +2710,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._PromoteReplica._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3343,12 +2724,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_promote_replica(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_promote_replica_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_promote_replica_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3369,23 +2746,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _RestoreInstance(
-        _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _RestoreInstance(_BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.RestoreInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3430,32 +2796,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_http_options()
 
-            request, metadata = self._interceptor.pre_restore_instance(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_restore_instance(request, metadata)
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseRestoreInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3478,16 +2830,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
 
             # Send the request
-            response = (
-                CloudFilestoreManagerRestTransport._RestoreInstance._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CloudFilestoreManagerRestTransport._RestoreInstance._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3501,12 +2845,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_restore_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_restore_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_restore_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3527,23 +2867,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _RevertInstance(
-        _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _RevertInstance(_BaseCloudFilestoreManagerRestTransport._BaseRevertInstance, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.RevertInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3588,30 +2917,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_revert_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseRevertInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3635,13 +2952,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._RevertInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3655,12 +2966,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_revert_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_revert_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_revert_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3681,23 +2988,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _UpdateBackup(
-        _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _UpdateBackup(_BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.UpdateBackup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3741,30 +3037,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_backup(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateBackup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3788,13 +3072,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._UpdateBackup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3808,12 +3086,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_update_backup(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_backup_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_backup_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3834,23 +3108,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _UpdateInstance(
-        _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _UpdateInstance(_BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.UpdateInstance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3894,30 +3157,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_http_options()
 
             request, metadata = self._interceptor.pre_update_instance(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateInstance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3941,13 +3192,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._UpdateInstance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3961,12 +3206,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_update_instance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_instance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_instance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3987,23 +3228,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
             return resp
 
-    class _UpdateSnapshot(
-        _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _UpdateSnapshot(_BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.UpdateSnapshot")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4048,30 +3278,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_http_options()
 
             request, metadata = self._interceptor.pre_update_snapshot(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseUpdateSnapshot._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4095,13 +3313,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._UpdateSnapshot._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4115,12 +3327,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             resp = self._interceptor.post_update_snapshot(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_snapshot_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_snapshot_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4142,184 +3350,109 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             return resp
 
     @property
-    def create_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateBackupRequest], operations_pb2.Operation
-    ]:
+    def create_backup(self) -> Callable[[cloud_filestore_service.CreateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateInstanceRequest], operations_pb2.Operation
-    ]:
+    def create_instance(self) -> Callable[[cloud_filestore_service.CreateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.CreateSnapshotRequest], operations_pb2.Operation
-    ]:
+    def create_snapshot(self) -> Callable[[cloud_filestore_service.CreateSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteBackupRequest], operations_pb2.Operation
-    ]:
+    def delete_backup(self) -> Callable[[cloud_filestore_service.DeleteBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteInstanceRequest], operations_pb2.Operation
-    ]:
+    def delete_instance(self) -> Callable[[cloud_filestore_service.DeleteInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.DeleteSnapshotRequest], operations_pb2.Operation
-    ]:
+    def delete_snapshot(self) -> Callable[[cloud_filestore_service.DeleteSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.GetBackupRequest], cloud_filestore_service.Backup
-    ]:
+    def get_backup(self) -> Callable[[cloud_filestore_service.GetBackupRequest], cloud_filestore_service.Backup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.GetInstanceRequest], cloud_filestore_service.Instance
-    ]:
+    def get_instance(self) -> Callable[[cloud_filestore_service.GetInstanceRequest], cloud_filestore_service.Instance]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.GetSnapshotRequest], cloud_filestore_service.Snapshot
-    ]:
+    def get_snapshot(self) -> Callable[[cloud_filestore_service.GetSnapshotRequest], cloud_filestore_service.Snapshot]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSnapshot(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_backups(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.ListBackupsRequest],
-        cloud_filestore_service.ListBackupsResponse,
-    ]:
+    def list_backups(self) -> Callable[[cloud_filestore_service.ListBackupsRequest], cloud_filestore_service.ListBackupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBackups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_instances(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.ListInstancesRequest],
-        cloud_filestore_service.ListInstancesResponse,
-    ]:
+    def list_instances(self) -> Callable[[cloud_filestore_service.ListInstancesRequest], cloud_filestore_service.ListInstancesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListInstances(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_snapshots(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.ListSnapshotsRequest],
-        cloud_filestore_service.ListSnapshotsResponse,
-    ]:
+    def list_snapshots(self) -> Callable[[cloud_filestore_service.ListSnapshotsRequest], cloud_filestore_service.ListSnapshotsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSnapshots(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def promote_replica(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.PromoteReplicaRequest], operations_pb2.Operation
-    ]:
+    def promote_replica(self) -> Callable[[cloud_filestore_service.PromoteReplicaRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PromoteReplica(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def restore_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.RestoreInstanceRequest], operations_pb2.Operation
-    ]:
+    def restore_instance(self) -> Callable[[cloud_filestore_service.RestoreInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RestoreInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def revert_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.RevertInstanceRequest], operations_pb2.Operation
-    ]:
+    def revert_instance(self) -> Callable[[cloud_filestore_service.RevertInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RevertInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_backup(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateBackupRequest], operations_pb2.Operation
-    ]:
+    def update_backup(self) -> Callable[[cloud_filestore_service.UpdateBackupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateBackup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_instance(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateInstanceRequest], operations_pb2.Operation
-    ]:
+    def update_instance(self) -> Callable[[cloud_filestore_service.UpdateInstanceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateInstance(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_snapshot(
-        self,
-    ) -> Callable[
-        [cloud_filestore_service.UpdateSnapshotRequest], operations_pb2.Operation
-    ]:
+    def update_snapshot(self) -> Callable[[cloud_filestore_service.UpdateSnapshotRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSnapshot(self._session, self._host, self._interceptor)  # type: ignore
@@ -4328,23 +3461,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCloudFilestoreManagerRestTransport._BaseGetLocation,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _GetLocation(_BaseCloudFilestoreManagerRestTransport._BaseGetLocation, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4382,26 +3504,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4425,12 +3537,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4442,9 +3549,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4469,23 +3574,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCloudFilestoreManagerRestTransport._BaseListLocations,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _ListLocations(_BaseCloudFilestoreManagerRestTransport._BaseListLocations, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4523,26 +3617,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4566,12 +3650,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4583,9 +3662,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4610,23 +3687,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _CancelOperation(_BaseCloudFilestoreManagerRestTransport._BaseCancelOperation, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4662,32 +3728,18 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4710,16 +3762,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
 
             # Send the request
-            response = (
-                CloudFilestoreManagerRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = CloudFilestoreManagerRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4733,23 +3777,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _DeleteOperation(_BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4784,28 +3817,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4828,15 +3849,8 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 )
 
             # Send the request
-            response = (
-                CloudFilestoreManagerRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = CloudFilestoreManagerRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4850,23 +3864,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCloudFilestoreManagerRestTransport._BaseGetOperation,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _GetOperation(_BaseCloudFilestoreManagerRestTransport._BaseGetOperation, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4904,26 +3907,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4947,12 +3940,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4964,9 +3952,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4991,23 +3977,12 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCloudFilestoreManagerRestTransport._BaseListOperations,
-        CloudFilestoreManagerRestStub,
-    ):
+    class _ListOperations(_BaseCloudFilestoreManagerRestTransport._BaseListOperations, CloudFilestoreManagerRestStub):
         def __hash__(self):
             return hash("CloudFilestoreManagerRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5045,26 +4020,16 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCloudFilestoreManagerRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5088,12 +4053,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
 
             # Send the request
             response = CloudFilestoreManagerRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5105,9 +4065,7 @@ class CloudFilestoreManagerRestTransport(_BaseCloudFilestoreManagerRestTransport
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

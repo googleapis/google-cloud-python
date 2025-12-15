@@ -336,9 +336,7 @@ class Experiment(proto.Message):
                 number=3,
             )
 
-        version_metrics: MutableSequence[
-            "Experiment.Result.VersionMetrics"
-        ] = proto.RepeatedField(
+        version_metrics: MutableSequence["Experiment.Result.VersionMetrics"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="Experiment.Result.VersionMetrics",

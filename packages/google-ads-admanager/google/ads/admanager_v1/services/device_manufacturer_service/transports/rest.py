@@ -29,10 +29,7 @@ import google.protobuf
 from google.protobuf import json_format
 from requests import __version__ as requests_version
 
-from google.ads.admanager_v1.types import (
-    device_manufacturer_messages,
-    device_manufacturer_service,
-)
+from google.ads.admanager_v1.types import device_manufacturer_messages, device_manufacturer_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .rest_base import _BaseDeviceManufacturerServiceRestTransport
@@ -99,13 +96,8 @@ class DeviceManufacturerServiceRestInterceptor:
     """
 
     def pre_get_device_manufacturer(
-        self,
-        request: device_manufacturer_service.GetDeviceManufacturerRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_manufacturer_service.GetDeviceManufacturerRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: device_manufacturer_service.GetDeviceManufacturerRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_manufacturer_service.GetDeviceManufacturerRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_device_manufacturer
 
         Override in a subclass to manipulate the request or metadata
@@ -129,13 +121,8 @@ class DeviceManufacturerServiceRestInterceptor:
         return response
 
     def post_get_device_manufacturer_with_metadata(
-        self,
-        response: device_manufacturer_messages.DeviceManufacturer,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_manufacturer_messages.DeviceManufacturer,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: device_manufacturer_messages.DeviceManufacturer, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_manufacturer_messages.DeviceManufacturer, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_device_manufacturer
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -151,13 +138,8 @@ class DeviceManufacturerServiceRestInterceptor:
         return response, metadata
 
     def pre_list_device_manufacturers(
-        self,
-        request: device_manufacturer_service.ListDeviceManufacturersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_manufacturer_service.ListDeviceManufacturersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: device_manufacturer_service.ListDeviceManufacturersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_manufacturer_service.ListDeviceManufacturersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_device_manufacturers
 
         Override in a subclass to manipulate the request or metadata
@@ -181,13 +163,8 @@ class DeviceManufacturerServiceRestInterceptor:
         return response
 
     def post_list_device_manufacturers_with_metadata(
-        self,
-        response: device_manufacturer_service.ListDeviceManufacturersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        device_manufacturer_service.ListDeviceManufacturersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: device_manufacturer_service.ListDeviceManufacturersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[device_manufacturer_service.ListDeviceManufacturersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_device_manufacturers
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -203,12 +180,8 @@ class DeviceManufacturerServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -216,9 +189,7 @@ class DeviceManufacturerServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -235,9 +206,7 @@ class DeviceManufacturerServiceRestStub:
     _interceptor: DeviceManufacturerServiceRestInterceptor
 
 
-class DeviceManufacturerServiceRestTransport(
-    _BaseDeviceManufacturerServiceRestTransport
-):
+class DeviceManufacturerServiceRestTransport(_BaseDeviceManufacturerServiceRestTransport):
     """REST backend synchronous transport for DeviceManufacturerService.
 
     Provides methods for handling ``DeviceManufacturer`` objects.
@@ -309,31 +278,18 @@ class DeviceManufacturerServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or DeviceManufacturerServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetDeviceManufacturer(
-        _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer,
-        DeviceManufacturerServiceRestStub,
-    ):
+    class _GetDeviceManufacturer(_BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer, DeviceManufacturerServiceRestStub):
         def __hash__(self):
             return hash("DeviceManufacturerServiceRestTransport.GetDeviceManufacturer")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -372,28 +328,16 @@ class DeviceManufacturerServiceRestTransport(
                     Represents a device manufacturer.
             """
 
-            http_options = (
-                _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_http_options()
-            )
+            http_options = _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_device_manufacturer(
-                request, metadata
-            )
-            transcoded_request = _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_device_manufacturer(request, metadata)
+            transcoded_request = _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeviceManufacturerServiceRestTransport._BaseGetDeviceManufacturer._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -417,12 +361,7 @@ class DeviceManufacturerServiceRestTransport(
 
             # Send the request
             response = DeviceManufacturerServiceRestTransport._GetDeviceManufacturer._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -438,18 +377,10 @@ class DeviceManufacturerServiceRestTransport(
 
             resp = self._interceptor.post_get_device_manufacturer(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_device_manufacturer_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_device_manufacturer_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        device_manufacturer_messages.DeviceManufacturer.to_json(
-                            response
-                        )
-                    )
+                    response_payload = device_manufacturer_messages.DeviceManufacturer.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -468,25 +399,12 @@ class DeviceManufacturerServiceRestTransport(
                 )
             return resp
 
-    class _ListDeviceManufacturers(
-        _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers,
-        DeviceManufacturerServiceRestStub,
-    ):
+    class _ListDeviceManufacturers(_BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers, DeviceManufacturerServiceRestStub):
         def __hash__(self):
-            return hash(
-                "DeviceManufacturerServiceRestTransport.ListDeviceManufacturers"
-            )
+            return hash("DeviceManufacturerServiceRestTransport.ListDeviceManufacturers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -527,28 +445,18 @@ class DeviceManufacturerServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_http_options()
-            )
+            http_options = _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_device_manufacturers(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_device_manufacturers(request, metadata)
             transcoded_request = _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeviceManufacturerServiceRestTransport._BaseListDeviceManufacturers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -572,12 +480,7 @@ class DeviceManufacturerServiceRestTransport(
 
             # Send the request
             response = DeviceManufacturerServiceRestTransport._ListDeviceManufacturers._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -587,24 +490,16 @@ class DeviceManufacturerServiceRestTransport(
 
             # Return the response
             resp = device_manufacturer_service.ListDeviceManufacturersResponse()
-            pb_resp = device_manufacturer_service.ListDeviceManufacturersResponse.pb(
-                resp
-            )
+            pb_resp = device_manufacturer_service.ListDeviceManufacturersResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_device_manufacturers(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_device_manufacturers_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_device_manufacturers_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = device_manufacturer_service.ListDeviceManufacturersResponse.to_json(
-                        response
-                    )
+                    response_payload = device_manufacturer_service.ListDeviceManufacturersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -626,10 +521,7 @@ class DeviceManufacturerServiceRestTransport(
     @property
     def get_device_manufacturer(
         self,
-    ) -> Callable[
-        [device_manufacturer_service.GetDeviceManufacturerRequest],
-        device_manufacturer_messages.DeviceManufacturer,
-    ]:
+    ) -> Callable[[device_manufacturer_service.GetDeviceManufacturerRequest], device_manufacturer_messages.DeviceManufacturer]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDeviceManufacturer(self._session, self._host, self._interceptor)  # type: ignore
@@ -637,10 +529,7 @@ class DeviceManufacturerServiceRestTransport(
     @property
     def list_device_manufacturers(
         self,
-    ) -> Callable[
-        [device_manufacturer_service.ListDeviceManufacturersRequest],
-        device_manufacturer_service.ListDeviceManufacturersResponse,
-    ]:
+    ) -> Callable[[device_manufacturer_service.ListDeviceManufacturersRequest], device_manufacturer_service.ListDeviceManufacturersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDeviceManufacturers(self._session, self._host, self._interceptor)  # type: ignore
@@ -649,23 +538,12 @@ class DeviceManufacturerServiceRestTransport(
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation,
-        DeviceManufacturerServiceRestStub,
-    ):
+    class _GetOperation(_BaseDeviceManufacturerServiceRestTransport._BaseGetOperation, DeviceManufacturerServiceRestStub):
         def __hash__(self):
             return hash("DeviceManufacturerServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -703,26 +581,16 @@ class DeviceManufacturerServiceRestTransport(
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseDeviceManufacturerServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -745,15 +613,8 @@ class DeviceManufacturerServiceRestTransport(
                 )
 
             # Send the request
-            response = (
-                DeviceManufacturerServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = DeviceManufacturerServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -765,9 +626,7 @@ class DeviceManufacturerServiceRestTransport(
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

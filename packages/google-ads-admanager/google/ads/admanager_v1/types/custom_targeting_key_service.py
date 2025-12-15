@@ -149,9 +149,7 @@ class ListCustomTargetingKeysResponse(proto.Message):
     def raw_page(self):
         return self
 
-    custom_targeting_keys: MutableSequence[
-        custom_targeting_key_messages.CustomTargetingKey
-    ] = proto.RepeatedField(
+    custom_targeting_keys: MutableSequence[custom_targeting_key_messages.CustomTargetingKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_targeting_key_messages.CustomTargetingKey,
@@ -182,12 +180,10 @@ class CreateCustomTargetingKeyRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=custom_targeting_key_messages.CustomTargetingKey,
-        )
+    custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=custom_targeting_key_messages.CustomTargetingKey,
     )
 
 
@@ -224,9 +220,7 @@ class BatchCreateCustomTargetingKeysResponse(proto.Message):
             The ``CustomTargetingKey`` objects created.
     """
 
-    custom_targeting_keys: MutableSequence[
-        custom_targeting_key_messages.CustomTargetingKey
-    ] = proto.RepeatedField(
+    custom_targeting_keys: MutableSequence[custom_targeting_key_messages.CustomTargetingKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_targeting_key_messages.CustomTargetingKey,
@@ -246,12 +240,10 @@ class UpdateCustomTargetingKeyRequest(proto.Message):
             Required. The list of fields to update.
     """
 
-    custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = (
-        proto.Field(
-            proto.MESSAGE,
-            number=1,
-            message=custom_targeting_key_messages.CustomTargetingKey,
-        )
+    custom_targeting_key: custom_targeting_key_messages.CustomTargetingKey = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=custom_targeting_key_messages.CustomTargetingKey,
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -293,9 +285,7 @@ class BatchUpdateCustomTargetingKeysResponse(proto.Message):
             The ``CustomTargetingKey`` objects updated.
     """
 
-    custom_targeting_keys: MutableSequence[
-        custom_targeting_key_messages.CustomTargetingKey
-    ] = proto.RepeatedField(
+    custom_targeting_keys: MutableSequence[custom_targeting_key_messages.CustomTargetingKey] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=custom_targeting_key_messages.CustomTargetingKey,

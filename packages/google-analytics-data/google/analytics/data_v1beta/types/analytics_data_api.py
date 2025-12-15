@@ -130,16 +130,12 @@ class CheckCompatibilityResponse(proto.Message):
             The compatibility of each metric.
     """
 
-    dimension_compatibilities: MutableSequence[
-        data.DimensionCompatibility
-    ] = proto.RepeatedField(
+    dimension_compatibilities: MutableSequence[data.DimensionCompatibility] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=data.DimensionCompatibility,
     )
-    metric_compatibilities: MutableSequence[
-        data.MetricCompatibility
-    ] = proto.RepeatedField(
+    metric_compatibilities: MutableSequence[data.MetricCompatibility] = proto.RepeatedField(
         proto.MESSAGE,
         number=2,
         message=data.MetricCompatibility,

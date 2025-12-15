@@ -96,12 +96,8 @@ class PredictionServiceRestInterceptor:
     """
 
     def pre_predict(
-        self,
-        request: prediction_service.PredictRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_service.PredictRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: prediction_service.PredictRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_service.PredictRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for predict
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +105,7 @@ class PredictionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_predict(
-        self, response: prediction_service.PredictResponse
-    ) -> prediction_service.PredictResponse:
+    def post_predict(self, response: prediction_service.PredictResponse) -> prediction_service.PredictResponse:
         """Post-rpc interceptor for predict
 
         DEPRECATED. Please use the `post_predict_with_metadata`
@@ -125,12 +119,8 @@ class PredictionServiceRestInterceptor:
         return response
 
     def post_predict_with_metadata(
-        self,
-        response: prediction_service.PredictResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_service.PredictResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: prediction_service.PredictResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_service.PredictResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for predict
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,13 +136,8 @@ class PredictionServiceRestInterceptor:
         return response, metadata
 
     def pre_predict_long_running(
-        self,
-        request: prediction_service.PredictLongRunningRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        prediction_service.PredictLongRunningRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: prediction_service.PredictLongRunningRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[prediction_service.PredictLongRunningRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for predict_long_running
 
         Override in a subclass to manipulate the request or metadata
@@ -160,9 +145,7 @@ class PredictionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_predict_long_running(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_predict_long_running(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for predict_long_running
 
         DEPRECATED. Please use the `post_predict_long_running_with_metadata`
@@ -176,9 +159,7 @@ class PredictionServiceRestInterceptor:
         return response
 
     def post_predict_long_running_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for predict_long_running
 
@@ -195,12 +176,8 @@ class PredictionServiceRestInterceptor:
         return response, metadata
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -218,12 +195,8 @@ class PredictionServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -241,12 +214,8 @@ class PredictionServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -254,9 +223,7 @@ class PredictionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -266,12 +233,8 @@ class PredictionServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -279,9 +242,7 @@ class PredictionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -370,9 +331,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -448,29 +407,17 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                 path_prefix="v1beta",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _Predict(
-        _BasePredictionServiceRestTransport._BasePredict, PredictionServiceRestStub
-    ):
+    class _Predict(_BasePredictionServiceRestTransport._BasePredict, PredictionServiceRestStub):
         def __hash__(self):
             return hash("PredictionServiceRestTransport.Predict")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -511,34 +458,18 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                     Response message for [PredictionService.Predict].
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BasePredict._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BasePredict._get_http_options()
 
             request, metadata = self._interceptor.pre_predict(request, metadata)
-            transcoded_request = _BasePredictionServiceRestTransport._BasePredict._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePredictionServiceRestTransport._BasePredict._get_transcoded_request(http_options, request)
 
-            body = (
-                _BasePredictionServiceRestTransport._BasePredict._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BasePredictionServiceRestTransport._BasePredict._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BasePredictionServiceRestTransport._BasePredict._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BasePredictionServiceRestTransport._BasePredict._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -562,13 +493,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             # Send the request
             response = PredictionServiceRestTransport._Predict._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -584,16 +509,10 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             resp = self._interceptor.post_predict(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_predict_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_predict_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = prediction_service.PredictResponse.to_json(
-                        response
-                    )
+                    response_payload = prediction_service.PredictResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -612,23 +531,12 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                 )
             return resp
 
-    class _PredictLongRunning(
-        _BasePredictionServiceRestTransport._BasePredictLongRunning,
-        PredictionServiceRestStub,
-    ):
+    class _PredictLongRunning(_BasePredictionServiceRestTransport._BasePredictLongRunning, PredictionServiceRestStub):
         def __hash__(self):
             return hash("PredictionServiceRestTransport.PredictLongRunning")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -672,32 +580,18 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BasePredictLongRunning._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_http_options()
 
-            request, metadata = self._interceptor.pre_predict_long_running(
-                request, metadata
-            )
-            transcoded_request = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_predict_long_running(request, metadata)
+            transcoded_request = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_transcoded_request(http_options, request)
 
-            body = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePredictionServiceRestTransport._BasePredictLongRunning._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -721,13 +615,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             # Send the request
             response = PredictionServiceRestTransport._PredictLongRunning._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -741,12 +629,8 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             resp = self._interceptor.post_predict_long_running(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_predict_long_running_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_predict_long_running_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -768,21 +652,13 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             return resp
 
     @property
-    def predict(
-        self,
-    ) -> Callable[
-        [prediction_service.PredictRequest], prediction_service.PredictResponse
-    ]:
+    def predict(self) -> Callable[[prediction_service.PredictRequest], prediction_service.PredictResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Predict(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def predict_long_running(
-        self,
-    ) -> Callable[
-        [prediction_service.PredictLongRunningRequest], operations_pb2.Operation
-    ]:
+    def predict_long_running(self) -> Callable[[prediction_service.PredictLongRunningRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PredictLongRunning(self._session, self._host, self._interceptor)  # type: ignore
@@ -791,23 +667,12 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BasePredictionServiceRestTransport._BaseCancelOperation,
-        PredictionServiceRestStub,
-    ):
+    class _CancelOperation(_BasePredictionServiceRestTransport._BaseCancelOperation, PredictionServiceRestStub):
         def __hash__(self):
             return hash("PredictionServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -842,28 +707,16 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePredictionServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BasePredictionServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePredictionServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePredictionServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -887,12 +740,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             # Send the request
             response = PredictionServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -906,23 +754,12 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BasePredictionServiceRestTransport._BaseDeleteOperation,
-        PredictionServiceRestStub,
-    ):
+    class _DeleteOperation(_BasePredictionServiceRestTransport._BaseDeleteOperation, PredictionServiceRestStub):
         def __hash__(self):
             return hash("PredictionServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -957,28 +794,16 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BasePredictionServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BasePredictionServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePredictionServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePredictionServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1002,12 +827,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             # Send the request
             response = PredictionServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1021,22 +841,12 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePredictionServiceRestTransport._BaseGetOperation, PredictionServiceRestStub
-    ):
+    class _GetOperation(_BasePredictionServiceRestTransport._BaseGetOperation, PredictionServiceRestStub):
         def __hash__(self):
             return hash("PredictionServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1074,26 +884,16 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePredictionServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePredictionServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePredictionServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePredictionServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1117,12 +917,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             # Send the request
             response = PredictionServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1134,9 +929,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1161,23 +954,12 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BasePredictionServiceRestTransport._BaseListOperations,
-        PredictionServiceRestStub,
-    ):
+    class _ListOperations(_BasePredictionServiceRestTransport._BaseListOperations, PredictionServiceRestStub):
         def __hash__(self):
             return hash("PredictionServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1215,26 +997,16 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BasePredictionServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BasePredictionServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BasePredictionServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePredictionServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePredictionServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePredictionServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1258,12 +1030,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
 
             # Send the request
             response = PredictionServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1275,9 +1042,7 @@ class PredictionServiceRestTransport(_BasePredictionServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

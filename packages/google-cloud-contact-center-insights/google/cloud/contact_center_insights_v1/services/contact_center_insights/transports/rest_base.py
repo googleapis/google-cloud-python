@@ -24,10 +24,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
 
-from google.cloud.contact_center_insights_v1.types import (
-    contact_center_insights,
-    resources,
-)
+from google.cloud.contact_center_insights_v1.types import contact_center_insights, resources
 
 from .base import DEFAULT_CLIENT_INFO, ContactCenterInsightsTransport
 
@@ -78,20 +75,14 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         # Run the base constructor
         maybe_url_match = re.match("^(?P<scheme>http(?:s)?://)?(?P<host>.*)$", host)
         if maybe_url_match is None:
-            raise ValueError(
-                f"Unexpected hostname structure: {host}"
-            )  # pragma: NO COVER
+            raise ValueError(f"Unexpected hostname structure: {host}")  # pragma: NO COVER
 
         url_match_items = maybe_url_match.groupdict()
 
         host = f"{url_scheme}://{host}" if not url_match_items["scheme"] else host
 
         super().__init__(
-            host=host,
-            credentials=credentials,
-            client_info=client_info,
-            always_use_jwt_access=always_use_jwt_access,
-            api_audience=api_audience,
+            host=host, credentials=credentials, client_info=client_info, always_use_jwt_access=always_use_jwt_access, api_audience=api_audience
         )
 
     class _BaseBulkAnalyzeConversations:
@@ -102,11 +93,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -121,9 +108,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.BulkAnalyzeConversationsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.BulkAnalyzeConversationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -131,9 +116,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -144,11 +127,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseBulkAnalyzeConversations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -161,11 +140,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -180,9 +155,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.BulkDeleteConversationsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.BulkDeleteConversationsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -190,9 +163,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -203,11 +174,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseBulkDeleteConversations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -220,11 +187,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -239,9 +202,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.BulkDownloadFeedbackLabelsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.BulkDownloadFeedbackLabelsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -249,9 +210,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -262,11 +221,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseBulkDownloadFeedbackLabels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -279,11 +234,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -298,9 +249,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.BulkUploadFeedbackLabelsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.BulkUploadFeedbackLabelsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -308,9 +257,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -321,11 +268,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseBulkUploadFeedbackLabels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -338,11 +281,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -356,9 +295,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.CalculateIssueModelStatsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.CalculateIssueModelStatsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -370,11 +307,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCalculateIssueModelStats._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -387,11 +320,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -421,11 +350,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCalculateStats._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -438,11 +363,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -465,9 +386,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -478,11 +397,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateAnalysis._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -495,11 +410,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -522,9 +433,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -535,11 +444,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateAnalysisRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -552,11 +457,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -579,9 +480,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -592,11 +491,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -609,11 +504,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -636,9 +527,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -649,11 +538,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateFeedbackLabel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -666,11 +551,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -693,9 +574,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -706,11 +585,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -723,11 +598,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -750,9 +621,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -763,11 +632,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreatePhraseMatcher._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -780,11 +645,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -807,9 +668,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -820,11 +679,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateQaQuestion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -837,11 +692,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -864,9 +715,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -877,11 +726,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateQaScorecard._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -894,11 +739,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -913,9 +754,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.CreateQaScorecardRevisionRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.CreateQaScorecardRevisionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -923,9 +762,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -936,11 +773,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateQaScorecardRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -953,11 +786,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -980,9 +809,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -993,11 +820,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseCreateView._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseCreateView._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1010,11 +833,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1040,11 +859,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteAnalysis._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1057,11 +872,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1087,11 +898,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteAnalysisRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1104,11 +911,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1134,11 +937,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1151,11 +950,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1181,11 +976,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteFeedbackLabel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1198,11 +989,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1228,11 +1015,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteIssue._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1245,11 +1028,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1275,11 +1054,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1292,11 +1067,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1322,11 +1093,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeletePhraseMatcher._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1339,11 +1106,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1369,11 +1132,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteQaQuestion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1386,11 +1145,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1416,11 +1171,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecard._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1433,11 +1184,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1451,9 +1198,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.DeleteQaScorecardRevisionRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.DeleteQaScorecardRevisionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1465,11 +1210,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteQaScorecardRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1482,11 +1223,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1512,11 +1249,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeleteView._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeleteView._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1529,11 +1262,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1556,9 +1285,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1569,11 +1296,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeployIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1586,11 +1309,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1605,9 +1324,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.DeployQaScorecardRevisionRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.DeployQaScorecardRevisionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -1615,9 +1332,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1628,11 +1343,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseDeployQaScorecardRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1645,11 +1356,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1672,9 +1379,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1685,11 +1390,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseExportInsightsData._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1702,11 +1403,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1729,9 +1426,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -1742,11 +1437,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseExportIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1759,11 +1450,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1789,11 +1476,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetAnalysis._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1806,11 +1489,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1836,11 +1515,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetAnalysisRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1853,11 +1528,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1883,11 +1554,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1900,11 +1567,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1930,11 +1593,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetEncryptionSpec._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1947,11 +1606,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -1977,11 +1632,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetFeedbackLabel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -1994,11 +1645,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2024,11 +1671,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetIssue._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetIssue._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2041,11 +1684,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2071,11 +1710,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2088,11 +1723,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2118,11 +1749,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetPhraseMatcher._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2135,11 +1762,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2165,11 +1788,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetQaQuestion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2182,11 +1801,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2212,11 +1827,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetQaScorecard._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2229,11 +1840,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2247,9 +1854,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.GetQaScorecardRevisionRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.GetQaScorecardRevisionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2261,11 +1866,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetQaScorecardRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2278,11 +1879,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2308,11 +1905,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2325,11 +1918,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2355,11 +1944,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseGetView._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseGetView._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2372,11 +1957,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2399,9 +1980,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2412,11 +1991,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseImportIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2429,11 +2004,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2456,9 +2027,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2469,11 +2038,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseIngestConversations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2486,11 +2051,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2505,9 +2066,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.InitializeEncryptionSpecRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.InitializeEncryptionSpecRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2515,9 +2074,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -2528,11 +2085,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseInitializeEncryptionSpec._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2545,11 +2098,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2563,9 +2112,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.ListAllFeedbackLabelsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.ListAllFeedbackLabelsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -2577,11 +2124,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListAllFeedbackLabels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2594,11 +2137,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2624,11 +2163,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListAnalyses._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2641,11 +2176,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2671,11 +2202,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListAnalysisRules._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2688,11 +2215,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2718,11 +2241,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListConversations._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListConversations._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2735,11 +2254,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2765,11 +2280,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListFeedbackLabels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2782,11 +2293,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2812,11 +2319,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListIssueModels._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2829,11 +2332,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2859,11 +2358,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListIssues._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListIssues._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2876,11 +2371,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2906,11 +2397,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListPhraseMatchers._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2923,11 +2410,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2953,11 +2436,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListQaQuestions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -2970,11 +2449,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -2988,9 +2463,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.ListQaScorecardRevisionsRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.ListQaScorecardRevisionsRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3002,11 +2475,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListQaScorecardRevisions._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3019,11 +2488,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3049,11 +2514,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListQaScorecards._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3066,11 +2527,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3096,11 +2553,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseListViews._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseListViews._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3113,11 +2566,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3145,9 +2594,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3158,11 +2605,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseQueryMetrics._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3175,11 +2618,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3194,9 +2633,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.TuneQaScorecardRevisionRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.TuneQaScorecardRevisionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3204,9 +2641,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3217,11 +2652,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseTuneQaScorecardRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3234,11 +2665,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3261,9 +2688,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3274,11 +2699,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUndeployIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3291,11 +2712,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3310,9 +2727,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @staticmethod
         def _get_transcoded_request(http_options, request):
-            pb_request = contact_center_insights.UndeployQaScorecardRevisionRequest.pb(
-                request
-            )
+            pb_request = contact_center_insights.UndeployQaScorecardRevisionRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
             return transcoded_request
 
@@ -3320,9 +2735,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3333,11 +2746,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUndeployQaScorecardRevision._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3350,11 +2759,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3377,9 +2782,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3390,11 +2793,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateAnalysisRule._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3407,11 +2806,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3434,9 +2829,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3447,11 +2840,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3466,11 +2855,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3493,9 +2878,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3506,11 +2889,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateFeedbackLabel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3523,11 +2902,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3550,9 +2925,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3563,11 +2936,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateIssue._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3580,11 +2949,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3607,9 +2972,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3620,11 +2983,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateIssueModel._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3637,11 +2996,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3664,9 +3019,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3677,11 +3030,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdatePhraseMatcher._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3696,11 +3045,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3723,9 +3068,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3736,11 +3079,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateQaQuestion._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3755,11 +3094,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3782,9 +3117,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3795,11 +3128,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateQaScorecard._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3814,11 +3143,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3841,9 +3166,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3854,11 +3177,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateSettings._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3871,11 +3190,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3898,9 +3213,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3911,11 +3224,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUpdateView._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUpdateView._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params
@@ -3928,11 +3237,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
+            return {k: v for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items() if k not in message_dict}
 
         @staticmethod
         def _get_http_options():
@@ -3955,9 +3260,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
         def _get_request_body_json(transcoded_request):
             # Jsonify the request body
 
-            body = json_format.MessageToJson(
-                transcoded_request["body"], use_integers_for_enums=True
-            )
+            body = json_format.MessageToJson(transcoded_request["body"], use_integers_for_enums=True)
             return body
 
         @staticmethod
@@ -3968,11 +3271,7 @@ class _BaseContactCenterInsightsRestTransport(ContactCenterInsightsTransport):
                     use_integers_for_enums=True,
                 )
             )
-            query_params.update(
-                _BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_unset_required_fields(
-                    query_params
-                )
-            )
+            query_params.update(_BaseContactCenterInsightsRestTransport._BaseUploadConversation._get_unset_required_fields(query_params))
 
             query_params["$alt"] = "json;enum-encoding=int"
             return query_params

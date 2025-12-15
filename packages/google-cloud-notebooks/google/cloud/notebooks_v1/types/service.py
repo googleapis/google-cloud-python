@@ -452,12 +452,10 @@ class UpdateShieldedInstanceConfigRequest(proto.Message):
         proto.STRING,
         number=1,
     )
-    shielded_instance_config: gcn_instance.Instance.ShieldedInstanceConfig = (
-        proto.Field(
-            proto.MESSAGE,
-            number=2,
-            message=gcn_instance.Instance.ShieldedInstanceConfig,
-        )
+    shielded_instance_config: gcn_instance.Instance.ShieldedInstanceConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcn_instance.Instance.ShieldedInstanceConfig,
     )
 
 

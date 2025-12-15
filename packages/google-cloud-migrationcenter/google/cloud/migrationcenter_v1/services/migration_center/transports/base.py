@@ -31,9 +31,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.migrationcenter_v1 import gapic_version as package_version
 from google.cloud.migrationcenter_v1.types import migrationcenter
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -95,23 +93,15 @@ class MigrationCenterTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -425,31 +415,15 @@ class MigrationCenterTransport(abc.ABC):
     @property
     def list_assets(
         self,
-    ) -> Callable[
-        [migrationcenter.ListAssetsRequest],
-        Union[
-            migrationcenter.ListAssetsResponse,
-            Awaitable[migrationcenter.ListAssetsResponse],
-        ],
-    ]:
+    ) -> Callable[[migrationcenter.ListAssetsRequest], Union[migrationcenter.ListAssetsResponse, Awaitable[migrationcenter.ListAssetsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_asset(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetAssetRequest],
-        Union[migrationcenter.Asset, Awaitable[migrationcenter.Asset]],
-    ]:
+    def get_asset(self) -> Callable[[migrationcenter.GetAssetRequest], Union[migrationcenter.Asset, Awaitable[migrationcenter.Asset]]]:
         raise NotImplementedError()
 
     @property
-    def update_asset(
-        self,
-    ) -> Callable[
-        [migrationcenter.UpdateAssetRequest],
-        Union[migrationcenter.Asset, Awaitable[migrationcenter.Asset]],
-    ]:
+    def update_asset(self) -> Callable[[migrationcenter.UpdateAssetRequest], Union[migrationcenter.Asset, Awaitable[migrationcenter.Asset]]]:
         raise NotImplementedError()
 
     @property
@@ -457,29 +431,16 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [migrationcenter.BatchUpdateAssetsRequest],
-        Union[
-            migrationcenter.BatchUpdateAssetsResponse,
-            Awaitable[migrationcenter.BatchUpdateAssetsResponse],
-        ],
+        Union[migrationcenter.BatchUpdateAssetsResponse, Awaitable[migrationcenter.BatchUpdateAssetsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
-    def delete_asset(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteAssetRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_asset(self) -> Callable[[migrationcenter.DeleteAssetRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def batch_delete_assets(
-        self,
-    ) -> Callable[
-        [migrationcenter.BatchDeleteAssetsRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def batch_delete_assets(self) -> Callable[[migrationcenter.BatchDeleteAssetsRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
@@ -487,10 +448,7 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [migrationcenter.ReportAssetFramesRequest],
-        Union[
-            migrationcenter.ReportAssetFramesResponse,
-            Awaitable[migrationcenter.ReportAssetFramesResponse],
-        ],
+        Union[migrationcenter.ReportAssetFramesResponse, Awaitable[migrationcenter.ReportAssetFramesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -499,88 +457,56 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [migrationcenter.AggregateAssetsValuesRequest],
-        Union[
-            migrationcenter.AggregateAssetsValuesResponse,
-            Awaitable[migrationcenter.AggregateAssetsValuesResponse],
-        ],
+        Union[migrationcenter.AggregateAssetsValuesResponse, Awaitable[migrationcenter.AggregateAssetsValuesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_import_job(
         self,
-    ) -> Callable[
-        [migrationcenter.CreateImportJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.CreateImportJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_import_jobs(
         self,
     ) -> Callable[
-        [migrationcenter.ListImportJobsRequest],
-        Union[
-            migrationcenter.ListImportJobsResponse,
-            Awaitable[migrationcenter.ListImportJobsResponse],
-        ],
+        [migrationcenter.ListImportJobsRequest], Union[migrationcenter.ListImportJobsResponse, Awaitable[migrationcenter.ListImportJobsResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_import_job(
         self,
-    ) -> Callable[
-        [migrationcenter.GetImportJobRequest],
-        Union[migrationcenter.ImportJob, Awaitable[migrationcenter.ImportJob]],
-    ]:
+    ) -> Callable[[migrationcenter.GetImportJobRequest], Union[migrationcenter.ImportJob, Awaitable[migrationcenter.ImportJob]]]:
         raise NotImplementedError()
 
     @property
     def delete_import_job(
         self,
-    ) -> Callable[
-        [migrationcenter.DeleteImportJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.DeleteImportJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_import_job(
         self,
-    ) -> Callable[
-        [migrationcenter.UpdateImportJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.UpdateImportJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def validate_import_job(
         self,
-    ) -> Callable[
-        [migrationcenter.ValidateImportJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.ValidateImportJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def run_import_job(
-        self,
-    ) -> Callable[
-        [migrationcenter.RunImportJobRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def run_import_job(self) -> Callable[[migrationcenter.RunImportJobRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_import_data_file(
         self,
-    ) -> Callable[
-        [migrationcenter.GetImportDataFileRequest],
-        Union[
-            migrationcenter.ImportDataFile, Awaitable[migrationcenter.ImportDataFile]
-        ],
-    ]:
+    ) -> Callable[[migrationcenter.GetImportDataFileRequest], Union[migrationcenter.ImportDataFile, Awaitable[migrationcenter.ImportDataFile]]]:
         raise NotImplementedError()
 
     @property
@@ -588,164 +514,90 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [migrationcenter.ListImportDataFilesRequest],
-        Union[
-            migrationcenter.ListImportDataFilesResponse,
-            Awaitable[migrationcenter.ListImportDataFilesResponse],
-        ],
+        Union[migrationcenter.ListImportDataFilesResponse, Awaitable[migrationcenter.ListImportDataFilesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_import_data_file(
         self,
-    ) -> Callable[
-        [migrationcenter.CreateImportDataFileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.CreateImportDataFileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_import_data_file(
         self,
-    ) -> Callable[
-        [migrationcenter.DeleteImportDataFileRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.DeleteImportDataFileRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_groups(
         self,
-    ) -> Callable[
-        [migrationcenter.ListGroupsRequest],
-        Union[
-            migrationcenter.ListGroupsResponse,
-            Awaitable[migrationcenter.ListGroupsResponse],
-        ],
-    ]:
+    ) -> Callable[[migrationcenter.ListGroupsRequest], Union[migrationcenter.ListGroupsResponse, Awaitable[migrationcenter.ListGroupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_group(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetGroupRequest],
-        Union[migrationcenter.Group, Awaitable[migrationcenter.Group]],
-    ]:
+    def get_group(self) -> Callable[[migrationcenter.GetGroupRequest], Union[migrationcenter.Group, Awaitable[migrationcenter.Group]]]:
         raise NotImplementedError()
 
     @property
-    def create_group(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_group(self) -> Callable[[migrationcenter.CreateGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[
-        [migrationcenter.UpdateGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_group(self) -> Callable[[migrationcenter.UpdateGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_group(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_group(self) -> Callable[[migrationcenter.DeleteGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def add_assets_to_group(
         self,
-    ) -> Callable[
-        [migrationcenter.AddAssetsToGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.AddAssetsToGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def remove_assets_from_group(
         self,
-    ) -> Callable[
-        [migrationcenter.RemoveAssetsFromGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.RemoveAssetsFromGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_error_frames(
         self,
     ) -> Callable[
-        [migrationcenter.ListErrorFramesRequest],
-        Union[
-            migrationcenter.ListErrorFramesResponse,
-            Awaitable[migrationcenter.ListErrorFramesResponse],
-        ],
+        [migrationcenter.ListErrorFramesRequest], Union[migrationcenter.ListErrorFramesResponse, Awaitable[migrationcenter.ListErrorFramesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_error_frame(
         self,
-    ) -> Callable[
-        [migrationcenter.GetErrorFrameRequest],
-        Union[migrationcenter.ErrorFrame, Awaitable[migrationcenter.ErrorFrame]],
-    ]:
+    ) -> Callable[[migrationcenter.GetErrorFrameRequest], Union[migrationcenter.ErrorFrame, Awaitable[migrationcenter.ErrorFrame]]]:
         raise NotImplementedError()
 
     @property
     def list_sources(
         self,
-    ) -> Callable[
-        [migrationcenter.ListSourcesRequest],
-        Union[
-            migrationcenter.ListSourcesResponse,
-            Awaitable[migrationcenter.ListSourcesResponse],
-        ],
-    ]:
+    ) -> Callable[[migrationcenter.ListSourcesRequest], Union[migrationcenter.ListSourcesResponse, Awaitable[migrationcenter.ListSourcesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetSourceRequest],
-        Union[migrationcenter.Source, Awaitable[migrationcenter.Source]],
-    ]:
+    def get_source(self) -> Callable[[migrationcenter.GetSourceRequest], Union[migrationcenter.Source, Awaitable[migrationcenter.Source]]]:
         raise NotImplementedError()
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateSourceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_source(self) -> Callable[[migrationcenter.CreateSourceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[
-        [migrationcenter.UpdateSourceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_source(self) -> Callable[[migrationcenter.UpdateSourceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_source(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteSourceRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_source(self) -> Callable[[migrationcenter.DeleteSourceRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -753,83 +605,54 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [migrationcenter.ListPreferenceSetsRequest],
-        Union[
-            migrationcenter.ListPreferenceSetsResponse,
-            Awaitable[migrationcenter.ListPreferenceSetsResponse],
-        ],
+        Union[migrationcenter.ListPreferenceSetsResponse, Awaitable[migrationcenter.ListPreferenceSetsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_preference_set(
         self,
-    ) -> Callable[
-        [migrationcenter.GetPreferenceSetRequest],
-        Union[migrationcenter.PreferenceSet, Awaitable[migrationcenter.PreferenceSet]],
-    ]:
+    ) -> Callable[[migrationcenter.GetPreferenceSetRequest], Union[migrationcenter.PreferenceSet, Awaitable[migrationcenter.PreferenceSet]]]:
         raise NotImplementedError()
 
     @property
     def create_preference_set(
         self,
-    ) -> Callable[
-        [migrationcenter.CreatePreferenceSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.CreatePreferenceSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_preference_set(
         self,
-    ) -> Callable[
-        [migrationcenter.UpdatePreferenceSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.UpdatePreferenceSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_preference_set(
         self,
-    ) -> Callable[
-        [migrationcenter.DeletePreferenceSetRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.DeletePreferenceSetRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_settings(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetSettingsRequest],
-        Union[migrationcenter.Settings, Awaitable[migrationcenter.Settings]],
-    ]:
+    def get_settings(self) -> Callable[[migrationcenter.GetSettingsRequest], Union[migrationcenter.Settings, Awaitable[migrationcenter.Settings]]]:
         raise NotImplementedError()
 
     @property
     def update_settings(
         self,
-    ) -> Callable[
-        [migrationcenter.UpdateSettingsRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.UpdateSettingsRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def create_report_config(
         self,
-    ) -> Callable[
-        [migrationcenter.CreateReportConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.CreateReportConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_report_config(
         self,
-    ) -> Callable[
-        [migrationcenter.GetReportConfigRequest],
-        Union[migrationcenter.ReportConfig, Awaitable[migrationcenter.ReportConfig]],
-    ]:
+    ) -> Callable[[migrationcenter.GetReportConfigRequest], Union[migrationcenter.ReportConfig, Awaitable[migrationcenter.ReportConfig]]]:
         raise NotImplementedError()
 
     @property
@@ -837,59 +660,32 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [migrationcenter.ListReportConfigsRequest],
-        Union[
-            migrationcenter.ListReportConfigsResponse,
-            Awaitable[migrationcenter.ListReportConfigsResponse],
-        ],
+        Union[migrationcenter.ListReportConfigsResponse, Awaitable[migrationcenter.ListReportConfigsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def delete_report_config(
         self,
-    ) -> Callable[
-        [migrationcenter.DeleteReportConfigRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[migrationcenter.DeleteReportConfigRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def create_report(
-        self,
-    ) -> Callable[
-        [migrationcenter.CreateReportRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_report(self) -> Callable[[migrationcenter.CreateReportRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_report(
-        self,
-    ) -> Callable[
-        [migrationcenter.GetReportRequest],
-        Union[migrationcenter.Report, Awaitable[migrationcenter.Report]],
-    ]:
+    def get_report(self) -> Callable[[migrationcenter.GetReportRequest], Union[migrationcenter.Report, Awaitable[migrationcenter.Report]]]:
         raise NotImplementedError()
 
     @property
     def list_reports(
         self,
-    ) -> Callable[
-        [migrationcenter.ListReportsRequest],
-        Union[
-            migrationcenter.ListReportsResponse,
-            Awaitable[migrationcenter.ListReportsResponse],
-        ],
-    ]:
+    ) -> Callable[[migrationcenter.ListReportsRequest], Union[migrationcenter.ListReportsResponse, Awaitable[migrationcenter.ListReportsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def delete_report(
-        self,
-    ) -> Callable[
-        [migrationcenter.DeleteReportRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_report(self) -> Callable[[migrationcenter.DeleteReportRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -897,20 +693,14 @@ class MigrationCenterTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -928,22 +718,13 @@ class MigrationCenterTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

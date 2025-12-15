@@ -119,12 +119,8 @@ class ExamplesRestInterceptor:
     """
 
     def pre_create_example(
-        self,
-        request: gcdc_example.CreateExampleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_example.CreateExampleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_example.CreateExampleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_example.CreateExampleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_example
 
         Override in a subclass to manipulate the request or metadata
@@ -132,9 +128,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_example(
-        self, response: gcdc_example.Example
-    ) -> gcdc_example.Example:
+    def post_create_example(self, response: gcdc_example.Example) -> gcdc_example.Example:
         """Post-rpc interceptor for create_example
 
         DEPRECATED. Please use the `post_create_example_with_metadata`
@@ -148,9 +142,7 @@ class ExamplesRestInterceptor:
         return response
 
     def post_create_example_with_metadata(
-        self,
-        response: gcdc_example.Example,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_example.Example, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_example.Example, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_example
 
@@ -167,9 +159,7 @@ class ExamplesRestInterceptor:
         return response, metadata
 
     def pre_delete_example(
-        self,
-        request: example.DeleteExampleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: example.DeleteExampleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[example.DeleteExampleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_example
 
@@ -179,9 +169,7 @@ class ExamplesRestInterceptor:
         return request, metadata
 
     def pre_get_example(
-        self,
-        request: example.GetExampleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: example.GetExampleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[example.GetExampleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_example
 
@@ -204,9 +192,7 @@ class ExamplesRestInterceptor:
         return response
 
     def post_get_example_with_metadata(
-        self,
-        response: example.Example,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: example.Example, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[example.Example, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_example
 
@@ -223,9 +209,7 @@ class ExamplesRestInterceptor:
         return response, metadata
 
     def pre_list_examples(
-        self,
-        request: example.ListExamplesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: example.ListExamplesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[example.ListExamplesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_examples
 
@@ -234,9 +218,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_examples(
-        self, response: example.ListExamplesResponse
-    ) -> example.ListExamplesResponse:
+    def post_list_examples(self, response: example.ListExamplesResponse) -> example.ListExamplesResponse:
         """Post-rpc interceptor for list_examples
 
         DEPRECATED. Please use the `post_list_examples_with_metadata`
@@ -250,9 +232,7 @@ class ExamplesRestInterceptor:
         return response
 
     def post_list_examples_with_metadata(
-        self,
-        response: example.ListExamplesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: example.ListExamplesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[example.ListExamplesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_examples
 
@@ -269,12 +249,8 @@ class ExamplesRestInterceptor:
         return response, metadata
 
     def pre_update_example(
-        self,
-        request: gcdc_example.UpdateExampleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_example.UpdateExampleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_example.UpdateExampleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_example.UpdateExampleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_example
 
         Override in a subclass to manipulate the request or metadata
@@ -282,9 +258,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_example(
-        self, response: gcdc_example.Example
-    ) -> gcdc_example.Example:
+    def post_update_example(self, response: gcdc_example.Example) -> gcdc_example.Example:
         """Post-rpc interceptor for update_example
 
         DEPRECATED. Please use the `post_update_example_with_metadata`
@@ -298,9 +272,7 @@ class ExamplesRestInterceptor:
         return response
 
     def post_update_example_with_metadata(
-        self,
-        response: gcdc_example.Example,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_example.Example, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_example.Example, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_example
 
@@ -317,12 +289,8 @@ class ExamplesRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -330,9 +298,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -342,12 +308,8 @@ class ExamplesRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -355,9 +317,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -367,12 +327,8 @@ class ExamplesRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -390,12 +346,8 @@ class ExamplesRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -403,9 +355,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -415,12 +365,8 @@ class ExamplesRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -428,9 +374,7 @@ class ExamplesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -520,30 +464,18 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or ExamplesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateExample(
-        _BaseExamplesRestTransport._BaseCreateExample, ExamplesRestStub
-    ):
+    class _CreateExample(_BaseExamplesRestTransport._BaseCreateExample, ExamplesRestStub):
         def __hash__(self):
             return hash("ExamplesRestTransport.CreateExample")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -590,34 +522,18 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseCreateExample._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseCreateExample._get_http_options()
 
             request, metadata = self._interceptor.pre_create_example(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseCreateExample._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseCreateExample._get_transcoded_request(http_options, request)
 
-            body = _BaseExamplesRestTransport._BaseCreateExample._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseExamplesRestTransport._BaseCreateExample._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseCreateExample._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseCreateExample._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -641,13 +557,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._CreateExample._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -663,12 +573,8 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             resp = self._interceptor.post_create_example(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_example_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_example_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_example.Example.to_json(response)
                 except:
@@ -689,22 +595,12 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 )
             return resp
 
-    class _DeleteExample(
-        _BaseExamplesRestTransport._BaseDeleteExample, ExamplesRestStub
-    ):
+    class _DeleteExample(_BaseExamplesRestTransport._BaseDeleteExample, ExamplesRestStub):
         def __hash__(self):
             return hash("ExamplesRestTransport.DeleteExample")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -740,30 +636,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseDeleteExample._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseDeleteExample._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_example(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseDeleteExample._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseDeleteExample._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseDeleteExample._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseDeleteExample._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -787,12 +669,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._DeleteExample._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -805,15 +682,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             return hash("ExamplesRestTransport.GetExample")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -859,30 +728,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseGetExample._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseGetExample._get_http_options()
 
             request, metadata = self._interceptor.pre_get_example(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseGetExample._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseGetExample._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseGetExample._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseGetExample._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -905,14 +760,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 )
 
             # Send the request
-            response = ExamplesRestTransport._GetExample._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = ExamplesRestTransport._GetExample._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -927,12 +775,8 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             resp = self._interceptor.post_get_example(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_example_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_example_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = example.Example.to_json(response)
                 except:
@@ -958,15 +802,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             return hash("ExamplesRestTransport.ListExamples")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1008,30 +844,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseListExamples._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseListExamples._get_http_options()
 
             request, metadata = self._interceptor.pre_list_examples(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseListExamples._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseListExamples._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseListExamples._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseListExamples._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1055,12 +877,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._ListExamples._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1076,12 +893,8 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             resp = self._interceptor.post_list_examples(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_examples_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_examples_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = example.ListExamplesResponse.to_json(response)
                 except:
@@ -1102,22 +915,12 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 )
             return resp
 
-    class _UpdateExample(
-        _BaseExamplesRestTransport._BaseUpdateExample, ExamplesRestStub
-    ):
+    class _UpdateExample(_BaseExamplesRestTransport._BaseUpdateExample, ExamplesRestStub):
         def __hash__(self):
             return hash("ExamplesRestTransport.UpdateExample")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1164,34 +967,18 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseUpdateExample._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseUpdateExample._get_http_options()
 
             request, metadata = self._interceptor.pre_update_example(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseUpdateExample._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseUpdateExample._get_transcoded_request(http_options, request)
 
-            body = _BaseExamplesRestTransport._BaseUpdateExample._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseExamplesRestTransport._BaseUpdateExample._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseUpdateExample._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseUpdateExample._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1215,13 +1002,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._UpdateExample._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1237,12 +1018,8 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             resp = self._interceptor.post_update_example(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_example_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_example_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_example.Example.to_json(response)
                 except:
@@ -1264,17 +1041,13 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             return resp
 
     @property
-    def create_example(
-        self,
-    ) -> Callable[[gcdc_example.CreateExampleRequest], gcdc_example.Example]:
+    def create_example(self) -> Callable[[gcdc_example.CreateExampleRequest], gcdc_example.Example]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateExample(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_example(
-        self,
-    ) -> Callable[[example.DeleteExampleRequest], empty_pb2.Empty]:
+    def delete_example(self) -> Callable[[example.DeleteExampleRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteExample(self._session, self._host, self._interceptor)  # type: ignore
@@ -1286,17 +1059,13 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
         return self._GetExample(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_examples(
-        self,
-    ) -> Callable[[example.ListExamplesRequest], example.ListExamplesResponse]:
+    def list_examples(self) -> Callable[[example.ListExamplesRequest], example.ListExamplesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListExamples(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_example(
-        self,
-    ) -> Callable[[gcdc_example.UpdateExampleRequest], gcdc_example.Example]:
+    def update_example(self) -> Callable[[gcdc_example.UpdateExampleRequest], gcdc_example.Example]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateExample(self._session, self._host, self._interceptor)  # type: ignore
@@ -1310,15 +1079,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             return hash("ExamplesRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1356,30 +1117,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1403,12 +1150,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1420,9 +1162,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1447,22 +1187,12 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseExamplesRestTransport._BaseListLocations, ExamplesRestStub
-    ):
+    class _ListLocations(_BaseExamplesRestTransport._BaseListLocations, ExamplesRestStub):
         def __hash__(self):
             return hash("ExamplesRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1500,30 +1230,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1547,12 +1263,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1564,9 +1275,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1591,22 +1300,12 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseExamplesRestTransport._BaseCancelOperation, ExamplesRestStub
-    ):
+    class _CancelOperation(_BaseExamplesRestTransport._BaseCancelOperation, ExamplesRestStub):
         def __hash__(self):
             return hash("ExamplesRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1641,32 +1340,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseCancelOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseExamplesRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1690,12 +1373,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1714,15 +1392,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             return hash("ExamplesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1760,30 +1430,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1807,12 +1463,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1824,9 +1475,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1851,22 +1500,12 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseExamplesRestTransport._BaseListOperations, ExamplesRestStub
-    ):
+    class _ListOperations(_BaseExamplesRestTransport._BaseListOperations, ExamplesRestStub):
         def __hash__(self):
             return hash("ExamplesRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1904,30 +1543,16 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseExamplesRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseExamplesRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseExamplesRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseExamplesRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseExamplesRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseExamplesRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1951,12 +1576,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
 
             # Send the request
             response = ExamplesRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1968,9 +1588,7 @@ class ExamplesRestTransport(_BaseExamplesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

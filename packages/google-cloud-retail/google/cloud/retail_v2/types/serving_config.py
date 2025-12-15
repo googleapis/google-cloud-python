@@ -348,12 +348,10 @@ class ServingConfig(proto.Message):
         proto.BOOL,
         number=24,
     )
-    personalization_spec: search_service.SearchRequest.PersonalizationSpec = (
-        proto.Field(
-            proto.MESSAGE,
-            number=21,
-            message=search_service.SearchRequest.PersonalizationSpec,
-        )
+    personalization_spec: search_service.SearchRequest.PersonalizationSpec = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=search_service.SearchRequest.PersonalizationSpec,
     )
     solution_types: MutableSequence[common.SolutionType] = proto.RepeatedField(
         proto.ENUM,

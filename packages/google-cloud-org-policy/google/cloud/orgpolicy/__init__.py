@@ -18,9 +18,7 @@ from google.cloud.orgpolicy import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.orgpolicy_v2.services.org_policy.async_client import (
-    OrgPolicyAsyncClient,
-)
+from google.cloud.orgpolicy_v2.services.org_policy.async_client import OrgPolicyAsyncClient
 from google.cloud.orgpolicy_v2.services.org_policy.client import OrgPolicyClient
 from google.cloud.orgpolicy_v2.types.constraint import Constraint, CustomConstraint
 from google.cloud.orgpolicy_v2.types.orgpolicy import (

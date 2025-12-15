@@ -96,12 +96,8 @@ class CompanyServiceRestInterceptor:
     """
 
     def pre_get_company(
-        self,
-        request: company_service.GetCompanyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        company_service.GetCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: company_service.GetCompanyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[company_service.GetCompanyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_company
 
         Override in a subclass to manipulate the request or metadata
@@ -109,9 +105,7 @@ class CompanyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_company(
-        self, response: company_messages.Company
-    ) -> company_messages.Company:
+    def post_get_company(self, response: company_messages.Company) -> company_messages.Company:
         """Post-rpc interceptor for get_company
 
         DEPRECATED. Please use the `post_get_company_with_metadata`
@@ -125,9 +119,7 @@ class CompanyServiceRestInterceptor:
         return response
 
     def post_get_company_with_metadata(
-        self,
-        response: company_messages.Company,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: company_messages.Company, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[company_messages.Company, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_company
 
@@ -144,12 +136,8 @@ class CompanyServiceRestInterceptor:
         return response, metadata
 
     def pre_list_companies(
-        self,
-        request: company_service.ListCompaniesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        company_service.ListCompaniesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: company_service.ListCompaniesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[company_service.ListCompaniesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_companies
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +145,7 @@ class CompanyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_companies(
-        self, response: company_service.ListCompaniesResponse
-    ) -> company_service.ListCompaniesResponse:
+    def post_list_companies(self, response: company_service.ListCompaniesResponse) -> company_service.ListCompaniesResponse:
         """Post-rpc interceptor for list_companies
 
         DEPRECATED. Please use the `post_list_companies_with_metadata`
@@ -173,12 +159,8 @@ class CompanyServiceRestInterceptor:
         return response
 
     def post_list_companies_with_metadata(
-        self,
-        response: company_service.ListCompaniesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        company_service.ListCompaniesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: company_service.ListCompaniesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[company_service.ListCompaniesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_companies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -194,12 +176,8 @@ class CompanyServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -207,9 +185,7 @@ class CompanyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -298,30 +274,18 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CompanyServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetCompany(
-        _BaseCompanyServiceRestTransport._BaseGetCompany, CompanyServiceRestStub
-    ):
+    class _GetCompany(_BaseCompanyServiceRestTransport._BaseGetCompany, CompanyServiceRestStub):
         def __hash__(self):
             return hash("CompanyServiceRestTransport.GetCompany")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -360,28 +324,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                     The ``Company`` resource.
             """
 
-            http_options = (
-                _BaseCompanyServiceRestTransport._BaseGetCompany._get_http_options()
-            )
+            http_options = _BaseCompanyServiceRestTransport._BaseGetCompany._get_http_options()
 
             request, metadata = self._interceptor.pre_get_company(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseGetCompany._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseGetCompany._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCompanyServiceRestTransport._BaseGetCompany._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCompanyServiceRestTransport._BaseGetCompany._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -405,12 +357,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             # Send the request
             response = CompanyServiceRestTransport._GetCompany._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -426,12 +373,8 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             resp = self._interceptor.post_get_company(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_company_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_company_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = company_messages.Company.to_json(response)
                 except:
@@ -452,22 +395,12 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 )
             return resp
 
-    class _ListCompanies(
-        _BaseCompanyServiceRestTransport._BaseListCompanies, CompanyServiceRestStub
-    ):
+    class _ListCompanies(_BaseCompanyServiceRestTransport._BaseListCompanies, CompanyServiceRestStub):
         def __hash__(self):
             return hash("CompanyServiceRestTransport.ListCompanies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -508,26 +441,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCompanyServiceRestTransport._BaseListCompanies._get_http_options()
-            )
+            http_options = _BaseCompanyServiceRestTransport._BaseListCompanies._get_http_options()
 
             request, metadata = self._interceptor.pre_list_companies(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseListCompanies._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseListCompanies._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseListCompanies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompanyServiceRestTransport._BaseListCompanies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -551,12 +474,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             # Send the request
             response = CompanyServiceRestTransport._ListCompanies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -572,16 +490,10 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             resp = self._interceptor.post_list_companies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_companies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_companies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = company_service.ListCompaniesResponse.to_json(
-                        response
-                    )
+                    response_payload = company_service.ListCompaniesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -601,19 +513,13 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             return resp
 
     @property
-    def get_company(
-        self,
-    ) -> Callable[[company_service.GetCompanyRequest], company_messages.Company]:
+    def get_company(self) -> Callable[[company_service.GetCompanyRequest], company_messages.Company]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCompany(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_companies(
-        self,
-    ) -> Callable[
-        [company_service.ListCompaniesRequest], company_service.ListCompaniesResponse
-    ]:
+    def list_companies(self) -> Callable[[company_service.ListCompaniesRequest], company_service.ListCompaniesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCompanies(self._session, self._host, self._interceptor)  # type: ignore
@@ -622,22 +528,12 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCompanyServiceRestTransport._BaseGetOperation, CompanyServiceRestStub
-    ):
+    class _GetOperation(_BaseCompanyServiceRestTransport._BaseGetOperation, CompanyServiceRestStub):
         def __hash__(self):
             return hash("CompanyServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -675,26 +571,16 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCompanyServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCompanyServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCompanyServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCompanyServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCompanyServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCompanyServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -718,12 +604,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
 
             # Send the request
             response = CompanyServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -735,9 +616,7 @@ class CompanyServiceRestTransport(_BaseCompanyServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

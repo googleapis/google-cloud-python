@@ -238,12 +238,10 @@ class Engine(proto.Message):
                 number=4,
             )
 
-        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Engine.ChatEngineConfig.AgentCreationConfig",
-            )
+        agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Engine.ChatEngineConfig.AgentCreationConfig",
         )
         dialogflow_agent_to_link: str = proto.Field(
             proto.STRING,

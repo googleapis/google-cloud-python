@@ -18,12 +18,8 @@ from google.cloud.lifesciences import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.lifesciences_v2beta.services.workflows_service_v2_beta.async_client import (
-    WorkflowsServiceV2BetaAsyncClient,
-)
-from google.cloud.lifesciences_v2beta.services.workflows_service_v2_beta.client import (
-    WorkflowsServiceV2BetaClient,
-)
+from google.cloud.lifesciences_v2beta.services.workflows_service_v2_beta.async_client import WorkflowsServiceV2BetaAsyncClient
+from google.cloud.lifesciences_v2beta.services.workflows_service_v2_beta.client import WorkflowsServiceV2BetaClient
 from google.cloud.lifesciences_v2beta.types.workflows import (
     Accelerator,
     Action,

@@ -13,14 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import (
-    Aggregate,
-    Blueprint,
-    UnitCondition,
-    UnitOperationCondition,
-    UnitOperationErrorCategory,
-    UnitVariable,
-)
+from .common import Aggregate, Blueprint, UnitCondition, UnitOperationCondition, UnitOperationErrorCategory, UnitVariable
 from .deployments_resources import (
     Dependency,
     Deprovision,
@@ -77,14 +70,7 @@ from .deployments_service import (
     UpdateUnitOperationRequest,
     UpdateUnitRequest,
 )
-from .rollouts_resources import (
-    ErrorBudget,
-    Rollout,
-    RolloutAction,
-    RolloutControl,
-    RolloutKind,
-    RolloutStats,
-)
+from .rollouts_resources import ErrorBudget, Rollout, RolloutAction, RolloutControl, RolloutKind, RolloutStats
 from .rollouts_service import (
     CreateRolloutKindRequest,
     CreateRolloutRequest,

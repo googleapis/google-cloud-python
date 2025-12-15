@@ -29,9 +29,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.maps.fleetengine_v1 import gapic_version as package_version
 from google.maps.fleetengine_v1.types import trip_api, trips
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -93,23 +91,15 @@ class TripServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -212,51 +202,27 @@ class TripServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def create_trip(
-        self,
-    ) -> Callable[
-        [trip_api.CreateTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]
-    ]:
+    def create_trip(self) -> Callable[[trip_api.CreateTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]]:
         raise NotImplementedError()
 
     @property
-    def get_trip(
-        self,
-    ) -> Callable[[trip_api.GetTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]]:
+    def get_trip(self) -> Callable[[trip_api.GetTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]]:
         raise NotImplementedError()
 
     @property
-    def delete_trip(
-        self,
-    ) -> Callable[
-        [trip_api.DeleteTripRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]
-    ]:
+    def delete_trip(self) -> Callable[[trip_api.DeleteTripRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def report_billable_trip(
-        self,
-    ) -> Callable[
-        [trip_api.ReportBillableTripRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def report_billable_trip(self) -> Callable[[trip_api.ReportBillableTripRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
-    def search_trips(
-        self,
-    ) -> Callable[
-        [trip_api.SearchTripsRequest],
-        Union[trip_api.SearchTripsResponse, Awaitable[trip_api.SearchTripsResponse]],
-    ]:
+    def search_trips(self) -> Callable[[trip_api.SearchTripsRequest], Union[trip_api.SearchTripsResponse, Awaitable[trip_api.SearchTripsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def update_trip(
-        self,
-    ) -> Callable[
-        [trip_api.UpdateTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]
-    ]:
+    def update_trip(self) -> Callable[[trip_api.UpdateTripRequest], Union[trips.Trip, Awaitable[trips.Trip]]]:
         raise NotImplementedError()
 
     @property

@@ -20,9 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ai.generativelanguage_v1alpha.types import (
-    cached_content as gag_cached_content,
-)
+from google.ai.generativelanguage_v1alpha.types import cached_content as gag_cached_content
 
 __protobuf__ = proto.module(
     package="google.ai.generativelanguage.v1alpha",
@@ -84,9 +82,7 @@ class ListCachedContentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cached_contents: MutableSequence[
-        gag_cached_content.CachedContent
-    ] = proto.RepeatedField(
+    cached_contents: MutableSequence[gag_cached_content.CachedContent] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=gag_cached_content.CachedContent,

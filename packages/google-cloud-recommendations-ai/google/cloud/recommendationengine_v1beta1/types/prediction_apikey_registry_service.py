@@ -115,9 +115,7 @@ class ListPredictionApiKeyRegistrationsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    prediction_api_key_registrations: MutableSequence[
-        "PredictionApiKeyRegistration"
-    ] = proto.RepeatedField(
+    prediction_api_key_registrations: MutableSequence["PredictionApiKeyRegistration"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="PredictionApiKeyRegistration",

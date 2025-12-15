@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .asset_service import (
-    SearchAllIamPoliciesRequest,
-    SearchAllIamPoliciesResponse,
-    SearchAllResourcesRequest,
-    SearchAllResourcesResponse,
-)
+from .asset_service import SearchAllIamPoliciesRequest, SearchAllIamPoliciesResponse, SearchAllResourcesRequest, SearchAllResourcesResponse
 from .assets import IamPolicySearchResult, Permissions, StandardResourceMetadata
 
 __all__ = (

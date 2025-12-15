@@ -21,10 +21,7 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.ads.admanager_v1.types import (
-    ad_review_center_ad_enums,
-    ad_review_center_ad_messages,
-)
+from google.ads.admanager_v1.types import ad_review_center_ad_enums, ad_review_center_ad_messages
 
 __protobuf__ = proto.module(
     package="google.ads.admanager.v1",
@@ -156,9 +153,7 @@ class SearchAdReviewCenterAdsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    ad_review_center_ads: MutableSequence[
-        ad_review_center_ad_messages.AdReviewCenterAd
-    ] = proto.RepeatedField(
+    ad_review_center_ads: MutableSequence[ad_review_center_ad_messages.AdReviewCenterAd] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=ad_review_center_ad_messages.AdReviewCenterAd,

@@ -183,13 +183,8 @@ class RegionNetworkPoliciesRestInterceptor:
     """
 
     def pre_add_association(
-        self,
-        request: compute.AddAssociationRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddAssociationRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AddAssociationRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddAssociationRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_association
 
         Override in a subclass to manipulate the request or metadata
@@ -211,9 +206,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_add_association_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_association
 
@@ -230,13 +223,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_add_traffic_classification_rule(
-        self,
-        request: compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_traffic_classification_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -244,9 +232,7 @@ class RegionNetworkPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_add_traffic_classification_rule(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_add_traffic_classification_rule(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for add_traffic_classification_rule
 
         DEPRECATED. Please use the `post_add_traffic_classification_rule_with_metadata`
@@ -260,9 +246,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_add_traffic_classification_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_traffic_classification_rule
 
@@ -279,13 +263,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_aggregated_list(
-        self,
-        request: compute.AggregatedListRegionNetworkPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.AggregatedListRegionNetworkPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.AggregatedListRegionNetworkPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.AggregatedListRegionNetworkPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for aggregated_list
 
         Override in a subclass to manipulate the request or metadata
@@ -293,9 +272,7 @@ class RegionNetworkPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_aggregated_list(
-        self, response: compute.NetworkPolicyAggregatedList
-    ) -> compute.NetworkPolicyAggregatedList:
+    def post_aggregated_list(self, response: compute.NetworkPolicyAggregatedList) -> compute.NetworkPolicyAggregatedList:
         """Post-rpc interceptor for aggregated_list
 
         DEPRECATED. Please use the `post_aggregated_list_with_metadata`
@@ -309,12 +286,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_aggregated_list_with_metadata(
-        self,
-        response: compute.NetworkPolicyAggregatedList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NetworkPolicyAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.NetworkPolicyAggregatedList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NetworkPolicyAggregatedList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for aggregated_list
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -330,13 +303,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_delete(
-        self,
-        request: compute.DeleteRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.DeleteRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.DeleteRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.DeleteRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete
 
         Override in a subclass to manipulate the request or metadata
@@ -358,9 +326,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_delete_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete
 
@@ -377,12 +343,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get(
-        self,
-        request: compute.GetRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.GetRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get
 
         Override in a subclass to manipulate the request or metadata
@@ -404,9 +366,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_get_with_metadata(
-        self,
-        response: compute.NetworkPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NetworkPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NetworkPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get
 
@@ -423,13 +383,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_association(
-        self,
-        request: compute.GetAssociationRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetAssociationRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetAssociationRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetAssociationRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_association
 
         Override in a subclass to manipulate the request or metadata
@@ -437,9 +392,7 @@ class RegionNetworkPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_association(
-        self, response: compute.NetworkPolicyAssociation
-    ) -> compute.NetworkPolicyAssociation:
+    def post_get_association(self, response: compute.NetworkPolicyAssociation) -> compute.NetworkPolicyAssociation:
         """Post-rpc interceptor for get_association
 
         DEPRECATED. Please use the `post_get_association_with_metadata`
@@ -453,12 +406,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_get_association_with_metadata(
-        self,
-        response: compute.NetworkPolicyAssociation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NetworkPolicyAssociation, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: compute.NetworkPolicyAssociation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NetworkPolicyAssociation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_association
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -474,13 +423,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_get_traffic_classification_rule(
-        self,
-        request: compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_traffic_classification_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -504,13 +448,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_get_traffic_classification_rule_with_metadata(
-        self,
-        response: compute.NetworkPolicyTrafficClassificationRule,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.NetworkPolicyTrafficClassificationRule,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: compute.NetworkPolicyTrafficClassificationRule, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.NetworkPolicyTrafficClassificationRule, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_traffic_classification_rule
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -526,13 +465,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_insert(
-        self,
-        request: compute.InsertRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.InsertRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.InsertRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.InsertRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for insert
 
         Override in a subclass to manipulate the request or metadata
@@ -554,9 +488,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_insert_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for insert
 
@@ -573,13 +505,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_list(
-        self,
-        request: compute.ListRegionNetworkPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.ListRegionNetworkPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.ListRegionNetworkPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.ListRegionNetworkPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list
 
         Override in a subclass to manipulate the request or metadata
@@ -587,9 +514,7 @@ class RegionNetworkPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_list(
-        self, response: compute.NetworkPolicyList
-    ) -> compute.NetworkPolicyList:
+    def post_list(self, response: compute.NetworkPolicyList) -> compute.NetworkPolicyList:
         """Post-rpc interceptor for list
 
         DEPRECATED. Please use the `post_list_with_metadata`
@@ -603,9 +528,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_list_with_metadata(
-        self,
-        response: compute.NetworkPolicyList,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.NetworkPolicyList, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.NetworkPolicyList, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list
 
@@ -622,12 +545,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch(
-        self,
-        request: compute.PatchRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: compute.PatchRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch
 
         Override in a subclass to manipulate the request or metadata
@@ -649,9 +568,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_patch_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch
 
@@ -668,13 +585,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_patch_traffic_classification_rule(
-        self,
-        request: compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for patch_traffic_classification_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -682,9 +594,7 @@ class RegionNetworkPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_patch_traffic_classification_rule(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_patch_traffic_classification_rule(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for patch_traffic_classification_rule
 
         DEPRECATED. Please use the `post_patch_traffic_classification_rule_with_metadata`
@@ -698,9 +608,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_patch_traffic_classification_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for patch_traffic_classification_rule
 
@@ -717,13 +625,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_remove_association(
-        self,
-        request: compute.RemoveAssociationRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveAssociationRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RemoveAssociationRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveAssociationRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_association
 
         Override in a subclass to manipulate the request or metadata
@@ -745,9 +648,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_remove_association_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_association
 
@@ -764,13 +665,8 @@ class RegionNetworkPoliciesRestInterceptor:
         return response, metadata
 
     def pre_remove_traffic_classification_rule(
-        self,
-        request: compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_traffic_classification_rule
 
         Override in a subclass to manipulate the request or metadata
@@ -778,9 +674,7 @@ class RegionNetworkPoliciesRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_traffic_classification_rule(
-        self, response: compute.Operation
-    ) -> compute.Operation:
+    def post_remove_traffic_classification_rule(self, response: compute.Operation) -> compute.Operation:
         """Post-rpc interceptor for remove_traffic_classification_rule
 
         DEPRECATED. Please use the `post_remove_traffic_classification_rule_with_metadata`
@@ -794,9 +688,7 @@ class RegionNetworkPoliciesRestInterceptor:
         return response
 
     def post_remove_traffic_classification_rule_with_metadata(
-        self,
-        response: compute.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: compute.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[compute.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_traffic_classification_rule
 
@@ -896,31 +788,18 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or RegionNetworkPoliciesRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _AddAssociation(
-        _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _AddAssociation(_BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.AddAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -979,30 +858,18 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_add_association(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseAddAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1026,13 +893,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._AddAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1048,12 +909,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_add_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1074,25 +931,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _AddTrafficClassificationRule(
-        _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _AddTrafficClassificationRule(_BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule, RegionNetworkPoliciesRestStub):
         def __hash__(self):
-            return hash(
-                "RegionNetworkPoliciesRestTransport.AddTrafficClassificationRule"
-            )
+            return hash("RegionNetworkPoliciesRestTransport.AddTrafficClassificationRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1152,32 +996,20 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_traffic_classification_rule(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_add_traffic_classification_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseAddTrafficClassificationRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1201,13 +1033,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._AddTrafficClassificationRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1223,15 +1049,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_add_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_add_traffic_classification_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_traffic_classification_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1252,23 +1071,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _AggregatedList(
-        _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _AggregatedList(_BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.AggregatedList")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1309,26 +1117,16 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_http_options()
 
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseAggregatedList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1352,12 +1150,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._AggregatedList._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1373,16 +1166,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_aggregated_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_aggregated_list_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_aggregated_list_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.NetworkPolicyAggregatedList.to_json(
-                        response
-                    )
+                    response_payload = compute.NetworkPolicyAggregatedList.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1401,23 +1188,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _Delete(
-        _BaseRegionNetworkPoliciesRestTransport._BaseDelete,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _Delete(_BaseRegionNetworkPoliciesRestTransport._BaseDelete, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.Delete")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1475,26 +1251,16 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseDelete._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseDelete._get_http_options()
 
             request, metadata = self._interceptor.pre_delete(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseDelete._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseDelete._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseDelete._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseDelete._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1518,12 +1284,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._Delete._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1539,12 +1300,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_delete(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -1565,22 +1322,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _Get(
-        _BaseRegionNetworkPoliciesRestTransport._BaseGet, RegionNetworkPoliciesRestStub
-    ):
+    class _Get(_BaseRegionNetworkPoliciesRestTransport._BaseGet, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.Get")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1621,28 +1368,16 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                     Represents a Network Policy resource.
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseGet._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseGet._get_http_options()
 
             request, metadata = self._interceptor.pre_get(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseGet._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseGet._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseGet._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseGet._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1666,12 +1401,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._Get._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1688,9 +1418,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
             resp = self._interceptor.post_get(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_get_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NetworkPolicy.to_json(response)
                 except:
@@ -1711,23 +1439,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _GetAssociation(
-        _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _GetAssociation(_BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.GetAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1768,26 +1485,16 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_association(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseGetAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1811,12 +1518,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._GetAssociation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1832,16 +1534,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_get_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = compute.NetworkPolicyAssociation.to_json(
-                        response
-                    )
+                    response_payload = compute.NetworkPolicyAssociation.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1860,25 +1556,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _GetTrafficClassificationRule(
-        _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _GetTrafficClassificationRule(_BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule, RegionNetworkPoliciesRestStub):
         def __hash__(self):
-            return hash(
-                "RegionNetworkPoliciesRestTransport.GetTrafficClassificationRule"
-            )
+            return hash("RegionNetworkPoliciesRestTransport.GetTrafficClassificationRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1925,28 +1608,18 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_traffic_classification_rule(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_get_traffic_classification_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseGetTrafficClassificationRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1970,12 +1643,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._GetTrafficClassificationRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1991,19 +1659,10 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_get_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_get_traffic_classification_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_traffic_classification_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        compute.NetworkPolicyTrafficClassificationRule.to_json(response)
-                    )
+                    response_payload = compute.NetworkPolicyTrafficClassificationRule.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2022,23 +1681,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _Insert(
-        _BaseRegionNetworkPoliciesRestTransport._BaseInsert,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _Insert(_BaseRegionNetworkPoliciesRestTransport._BaseInsert, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.Insert")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2097,30 +1745,18 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_http_options()
 
             request, metadata = self._interceptor.pre_insert(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseInsert._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2144,13 +1780,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._Insert._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2166,12 +1796,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_insert(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_insert_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_insert_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2192,22 +1818,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _List(
-        _BaseRegionNetworkPoliciesRestTransport._BaseList, RegionNetworkPoliciesRestStub
-    ):
+    class _List(_BaseRegionNetworkPoliciesRestTransport._BaseList, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.List")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2248,26 +1864,16 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseList._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseList._get_http_options()
 
             request, metadata = self._interceptor.pre_list(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseList._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseList._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseList._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseList._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2291,12 +1897,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._List._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2313,9 +1914,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
             resp = self._interceptor.post_list(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
             resp, _ = self._interceptor.post_list_with_metadata(resp, response_metadata)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.NetworkPolicyList.to_json(response)
                 except:
@@ -2336,23 +1935,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _Patch(
-        _BaseRegionNetworkPoliciesRestTransport._BasePatch,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _Patch(_BaseRegionNetworkPoliciesRestTransport._BasePatch, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.Patch")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2411,30 +1999,18 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_http_options()
 
             request, metadata = self._interceptor.pre_patch(request, metadata)
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_transcoded_request(http_options, request)
 
-            body = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BasePatch._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2458,13 +2034,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._Patch._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2480,12 +2050,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_patch(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_patch_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2506,25 +2072,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _PatchTrafficClassificationRule(
-        _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _PatchTrafficClassificationRule(_BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule, RegionNetworkPoliciesRestStub):
         def __hash__(self):
-            return hash(
-                "RegionNetworkPoliciesRestTransport.PatchTrafficClassificationRule"
-            )
+            return hash("RegionNetworkPoliciesRestTransport.PatchTrafficClassificationRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2584,32 +2137,20 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_http_options()
 
-            request, metadata = self._interceptor.pre_patch_traffic_classification_rule(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_patch_traffic_classification_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BasePatchTrafficClassificationRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2633,13 +2174,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._PatchTrafficClassificationRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2655,15 +2190,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_patch_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_patch_traffic_classification_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_patch_traffic_classification_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2684,23 +2212,12 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
             return resp
 
-    class _RemoveAssociation(
-        _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation,
-        RegionNetworkPoliciesRestStub,
-    ):
+    class _RemoveAssociation(_BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation, RegionNetworkPoliciesRestStub):
         def __hash__(self):
             return hash("RegionNetworkPoliciesRestTransport.RemoveAssociation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2758,28 +2275,16 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_association(
-                request, metadata
-            )
-            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_association(request, metadata)
+            transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveAssociation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2802,15 +2307,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
                 )
 
             # Send the request
-            response = (
-                RegionNetworkPoliciesRestTransport._RemoveAssociation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = RegionNetworkPoliciesRestTransport._RemoveAssociation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2826,12 +2324,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_remove_association(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_association_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_association_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -2853,24 +2347,13 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
             return resp
 
     class _RemoveTrafficClassificationRule(
-        _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule,
-        RegionNetworkPoliciesRestStub,
+        _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule, RegionNetworkPoliciesRestStub
     ):
         def __hash__(self):
-            return hash(
-                "RegionNetworkPoliciesRestTransport.RemoveTrafficClassificationRule"
-            )
+            return hash("RegionNetworkPoliciesRestTransport.RemoveTrafficClassificationRule")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2929,31 +2412,18 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             """
 
-            http_options = (
-                _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_http_options()
-            )
+            http_options = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_http_options()
 
-            (
-                request,
-                metadata,
-            ) = self._interceptor.pre_remove_traffic_classification_rule(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_remove_traffic_classification_rule(request, metadata)
             transcoded_request = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseRegionNetworkPoliciesRestTransport._BaseRemoveTrafficClassificationRule._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2977,12 +2447,7 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             # Send the request
             response = RegionNetworkPoliciesRestTransport._RemoveTrafficClassificationRule._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2998,15 +2463,8 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
 
             resp = self._interceptor.post_remove_traffic_classification_rule(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_remove_traffic_classification_rule_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_traffic_classification_rule_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = compute.Operation.to_json(response)
                 except:
@@ -3028,60 +2486,37 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
             return resp
 
     @property
-    def add_association(
-        self,
-    ) -> Callable[
-        [compute.AddAssociationRegionNetworkPolicyRequest], compute.Operation
-    ]:
+    def add_association(self) -> Callable[[compute.AddAssociationRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def add_traffic_classification_rule(
-        self,
-    ) -> Callable[
-        [compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest],
-        compute.Operation,
-    ]:
+    def add_traffic_classification_rule(self) -> Callable[[compute.AddTrafficClassificationRuleRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def aggregated_list(
-        self,
-    ) -> Callable[
-        [compute.AggregatedListRegionNetworkPoliciesRequest],
-        compute.NetworkPolicyAggregatedList,
-    ]:
+    def aggregated_list(self) -> Callable[[compute.AggregatedListRegionNetworkPoliciesRequest], compute.NetworkPolicyAggregatedList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AggregatedList(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete(
-        self,
-    ) -> Callable[[compute.DeleteRegionNetworkPolicyRequest], compute.Operation]:
+    def delete(self) -> Callable[[compute.DeleteRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Delete(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get(
-        self,
-    ) -> Callable[[compute.GetRegionNetworkPolicyRequest], compute.NetworkPolicy]:
+    def get(self) -> Callable[[compute.GetRegionNetworkPolicyRequest], compute.NetworkPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Get(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_association(
-        self,
-    ) -> Callable[
-        [compute.GetAssociationRegionNetworkPolicyRequest],
-        compute.NetworkPolicyAssociation,
-    ]:
+    def get_association(self) -> Callable[[compute.GetAssociationRegionNetworkPolicyRequest], compute.NetworkPolicyAssociation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAssociation(self._session, self._host, self._interceptor)  # type: ignore
@@ -3089,68 +2524,43 @@ class RegionNetworkPoliciesRestTransport(_BaseRegionNetworkPoliciesRestTransport
     @property
     def get_traffic_classification_rule(
         self,
-    ) -> Callable[
-        [compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest],
-        compute.NetworkPolicyTrafficClassificationRule,
-    ]:
+    ) -> Callable[[compute.GetTrafficClassificationRuleRegionNetworkPolicyRequest], compute.NetworkPolicyTrafficClassificationRule]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def insert(
-        self,
-    ) -> Callable[[compute.InsertRegionNetworkPolicyRequest], compute.Operation]:
+    def insert(self) -> Callable[[compute.InsertRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Insert(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list(
-        self,
-    ) -> Callable[
-        [compute.ListRegionNetworkPoliciesRequest], compute.NetworkPolicyList
-    ]:
+    def list(self) -> Callable[[compute.ListRegionNetworkPoliciesRequest], compute.NetworkPolicyList]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._List(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch(
-        self,
-    ) -> Callable[[compute.PatchRegionNetworkPolicyRequest], compute.Operation]:
+    def patch(self) -> Callable[[compute.PatchRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._Patch(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def patch_traffic_classification_rule(
-        self,
-    ) -> Callable[
-        [compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest],
-        compute.Operation,
-    ]:
+    def patch_traffic_classification_rule(self) -> Callable[[compute.PatchTrafficClassificationRuleRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PatchTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_association(
-        self,
-    ) -> Callable[
-        [compute.RemoveAssociationRegionNetworkPolicyRequest], compute.Operation
-    ]:
+    def remove_association(self) -> Callable[[compute.RemoveAssociationRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveAssociation(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_traffic_classification_rule(
-        self,
-    ) -> Callable[
-        [compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest],
-        compute.Operation,
-    ]:
+    def remove_traffic_classification_rule(self) -> Callable[[compute.RemoveTrafficClassificationRuleRegionNetworkPolicyRequest], compute.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveTrafficClassificationRule(self._session, self._host, self._interceptor)  # type: ignore

@@ -31,9 +31,7 @@ import google.protobuf
 from google.cloud.resourcemanager_v3 import gapic_version as package_version
 from google.cloud.resourcemanager_v3.types import projects
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -98,23 +96,15 @@ class ProjectsTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -243,95 +233,47 @@ class ProjectsTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def get_project(
-        self,
-    ) -> Callable[
-        [projects.GetProjectRequest],
-        Union[projects.Project, Awaitable[projects.Project]],
-    ]:
+    def get_project(self) -> Callable[[projects.GetProjectRequest], Union[projects.Project, Awaitable[projects.Project]]]:
         raise NotImplementedError()
 
     @property
     def list_projects(
         self,
-    ) -> Callable[
-        [projects.ListProjectsRequest],
-        Union[projects.ListProjectsResponse, Awaitable[projects.ListProjectsResponse]],
-    ]:
+    ) -> Callable[[projects.ListProjectsRequest], Union[projects.ListProjectsResponse, Awaitable[projects.ListProjectsResponse]]]:
         raise NotImplementedError()
 
     @property
     def search_projects(
         self,
-    ) -> Callable[
-        [projects.SearchProjectsRequest],
-        Union[
-            projects.SearchProjectsResponse, Awaitable[projects.SearchProjectsResponse]
-        ],
-    ]:
+    ) -> Callable[[projects.SearchProjectsRequest], Union[projects.SearchProjectsResponse, Awaitable[projects.SearchProjectsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def create_project(
-        self,
-    ) -> Callable[
-        [projects.CreateProjectRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_project(self) -> Callable[[projects.CreateProjectRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_project(
-        self,
-    ) -> Callable[
-        [projects.UpdateProjectRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_project(self) -> Callable[[projects.UpdateProjectRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def move_project(
-        self,
-    ) -> Callable[
-        [projects.MoveProjectRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def move_project(self) -> Callable[[projects.MoveProjectRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_project(
-        self,
-    ) -> Callable[
-        [projects.DeleteProjectRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_project(self) -> Callable[[projects.DeleteProjectRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def undelete_project(
-        self,
-    ) -> Callable[
-        [projects.UndeleteProjectRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def undelete_project(self) -> Callable[[projects.UndeleteProjectRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.GetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.SetIamPolicyRequest],
-        Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]],
-    ]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Union[policy_pb2.Policy, Awaitable[policy_pb2.Policy]]]:
         raise NotImplementedError()
 
     @property
@@ -339,20 +281,14 @@ class ProjectsTransport(abc.ABC):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Union[
-            iam_policy_pb2.TestIamPermissionsResponse,
-            Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
-        ],
+        Union[iam_policy_pb2.TestIamPermissionsResponse, Awaitable[iam_policy_pb2.TestIamPermissionsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property

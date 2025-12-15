@@ -119,13 +119,8 @@ class AutoscalingPolicyServiceRestInterceptor:
     """
 
     def pre_create_autoscaling_policy(
-        self,
-        request: autoscaling_policies.CreateAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.CreateAutoscalingPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autoscaling_policies.CreateAutoscalingPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.CreateAutoscalingPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_autoscaling_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -133,9 +128,7 @@ class AutoscalingPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_autoscaling_policy(
-        self, response: autoscaling_policies.AutoscalingPolicy
-    ) -> autoscaling_policies.AutoscalingPolicy:
+    def post_create_autoscaling_policy(self, response: autoscaling_policies.AutoscalingPolicy) -> autoscaling_policies.AutoscalingPolicy:
         """Post-rpc interceptor for create_autoscaling_policy
 
         DEPRECATED. Please use the `post_create_autoscaling_policy_with_metadata`
@@ -149,12 +142,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def post_create_autoscaling_policy_with_metadata(
-        self,
-        response: autoscaling_policies.AutoscalingPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.AutoscalingPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: autoscaling_policies.AutoscalingPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.AutoscalingPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_autoscaling_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -170,13 +159,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_autoscaling_policy(
-        self,
-        request: autoscaling_policies.DeleteAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.DeleteAutoscalingPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autoscaling_policies.DeleteAutoscalingPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.DeleteAutoscalingPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_autoscaling_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -185,13 +169,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return request, metadata
 
     def pre_get_autoscaling_policy(
-        self,
-        request: autoscaling_policies.GetAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.GetAutoscalingPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autoscaling_policies.GetAutoscalingPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.GetAutoscalingPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_autoscaling_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -199,9 +178,7 @@ class AutoscalingPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_autoscaling_policy(
-        self, response: autoscaling_policies.AutoscalingPolicy
-    ) -> autoscaling_policies.AutoscalingPolicy:
+    def post_get_autoscaling_policy(self, response: autoscaling_policies.AutoscalingPolicy) -> autoscaling_policies.AutoscalingPolicy:
         """Post-rpc interceptor for get_autoscaling_policy
 
         DEPRECATED. Please use the `post_get_autoscaling_policy_with_metadata`
@@ -215,12 +192,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def post_get_autoscaling_policy_with_metadata(
-        self,
-        response: autoscaling_policies.AutoscalingPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.AutoscalingPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: autoscaling_policies.AutoscalingPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.AutoscalingPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_autoscaling_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -236,13 +209,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response, metadata
 
     def pre_list_autoscaling_policies(
-        self,
-        request: autoscaling_policies.ListAutoscalingPoliciesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.ListAutoscalingPoliciesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autoscaling_policies.ListAutoscalingPoliciesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.ListAutoscalingPoliciesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_autoscaling_policies
 
         Override in a subclass to manipulate the request or metadata
@@ -266,13 +234,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def post_list_autoscaling_policies_with_metadata(
-        self,
-        response: autoscaling_policies.ListAutoscalingPoliciesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.ListAutoscalingPoliciesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: autoscaling_policies.ListAutoscalingPoliciesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.ListAutoscalingPoliciesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_autoscaling_policies
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -288,13 +251,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response, metadata
 
     def pre_update_autoscaling_policy(
-        self,
-        request: autoscaling_policies.UpdateAutoscalingPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.UpdateAutoscalingPolicyRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: autoscaling_policies.UpdateAutoscalingPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.UpdateAutoscalingPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_autoscaling_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -302,9 +260,7 @@ class AutoscalingPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_autoscaling_policy(
-        self, response: autoscaling_policies.AutoscalingPolicy
-    ) -> autoscaling_policies.AutoscalingPolicy:
+    def post_update_autoscaling_policy(self, response: autoscaling_policies.AutoscalingPolicy) -> autoscaling_policies.AutoscalingPolicy:
         """Post-rpc interceptor for update_autoscaling_policy
 
         DEPRECATED. Please use the `post_update_autoscaling_policy_with_metadata`
@@ -318,12 +274,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def post_update_autoscaling_policy_with_metadata(
-        self,
-        response: autoscaling_policies.AutoscalingPolicy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        autoscaling_policies.AutoscalingPolicy, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: autoscaling_policies.AutoscalingPolicy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[autoscaling_policies.AutoscalingPolicy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_autoscaling_policy
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -339,12 +291,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -362,12 +310,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -385,13 +329,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -399,9 +338,7 @@ class AutoscalingPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the response
@@ -411,12 +348,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -434,12 +367,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -457,12 +386,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -470,9 +395,7 @@ class AutoscalingPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -482,12 +405,8 @@ class AutoscalingPolicyServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -495,9 +414,7 @@ class AutoscalingPolicyServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -587,31 +504,18 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AutoscalingPolicyServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _CreateAutoscalingPolicy(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _CreateAutoscalingPolicy(_BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.CreateAutoscalingPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -654,32 +558,20 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_autoscaling_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_create_autoscaling_policy(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseCreateAutoscalingPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -703,13 +595,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._CreateAutoscalingPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -725,16 +611,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             resp = self._interceptor.post_create_autoscaling_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_autoscaling_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_autoscaling_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(
-                        response
-                    )
+                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -753,23 +633,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
             return resp
 
-    class _DeleteAutoscalingPolicy(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _DeleteAutoscalingPolicy(_BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.DeleteAutoscalingPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -807,28 +676,18 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_autoscaling_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_delete_autoscaling_policy(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteAutoscalingPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -852,12 +711,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._DeleteAutoscalingPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -865,23 +719,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _GetAutoscalingPolicy(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _GetAutoscalingPolicy(_BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.GetAutoscalingPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -923,28 +766,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_autoscaling_policy(
-                request, metadata
-            )
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_autoscaling_policy(request, metadata)
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetAutoscalingPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -968,12 +799,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._GetAutoscalingPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -989,16 +815,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             resp = self._interceptor.post_get_autoscaling_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_autoscaling_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_autoscaling_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(
-                        response
-                    )
+                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1017,23 +837,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
             return resp
 
-    class _ListAutoscalingPolicies(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _ListAutoscalingPolicies(_BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.ListAutoscalingPolicies")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1075,28 +884,18 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_autoscaling_policies(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_autoscaling_policies(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_transcoded_request(
                 http_options, request
             )
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseListAutoscalingPolicies._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1120,12 +919,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._ListAutoscalingPolicies._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1141,18 +935,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             resp = self._interceptor.post_list_autoscaling_policies(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_autoscaling_policies_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_autoscaling_policies_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        autoscaling_policies.ListAutoscalingPoliciesResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = autoscaling_policies.ListAutoscalingPoliciesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1171,23 +957,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
             return resp
 
-    class _UpdateAutoscalingPolicy(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _UpdateAutoscalingPolicy(_BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.UpdateAutoscalingPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1230,32 +1005,20 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_autoscaling_policy(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_update_autoscaling_policy(request, metadata)
             transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_transcoded_request(
                 http_options, request
             )
 
-            body = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseUpdateAutoscalingPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1279,13 +1042,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             # Send the request
             response = AutoscalingPolicyServiceRestTransport._UpdateAutoscalingPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1301,16 +1058,10 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
 
             resp = self._interceptor.post_update_autoscaling_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_autoscaling_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_autoscaling_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(
-                        response
-                    )
+                    response_payload = autoscaling_policies.AutoscalingPolicy.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1330,33 +1081,19 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             return resp
 
     @property
-    def create_autoscaling_policy(
-        self,
-    ) -> Callable[
-        [autoscaling_policies.CreateAutoscalingPolicyRequest],
-        autoscaling_policies.AutoscalingPolicy,
-    ]:
+    def create_autoscaling_policy(self) -> Callable[[autoscaling_policies.CreateAutoscalingPolicyRequest], autoscaling_policies.AutoscalingPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAutoscalingPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_autoscaling_policy(
-        self,
-    ) -> Callable[
-        [autoscaling_policies.DeleteAutoscalingPolicyRequest], empty_pb2.Empty
-    ]:
+    def delete_autoscaling_policy(self) -> Callable[[autoscaling_policies.DeleteAutoscalingPolicyRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAutoscalingPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_autoscaling_policy(
-        self,
-    ) -> Callable[
-        [autoscaling_policies.GetAutoscalingPolicyRequest],
-        autoscaling_policies.AutoscalingPolicy,
-    ]:
+    def get_autoscaling_policy(self) -> Callable[[autoscaling_policies.GetAutoscalingPolicyRequest], autoscaling_policies.AutoscalingPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAutoscalingPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1364,21 +1101,13 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     @property
     def list_autoscaling_policies(
         self,
-    ) -> Callable[
-        [autoscaling_policies.ListAutoscalingPoliciesRequest],
-        autoscaling_policies.ListAutoscalingPoliciesResponse,
-    ]:
+    ) -> Callable[[autoscaling_policies.ListAutoscalingPoliciesRequest], autoscaling_policies.ListAutoscalingPoliciesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAutoscalingPolicies(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_autoscaling_policy(
-        self,
-    ) -> Callable[
-        [autoscaling_policies.UpdateAutoscalingPolicyRequest],
-        autoscaling_policies.AutoscalingPolicy,
-    ]:
+    def update_autoscaling_policy(self) -> Callable[[autoscaling_policies.UpdateAutoscalingPolicyRequest], autoscaling_policies.AutoscalingPolicy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAutoscalingPolicy(self._session, self._host, self._interceptor)  # type: ignore
@@ -1387,23 +1116,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def get_iam_policy(self):
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetIamPolicy(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _GetIamPolicy(_BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1442,30 +1160,18 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 policy_pb2.Policy: Response from GetIamPolicy method.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1488,16 +1194,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._GetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AutoscalingPolicyServiceRestTransport._GetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1509,9 +1207,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1536,23 +1232,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def set_iam_policy(self):
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _SetIamPolicy(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _SetIamPolicy(_BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1591,30 +1276,18 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 policy_pb2.Policy: Response from SetIamPolicy method.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1637,16 +1310,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._SetIamPolicy._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AutoscalingPolicyServiceRestTransport._SetIamPolicy._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1658,9 +1323,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = policy_pb2.Policy()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_set_iam_policy(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1685,23 +1348,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def test_iam_permissions(self):
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _TestIamPermissions(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _TestIamPermissions(_BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1740,32 +1392,18 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 iam_policy_pb2.TestIamPermissionsResponse: Response from TestIamPermissions method.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1788,16 +1426,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._TestIamPermissions._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = AutoscalingPolicyServiceRestTransport._TestIamPermissions._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1809,9 +1439,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = iam_policy_pb2.TestIamPermissionsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_test_iam_permissions(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1836,23 +1464,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _CancelOperation(_BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1887,28 +1504,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1931,15 +1536,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._CancelOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AutoscalingPolicyServiceRestTransport._CancelOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1953,23 +1551,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _DeleteOperation(_BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2004,28 +1591,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2048,15 +1623,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._DeleteOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AutoscalingPolicyServiceRestTransport._DeleteOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2070,23 +1638,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _GetOperation(_BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2124,26 +1681,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2166,15 +1713,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._GetOperation._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AutoscalingPolicyServiceRestTransport._GetOperation._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2186,9 +1726,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2213,23 +1751,12 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations,
-        AutoscalingPolicyServiceRestStub,
-    ):
+    class _ListOperations(_BaseAutoscalingPolicyServiceRestTransport._BaseListOperations, AutoscalingPolicyServiceRestStub):
         def __hash__(self):
             return hash("AutoscalingPolicyServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2267,26 +1794,16 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAutoscalingPolicyServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2309,15 +1826,8 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
                 )
 
             # Send the request
-            response = (
-                AutoscalingPolicyServiceRestTransport._ListOperations._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = AutoscalingPolicyServiceRestTransport._ListOperations._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2329,9 +1839,7 @@ class AutoscalingPolicyServiceRestTransport(_BaseAutoscalingPolicyServiceRestTra
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

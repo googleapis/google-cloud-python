@@ -87,13 +87,8 @@ class AggregateProductStatusesServiceRestInterceptor:
     """
 
     def pre_list_aggregate_product_statuses(
-        self,
-        request: aggregateproductstatuses.ListAggregateProductStatusesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aggregateproductstatuses.ListAggregateProductStatusesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: aggregateproductstatuses.ListAggregateProductStatusesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aggregateproductstatuses.ListAggregateProductStatusesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_aggregate_product_statuses
 
         Override in a subclass to manipulate the request or metadata
@@ -117,13 +112,8 @@ class AggregateProductStatusesServiceRestInterceptor:
         return response
 
     def post_list_aggregate_product_statuses_with_metadata(
-        self,
-        response: aggregateproductstatuses.ListAggregateProductStatusesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        aggregateproductstatuses.ListAggregateProductStatusesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: aggregateproductstatuses.ListAggregateProductStatusesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[aggregateproductstatuses.ListAggregateProductStatusesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_aggregate_product_statuses
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -146,9 +136,7 @@ class AggregateProductStatusesServiceRestStub:
     _interceptor: AggregateProductStatusesServiceRestInterceptor
 
 
-class AggregateProductStatusesServiceRestTransport(
-    _BaseAggregateProductStatusesServiceRestTransport
-):
+class AggregateProductStatusesServiceRestTransport(_BaseAggregateProductStatusesServiceRestTransport):
     """REST backend synchronous transport for AggregateProductStatusesService.
 
     Service to manage aggregate product statuses.
@@ -220,35 +208,20 @@ class AggregateProductStatusesServiceRestTransport(
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = (
-            interceptor or AggregateProductStatusesServiceRestInterceptor()
-        )
+        self._interceptor = interceptor or AggregateProductStatusesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
     class _ListAggregateProductStatuses(
-        _BaseAggregateProductStatusesServiceRestTransport._BaseListAggregateProductStatuses,
-        AggregateProductStatusesServiceRestStub,
+        _BaseAggregateProductStatusesServiceRestTransport._BaseListAggregateProductStatuses, AggregateProductStatusesServiceRestStub
     ):
         def __hash__(self):
-            return hash(
-                "AggregateProductStatusesServiceRestTransport.ListAggregateProductStatuses"
-            )
+            return hash("AggregateProductStatusesServiceRestTransport.ListAggregateProductStatuses")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -291,13 +264,9 @@ class AggregateProductStatusesServiceRestTransport(
 
             """
 
-            http_options = (
-                _BaseAggregateProductStatusesServiceRestTransport._BaseListAggregateProductStatuses._get_http_options()
-            )
+            http_options = _BaseAggregateProductStatusesServiceRestTransport._BaseListAggregateProductStatuses._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_aggregate_product_statuses(
-                request, metadata
-            )
+            request, metadata = self._interceptor.pre_list_aggregate_product_statuses(request, metadata)
             transcoded_request = _BaseAggregateProductStatusesServiceRestTransport._BaseListAggregateProductStatuses._get_transcoded_request(
                 http_options, request
             )
@@ -307,12 +276,8 @@ class AggregateProductStatusesServiceRestTransport(
                 transcoded_request
             )
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -336,12 +301,7 @@ class AggregateProductStatusesServiceRestTransport(
 
             # Send the request
             response = AggregateProductStatusesServiceRestTransport._ListAggregateProductStatuses._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -351,27 +311,16 @@ class AggregateProductStatusesServiceRestTransport(
 
             # Return the response
             resp = aggregateproductstatuses.ListAggregateProductStatusesResponse()
-            pb_resp = aggregateproductstatuses.ListAggregateProductStatusesResponse.pb(
-                resp
-            )
+            pb_resp = aggregateproductstatuses.ListAggregateProductStatusesResponse.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
 
             resp = self._interceptor.post_list_aggregate_product_statuses(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_list_aggregate_product_statuses_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_aggregate_product_statuses_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = aggregateproductstatuses.ListAggregateProductStatusesResponse.to_json(
-                        response
-                    )
+                    response_payload = aggregateproductstatuses.ListAggregateProductStatusesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -393,10 +342,7 @@ class AggregateProductStatusesServiceRestTransport(
     @property
     def list_aggregate_product_statuses(
         self,
-    ) -> Callable[
-        [aggregateproductstatuses.ListAggregateProductStatusesRequest],
-        aggregateproductstatuses.ListAggregateProductStatusesResponse,
-    ]:
+    ) -> Callable[[aggregateproductstatuses.ListAggregateProductStatusesRequest], aggregateproductstatuses.ListAggregateProductStatusesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAggregateProductStatuses(self._session, self._host, self._interceptor)  # type: ignore

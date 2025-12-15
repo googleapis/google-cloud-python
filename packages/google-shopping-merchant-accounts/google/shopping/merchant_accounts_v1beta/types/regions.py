@@ -265,9 +265,7 @@ class Region(proto.Message):
             proto.STRING,
             number=1,
         )
-        postal_codes: MutableSequence[
-            "Region.PostalCodeArea.PostalCodeRange"
-        ] = proto.RepeatedField(
+        postal_codes: MutableSequence["Region.PostalCodeArea.PostalCodeRange"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="Region.PostalCodeArea.PostalCodeRange",

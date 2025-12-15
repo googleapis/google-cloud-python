@@ -168,9 +168,7 @@ class TablesServiceRestInterceptor:
     """
 
     def pre_batch_create_rows(
-        self,
-        request: tables.BatchCreateRowsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.BatchCreateRowsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.BatchCreateRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_rows
 
@@ -179,9 +177,7 @@ class TablesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_rows(
-        self, response: tables.BatchCreateRowsResponse
-    ) -> tables.BatchCreateRowsResponse:
+    def post_batch_create_rows(self, response: tables.BatchCreateRowsResponse) -> tables.BatchCreateRowsResponse:
         """Post-rpc interceptor for batch_create_rows
 
         DEPRECATED. Please use the `post_batch_create_rows_with_metadata`
@@ -195,9 +191,7 @@ class TablesServiceRestInterceptor:
         return response
 
     def post_batch_create_rows_with_metadata(
-        self,
-        response: tables.BatchCreateRowsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tables.BatchCreateRowsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.BatchCreateRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_rows
 
@@ -214,9 +208,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_delete_rows(
-        self,
-        request: tables.BatchDeleteRowsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.BatchDeleteRowsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.BatchDeleteRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_rows
 
@@ -226,9 +218,7 @@ class TablesServiceRestInterceptor:
         return request, metadata
 
     def pre_batch_update_rows(
-        self,
-        request: tables.BatchUpdateRowsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.BatchUpdateRowsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.BatchUpdateRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_rows
 
@@ -237,9 +227,7 @@ class TablesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_rows(
-        self, response: tables.BatchUpdateRowsResponse
-    ) -> tables.BatchUpdateRowsResponse:
+    def post_batch_update_rows(self, response: tables.BatchUpdateRowsResponse) -> tables.BatchUpdateRowsResponse:
         """Post-rpc interceptor for batch_update_rows
 
         DEPRECATED. Please use the `post_batch_update_rows_with_metadata`
@@ -253,9 +241,7 @@ class TablesServiceRestInterceptor:
         return response
 
     def post_batch_update_rows_with_metadata(
-        self,
-        response: tables.BatchUpdateRowsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tables.BatchUpdateRowsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.BatchUpdateRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_rows
 
@@ -272,9 +258,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_create_row(
-        self,
-        request: tables.CreateRowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.CreateRowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.CreateRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_row
 
@@ -314,9 +298,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_row(
-        self,
-        request: tables.DeleteRowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.DeleteRowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.DeleteRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_row
 
@@ -326,9 +308,7 @@ class TablesServiceRestInterceptor:
         return request, metadata
 
     def pre_get_row(
-        self,
-        request: tables.GetRowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.GetRowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.GetRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_row
 
@@ -368,9 +348,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_table(
-        self,
-        request: tables.GetTableRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.GetTableRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.GetTableRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_table
 
@@ -410,9 +388,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_get_workspace(
-        self,
-        request: tables.GetWorkspaceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.GetWorkspaceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.GetWorkspaceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_workspace
 
@@ -435,9 +411,7 @@ class TablesServiceRestInterceptor:
         return response
 
     def post_get_workspace_with_metadata(
-        self,
-        response: tables.Workspace,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tables.Workspace, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.Workspace, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_workspace
 
@@ -454,9 +428,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_rows(
-        self,
-        request: tables.ListRowsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.ListRowsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.ListRowsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_rows
 
@@ -465,9 +437,7 @@ class TablesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_rows(
-        self, response: tables.ListRowsResponse
-    ) -> tables.ListRowsResponse:
+    def post_list_rows(self, response: tables.ListRowsResponse) -> tables.ListRowsResponse:
         """Post-rpc interceptor for list_rows
 
         DEPRECATED. Please use the `post_list_rows_with_metadata`
@@ -481,9 +451,7 @@ class TablesServiceRestInterceptor:
         return response
 
     def post_list_rows_with_metadata(
-        self,
-        response: tables.ListRowsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tables.ListRowsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.ListRowsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_rows
 
@@ -500,9 +468,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_tables(
-        self,
-        request: tables.ListTablesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.ListTablesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.ListTablesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_tables
 
@@ -511,9 +477,7 @@ class TablesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_tables(
-        self, response: tables.ListTablesResponse
-    ) -> tables.ListTablesResponse:
+    def post_list_tables(self, response: tables.ListTablesResponse) -> tables.ListTablesResponse:
         """Post-rpc interceptor for list_tables
 
         DEPRECATED. Please use the `post_list_tables_with_metadata`
@@ -527,9 +491,7 @@ class TablesServiceRestInterceptor:
         return response
 
     def post_list_tables_with_metadata(
-        self,
-        response: tables.ListTablesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tables.ListTablesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.ListTablesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_tables
 
@@ -546,9 +508,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_list_workspaces(
-        self,
-        request: tables.ListWorkspacesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.ListWorkspacesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.ListWorkspacesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_workspaces
 
@@ -557,9 +517,7 @@ class TablesServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_workspaces(
-        self, response: tables.ListWorkspacesResponse
-    ) -> tables.ListWorkspacesResponse:
+    def post_list_workspaces(self, response: tables.ListWorkspacesResponse) -> tables.ListWorkspacesResponse:
         """Post-rpc interceptor for list_workspaces
 
         DEPRECATED. Please use the `post_list_workspaces_with_metadata`
@@ -573,9 +531,7 @@ class TablesServiceRestInterceptor:
         return response
 
     def post_list_workspaces_with_metadata(
-        self,
-        response: tables.ListWorkspacesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: tables.ListWorkspacesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.ListWorkspacesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_workspaces
 
@@ -592,9 +548,7 @@ class TablesServiceRestInterceptor:
         return response, metadata
 
     def pre_update_row(
-        self,
-        request: tables.UpdateRowRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: tables.UpdateRowRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[tables.UpdateRowRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_row
 
@@ -726,30 +680,18 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or TablesServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchCreateRows(
-        _BaseTablesServiceRestTransport._BaseBatchCreateRows, TablesServiceRestStub
-    ):
+    class _BatchCreateRows(_BaseTablesServiceRestTransport._BaseBatchCreateRows, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.BatchCreateRows")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -792,32 +734,18 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_rows(
-                request, metadata
-            )
-            transcoded_request = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_rows(request, metadata)
+            transcoded_request = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_transcoded_request(http_options, request)
 
-            body = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseBatchCreateRows._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -841,13 +769,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._BatchCreateRows._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -863,12 +785,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_rows(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_rows_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_rows_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.BatchCreateRowsResponse.to_json(response)
                 except:
@@ -889,22 +807,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeleteRows(
-        _BaseTablesServiceRestTransport._BaseBatchDeleteRows, TablesServiceRestStub
-    ):
+    class _BatchDeleteRows(_BaseTablesServiceRestTransport._BaseBatchDeleteRows, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.BatchDeleteRows")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -941,32 +849,18 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_rows(
-                request, metadata
-            )
-            transcoded_request = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_rows(request, metadata)
+            transcoded_request = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_transcoded_request(http_options, request)
 
-            body = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseBatchDeleteRows._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -990,13 +884,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._BatchDeleteRows._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1004,22 +892,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchUpdateRows(
-        _BaseTablesServiceRestTransport._BaseBatchUpdateRows, TablesServiceRestStub
-    ):
+    class _BatchUpdateRows(_BaseTablesServiceRestTransport._BaseBatchUpdateRows, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.BatchUpdateRows")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1062,32 +940,18 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_rows(
-                request, metadata
-            )
-            transcoded_request = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_rows(request, metadata)
+            transcoded_request = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_transcoded_request(http_options, request)
 
-            body = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseBatchUpdateRows._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1111,13 +975,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._BatchUpdateRows._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1133,12 +991,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_rows(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_rows_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_rows_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.BatchUpdateRowsResponse.to_json(response)
                 except:
@@ -1159,22 +1013,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _CreateRow(
-        _BaseTablesServiceRestTransport._BaseCreateRow, TablesServiceRestStub
-    ):
+    class _CreateRow(_BaseTablesServiceRestTransport._BaseCreateRow, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.CreateRow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1215,36 +1059,18 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     A single row in a table.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseCreateRow._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseCreateRow._get_http_options()
 
             request, metadata = self._interceptor.pre_create_row(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseCreateRow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseCreateRow._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTablesServiceRestTransport._BaseCreateRow._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTablesServiceRestTransport._BaseCreateRow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseCreateRow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseCreateRow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1268,13 +1094,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._CreateRow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1290,12 +1110,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_create_row(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_row_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_row_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.Row.to_json(response)
                 except:
@@ -1316,22 +1132,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _DeleteRow(
-        _BaseTablesServiceRestTransport._BaseDeleteRow, TablesServiceRestStub
-    ):
+    class _DeleteRow(_BaseTablesServiceRestTransport._BaseDeleteRow, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.DeleteRow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1367,30 +1173,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseDeleteRow._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseDeleteRow._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_row(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseDeleteRow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseDeleteRow._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseDeleteRow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseDeleteRow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1414,12 +1206,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._DeleteRow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1432,15 +1219,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             return hash("TablesServiceRestTransport.GetRow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1480,30 +1259,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     A single row in a table.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseGetRow._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseGetRow._get_http_options()
 
             request, metadata = self._interceptor.pre_get_row(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseGetRow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseGetRow._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseGetRow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseGetRow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1527,12 +1292,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._GetRow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1548,12 +1308,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_get_row(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_row_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_row_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.Row.to_json(response)
                 except:
@@ -1574,22 +1330,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _GetTable(
-        _BaseTablesServiceRestTransport._BaseGetTable, TablesServiceRestStub
-    ):
+    class _GetTable(_BaseTablesServiceRestTransport._BaseGetTable, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.GetTable")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1629,30 +1375,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     A single table.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseGetTable._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseGetTable._get_http_options()
 
             request, metadata = self._interceptor.pre_get_table(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseGetTable._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseGetTable._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseGetTable._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseGetTable._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1676,12 +1408,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._GetTable._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1697,12 +1424,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_get_table(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_table_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_table_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.Table.to_json(response)
                 except:
@@ -1723,22 +1446,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _GetWorkspace(
-        _BaseTablesServiceRestTransport._BaseGetWorkspace, TablesServiceRestStub
-    ):
+    class _GetWorkspace(_BaseTablesServiceRestTransport._BaseGetWorkspace, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.GetWorkspace")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1778,26 +1491,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     A single workspace.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseGetWorkspace._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_http_options()
 
             request, metadata = self._interceptor.pre_get_workspace(request, metadata)
-            transcoded_request = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseGetWorkspace._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1821,12 +1524,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._GetWorkspace._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1842,12 +1540,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_get_workspace(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_workspace_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_workspace_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.Workspace.to_json(response)
                 except:
@@ -1868,22 +1562,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _ListRows(
-        _BaseTablesServiceRestTransport._BaseListRows, TablesServiceRestStub
-    ):
+    class _ListRows(_BaseTablesServiceRestTransport._BaseListRows, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.ListRows")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1925,30 +1609,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseListRows._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseListRows._get_http_options()
 
             request, metadata = self._interceptor.pre_list_rows(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseListRows._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseListRows._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseListRows._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseListRows._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1972,12 +1642,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._ListRows._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1993,12 +1658,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_list_rows(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_rows_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_rows_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.ListRowsResponse.to_json(response)
                 except:
@@ -2019,22 +1680,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _ListTables(
-        _BaseTablesServiceRestTransport._BaseListTables, TablesServiceRestStub
-    ):
+    class _ListTables(_BaseTablesServiceRestTransport._BaseListTables, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.ListTables")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2076,30 +1727,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseListTables._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseListTables._get_http_options()
 
             request, metadata = self._interceptor.pre_list_tables(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseListTables._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseListTables._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseListTables._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseListTables._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2123,12 +1760,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._ListTables._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2144,12 +1776,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_list_tables(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_tables_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_tables_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.ListTablesResponse.to_json(response)
                 except:
@@ -2170,22 +1798,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _ListWorkspaces(
-        _BaseTablesServiceRestTransport._BaseListWorkspaces, TablesServiceRestStub
-    ):
+    class _ListWorkspaces(_BaseTablesServiceRestTransport._BaseListWorkspaces, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.ListWorkspaces")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2227,26 +1845,16 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseListWorkspaces._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_http_options()
 
             request, metadata = self._interceptor.pre_list_workspaces(request, metadata)
-            transcoded_request = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseListWorkspaces._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2270,12 +1878,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._ListWorkspaces._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2291,12 +1894,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_list_workspaces(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_workspaces_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_workspaces_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.ListWorkspacesResponse.to_json(response)
                 except:
@@ -2317,22 +1916,12 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                 )
             return resp
 
-    class _UpdateRow(
-        _BaseTablesServiceRestTransport._BaseUpdateRow, TablesServiceRestStub
-    ):
+    class _UpdateRow(_BaseTablesServiceRestTransport._BaseUpdateRow, TablesServiceRestStub):
         def __hash__(self):
             return hash("TablesServiceRestTransport.UpdateRow")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2373,36 +1962,18 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
                     A single row in a table.
             """
 
-            http_options = (
-                _BaseTablesServiceRestTransport._BaseUpdateRow._get_http_options()
-            )
+            http_options = _BaseTablesServiceRestTransport._BaseUpdateRow._get_http_options()
 
             request, metadata = self._interceptor.pre_update_row(request, metadata)
-            transcoded_request = (
-                _BaseTablesServiceRestTransport._BaseUpdateRow._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTablesServiceRestTransport._BaseUpdateRow._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTablesServiceRestTransport._BaseUpdateRow._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTablesServiceRestTransport._BaseUpdateRow._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTablesServiceRestTransport._BaseUpdateRow._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTablesServiceRestTransport._BaseUpdateRow._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2426,13 +1997,7 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             # Send the request
             response = TablesServiceRestTransport._UpdateRow._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2448,12 +2013,8 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
 
             resp = self._interceptor.post_update_row(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_row_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_row_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = tables.Row.to_json(response)
                 except:
@@ -2475,25 +2036,19 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
             return resp
 
     @property
-    def batch_create_rows(
-        self,
-    ) -> Callable[[tables.BatchCreateRowsRequest], tables.BatchCreateRowsResponse]:
+    def batch_create_rows(self) -> Callable[[tables.BatchCreateRowsRequest], tables.BatchCreateRowsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateRows(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_delete_rows(
-        self,
-    ) -> Callable[[tables.BatchDeleteRowsRequest], empty_pb2.Empty]:
+    def batch_delete_rows(self) -> Callable[[tables.BatchDeleteRowsRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteRows(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_rows(
-        self,
-    ) -> Callable[[tables.BatchUpdateRowsRequest], tables.BatchUpdateRowsResponse]:
+    def batch_update_rows(self) -> Callable[[tables.BatchUpdateRowsRequest], tables.BatchUpdateRowsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateRows(self._session, self._host, self._interceptor)  # type: ignore
@@ -2535,17 +2090,13 @@ class TablesServiceRestTransport(_BaseTablesServiceRestTransport):
         return self._ListRows(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_tables(
-        self,
-    ) -> Callable[[tables.ListTablesRequest], tables.ListTablesResponse]:
+    def list_tables(self) -> Callable[[tables.ListTablesRequest], tables.ListTablesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTables(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_workspaces(
-        self,
-    ) -> Callable[[tables.ListWorkspacesRequest], tables.ListWorkspacesResponse]:
+    def list_workspaces(self) -> Callable[[tables.ListWorkspacesRequest], tables.ListWorkspacesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkspaces(self._session, self._host, self._interceptor)  # type: ignore

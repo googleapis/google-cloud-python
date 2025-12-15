@@ -18,12 +18,8 @@ from google.cloud.bigquery_biglake import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.bigquery_biglake_v1.services.metastore_service.async_client import (
-    MetastoreServiceAsyncClient,
-)
-from google.cloud.bigquery_biglake_v1.services.metastore_service.client import (
-    MetastoreServiceClient,
-)
+from google.cloud.bigquery_biglake_v1.services.metastore_service.async_client import MetastoreServiceAsyncClient
+from google.cloud.bigquery_biglake_v1.services.metastore_service.client import MetastoreServiceClient
 from google.cloud.bigquery_biglake_v1.types.metastore import (
     Catalog,
     CreateCatalogRequest,

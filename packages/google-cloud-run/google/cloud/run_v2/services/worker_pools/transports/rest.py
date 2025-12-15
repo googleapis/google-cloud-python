@@ -148,12 +148,8 @@ class WorkerPoolsRestInterceptor:
     """
 
     def pre_create_worker_pool(
-        self,
-        request: gcr_worker_pool.CreateWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcr_worker_pool.CreateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcr_worker_pool.CreateWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcr_worker_pool.CreateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -161,9 +157,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_create_worker_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_worker_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_worker_pool
 
         DEPRECATED. Please use the `post_create_worker_pool_with_metadata`
@@ -177,9 +171,7 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_create_worker_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_worker_pool
 
@@ -196,12 +188,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_delete_worker_pool(
-        self,
-        request: worker_pool.DeleteWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        worker_pool.DeleteWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: worker_pool.DeleteWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[worker_pool.DeleteWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -209,9 +197,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_worker_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_worker_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_worker_pool
 
         DEPRECATED. Please use the `post_delete_worker_pool_with_metadata`
@@ -225,9 +211,7 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_delete_worker_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_worker_pool
 
@@ -244,12 +228,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_get_iam_policy(
-        self,
-        request: iam_policy_pb2.GetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.GetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.GetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -271,9 +251,7 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_get_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_iam_policy
 
@@ -290,12 +268,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_get_worker_pool(
-        self,
-        request: worker_pool.GetWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        worker_pool.GetWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: worker_pool.GetWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[worker_pool.GetWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -303,9 +277,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_worker_pool(
-        self, response: worker_pool.WorkerPool
-    ) -> worker_pool.WorkerPool:
+    def post_get_worker_pool(self, response: worker_pool.WorkerPool) -> worker_pool.WorkerPool:
         """Post-rpc interceptor for get_worker_pool
 
         DEPRECATED. Please use the `post_get_worker_pool_with_metadata`
@@ -319,9 +291,7 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_get_worker_pool_with_metadata(
-        self,
-        response: worker_pool.WorkerPool,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: worker_pool.WorkerPool, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[worker_pool.WorkerPool, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_worker_pool
 
@@ -338,12 +308,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_list_worker_pools(
-        self,
-        request: worker_pool.ListWorkerPoolsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        worker_pool.ListWorkerPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: worker_pool.ListWorkerPoolsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[worker_pool.ListWorkerPoolsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_worker_pools
 
         Override in a subclass to manipulate the request or metadata
@@ -351,9 +317,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_worker_pools(
-        self, response: worker_pool.ListWorkerPoolsResponse
-    ) -> worker_pool.ListWorkerPoolsResponse:
+    def post_list_worker_pools(self, response: worker_pool.ListWorkerPoolsResponse) -> worker_pool.ListWorkerPoolsResponse:
         """Post-rpc interceptor for list_worker_pools
 
         DEPRECATED. Please use the `post_list_worker_pools_with_metadata`
@@ -367,12 +331,8 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_list_worker_pools_with_metadata(
-        self,
-        response: worker_pool.ListWorkerPoolsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        worker_pool.ListWorkerPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: worker_pool.ListWorkerPoolsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[worker_pool.ListWorkerPoolsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_worker_pools
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -388,12 +348,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_set_iam_policy(
-        self,
-        request: iam_policy_pb2.SetIamPolicyRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: iam_policy_pb2.SetIamPolicyRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.SetIamPolicyRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for set_iam_policy
 
         Override in a subclass to manipulate the request or metadata
@@ -415,9 +371,7 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_set_iam_policy_with_metadata(
-        self,
-        response: policy_pb2.Policy,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: policy_pb2.Policy, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[policy_pb2.Policy, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for set_iam_policy
 
@@ -434,13 +388,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_test_iam_permissions(
-        self,
-        request: iam_policy_pb2.TestIamPermissionsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: iam_policy_pb2.TestIamPermissionsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for test_iam_permissions
 
         Override in a subclass to manipulate the request or metadata
@@ -448,9 +397,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_test_iam_permissions(
-        self, response: iam_policy_pb2.TestIamPermissionsResponse
-    ) -> iam_policy_pb2.TestIamPermissionsResponse:
+    def post_test_iam_permissions(self, response: iam_policy_pb2.TestIamPermissionsResponse) -> iam_policy_pb2.TestIamPermissionsResponse:
         """Post-rpc interceptor for test_iam_permissions
 
         DEPRECATED. Please use the `post_test_iam_permissions_with_metadata`
@@ -464,13 +411,8 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_test_iam_permissions_with_metadata(
-        self,
-        response: iam_policy_pb2.TestIamPermissionsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        iam_policy_pb2.TestIamPermissionsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: iam_policy_pb2.TestIamPermissionsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[iam_policy_pb2.TestIamPermissionsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for test_iam_permissions
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -486,12 +428,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_update_worker_pool(
-        self,
-        request: gcr_worker_pool.UpdateWorkerPoolRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcr_worker_pool.UpdateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcr_worker_pool.UpdateWorkerPoolRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcr_worker_pool.UpdateWorkerPoolRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_worker_pool
 
         Override in a subclass to manipulate the request or metadata
@@ -499,9 +437,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_update_worker_pool(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_worker_pool(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_worker_pool
 
         DEPRECATED. Please use the `post_update_worker_pool_with_metadata`
@@ -515,9 +451,7 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def post_update_worker_pool_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_worker_pool
 
@@ -534,12 +468,8 @@ class WorkerPoolsRestInterceptor:
         return response, metadata
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -557,12 +487,8 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -570,9 +496,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -582,12 +506,8 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -595,9 +515,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -607,12 +525,8 @@ class WorkerPoolsRestInterceptor:
         return response
 
     def pre_wait_operation(
-        self,
-        request: operations_pb2.WaitOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.WaitOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.WaitOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -620,9 +534,7 @@ class WorkerPoolsRestInterceptor:
         """
         return request, metadata
 
-    def post_wait_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_wait_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for wait_operation
 
         Override in a subclass to manipulate the response
@@ -711,9 +623,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -766,29 +676,17 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 path_prefix="v2",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CreateWorkerPool(
-        _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool, WorkerPoolsRestStub
-    ):
+    class _CreateWorkerPool(_BaseWorkerPoolsRestTransport._BaseCreateWorkerPool, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.CreateWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -832,32 +730,18 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_worker_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_worker_pool(request, metadata)
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseCreateWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -881,13 +765,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._CreateWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -901,12 +779,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_create_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -927,22 +801,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _DeleteWorkerPool(
-        _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool, WorkerPoolsRestStub
-    ):
+    class _DeleteWorkerPool(_BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.DeleteWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -985,28 +849,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_worker_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_worker_pool(request, metadata)
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseDeleteWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1030,12 +882,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._DeleteWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1049,12 +896,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_delete_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1075,22 +918,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _GetIamPolicy(
-        _BaseWorkerPoolsRestTransport._BaseGetIamPolicy, WorkerPoolsRestStub
-    ):
+    class _GetIamPolicy(_BaseWorkerPoolsRestTransport._BaseGetIamPolicy, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.GetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1204,30 +1037,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseGetIamPolicy._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseGetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_get_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseWorkerPoolsRestTransport._BaseGetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseGetIamPolicy._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWorkerPoolsRestTransport._BaseGetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseGetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1251,12 +1070,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._GetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1272,12 +1086,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_get_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1298,22 +1108,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _GetWorkerPool(
-        _BaseWorkerPoolsRestTransport._BaseGetWorkerPool, WorkerPoolsRestStub
-    ):
+    class _GetWorkerPool(_BaseWorkerPoolsRestTransport._BaseGetWorkerPool, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.GetWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1363,28 +1163,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseGetWorkerPool._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseGetWorkerPool._get_http_options()
 
             request, metadata = self._interceptor.pre_get_worker_pool(request, metadata)
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseGetWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseGetWorkerPool._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWorkerPoolsRestTransport._BaseGetWorkerPool._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseGetWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1408,12 +1196,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._GetWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1429,12 +1212,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_get_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = worker_pool.WorkerPool.to_json(response)
                 except:
@@ -1455,22 +1234,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _ListWorkerPools(
-        _BaseWorkerPoolsRestTransport._BaseListWorkerPools, WorkerPoolsRestStub
-    ):
+    class _ListWorkerPools(_BaseWorkerPoolsRestTransport._BaseListWorkerPools, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.ListWorkerPools")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1512,28 +1281,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseListWorkerPools._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseListWorkerPools._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_worker_pools(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseListWorkerPools._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_worker_pools(request, metadata)
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseListWorkerPools._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseListWorkerPools._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseListWorkerPools._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1557,12 +1314,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._ListWorkerPools._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1578,16 +1330,10 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_list_worker_pools(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_worker_pools_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_worker_pools_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = worker_pool.ListWorkerPoolsResponse.to_json(
-                        response
-                    )
+                    response_payload = worker_pool.ListWorkerPoolsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1606,22 +1352,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _SetIamPolicy(
-        _BaseWorkerPoolsRestTransport._BaseSetIamPolicy, WorkerPoolsRestStub
-    ):
+    class _SetIamPolicy(_BaseWorkerPoolsRestTransport._BaseSetIamPolicy, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.SetIamPolicy")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1736,36 +1472,18 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_http_options()
 
             request, metadata = self._interceptor.pre_set_iam_policy(request, metadata)
-            transcoded_request = (
-                _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseSetIamPolicy._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1789,13 +1507,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._SetIamPolicy._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1811,12 +1523,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_set_iam_policy(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_set_iam_policy_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1837,22 +1545,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _TestIamPermissions(
-        _BaseWorkerPoolsRestTransport._BaseTestIamPermissions, WorkerPoolsRestStub
-    ):
+    class _TestIamPermissions(_BaseWorkerPoolsRestTransport._BaseTestIamPermissions, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.TestIamPermissions")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1892,32 +1590,18 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                     Response message for ``TestIamPermissions`` method.
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_http_options()
 
-            request, metadata = self._interceptor.pre_test_iam_permissions(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_test_iam_permissions(request, metadata)
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseTestIamPermissions._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1941,13 +1625,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._TestIamPermissions._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1963,12 +1641,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_test_iam_permissions(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_test_iam_permissions_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1989,22 +1663,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 )
             return resp
 
-    class _UpdateWorkerPool(
-        _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool, WorkerPoolsRestStub
-    ):
+    class _UpdateWorkerPool(_BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.UpdateWorkerPool")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2048,32 +1712,18 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_worker_pool(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_worker_pool(request, metadata)
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_transcoded_request(http_options, request)
 
-            body = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseUpdateWorkerPool._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2097,13 +1747,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._UpdateWorkerPool._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2117,12 +1761,8 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             resp = self._interceptor.post_update_worker_pool(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_worker_pool_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_worker_pool_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2144,70 +1784,49 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
             return resp
 
     @property
-    def create_worker_pool(
-        self,
-    ) -> Callable[[gcr_worker_pool.CreateWorkerPoolRequest], operations_pb2.Operation]:
+    def create_worker_pool(self) -> Callable[[gcr_worker_pool.CreateWorkerPoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_worker_pool(
-        self,
-    ) -> Callable[[worker_pool.DeleteWorkerPoolRequest], operations_pb2.Operation]:
+    def delete_worker_pool(self) -> Callable[[worker_pool.DeleteWorkerPoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
+    def get_iam_policy(self) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_worker_pool(
-        self,
-    ) -> Callable[[worker_pool.GetWorkerPoolRequest], worker_pool.WorkerPool]:
+    def get_worker_pool(self) -> Callable[[worker_pool.GetWorkerPoolRequest], worker_pool.WorkerPool]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_worker_pools(
-        self,
-    ) -> Callable[
-        [worker_pool.ListWorkerPoolsRequest], worker_pool.ListWorkerPoolsResponse
-    ]:
+    def list_worker_pools(self) -> Callable[[worker_pool.ListWorkerPoolsRequest], worker_pool.ListWorkerPoolsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListWorkerPools(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def set_iam_policy(
-        self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
+    def set_iam_policy(self) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SetIamPolicy(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def test_iam_permissions(
-        self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    def test_iam_permissions(self) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._TestIamPermissions(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_worker_pool(
-        self,
-    ) -> Callable[[gcr_worker_pool.UpdateWorkerPoolRequest], operations_pb2.Operation]:
+    def update_worker_pool(self) -> Callable[[gcr_worker_pool.UpdateWorkerPoolRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateWorkerPool(self._session, self._host, self._interceptor)  # type: ignore
@@ -2216,22 +1835,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseWorkerPoolsRestTransport._BaseDeleteOperation, WorkerPoolsRestStub
-    ):
+    class _DeleteOperation(_BaseWorkerPoolsRestTransport._BaseDeleteOperation, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2266,28 +1875,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2311,12 +1908,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2330,22 +1922,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseWorkerPoolsRestTransport._BaseGetOperation, WorkerPoolsRestStub
-    ):
+    class _GetOperation(_BaseWorkerPoolsRestTransport._BaseGetOperation, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2383,30 +1965,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseWorkerPoolsRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWorkerPoolsRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2430,12 +1998,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2447,9 +2010,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2474,22 +2035,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseWorkerPoolsRestTransport._BaseListOperations, WorkerPoolsRestStub
-    ):
+    class _ListOperations(_BaseWorkerPoolsRestTransport._BaseListOperations, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2527,26 +2078,16 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseWorkerPoolsRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2570,12 +2111,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2587,9 +2123,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2614,22 +2148,12 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
     def wait_operation(self):
         return self._WaitOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _WaitOperation(
-        _BaseWorkerPoolsRestTransport._BaseWaitOperation, WorkerPoolsRestStub
-    ):
+    class _WaitOperation(_BaseWorkerPoolsRestTransport._BaseWaitOperation, WorkerPoolsRestStub):
         def __hash__(self):
             return hash("WorkerPoolsRestTransport.WaitOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2668,34 +2192,18 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
                 operations_pb2.Operation: Response from WaitOperation method.
             """
 
-            http_options = (
-                _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_http_options()
-            )
+            http_options = _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_wait_operation(request, metadata)
-            transcoded_request = _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseWorkerPoolsRestTransport._BaseWaitOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2719,13 +2227,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
 
             # Send the request
             response = WorkerPoolsRestTransport._WaitOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2737,9 +2239,7 @@ class WorkerPoolsRestTransport(_BaseWorkerPoolsRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_wait_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

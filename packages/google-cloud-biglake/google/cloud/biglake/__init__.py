@@ -18,12 +18,8 @@ from google.cloud.biglake import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.biglake_v1.services.iceberg_catalog_service.async_client import (
-    IcebergCatalogServiceAsyncClient,
-)
-from google.cloud.biglake_v1.services.iceberg_catalog_service.client import (
-    IcebergCatalogServiceClient,
-)
+from google.cloud.biglake_v1.services.iceberg_catalog_service.async_client import IcebergCatalogServiceAsyncClient
+from google.cloud.biglake_v1.services.iceberg_catalog_service.client import IcebergCatalogServiceClient
 from google.cloud.biglake_v1.types.iceberg_rest_catalog import (
     CreateIcebergCatalogRequest,
     FailoverIcebergCatalogRequest,

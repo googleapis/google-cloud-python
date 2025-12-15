@@ -18,21 +18,11 @@ from google.cloud.monitoring_dashboard import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service.async_client import (
-    DashboardsServiceAsyncClient,
-)
-from google.cloud.monitoring_dashboard_v1.services.dashboards_service.client import (
-    DashboardsServiceClient,
-)
+from google.cloud.monitoring_dashboard_v1.services.dashboards_service.async_client import DashboardsServiceAsyncClient
+from google.cloud.monitoring_dashboard_v1.services.dashboards_service.client import DashboardsServiceClient
 from google.cloud.monitoring_dashboard_v1.types.alertchart import AlertChart
-from google.cloud.monitoring_dashboard_v1.types.collapsible_group import (
-    CollapsibleGroup,
-)
-from google.cloud.monitoring_dashboard_v1.types.common import (
-    Aggregation,
-    PickTimeSeriesFilter,
-    StatisticalTimeSeriesFilter,
-)
+from google.cloud.monitoring_dashboard_v1.types.collapsible_group import CollapsibleGroup
+from google.cloud.monitoring_dashboard_v1.types.common import Aggregation, PickTimeSeriesFilter, StatisticalTimeSeriesFilter
 from google.cloud.monitoring_dashboard_v1.types.dashboard import Dashboard
 from google.cloud.monitoring_dashboard_v1.types.dashboard_filter import DashboardFilter
 from google.cloud.monitoring_dashboard_v1.types.dashboards_service import (
@@ -43,32 +33,17 @@ from google.cloud.monitoring_dashboard_v1.types.dashboards_service import (
     ListDashboardsResponse,
     UpdateDashboardRequest,
 )
-from google.cloud.monitoring_dashboard_v1.types.error_reporting_panel import (
-    ErrorReportingPanel,
-)
+from google.cloud.monitoring_dashboard_v1.types.error_reporting_panel import ErrorReportingPanel
 from google.cloud.monitoring_dashboard_v1.types.incident_list import IncidentList
-from google.cloud.monitoring_dashboard_v1.types.layouts import (
-    ColumnLayout,
-    GridLayout,
-    MosaicLayout,
-    RowLayout,
-)
+from google.cloud.monitoring_dashboard_v1.types.layouts import ColumnLayout, GridLayout, MosaicLayout, RowLayout
 from google.cloud.monitoring_dashboard_v1.types.logs_panel import LogsPanel
-from google.cloud.monitoring_dashboard_v1.types.metrics import (
-    SparkChartType,
-    Threshold,
-    TimeSeriesFilter,
-    TimeSeriesFilterRatio,
-    TimeSeriesQuery,
-)
+from google.cloud.monitoring_dashboard_v1.types.metrics import SparkChartType, Threshold, TimeSeriesFilter, TimeSeriesFilterRatio, TimeSeriesQuery
 from google.cloud.monitoring_dashboard_v1.types.piechart import PieChart
 from google.cloud.monitoring_dashboard_v1.types.scorecard import Scorecard
 from google.cloud.monitoring_dashboard_v1.types.section_header import SectionHeader
 from google.cloud.monitoring_dashboard_v1.types.single_view_group import SingleViewGroup
 from google.cloud.monitoring_dashboard_v1.types.table import TimeSeriesTable
-from google.cloud.monitoring_dashboard_v1.types.table_display_options import (
-    TableDisplayOptions,
-)
+from google.cloud.monitoring_dashboard_v1.types.table_display_options import TableDisplayOptions
 from google.cloud.monitoring_dashboard_v1.types.text import Text
 from google.cloud.monitoring_dashboard_v1.types.widget import Widget
 from google.cloud.monitoring_dashboard_v1.types.xychart import ChartOptions, XyChart

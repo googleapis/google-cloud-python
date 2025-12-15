@@ -26,26 +26,8 @@ from .batch import (
     ListTasksResponse,
     OperationMetadata,
 )
-from .job import (
-    AllocationPolicy,
-    Job,
-    JobNotification,
-    JobStatus,
-    LogsPolicy,
-    ServiceAccount,
-    TaskGroup,
-)
-from .task import (
-    ComputeResource,
-    Environment,
-    LifecyclePolicy,
-    Runnable,
-    StatusEvent,
-    Task,
-    TaskExecution,
-    TaskSpec,
-    TaskStatus,
-)
+from .job import AllocationPolicy, Job, JobNotification, JobStatus, LogsPolicy, ServiceAccount, TaskGroup
+from .task import ComputeResource, Environment, LifecyclePolicy, Runnable, StatusEvent, Task, TaskExecution, TaskSpec, TaskStatus
 from .volume import GCS, NFS, Volume
 
 __all__ = (

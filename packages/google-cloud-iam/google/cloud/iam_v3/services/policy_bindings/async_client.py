@@ -16,18 +16,7 @@
 from collections import OrderedDict
 import logging as std_logging
 import re
-from typing import (
-    Callable,
-    Dict,
-    Mapping,
-    MutableMapping,
-    MutableSequence,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-)
+from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, Sequence, Tuple, Type, Union
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -54,11 +43,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
 
 from google.cloud.iam_v3.services.policy_bindings import pagers
-from google.cloud.iam_v3.types import (
-    operation_metadata,
-    policy_binding_resources,
-    policy_bindings_service,
-)
+from google.cloud.iam_v3.types import operation_metadata, policy_binding_resources, policy_bindings_service
 
 from .client import PolicyBindingsClient
 from .transports.base import DEFAULT_CLIENT_INFO, PolicyBindingsTransport
@@ -89,33 +74,17 @@ class PolicyBindingsAsyncClient:
     _DEFAULT_UNIVERSE = PolicyBindingsClient._DEFAULT_UNIVERSE
 
     policy_binding_path = staticmethod(PolicyBindingsClient.policy_binding_path)
-    parse_policy_binding_path = staticmethod(
-        PolicyBindingsClient.parse_policy_binding_path
-    )
-    common_billing_account_path = staticmethod(
-        PolicyBindingsClient.common_billing_account_path
-    )
-    parse_common_billing_account_path = staticmethod(
-        PolicyBindingsClient.parse_common_billing_account_path
-    )
+    parse_policy_binding_path = staticmethod(PolicyBindingsClient.parse_policy_binding_path)
+    common_billing_account_path = staticmethod(PolicyBindingsClient.common_billing_account_path)
+    parse_common_billing_account_path = staticmethod(PolicyBindingsClient.parse_common_billing_account_path)
     common_folder_path = staticmethod(PolicyBindingsClient.common_folder_path)
-    parse_common_folder_path = staticmethod(
-        PolicyBindingsClient.parse_common_folder_path
-    )
-    common_organization_path = staticmethod(
-        PolicyBindingsClient.common_organization_path
-    )
-    parse_common_organization_path = staticmethod(
-        PolicyBindingsClient.parse_common_organization_path
-    )
+    parse_common_folder_path = staticmethod(PolicyBindingsClient.parse_common_folder_path)
+    common_organization_path = staticmethod(PolicyBindingsClient.common_organization_path)
+    parse_common_organization_path = staticmethod(PolicyBindingsClient.parse_common_organization_path)
     common_project_path = staticmethod(PolicyBindingsClient.common_project_path)
-    parse_common_project_path = staticmethod(
-        PolicyBindingsClient.parse_common_project_path
-    )
+    parse_common_project_path = staticmethod(PolicyBindingsClient.parse_common_project_path)
     common_location_path = staticmethod(PolicyBindingsClient.common_location_path)
-    parse_common_location_path = staticmethod(
-        PolicyBindingsClient.parse_common_location_path
-    )
+    parse_common_location_path = staticmethod(PolicyBindingsClient.parse_common_location_path)
 
     @classmethod
     def from_service_account_info(cls, info: dict, *args, **kwargs):
@@ -151,9 +120,7 @@ class PolicyBindingsAsyncClient:
     from_service_account_json = from_service_account_file
 
     @classmethod
-    def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[ClientOptions] = None
-    ):
+    def get_mtls_endpoint_and_cert_source(cls, client_options: Optional[ClientOptions] = None):
         """Return the API endpoint and client cert source for mutual TLS.
 
         The client cert source is determined in the following order:
@@ -220,9 +187,7 @@ class PolicyBindingsAsyncClient:
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Optional[
-            Union[str, PolicyBindingsTransport, Callable[..., PolicyBindingsTransport]]
-        ] = "grpc_asyncio",
+        transport: Optional[Union[str, PolicyBindingsTransport, Callable[..., PolicyBindingsTransport]]] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
@@ -282,20 +247,14 @@ class PolicyBindingsAsyncClient:
             client_info=client_info,
         )
 
-        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        ):  # pragma: NO COVER
+        if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG):  # pragma: NO COVER
             _LOGGER.debug(
                 "Created client `google.iam_v3.PolicyBindingsAsyncClient`.",
                 extra={
                     "serviceName": "google.iam.v3.PolicyBindings",
-                    "universeDomain": getattr(
-                        self._client._transport._credentials, "universe_domain", ""
-                    ),
+                    "universeDomain": getattr(self._client._transport._credentials, "universe_domain", ""),
                     "credentialsType": f"{type(self._client._transport._credentials).__module__}.{type(self._client._transport._credentials).__qualname__}",
-                    "credentialsInfo": getattr(
-                        self.transport._credentials, "get_cred_info", lambda: None
-                    )(),
+                    "credentialsInfo": getattr(self.transport._credentials, "get_cred_info", lambda: None)(),
                 }
                 if hasattr(self._client._transport, "_credentials")
                 else {
@@ -306,9 +265,7 @@ class PolicyBindingsAsyncClient:
 
     async def create_policy_binding(
         self,
-        request: Optional[
-            Union[policy_bindings_service.CreatePolicyBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[policy_bindings_service.CreatePolicyBindingRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         policy_binding: Optional[policy_binding_resources.PolicyBinding] = None,
@@ -418,14 +375,9 @@ class PolicyBindingsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, policy_binding, policy_binding_id]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -443,15 +395,11 @@ class PolicyBindingsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.create_policy_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.create_policy_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -477,9 +425,7 @@ class PolicyBindingsAsyncClient:
 
     async def get_policy_binding(
         self,
-        request: Optional[
-            Union[policy_bindings_service.GetPolicyBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[policy_bindings_service.GetPolicyBindingRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -547,14 +493,9 @@ class PolicyBindingsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -568,15 +509,11 @@ class PolicyBindingsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.get_policy_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.get_policy_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -594,9 +531,7 @@ class PolicyBindingsAsyncClient:
 
     async def update_policy_binding(
         self,
-        request: Optional[
-            Union[policy_bindings_service.UpdatePolicyBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[policy_bindings_service.UpdatePolicyBindingRequest, dict]] = None,
         *,
         policy_binding: Optional[policy_binding_resources.PolicyBinding] = None,
         update_mask: Optional[field_mask_pb2.FieldMask] = None,
@@ -687,14 +622,9 @@ class PolicyBindingsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [policy_binding, update_mask]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -710,17 +640,11 @@ class PolicyBindingsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.update_policy_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.update_policy_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata(
-                (("policy_binding.name", request.policy_binding.name),)
-            ),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("policy_binding.name", request.policy_binding.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -746,9 +670,7 @@ class PolicyBindingsAsyncClient:
 
     async def delete_policy_binding(
         self,
-        request: Optional[
-            Union[policy_bindings_service.DeletePolicyBindingRequest, dict]
-        ] = None,
+        request: Optional[Union[policy_bindings_service.DeletePolicyBindingRequest, dict]] = None,
         *,
         name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -835,14 +757,9 @@ class PolicyBindingsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [name]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -856,15 +773,11 @@ class PolicyBindingsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.delete_policy_binding
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.delete_policy_binding]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -890,9 +803,7 @@ class PolicyBindingsAsyncClient:
 
     async def list_policy_bindings(
         self,
-        request: Optional[
-            Union[policy_bindings_service.ListPolicyBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[policy_bindings_service.ListPolicyBindingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -967,14 +878,9 @@ class PolicyBindingsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
@@ -988,15 +894,11 @@ class PolicyBindingsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.list_policy_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.list_policy_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1025,9 +927,7 @@ class PolicyBindingsAsyncClient:
 
     async def search_target_policy_bindings(
         self,
-        request: Optional[
-            Union[policy_bindings_service.SearchTargetPolicyBindingsRequest, dict]
-        ] = None,
+        request: Optional[Union[policy_bindings_service.SearchTargetPolicyBindingsRequest, dict]] = None,
         *,
         parent: Optional[str] = None,
         target: Optional[str] = None,
@@ -1123,20 +1023,13 @@ class PolicyBindingsAsyncClient:
         # - Quick check: If we got a request object, we should *not* have
         #   gotten any keyword arguments that map to the request.
         flattened_params = [parent, target]
-        has_flattened_params = (
-            len([param for param in flattened_params if param is not None]) > 0
-        )
+        has_flattened_params = len([param for param in flattened_params if param is not None]) > 0
         if request is not None and has_flattened_params:
-            raise ValueError(
-                "If the `request` argument is set, then none of "
-                "the individual field arguments should be set."
-            )
+            raise ValueError("If the `request` argument is set, then none of " "the individual field arguments should be set.")
 
         # - Use the request object if provided (there's no risk of modifying the input as
         #   there are no flattened fields), or create one.
-        if not isinstance(
-            request, policy_bindings_service.SearchTargetPolicyBindingsRequest
-        ):
+        if not isinstance(request, policy_bindings_service.SearchTargetPolicyBindingsRequest):
             request = policy_bindings_service.SearchTargetPolicyBindingsRequest(request)
 
         # If we have keyword arguments corresponding to fields on the
@@ -1148,15 +1041,11 @@ class PolicyBindingsAsyncClient:
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._client._transport._wrapped_methods[
-            self._client._transport.search_target_policy_bindings
-        ]
+        rpc = self._client._transport._wrapped_methods[self._client._transport.search_target_policy_bindings]
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1220,9 +1109,7 @@ class PolicyBindingsAsyncClient:
 
         # Certain fields should be provided within the metadata header;
         # add these here.
-        metadata = tuple(metadata) + (
-            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
-        )
+        metadata = tuple(metadata) + (gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),)
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -1245,9 +1132,7 @@ class PolicyBindingsAsyncClient:
         await self.transport.close()
 
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__

@@ -160,13 +160,8 @@ class AdUnitServiceRestInterceptor:
     """
 
     def pre_batch_activate_ad_units(
-        self,
-        request: ad_unit_service.BatchActivateAdUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchActivateAdUnitsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_unit_service.BatchActivateAdUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchActivateAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_activate_ad_units
 
         Override in a subclass to manipulate the request or metadata
@@ -174,9 +169,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_activate_ad_units(
-        self, response: ad_unit_service.BatchActivateAdUnitsResponse
-    ) -> ad_unit_service.BatchActivateAdUnitsResponse:
+    def post_batch_activate_ad_units(self, response: ad_unit_service.BatchActivateAdUnitsResponse) -> ad_unit_service.BatchActivateAdUnitsResponse:
         """Post-rpc interceptor for batch_activate_ad_units
 
         DEPRECATED. Please use the `post_batch_activate_ad_units_with_metadata`
@@ -190,13 +183,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_batch_activate_ad_units_with_metadata(
-        self,
-        response: ad_unit_service.BatchActivateAdUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchActivateAdUnitsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ad_unit_service.BatchActivateAdUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchActivateAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_activate_ad_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -212,13 +200,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_archive_ad_units(
-        self,
-        request: ad_unit_service.BatchArchiveAdUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchArchiveAdUnitsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_unit_service.BatchArchiveAdUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchArchiveAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_archive_ad_units
 
         Override in a subclass to manipulate the request or metadata
@@ -226,9 +209,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_archive_ad_units(
-        self, response: ad_unit_service.BatchArchiveAdUnitsResponse
-    ) -> ad_unit_service.BatchArchiveAdUnitsResponse:
+    def post_batch_archive_ad_units(self, response: ad_unit_service.BatchArchiveAdUnitsResponse) -> ad_unit_service.BatchArchiveAdUnitsResponse:
         """Post-rpc interceptor for batch_archive_ad_units
 
         DEPRECATED. Please use the `post_batch_archive_ad_units_with_metadata`
@@ -242,13 +223,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_batch_archive_ad_units_with_metadata(
-        self,
-        response: ad_unit_service.BatchArchiveAdUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchArchiveAdUnitsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ad_unit_service.BatchArchiveAdUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchArchiveAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_archive_ad_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -264,13 +240,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_create_ad_units(
-        self,
-        request: ad_unit_service.BatchCreateAdUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchCreateAdUnitsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_unit_service.BatchCreateAdUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchCreateAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_ad_units
 
         Override in a subclass to manipulate the request or metadata
@@ -278,9 +249,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_ad_units(
-        self, response: ad_unit_service.BatchCreateAdUnitsResponse
-    ) -> ad_unit_service.BatchCreateAdUnitsResponse:
+    def post_batch_create_ad_units(self, response: ad_unit_service.BatchCreateAdUnitsResponse) -> ad_unit_service.BatchCreateAdUnitsResponse:
         """Post-rpc interceptor for batch_create_ad_units
 
         DEPRECATED. Please use the `post_batch_create_ad_units_with_metadata`
@@ -294,13 +263,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_batch_create_ad_units_with_metadata(
-        self,
-        response: ad_unit_service.BatchCreateAdUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchCreateAdUnitsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ad_unit_service.BatchCreateAdUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchCreateAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_ad_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -316,13 +280,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_deactivate_ad_units(
-        self,
-        request: ad_unit_service.BatchDeactivateAdUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchDeactivateAdUnitsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_unit_service.BatchDeactivateAdUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchDeactivateAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_deactivate_ad_units
 
         Override in a subclass to manipulate the request or metadata
@@ -346,13 +305,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_batch_deactivate_ad_units_with_metadata(
-        self,
-        response: ad_unit_service.BatchDeactivateAdUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchDeactivateAdUnitsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ad_unit_service.BatchDeactivateAdUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchDeactivateAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_deactivate_ad_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -368,13 +322,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_update_ad_units(
-        self,
-        request: ad_unit_service.BatchUpdateAdUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchUpdateAdUnitsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ad_unit_service.BatchUpdateAdUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchUpdateAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_ad_units
 
         Override in a subclass to manipulate the request or metadata
@@ -382,9 +331,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_ad_units(
-        self, response: ad_unit_service.BatchUpdateAdUnitsResponse
-    ) -> ad_unit_service.BatchUpdateAdUnitsResponse:
+    def post_batch_update_ad_units(self, response: ad_unit_service.BatchUpdateAdUnitsResponse) -> ad_unit_service.BatchUpdateAdUnitsResponse:
         """Post-rpc interceptor for batch_update_ad_units
 
         DEPRECATED. Please use the `post_batch_update_ad_units_with_metadata`
@@ -398,13 +345,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_batch_update_ad_units_with_metadata(
-        self,
-        response: ad_unit_service.BatchUpdateAdUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.BatchUpdateAdUnitsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ad_unit_service.BatchUpdateAdUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.BatchUpdateAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_ad_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -420,12 +362,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_create_ad_unit(
-        self,
-        request: ad_unit_service.CreateAdUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.CreateAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_unit_service.CreateAdUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.CreateAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_ad_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -433,9 +371,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_ad_unit(
-        self, response: ad_unit_messages.AdUnit
-    ) -> ad_unit_messages.AdUnit:
+    def post_create_ad_unit(self, response: ad_unit_messages.AdUnit) -> ad_unit_messages.AdUnit:
         """Post-rpc interceptor for create_ad_unit
 
         DEPRECATED. Please use the `post_create_ad_unit_with_metadata`
@@ -449,9 +385,7 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_create_ad_unit_with_metadata(
-        self,
-        response: ad_unit_messages.AdUnit,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_unit_messages.AdUnit, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_unit_messages.AdUnit, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_ad_unit
 
@@ -468,12 +402,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_get_ad_unit(
-        self,
-        request: ad_unit_service.GetAdUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.GetAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_unit_service.GetAdUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.GetAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_ad_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -481,9 +411,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_ad_unit(
-        self, response: ad_unit_messages.AdUnit
-    ) -> ad_unit_messages.AdUnit:
+    def post_get_ad_unit(self, response: ad_unit_messages.AdUnit) -> ad_unit_messages.AdUnit:
         """Post-rpc interceptor for get_ad_unit
 
         DEPRECATED. Please use the `post_get_ad_unit_with_metadata`
@@ -497,9 +425,7 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_get_ad_unit_with_metadata(
-        self,
-        response: ad_unit_messages.AdUnit,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_unit_messages.AdUnit, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_unit_messages.AdUnit, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_ad_unit
 
@@ -516,12 +442,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_list_ad_units(
-        self,
-        request: ad_unit_service.ListAdUnitsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.ListAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_unit_service.ListAdUnitsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.ListAdUnitsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_ad_units
 
         Override in a subclass to manipulate the request or metadata
@@ -529,9 +451,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_ad_units(
-        self, response: ad_unit_service.ListAdUnitsResponse
-    ) -> ad_unit_service.ListAdUnitsResponse:
+    def post_list_ad_units(self, response: ad_unit_service.ListAdUnitsResponse) -> ad_unit_service.ListAdUnitsResponse:
         """Post-rpc interceptor for list_ad_units
 
         DEPRECATED. Please use the `post_list_ad_units_with_metadata`
@@ -545,12 +465,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_list_ad_units_with_metadata(
-        self,
-        response: ad_unit_service.ListAdUnitsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.ListAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: ad_unit_service.ListAdUnitsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.ListAdUnitsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_ad_units
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -566,12 +482,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_list_ad_unit_sizes(
-        self,
-        request: ad_unit_service.ListAdUnitSizesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.ListAdUnitSizesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_unit_service.ListAdUnitSizesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.ListAdUnitSizesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_ad_unit_sizes
 
         Override in a subclass to manipulate the request or metadata
@@ -579,9 +491,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_ad_unit_sizes(
-        self, response: ad_unit_service.ListAdUnitSizesResponse
-    ) -> ad_unit_service.ListAdUnitSizesResponse:
+    def post_list_ad_unit_sizes(self, response: ad_unit_service.ListAdUnitSizesResponse) -> ad_unit_service.ListAdUnitSizesResponse:
         """Post-rpc interceptor for list_ad_unit_sizes
 
         DEPRECATED. Please use the `post_list_ad_unit_sizes_with_metadata`
@@ -595,12 +505,8 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_list_ad_unit_sizes_with_metadata(
-        self,
-        response: ad_unit_service.ListAdUnitSizesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.ListAdUnitSizesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: ad_unit_service.ListAdUnitSizesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.ListAdUnitSizesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_ad_unit_sizes
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -616,12 +522,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_update_ad_unit(
-        self,
-        request: ad_unit_service.UpdateAdUnitRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ad_unit_service.UpdateAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ad_unit_service.UpdateAdUnitRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ad_unit_service.UpdateAdUnitRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_ad_unit
 
         Override in a subclass to manipulate the request or metadata
@@ -629,9 +531,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_ad_unit(
-        self, response: ad_unit_messages.AdUnit
-    ) -> ad_unit_messages.AdUnit:
+    def post_update_ad_unit(self, response: ad_unit_messages.AdUnit) -> ad_unit_messages.AdUnit:
         """Post-rpc interceptor for update_ad_unit
 
         DEPRECATED. Please use the `post_update_ad_unit_with_metadata`
@@ -645,9 +545,7 @@ class AdUnitServiceRestInterceptor:
         return response
 
     def post_update_ad_unit_with_metadata(
-        self,
-        response: ad_unit_messages.AdUnit,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: ad_unit_messages.AdUnit, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[ad_unit_messages.AdUnit, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_ad_unit
 
@@ -664,12 +562,8 @@ class AdUnitServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -677,9 +571,7 @@ class AdUnitServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -768,30 +660,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or AdUnitServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchActivateAdUnits(
-        _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits, AdUnitServiceRestStub
-    ):
+    class _BatchActivateAdUnits(_BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.BatchActivateAdUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -831,32 +711,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     Response object for ``BatchActivateAdUnits`` method.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_activate_ad_units(
-                request, metadata
-            )
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_activate_ad_units(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchActivateAdUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -880,13 +746,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._BatchActivateAdUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -902,16 +762,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_batch_activate_ad_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_activate_ad_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_activate_ad_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ad_unit_service.BatchActivateAdUnitsResponse.to_json(response)
-                    )
+                    response_payload = ad_unit_service.BatchActivateAdUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -930,22 +784,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _BatchArchiveAdUnits(
-        _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits, AdUnitServiceRestStub
-    ):
+    class _BatchArchiveAdUnits(_BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.BatchArchiveAdUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -985,32 +829,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     Response object for ``BatchArchiveAdUnits`` method.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_archive_ad_units(
-                request, metadata
-            )
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_archive_ad_units(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchArchiveAdUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1034,13 +864,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._BatchArchiveAdUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1056,16 +880,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_batch_archive_ad_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_archive_ad_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_archive_ad_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ad_unit_service.BatchArchiveAdUnitsResponse.to_json(response)
-                    )
+                    response_payload = ad_unit_service.BatchArchiveAdUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1084,22 +902,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _BatchCreateAdUnits(
-        _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits, AdUnitServiceRestStub
-    ):
+    class _BatchCreateAdUnits(_BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.BatchCreateAdUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1139,32 +947,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     Response object for ``BatchCreateAdUnits`` method.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_ad_units(
-                request, metadata
-            )
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_ad_units(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchCreateAdUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1188,13 +982,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._BatchCreateAdUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1210,16 +998,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_ad_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_ad_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_ad_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ad_unit_service.BatchCreateAdUnitsResponse.to_json(response)
-                    )
+                    response_payload = ad_unit_service.BatchCreateAdUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1238,23 +1020,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeactivateAdUnits(
-        _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits,
-        AdUnitServiceRestStub,
-    ):
+    class _BatchDeactivateAdUnits(_BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.BatchDeactivateAdUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1294,32 +1065,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     Response object for ``BatchDeactivateAdUnits`` method.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_deactivate_ad_units(
-                request, metadata
-            )
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_deactivate_ad_units(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchDeactivateAdUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1343,13 +1100,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._BatchDeactivateAdUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1365,16 +1116,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_batch_deactivate_ad_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_deactivate_ad_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_deactivate_ad_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ad_unit_service.BatchDeactivateAdUnitsResponse.to_json(response)
-                    )
+                    response_payload = ad_unit_service.BatchDeactivateAdUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1393,22 +1138,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _BatchUpdateAdUnits(
-        _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits, AdUnitServiceRestStub
-    ):
+    class _BatchUpdateAdUnits(_BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.BatchUpdateAdUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1448,32 +1183,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     Response object for ``BatchUpdateAdUnits`` method.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_ad_units(
-                request, metadata
-            )
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_ad_units(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseBatchUpdateAdUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1497,13 +1218,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._BatchUpdateAdUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1519,16 +1234,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_ad_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_ad_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_ad_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ad_unit_service.BatchUpdateAdUnitsResponse.to_json(response)
-                    )
+                    response_payload = ad_unit_service.BatchUpdateAdUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1547,22 +1256,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _CreateAdUnit(
-        _BaseAdUnitServiceRestTransport._BaseCreateAdUnit, AdUnitServiceRestStub
-    ):
+    class _CreateAdUnit(_BaseAdUnitServiceRestTransport._BaseCreateAdUnit, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.CreateAdUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1602,30 +1301,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     The AdUnit resource.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_create_ad_unit(request, metadata)
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseCreateAdUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1649,13 +1336,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._CreateAdUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1671,12 +1352,8 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_create_ad_unit(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_ad_unit_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_ad_unit_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_unit_messages.AdUnit.to_json(response)
                 except:
@@ -1697,22 +1374,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _GetAdUnit(
-        _BaseAdUnitServiceRestTransport._BaseGetAdUnit, AdUnitServiceRestStub
-    ):
+    class _GetAdUnit(_BaseAdUnitServiceRestTransport._BaseGetAdUnit, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.GetAdUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1751,30 +1418,16 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     The AdUnit resource.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseGetAdUnit._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseGetAdUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_get_ad_unit(request, metadata)
-            transcoded_request = (
-                _BaseAdUnitServiceRestTransport._BaseGetAdUnit._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseGetAdUnit._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdUnitServiceRestTransport._BaseGetAdUnit._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseGetAdUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1798,12 +1451,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._GetAdUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1819,12 +1467,8 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_get_ad_unit(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_ad_unit_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_ad_unit_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_unit_messages.AdUnit.to_json(response)
                 except:
@@ -1845,22 +1489,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _ListAdUnits(
-        _BaseAdUnitServiceRestTransport._BaseListAdUnits, AdUnitServiceRestStub
-    ):
+    class _ListAdUnits(_BaseAdUnitServiceRestTransport._BaseListAdUnits, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.ListAdUnits")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1903,28 +1537,16 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseListAdUnits._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseListAdUnits._get_http_options()
 
             request, metadata = self._interceptor.pre_list_ad_units(request, metadata)
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseListAdUnits._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseListAdUnits._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseAdUnitServiceRestTransport._BaseListAdUnits._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseListAdUnits._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1948,12 +1570,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._ListAdUnits._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1969,16 +1586,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_list_ad_units(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_ad_units_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_ad_units_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ad_unit_service.ListAdUnitsResponse.to_json(
-                        response
-                    )
+                    response_payload = ad_unit_service.ListAdUnitsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1997,22 +1608,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _ListAdUnitSizes(
-        _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes, AdUnitServiceRestStub
-    ):
+    class _ListAdUnitSizes(_BaseAdUnitServiceRestTransport._BaseListAdUnitSizes, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.ListAdUnitSizes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2055,28 +1656,16 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_ad_unit_sizes(
-                request, metadata
-            )
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_ad_unit_sizes(request, metadata)
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseListAdUnitSizes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2100,12 +1689,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._ListAdUnitSizes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2121,16 +1705,10 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_list_ad_unit_sizes(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_ad_unit_sizes_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_ad_unit_sizes_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ad_unit_service.ListAdUnitSizesResponse.to_json(
-                        response
-                    )
+                    response_payload = ad_unit_service.ListAdUnitSizesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2149,22 +1727,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAdUnit(
-        _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit, AdUnitServiceRestStub
-    ):
+    class _UpdateAdUnit(_BaseAdUnitServiceRestTransport._BaseUpdateAdUnit, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.UpdateAdUnit")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2204,30 +1772,18 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                     The AdUnit resource.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_http_options()
 
             request, metadata = self._interceptor.pre_update_ad_unit(request, metadata)
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_transcoded_request(http_options, request)
 
-            body = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseUpdateAdUnit._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2251,13 +1807,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._UpdateAdUnit._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2273,12 +1823,8 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             resp = self._interceptor.post_update_ad_unit(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_ad_unit_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_ad_unit_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = ad_unit_messages.AdUnit.to_json(response)
                 except:
@@ -2300,101 +1846,61 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             return resp
 
     @property
-    def batch_activate_ad_units(
-        self,
-    ) -> Callable[
-        [ad_unit_service.BatchActivateAdUnitsRequest],
-        ad_unit_service.BatchActivateAdUnitsResponse,
-    ]:
+    def batch_activate_ad_units(self) -> Callable[[ad_unit_service.BatchActivateAdUnitsRequest], ad_unit_service.BatchActivateAdUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchActivateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_archive_ad_units(
-        self,
-    ) -> Callable[
-        [ad_unit_service.BatchArchiveAdUnitsRequest],
-        ad_unit_service.BatchArchiveAdUnitsResponse,
-    ]:
+    def batch_archive_ad_units(self) -> Callable[[ad_unit_service.BatchArchiveAdUnitsRequest], ad_unit_service.BatchArchiveAdUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchArchiveAdUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_create_ad_units(
-        self,
-    ) -> Callable[
-        [ad_unit_service.BatchCreateAdUnitsRequest],
-        ad_unit_service.BatchCreateAdUnitsResponse,
-    ]:
+    def batch_create_ad_units(self) -> Callable[[ad_unit_service.BatchCreateAdUnitsRequest], ad_unit_service.BatchCreateAdUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_deactivate_ad_units(
-        self,
-    ) -> Callable[
-        [ad_unit_service.BatchDeactivateAdUnitsRequest],
-        ad_unit_service.BatchDeactivateAdUnitsResponse,
-    ]:
+    def batch_deactivate_ad_units(self) -> Callable[[ad_unit_service.BatchDeactivateAdUnitsRequest], ad_unit_service.BatchDeactivateAdUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeactivateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_ad_units(
-        self,
-    ) -> Callable[
-        [ad_unit_service.BatchUpdateAdUnitsRequest],
-        ad_unit_service.BatchUpdateAdUnitsResponse,
-    ]:
+    def batch_update_ad_units(self) -> Callable[[ad_unit_service.BatchUpdateAdUnitsRequest], ad_unit_service.BatchUpdateAdUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateAdUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_ad_unit(
-        self,
-    ) -> Callable[[ad_unit_service.CreateAdUnitRequest], ad_unit_messages.AdUnit]:
+    def create_ad_unit(self) -> Callable[[ad_unit_service.CreateAdUnitRequest], ad_unit_messages.AdUnit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAdUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_ad_unit(
-        self,
-    ) -> Callable[[ad_unit_service.GetAdUnitRequest], ad_unit_messages.AdUnit]:
+    def get_ad_unit(self) -> Callable[[ad_unit_service.GetAdUnitRequest], ad_unit_messages.AdUnit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAdUnit(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_ad_units(
-        self,
-    ) -> Callable[
-        [ad_unit_service.ListAdUnitsRequest], ad_unit_service.ListAdUnitsResponse
-    ]:
+    def list_ad_units(self) -> Callable[[ad_unit_service.ListAdUnitsRequest], ad_unit_service.ListAdUnitsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAdUnits(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_ad_unit_sizes(
-        self,
-    ) -> Callable[
-        [ad_unit_service.ListAdUnitSizesRequest],
-        ad_unit_service.ListAdUnitSizesResponse,
-    ]:
+    def list_ad_unit_sizes(self) -> Callable[[ad_unit_service.ListAdUnitSizesRequest], ad_unit_service.ListAdUnitSizesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAdUnitSizes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_ad_unit(
-        self,
-    ) -> Callable[[ad_unit_service.UpdateAdUnitRequest], ad_unit_messages.AdUnit]:
+    def update_ad_unit(self) -> Callable[[ad_unit_service.UpdateAdUnitRequest], ad_unit_messages.AdUnit]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAdUnit(self._session, self._host, self._interceptor)  # type: ignore
@@ -2403,22 +1909,12 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseAdUnitServiceRestTransport._BaseGetOperation, AdUnitServiceRestStub
-    ):
+    class _GetOperation(_BaseAdUnitServiceRestTransport._BaseGetOperation, AdUnitServiceRestStub):
         def __hash__(self):
             return hash("AdUnitServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2456,26 +1952,16 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseAdUnitServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseAdUnitServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseAdUnitServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseAdUnitServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseAdUnitServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseAdUnitServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2499,12 +1985,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
 
             # Send the request
             response = AdUnitServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2516,9 +1997,7 @@ class AdUnitServiceRestTransport(_BaseAdUnitServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

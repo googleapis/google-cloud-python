@@ -28,12 +28,7 @@ from .common import (
     UserInfo,
 )
 from .completion import CompletionSuggestion, SuggestionDenyListEntry
-from .completion_service import (
-    AdvancedCompleteQueryRequest,
-    AdvancedCompleteQueryResponse,
-    CompleteQueryRequest,
-    CompleteQueryResponse,
-)
+from .completion_service import AdvancedCompleteQueryRequest, AdvancedCompleteQueryResponse, CompleteQueryRequest, CompleteQueryResponse
 from .control import Condition, Control
 from .control_service import (
     CreateControlRequest,
@@ -43,13 +38,7 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
-from .conversation import (
-    Conversation,
-    ConversationContext,
-    ConversationMessage,
-    Reply,
-    TextInput,
-)
+from .conversation import Conversation, ConversationContext, ConversationMessage, Reply, TextInput
 from .conversational_search_service import (
     AnswerQueryRequest,
     AnswerQueryResponse,
@@ -70,12 +59,7 @@ from .conversational_search_service import (
     UpdateSessionRequest,
 )
 from .custom_tuning_model import CustomTuningModel
-from .data_store import (
-    DataStore,
-    LanguageInfo,
-    NaturalLanguageQueryUnderstandingConfig,
-    WorkspaceConfig,
-)
+from .data_store import DataStore, LanguageInfo, NaturalLanguageQueryUnderstandingConfig, WorkspaceConfig
 from .data_store_service import (
     CreateDataStoreMetadata,
     CreateDataStoreRequest,
@@ -218,19 +202,9 @@ from .search_tuning_service import (
     TrainCustomModelResponse,
 )
 from .serving_config import ServingConfig
-from .serving_config_service import (
-    GetServingConfigRequest,
-    ListServingConfigsRequest,
-    ListServingConfigsResponse,
-    UpdateServingConfigRequest,
-)
+from .serving_config_service import GetServingConfigRequest, ListServingConfigsRequest, ListServingConfigsResponse, UpdateServingConfigRequest
 from .session import Query, Session
-from .site_search_engine import (
-    Sitemap,
-    SiteSearchEngine,
-    SiteVerificationInfo,
-    TargetSite,
-)
+from .site_search_engine import Sitemap, SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
     BatchCreateTargetSiteMetadata,
     BatchCreateTargetSitesRequest,
@@ -266,16 +240,7 @@ from .site_search_engine_service import (
     UpdateTargetSiteMetadata,
     UpdateTargetSiteRequest,
 )
-from .user_event import (
-    CompletionInfo,
-    DocumentInfo,
-    MediaInfo,
-    PageInfo,
-    PanelInfo,
-    SearchInfo,
-    TransactionInfo,
-    UserEvent,
-)
+from .user_event import CompletionInfo, DocumentInfo, MediaInfo, PageInfo, PanelInfo, SearchInfo, TransactionInfo, UserEvent
 from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (

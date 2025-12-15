@@ -17,15 +17,10 @@ from collections import OrderedDict
 from typing import Dict, Type
 
 from .base import InstanceSettingsServiceTransport
-from .rest import (
-    InstanceSettingsServiceRestInterceptor,
-    InstanceSettingsServiceRestTransport,
-)
+from .rest import InstanceSettingsServiceRestInterceptor, InstanceSettingsServiceRestTransport
 
 # Compile a registry of transports.
-_transport_registry = (
-    OrderedDict()
-)  # type: Dict[str, Type[InstanceSettingsServiceTransport]]
+_transport_registry = OrderedDict()  # type: Dict[str, Type[InstanceSettingsServiceTransport]]
 _transport_registry["rest"] = InstanceSettingsServiceRestTransport
 
 __all__ = (

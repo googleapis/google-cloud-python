@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,19 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.documentai_v1.types import (
-    document_processor_service,
-    evaluation,
-    processor,
-    processor_type,
-)
+from google.cloud.documentai_v1.types import document_processor_service, evaluation, processor, processor_type
 
 
 class ListProcessorTypesPager:
@@ -106,12 +89,7 @@ class ListProcessorTypesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[processor_type.ProcessorType]:
@@ -142,9 +120,7 @@ class ListProcessorTypesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[document_processor_service.ListProcessorTypesResponse]
-        ],
+        method: Callable[..., Awaitable[document_processor_service.ListProcessorTypesResponse]],
         request: document_processor_service.ListProcessorTypesRequest,
         response: document_processor_service.ListProcessorTypesResponse,
         *,
@@ -180,18 +156,11 @@ class ListProcessorTypesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[document_processor_service.ListProcessorTypesResponse]:
+    async def pages(self) -> AsyncIterator[document_processor_service.ListProcessorTypesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[processor_type.ProcessorType]:
@@ -266,12 +235,7 @@ class ListProcessorsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[processor.Processor]:
@@ -302,9 +266,7 @@ class ListProcessorsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[document_processor_service.ListProcessorsResponse]
-        ],
+        method: Callable[..., Awaitable[document_processor_service.ListProcessorsResponse]],
         request: document_processor_service.ListProcessorsRequest,
         response: document_processor_service.ListProcessorsResponse,
         *,
@@ -340,18 +302,11 @@ class ListProcessorsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[document_processor_service.ListProcessorsResponse]:
+    async def pages(self) -> AsyncIterator[document_processor_service.ListProcessorsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[processor.Processor]:
@@ -422,18 +377,11 @@ class ListProcessorVersionsPager:
         return getattr(self._response, name)
 
     @property
-    def pages(
-        self,
-    ) -> Iterator[document_processor_service.ListProcessorVersionsResponse]:
+    def pages(self) -> Iterator[document_processor_service.ListProcessorVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[processor.ProcessorVersion]:
@@ -464,9 +412,7 @@ class ListProcessorVersionsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[document_processor_service.ListProcessorVersionsResponse]
-        ],
+        method: Callable[..., Awaitable[document_processor_service.ListProcessorVersionsResponse]],
         request: document_processor_service.ListProcessorVersionsRequest,
         response: document_processor_service.ListProcessorVersionsResponse,
         *,
@@ -502,18 +448,11 @@ class ListProcessorVersionsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[document_processor_service.ListProcessorVersionsResponse]:
+    async def pages(self) -> AsyncIterator[document_processor_service.ListProcessorVersionsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[processor.ProcessorVersion]:
@@ -588,12 +527,7 @@ class ListEvaluationsPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[evaluation.Evaluation]:
@@ -624,9 +558,7 @@ class ListEvaluationsAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[document_processor_service.ListEvaluationsResponse]
-        ],
+        method: Callable[..., Awaitable[document_processor_service.ListEvaluationsResponse]],
         request: document_processor_service.ListEvaluationsRequest,
         response: document_processor_service.ListEvaluationsResponse,
         *,
@@ -662,18 +594,11 @@ class ListEvaluationsAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[document_processor_service.ListEvaluationsResponse]:
+    async def pages(self) -> AsyncIterator[document_processor_service.ListEvaluationsResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[evaluation.Evaluation]:

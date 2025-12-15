@@ -18,18 +18,9 @@ from google.cloud.service_usage import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.service_usage_v1.services.service_usage.async_client import (
-    ServiceUsageAsyncClient,
-)
-from google.cloud.service_usage_v1.services.service_usage.client import (
-    ServiceUsageClient,
-)
-from google.cloud.service_usage_v1.types.resources import (
-    OperationMetadata,
-    Service,
-    ServiceConfig,
-    State,
-)
+from google.cloud.service_usage_v1.services.service_usage.async_client import ServiceUsageAsyncClient
+from google.cloud.service_usage_v1.services.service_usage.client import ServiceUsageClient
+from google.cloud.service_usage_v1.types.resources import OperationMetadata, Service, ServiceConfig, State
 from google.cloud.service_usage_v1.types.serviceusage import (
     BatchEnableServicesRequest,
     BatchEnableServicesResponse,

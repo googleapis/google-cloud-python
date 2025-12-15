@@ -22,9 +22,7 @@ from google.cloud.osconfig_v1.types import inventory
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.identity.accesscontextmanager.v1 import access_level_pb2  # type: ignore
 from google.identity.accesscontextmanager.v1 import access_policy_pb2  # type: ignore
-from google.identity.accesscontextmanager.v1 import (
-    service_perimeter_pb2,
-)  # type: ignore
+from google.identity.accesscontextmanager.v1 import service_perimeter_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import code_pb2  # type: ignore
@@ -1367,9 +1365,7 @@ class IamPolicySearchResult(proto.Message):
                 number=1,
             )
 
-        matched_permissions: MutableMapping[
-            str, "IamPolicySearchResult.Explanation.Permissions"
-        ] = proto.MapField(
+        matched_permissions: MutableMapping[str, "IamPolicySearchResult.Explanation.Permissions"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=1,
@@ -1664,23 +1660,17 @@ class IamPolicyAnalysisResult(proto.Message):
                 defined in the above IAM policy binding.
         """
 
-        resources: MutableSequence[
-            "IamPolicyAnalysisResult.Resource"
-        ] = proto.RepeatedField(
+        resources: MutableSequence["IamPolicyAnalysisResult.Resource"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="IamPolicyAnalysisResult.Resource",
         )
-        accesses: MutableSequence[
-            "IamPolicyAnalysisResult.Access"
-        ] = proto.RepeatedField(
+        accesses: MutableSequence["IamPolicyAnalysisResult.Access"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="IamPolicyAnalysisResult.Access",
         )
-        resource_edges: MutableSequence[
-            "IamPolicyAnalysisResult.Edge"
-        ] = proto.RepeatedField(
+        resource_edges: MutableSequence["IamPolicyAnalysisResult.Edge"] = proto.RepeatedField(
             proto.MESSAGE,
             number=3,
             message="IamPolicyAnalysisResult.Edge",
@@ -1716,16 +1706,12 @@ class IamPolicyAnalysisResult(proto.Message):
                 enabled in request.
         """
 
-        identities: MutableSequence[
-            "IamPolicyAnalysisResult.Identity"
-        ] = proto.RepeatedField(
+        identities: MutableSequence["IamPolicyAnalysisResult.Identity"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="IamPolicyAnalysisResult.Identity",
         )
-        group_edges: MutableSequence[
-            "IamPolicyAnalysisResult.Edge"
-        ] = proto.RepeatedField(
+        group_edges: MutableSequence["IamPolicyAnalysisResult.Edge"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="IamPolicyAnalysisResult.Edge",

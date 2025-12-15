@@ -299,9 +299,7 @@ class Plugin(proto.Message):
                     the corresponding service account.
             """
 
-            supported_auth_types: MutableSequence[
-                common_fields.AuthType
-            ] = proto.RepeatedField(
+            supported_auth_types: MutableSequence[common_fields.AuthType] = proto.RepeatedField(
                 proto.ENUM,
                 number=1,
                 enum=common_fields.AuthType,
@@ -317,9 +315,7 @@ class Plugin(proto.Message):
             number=1,
             message="Plugin.ConfigTemplate.AuthConfigTemplate",
         )
-        additional_config_template: MutableSequence[
-            common_fields.ConfigVariableTemplate
-        ] = proto.RepeatedField(
+        additional_config_template: MutableSequence[common_fields.ConfigVariableTemplate] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message=common_fields.ConfigVariableTemplate,
@@ -771,9 +767,7 @@ class PluginInstance(proto.Message):
         number=3,
         message=common_fields.AuthConfig,
     )
-    additional_config: MutableMapping[
-        str, common_fields.ConfigVariable
-    ] = proto.MapField(
+    additional_config: MutableMapping[str, common_fields.ConfigVariable] = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
         number=4,

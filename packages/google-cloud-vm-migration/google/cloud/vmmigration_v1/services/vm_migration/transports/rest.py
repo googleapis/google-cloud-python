@@ -577,12 +577,8 @@ class VmMigrationRestInterceptor:
     """
 
     def pre_add_group_migration(
-        self,
-        request: vmmigration.AddGroupMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.AddGroupMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.AddGroupMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.AddGroupMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for add_group_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -590,9 +586,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_add_group_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_add_group_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for add_group_migration
 
         DEPRECATED. Please use the `post_add_group_migration_with_metadata`
@@ -606,9 +600,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_add_group_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for add_group_migration
 
@@ -625,12 +617,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_cancel_clone_job(
-        self,
-        request: vmmigration.CancelCloneJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CancelCloneJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CancelCloneJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CancelCloneJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_clone_job
 
         Override in a subclass to manipulate the request or metadata
@@ -638,9 +626,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_clone_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_cancel_clone_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_clone_job
 
         DEPRECATED. Please use the `post_cancel_clone_job_with_metadata`
@@ -654,9 +640,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_cancel_clone_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_clone_job
 
@@ -673,12 +657,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_cancel_cutover_job(
-        self,
-        request: vmmigration.CancelCutoverJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CancelCutoverJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CancelCutoverJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CancelCutoverJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_cutover_job
 
         Override in a subclass to manipulate the request or metadata
@@ -686,9 +666,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_cutover_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_cancel_cutover_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_cutover_job
 
         DEPRECATED. Please use the `post_cancel_cutover_job_with_metadata`
@@ -702,9 +680,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_cancel_cutover_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_cutover_job
 
@@ -721,13 +697,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_cancel_disk_migration_job(
-        self,
-        request: vmmigration.CancelDiskMigrationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CancelDiskMigrationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.CancelDiskMigrationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CancelDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_disk_migration_job
 
         Override in a subclass to manipulate the request or metadata
@@ -735,9 +706,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_disk_migration_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_cancel_disk_migration_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_disk_migration_job
 
         DEPRECATED. Please use the `post_cancel_disk_migration_job_with_metadata`
@@ -751,9 +720,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_cancel_disk_migration_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_disk_migration_job
 
@@ -770,12 +737,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_cancel_image_import_job(
-        self,
-        request: vmmigration.CancelImageImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CancelImageImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CancelImageImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CancelImageImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_image_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -783,9 +746,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_cancel_image_import_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_cancel_image_import_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for cancel_image_import_job
 
         DEPRECATED. Please use the `post_cancel_image_import_job_with_metadata`
@@ -799,9 +760,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_cancel_image_import_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for cancel_image_import_job
 
@@ -818,12 +777,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_clone_job(
-        self,
-        request: vmmigration.CreateCloneJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateCloneJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CreateCloneJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateCloneJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_clone_job
 
         Override in a subclass to manipulate the request or metadata
@@ -831,9 +786,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_clone_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_clone_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_clone_job
 
         DEPRECATED. Please use the `post_create_clone_job_with_metadata`
@@ -847,9 +800,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_clone_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_clone_job
 
@@ -866,12 +817,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_cutover_job(
-        self,
-        request: vmmigration.CreateCutoverJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateCutoverJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CreateCutoverJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateCutoverJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_cutover_job
 
         Override in a subclass to manipulate the request or metadata
@@ -879,9 +826,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_cutover_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_cutover_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_cutover_job
 
         DEPRECATED. Please use the `post_create_cutover_job_with_metadata`
@@ -895,9 +840,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_cutover_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_cutover_job
 
@@ -914,13 +857,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_datacenter_connector(
-        self,
-        request: vmmigration.CreateDatacenterConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateDatacenterConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.CreateDatacenterConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateDatacenterConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_datacenter_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -928,9 +866,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_datacenter_connector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_datacenter_connector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_datacenter_connector
 
         DEPRECATED. Please use the `post_create_datacenter_connector_with_metadata`
@@ -944,9 +880,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_datacenter_connector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_datacenter_connector
 
@@ -963,13 +897,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_disk_migration_job(
-        self,
-        request: vmmigration.CreateDiskMigrationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateDiskMigrationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.CreateDiskMigrationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_disk_migration_job
 
         Override in a subclass to manipulate the request or metadata
@@ -977,9 +906,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_disk_migration_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_disk_migration_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_disk_migration_job
 
         DEPRECATED. Please use the `post_create_disk_migration_job_with_metadata`
@@ -993,9 +920,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_disk_migration_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_disk_migration_job
 
@@ -1012,9 +937,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_group(
-        self,
-        request: vmmigration.CreateGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.CreateGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.CreateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_group
 
@@ -1023,9 +946,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_group
 
         DEPRECATED. Please use the `post_create_group_with_metadata`
@@ -1039,9 +960,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_group
 
@@ -1058,12 +977,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_image_import(
-        self,
-        request: vmmigration.CreateImageImportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateImageImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CreateImageImportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateImageImportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_image_import
 
         Override in a subclass to manipulate the request or metadata
@@ -1071,9 +986,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_image_import(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_image_import(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_image_import
 
         DEPRECATED. Please use the `post_create_image_import_with_metadata`
@@ -1087,9 +1000,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_image_import_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_image_import
 
@@ -1106,12 +1017,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_migrating_vm(
-        self,
-        request: vmmigration.CreateMigratingVmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CreateMigratingVmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_migrating_vm
 
         Override in a subclass to manipulate the request or metadata
@@ -1119,9 +1026,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_migrating_vm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_migrating_vm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_migrating_vm
 
         DEPRECATED. Please use the `post_create_migrating_vm_with_metadata`
@@ -1135,9 +1040,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_migrating_vm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_migrating_vm
 
@@ -1154,12 +1057,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_source(
-        self,
-        request: vmmigration.CreateSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CreateSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1167,9 +1066,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_source
 
         DEPRECATED. Please use the `post_create_source_with_metadata`
@@ -1183,9 +1080,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_source
 
@@ -1202,12 +1097,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_target_project(
-        self,
-        request: vmmigration.CreateTargetProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.CreateTargetProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_target_project
 
         Override in a subclass to manipulate the request or metadata
@@ -1215,9 +1106,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_target_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_target_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_target_project
 
         DEPRECATED. Please use the `post_create_target_project_with_metadata`
@@ -1231,9 +1120,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_target_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_target_project
 
@@ -1250,13 +1137,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_create_utilization_report(
-        self,
-        request: vmmigration.CreateUtilizationReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.CreateUtilizationReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.CreateUtilizationReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.CreateUtilizationReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_utilization_report
 
         Override in a subclass to manipulate the request or metadata
@@ -1264,9 +1146,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_create_utilization_report(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_utilization_report(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_utilization_report
 
         DEPRECATED. Please use the `post_create_utilization_report_with_metadata`
@@ -1280,9 +1160,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_create_utilization_report_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_utilization_report
 
@@ -1299,13 +1177,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_datacenter_connector(
-        self,
-        request: vmmigration.DeleteDatacenterConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteDatacenterConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.DeleteDatacenterConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteDatacenterConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_datacenter_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -1313,9 +1186,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_datacenter_connector(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_datacenter_connector(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_datacenter_connector
 
         DEPRECATED. Please use the `post_delete_datacenter_connector_with_metadata`
@@ -1329,9 +1200,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_datacenter_connector_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_datacenter_connector
 
@@ -1348,13 +1217,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_disk_migration_job(
-        self,
-        request: vmmigration.DeleteDiskMigrationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteDiskMigrationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.DeleteDiskMigrationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_disk_migration_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1362,9 +1226,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_disk_migration_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_disk_migration_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_disk_migration_job
 
         DEPRECATED. Please use the `post_delete_disk_migration_job_with_metadata`
@@ -1378,9 +1240,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_disk_migration_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_disk_migration_job
 
@@ -1397,9 +1257,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_group(
-        self,
-        request: vmmigration.DeleteGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.DeleteGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.DeleteGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_group
 
@@ -1408,9 +1266,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_group
 
         DEPRECATED. Please use the `post_delete_group_with_metadata`
@@ -1424,9 +1280,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_group
 
@@ -1443,12 +1297,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_image_import(
-        self,
-        request: vmmigration.DeleteImageImportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteImageImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.DeleteImageImportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteImageImportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_image_import
 
         Override in a subclass to manipulate the request or metadata
@@ -1456,9 +1306,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_image_import(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_image_import(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_image_import
 
         DEPRECATED. Please use the `post_delete_image_import_with_metadata`
@@ -1472,9 +1320,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_image_import_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_image_import
 
@@ -1491,12 +1337,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_migrating_vm(
-        self,
-        request: vmmigration.DeleteMigratingVmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.DeleteMigratingVmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_migrating_vm
 
         Override in a subclass to manipulate the request or metadata
@@ -1504,9 +1346,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_migrating_vm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_migrating_vm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_migrating_vm
 
         DEPRECATED. Please use the `post_delete_migrating_vm_with_metadata`
@@ -1520,9 +1360,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_migrating_vm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_migrating_vm
 
@@ -1539,12 +1377,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_source(
-        self,
-        request: vmmigration.DeleteSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.DeleteSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_source
 
         Override in a subclass to manipulate the request or metadata
@@ -1552,9 +1386,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_source
 
         DEPRECATED. Please use the `post_delete_source_with_metadata`
@@ -1568,9 +1400,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_source
 
@@ -1587,12 +1417,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_target_project(
-        self,
-        request: vmmigration.DeleteTargetProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.DeleteTargetProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_target_project
 
         Override in a subclass to manipulate the request or metadata
@@ -1600,9 +1426,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_target_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_target_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_target_project
 
         DEPRECATED. Please use the `post_delete_target_project_with_metadata`
@@ -1616,9 +1440,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_target_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_target_project
 
@@ -1635,13 +1457,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_delete_utilization_report(
-        self,
-        request: vmmigration.DeleteUtilizationReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DeleteUtilizationReportRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.DeleteUtilizationReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DeleteUtilizationReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_utilization_report
 
         Override in a subclass to manipulate the request or metadata
@@ -1649,9 +1466,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_utilization_report(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_utilization_report(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_utilization_report
 
         DEPRECATED. Please use the `post_delete_utilization_report_with_metadata`
@@ -1665,9 +1480,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_delete_utilization_report_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_utilization_report
 
@@ -1684,12 +1497,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_extend_migration(
-        self,
-        request: vmmigration.ExtendMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ExtendMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ExtendMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ExtendMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for extend_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -1697,9 +1506,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_extend_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_extend_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for extend_migration
 
         DEPRECATED. Please use the `post_extend_migration_with_metadata`
@@ -1713,9 +1520,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_extend_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for extend_migration
 
@@ -1732,12 +1537,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_fetch_inventory(
-        self,
-        request: vmmigration.FetchInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.FetchInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.FetchInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.FetchInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -1745,9 +1546,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_inventory(
-        self, response: vmmigration.FetchInventoryResponse
-    ) -> vmmigration.FetchInventoryResponse:
+    def post_fetch_inventory(self, response: vmmigration.FetchInventoryResponse) -> vmmigration.FetchInventoryResponse:
         """Post-rpc interceptor for fetch_inventory
 
         DEPRECATED. Please use the `post_fetch_inventory_with_metadata`
@@ -1761,12 +1560,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_fetch_inventory_with_metadata(
-        self,
-        response: vmmigration.FetchInventoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.FetchInventoryResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.FetchInventoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.FetchInventoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_inventory
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1782,13 +1577,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_fetch_storage_inventory(
-        self,
-        request: vmmigration.FetchStorageInventoryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.FetchStorageInventoryRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.FetchStorageInventoryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.FetchStorageInventoryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for fetch_storage_inventory
 
         Override in a subclass to manipulate the request or metadata
@@ -1796,9 +1586,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_fetch_storage_inventory(
-        self, response: vmmigration.FetchStorageInventoryResponse
-    ) -> vmmigration.FetchStorageInventoryResponse:
+    def post_fetch_storage_inventory(self, response: vmmigration.FetchStorageInventoryResponse) -> vmmigration.FetchStorageInventoryResponse:
         """Post-rpc interceptor for fetch_storage_inventory
 
         DEPRECATED. Please use the `post_fetch_storage_inventory_with_metadata`
@@ -1812,13 +1600,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_fetch_storage_inventory_with_metadata(
-        self,
-        response: vmmigration.FetchStorageInventoryResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.FetchStorageInventoryResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmmigration.FetchStorageInventoryResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.FetchStorageInventoryResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for fetch_storage_inventory
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1834,12 +1617,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_finalize_migration(
-        self,
-        request: vmmigration.FinalizeMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.FinalizeMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.FinalizeMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.FinalizeMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for finalize_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -1847,9 +1626,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_finalize_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_finalize_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for finalize_migration
 
         DEPRECATED. Please use the `post_finalize_migration_with_metadata`
@@ -1863,9 +1640,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_finalize_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for finalize_migration
 
@@ -1882,9 +1657,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_clone_job(
-        self,
-        request: vmmigration.GetCloneJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.GetCloneJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.GetCloneJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_clone_job
 
@@ -1893,9 +1666,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_clone_job(
-        self, response: vmmigration.CloneJob
-    ) -> vmmigration.CloneJob:
+    def post_get_clone_job(self, response: vmmigration.CloneJob) -> vmmigration.CloneJob:
         """Post-rpc interceptor for get_clone_job
 
         DEPRECATED. Please use the `post_get_clone_job_with_metadata`
@@ -1909,9 +1680,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_clone_job_with_metadata(
-        self,
-        response: vmmigration.CloneJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.CloneJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.CloneJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_clone_job
 
@@ -1928,12 +1697,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_cutover_job(
-        self,
-        request: vmmigration.GetCutoverJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetCutoverJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetCutoverJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetCutoverJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_cutover_job
 
         Override in a subclass to manipulate the request or metadata
@@ -1941,9 +1706,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_cutover_job(
-        self, response: vmmigration.CutoverJob
-    ) -> vmmigration.CutoverJob:
+    def post_get_cutover_job(self, response: vmmigration.CutoverJob) -> vmmigration.CutoverJob:
         """Post-rpc interceptor for get_cutover_job
 
         DEPRECATED. Please use the `post_get_cutover_job_with_metadata`
@@ -1957,9 +1720,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_cutover_job_with_metadata(
-        self,
-        response: vmmigration.CutoverJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.CutoverJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.CutoverJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_cutover_job
 
@@ -1976,13 +1737,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_datacenter_connector(
-        self,
-        request: vmmigration.GetDatacenterConnectorRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetDatacenterConnectorRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.GetDatacenterConnectorRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetDatacenterConnectorRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_datacenter_connector
 
         Override in a subclass to manipulate the request or metadata
@@ -1990,9 +1746,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_datacenter_connector(
-        self, response: vmmigration.DatacenterConnector
-    ) -> vmmigration.DatacenterConnector:
+    def post_get_datacenter_connector(self, response: vmmigration.DatacenterConnector) -> vmmigration.DatacenterConnector:
         """Post-rpc interceptor for get_datacenter_connector
 
         DEPRECATED. Please use the `post_get_datacenter_connector_with_metadata`
@@ -2006,12 +1760,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_datacenter_connector_with_metadata(
-        self,
-        response: vmmigration.DatacenterConnector,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.DatacenterConnector, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.DatacenterConnector, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.DatacenterConnector, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_datacenter_connector
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2027,12 +1777,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_disk_migration_job(
-        self,
-        request: vmmigration.GetDiskMigrationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetDiskMigrationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_disk_migration_job
 
         Override in a subclass to manipulate the request or metadata
@@ -2040,9 +1786,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_disk_migration_job(
-        self, response: vmmigration.DiskMigrationJob
-    ) -> vmmigration.DiskMigrationJob:
+    def post_get_disk_migration_job(self, response: vmmigration.DiskMigrationJob) -> vmmigration.DiskMigrationJob:
         """Post-rpc interceptor for get_disk_migration_job
 
         DEPRECATED. Please use the `post_get_disk_migration_job_with_metadata`
@@ -2056,9 +1800,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_disk_migration_job_with_metadata(
-        self,
-        response: vmmigration.DiskMigrationJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.DiskMigrationJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.DiskMigrationJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_disk_migration_job
 
@@ -2075,9 +1817,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_group(
-        self,
-        request: vmmigration.GetGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.GetGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.GetGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_group
 
@@ -2100,9 +1840,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_group_with_metadata(
-        self,
-        response: vmmigration.Group,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.Group, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.Group, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_group
 
@@ -2119,12 +1857,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_image_import(
-        self,
-        request: vmmigration.GetImageImportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetImageImportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetImageImportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetImageImportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_image_import
 
         Override in a subclass to manipulate the request or metadata
@@ -2132,9 +1866,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_image_import(
-        self, response: vmmigration.ImageImport
-    ) -> vmmigration.ImageImport:
+    def post_get_image_import(self, response: vmmigration.ImageImport) -> vmmigration.ImageImport:
         """Post-rpc interceptor for get_image_import
 
         DEPRECATED. Please use the `post_get_image_import_with_metadata`
@@ -2148,9 +1880,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_image_import_with_metadata(
-        self,
-        response: vmmigration.ImageImport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.ImageImport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.ImageImport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_image_import
 
@@ -2167,12 +1897,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_image_import_job(
-        self,
-        request: vmmigration.GetImageImportJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetImageImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetImageImportJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetImageImportJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_image_import_job
 
         Override in a subclass to manipulate the request or metadata
@@ -2180,9 +1906,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_image_import_job(
-        self, response: vmmigration.ImageImportJob
-    ) -> vmmigration.ImageImportJob:
+    def post_get_image_import_job(self, response: vmmigration.ImageImportJob) -> vmmigration.ImageImportJob:
         """Post-rpc interceptor for get_image_import_job
 
         DEPRECATED. Please use the `post_get_image_import_job_with_metadata`
@@ -2196,9 +1920,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_image_import_job_with_metadata(
-        self,
-        response: vmmigration.ImageImportJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.ImageImportJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.ImageImportJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_image_import_job
 
@@ -2215,12 +1937,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_migrating_vm(
-        self,
-        request: vmmigration.GetMigratingVmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetMigratingVmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_migrating_vm
 
         Override in a subclass to manipulate the request or metadata
@@ -2228,9 +1946,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_migrating_vm(
-        self, response: vmmigration.MigratingVm
-    ) -> vmmigration.MigratingVm:
+    def post_get_migrating_vm(self, response: vmmigration.MigratingVm) -> vmmigration.MigratingVm:
         """Post-rpc interceptor for get_migrating_vm
 
         DEPRECATED. Please use the `post_get_migrating_vm_with_metadata`
@@ -2244,9 +1960,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_migrating_vm_with_metadata(
-        self,
-        response: vmmigration.MigratingVm,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.MigratingVm, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.MigratingVm, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_migrating_vm
 
@@ -2263,12 +1977,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_replication_cycle(
-        self,
-        request: vmmigration.GetReplicationCycleRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetReplicationCycleRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetReplicationCycleRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetReplicationCycleRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_replication_cycle
 
         Override in a subclass to manipulate the request or metadata
@@ -2276,9 +1986,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_replication_cycle(
-        self, response: vmmigration.ReplicationCycle
-    ) -> vmmigration.ReplicationCycle:
+    def post_get_replication_cycle(self, response: vmmigration.ReplicationCycle) -> vmmigration.ReplicationCycle:
         """Post-rpc interceptor for get_replication_cycle
 
         DEPRECATED. Please use the `post_get_replication_cycle_with_metadata`
@@ -2292,9 +2000,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_replication_cycle_with_metadata(
-        self,
-        response: vmmigration.ReplicationCycle,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.ReplicationCycle, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.ReplicationCycle, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_replication_cycle
 
@@ -2311,9 +2017,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_source(
-        self,
-        request: vmmigration.GetSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.GetSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.GetSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_source
 
@@ -2336,9 +2040,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_source_with_metadata(
-        self,
-        response: vmmigration.Source,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.Source, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.Source, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_source
 
@@ -2355,12 +2057,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_target_project(
-        self,
-        request: vmmigration.GetTargetProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetTargetProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_target_project
 
         Override in a subclass to manipulate the request or metadata
@@ -2368,9 +2066,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_target_project(
-        self, response: vmmigration.TargetProject
-    ) -> vmmigration.TargetProject:
+    def post_get_target_project(self, response: vmmigration.TargetProject) -> vmmigration.TargetProject:
         """Post-rpc interceptor for get_target_project
 
         DEPRECATED. Please use the `post_get_target_project_with_metadata`
@@ -2384,9 +2080,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_target_project_with_metadata(
-        self,
-        response: vmmigration.TargetProject,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.TargetProject, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.TargetProject, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_target_project
 
@@ -2403,12 +2097,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_utilization_report(
-        self,
-        request: vmmigration.GetUtilizationReportRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.GetUtilizationReportRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.GetUtilizationReportRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.GetUtilizationReportRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_utilization_report
 
         Override in a subclass to manipulate the request or metadata
@@ -2416,9 +2106,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_utilization_report(
-        self, response: vmmigration.UtilizationReport
-    ) -> vmmigration.UtilizationReport:
+    def post_get_utilization_report(self, response: vmmigration.UtilizationReport) -> vmmigration.UtilizationReport:
         """Post-rpc interceptor for get_utilization_report
 
         DEPRECATED. Please use the `post_get_utilization_report_with_metadata`
@@ -2432,9 +2120,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_get_utilization_report_with_metadata(
-        self,
-        response: vmmigration.UtilizationReport,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.UtilizationReport, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.UtilizationReport, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_utilization_report
 
@@ -2451,12 +2137,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_clone_jobs(
-        self,
-        request: vmmigration.ListCloneJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListCloneJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ListCloneJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListCloneJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_clone_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -2464,9 +2146,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_clone_jobs(
-        self, response: vmmigration.ListCloneJobsResponse
-    ) -> vmmigration.ListCloneJobsResponse:
+    def post_list_clone_jobs(self, response: vmmigration.ListCloneJobsResponse) -> vmmigration.ListCloneJobsResponse:
         """Post-rpc interceptor for list_clone_jobs
 
         DEPRECATED. Please use the `post_list_clone_jobs_with_metadata`
@@ -2480,12 +2160,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_clone_jobs_with_metadata(
-        self,
-        response: vmmigration.ListCloneJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListCloneJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListCloneJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListCloneJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_clone_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2501,12 +2177,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_cutover_jobs(
-        self,
-        request: vmmigration.ListCutoverJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListCutoverJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ListCutoverJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListCutoverJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_cutover_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -2514,9 +2186,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_cutover_jobs(
-        self, response: vmmigration.ListCutoverJobsResponse
-    ) -> vmmigration.ListCutoverJobsResponse:
+    def post_list_cutover_jobs(self, response: vmmigration.ListCutoverJobsResponse) -> vmmigration.ListCutoverJobsResponse:
         """Post-rpc interceptor for list_cutover_jobs
 
         DEPRECATED. Please use the `post_list_cutover_jobs_with_metadata`
@@ -2530,12 +2200,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_cutover_jobs_with_metadata(
-        self,
-        response: vmmigration.ListCutoverJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListCutoverJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListCutoverJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListCutoverJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_cutover_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2551,13 +2217,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_datacenter_connectors(
-        self,
-        request: vmmigration.ListDatacenterConnectorsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListDatacenterConnectorsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.ListDatacenterConnectorsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListDatacenterConnectorsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_datacenter_connectors
 
         Override in a subclass to manipulate the request or metadata
@@ -2565,9 +2226,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_datacenter_connectors(
-        self, response: vmmigration.ListDatacenterConnectorsResponse
-    ) -> vmmigration.ListDatacenterConnectorsResponse:
+    def post_list_datacenter_connectors(self, response: vmmigration.ListDatacenterConnectorsResponse) -> vmmigration.ListDatacenterConnectorsResponse:
         """Post-rpc interceptor for list_datacenter_connectors
 
         DEPRECATED. Please use the `post_list_datacenter_connectors_with_metadata`
@@ -2581,13 +2240,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_datacenter_connectors_with_metadata(
-        self,
-        response: vmmigration.ListDatacenterConnectorsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListDatacenterConnectorsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmmigration.ListDatacenterConnectorsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListDatacenterConnectorsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_datacenter_connectors
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2603,13 +2257,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_disk_migration_jobs(
-        self,
-        request: vmmigration.ListDiskMigrationJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListDiskMigrationJobsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.ListDiskMigrationJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListDiskMigrationJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_disk_migration_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -2617,9 +2266,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_disk_migration_jobs(
-        self, response: vmmigration.ListDiskMigrationJobsResponse
-    ) -> vmmigration.ListDiskMigrationJobsResponse:
+    def post_list_disk_migration_jobs(self, response: vmmigration.ListDiskMigrationJobsResponse) -> vmmigration.ListDiskMigrationJobsResponse:
         """Post-rpc interceptor for list_disk_migration_jobs
 
         DEPRECATED. Please use the `post_list_disk_migration_jobs_with_metadata`
@@ -2633,13 +2280,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_disk_migration_jobs_with_metadata(
-        self,
-        response: vmmigration.ListDiskMigrationJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListDiskMigrationJobsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmmigration.ListDiskMigrationJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListDiskMigrationJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_disk_migration_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2655,9 +2297,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_groups(
-        self,
-        request: vmmigration.ListGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.ListGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.ListGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_groups
 
@@ -2666,9 +2306,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_groups(
-        self, response: vmmigration.ListGroupsResponse
-    ) -> vmmigration.ListGroupsResponse:
+    def post_list_groups(self, response: vmmigration.ListGroupsResponse) -> vmmigration.ListGroupsResponse:
         """Post-rpc interceptor for list_groups
 
         DEPRECATED. Please use the `post_list_groups_with_metadata`
@@ -2682,9 +2320,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_groups_with_metadata(
-        self,
-        response: vmmigration.ListGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: vmmigration.ListGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.ListGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_groups
 
@@ -2701,12 +2337,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_image_import_jobs(
-        self,
-        request: vmmigration.ListImageImportJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListImageImportJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ListImageImportJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListImageImportJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_image_import_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -2714,9 +2346,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_image_import_jobs(
-        self, response: vmmigration.ListImageImportJobsResponse
-    ) -> vmmigration.ListImageImportJobsResponse:
+    def post_list_image_import_jobs(self, response: vmmigration.ListImageImportJobsResponse) -> vmmigration.ListImageImportJobsResponse:
         """Post-rpc interceptor for list_image_import_jobs
 
         DEPRECATED. Please use the `post_list_image_import_jobs_with_metadata`
@@ -2730,12 +2360,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_image_import_jobs_with_metadata(
-        self,
-        response: vmmigration.ListImageImportJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListImageImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListImageImportJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListImageImportJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_image_import_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2751,12 +2377,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_image_imports(
-        self,
-        request: vmmigration.ListImageImportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListImageImportsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ListImageImportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListImageImportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_image_imports
 
         Override in a subclass to manipulate the request or metadata
@@ -2764,9 +2386,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_image_imports(
-        self, response: vmmigration.ListImageImportsResponse
-    ) -> vmmigration.ListImageImportsResponse:
+    def post_list_image_imports(self, response: vmmigration.ListImageImportsResponse) -> vmmigration.ListImageImportsResponse:
         """Post-rpc interceptor for list_image_imports
 
         DEPRECATED. Please use the `post_list_image_imports_with_metadata`
@@ -2780,12 +2400,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_image_imports_with_metadata(
-        self,
-        response: vmmigration.ListImageImportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListImageImportsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListImageImportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListImageImportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_image_imports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2801,12 +2417,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_migrating_vms(
-        self,
-        request: vmmigration.ListMigratingVmsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListMigratingVmsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ListMigratingVmsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListMigratingVmsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_migrating_vms
 
         Override in a subclass to manipulate the request or metadata
@@ -2814,9 +2426,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_migrating_vms(
-        self, response: vmmigration.ListMigratingVmsResponse
-    ) -> vmmigration.ListMigratingVmsResponse:
+    def post_list_migrating_vms(self, response: vmmigration.ListMigratingVmsResponse) -> vmmigration.ListMigratingVmsResponse:
         """Post-rpc interceptor for list_migrating_vms
 
         DEPRECATED. Please use the `post_list_migrating_vms_with_metadata`
@@ -2830,12 +2440,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_migrating_vms_with_metadata(
-        self,
-        response: vmmigration.ListMigratingVmsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListMigratingVmsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListMigratingVmsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListMigratingVmsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_migrating_vms
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2851,13 +2457,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_replication_cycles(
-        self,
-        request: vmmigration.ListReplicationCyclesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListReplicationCyclesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.ListReplicationCyclesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListReplicationCyclesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_replication_cycles
 
         Override in a subclass to manipulate the request or metadata
@@ -2865,9 +2466,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_replication_cycles(
-        self, response: vmmigration.ListReplicationCyclesResponse
-    ) -> vmmigration.ListReplicationCyclesResponse:
+    def post_list_replication_cycles(self, response: vmmigration.ListReplicationCyclesResponse) -> vmmigration.ListReplicationCyclesResponse:
         """Post-rpc interceptor for list_replication_cycles
 
         DEPRECATED. Please use the `post_list_replication_cycles_with_metadata`
@@ -2881,13 +2480,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_replication_cycles_with_metadata(
-        self,
-        response: vmmigration.ListReplicationCyclesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListReplicationCyclesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmmigration.ListReplicationCyclesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListReplicationCyclesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_replication_cycles
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2903,9 +2497,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_sources(
-        self,
-        request: vmmigration.ListSourcesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.ListSourcesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.ListSourcesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sources
 
@@ -2914,9 +2506,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sources(
-        self, response: vmmigration.ListSourcesResponse
-    ) -> vmmigration.ListSourcesResponse:
+    def post_list_sources(self, response: vmmigration.ListSourcesResponse) -> vmmigration.ListSourcesResponse:
         """Post-rpc interceptor for list_sources
 
         DEPRECATED. Please use the `post_list_sources_with_metadata`
@@ -2930,12 +2520,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_sources_with_metadata(
-        self,
-        response: vmmigration.ListSourcesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListSourcesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListSourcesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sources
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -2951,12 +2537,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_target_projects(
-        self,
-        request: vmmigration.ListTargetProjectsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListTargetProjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ListTargetProjectsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListTargetProjectsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_target_projects
 
         Override in a subclass to manipulate the request or metadata
@@ -2964,9 +2546,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_target_projects(
-        self, response: vmmigration.ListTargetProjectsResponse
-    ) -> vmmigration.ListTargetProjectsResponse:
+    def post_list_target_projects(self, response: vmmigration.ListTargetProjectsResponse) -> vmmigration.ListTargetProjectsResponse:
         """Post-rpc interceptor for list_target_projects
 
         DEPRECATED. Please use the `post_list_target_projects_with_metadata`
@@ -2980,12 +2560,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_target_projects_with_metadata(
-        self,
-        response: vmmigration.ListTargetProjectsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListTargetProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: vmmigration.ListTargetProjectsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListTargetProjectsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_target_projects
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3001,13 +2577,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_list_utilization_reports(
-        self,
-        request: vmmigration.ListUtilizationReportsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListUtilizationReportsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.ListUtilizationReportsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListUtilizationReportsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_utilization_reports
 
         Override in a subclass to manipulate the request or metadata
@@ -3015,9 +2586,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_utilization_reports(
-        self, response: vmmigration.ListUtilizationReportsResponse
-    ) -> vmmigration.ListUtilizationReportsResponse:
+    def post_list_utilization_reports(self, response: vmmigration.ListUtilizationReportsResponse) -> vmmigration.ListUtilizationReportsResponse:
         """Post-rpc interceptor for list_utilization_reports
 
         DEPRECATED. Please use the `post_list_utilization_reports_with_metadata`
@@ -3031,13 +2600,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_list_utilization_reports_with_metadata(
-        self,
-        response: vmmigration.ListUtilizationReportsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ListUtilizationReportsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: vmmigration.ListUtilizationReportsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ListUtilizationReportsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_utilization_reports
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -3053,12 +2617,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_pause_migration(
-        self,
-        request: vmmigration.PauseMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.PauseMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.PauseMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.PauseMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for pause_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -3066,9 +2626,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_pause_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_pause_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for pause_migration
 
         DEPRECATED. Please use the `post_pause_migration_with_metadata`
@@ -3082,9 +2640,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_pause_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for pause_migration
 
@@ -3101,12 +2657,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_remove_group_migration(
-        self,
-        request: vmmigration.RemoveGroupMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.RemoveGroupMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.RemoveGroupMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.RemoveGroupMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_group_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -3114,9 +2666,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_remove_group_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_remove_group_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for remove_group_migration
 
         DEPRECATED. Please use the `post_remove_group_migration_with_metadata`
@@ -3130,9 +2680,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_remove_group_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_group_migration
 
@@ -3149,12 +2697,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_resume_migration(
-        self,
-        request: vmmigration.ResumeMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.ResumeMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.ResumeMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.ResumeMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for resume_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -3162,9 +2706,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_resume_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_resume_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for resume_migration
 
         DEPRECATED. Please use the `post_resume_migration_with_metadata`
@@ -3178,9 +2720,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_resume_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for resume_migration
 
@@ -3197,12 +2737,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_run_disk_migration_job(
-        self,
-        request: vmmigration.RunDiskMigrationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.RunDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.RunDiskMigrationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.RunDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_disk_migration_job
 
         Override in a subclass to manipulate the request or metadata
@@ -3210,9 +2746,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_run_disk_migration_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_disk_migration_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_disk_migration_job
 
         DEPRECATED. Please use the `post_run_disk_migration_job_with_metadata`
@@ -3226,9 +2760,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_run_disk_migration_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_disk_migration_job
 
@@ -3245,12 +2777,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_start_migration(
-        self,
-        request: vmmigration.StartMigrationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.StartMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.StartMigrationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.StartMigrationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for start_migration
 
         Override in a subclass to manipulate the request or metadata
@@ -3258,9 +2786,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_start_migration(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_start_migration(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for start_migration
 
         DEPRECATED. Please use the `post_start_migration_with_metadata`
@@ -3274,9 +2800,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_start_migration_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for start_migration
 
@@ -3293,13 +2817,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_update_disk_migration_job(
-        self,
-        request: vmmigration.UpdateDiskMigrationJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.UpdateDiskMigrationJobRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: vmmigration.UpdateDiskMigrationJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.UpdateDiskMigrationJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_disk_migration_job
 
         Override in a subclass to manipulate the request or metadata
@@ -3307,9 +2826,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_disk_migration_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_disk_migration_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_disk_migration_job
 
         DEPRECATED. Please use the `post_update_disk_migration_job_with_metadata`
@@ -3323,9 +2840,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_update_disk_migration_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_disk_migration_job
 
@@ -3342,9 +2857,7 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_update_group(
-        self,
-        request: vmmigration.UpdateGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: vmmigration.UpdateGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[vmmigration.UpdateGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_group
 
@@ -3353,9 +2866,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_group
 
         DEPRECATED. Please use the `post_update_group_with_metadata`
@@ -3369,9 +2880,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_update_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_group
 
@@ -3388,12 +2897,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_update_migrating_vm(
-        self,
-        request: vmmigration.UpdateMigratingVmRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.UpdateMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.UpdateMigratingVmRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.UpdateMigratingVmRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_migrating_vm
 
         Override in a subclass to manipulate the request or metadata
@@ -3401,9 +2906,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_migrating_vm(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_migrating_vm(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_migrating_vm
 
         DEPRECATED. Please use the `post_update_migrating_vm_with_metadata`
@@ -3417,9 +2920,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_update_migrating_vm_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_migrating_vm
 
@@ -3436,12 +2937,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_update_source(
-        self,
-        request: vmmigration.UpdateSourceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.UpdateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.UpdateSourceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.UpdateSourceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_source
 
         Override in a subclass to manipulate the request or metadata
@@ -3449,9 +2946,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_source(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_source(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_source
 
         DEPRECATED. Please use the `post_update_source_with_metadata`
@@ -3465,9 +2960,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_update_source_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_source
 
@@ -3484,12 +2977,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_update_target_project(
-        self,
-        request: vmmigration.UpdateTargetProjectRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.UpdateTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.UpdateTargetProjectRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.UpdateTargetProjectRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_target_project
 
         Override in a subclass to manipulate the request or metadata
@@ -3497,9 +2986,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_update_target_project(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_target_project(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_target_project
 
         DEPRECATED. Please use the `post_update_target_project_with_metadata`
@@ -3513,9 +3000,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_update_target_project_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_target_project
 
@@ -3532,12 +3017,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_upgrade_appliance(
-        self,
-        request: vmmigration.UpgradeApplianceRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        vmmigration.UpgradeApplianceRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: vmmigration.UpgradeApplianceRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[vmmigration.UpgradeApplianceRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for upgrade_appliance
 
         Override in a subclass to manipulate the request or metadata
@@ -3545,9 +3026,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_upgrade_appliance(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_upgrade_appliance(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for upgrade_appliance
 
         DEPRECATED. Please use the `post_upgrade_appliance_with_metadata`
@@ -3561,9 +3040,7 @@ class VmMigrationRestInterceptor:
         return response
 
     def post_upgrade_appliance_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for upgrade_appliance
 
@@ -3580,12 +3057,8 @@ class VmMigrationRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -3593,9 +3066,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -3605,12 +3076,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -3618,9 +3085,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -3630,12 +3095,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3653,12 +3114,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3676,12 +3133,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -3689,9 +3142,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -3701,12 +3152,8 @@ class VmMigrationRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -3714,9 +3161,7 @@ class VmMigrationRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -3805,9 +3250,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -3860,29 +3303,17 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _AddGroupMigration(
-        _BaseVmMigrationRestTransport._BaseAddGroupMigration, VmMigrationRestStub
-    ):
+    class _AddGroupMigration(_BaseVmMigrationRestTransport._BaseAddGroupMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.AddGroupMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3926,32 +3357,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_http_options()
 
-            request, metadata = self._interceptor.pre_add_group_migration(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_add_group_migration(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseAddGroupMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3975,13 +3392,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._AddGroupMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3995,12 +3406,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_add_group_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_add_group_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_add_group_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4021,22 +3428,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CancelCloneJob(
-        _BaseVmMigrationRestTransport._BaseCancelCloneJob, VmMigrationRestStub
-    ):
+    class _CancelCloneJob(_BaseVmMigrationRestTransport._BaseCancelCloneJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CancelCloneJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4080,32 +3477,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_clone_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_clone_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCancelCloneJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4129,13 +3512,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CancelCloneJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4149,12 +3526,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_cancel_clone_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_clone_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_clone_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4175,22 +3548,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CancelCutoverJob(
-        _BaseVmMigrationRestTransport._BaseCancelCutoverJob, VmMigrationRestStub
-    ):
+    class _CancelCutoverJob(_BaseVmMigrationRestTransport._BaseCancelCutoverJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CancelCutoverJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4234,32 +3597,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_cutover_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_cutover_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCancelCutoverJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4283,13 +3632,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CancelCutoverJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4303,12 +3646,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_cancel_cutover_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_cutover_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_cutover_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4329,22 +3668,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CancelDiskMigrationJob(
-        _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob, VmMigrationRestStub
-    ):
+    class _CancelDiskMigrationJob(_BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CancelDiskMigrationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4388,32 +3717,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_disk_migration_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_disk_migration_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCancelDiskMigrationJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4437,13 +3752,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CancelDiskMigrationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4457,12 +3766,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_cancel_disk_migration_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_disk_migration_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_disk_migration_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4483,22 +3788,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CancelImageImportJob(
-        _BaseVmMigrationRestTransport._BaseCancelImageImportJob, VmMigrationRestStub
-    ):
+    class _CancelImageImportJob(_BaseVmMigrationRestTransport._BaseCancelImageImportJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CancelImageImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4542,32 +3837,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_image_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_image_import_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCancelImageImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4591,13 +3872,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CancelImageImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4611,12 +3886,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_cancel_image_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_cancel_image_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_cancel_image_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4637,22 +3908,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateCloneJob(
-        _BaseVmMigrationRestTransport._BaseCreateCloneJob, VmMigrationRestStub
-    ):
+    class _CreateCloneJob(_BaseVmMigrationRestTransport._BaseCreateCloneJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateCloneJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4696,32 +3957,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_clone_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_clone_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateCloneJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4745,13 +3992,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateCloneJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4765,12 +4006,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_clone_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_clone_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_clone_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4791,22 +4028,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateCutoverJob(
-        _BaseVmMigrationRestTransport._BaseCreateCutoverJob, VmMigrationRestStub
-    ):
+    class _CreateCutoverJob(_BaseVmMigrationRestTransport._BaseCreateCutoverJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateCutoverJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4850,32 +4077,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_cutover_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_cutover_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateCutoverJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -4899,13 +4112,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateCutoverJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4919,12 +4126,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_cutover_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_cutover_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_cutover_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -4945,23 +4148,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateDatacenterConnector(
-        _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector,
-        VmMigrationRestStub,
-    ):
+    class _CreateDatacenterConnector(_BaseVmMigrationRestTransport._BaseCreateDatacenterConnector, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateDatacenterConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5006,32 +4198,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_datacenter_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_datacenter_connector(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateDatacenterConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5054,16 +4232,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmMigrationRestTransport._CreateDatacenterConnector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = VmMigrationRestTransport._CreateDatacenterConnector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5077,12 +4247,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_datacenter_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_datacenter_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_datacenter_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5103,22 +4269,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateDiskMigrationJob(
-        _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob, VmMigrationRestStub
-    ):
+    class _CreateDiskMigrationJob(_BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateDiskMigrationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5162,32 +4318,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_disk_migration_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_disk_migration_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateDiskMigrationJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5211,13 +4353,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateDiskMigrationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5231,12 +4367,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_disk_migration_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_disk_migration_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_disk_migration_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5257,22 +4389,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateGroup(
-        _BaseVmMigrationRestTransport._BaseCreateGroup, VmMigrationRestStub
-    ):
+    class _CreateGroup(_BaseVmMigrationRestTransport._BaseCreateGroup, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5316,36 +4438,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateGroup._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_create_group(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseCreateGroup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateGroup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseVmMigrationRestTransport._BaseCreateGroup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseCreateGroup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5369,13 +4473,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5389,12 +4487,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5415,22 +4509,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateImageImport(
-        _BaseVmMigrationRestTransport._BaseCreateImageImport, VmMigrationRestStub
-    ):
+    class _CreateImageImport(_BaseVmMigrationRestTransport._BaseCreateImageImport, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateImageImport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5474,32 +4558,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateImageImport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_image_import(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_image_import(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateImageImport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5523,13 +4593,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateImageImport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5543,12 +4607,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_image_import(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_image_import_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_image_import_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5569,22 +4629,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateMigratingVm(
-        _BaseVmMigrationRestTransport._BaseCreateMigratingVm, VmMigrationRestStub
-    ):
+    class _CreateMigratingVm(_BaseVmMigrationRestTransport._BaseCreateMigratingVm, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateMigratingVm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5628,32 +4678,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_migrating_vm(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_migrating_vm(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateMigratingVm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5677,13 +4713,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateMigratingVm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5697,12 +4727,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_migrating_vm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_migrating_vm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_migrating_vm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5723,22 +4749,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateSource(
-        _BaseVmMigrationRestTransport._BaseCreateSource, VmMigrationRestStub
-    ):
+    class _CreateSource(_BaseVmMigrationRestTransport._BaseCreateSource, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5782,36 +4798,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateSource._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateSource._get_http_options()
 
             request, metadata = self._interceptor.pre_create_source(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseCreateSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateSource._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseVmMigrationRestTransport._BaseCreateSource._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseCreateSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5835,13 +4833,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5855,12 +4847,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5881,22 +4869,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateTargetProject(
-        _BaseVmMigrationRestTransport._BaseCreateTargetProject, VmMigrationRestStub
-    ):
+    class _CreateTargetProject(_BaseVmMigrationRestTransport._BaseCreateTargetProject, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateTargetProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5940,32 +4918,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_target_project(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_target_project(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateTargetProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5989,13 +4953,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateTargetProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6009,12 +4967,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_target_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_target_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_target_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6035,22 +4989,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _CreateUtilizationReport(
-        _BaseVmMigrationRestTransport._BaseCreateUtilizationReport, VmMigrationRestStub
-    ):
+    class _CreateUtilizationReport(_BaseVmMigrationRestTransport._BaseCreateUtilizationReport, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CreateUtilizationReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6094,32 +5038,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_utilization_report(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_utilization_report(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCreateUtilizationReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6143,13 +5073,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CreateUtilizationReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6163,12 +5087,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_create_utilization_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_utilization_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_utilization_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6189,23 +5109,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteDatacenterConnector(
-        _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector,
-        VmMigrationRestStub,
-    ):
+    class _DeleteDatacenterConnector(_BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteDatacenterConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6249,28 +5158,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_datacenter_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_datacenter_connector(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteDatacenterConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6293,15 +5190,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
 
             # Send the request
-            response = (
-                VmMigrationRestTransport._DeleteDatacenterConnector._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = VmMigrationRestTransport._DeleteDatacenterConnector._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6315,12 +5205,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_datacenter_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_datacenter_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_datacenter_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6341,22 +5227,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteDiskMigrationJob(
-        _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob, VmMigrationRestStub
-    ):
+    class _DeleteDiskMigrationJob(_BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteDiskMigrationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6399,28 +5275,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_disk_migration_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_disk_migration_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteDiskMigrationJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6444,12 +5308,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteDiskMigrationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6463,12 +5322,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_disk_migration_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_disk_migration_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_disk_migration_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6489,22 +5344,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteGroup(
-        _BaseVmMigrationRestTransport._BaseDeleteGroup, VmMigrationRestStub
-    ):
+    class _DeleteGroup(_BaseVmMigrationRestTransport._BaseDeleteGroup, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6547,30 +5392,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteGroup._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_group(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseDeleteGroup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseDeleteGroup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6594,12 +5425,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6613,12 +5439,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6639,22 +5461,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteImageImport(
-        _BaseVmMigrationRestTransport._BaseDeleteImageImport, VmMigrationRestStub
-    ):
+    class _DeleteImageImport(_BaseVmMigrationRestTransport._BaseDeleteImageImport, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteImageImport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6697,28 +5509,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_image_import(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_image_import(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteImageImport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6742,12 +5542,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteImageImport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6761,12 +5556,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_image_import(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_image_import_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_image_import_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6787,22 +5578,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteMigratingVm(
-        _BaseVmMigrationRestTransport._BaseDeleteMigratingVm, VmMigrationRestStub
-    ):
+    class _DeleteMigratingVm(_BaseVmMigrationRestTransport._BaseDeleteMigratingVm, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteMigratingVm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6845,28 +5626,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_migrating_vm(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_migrating_vm(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteMigratingVm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6890,12 +5659,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteMigratingVm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6909,12 +5673,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_migrating_vm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_migrating_vm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_migrating_vm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6935,22 +5695,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteSource(
-        _BaseVmMigrationRestTransport._BaseDeleteSource, VmMigrationRestStub
-    ):
+    class _DeleteSource(_BaseVmMigrationRestTransport._BaseDeleteSource, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6993,30 +5743,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteSource._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteSource._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_source(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseDeleteSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseDeleteSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7040,12 +5776,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7059,12 +5790,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7085,22 +5812,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteTargetProject(
-        _BaseVmMigrationRestTransport._BaseDeleteTargetProject, VmMigrationRestStub
-    ):
+    class _DeleteTargetProject(_BaseVmMigrationRestTransport._BaseDeleteTargetProject, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteTargetProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7143,28 +5860,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_target_project(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_target_project(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteTargetProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7188,12 +5893,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteTargetProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7207,12 +5907,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_target_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_target_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_target_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7233,22 +5929,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _DeleteUtilizationReport(
-        _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport, VmMigrationRestStub
-    ):
+    class _DeleteUtilizationReport(_BaseVmMigrationRestTransport._BaseDeleteUtilizationReport, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteUtilizationReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7291,28 +5977,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_utilization_report(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_utilization_report(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteUtilizationReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7336,12 +6010,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteUtilizationReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7355,12 +6024,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_delete_utilization_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_utilization_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_utilization_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7381,22 +6046,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ExtendMigration(
-        _BaseVmMigrationRestTransport._BaseExtendMigration, VmMigrationRestStub
-    ):
+    class _ExtendMigration(_BaseVmMigrationRestTransport._BaseExtendMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ExtendMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7440,32 +6095,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseExtendMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseExtendMigration._get_http_options()
 
-            request, metadata = self._interceptor.pre_extend_migration(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseExtendMigration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_extend_migration(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseExtendMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseExtendMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseExtendMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseExtendMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseExtendMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7489,13 +6130,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ExtendMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7509,12 +6144,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_extend_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_extend_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_extend_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7535,22 +6166,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _FetchInventory(
-        _BaseVmMigrationRestTransport._BaseFetchInventory, VmMigrationRestStub
-    ):
+    class _FetchInventory(_BaseVmMigrationRestTransport._BaseFetchInventory, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.FetchInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7592,26 +6213,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseFetchInventory._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseFetchInventory._get_http_options()
 
             request, metadata = self._interceptor.pre_fetch_inventory(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BaseFetchInventory._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseFetchInventory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseFetchInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseFetchInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7635,12 +6246,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._FetchInventory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7656,16 +6262,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_fetch_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.FetchInventoryResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.FetchInventoryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7684,22 +6284,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _FetchStorageInventory(
-        _BaseVmMigrationRestTransport._BaseFetchStorageInventory, VmMigrationRestStub
-    ):
+    class _FetchStorageInventory(_BaseVmMigrationRestTransport._BaseFetchStorageInventory, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.FetchStorageInventory")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7741,28 +6331,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_http_options()
 
-            request, metadata = self._interceptor.pre_fetch_storage_inventory(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_fetch_storage_inventory(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseFetchStorageInventory._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -7786,12 +6364,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._FetchStorageInventory._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7807,16 +6380,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_fetch_storage_inventory(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_fetch_storage_inventory_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_fetch_storage_inventory_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmmigration.FetchStorageInventoryResponse.to_json(response)
-                    )
+                    response_payload = vmmigration.FetchStorageInventoryResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -7835,22 +6402,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _FinalizeMigration(
-        _BaseVmMigrationRestTransport._BaseFinalizeMigration, VmMigrationRestStub
-    ):
+    class _FinalizeMigration(_BaseVmMigrationRestTransport._BaseFinalizeMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.FinalizeMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7894,32 +6451,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_http_options()
 
-            request, metadata = self._interceptor.pre_finalize_migration(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_finalize_migration(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseFinalizeMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7943,13 +6486,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._FinalizeMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7963,12 +6500,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_finalize_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_finalize_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_finalize_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7989,22 +6522,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetCloneJob(
-        _BaseVmMigrationRestTransport._BaseGetCloneJob, VmMigrationRestStub
-    ):
+    class _GetCloneJob(_BaseVmMigrationRestTransport._BaseGetCloneJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetCloneJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8057,30 +6580,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetCloneJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetCloneJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_clone_job(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseGetCloneJob._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetCloneJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseGetCloneJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetCloneJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8104,12 +6613,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetCloneJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8125,12 +6629,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_clone_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_clone_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_clone_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.CloneJob.to_json(response)
                 except:
@@ -8151,22 +6651,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetCutoverJob(
-        _BaseVmMigrationRestTransport._BaseGetCutoverJob, VmMigrationRestStub
-    ):
+    class _GetCutoverJob(_BaseVmMigrationRestTransport._BaseGetCutoverJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetCutoverJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8212,28 +6702,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_http_options()
 
             request, metadata = self._interceptor.pre_get_cutover_job(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetCutoverJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8257,12 +6735,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetCutoverJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8278,12 +6751,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_cutover_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_cutover_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_cutover_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.CutoverJob.to_json(response)
                 except:
@@ -8304,22 +6773,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetDatacenterConnector(
-        _BaseVmMigrationRestTransport._BaseGetDatacenterConnector, VmMigrationRestStub
-    ):
+    class _GetDatacenterConnector(_BaseVmMigrationRestTransport._BaseGetDatacenterConnector, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetDatacenterConnector")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8366,28 +6825,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_datacenter_connector(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_datacenter_connector(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetDatacenterConnector._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8411,12 +6858,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetDatacenterConnector._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8432,12 +6874,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_datacenter_connector(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_datacenter_connector_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_datacenter_connector_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.DatacenterConnector.to_json(response)
                 except:
@@ -8458,22 +6896,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetDiskMigrationJob(
-        _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob, VmMigrationRestStub
-    ):
+    class _GetDiskMigrationJob(_BaseVmMigrationRestTransport._BaseGetDiskMigrationJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetDiskMigrationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8516,28 +6944,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_disk_migration_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_disk_migration_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetDiskMigrationJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8561,12 +6977,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetDiskMigrationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8582,12 +6993,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_disk_migration_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_disk_migration_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_disk_migration_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.DiskMigrationJob.to_json(response)
                 except:
@@ -8613,15 +7020,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             return hash("VmMigrationRestTransport.GetGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8664,30 +7063,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetGroup._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_group(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseGetGroup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseGetGroup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8711,12 +7096,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8732,12 +7112,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.Group.to_json(response)
                 except:
@@ -8758,22 +7134,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetImageImport(
-        _BaseVmMigrationRestTransport._BaseGetImageImport, VmMigrationRestStub
-    ):
+    class _GetImageImport(_BaseVmMigrationRestTransport._BaseGetImageImport, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetImageImport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8816,28 +7182,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetImageImport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetImageImport._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_image_import(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetImageImport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_image_import(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetImageImport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetImageImport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetImageImport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -8861,12 +7215,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetImageImport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -8882,12 +7231,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_image_import(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_image_import_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_image_import_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ImageImport.to_json(response)
                 except:
@@ -8908,22 +7253,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetImageImportJob(
-        _BaseVmMigrationRestTransport._BaseGetImageImportJob, VmMigrationRestStub
-    ):
+    class _GetImageImportJob(_BaseVmMigrationRestTransport._BaseGetImageImportJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetImageImportJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -8965,28 +7300,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_image_import_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_image_import_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetImageImportJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9010,12 +7333,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetImageImportJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9031,12 +7349,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_image_import_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_image_import_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_image_import_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ImageImportJob.to_json(response)
                 except:
@@ -9057,22 +7371,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetMigratingVm(
-        _BaseVmMigrationRestTransport._BaseGetMigratingVm, VmMigrationRestStub
-    ):
+    class _GetMigratingVm(_BaseVmMigrationRestTransport._BaseGetMigratingVm, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetMigratingVm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9115,28 +7419,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_migrating_vm(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_migrating_vm(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetMigratingVm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9160,12 +7452,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetMigratingVm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9181,12 +7468,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_migrating_vm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_migrating_vm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_migrating_vm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.MigratingVm.to_json(response)
                 except:
@@ -9207,22 +7490,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetReplicationCycle(
-        _BaseVmMigrationRestTransport._BaseGetReplicationCycle, VmMigrationRestStub
-    ):
+    class _GetReplicationCycle(_BaseVmMigrationRestTransport._BaseGetReplicationCycle, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetReplicationCycle")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9265,28 +7538,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_replication_cycle(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_replication_cycle(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetReplicationCycle._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9310,12 +7571,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetReplicationCycle._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9331,12 +7587,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_replication_cycle(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_replication_cycle_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_replication_cycle_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ReplicationCycle.to_json(response)
                 except:
@@ -9362,15 +7614,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             return hash("VmMigrationRestTransport.GetSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9414,30 +7658,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetSource._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetSource._get_http_options()
 
             request, metadata = self._interceptor.pre_get_source(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseGetSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetSource._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseGetSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9461,12 +7691,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9482,12 +7707,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.Source.to_json(response)
                 except:
@@ -9508,22 +7729,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetTargetProject(
-        _BaseVmMigrationRestTransport._BaseGetTargetProject, VmMigrationRestStub
-    ):
+    class _GetTargetProject(_BaseVmMigrationRestTransport._BaseGetTargetProject, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetTargetProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9566,28 +7777,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetTargetProject._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_target_project(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetTargetProject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_target_project(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetTargetProject._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetTargetProject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetTargetProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9611,12 +7810,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetTargetProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9632,12 +7826,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_target_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_target_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_target_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.TargetProject.to_json(response)
                 except:
@@ -9658,22 +7848,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _GetUtilizationReport(
-        _BaseVmMigrationRestTransport._BaseGetUtilizationReport, VmMigrationRestStub
-    ):
+    class _GetUtilizationReport(_BaseVmMigrationRestTransport._BaseGetUtilizationReport, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetUtilizationReport")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9716,28 +7896,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_utilization_report(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_utilization_report(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetUtilizationReport._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9761,12 +7929,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetUtilizationReport._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9782,12 +7945,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_get_utilization_report(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_utilization_report_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_utilization_report_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.UtilizationReport.to_json(response)
                 except:
@@ -9808,22 +7967,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListCloneJobs(
-        _BaseVmMigrationRestTransport._BaseListCloneJobs, VmMigrationRestStub
-    ):
+    class _ListCloneJobs(_BaseVmMigrationRestTransport._BaseListCloneJobs, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListCloneJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -9865,28 +8014,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListCloneJobs._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListCloneJobs._get_http_options()
 
             request, metadata = self._interceptor.pre_list_clone_jobs(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListCloneJobs._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListCloneJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseListCloneJobs._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListCloneJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -9910,12 +8047,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListCloneJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -9931,16 +8063,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_clone_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_clone_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_clone_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.ListCloneJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.ListCloneJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -9959,22 +8085,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListCutoverJobs(
-        _BaseVmMigrationRestTransport._BaseListCutoverJobs, VmMigrationRestStub
-    ):
+    class _ListCutoverJobs(_BaseVmMigrationRestTransport._BaseListCutoverJobs, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListCutoverJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10016,28 +8132,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_cutover_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_cutover_jobs(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListCutoverJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10061,12 +8165,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListCutoverJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10082,16 +8181,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_cutover_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_cutover_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_cutover_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.ListCutoverJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.ListCutoverJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10110,22 +8203,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListDatacenterConnectors(
-        _BaseVmMigrationRestTransport._BaseListDatacenterConnectors, VmMigrationRestStub
-    ):
+    class _ListDatacenterConnectors(_BaseVmMigrationRestTransport._BaseListDatacenterConnectors, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListDatacenterConnectors")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10168,28 +8251,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_datacenter_connectors(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_datacenter_connectors(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListDatacenterConnectors._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10213,12 +8284,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListDatacenterConnectors._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10234,16 +8300,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_datacenter_connectors(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_datacenter_connectors_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_datacenter_connectors_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmmigration.ListDatacenterConnectorsResponse.to_json(response)
-                    )
+                    response_payload = vmmigration.ListDatacenterConnectorsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10262,22 +8322,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListDiskMigrationJobs(
-        _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs, VmMigrationRestStub
-    ):
+    class _ListDiskMigrationJobs(_BaseVmMigrationRestTransport._BaseListDiskMigrationJobs, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListDiskMigrationJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10319,28 +8369,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_disk_migration_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_disk_migration_jobs(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListDiskMigrationJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10364,12 +8402,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListDiskMigrationJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10385,16 +8418,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_disk_migration_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_disk_migration_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_disk_migration_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmmigration.ListDiskMigrationJobsResponse.to_json(response)
-                    )
+                    response_payload = vmmigration.ListDiskMigrationJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10413,22 +8440,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListGroups(
-        _BaseVmMigrationRestTransport._BaseListGroups, VmMigrationRestStub
-    ):
+    class _ListGroups(_BaseVmMigrationRestTransport._BaseListGroups, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10470,30 +8487,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListGroups._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListGroups._get_http_options()
 
             request, metadata = self._interceptor.pre_list_groups(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseListGroups._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseListGroups._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10517,12 +8520,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListGroups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10538,12 +8536,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ListGroupsResponse.to_json(response)
                 except:
@@ -10564,22 +8558,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListImageImportJobs(
-        _BaseVmMigrationRestTransport._BaseListImageImportJobs, VmMigrationRestStub
-    ):
+    class _ListImageImportJobs(_BaseVmMigrationRestTransport._BaseListImageImportJobs, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListImageImportJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10621,28 +8605,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_image_import_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_image_import_jobs(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListImageImportJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10666,12 +8638,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListImageImportJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10687,16 +8654,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_image_import_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_image_import_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_image_import_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.ListImageImportJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.ListImageImportJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10715,22 +8676,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListImageImports(
-        _BaseVmMigrationRestTransport._BaseListImageImports, VmMigrationRestStub
-    ):
+    class _ListImageImports(_BaseVmMigrationRestTransport._BaseListImageImports, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListImageImports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10772,28 +8723,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListImageImports._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListImageImports._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_image_imports(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListImageImports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_image_imports(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListImageImports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListImageImports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListImageImports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10817,12 +8756,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListImageImports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10838,16 +8772,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_image_imports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_image_imports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_image_imports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.ListImageImportsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.ListImageImportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -10866,22 +8794,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListMigratingVms(
-        _BaseVmMigrationRestTransport._BaseListMigratingVms, VmMigrationRestStub
-    ):
+    class _ListMigratingVms(_BaseVmMigrationRestTransport._BaseListMigratingVms, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListMigratingVms")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -10923,28 +8841,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListMigratingVms._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListMigratingVms._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_migrating_vms(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListMigratingVms._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_migrating_vms(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListMigratingVms._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListMigratingVms._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListMigratingVms._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -10968,12 +8874,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListMigratingVms._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -10989,16 +8890,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_migrating_vms(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_migrating_vms_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_migrating_vms_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.ListMigratingVmsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.ListMigratingVmsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11017,22 +8912,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListReplicationCycles(
-        _BaseVmMigrationRestTransport._BaseListReplicationCycles, VmMigrationRestStub
-    ):
+    class _ListReplicationCycles(_BaseVmMigrationRestTransport._BaseListReplicationCycles, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListReplicationCycles")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11074,28 +8959,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_replication_cycles(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_replication_cycles(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListReplicationCycles._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11119,12 +8992,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListReplicationCycles._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11140,16 +9008,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_replication_cycles(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_replication_cycles_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_replication_cycles_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmmigration.ListReplicationCyclesResponse.to_json(response)
-                    )
+                    response_payload = vmmigration.ListReplicationCyclesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11168,22 +9030,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListSources(
-        _BaseVmMigrationRestTransport._BaseListSources, VmMigrationRestStub
-    ):
+    class _ListSources(_BaseVmMigrationRestTransport._BaseListSources, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListSources")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11225,30 +9077,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListSources._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListSources._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sources(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseListSources._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListSources._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseListSources._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListSources._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11272,12 +9110,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListSources._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11293,12 +9126,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_sources(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sources_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sources_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = vmmigration.ListSourcesResponse.to_json(response)
                 except:
@@ -11319,22 +9148,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListTargetProjects(
-        _BaseVmMigrationRestTransport._BaseListTargetProjects, VmMigrationRestStub
-    ):
+    class _ListTargetProjects(_BaseVmMigrationRestTransport._BaseListTargetProjects, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListTargetProjects")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11376,28 +9195,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListTargetProjects._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListTargetProjects._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_target_projects(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListTargetProjects._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_target_projects(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListTargetProjects._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListTargetProjects._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListTargetProjects._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11421,12 +9228,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListTargetProjects._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11442,16 +9244,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_target_projects(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_target_projects_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_target_projects_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = vmmigration.ListTargetProjectsResponse.to_json(
-                        response
-                    )
+                    response_payload = vmmigration.ListTargetProjectsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11470,22 +9266,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ListUtilizationReports(
-        _BaseVmMigrationRestTransport._BaseListUtilizationReports, VmMigrationRestStub
-    ):
+    class _ListUtilizationReports(_BaseVmMigrationRestTransport._BaseListUtilizationReports, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListUtilizationReports")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11527,28 +9313,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_utilization_reports(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_utilization_reports(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListUtilizationReports._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -11572,12 +9346,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListUtilizationReports._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11593,16 +9362,10 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_list_utilization_reports(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_utilization_reports_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_utilization_reports_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        vmmigration.ListUtilizationReportsResponse.to_json(response)
-                    )
+                    response_payload = vmmigration.ListUtilizationReportsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -11621,22 +9384,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _PauseMigration(
-        _BaseVmMigrationRestTransport._BasePauseMigration, VmMigrationRestStub
-    ):
+    class _PauseMigration(_BaseVmMigrationRestTransport._BasePauseMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.PauseMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11680,30 +9433,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BasePauseMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BasePauseMigration._get_http_options()
 
             request, metadata = self._interceptor.pre_pause_migration(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BasePauseMigration._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BasePauseMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BasePauseMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BasePauseMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BasePauseMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BasePauseMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11727,13 +9468,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._PauseMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11747,12 +9482,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_pause_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_pause_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_pause_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11773,22 +9504,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _RemoveGroupMigration(
-        _BaseVmMigrationRestTransport._BaseRemoveGroupMigration, VmMigrationRestStub
-    ):
+    class _RemoveGroupMigration(_BaseVmMigrationRestTransport._BaseRemoveGroupMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.RemoveGroupMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11832,32 +9553,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_group_migration(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_group_migration(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseRemoveGroupMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -11881,13 +9588,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._RemoveGroupMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -11901,12 +9602,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_remove_group_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_group_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_group_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -11927,22 +9624,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _ResumeMigration(
-        _BaseVmMigrationRestTransport._BaseResumeMigration, VmMigrationRestStub
-    ):
+    class _ResumeMigration(_BaseVmMigrationRestTransport._BaseResumeMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ResumeMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -11986,32 +9673,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseResumeMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseResumeMigration._get_http_options()
 
-            request, metadata = self._interceptor.pre_resume_migration(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseResumeMigration._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_resume_migration(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseResumeMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseResumeMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseResumeMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseResumeMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseResumeMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12035,13 +9708,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ResumeMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12055,12 +9722,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_resume_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_resume_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_resume_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12081,22 +9744,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _RunDiskMigrationJob(
-        _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob, VmMigrationRestStub
-    ):
+    class _RunDiskMigrationJob(_BaseVmMigrationRestTransport._BaseRunDiskMigrationJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.RunDiskMigrationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12140,32 +9793,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_run_disk_migration_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_run_disk_migration_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseRunDiskMigrationJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12189,13 +9828,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._RunDiskMigrationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12209,12 +9842,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_run_disk_migration_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_disk_migration_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_disk_migration_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12235,22 +9864,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _StartMigration(
-        _BaseVmMigrationRestTransport._BaseStartMigration, VmMigrationRestStub
-    ):
+    class _StartMigration(_BaseVmMigrationRestTransport._BaseStartMigration, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.StartMigration")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12294,30 +9913,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseStartMigration._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseStartMigration._get_http_options()
 
             request, metadata = self._interceptor.pre_start_migration(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BaseStartMigration._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseStartMigration._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseStartMigration._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseStartMigration._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseStartMigration._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseStartMigration._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12341,13 +9948,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._StartMigration._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12361,12 +9962,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_start_migration(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_start_migration_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_start_migration_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12387,22 +9984,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _UpdateDiskMigrationJob(
-        _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob, VmMigrationRestStub
-    ):
+    class _UpdateDiskMigrationJob(_BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.UpdateDiskMigrationJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12446,32 +10033,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_disk_migration_job(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_disk_migration_job(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseUpdateDiskMigrationJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12495,13 +10068,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._UpdateDiskMigrationJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12515,12 +10082,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_update_disk_migration_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_disk_migration_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_disk_migration_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12541,22 +10104,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _UpdateGroup(
-        _BaseVmMigrationRestTransport._BaseUpdateGroup, VmMigrationRestStub
-    ):
+    class _UpdateGroup(_BaseVmMigrationRestTransport._BaseUpdateGroup, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.UpdateGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12600,36 +10153,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateGroup._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_update_group(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseUpdateGroup._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateGroup._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseVmMigrationRestTransport._BaseUpdateGroup._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseVmMigrationRestTransport._BaseUpdateGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseUpdateGroup._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseUpdateGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12653,13 +10188,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._UpdateGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12673,12 +10202,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_update_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12699,22 +10224,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _UpdateMigratingVm(
-        _BaseVmMigrationRestTransport._BaseUpdateMigratingVm, VmMigrationRestStub
-    ):
+    class _UpdateMigratingVm(_BaseVmMigrationRestTransport._BaseUpdateMigratingVm, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.UpdateMigratingVm")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12758,32 +10273,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_migrating_vm(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_migrating_vm(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseUpdateMigratingVm._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12807,13 +10308,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._UpdateMigratingVm._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12827,12 +10322,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_update_migrating_vm(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_migrating_vm_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_migrating_vm_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -12853,22 +10344,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _UpdateSource(
-        _BaseVmMigrationRestTransport._BaseUpdateSource, VmMigrationRestStub
-    ):
+    class _UpdateSource(_BaseVmMigrationRestTransport._BaseUpdateSource, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.UpdateSource")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -12912,36 +10393,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateSource._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateSource._get_http_options()
 
             request, metadata = self._interceptor.pre_update_source(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseUpdateSource._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateSource._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseVmMigrationRestTransport._BaseUpdateSource._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseVmMigrationRestTransport._BaseUpdateSource._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseUpdateSource._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseUpdateSource._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -12965,13 +10428,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._UpdateSource._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -12985,12 +10442,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_update_source(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_source_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_source_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13011,22 +10464,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _UpdateTargetProject(
-        _BaseVmMigrationRestTransport._BaseUpdateTargetProject, VmMigrationRestStub
-    ):
+    class _UpdateTargetProject(_BaseVmMigrationRestTransport._BaseUpdateTargetProject, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.UpdateTargetProject")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13070,32 +10513,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_target_project(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_target_project(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseUpdateTargetProject._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13119,13 +10548,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._UpdateTargetProject._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13139,12 +10562,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_update_target_project(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_target_project_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_target_project_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13165,22 +10584,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 )
             return resp
 
-    class _UpgradeAppliance(
-        _BaseVmMigrationRestTransport._BaseUpgradeAppliance, VmMigrationRestStub
-    ):
+    class _UpgradeAppliance(_BaseVmMigrationRestTransport._BaseUpgradeAppliance, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.UpgradeAppliance")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13224,32 +10633,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_http_options()
 
-            request, metadata = self._interceptor.pre_upgrade_appliance(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_upgrade_appliance(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseUpgradeAppliance._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13273,13 +10668,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._UpgradeAppliance._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13293,12 +10682,8 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             resp = self._interceptor.post_upgrade_appliance(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_upgrade_appliance_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_upgrade_appliance_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -13320,272 +10705,187 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             return resp
 
     @property
-    def add_group_migration(
-        self,
-    ) -> Callable[[vmmigration.AddGroupMigrationRequest], operations_pb2.Operation]:
+    def add_group_migration(self) -> Callable[[vmmigration.AddGroupMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._AddGroupMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_clone_job(
-        self,
-    ) -> Callable[[vmmigration.CancelCloneJobRequest], operations_pb2.Operation]:
+    def cancel_clone_job(self) -> Callable[[vmmigration.CancelCloneJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelCloneJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_cutover_job(
-        self,
-    ) -> Callable[[vmmigration.CancelCutoverJobRequest], operations_pb2.Operation]:
+    def cancel_cutover_job(self) -> Callable[[vmmigration.CancelCutoverJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelCutoverJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CancelDiskMigrationJobRequest], operations_pb2.Operation
-    ]:
+    def cancel_disk_migration_job(self) -> Callable[[vmmigration.CancelDiskMigrationJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def cancel_image_import_job(
-        self,
-    ) -> Callable[[vmmigration.CancelImageImportJobRequest], operations_pb2.Operation]:
+    def cancel_image_import_job(self) -> Callable[[vmmigration.CancelImageImportJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelImageImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_clone_job(
-        self,
-    ) -> Callable[[vmmigration.CreateCloneJobRequest], operations_pb2.Operation]:
+    def create_clone_job(self) -> Callable[[vmmigration.CreateCloneJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCloneJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_cutover_job(
-        self,
-    ) -> Callable[[vmmigration.CreateCutoverJobRequest], operations_pb2.Operation]:
+    def create_cutover_job(self) -> Callable[[vmmigration.CreateCutoverJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateCutoverJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_datacenter_connector(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateDatacenterConnectorRequest], operations_pb2.Operation
-    ]:
+    def create_datacenter_connector(self) -> Callable[[vmmigration.CreateDatacenterConnectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDatacenterConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateDiskMigrationJobRequest], operations_pb2.Operation
-    ]:
+    def create_disk_migration_job(self) -> Callable[[vmmigration.CreateDiskMigrationJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_group(
-        self,
-    ) -> Callable[[vmmigration.CreateGroupRequest], operations_pb2.Operation]:
+    def create_group(self) -> Callable[[vmmigration.CreateGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_image_import(
-        self,
-    ) -> Callable[[vmmigration.CreateImageImportRequest], operations_pb2.Operation]:
+    def create_image_import(self) -> Callable[[vmmigration.CreateImageImportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateImageImport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_migrating_vm(
-        self,
-    ) -> Callable[[vmmigration.CreateMigratingVmRequest], operations_pb2.Operation]:
+    def create_migrating_vm(self) -> Callable[[vmmigration.CreateMigratingVmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMigratingVm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_source(
-        self,
-    ) -> Callable[[vmmigration.CreateSourceRequest], operations_pb2.Operation]:
+    def create_source(self) -> Callable[[vmmigration.CreateSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_target_project(
-        self,
-    ) -> Callable[[vmmigration.CreateTargetProjectRequest], operations_pb2.Operation]:
+    def create_target_project(self) -> Callable[[vmmigration.CreateTargetProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTargetProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_utilization_report(
-        self,
-    ) -> Callable[
-        [vmmigration.CreateUtilizationReportRequest], operations_pb2.Operation
-    ]:
+    def create_utilization_report(self) -> Callable[[vmmigration.CreateUtilizationReportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateUtilizationReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_datacenter_connector(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteDatacenterConnectorRequest], operations_pb2.Operation
-    ]:
+    def delete_datacenter_connector(self) -> Callable[[vmmigration.DeleteDatacenterConnectorRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDatacenterConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteDiskMigrationJobRequest], operations_pb2.Operation
-    ]:
+    def delete_disk_migration_job(self) -> Callable[[vmmigration.DeleteDiskMigrationJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_group(
-        self,
-    ) -> Callable[[vmmigration.DeleteGroupRequest], operations_pb2.Operation]:
+    def delete_group(self) -> Callable[[vmmigration.DeleteGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_image_import(
-        self,
-    ) -> Callable[[vmmigration.DeleteImageImportRequest], operations_pb2.Operation]:
+    def delete_image_import(self) -> Callable[[vmmigration.DeleteImageImportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteImageImport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_migrating_vm(
-        self,
-    ) -> Callable[[vmmigration.DeleteMigratingVmRequest], operations_pb2.Operation]:
+    def delete_migrating_vm(self) -> Callable[[vmmigration.DeleteMigratingVmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteMigratingVm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_source(
-        self,
-    ) -> Callable[[vmmigration.DeleteSourceRequest], operations_pb2.Operation]:
+    def delete_source(self) -> Callable[[vmmigration.DeleteSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_target_project(
-        self,
-    ) -> Callable[[vmmigration.DeleteTargetProjectRequest], operations_pb2.Operation]:
+    def delete_target_project(self) -> Callable[[vmmigration.DeleteTargetProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteTargetProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_utilization_report(
-        self,
-    ) -> Callable[
-        [vmmigration.DeleteUtilizationReportRequest], operations_pb2.Operation
-    ]:
+    def delete_utilization_report(self) -> Callable[[vmmigration.DeleteUtilizationReportRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteUtilizationReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def extend_migration(
-        self,
-    ) -> Callable[[vmmigration.ExtendMigrationRequest], operations_pb2.Operation]:
+    def extend_migration(self) -> Callable[[vmmigration.ExtendMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExtendMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_inventory(
-        self,
-    ) -> Callable[
-        [vmmigration.FetchInventoryRequest], vmmigration.FetchInventoryResponse
-    ]:
+    def fetch_inventory(self) -> Callable[[vmmigration.FetchInventoryRequest], vmmigration.FetchInventoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def fetch_storage_inventory(
-        self,
-    ) -> Callable[
-        [vmmigration.FetchStorageInventoryRequest],
-        vmmigration.FetchStorageInventoryResponse,
-    ]:
+    def fetch_storage_inventory(self) -> Callable[[vmmigration.FetchStorageInventoryRequest], vmmigration.FetchStorageInventoryResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FetchStorageInventory(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def finalize_migration(
-        self,
-    ) -> Callable[[vmmigration.FinalizeMigrationRequest], operations_pb2.Operation]:
+    def finalize_migration(self) -> Callable[[vmmigration.FinalizeMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._FinalizeMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_clone_job(
-        self,
-    ) -> Callable[[vmmigration.GetCloneJobRequest], vmmigration.CloneJob]:
+    def get_clone_job(self) -> Callable[[vmmigration.GetCloneJobRequest], vmmigration.CloneJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCloneJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_cutover_job(
-        self,
-    ) -> Callable[[vmmigration.GetCutoverJobRequest], vmmigration.CutoverJob]:
+    def get_cutover_job(self) -> Callable[[vmmigration.GetCutoverJobRequest], vmmigration.CutoverJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetCutoverJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_datacenter_connector(
-        self,
-    ) -> Callable[
-        [vmmigration.GetDatacenterConnectorRequest], vmmigration.DatacenterConnector
-    ]:
+    def get_datacenter_connector(self) -> Callable[[vmmigration.GetDatacenterConnectorRequest], vmmigration.DatacenterConnector]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDatacenterConnector(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.GetDiskMigrationJobRequest], vmmigration.DiskMigrationJob
-    ]:
+    def get_disk_migration_job(self) -> Callable[[vmmigration.GetDiskMigrationJobRequest], vmmigration.DiskMigrationJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
@@ -13597,272 +10897,181 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
         return self._GetGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_image_import(
-        self,
-    ) -> Callable[[vmmigration.GetImageImportRequest], vmmigration.ImageImport]:
+    def get_image_import(self) -> Callable[[vmmigration.GetImageImportRequest], vmmigration.ImageImport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetImageImport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_image_import_job(
-        self,
-    ) -> Callable[[vmmigration.GetImageImportJobRequest], vmmigration.ImageImportJob]:
+    def get_image_import_job(self) -> Callable[[vmmigration.GetImageImportJobRequest], vmmigration.ImageImportJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetImageImportJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_migrating_vm(
-        self,
-    ) -> Callable[[vmmigration.GetMigratingVmRequest], vmmigration.MigratingVm]:
+    def get_migrating_vm(self) -> Callable[[vmmigration.GetMigratingVmRequest], vmmigration.MigratingVm]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMigratingVm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_replication_cycle(
-        self,
-    ) -> Callable[
-        [vmmigration.GetReplicationCycleRequest], vmmigration.ReplicationCycle
-    ]:
+    def get_replication_cycle(self) -> Callable[[vmmigration.GetReplicationCycleRequest], vmmigration.ReplicationCycle]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetReplicationCycle(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_source(
-        self,
-    ) -> Callable[[vmmigration.GetSourceRequest], vmmigration.Source]:
+    def get_source(self) -> Callable[[vmmigration.GetSourceRequest], vmmigration.Source]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_target_project(
-        self,
-    ) -> Callable[[vmmigration.GetTargetProjectRequest], vmmigration.TargetProject]:
+    def get_target_project(self) -> Callable[[vmmigration.GetTargetProjectRequest], vmmigration.TargetProject]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTargetProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_utilization_report(
-        self,
-    ) -> Callable[
-        [vmmigration.GetUtilizationReportRequest], vmmigration.UtilizationReport
-    ]:
+    def get_utilization_report(self) -> Callable[[vmmigration.GetUtilizationReportRequest], vmmigration.UtilizationReport]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetUtilizationReport(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_clone_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListCloneJobsRequest], vmmigration.ListCloneJobsResponse
-    ]:
+    def list_clone_jobs(self) -> Callable[[vmmigration.ListCloneJobsRequest], vmmigration.ListCloneJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCloneJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_cutover_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListCutoverJobsRequest], vmmigration.ListCutoverJobsResponse
-    ]:
+    def list_cutover_jobs(self) -> Callable[[vmmigration.ListCutoverJobsRequest], vmmigration.ListCutoverJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListCutoverJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_datacenter_connectors(
-        self,
-    ) -> Callable[
-        [vmmigration.ListDatacenterConnectorsRequest],
-        vmmigration.ListDatacenterConnectorsResponse,
-    ]:
+    def list_datacenter_connectors(self) -> Callable[[vmmigration.ListDatacenterConnectorsRequest], vmmigration.ListDatacenterConnectorsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDatacenterConnectors(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_disk_migration_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListDiskMigrationJobsRequest],
-        vmmigration.ListDiskMigrationJobsResponse,
-    ]:
+    def list_disk_migration_jobs(self) -> Callable[[vmmigration.ListDiskMigrationJobsRequest], vmmigration.ListDiskMigrationJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListDiskMigrationJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_groups(
-        self,
-    ) -> Callable[[vmmigration.ListGroupsRequest], vmmigration.ListGroupsResponse]:
+    def list_groups(self) -> Callable[[vmmigration.ListGroupsRequest], vmmigration.ListGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_image_import_jobs(
-        self,
-    ) -> Callable[
-        [vmmigration.ListImageImportJobsRequest],
-        vmmigration.ListImageImportJobsResponse,
-    ]:
+    def list_image_import_jobs(self) -> Callable[[vmmigration.ListImageImportJobsRequest], vmmigration.ListImageImportJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListImageImportJobs(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_image_imports(
-        self,
-    ) -> Callable[
-        [vmmigration.ListImageImportsRequest], vmmigration.ListImageImportsResponse
-    ]:
+    def list_image_imports(self) -> Callable[[vmmigration.ListImageImportsRequest], vmmigration.ListImageImportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListImageImports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_migrating_vms(
-        self,
-    ) -> Callable[
-        [vmmigration.ListMigratingVmsRequest], vmmigration.ListMigratingVmsResponse
-    ]:
+    def list_migrating_vms(self) -> Callable[[vmmigration.ListMigratingVmsRequest], vmmigration.ListMigratingVmsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMigratingVms(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_replication_cycles(
-        self,
-    ) -> Callable[
-        [vmmigration.ListReplicationCyclesRequest],
-        vmmigration.ListReplicationCyclesResponse,
-    ]:
+    def list_replication_cycles(self) -> Callable[[vmmigration.ListReplicationCyclesRequest], vmmigration.ListReplicationCyclesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListReplicationCycles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sources(
-        self,
-    ) -> Callable[[vmmigration.ListSourcesRequest], vmmigration.ListSourcesResponse]:
+    def list_sources(self) -> Callable[[vmmigration.ListSourcesRequest], vmmigration.ListSourcesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_target_projects(
-        self,
-    ) -> Callable[
-        [vmmigration.ListTargetProjectsRequest], vmmigration.ListTargetProjectsResponse
-    ]:
+    def list_target_projects(self) -> Callable[[vmmigration.ListTargetProjectsRequest], vmmigration.ListTargetProjectsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTargetProjects(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_utilization_reports(
-        self,
-    ) -> Callable[
-        [vmmigration.ListUtilizationReportsRequest],
-        vmmigration.ListUtilizationReportsResponse,
-    ]:
+    def list_utilization_reports(self) -> Callable[[vmmigration.ListUtilizationReportsRequest], vmmigration.ListUtilizationReportsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListUtilizationReports(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def pause_migration(
-        self,
-    ) -> Callable[[vmmigration.PauseMigrationRequest], operations_pb2.Operation]:
+    def pause_migration(self) -> Callable[[vmmigration.PauseMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._PauseMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_group_migration(
-        self,
-    ) -> Callable[[vmmigration.RemoveGroupMigrationRequest], operations_pb2.Operation]:
+    def remove_group_migration(self) -> Callable[[vmmigration.RemoveGroupMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveGroupMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def resume_migration(
-        self,
-    ) -> Callable[[vmmigration.ResumeMigrationRequest], operations_pb2.Operation]:
+    def resume_migration(self) -> Callable[[vmmigration.ResumeMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ResumeMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_disk_migration_job(
-        self,
-    ) -> Callable[[vmmigration.RunDiskMigrationJobRequest], operations_pb2.Operation]:
+    def run_disk_migration_job(self) -> Callable[[vmmigration.RunDiskMigrationJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def start_migration(
-        self,
-    ) -> Callable[[vmmigration.StartMigrationRequest], operations_pb2.Operation]:
+    def start_migration(self) -> Callable[[vmmigration.StartMigrationRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartMigration(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_disk_migration_job(
-        self,
-    ) -> Callable[
-        [vmmigration.UpdateDiskMigrationJobRequest], operations_pb2.Operation
-    ]:
+    def update_disk_migration_job(self) -> Callable[[vmmigration.UpdateDiskMigrationJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDiskMigrationJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_group(
-        self,
-    ) -> Callable[[vmmigration.UpdateGroupRequest], operations_pb2.Operation]:
+    def update_group(self) -> Callable[[vmmigration.UpdateGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_migrating_vm(
-        self,
-    ) -> Callable[[vmmigration.UpdateMigratingVmRequest], operations_pb2.Operation]:
+    def update_migrating_vm(self) -> Callable[[vmmigration.UpdateMigratingVmRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateMigratingVm(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_source(
-        self,
-    ) -> Callable[[vmmigration.UpdateSourceRequest], operations_pb2.Operation]:
+    def update_source(self) -> Callable[[vmmigration.UpdateSourceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSource(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_target_project(
-        self,
-    ) -> Callable[[vmmigration.UpdateTargetProjectRequest], operations_pb2.Operation]:
+    def update_target_project(self) -> Callable[[vmmigration.UpdateTargetProjectRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTargetProject(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def upgrade_appliance(
-        self,
-    ) -> Callable[[vmmigration.UpgradeApplianceRequest], operations_pb2.Operation]:
+    def upgrade_appliance(self) -> Callable[[vmmigration.UpgradeApplianceRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpgradeAppliance(self._session, self._host, self._interceptor)  # type: ignore
@@ -13871,22 +11080,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseVmMigrationRestTransport._BaseGetLocation, VmMigrationRestStub
-    ):
+    class _GetLocation(_BaseVmMigrationRestTransport._BaseGetLocation, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -13924,30 +11123,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -13971,12 +11156,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -13988,9 +11168,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14015,22 +11193,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseVmMigrationRestTransport._BaseListLocations, VmMigrationRestStub
-    ):
+    class _ListLocations(_BaseVmMigrationRestTransport._BaseListLocations, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14068,28 +11236,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14113,12 +11269,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14130,9 +11281,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14157,22 +11306,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseVmMigrationRestTransport._BaseCancelOperation, VmMigrationRestStub
-    ):
+    class _CancelOperation(_BaseVmMigrationRestTransport._BaseCancelOperation, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14208,32 +11347,18 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseVmMigrationRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseVmMigrationRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14257,13 +11382,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14277,22 +11396,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseVmMigrationRestTransport._BaseDeleteOperation, VmMigrationRestStub
-    ):
+    class _DeleteOperation(_BaseVmMigrationRestTransport._BaseDeleteOperation, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14327,28 +11436,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseVmMigrationRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14372,12 +11469,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14391,22 +11483,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseVmMigrationRestTransport._BaseGetOperation, VmMigrationRestStub
-    ):
+    class _GetOperation(_BaseVmMigrationRestTransport._BaseGetOperation, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14444,30 +11526,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseVmMigrationRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseVmMigrationRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14491,12 +11559,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14508,9 +11571,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -14535,22 +11596,12 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseVmMigrationRestTransport._BaseListOperations, VmMigrationRestStub
-    ):
+    class _ListOperations(_BaseVmMigrationRestTransport._BaseListOperations, VmMigrationRestStub):
         def __hash__(self):
             return hash("VmMigrationRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -14588,26 +11639,16 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseVmMigrationRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseVmMigrationRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseVmMigrationRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseVmMigrationRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseVmMigrationRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseVmMigrationRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -14631,12 +11672,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
 
             # Send the request
             response = VmMigrationRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -14648,9 +11684,7 @@ class VmMigrationRestTransport(_BaseVmMigrationRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

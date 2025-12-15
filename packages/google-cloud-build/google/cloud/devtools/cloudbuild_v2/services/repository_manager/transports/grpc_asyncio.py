@@ -50,13 +50,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -66,10 +62,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -88,11 +81,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -271,18 +260,14 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -318,9 +303,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -343,19 +326,13 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def create_connection(
-        self,
-    ) -> Callable[
-        [repositories.CreateConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_connection(self) -> Callable[[repositories.CreateConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create connection method over gRPC.
 
         Creates a Connection.
@@ -379,11 +356,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["create_connection"]
 
     @property
-    def get_connection(
-        self,
-    ) -> Callable[
-        [repositories.GetConnectionRequest], Awaitable[repositories.Connection]
-    ]:
+    def get_connection(self) -> Callable[[repositories.GetConnectionRequest], Awaitable[repositories.Connection]]:
         r"""Return a callable for the get connection method over gRPC.
 
         Gets details of a single connection.
@@ -407,12 +380,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["get_connection"]
 
     @property
-    def list_connections(
-        self,
-    ) -> Callable[
-        [repositories.ListConnectionsRequest],
-        Awaitable[repositories.ListConnectionsResponse],
-    ]:
+    def list_connections(self) -> Callable[[repositories.ListConnectionsRequest], Awaitable[repositories.ListConnectionsResponse]]:
         r"""Return a callable for the list connections method over gRPC.
 
         Lists Connections in a given project and location.
@@ -436,11 +404,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["list_connections"]
 
     @property
-    def update_connection(
-        self,
-    ) -> Callable[
-        [repositories.UpdateConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_connection(self) -> Callable[[repositories.UpdateConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update connection method over gRPC.
 
         Updates a single connection.
@@ -464,11 +428,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["update_connection"]
 
     @property
-    def delete_connection(
-        self,
-    ) -> Callable[
-        [repositories.DeleteConnectionRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_connection(self) -> Callable[[repositories.DeleteConnectionRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete connection method over gRPC.
 
         Deletes a single connection.
@@ -492,11 +452,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["delete_connection"]
 
     @property
-    def create_repository(
-        self,
-    ) -> Callable[
-        [repositories.CreateRepositoryRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_repository(self) -> Callable[[repositories.CreateRepositoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create repository method over gRPC.
 
         Creates a Repository.
@@ -520,12 +476,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["create_repository"]
 
     @property
-    def batch_create_repositories(
-        self,
-    ) -> Callable[
-        [repositories.BatchCreateRepositoriesRequest],
-        Awaitable[operations_pb2.Operation],
-    ]:
+    def batch_create_repositories(self) -> Callable[[repositories.BatchCreateRepositoriesRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the batch create repositories method over gRPC.
 
         Creates multiple repositories inside a connection.
@@ -549,11 +500,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["batch_create_repositories"]
 
     @property
-    def get_repository(
-        self,
-    ) -> Callable[
-        [repositories.GetRepositoryRequest], Awaitable[repositories.Repository]
-    ]:
+    def get_repository(self) -> Callable[[repositories.GetRepositoryRequest], Awaitable[repositories.Repository]]:
         r"""Return a callable for the get repository method over gRPC.
 
         Gets details of a single repository.
@@ -577,12 +524,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["get_repository"]
 
     @property
-    def list_repositories(
-        self,
-    ) -> Callable[
-        [repositories.ListRepositoriesRequest],
-        Awaitable[repositories.ListRepositoriesResponse],
-    ]:
+    def list_repositories(self) -> Callable[[repositories.ListRepositoriesRequest], Awaitable[repositories.ListRepositoriesResponse]]:
         r"""Return a callable for the list repositories method over gRPC.
 
         Lists Repositories in a given connection.
@@ -606,11 +548,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["list_repositories"]
 
     @property
-    def delete_repository(
-        self,
-    ) -> Callable[
-        [repositories.DeleteRepositoryRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_repository(self) -> Callable[[repositories.DeleteRepositoryRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete repository method over gRPC.
 
         Deletes a single repository.
@@ -634,12 +572,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["delete_repository"]
 
     @property
-    def fetch_read_write_token(
-        self,
-    ) -> Callable[
-        [repositories.FetchReadWriteTokenRequest],
-        Awaitable[repositories.FetchReadWriteTokenResponse],
-    ]:
+    def fetch_read_write_token(self) -> Callable[[repositories.FetchReadWriteTokenRequest], Awaitable[repositories.FetchReadWriteTokenResponse]]:
         r"""Return a callable for the fetch read write token method over gRPC.
 
         Fetches read/write token of a given repository.
@@ -663,12 +596,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["fetch_read_write_token"]
 
     @property
-    def fetch_read_token(
-        self,
-    ) -> Callable[
-        [repositories.FetchReadTokenRequest],
-        Awaitable[repositories.FetchReadTokenResponse],
-    ]:
+    def fetch_read_token(self) -> Callable[[repositories.FetchReadTokenRequest], Awaitable[repositories.FetchReadTokenResponse]]:
         r"""Return a callable for the fetch read token method over gRPC.
 
         Fetches read token of a given repository.
@@ -694,10 +622,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
     @property
     def fetch_linkable_repositories(
         self,
-    ) -> Callable[
-        [repositories.FetchLinkableRepositoriesRequest],
-        Awaitable[repositories.FetchLinkableRepositoriesResponse],
-    ]:
+    ) -> Callable[[repositories.FetchLinkableRepositoriesRequest], Awaitable[repositories.FetchLinkableRepositoriesResponse]]:
         r"""Return a callable for the fetch linkable repositories method over gRPC.
 
         FetchLinkableRepositories get repositories from SCM
@@ -715,9 +640,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "fetch_linkable_repositories" not in self._stubs:
-            self._stubs[
-                "fetch_linkable_repositories"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["fetch_linkable_repositories"] = self._logged_channel.unary_unary(
                 "/google.devtools.cloudbuild.v2.RepositoryManager/FetchLinkableRepositories",
                 request_serializer=repositories.FetchLinkableRepositoriesRequest.serialize,
                 response_deserializer=repositories.FetchLinkableRepositoriesResponse.deserialize,
@@ -725,11 +648,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
         return self._stubs["fetch_linkable_repositories"]
 
     @property
-    def fetch_git_refs(
-        self,
-    ) -> Callable[
-        [repositories.FetchGitRefsRequest], Awaitable[repositories.FetchGitRefsResponse]
-    ]:
+    def fetch_git_refs(self) -> Callable[[repositories.FetchGitRefsRequest], Awaitable[repositories.FetchGitRefsResponse]]:
         r"""Return a callable for the fetch git refs method over gRPC.
 
         Fetch the list of branches or tags for a given
@@ -1016,10 +935,7 @@ class RepositoryManagerGrpcAsyncIOTransport(RepositoryManagerTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

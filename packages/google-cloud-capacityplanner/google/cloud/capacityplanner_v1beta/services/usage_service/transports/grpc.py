@@ -45,9 +45,7 @@ _LOGGER = std_logging.getLogger(__name__)
 
 class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -57,10 +55,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -79,11 +74,7 @@ class _LoggingClientInterceptor(grpc.UnaryUnaryClientInterceptor):  # pragma: NO
         if logging_enabled:  # pragma: NO COVER
             response_metadata = response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = response.result()
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -218,18 +209,14 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -263,9 +250,7 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
             )
 
         self._interceptor = _LoggingClientInterceptor()
-        self._logged_channel = grpc.intercept_channel(
-            self._grpc_channel, self._interceptor
-        )
+        self._logged_channel = grpc.intercept_channel(self._grpc_channel, self._interceptor)
 
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
@@ -332,20 +317,13 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def query_usage_histories(
-        self,
-    ) -> Callable[
-        [usage_service.QueryUsageHistoriesRequest],
-        usage_service.QueryUsageHistoriesResponse,
-    ]:
+    def query_usage_histories(self) -> Callable[[usage_service.QueryUsageHistoriesRequest], usage_service.QueryUsageHistoriesResponse]:
         r"""Return a callable for the query usage histories method over gRPC.
 
         Returns a list of the usage histories that are in the
@@ -370,11 +348,7 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
         return self._stubs["query_usage_histories"]
 
     @property
-    def query_forecasts(
-        self,
-    ) -> Callable[
-        [usage_service.QueryForecastsRequest], usage_service.QueryForecastsResponse
-    ]:
+    def query_forecasts(self) -> Callable[[usage_service.QueryForecastsRequest], usage_service.QueryForecastsResponse]:
         r"""Return a callable for the query forecasts method over gRPC.
 
         Returns a list of the forecasts that are in the
@@ -399,12 +373,7 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
         return self._stubs["query_forecasts"]
 
     @property
-    def query_reservations(
-        self,
-    ) -> Callable[
-        [usage_service.QueryReservationsRequest],
-        usage_service.QueryReservationsResponse,
-    ]:
+    def query_reservations(self) -> Callable[[usage_service.QueryReservationsRequest], usage_service.QueryReservationsResponse]:
         r"""Return a callable for the query reservations method over gRPC.
 
         Returns a list of the reservations that are in the
@@ -429,11 +398,7 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
         return self._stubs["query_reservations"]
 
     @property
-    def export_usage_histories(
-        self,
-    ) -> Callable[
-        [usage_service.ExportUsageHistoriesRequest], operations_pb2.Operation
-    ]:
+    def export_usage_histories(self) -> Callable[[usage_service.ExportUsageHistoriesRequest], operations_pb2.Operation]:
         r"""Return a callable for the export usage histories method over gRPC.
 
         Exports historical usage data requested by user into
@@ -459,9 +424,7 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
         return self._stubs["export_usage_histories"]
 
     @property
-    def export_forecasts(
-        self,
-    ) -> Callable[[usage_service.ExportForecastsRequest], operations_pb2.Operation]:
+    def export_forecasts(self) -> Callable[[usage_service.ExportForecastsRequest], operations_pb2.Operation]:
         r"""Return a callable for the export forecasts method over gRPC.
 
         Exports forecasted usage data requested by user into
@@ -487,11 +450,7 @@ class UsageServiceGrpcTransport(UsageServiceTransport):
         return self._stubs["export_forecasts"]
 
     @property
-    def export_reservations_usage(
-        self,
-    ) -> Callable[
-        [usage_service.ExportReservationsUsageRequest], operations_pb2.Operation
-    ]:
+    def export_reservations_usage(self) -> Callable[[usage_service.ExportReservationsUsageRequest], operations_pb2.Operation]:
         r"""Return a callable for the export reservations usage method over gRPC.
 
         Exports reservations usage data requested by user

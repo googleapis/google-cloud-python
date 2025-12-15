@@ -312,12 +312,8 @@ class CatalogServiceRestInterceptor:
     """
 
     def pre_cancel_metadata_job(
-        self,
-        request: catalog.CancelMetadataJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.CancelMetadataJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.CancelMetadataJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.CancelMetadataJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_metadata_job
 
         Override in a subclass to manipulate the request or metadata
@@ -326,12 +322,8 @@ class CatalogServiceRestInterceptor:
         return request, metadata
 
     def pre_create_aspect_type(
-        self,
-        request: catalog.CreateAspectTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.CreateAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.CreateAspectTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.CreateAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_aspect_type
 
         Override in a subclass to manipulate the request or metadata
@@ -339,9 +331,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_aspect_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_aspect_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_aspect_type
 
         DEPRECATED. Please use the `post_create_aspect_type_with_metadata`
@@ -355,9 +345,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_create_aspect_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_aspect_type
 
@@ -374,9 +362,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_create_entry(
-        self,
-        request: catalog.CreateEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.CreateEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.CreateEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entry
 
@@ -416,12 +402,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_create_entry_group(
-        self,
-        request: catalog.CreateEntryGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.CreateEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.CreateEntryGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.CreateEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entry_group
 
         Override in a subclass to manipulate the request or metadata
@@ -429,9 +411,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_entry_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_entry_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_entry_group
 
         DEPRECATED. Please use the `post_create_entry_group_with_metadata`
@@ -445,9 +425,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_create_entry_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entry_group
 
@@ -464,9 +442,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_create_entry_link(
-        self,
-        request: catalog.CreateEntryLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.CreateEntryLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.CreateEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entry_link
 
@@ -489,9 +465,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_create_entry_link_with_metadata(
-        self,
-        response: catalog.EntryLink,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.EntryLink, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entry_link
 
@@ -508,9 +482,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_create_entry_type(
-        self,
-        request: catalog.CreateEntryTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.CreateEntryTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.CreateEntryTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_entry_type
 
@@ -519,9 +491,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_entry_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_entry_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_entry_type
 
         DEPRECATED. Please use the `post_create_entry_type_with_metadata`
@@ -535,9 +505,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_create_entry_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_entry_type
 
@@ -554,12 +522,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_create_metadata_job(
-        self,
-        request: catalog.CreateMetadataJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.CreateMetadataJobRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.CreateMetadataJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.CreateMetadataJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_metadata_job
 
         Override in a subclass to manipulate the request or metadata
@@ -567,9 +531,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_metadata_job(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_create_metadata_job(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_metadata_job
 
         DEPRECATED. Please use the `post_create_metadata_job_with_metadata`
@@ -583,9 +545,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_create_metadata_job_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_metadata_job
 
@@ -602,12 +562,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_aspect_type(
-        self,
-        request: catalog.DeleteAspectTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.DeleteAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.DeleteAspectTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.DeleteAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_aspect_type
 
         Override in a subclass to manipulate the request or metadata
@@ -615,9 +571,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_aspect_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_aspect_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_aspect_type
 
         DEPRECATED. Please use the `post_delete_aspect_type_with_metadata`
@@ -631,9 +585,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_delete_aspect_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_aspect_type
 
@@ -650,9 +602,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_entry(
-        self,
-        request: catalog.DeleteEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.DeleteEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.DeleteEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entry
 
@@ -692,12 +642,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_entry_group(
-        self,
-        request: catalog.DeleteEntryGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.DeleteEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.DeleteEntryGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.DeleteEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entry_group
 
         Override in a subclass to manipulate the request or metadata
@@ -705,9 +651,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_entry_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_entry_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_entry_group
 
         DEPRECATED. Please use the `post_delete_entry_group_with_metadata`
@@ -721,9 +665,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_delete_entry_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_entry_group
 
@@ -740,9 +682,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_entry_link(
-        self,
-        request: catalog.DeleteEntryLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.DeleteEntryLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.DeleteEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entry_link
 
@@ -765,9 +705,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_delete_entry_link_with_metadata(
-        self,
-        response: catalog.EntryLink,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.EntryLink, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_entry_link
 
@@ -784,9 +722,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_delete_entry_type(
-        self,
-        request: catalog.DeleteEntryTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.DeleteEntryTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.DeleteEntryTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_entry_type
 
@@ -795,9 +731,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_delete_entry_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_delete_entry_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for delete_entry_type
 
         DEPRECATED. Please use the `post_delete_entry_type_with_metadata`
@@ -811,9 +745,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_delete_entry_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for delete_entry_type
 
@@ -830,9 +762,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_aspect_type(
-        self,
-        request: catalog.GetAspectTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.GetAspectTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.GetAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_aspect_type
 
@@ -855,9 +785,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_get_aspect_type_with_metadata(
-        self,
-        response: catalog.AspectType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.AspectType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.AspectType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_aspect_type
 
@@ -874,9 +802,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_entry(
-        self,
-        request: catalog.GetEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.GetEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.GetEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entry
 
@@ -916,9 +842,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_entry_group(
-        self,
-        request: catalog.GetEntryGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.GetEntryGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.GetEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entry_group
 
@@ -941,9 +865,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_get_entry_group_with_metadata(
-        self,
-        response: catalog.EntryGroup,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.EntryGroup, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.EntryGroup, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entry_group
 
@@ -960,9 +882,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_entry_link(
-        self,
-        request: catalog.GetEntryLinkRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.GetEntryLinkRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.GetEntryLinkRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entry_link
 
@@ -985,9 +905,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_get_entry_link_with_metadata(
-        self,
-        response: catalog.EntryLink,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.EntryLink, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.EntryLink, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entry_link
 
@@ -1004,9 +922,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_entry_type(
-        self,
-        request: catalog.GetEntryTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.GetEntryTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.GetEntryTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_entry_type
 
@@ -1029,9 +945,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_get_entry_type_with_metadata(
-        self,
-        response: catalog.EntryType,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.EntryType, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.EntryType, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_entry_type
 
@@ -1048,9 +962,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_metadata_job(
-        self,
-        request: catalog.GetMetadataJobRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.GetMetadataJobRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.GetMetadataJobRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_metadata_job
 
@@ -1059,9 +971,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_metadata_job(
-        self, response: catalog.MetadataJob
-    ) -> catalog.MetadataJob:
+    def post_get_metadata_job(self, response: catalog.MetadataJob) -> catalog.MetadataJob:
         """Post-rpc interceptor for get_metadata_job
 
         DEPRECATED. Please use the `post_get_metadata_job_with_metadata`
@@ -1075,9 +985,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_get_metadata_job_with_metadata(
-        self,
-        response: catalog.MetadataJob,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.MetadataJob, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.MetadataJob, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_metadata_job
 
@@ -1094,9 +1002,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_list_aspect_types(
-        self,
-        request: catalog.ListAspectTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.ListAspectTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.ListAspectTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_aspect_types
 
@@ -1105,9 +1011,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_aspect_types(
-        self, response: catalog.ListAspectTypesResponse
-    ) -> catalog.ListAspectTypesResponse:
+    def post_list_aspect_types(self, response: catalog.ListAspectTypesResponse) -> catalog.ListAspectTypesResponse:
         """Post-rpc interceptor for list_aspect_types
 
         DEPRECATED. Please use the `post_list_aspect_types_with_metadata`
@@ -1121,12 +1025,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_list_aspect_types_with_metadata(
-        self,
-        response: catalog.ListAspectTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.ListAspectTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: catalog.ListAspectTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.ListAspectTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_aspect_types
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1142,9 +1042,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_list_entries(
-        self,
-        request: catalog.ListEntriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.ListEntriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.ListEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entries
 
@@ -1153,9 +1051,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_entries(
-        self, response: catalog.ListEntriesResponse
-    ) -> catalog.ListEntriesResponse:
+    def post_list_entries(self, response: catalog.ListEntriesResponse) -> catalog.ListEntriesResponse:
         """Post-rpc interceptor for list_entries
 
         DEPRECATED. Please use the `post_list_entries_with_metadata`
@@ -1169,9 +1065,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_list_entries_with_metadata(
-        self,
-        response: catalog.ListEntriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.ListEntriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.ListEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entries
 
@@ -1188,9 +1082,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_list_entry_groups(
-        self,
-        request: catalog.ListEntryGroupsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.ListEntryGroupsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.ListEntryGroupsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entry_groups
 
@@ -1199,9 +1091,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_entry_groups(
-        self, response: catalog.ListEntryGroupsResponse
-    ) -> catalog.ListEntryGroupsResponse:
+    def post_list_entry_groups(self, response: catalog.ListEntryGroupsResponse) -> catalog.ListEntryGroupsResponse:
         """Post-rpc interceptor for list_entry_groups
 
         DEPRECATED. Please use the `post_list_entry_groups_with_metadata`
@@ -1215,12 +1105,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_list_entry_groups_with_metadata(
-        self,
-        response: catalog.ListEntryGroupsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.ListEntryGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: catalog.ListEntryGroupsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.ListEntryGroupsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entry_groups
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1236,9 +1122,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_list_entry_types(
-        self,
-        request: catalog.ListEntryTypesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.ListEntryTypesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.ListEntryTypesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_entry_types
 
@@ -1247,9 +1131,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_entry_types(
-        self, response: catalog.ListEntryTypesResponse
-    ) -> catalog.ListEntryTypesResponse:
+    def post_list_entry_types(self, response: catalog.ListEntryTypesResponse) -> catalog.ListEntryTypesResponse:
         """Post-rpc interceptor for list_entry_types
 
         DEPRECATED. Please use the `post_list_entry_types_with_metadata`
@@ -1263,9 +1145,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_list_entry_types_with_metadata(
-        self,
-        response: catalog.ListEntryTypesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.ListEntryTypesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.ListEntryTypesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_entry_types
 
@@ -1282,12 +1162,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_list_metadata_jobs(
-        self,
-        request: catalog.ListMetadataJobsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.ListMetadataJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.ListMetadataJobsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.ListMetadataJobsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_metadata_jobs
 
         Override in a subclass to manipulate the request or metadata
@@ -1295,9 +1171,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_metadata_jobs(
-        self, response: catalog.ListMetadataJobsResponse
-    ) -> catalog.ListMetadataJobsResponse:
+    def post_list_metadata_jobs(self, response: catalog.ListMetadataJobsResponse) -> catalog.ListMetadataJobsResponse:
         """Post-rpc interceptor for list_metadata_jobs
 
         DEPRECATED. Please use the `post_list_metadata_jobs_with_metadata`
@@ -1311,12 +1185,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_list_metadata_jobs_with_metadata(
-        self,
-        response: catalog.ListMetadataJobsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.ListMetadataJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: catalog.ListMetadataJobsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.ListMetadataJobsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_metadata_jobs
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -1332,9 +1202,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_lookup_entry(
-        self,
-        request: catalog.LookupEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.LookupEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.LookupEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for lookup_entry
 
@@ -1374,9 +1242,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_search_entries(
-        self,
-        request: catalog.SearchEntriesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.SearchEntriesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.SearchEntriesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for search_entries
 
@@ -1385,9 +1251,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_search_entries(
-        self, response: catalog.SearchEntriesResponse
-    ) -> catalog.SearchEntriesResponse:
+    def post_search_entries(self, response: catalog.SearchEntriesResponse) -> catalog.SearchEntriesResponse:
         """Post-rpc interceptor for search_entries
 
         DEPRECATED. Please use the `post_search_entries_with_metadata`
@@ -1401,9 +1265,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_search_entries_with_metadata(
-        self,
-        response: catalog.SearchEntriesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: catalog.SearchEntriesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.SearchEntriesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for search_entries
 
@@ -1420,12 +1282,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_update_aspect_type(
-        self,
-        request: catalog.UpdateAspectTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.UpdateAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.UpdateAspectTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.UpdateAspectTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_aspect_type
 
         Override in a subclass to manipulate the request or metadata
@@ -1433,9 +1291,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_aspect_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_aspect_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_aspect_type
 
         DEPRECATED. Please use the `post_update_aspect_type_with_metadata`
@@ -1449,9 +1305,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_update_aspect_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_aspect_type
 
@@ -1468,9 +1322,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_update_entry(
-        self,
-        request: catalog.UpdateEntryRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.UpdateEntryRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.UpdateEntryRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_entry
 
@@ -1510,12 +1362,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_update_entry_group(
-        self,
-        request: catalog.UpdateEntryGroupRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        catalog.UpdateEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: catalog.UpdateEntryGroupRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[catalog.UpdateEntryGroupRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_entry_group
 
         Override in a subclass to manipulate the request or metadata
@@ -1523,9 +1371,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_entry_group(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_entry_group(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_entry_group
 
         DEPRECATED. Please use the `post_update_entry_group_with_metadata`
@@ -1539,9 +1385,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_update_entry_group_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_entry_group
 
@@ -1558,9 +1402,7 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_update_entry_type(
-        self,
-        request: catalog.UpdateEntryTypeRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: catalog.UpdateEntryTypeRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[catalog.UpdateEntryTypeRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_entry_type
 
@@ -1569,9 +1411,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_entry_type(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_update_entry_type(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_entry_type
 
         DEPRECATED. Please use the `post_update_entry_type_with_metadata`
@@ -1585,9 +1425,7 @@ class CatalogServiceRestInterceptor:
         return response
 
     def post_update_entry_type_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_entry_type
 
@@ -1604,12 +1442,8 @@ class CatalogServiceRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -1617,9 +1451,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -1629,12 +1461,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -1642,9 +1470,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -1654,12 +1480,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1677,12 +1499,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def pre_delete_operation(
-        self,
-        request: operations_pb2.DeleteOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.DeleteOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.DeleteOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for delete_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1700,12 +1518,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -1713,9 +1527,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -1725,12 +1537,8 @@ class CatalogServiceRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -1738,9 +1546,7 @@ class CatalogServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -1834,9 +1640,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -1906,29 +1710,17 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 path_prefix="v1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _CancelMetadataJob(
-        _BaseCatalogServiceRestTransport._BaseCancelMetadataJob, CatalogServiceRestStub
-    ):
+    class _CancelMetadataJob(_BaseCatalogServiceRestTransport._BaseCancelMetadataJob, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CancelMetadataJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1964,32 +1756,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_metadata_job(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_metadata_job(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCancelMetadataJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2013,13 +1791,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CancelMetadataJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2027,22 +1799,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _CreateAspectType(
-        _BaseCatalogServiceRestTransport._BaseCreateAspectType, CatalogServiceRestStub
-    ):
+    class _CreateAspectType(_BaseCatalogServiceRestTransport._BaseCreateAspectType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CreateAspectType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2085,32 +1847,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_aspect_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_aspect_type(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateAspectType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2134,13 +1882,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CreateAspectType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2154,12 +1896,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_create_aspect_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_aspect_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_aspect_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2180,22 +1918,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _CreateEntry(
-        _BaseCatalogServiceRestTransport._BaseCreateEntry, CatalogServiceRestStub
-    ):
+    class _CreateEntry(_BaseCatalogServiceRestTransport._BaseCreateEntry, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CreateEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2238,30 +1966,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntry._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_http_options()
 
             request, metadata = self._interceptor.pre_create_entry(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2285,13 +2001,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CreateEntry._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2307,12 +2017,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_create_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
                 except:
@@ -2333,22 +2039,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _CreateEntryGroup(
-        _BaseCatalogServiceRestTransport._BaseCreateEntryGroup, CatalogServiceRestStub
-    ):
+    class _CreateEntryGroup(_BaseCatalogServiceRestTransport._BaseCreateEntryGroup, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CreateEntryGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2391,32 +2087,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_entry_group(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_entry_group(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2440,13 +2122,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CreateEntryGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2460,12 +2136,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_create_entry_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_entry_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entry_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2486,22 +2158,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _CreateEntryLink(
-        _BaseCatalogServiceRestTransport._BaseCreateEntryLink, CatalogServiceRestStub
-    ):
+    class _CreateEntryLink(_BaseCatalogServiceRestTransport._BaseCreateEntryLink, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CreateEntryLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2543,32 +2205,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_entry_link(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_entry_link(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2592,13 +2240,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CreateEntryLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2614,12 +2256,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_create_entry_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_entry_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entry_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryLink.to_json(response)
                 except:
@@ -2640,22 +2278,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _CreateEntryType(
-        _BaseCatalogServiceRestTransport._BaseCreateEntryType, CatalogServiceRestStub
-    ):
+    class _CreateEntryType(_BaseCatalogServiceRestTransport._BaseCreateEntryType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CreateEntryType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2698,32 +2326,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_entry_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_entry_type(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateEntryType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2747,13 +2361,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CreateEntryType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2767,12 +2375,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_create_entry_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_entry_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_entry_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2793,22 +2397,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _CreateMetadataJob(
-        _BaseCatalogServiceRestTransport._BaseCreateMetadataJob, CatalogServiceRestStub
-    ):
+    class _CreateMetadataJob(_BaseCatalogServiceRestTransport._BaseCreateMetadataJob, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CreateMetadataJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2851,32 +2445,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_metadata_job(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_metadata_job(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCreateMetadataJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2900,13 +2480,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CreateMetadataJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2920,12 +2494,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_create_metadata_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_metadata_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_metadata_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2946,22 +2516,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _DeleteAspectType(
-        _BaseCatalogServiceRestTransport._BaseDeleteAspectType, CatalogServiceRestStub
-    ):
+    class _DeleteAspectType(_BaseCatalogServiceRestTransport._BaseDeleteAspectType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.DeleteAspectType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3003,28 +2563,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_aspect_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_aspect_type(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteAspectType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3048,12 +2596,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteAspectType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3067,12 +2610,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_delete_aspect_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_aspect_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_aspect_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3093,22 +2632,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEntry(
-        _BaseCatalogServiceRestTransport._BaseDeleteEntry, CatalogServiceRestStub
-    ):
+    class _DeleteEntry(_BaseCatalogServiceRestTransport._BaseDeleteEntry, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.DeleteEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3150,26 +2679,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_http_options()
 
             request, metadata = self._interceptor.pre_delete_entry(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3193,12 +2712,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteEntry._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3214,12 +2728,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_delete_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
                 except:
@@ -3240,22 +2750,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEntryGroup(
-        _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup, CatalogServiceRestStub
-    ):
+    class _DeleteEntryGroup(_BaseCatalogServiceRestTransport._BaseDeleteEntryGroup, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.DeleteEntryGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3297,28 +2797,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_entry_group(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_entry_group(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3342,12 +2830,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteEntryGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3361,12 +2844,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_delete_entry_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_entry_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_entry_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3387,22 +2866,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEntryLink(
-        _BaseCatalogServiceRestTransport._BaseDeleteEntryLink, CatalogServiceRestStub
-    ):
+    class _DeleteEntryLink(_BaseCatalogServiceRestTransport._BaseDeleteEntryLink, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.DeleteEntryLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3443,28 +2912,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_entry_link(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_entry_link(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3488,12 +2945,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteEntryLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3509,12 +2961,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_delete_entry_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_entry_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_entry_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryLink.to_json(response)
                 except:
@@ -3535,22 +2983,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _DeleteEntryType(
-        _BaseCatalogServiceRestTransport._BaseDeleteEntryType, CatalogServiceRestStub
-    ):
+    class _DeleteEntryType(_BaseCatalogServiceRestTransport._BaseDeleteEntryType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.DeleteEntryType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3592,28 +3030,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_entry_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_entry_type(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteEntryType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3637,12 +3063,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteEntryType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3656,12 +3077,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_delete_entry_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_delete_entry_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_delete_entry_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3682,22 +3099,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _GetAspectType(
-        _BaseCatalogServiceRestTransport._BaseGetAspectType, CatalogServiceRestStub
-    ):
+    class _GetAspectType(_BaseCatalogServiceRestTransport._BaseGetAspectType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetAspectType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3740,26 +3147,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetAspectType._get_http_options()
 
             request, metadata = self._interceptor.pre_get_aspect_type(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetAspectType._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetAspectType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetAspectType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetAspectType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3783,12 +3180,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetAspectType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3804,12 +3196,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_get_aspect_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_aspect_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_aspect_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.AspectType.to_json(response)
                 except:
@@ -3830,22 +3218,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _GetEntry(
-        _BaseCatalogServiceRestTransport._BaseGetEntry, CatalogServiceRestStub
-    ):
+    class _GetEntry(_BaseCatalogServiceRestTransport._BaseGetEntry, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3887,30 +3265,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetEntry._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetEntry._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entry(request, metadata)
-            transcoded_request = (
-                _BaseCatalogServiceRestTransport._BaseGetEntry._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseCatalogServiceRestTransport._BaseGetEntry._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -3934,12 +3298,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetEntry._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3955,12 +3314,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_get_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
                 except:
@@ -3981,22 +3336,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _GetEntryGroup(
-        _BaseCatalogServiceRestTransport._BaseGetEntryGroup, CatalogServiceRestStub
-    ):
+    class _GetEntryGroup(_BaseCatalogServiceRestTransport._BaseGetEntryGroup, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetEntryGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4037,26 +3382,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entry_group(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4080,12 +3415,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetEntryGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4101,12 +3431,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_get_entry_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entry_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entry_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryGroup.to_json(response)
                 except:
@@ -4127,22 +3453,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _GetEntryLink(
-        _BaseCatalogServiceRestTransport._BaseGetEntryLink, CatalogServiceRestStub
-    ):
+    class _GetEntryLink(_BaseCatalogServiceRestTransport._BaseGetEntryLink, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetEntryLink")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4183,26 +3499,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entry_link(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryLink._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4226,12 +3532,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetEntryLink._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4247,12 +3548,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_get_entry_link(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entry_link_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entry_link_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryLink.to_json(response)
                 except:
@@ -4273,22 +3570,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _GetEntryType(
-        _BaseCatalogServiceRestTransport._BaseGetEntryType, CatalogServiceRestStub
-    ):
+    class _GetEntryType(_BaseCatalogServiceRestTransport._BaseGetEntryType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetEntryType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4329,26 +3616,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetEntryType._get_http_options()
 
             request, metadata = self._interceptor.pre_get_entry_type(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryType._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetEntryType._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetEntryType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4372,12 +3649,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetEntryType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4393,12 +3665,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_get_entry_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_entry_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_entry_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.EntryType.to_json(response)
                 except:
@@ -4419,22 +3687,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _GetMetadataJob(
-        _BaseCatalogServiceRestTransport._BaseGetMetadataJob, CatalogServiceRestStub
-    ):
+    class _GetMetadataJob(_BaseCatalogServiceRestTransport._BaseGetMetadataJob, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetMetadataJob")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4473,28 +3731,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     A metadata job resource.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_metadata_job(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_metadata_job(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetMetadataJob._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4518,12 +3764,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetMetadataJob._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4539,12 +3780,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_get_metadata_job(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_metadata_job_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_metadata_job_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.MetadataJob.to_json(response)
                 except:
@@ -4565,22 +3802,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _ListAspectTypes(
-        _BaseCatalogServiceRestTransport._BaseListAspectTypes, CatalogServiceRestStub
-    ):
+    class _ListAspectTypes(_BaseCatalogServiceRestTransport._BaseListAspectTypes, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListAspectTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4619,28 +3846,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List AspectTypes response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_aspect_types(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_aspect_types(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListAspectTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4664,12 +3879,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListAspectTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4685,12 +3895,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_list_aspect_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_aspect_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_aspect_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListAspectTypesResponse.to_json(response)
                 except:
@@ -4711,22 +3917,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _ListEntries(
-        _BaseCatalogServiceRestTransport._BaseListEntries, CatalogServiceRestStub
-    ):
+    class _ListEntries(_BaseCatalogServiceRestTransport._BaseListEntries, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListEntries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4765,26 +3961,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List Entries response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListEntries._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListEntries._get_http_options()
 
             request, metadata = self._interceptor.pre_list_entries(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListEntries._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListEntries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListEntries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListEntries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4808,12 +3994,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListEntries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4829,12 +4010,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_list_entries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListEntriesResponse.to_json(response)
                 except:
@@ -4855,22 +4032,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _ListEntryGroups(
-        _BaseCatalogServiceRestTransport._BaseListEntryGroups, CatalogServiceRestStub
-    ):
+    class _ListEntryGroups(_BaseCatalogServiceRestTransport._BaseListEntryGroups, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListEntryGroups")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -4909,28 +4076,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List entry groups response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_entry_groups(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_entry_groups(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListEntryGroups._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -4954,12 +4109,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListEntryGroups._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -4975,12 +4125,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_list_entry_groups(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entry_groups_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entry_groups_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListEntryGroupsResponse.to_json(response)
                 except:
@@ -5001,22 +4147,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _ListEntryTypes(
-        _BaseCatalogServiceRestTransport._BaseListEntryTypes, CatalogServiceRestStub
-    ):
+    class _ListEntryTypes(_BaseCatalogServiceRestTransport._BaseListEntryTypes, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListEntryTypes")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5055,28 +4191,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List EntryTypes response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_entry_types(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_entry_types(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListEntryTypes._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5100,12 +4224,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListEntryTypes._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5121,12 +4240,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_list_entry_types(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_entry_types_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_entry_types_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.ListEntryTypesResponse.to_json(response)
                 except:
@@ -5147,22 +4262,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _ListMetadataJobs(
-        _BaseCatalogServiceRestTransport._BaseListMetadataJobs, CatalogServiceRestStub
-    ):
+    class _ListMetadataJobs(_BaseCatalogServiceRestTransport._BaseListMetadataJobs, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListMetadataJobs")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5201,28 +4306,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     List metadata jobs response.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_metadata_jobs(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_metadata_jobs(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListMetadataJobs._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5246,12 +4339,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListMetadataJobs._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5267,16 +4355,10 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_list_metadata_jobs(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_metadata_jobs_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_metadata_jobs_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = catalog.ListMetadataJobsResponse.to_json(
-                        response
-                    )
+                    response_payload = catalog.ListMetadataJobsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -5295,22 +4377,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _LookupEntry(
-        _BaseCatalogServiceRestTransport._BaseLookupEntry, CatalogServiceRestStub
-    ):
+    class _LookupEntry(_BaseCatalogServiceRestTransport._BaseLookupEntry, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.LookupEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5353,26 +4425,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseLookupEntry._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseLookupEntry._get_http_options()
 
             request, metadata = self._interceptor.pre_lookup_entry(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseLookupEntry._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseLookupEntry._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseLookupEntry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseLookupEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5396,12 +4458,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._LookupEntry._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5417,12 +4474,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_lookup_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_lookup_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_lookup_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
                 except:
@@ -5443,22 +4496,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _SearchEntries(
-        _BaseCatalogServiceRestTransport._BaseSearchEntries, CatalogServiceRestStub
-    ):
+    class _SearchEntries(_BaseCatalogServiceRestTransport._BaseSearchEntries, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.SearchEntries")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5497,26 +4540,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseSearchEntries._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseSearchEntries._get_http_options()
 
             request, metadata = self._interceptor.pre_search_entries(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseSearchEntries._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseSearchEntries._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseSearchEntries._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseSearchEntries._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5540,12 +4573,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._SearchEntries._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5561,12 +4589,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_search_entries(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_search_entries_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_search_entries_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.SearchEntriesResponse.to_json(response)
                 except:
@@ -5587,22 +4611,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _UpdateAspectType(
-        _BaseCatalogServiceRestTransport._BaseUpdateAspectType, CatalogServiceRestStub
-    ):
+    class _UpdateAspectType(_BaseCatalogServiceRestTransport._BaseUpdateAspectType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.UpdateAspectType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5645,32 +4659,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_aspect_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_aspect_type(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseUpdateAspectType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -5694,13 +4694,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._UpdateAspectType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5714,12 +4708,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_update_aspect_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_aspect_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_aspect_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -5740,22 +4730,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEntry(
-        _BaseCatalogServiceRestTransport._BaseUpdateEntry, CatalogServiceRestStub
-    ):
+    class _UpdateEntry(_BaseCatalogServiceRestTransport._BaseUpdateEntry, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.UpdateEntry")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5798,30 +4778,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_http_options()
 
             request, metadata = self._interceptor.pre_update_entry(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntry._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -5845,13 +4813,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._UpdateEntry._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -5867,12 +4829,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_update_entry(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_entry_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_entry_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = catalog.Entry.to_json(response)
                 except:
@@ -5893,22 +4851,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEntryGroup(
-        _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup, CatalogServiceRestStub
-    ):
+    class _UpdateEntryGroup(_BaseCatalogServiceRestTransport._BaseUpdateEntryGroup, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.UpdateEntryGroup")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -5951,32 +4899,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_entry_group(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_entry_group(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntryGroup._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6000,13 +4934,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._UpdateEntryGroup._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6020,12 +4948,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_update_entry_group(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_entry_group_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_entry_group_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6046,22 +4970,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 )
             return resp
 
-    class _UpdateEntryType(
-        _BaseCatalogServiceRestTransport._BaseUpdateEntryType, CatalogServiceRestStub
-    ):
+    class _UpdateEntryType(_BaseCatalogServiceRestTransport._BaseUpdateEntryType, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.UpdateEntryType")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6104,32 +5018,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_entry_type(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_entry_type(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseUpdateEntryType._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6153,13 +5053,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._UpdateEntryType._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6173,12 +5067,8 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             resp = self._interceptor.post_update_entry_type(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_entry_type_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_entry_type_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6200,17 +5090,13 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             return resp
 
     @property
-    def cancel_metadata_job(
-        self,
-    ) -> Callable[[catalog.CancelMetadataJobRequest], empty_pb2.Empty]:
+    def cancel_metadata_job(self) -> Callable[[catalog.CancelMetadataJobRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CancelMetadataJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_aspect_type(
-        self,
-    ) -> Callable[[catalog.CreateAspectTypeRequest], operations_pb2.Operation]:
+    def create_aspect_type(self) -> Callable[[catalog.CreateAspectTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateAspectType(self._session, self._host, self._interceptor)  # type: ignore
@@ -6222,41 +5108,31 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._CreateEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_entry_group(
-        self,
-    ) -> Callable[[catalog.CreateEntryGroupRequest], operations_pb2.Operation]:
+    def create_entry_group(self) -> Callable[[catalog.CreateEntryGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_entry_link(
-        self,
-    ) -> Callable[[catalog.CreateEntryLinkRequest], catalog.EntryLink]:
+    def create_entry_link(self) -> Callable[[catalog.CreateEntryLinkRequest], catalog.EntryLink]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_entry_type(
-        self,
-    ) -> Callable[[catalog.CreateEntryTypeRequest], operations_pb2.Operation]:
+    def create_entry_type(self) -> Callable[[catalog.CreateEntryTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEntryType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_metadata_job(
-        self,
-    ) -> Callable[[catalog.CreateMetadataJobRequest], operations_pb2.Operation]:
+    def create_metadata_job(self) -> Callable[[catalog.CreateMetadataJobRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateMetadataJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_aspect_type(
-        self,
-    ) -> Callable[[catalog.DeleteAspectTypeRequest], operations_pb2.Operation]:
+    def delete_aspect_type(self) -> Callable[[catalog.DeleteAspectTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteAspectType(self._session, self._host, self._interceptor)  # type: ignore
@@ -6268,33 +5144,25 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._DeleteEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_entry_group(
-        self,
-    ) -> Callable[[catalog.DeleteEntryGroupRequest], operations_pb2.Operation]:
+    def delete_entry_group(self) -> Callable[[catalog.DeleteEntryGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_entry_link(
-        self,
-    ) -> Callable[[catalog.DeleteEntryLinkRequest], catalog.EntryLink]:
+    def delete_entry_link(self) -> Callable[[catalog.DeleteEntryLinkRequest], catalog.EntryLink]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEntryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def delete_entry_type(
-        self,
-    ) -> Callable[[catalog.DeleteEntryTypeRequest], operations_pb2.Operation]:
+    def delete_entry_type(self) -> Callable[[catalog.DeleteEntryTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEntryType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_aspect_type(
-        self,
-    ) -> Callable[[catalog.GetAspectTypeRequest], catalog.AspectType]:
+    def get_aspect_type(self) -> Callable[[catalog.GetAspectTypeRequest], catalog.AspectType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetAspectType(self._session, self._host, self._interceptor)  # type: ignore
@@ -6306,73 +5174,55 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._GetEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_entry_group(
-        self,
-    ) -> Callable[[catalog.GetEntryGroupRequest], catalog.EntryGroup]:
+    def get_entry_group(self) -> Callable[[catalog.GetEntryGroupRequest], catalog.EntryGroup]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_entry_link(
-        self,
-    ) -> Callable[[catalog.GetEntryLinkRequest], catalog.EntryLink]:
+    def get_entry_link(self) -> Callable[[catalog.GetEntryLinkRequest], catalog.EntryLink]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntryLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_entry_type(
-        self,
-    ) -> Callable[[catalog.GetEntryTypeRequest], catalog.EntryType]:
+    def get_entry_type(self) -> Callable[[catalog.GetEntryTypeRequest], catalog.EntryType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetEntryType(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_metadata_job(
-        self,
-    ) -> Callable[[catalog.GetMetadataJobRequest], catalog.MetadataJob]:
+    def get_metadata_job(self) -> Callable[[catalog.GetMetadataJobRequest], catalog.MetadataJob]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetMetadataJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_aspect_types(
-        self,
-    ) -> Callable[[catalog.ListAspectTypesRequest], catalog.ListAspectTypesResponse]:
+    def list_aspect_types(self) -> Callable[[catalog.ListAspectTypesRequest], catalog.ListAspectTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListAspectTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_entries(
-        self,
-    ) -> Callable[[catalog.ListEntriesRequest], catalog.ListEntriesResponse]:
+    def list_entries(self) -> Callable[[catalog.ListEntriesRequest], catalog.ListEntriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_entry_groups(
-        self,
-    ) -> Callable[[catalog.ListEntryGroupsRequest], catalog.ListEntryGroupsResponse]:
+    def list_entry_groups(self) -> Callable[[catalog.ListEntryGroupsRequest], catalog.ListEntryGroupsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntryGroups(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_entry_types(
-        self,
-    ) -> Callable[[catalog.ListEntryTypesRequest], catalog.ListEntryTypesResponse]:
+    def list_entry_types(self) -> Callable[[catalog.ListEntryTypesRequest], catalog.ListEntryTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEntryTypes(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_metadata_jobs(
-        self,
-    ) -> Callable[[catalog.ListMetadataJobsRequest], catalog.ListMetadataJobsResponse]:
+    def list_metadata_jobs(self) -> Callable[[catalog.ListMetadataJobsRequest], catalog.ListMetadataJobsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListMetadataJobs(self._session, self._host, self._interceptor)  # type: ignore
@@ -6384,17 +5234,13 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._LookupEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def search_entries(
-        self,
-    ) -> Callable[[catalog.SearchEntriesRequest], catalog.SearchEntriesResponse]:
+    def search_entries(self) -> Callable[[catalog.SearchEntriesRequest], catalog.SearchEntriesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._SearchEntries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_aspect_type(
-        self,
-    ) -> Callable[[catalog.UpdateAspectTypeRequest], operations_pb2.Operation]:
+    def update_aspect_type(self) -> Callable[[catalog.UpdateAspectTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAspectType(self._session, self._host, self._interceptor)  # type: ignore
@@ -6406,17 +5252,13 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
         return self._UpdateEntry(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_entry_group(
-        self,
-    ) -> Callable[[catalog.UpdateEntryGroupRequest], operations_pb2.Operation]:
+    def update_entry_group(self) -> Callable[[catalog.UpdateEntryGroupRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntryGroup(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_entry_type(
-        self,
-    ) -> Callable[[catalog.UpdateEntryTypeRequest], operations_pb2.Operation]:
+    def update_entry_type(self) -> Callable[[catalog.UpdateEntryTypeRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEntryType(self._session, self._host, self._interceptor)  # type: ignore
@@ -6425,22 +5267,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     def get_location(self):
         return self._GetLocation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetLocation(
-        _BaseCatalogServiceRestTransport._BaseGetLocation, CatalogServiceRestStub
-    ):
+    class _GetLocation(_BaseCatalogServiceRestTransport._BaseGetLocation, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6478,26 +5310,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetLocation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetLocation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6521,12 +5343,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6538,9 +5355,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6565,22 +5380,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseCatalogServiceRestTransport._BaseListLocations, CatalogServiceRestStub
-    ):
+    class _ListLocations(_BaseCatalogServiceRestTransport._BaseListLocations, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6618,26 +5423,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListLocations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListLocations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6661,12 +5456,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6678,9 +5468,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -6705,22 +5493,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseCatalogServiceRestTransport._BaseCancelOperation, CatalogServiceRestStub
-    ):
+    class _CancelOperation(_BaseCatalogServiceRestTransport._BaseCancelOperation, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6756,32 +5534,18 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
-            body = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6805,13 +5569,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6825,22 +5583,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     def delete_operation(self):
         return self._DeleteOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _DeleteOperation(
-        _BaseCatalogServiceRestTransport._BaseDeleteOperation, CatalogServiceRestStub
-    ):
+    class _DeleteOperation(_BaseCatalogServiceRestTransport._BaseDeleteOperation, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.DeleteOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6875,28 +5623,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_delete_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_delete_operation(request, metadata)
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseDeleteOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -6920,12 +5656,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._DeleteOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -6939,22 +5670,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseCatalogServiceRestTransport._BaseGetOperation, CatalogServiceRestStub
-    ):
+    class _GetOperation(_BaseCatalogServiceRestTransport._BaseGetOperation, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -6992,26 +5713,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7035,12 +5746,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7052,9 +5758,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -7079,22 +5783,12 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseCatalogServiceRestTransport._BaseListOperations, CatalogServiceRestStub
-    ):
+    class _ListOperations(_BaseCatalogServiceRestTransport._BaseListOperations, CatalogServiceRestStub):
         def __hash__(self):
             return hash("CatalogServiceRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -7132,26 +5826,16 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseCatalogServiceRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseCatalogServiceRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = _BaseCatalogServiceRestTransport._BaseListOperations._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseCatalogServiceRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseCatalogServiceRestTransport._BaseListOperations._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseCatalogServiceRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -7175,12 +5859,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
 
             # Send the request
             response = CatalogServiceRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -7192,9 +5871,7 @@ class CatalogServiceRestTransport(_BaseCatalogServiceRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

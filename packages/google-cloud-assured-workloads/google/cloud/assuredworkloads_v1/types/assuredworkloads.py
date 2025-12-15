@@ -555,9 +555,7 @@ class Workload(proto.Message):
             optional=True,
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
-        setup_errors: MutableSequence[
-            "Workload.SaaEnrollmentResponse.SetupError"
-        ] = proto.RepeatedField(
+        setup_errors: MutableSequence["Workload.SaaEnrollmentResponse.SetupError"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="Workload.SaaEnrollmentResponse.SetupError",
@@ -1071,19 +1069,15 @@ class Violation(proto.Message):
                     number=3,
                 )
 
-            gcloud_instructions: "Violation.Remediation.Instructions.Gcloud" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=1,
-                    message="Violation.Remediation.Instructions.Gcloud",
-                )
+            gcloud_instructions: "Violation.Remediation.Instructions.Gcloud" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="Violation.Remediation.Instructions.Gcloud",
             )
-            console_instructions: "Violation.Remediation.Instructions.Console" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=2,
-                    message="Violation.Remediation.Instructions.Console",
-                )
+            console_instructions: "Violation.Remediation.Instructions.Console" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="Violation.Remediation.Instructions.Console",
             )
 
         instructions: "Violation.Remediation.Instructions" = proto.Field(

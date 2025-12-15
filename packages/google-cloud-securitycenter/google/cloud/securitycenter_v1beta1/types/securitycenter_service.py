@@ -23,12 +23,8 @@ from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1beta1.types import (
-    organization_settings as gcs_organization_settings,
-)
-from google.cloud.securitycenter_v1beta1.types import (
-    security_marks as gcs_security_marks,
-)
+from google.cloud.securitycenter_v1beta1.types import organization_settings as gcs_organization_settings
+from google.cloud.securitycenter_v1beta1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1beta1.types import asset as gcs_asset
 from google.cloud.securitycenter_v1beta1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1beta1.types import source as gcs_source

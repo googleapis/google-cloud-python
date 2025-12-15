@@ -111,13 +111,8 @@ class IngestionServiceRestInterceptor:
     """
 
     def pre_ingest_audience_members(
-        self,
-        request: ingestion_service.IngestAudienceMembersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.IngestAudienceMembersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ingestion_service.IngestAudienceMembersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.IngestAudienceMembersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for ingest_audience_members
 
         Override in a subclass to manipulate the request or metadata
@@ -141,13 +136,8 @@ class IngestionServiceRestInterceptor:
         return response
 
     def post_ingest_audience_members_with_metadata(
-        self,
-        response: ingestion_service.IngestAudienceMembersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.IngestAudienceMembersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ingestion_service.IngestAudienceMembersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.IngestAudienceMembersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for ingest_audience_members
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -163,12 +153,8 @@ class IngestionServiceRestInterceptor:
         return response, metadata
 
     def pre_ingest_events(
-        self,
-        request: ingestion_service.IngestEventsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.IngestEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: ingestion_service.IngestEventsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.IngestEventsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for ingest_events
 
         Override in a subclass to manipulate the request or metadata
@@ -176,9 +162,7 @@ class IngestionServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_ingest_events(
-        self, response: ingestion_service.IngestEventsResponse
-    ) -> ingestion_service.IngestEventsResponse:
+    def post_ingest_events(self, response: ingestion_service.IngestEventsResponse) -> ingestion_service.IngestEventsResponse:
         """Post-rpc interceptor for ingest_events
 
         DEPRECATED. Please use the `post_ingest_events_with_metadata`
@@ -192,12 +176,8 @@ class IngestionServiceRestInterceptor:
         return response
 
     def post_ingest_events_with_metadata(
-        self,
-        response: ingestion_service.IngestEventsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.IngestEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: ingestion_service.IngestEventsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.IngestEventsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for ingest_events
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -213,13 +193,8 @@ class IngestionServiceRestInterceptor:
         return response, metadata
 
     def pre_remove_audience_members(
-        self,
-        request: ingestion_service.RemoveAudienceMembersRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.RemoveAudienceMembersRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ingestion_service.RemoveAudienceMembersRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.RemoveAudienceMembersRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for remove_audience_members
 
         Override in a subclass to manipulate the request or metadata
@@ -243,13 +218,8 @@ class IngestionServiceRestInterceptor:
         return response
 
     def post_remove_audience_members_with_metadata(
-        self,
-        response: ingestion_service.RemoveAudienceMembersResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.RemoveAudienceMembersResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ingestion_service.RemoveAudienceMembersResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.RemoveAudienceMembersResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for remove_audience_members
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -265,13 +235,8 @@ class IngestionServiceRestInterceptor:
         return response, metadata
 
     def pre_retrieve_request_status(
-        self,
-        request: ingestion_service.RetrieveRequestStatusRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.RetrieveRequestStatusRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: ingestion_service.RetrieveRequestStatusRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.RetrieveRequestStatusRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for retrieve_request_status
 
         Override in a subclass to manipulate the request or metadata
@@ -295,13 +260,8 @@ class IngestionServiceRestInterceptor:
         return response
 
     def post_retrieve_request_status_with_metadata(
-        self,
-        response: ingestion_service.RetrieveRequestStatusResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        ingestion_service.RetrieveRequestStatusResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: ingestion_service.RetrieveRequestStatusResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[ingestion_service.RetrieveRequestStatusResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for retrieve_request_status
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -396,31 +356,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or IngestionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _IngestAudienceMembers(
-        _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers,
-        IngestionServiceRestStub,
-    ):
+    class _IngestAudienceMembers(_BaseIngestionServiceRestTransport._BaseIngestAudienceMembers, IngestionServiceRestStub):
         def __hash__(self):
             return hash("IngestionServiceRestTransport.IngestAudienceMembers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -464,32 +411,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_http_options()
-            )
+            http_options = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_http_options()
 
-            request, metadata = self._interceptor.pre_ingest_audience_members(
-                request, metadata
-            )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_ingest_audience_members(request, metadata)
+            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_transcoded_request(http_options, request)
 
-            body = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIngestionServiceRestTransport._BaseIngestAudienceMembers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -512,16 +445,8 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                IngestionServiceRestTransport._IngestAudienceMembers._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IngestionServiceRestTransport._IngestAudienceMembers._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -537,18 +462,10 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             resp = self._interceptor.post_ingest_audience_members(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_ingest_audience_members_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_ingest_audience_members_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ingestion_service.IngestAudienceMembersResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = ingestion_service.IngestAudienceMembersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -567,22 +484,12 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                 )
             return resp
 
-    class _IngestEvents(
-        _BaseIngestionServiceRestTransport._BaseIngestEvents, IngestionServiceRestStub
-    ):
+    class _IngestEvents(_BaseIngestionServiceRestTransport._BaseIngestEvents, IngestionServiceRestStub):
         def __hash__(self):
             return hash("IngestionServiceRestTransport.IngestEvents")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -626,30 +533,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseIngestionServiceRestTransport._BaseIngestEvents._get_http_options()
-            )
+            http_options = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_http_options()
 
             request, metadata = self._interceptor.pre_ingest_events(request, metadata)
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_transcoded_request(http_options, request)
 
-            body = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIngestionServiceRestTransport._BaseIngestEvents._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -673,13 +568,7 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             # Send the request
             response = IngestionServiceRestTransport._IngestEvents._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -695,16 +584,10 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             resp = self._interceptor.post_ingest_events(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_ingest_events_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_ingest_events_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = ingestion_service.IngestEventsResponse.to_json(
-                        response
-                    )
+                    response_payload = ingestion_service.IngestEventsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -723,23 +606,12 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                 )
             return resp
 
-    class _RemoveAudienceMembers(
-        _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers,
-        IngestionServiceRestStub,
-    ):
+    class _RemoveAudienceMembers(_BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers, IngestionServiceRestStub):
         def __hash__(self):
             return hash("IngestionServiceRestTransport.RemoveAudienceMembers")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -783,32 +655,18 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_http_options()
-            )
+            http_options = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_http_options()
 
-            request, metadata = self._interceptor.pre_remove_audience_members(
-                request, metadata
-            )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_remove_audience_members(request, metadata)
+            transcoded_request = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_transcoded_request(http_options, request)
 
-            body = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIngestionServiceRestTransport._BaseRemoveAudienceMembers._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -831,16 +689,8 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                IngestionServiceRestTransport._RemoveAudienceMembers._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = IngestionServiceRestTransport._RemoveAudienceMembers._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -856,18 +706,10 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             resp = self._interceptor.post_remove_audience_members(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_remove_audience_members_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_remove_audience_members_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ingestion_service.RemoveAudienceMembersResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = ingestion_service.RemoveAudienceMembersResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -886,23 +728,12 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                 )
             return resp
 
-    class _RetrieveRequestStatus(
-        _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus,
-        IngestionServiceRestStub,
-    ):
+    class _RetrieveRequestStatus(_BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus, IngestionServiceRestStub):
         def __hash__(self):
             return hash("IngestionServiceRestTransport.RetrieveRequestStatus")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -945,28 +776,16 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_http_options()
-            )
+            http_options = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_http_options()
 
-            request, metadata = self._interceptor.pre_retrieve_request_status(
-                request, metadata
-            )
-            transcoded_request = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_retrieve_request_status(request, metadata)
+            transcoded_request = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseIngestionServiceRestTransport._BaseRetrieveRequestStatus._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -989,15 +808,8 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                IngestionServiceRestTransport._RetrieveRequestStatus._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                )
+            response = IngestionServiceRestTransport._RetrieveRequestStatus._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1013,18 +825,10 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
 
             resp = self._interceptor.post_retrieve_request_status(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_retrieve_request_status_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_retrieve_request_status_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        ingestion_service.RetrieveRequestStatusResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = ingestion_service.RetrieveRequestStatusResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1044,44 +848,25 @@ class IngestionServiceRestTransport(_BaseIngestionServiceRestTransport):
             return resp
 
     @property
-    def ingest_audience_members(
-        self,
-    ) -> Callable[
-        [ingestion_service.IngestAudienceMembersRequest],
-        ingestion_service.IngestAudienceMembersResponse,
-    ]:
+    def ingest_audience_members(self) -> Callable[[ingestion_service.IngestAudienceMembersRequest], ingestion_service.IngestAudienceMembersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IngestAudienceMembers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def ingest_events(
-        self,
-    ) -> Callable[
-        [ingestion_service.IngestEventsRequest], ingestion_service.IngestEventsResponse
-    ]:
+    def ingest_events(self) -> Callable[[ingestion_service.IngestEventsRequest], ingestion_service.IngestEventsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._IngestEvents(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def remove_audience_members(
-        self,
-    ) -> Callable[
-        [ingestion_service.RemoveAudienceMembersRequest],
-        ingestion_service.RemoveAudienceMembersResponse,
-    ]:
+    def remove_audience_members(self) -> Callable[[ingestion_service.RemoveAudienceMembersRequest], ingestion_service.RemoveAudienceMembersResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RemoveAudienceMembers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def retrieve_request_status(
-        self,
-    ) -> Callable[
-        [ingestion_service.RetrieveRequestStatusRequest],
-        ingestion_service.RetrieveRequestStatusResponse,
-    ]:
+    def retrieve_request_status(self) -> Callable[[ingestion_service.RetrieveRequestStatusRequest], ingestion_service.RetrieveRequestStatusResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RetrieveRequestStatus(self._session, self._host, self._interceptor)  # type: ignore

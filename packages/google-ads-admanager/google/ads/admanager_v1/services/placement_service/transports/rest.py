@@ -152,13 +152,8 @@ class PlacementServiceRestInterceptor:
     """
 
     def pre_batch_activate_placements(
-        self,
-        request: placement_service.BatchActivatePlacementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchActivatePlacementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.BatchActivatePlacementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchActivatePlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_activate_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -182,13 +177,8 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_batch_activate_placements_with_metadata(
-        self,
-        response: placement_service.BatchActivatePlacementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchActivatePlacementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: placement_service.BatchActivatePlacementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchActivatePlacementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_activate_placements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -204,13 +194,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_archive_placements(
-        self,
-        request: placement_service.BatchArchivePlacementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchArchivePlacementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.BatchArchivePlacementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchArchivePlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_archive_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -234,13 +219,8 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_batch_archive_placements_with_metadata(
-        self,
-        response: placement_service.BatchArchivePlacementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchArchivePlacementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: placement_service.BatchArchivePlacementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchArchivePlacementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_archive_placements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -256,13 +236,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_create_placements(
-        self,
-        request: placement_service.BatchCreatePlacementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchCreatePlacementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.BatchCreatePlacementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchCreatePlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -286,13 +261,8 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_batch_create_placements_with_metadata(
-        self,
-        response: placement_service.BatchCreatePlacementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchCreatePlacementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: placement_service.BatchCreatePlacementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchCreatePlacementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_placements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -308,13 +278,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_deactivate_placements(
-        self,
-        request: placement_service.BatchDeactivatePlacementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchDeactivatePlacementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.BatchDeactivatePlacementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchDeactivatePlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_deactivate_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -338,13 +303,8 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_batch_deactivate_placements_with_metadata(
-        self,
-        response: placement_service.BatchDeactivatePlacementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchDeactivatePlacementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: placement_service.BatchDeactivatePlacementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchDeactivatePlacementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_deactivate_placements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -360,13 +320,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_update_placements(
-        self,
-        request: placement_service.BatchUpdatePlacementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchUpdatePlacementsRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.BatchUpdatePlacementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchUpdatePlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -390,13 +345,8 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_batch_update_placements_with_metadata(
-        self,
-        response: placement_service.BatchUpdatePlacementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.BatchUpdatePlacementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: placement_service.BatchUpdatePlacementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.BatchUpdatePlacementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_placements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -412,13 +362,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_create_placement(
-        self,
-        request: placement_service.CreatePlacementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.CreatePlacementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.CreatePlacementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.CreatePlacementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_placement
 
         Override in a subclass to manipulate the request or metadata
@@ -426,9 +371,7 @@ class PlacementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_create_placement(
-        self, response: placement_messages.Placement
-    ) -> placement_messages.Placement:
+    def post_create_placement(self, response: placement_messages.Placement) -> placement_messages.Placement:
         """Post-rpc interceptor for create_placement
 
         DEPRECATED. Please use the `post_create_placement_with_metadata`
@@ -442,9 +385,7 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_create_placement_with_metadata(
-        self,
-        response: placement_messages.Placement,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: placement_messages.Placement, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[placement_messages.Placement, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_placement
 
@@ -461,12 +402,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_placement(
-        self,
-        request: placement_service.GetPlacementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.GetPlacementRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: placement_service.GetPlacementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.GetPlacementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_placement
 
         Override in a subclass to manipulate the request or metadata
@@ -474,9 +411,7 @@ class PlacementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_placement(
-        self, response: placement_messages.Placement
-    ) -> placement_messages.Placement:
+    def post_get_placement(self, response: placement_messages.Placement) -> placement_messages.Placement:
         """Post-rpc interceptor for get_placement
 
         DEPRECATED. Please use the `post_get_placement_with_metadata`
@@ -490,9 +425,7 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_get_placement_with_metadata(
-        self,
-        response: placement_messages.Placement,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: placement_messages.Placement, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[placement_messages.Placement, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_placement
 
@@ -509,12 +442,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_list_placements(
-        self,
-        request: placement_service.ListPlacementsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.ListPlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: placement_service.ListPlacementsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.ListPlacementsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_placements
 
         Override in a subclass to manipulate the request or metadata
@@ -522,9 +451,7 @@ class PlacementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_placements(
-        self, response: placement_service.ListPlacementsResponse
-    ) -> placement_service.ListPlacementsResponse:
+    def post_list_placements(self, response: placement_service.ListPlacementsResponse) -> placement_service.ListPlacementsResponse:
         """Post-rpc interceptor for list_placements
 
         DEPRECATED. Please use the `post_list_placements_with_metadata`
@@ -538,13 +465,8 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_list_placements_with_metadata(
-        self,
-        response: placement_service.ListPlacementsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.ListPlacementsResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: placement_service.ListPlacementsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.ListPlacementsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_placements
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -560,13 +482,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_update_placement(
-        self,
-        request: placement_service.UpdatePlacementRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        placement_service.UpdatePlacementRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: placement_service.UpdatePlacementRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[placement_service.UpdatePlacementRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_placement
 
         Override in a subclass to manipulate the request or metadata
@@ -574,9 +491,7 @@ class PlacementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_update_placement(
-        self, response: placement_messages.Placement
-    ) -> placement_messages.Placement:
+    def post_update_placement(self, response: placement_messages.Placement) -> placement_messages.Placement:
         """Post-rpc interceptor for update_placement
 
         DEPRECATED. Please use the `post_update_placement_with_metadata`
@@ -590,9 +505,7 @@ class PlacementServiceRestInterceptor:
         return response
 
     def post_update_placement_with_metadata(
-        self,
-        response: placement_messages.Placement,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: placement_messages.Placement, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[placement_messages.Placement, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_placement
 
@@ -609,12 +522,8 @@ class PlacementServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -622,9 +531,7 @@ class PlacementServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -713,31 +620,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or PlacementServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchActivatePlacements(
-        _BasePlacementServiceRestTransport._BaseBatchActivatePlacements,
-        PlacementServiceRestStub,
-    ):
+    class _BatchActivatePlacements(_BasePlacementServiceRestTransport._BaseBatchActivatePlacements, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.BatchActivatePlacements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -777,32 +671,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchActivatePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_activate_placements(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_activate_placements(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseBatchActivatePlacements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -825,16 +705,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                PlacementServiceRestTransport._BatchActivatePlacements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PlacementServiceRestTransport._BatchActivatePlacements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -850,18 +722,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_batch_activate_placements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_activate_placements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_activate_placements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        placement_service.BatchActivatePlacementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = placement_service.BatchActivatePlacementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -880,23 +744,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _BatchArchivePlacements(
-        _BasePlacementServiceRestTransport._BaseBatchArchivePlacements,
-        PlacementServiceRestStub,
-    ):
+    class _BatchArchivePlacements(_BasePlacementServiceRestTransport._BaseBatchArchivePlacements, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.BatchArchivePlacements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -936,32 +789,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchArchivePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_archive_placements(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_archive_placements(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseBatchArchivePlacements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -984,16 +823,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                PlacementServiceRestTransport._BatchArchivePlacements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PlacementServiceRestTransport._BatchArchivePlacements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1009,18 +840,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_batch_archive_placements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_archive_placements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_archive_placements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        placement_service.BatchArchivePlacementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = placement_service.BatchArchivePlacementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1039,23 +862,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _BatchCreatePlacements(
-        _BasePlacementServiceRestTransport._BaseBatchCreatePlacements,
-        PlacementServiceRestStub,
-    ):
+    class _BatchCreatePlacements(_BasePlacementServiceRestTransport._BaseBatchCreatePlacements, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.BatchCreatePlacements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1095,32 +907,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchCreatePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_placements(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_placements(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseBatchCreatePlacements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1143,16 +941,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                PlacementServiceRestTransport._BatchCreatePlacements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PlacementServiceRestTransport._BatchCreatePlacements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1168,18 +958,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_placements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_placements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_placements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        placement_service.BatchCreatePlacementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = placement_service.BatchCreatePlacementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1198,23 +980,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeactivatePlacements(
-        _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements,
-        PlacementServiceRestStub,
-    ):
+    class _BatchDeactivatePlacements(_BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.BatchDeactivatePlacements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1258,32 +1029,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_deactivate_placements(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_deactivate_placements(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseBatchDeactivatePlacements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1306,16 +1063,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                PlacementServiceRestTransport._BatchDeactivatePlacements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PlacementServiceRestTransport._BatchDeactivatePlacements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1331,18 +1080,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_batch_deactivate_placements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_deactivate_placements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_deactivate_placements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        placement_service.BatchDeactivatePlacementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = placement_service.BatchDeactivatePlacementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1361,23 +1102,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _BatchUpdatePlacements(
-        _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements,
-        PlacementServiceRestStub,
-    ):
+    class _BatchUpdatePlacements(_BasePlacementServiceRestTransport._BaseBatchUpdatePlacements, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.BatchUpdatePlacements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1417,32 +1147,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     Response object for ``BatchUpdatePlacements`` method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_placements(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_placements(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseBatchUpdatePlacements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1465,16 +1181,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                PlacementServiceRestTransport._BatchUpdatePlacements._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = PlacementServiceRestTransport._BatchUpdatePlacements._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1490,18 +1198,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_placements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_placements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_placements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        placement_service.BatchUpdatePlacementsResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = placement_service.BatchUpdatePlacementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1520,23 +1220,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _CreatePlacement(
-        _BasePlacementServiceRestTransport._BaseCreatePlacement,
-        PlacementServiceRestStub,
-    ):
+    class _CreatePlacement(_BasePlacementServiceRestTransport._BaseCreatePlacement, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.CreatePlacement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1576,32 +1265,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     The ``Placement`` resource.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseCreatePlacement._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_placement(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_create_placement(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseCreatePlacement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1625,13 +1300,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             # Send the request
             response = PlacementServiceRestTransport._CreatePlacement._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1647,12 +1316,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_create_placement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_placement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_placement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = placement_messages.Placement.to_json(response)
                 except:
@@ -1673,22 +1338,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _GetPlacement(
-        _BasePlacementServiceRestTransport._BaseGetPlacement, PlacementServiceRestStub
-    ):
+    class _GetPlacement(_BasePlacementServiceRestTransport._BaseGetPlacement, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.GetPlacement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1727,26 +1382,16 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     The ``Placement`` resource.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseGetPlacement._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseGetPlacement._get_http_options()
 
             request, metadata = self._interceptor.pre_get_placement(request, metadata)
-            transcoded_request = _BasePlacementServiceRestTransport._BaseGetPlacement._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseGetPlacement._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseGetPlacement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseGetPlacement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1770,12 +1415,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             # Send the request
             response = PlacementServiceRestTransport._GetPlacement._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1791,12 +1431,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_get_placement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_placement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_placement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = placement_messages.Placement.to_json(response)
                 except:
@@ -1817,22 +1453,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _ListPlacements(
-        _BasePlacementServiceRestTransport._BaseListPlacements, PlacementServiceRestStub
-    ):
+    class _ListPlacements(_BasePlacementServiceRestTransport._BaseListPlacements, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.ListPlacements")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1873,26 +1499,16 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseListPlacements._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseListPlacements._get_http_options()
 
             request, metadata = self._interceptor.pre_list_placements(request, metadata)
-            transcoded_request = _BasePlacementServiceRestTransport._BaseListPlacements._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseListPlacements._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseListPlacements._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseListPlacements._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1916,12 +1532,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             # Send the request
             response = PlacementServiceRestTransport._ListPlacements._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1937,16 +1548,10 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_list_placements(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_placements_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_placements_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = placement_service.ListPlacementsResponse.to_json(
-                        response
-                    )
+                    response_payload = placement_service.ListPlacementsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1965,23 +1570,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 )
             return resp
 
-    class _UpdatePlacement(
-        _BasePlacementServiceRestTransport._BaseUpdatePlacement,
-        PlacementServiceRestStub,
-    ):
+    class _UpdatePlacement(_BasePlacementServiceRestTransport._BaseUpdatePlacement, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.UpdatePlacement")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2021,32 +1615,18 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                     The ``Placement`` resource.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_placement(
-                request, metadata
-            )
-            transcoded_request = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_update_placement(request, metadata)
+            transcoded_request = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_transcoded_request(http_options, request)
 
-            body = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_request_body_json(
-                transcoded_request
-            )
+            body = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseUpdatePlacement._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2070,13 +1650,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             # Send the request
             response = PlacementServiceRestTransport._UpdatePlacement._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2092,12 +1666,8 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             resp = self._interceptor.post_update_placement(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_placement_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_placement_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = placement_messages.Placement.to_json(response)
                 except:
@@ -2121,10 +1691,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     @property
     def batch_activate_placements(
         self,
-    ) -> Callable[
-        [placement_service.BatchActivatePlacementsRequest],
-        placement_service.BatchActivatePlacementsResponse,
-    ]:
+    ) -> Callable[[placement_service.BatchActivatePlacementsRequest], placement_service.BatchActivatePlacementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchActivatePlacements(self._session, self._host, self._interceptor)  # type: ignore
@@ -2132,21 +1699,13 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     @property
     def batch_archive_placements(
         self,
-    ) -> Callable[
-        [placement_service.BatchArchivePlacementsRequest],
-        placement_service.BatchArchivePlacementsResponse,
-    ]:
+    ) -> Callable[[placement_service.BatchArchivePlacementsRequest], placement_service.BatchArchivePlacementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchArchivePlacements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_create_placements(
-        self,
-    ) -> Callable[
-        [placement_service.BatchCreatePlacementsRequest],
-        placement_service.BatchCreatePlacementsResponse,
-    ]:
+    def batch_create_placements(self) -> Callable[[placement_service.BatchCreatePlacementsRequest], placement_service.BatchCreatePlacementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreatePlacements(self._session, self._host, self._interceptor)  # type: ignore
@@ -2154,62 +1713,37 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     @property
     def batch_deactivate_placements(
         self,
-    ) -> Callable[
-        [placement_service.BatchDeactivatePlacementsRequest],
-        placement_service.BatchDeactivatePlacementsResponse,
-    ]:
+    ) -> Callable[[placement_service.BatchDeactivatePlacementsRequest], placement_service.BatchDeactivatePlacementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeactivatePlacements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_placements(
-        self,
-    ) -> Callable[
-        [placement_service.BatchUpdatePlacementsRequest],
-        placement_service.BatchUpdatePlacementsResponse,
-    ]:
+    def batch_update_placements(self) -> Callable[[placement_service.BatchUpdatePlacementsRequest], placement_service.BatchUpdatePlacementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdatePlacements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_placement(
-        self,
-    ) -> Callable[
-        [placement_service.CreatePlacementRequest], placement_messages.Placement
-    ]:
+    def create_placement(self) -> Callable[[placement_service.CreatePlacementRequest], placement_messages.Placement]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreatePlacement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_placement(
-        self,
-    ) -> Callable[
-        [placement_service.GetPlacementRequest], placement_messages.Placement
-    ]:
+    def get_placement(self) -> Callable[[placement_service.GetPlacementRequest], placement_messages.Placement]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetPlacement(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_placements(
-        self,
-    ) -> Callable[
-        [placement_service.ListPlacementsRequest],
-        placement_service.ListPlacementsResponse,
-    ]:
+    def list_placements(self) -> Callable[[placement_service.ListPlacementsRequest], placement_service.ListPlacementsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListPlacements(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_placement(
-        self,
-    ) -> Callable[
-        [placement_service.UpdatePlacementRequest], placement_messages.Placement
-    ]:
+    def update_placement(self) -> Callable[[placement_service.UpdatePlacementRequest], placement_messages.Placement]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdatePlacement(self._session, self._host, self._interceptor)  # type: ignore
@@ -2218,22 +1752,12 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BasePlacementServiceRestTransport._BaseGetOperation, PlacementServiceRestStub
-    ):
+    class _GetOperation(_BasePlacementServiceRestTransport._BaseGetOperation, PlacementServiceRestStub):
         def __hash__(self):
             return hash("PlacementServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2271,26 +1795,16 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BasePlacementServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BasePlacementServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = _BasePlacementServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                http_options, request
-            )
+            transcoded_request = _BasePlacementServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BasePlacementServiceRestTransport._BaseGetOperation._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BasePlacementServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2314,12 +1828,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
 
             # Send the request
             response = PlacementServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2331,9 +1840,7 @@ class PlacementServiceRestTransport(_BasePlacementServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

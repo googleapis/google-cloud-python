@@ -308,12 +308,10 @@ class Constraint(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            metadata: "Constraint.CustomConstraintDefinition.Parameter.Metadata" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=4,
-                    message="Constraint.CustomConstraintDefinition.Parameter.Metadata",
-                )
+            metadata: "Constraint.CustomConstraintDefinition.Parameter.Metadata" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="Constraint.CustomConstraintDefinition.Parameter.Metadata",
             )
             item: "Constraint.CustomConstraintDefinition.Parameter.Type" = proto.Field(
                 proto.ENUM,
@@ -325,9 +323,7 @@ class Constraint(proto.Message):
             proto.STRING,
             number=1,
         )
-        method_types: MutableSequence[
-            "Constraint.CustomConstraintDefinition.MethodType"
-        ] = proto.RepeatedField(
+        method_types: MutableSequence["Constraint.CustomConstraintDefinition.MethodType"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="Constraint.CustomConstraintDefinition.MethodType",
@@ -341,9 +337,7 @@ class Constraint(proto.Message):
             number=4,
             enum="Constraint.CustomConstraintDefinition.ActionType",
         )
-        parameters: MutableMapping[
-            str, "Constraint.CustomConstraintDefinition.Parameter"
-        ] = proto.MapField(
+        parameters: MutableMapping[str, "Constraint.CustomConstraintDefinition.Parameter"] = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=5,
@@ -364,12 +358,10 @@ class Constraint(proto.Message):
                 a managed constraint.
         """
 
-        custom_constraint_definition: "Constraint.CustomConstraintDefinition" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=1,
-                message="Constraint.CustomConstraintDefinition",
-            )
+        custom_constraint_definition: "Constraint.CustomConstraintDefinition" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Constraint.CustomConstraintDefinition",
         )
 
     name: str = proto.Field(

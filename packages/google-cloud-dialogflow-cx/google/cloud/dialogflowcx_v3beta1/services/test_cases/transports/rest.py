@@ -175,12 +175,8 @@ class TestCasesRestInterceptor:
     """
 
     def pre_batch_delete_test_cases(
-        self,
-        request: test_case.BatchDeleteTestCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.BatchDeleteTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.BatchDeleteTestCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.BatchDeleteTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_delete_test_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -189,12 +185,8 @@ class TestCasesRestInterceptor:
         return request, metadata
 
     def pre_batch_run_test_cases(
-        self,
-        request: test_case.BatchRunTestCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.BatchRunTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.BatchRunTestCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.BatchRunTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_run_test_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -202,9 +194,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_run_test_cases(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_batch_run_test_cases(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for batch_run_test_cases
 
         DEPRECATED. Please use the `post_batch_run_test_cases_with_metadata`
@@ -218,9 +208,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_batch_run_test_cases_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_run_test_cases
 
@@ -237,12 +225,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_calculate_coverage(
-        self,
-        request: test_case.CalculateCoverageRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.CalculateCoverageRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.CalculateCoverageRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.CalculateCoverageRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for calculate_coverage
 
         Override in a subclass to manipulate the request or metadata
@@ -250,9 +234,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_calculate_coverage(
-        self, response: test_case.CalculateCoverageResponse
-    ) -> test_case.CalculateCoverageResponse:
+    def post_calculate_coverage(self, response: test_case.CalculateCoverageResponse) -> test_case.CalculateCoverageResponse:
         """Post-rpc interceptor for calculate_coverage
 
         DEPRECATED. Please use the `post_calculate_coverage_with_metadata`
@@ -266,12 +248,8 @@ class TestCasesRestInterceptor:
         return response
 
     def post_calculate_coverage_with_metadata(
-        self,
-        response: test_case.CalculateCoverageResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.CalculateCoverageResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: test_case.CalculateCoverageResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.CalculateCoverageResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for calculate_coverage
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -287,12 +265,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_create_test_case(
-        self,
-        request: gcdc_test_case.CreateTestCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_test_case.CreateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_test_case.CreateTestCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_test_case.CreateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_test_case
 
         Override in a subclass to manipulate the request or metadata
@@ -300,9 +274,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_create_test_case(
-        self, response: gcdc_test_case.TestCase
-    ) -> gcdc_test_case.TestCase:
+    def post_create_test_case(self, response: gcdc_test_case.TestCase) -> gcdc_test_case.TestCase:
         """Post-rpc interceptor for create_test_case
 
         DEPRECATED. Please use the `post_create_test_case_with_metadata`
@@ -316,9 +288,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_create_test_case_with_metadata(
-        self,
-        response: gcdc_test_case.TestCase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_test_case.TestCase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_test_case
 
@@ -335,12 +305,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_export_test_cases(
-        self,
-        request: test_case.ExportTestCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.ExportTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.ExportTestCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.ExportTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for export_test_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -348,9 +314,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_export_test_cases(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_export_test_cases(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for export_test_cases
 
         DEPRECATED. Please use the `post_export_test_cases_with_metadata`
@@ -364,9 +328,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_export_test_cases_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for export_test_cases
 
@@ -383,9 +345,7 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_get_test_case(
-        self,
-        request: test_case.GetTestCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: test_case.GetTestCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[test_case.GetTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_test_case
 
@@ -408,9 +368,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_get_test_case_with_metadata(
-        self,
-        response: test_case.TestCase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: test_case.TestCase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_test_case
 
@@ -427,12 +385,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_get_test_case_result(
-        self,
-        request: test_case.GetTestCaseResultRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.GetTestCaseResultRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.GetTestCaseResultRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.GetTestCaseResultRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_test_case_result
 
         Override in a subclass to manipulate the request or metadata
@@ -440,9 +394,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_test_case_result(
-        self, response: test_case.TestCaseResult
-    ) -> test_case.TestCaseResult:
+    def post_get_test_case_result(self, response: test_case.TestCaseResult) -> test_case.TestCaseResult:
         """Post-rpc interceptor for get_test_case_result
 
         DEPRECATED. Please use the `post_get_test_case_result_with_metadata`
@@ -456,9 +408,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_get_test_case_result_with_metadata(
-        self,
-        response: test_case.TestCaseResult,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: test_case.TestCaseResult, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[test_case.TestCaseResult, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_test_case_result
 
@@ -475,12 +425,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_import_test_cases(
-        self,
-        request: test_case.ImportTestCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.ImportTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.ImportTestCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.ImportTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for import_test_cases
 
         Override in a subclass to manipulate the request or metadata
@@ -488,9 +434,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_import_test_cases(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_import_test_cases(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for import_test_cases
 
         DEPRECATED. Please use the `post_import_test_cases_with_metadata`
@@ -504,9 +448,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_import_test_cases_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for import_test_cases
 
@@ -523,12 +465,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_list_test_case_results(
-        self,
-        request: test_case.ListTestCaseResultsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.ListTestCaseResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: test_case.ListTestCaseResultsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.ListTestCaseResultsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_test_case_results
 
         Override in a subclass to manipulate the request or metadata
@@ -536,9 +474,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_test_case_results(
-        self, response: test_case.ListTestCaseResultsResponse
-    ) -> test_case.ListTestCaseResultsResponse:
+    def post_list_test_case_results(self, response: test_case.ListTestCaseResultsResponse) -> test_case.ListTestCaseResultsResponse:
         """Post-rpc interceptor for list_test_case_results
 
         DEPRECATED. Please use the `post_list_test_case_results_with_metadata`
@@ -552,12 +488,8 @@ class TestCasesRestInterceptor:
         return response
 
     def post_list_test_case_results_with_metadata(
-        self,
-        response: test_case.ListTestCaseResultsResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.ListTestCaseResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: test_case.ListTestCaseResultsResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.ListTestCaseResultsResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_test_case_results
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -573,9 +505,7 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_list_test_cases(
-        self,
-        request: test_case.ListTestCasesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: test_case.ListTestCasesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[test_case.ListTestCasesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_test_cases
 
@@ -584,9 +514,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_test_cases(
-        self, response: test_case.ListTestCasesResponse
-    ) -> test_case.ListTestCasesResponse:
+    def post_list_test_cases(self, response: test_case.ListTestCasesResponse) -> test_case.ListTestCasesResponse:
         """Post-rpc interceptor for list_test_cases
 
         DEPRECATED. Please use the `post_list_test_cases_with_metadata`
@@ -600,12 +528,8 @@ class TestCasesRestInterceptor:
         return response
 
     def post_list_test_cases_with_metadata(
-        self,
-        response: test_case.ListTestCasesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        test_case.ListTestCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: test_case.ListTestCasesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[test_case.ListTestCasesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_test_cases
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -621,9 +545,7 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_run_test_case(
-        self,
-        request: test_case.RunTestCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: test_case.RunTestCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[test_case.RunTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for run_test_case
 
@@ -632,9 +554,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_run_test_case(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_run_test_case(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for run_test_case
 
         DEPRECATED. Please use the `post_run_test_case_with_metadata`
@@ -648,9 +568,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_run_test_case_with_metadata(
-        self,
-        response: operations_pb2.Operation,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: operations_pb2.Operation, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[operations_pb2.Operation, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for run_test_case
 
@@ -667,12 +585,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_update_test_case(
-        self,
-        request: gcdc_test_case.UpdateTestCaseRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        gcdc_test_case.UpdateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: gcdc_test_case.UpdateTestCaseRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[gcdc_test_case.UpdateTestCaseRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_test_case
 
         Override in a subclass to manipulate the request or metadata
@@ -680,9 +594,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_update_test_case(
-        self, response: gcdc_test_case.TestCase
-    ) -> gcdc_test_case.TestCase:
+    def post_update_test_case(self, response: gcdc_test_case.TestCase) -> gcdc_test_case.TestCase:
         """Post-rpc interceptor for update_test_case
 
         DEPRECATED. Please use the `post_update_test_case_with_metadata`
@@ -696,9 +608,7 @@ class TestCasesRestInterceptor:
         return response
 
     def post_update_test_case_with_metadata(
-        self,
-        response: gcdc_test_case.TestCase,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: gcdc_test_case.TestCase, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[gcdc_test_case.TestCase, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_test_case
 
@@ -715,12 +625,8 @@ class TestCasesRestInterceptor:
         return response, metadata
 
     def pre_get_location(
-        self,
-        request: locations_pb2.GetLocationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.GetLocationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.GetLocationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_location
 
         Override in a subclass to manipulate the request or metadata
@@ -728,9 +634,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_location(
-        self, response: locations_pb2.Location
-    ) -> locations_pb2.Location:
+    def post_get_location(self, response: locations_pb2.Location) -> locations_pb2.Location:
         """Post-rpc interceptor for get_location
 
         Override in a subclass to manipulate the response
@@ -740,12 +644,8 @@ class TestCasesRestInterceptor:
         return response
 
     def pre_list_locations(
-        self,
-        request: locations_pb2.ListLocationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: locations_pb2.ListLocationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[locations_pb2.ListLocationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the request or metadata
@@ -753,9 +653,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_locations(
-        self, response: locations_pb2.ListLocationsResponse
-    ) -> locations_pb2.ListLocationsResponse:
+    def post_list_locations(self, response: locations_pb2.ListLocationsResponse) -> locations_pb2.ListLocationsResponse:
         """Post-rpc interceptor for list_locations
 
         Override in a subclass to manipulate the response
@@ -765,12 +663,8 @@ class TestCasesRestInterceptor:
         return response
 
     def pre_cancel_operation(
-        self,
-        request: operations_pb2.CancelOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.CancelOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.CancelOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for cancel_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -788,12 +682,8 @@ class TestCasesRestInterceptor:
         return response
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -801,9 +691,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -813,12 +701,8 @@ class TestCasesRestInterceptor:
         return response
 
     def pre_list_operations(
-        self,
-        request: operations_pb2.ListOperationsRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.ListOperationsRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.ListOperationsRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
@@ -826,9 +710,7 @@ class TestCasesRestInterceptor:
         """
         return request, metadata
 
-    def post_list_operations(
-        self, response: operations_pb2.ListOperationsResponse
-    ) -> operations_pb2.ListOperationsResponse:
+    def post_list_operations(self, response: operations_pb2.ListOperationsResponse) -> operations_pb2.ListOperationsResponse:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
@@ -919,9 +801,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
@@ -979,29 +859,17 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 path_prefix="v3beta1",
             )
 
-            self._operations_client = operations_v1.AbstractOperationsClient(
-                transport=rest_transport
-            )
+            self._operations_client = operations_v1.AbstractOperationsClient(transport=rest_transport)
 
         # Return the client from cache.
         return self._operations_client
 
-    class _BatchDeleteTestCases(
-        _BaseTestCasesRestTransport._BaseBatchDeleteTestCases, TestCasesRestStub
-    ):
+    class _BatchDeleteTestCases(_BaseTestCasesRestTransport._BaseBatchDeleteTestCases, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.BatchDeleteTestCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1038,32 +906,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_delete_test_cases(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_delete_test_cases(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_transcoded_request(http_options, request)
 
-            body = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTestCasesRestTransport._BaseBatchDeleteTestCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1087,13 +941,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._BatchDeleteTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1101,22 +949,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
-    class _BatchRunTestCases(
-        _BaseTestCasesRestTransport._BaseBatchRunTestCases, TestCasesRestStub
-    ):
+    class _BatchRunTestCases(_BaseTestCasesRestTransport._BaseBatchRunTestCases, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.BatchRunTestCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1160,32 +998,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_run_test_cases(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_run_test_cases(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_transcoded_request(http_options, request)
 
-            body = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTestCasesRestTransport._BaseBatchRunTestCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1209,13 +1033,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._BatchRunTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1229,12 +1047,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_batch_run_test_cases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_run_test_cases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_run_test_cases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1255,22 +1069,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _CalculateCoverage(
-        _BaseTestCasesRestTransport._BaseCalculateCoverage, TestCasesRestStub
-    ):
+    class _CalculateCoverage(_BaseTestCasesRestTransport._BaseCalculateCoverage, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.CalculateCoverage")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1312,28 +1116,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseCalculateCoverage._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_http_options()
 
-            request, metadata = self._interceptor.pre_calculate_coverage(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_calculate_coverage(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTestCasesRestTransport._BaseCalculateCoverage._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1357,12 +1149,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._CalculateCoverage._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1378,16 +1165,10 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_calculate_coverage(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_calculate_coverage_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_calculate_coverage_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = test_case.CalculateCoverageResponse.to_json(
-                        response
-                    )
+                    response_payload = test_case.CalculateCoverageResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1406,22 +1187,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _CreateTestCase(
-        _BaseTestCasesRestTransport._BaseCreateTestCase, TestCasesRestStub
-    ):
+    class _CreateTestCase(_BaseTestCasesRestTransport._BaseCreateTestCase, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.CreateTestCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1462,38 +1233,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     Represents a test case.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseCreateTestCase._get_http_options()
 
-            request, metadata = self._interceptor.pre_create_test_case(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_create_test_case(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseCreateTestCase._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTestCasesRestTransport._BaseCreateTestCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseCreateTestCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseCreateTestCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1517,13 +1268,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._CreateTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1539,12 +1284,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_create_test_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_test_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_test_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_test_case.TestCase.to_json(response)
                 except:
@@ -1565,22 +1306,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _ExportTestCases(
-        _BaseTestCasesRestTransport._BaseExportTestCases, TestCasesRestStub
-    ):
+    class _ExportTestCases(_BaseTestCasesRestTransport._BaseExportTestCases, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.ExportTestCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1624,36 +1355,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseExportTestCases._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseExportTestCases._get_http_options()
 
-            request, metadata = self._interceptor.pre_export_test_cases(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseExportTestCases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_export_test_cases(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseExportTestCases._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseExportTestCases._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTestCasesRestTransport._BaseExportTestCases._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseExportTestCases._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseExportTestCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -1677,13 +1390,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._ExportTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1697,12 +1404,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_export_test_cases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_export_test_cases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_export_test_cases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -1728,15 +1431,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             return hash("TestCasesRestTransport.GetTestCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1776,30 +1471,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     Represents a test case.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetTestCase._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseGetTestCase._get_http_options()
 
             request, metadata = self._interceptor.pre_get_test_case(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseGetTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseGetTestCase._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseGetTestCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseGetTestCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1823,12 +1504,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._GetTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1844,12 +1520,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_get_test_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_test_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_test_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = test_case.TestCase.to_json(response)
                 except:
@@ -1870,22 +1542,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _GetTestCaseResult(
-        _BaseTestCasesRestTransport._BaseGetTestCaseResult, TestCasesRestStub
-    ):
+    class _GetTestCaseResult(_BaseTestCasesRestTransport._BaseGetTestCaseResult, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.GetTestCaseResult")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1927,28 +1589,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_http_options()
 
-            request, metadata = self._interceptor.pre_get_test_case_result(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_get_test_case_result(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTestCasesRestTransport._BaseGetTestCaseResult._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1972,12 +1622,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._GetTestCaseResult._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1993,12 +1638,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_get_test_case_result(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_test_case_result_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_test_case_result_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = test_case.TestCaseResult.to_json(response)
                 except:
@@ -2019,22 +1660,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _ImportTestCases(
-        _BaseTestCasesRestTransport._BaseImportTestCases, TestCasesRestStub
-    ):
+    class _ImportTestCases(_BaseTestCasesRestTransport._BaseImportTestCases, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.ImportTestCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2078,36 +1709,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseImportTestCases._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseImportTestCases._get_http_options()
 
-            request, metadata = self._interceptor.pre_import_test_cases(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseImportTestCases._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_import_test_cases(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseImportTestCases._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseImportTestCases._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTestCasesRestTransport._BaseImportTestCases._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseImportTestCases._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseImportTestCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2131,13 +1744,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._ImportTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2151,12 +1758,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_import_test_cases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_import_test_cases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_import_test_cases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2177,22 +1780,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _ListTestCaseResults(
-        _BaseTestCasesRestTransport._BaseListTestCaseResults, TestCasesRestStub
-    ):
+    class _ListTestCaseResults(_BaseTestCasesRestTransport._BaseListTestCaseResults, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.ListTestCaseResults")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2234,28 +1827,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListTestCaseResults._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_http_options()
 
-            request, metadata = self._interceptor.pre_list_test_case_results(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_list_test_case_results(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseTestCasesRestTransport._BaseListTestCaseResults._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2279,12 +1860,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._ListTestCaseResults._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2300,16 +1876,10 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_list_test_case_results(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_test_case_results_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_test_case_results_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = test_case.ListTestCaseResultsResponse.to_json(
-                        response
-                    )
+                    response_payload = test_case.ListTestCaseResultsResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -2328,22 +1898,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _ListTestCases(
-        _BaseTestCasesRestTransport._BaseListTestCases, TestCasesRestStub
-    ):
+    class _ListTestCases(_BaseTestCasesRestTransport._BaseListTestCases, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.ListTestCases")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2385,30 +1945,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListTestCases._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseListTestCases._get_http_options()
 
             request, metadata = self._interceptor.pre_list_test_cases(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseListTestCases._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseListTestCases._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseListTestCases._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseListTestCases._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2432,12 +1978,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._ListTestCases._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2453,12 +1994,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_list_test_cases(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_test_cases_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_test_cases_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = test_case.ListTestCasesResponse.to_json(response)
                 except:
@@ -2484,15 +2021,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             return hash("TestCasesRestTransport.RunTestCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2536,34 +2065,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseRunTestCase._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseRunTestCase._get_http_options()
 
             request, metadata = self._interceptor.pre_run_test_case(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseRunTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseRunTestCase._get_transcoded_request(http_options, request)
 
-            body = _BaseTestCasesRestTransport._BaseRunTestCase._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseTestCasesRestTransport._BaseRunTestCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseRunTestCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseRunTestCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2587,13 +2100,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._RunTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2607,12 +2114,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_run_test_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_run_test_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_run_test_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -2633,22 +2136,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 )
             return resp
 
-    class _UpdateTestCase(
-        _BaseTestCasesRestTransport._BaseUpdateTestCase, TestCasesRestStub
-    ):
+    class _UpdateTestCase(_BaseTestCasesRestTransport._BaseUpdateTestCase, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.UpdateTestCase")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2689,38 +2182,18 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     Represents a test case.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseUpdateTestCase._get_http_options()
 
-            request, metadata = self._interceptor.pre_update_test_case(
-                request, metadata
-            )
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            request, metadata = self._interceptor.pre_update_test_case(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseUpdateTestCase._get_transcoded_request(http_options, request)
 
-            body = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_request_body_json(
-                    transcoded_request
-                )
-            )
+            body = _BaseTestCasesRestTransport._BaseUpdateTestCase._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseUpdateTestCase._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseUpdateTestCase._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -2744,13 +2217,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._UpdateTestCase._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2766,12 +2233,8 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             resp = self._interceptor.post_update_test_case(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_test_case_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_test_case_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = gcdc_test_case.TestCase.to_json(response)
                 except:
@@ -2793,101 +2256,73 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             return resp
 
     @property
-    def batch_delete_test_cases(
-        self,
-    ) -> Callable[[test_case.BatchDeleteTestCasesRequest], empty_pb2.Empty]:
+    def batch_delete_test_cases(self) -> Callable[[test_case.BatchDeleteTestCasesRequest], empty_pb2.Empty]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeleteTestCases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_run_test_cases(
-        self,
-    ) -> Callable[[test_case.BatchRunTestCasesRequest], operations_pb2.Operation]:
+    def batch_run_test_cases(self) -> Callable[[test_case.BatchRunTestCasesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchRunTestCases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def calculate_coverage(
-        self,
-    ) -> Callable[
-        [test_case.CalculateCoverageRequest], test_case.CalculateCoverageResponse
-    ]:
+    def calculate_coverage(self) -> Callable[[test_case.CalculateCoverageRequest], test_case.CalculateCoverageResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CalculateCoverage(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_test_case(
-        self,
-    ) -> Callable[[gcdc_test_case.CreateTestCaseRequest], gcdc_test_case.TestCase]:
+    def create_test_case(self) -> Callable[[gcdc_test_case.CreateTestCaseRequest], gcdc_test_case.TestCase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateTestCase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def export_test_cases(
-        self,
-    ) -> Callable[[test_case.ExportTestCasesRequest], operations_pb2.Operation]:
+    def export_test_cases(self) -> Callable[[test_case.ExportTestCasesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ExportTestCases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_test_case(
-        self,
-    ) -> Callable[[test_case.GetTestCaseRequest], test_case.TestCase]:
+    def get_test_case(self) -> Callable[[test_case.GetTestCaseRequest], test_case.TestCase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTestCase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def get_test_case_result(
-        self,
-    ) -> Callable[[test_case.GetTestCaseResultRequest], test_case.TestCaseResult]:
+    def get_test_case_result(self) -> Callable[[test_case.GetTestCaseResultRequest], test_case.TestCaseResult]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetTestCaseResult(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def import_test_cases(
-        self,
-    ) -> Callable[[test_case.ImportTestCasesRequest], operations_pb2.Operation]:
+    def import_test_cases(self) -> Callable[[test_case.ImportTestCasesRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ImportTestCases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_test_case_results(
-        self,
-    ) -> Callable[
-        [test_case.ListTestCaseResultsRequest], test_case.ListTestCaseResultsResponse
-    ]:
+    def list_test_case_results(self) -> Callable[[test_case.ListTestCaseResultsRequest], test_case.ListTestCaseResultsResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTestCaseResults(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_test_cases(
-        self,
-    ) -> Callable[[test_case.ListTestCasesRequest], test_case.ListTestCasesResponse]:
+    def list_test_cases(self) -> Callable[[test_case.ListTestCasesRequest], test_case.ListTestCasesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListTestCases(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def run_test_case(
-        self,
-    ) -> Callable[[test_case.RunTestCaseRequest], operations_pb2.Operation]:
+    def run_test_case(self) -> Callable[[test_case.RunTestCaseRequest], operations_pb2.Operation]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._RunTestCase(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_test_case(
-        self,
-    ) -> Callable[[gcdc_test_case.UpdateTestCaseRequest], gcdc_test_case.TestCase]:
+    def update_test_case(self) -> Callable[[gcdc_test_case.UpdateTestCaseRequest], gcdc_test_case.TestCase]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateTestCase(self._session, self._host, self._interceptor)  # type: ignore
@@ -2901,15 +2336,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             return hash("TestCasesRestTransport.GetLocation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2947,30 +2374,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 locations_pb2.Location: Response from GetLocation method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetLocation._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseGetLocation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_location(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseGetLocation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseGetLocation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseGetLocation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseGetLocation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2994,12 +2407,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._GetLocation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3011,9 +2419,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = locations_pb2.Location()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_location(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3038,22 +2444,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def list_locations(self):
         return self._ListLocations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListLocations(
-        _BaseTestCasesRestTransport._BaseListLocations, TestCasesRestStub
-    ):
+    class _ListLocations(_BaseTestCasesRestTransport._BaseListLocations, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.ListLocations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3091,30 +2487,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 locations_pb2.ListLocationsResponse: Response from ListLocations method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListLocations._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseListLocations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_locations(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseListLocations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseListLocations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseListLocations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseListLocations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3138,12 +2520,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._ListLocations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3155,9 +2532,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = locations_pb2.ListLocationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_locations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3182,22 +2557,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def cancel_operation(self):
         return self._CancelOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _CancelOperation(
-        _BaseTestCasesRestTransport._BaseCancelOperation, TestCasesRestStub
-    ):
+    class _CancelOperation(_BaseTestCasesRestTransport._BaseCancelOperation, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.CancelOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3232,30 +2597,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                     be of type `bytes`.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseCancelOperation._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseCancelOperation._get_http_options()
 
-            request, metadata = self._interceptor.pre_cancel_operation(
-                request, metadata
-            )
-            transcoded_request = _BaseTestCasesRestTransport._BaseCancelOperation._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_cancel_operation(request, metadata)
+            transcoded_request = _BaseTestCasesRestTransport._BaseCancelOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseCancelOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseCancelOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3279,12 +2630,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._CancelOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3298,22 +2644,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseTestCasesRestTransport._BaseGetOperation, TestCasesRestStub
-    ):
+    class _GetOperation(_BaseTestCasesRestTransport._BaseGetOperation, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3351,30 +2687,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3398,12 +2720,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3415,9 +2732,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:
@@ -3442,22 +2757,12 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(
-        _BaseTestCasesRestTransport._BaseListOperations, TestCasesRestStub
-    ):
+    class _ListOperations(_BaseTestCasesRestTransport._BaseListOperations, TestCasesRestStub):
         def __hash__(self):
             return hash("TestCasesRestTransport.ListOperations")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -3495,30 +2800,16 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
                 operations_pb2.ListOperationsResponse: Response from ListOperations method.
             """
 
-            http_options = (
-                _BaseTestCasesRestTransport._BaseListOperations._get_http_options()
-            )
+            http_options = _BaseTestCasesRestTransport._BaseListOperations._get_http_options()
 
             request, metadata = self._interceptor.pre_list_operations(request, metadata)
-            transcoded_request = (
-                _BaseTestCasesRestTransport._BaseListOperations._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseTestCasesRestTransport._BaseListOperations._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseTestCasesRestTransport._BaseListOperations._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseTestCasesRestTransport._BaseListOperations._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -3542,12 +2833,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
 
             # Send the request
             response = TestCasesRestTransport._ListOperations._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -3559,9 +2845,7 @@ class TestCasesRestTransport(_BaseTestCasesRestTransport):
             resp = operations_pb2.ListOperationsResponse()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_list_operations(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

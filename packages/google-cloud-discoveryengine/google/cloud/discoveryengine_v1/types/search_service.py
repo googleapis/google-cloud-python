@@ -870,9 +870,7 @@ class SearchRequest(proto.Message):
                     number=3,
                     enum="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.InterpolationType",
                 )
-                control_points: MutableSequence[
-                    "SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"
-                ] = proto.RepeatedField(
+                control_points: MutableSequence["SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint"] = proto.RepeatedField(
                     proto.MESSAGE,
                     number=4,
                     message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec.ControlPoint",
@@ -892,9 +890,7 @@ class SearchRequest(proto.Message):
                 message="SearchRequest.BoostSpec.ConditionBoostSpec.BoostControlSpec",
             )
 
-        condition_boost_specs: MutableSequence[
-            "SearchRequest.BoostSpec.ConditionBoostSpec"
-        ] = proto.RepeatedField(
+        condition_boost_specs: MutableSequence["SearchRequest.BoostSpec.ConditionBoostSpec"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message="SearchRequest.BoostSpec.ConditionBoostSpec",
@@ -1241,12 +1237,10 @@ class SearchRequest(proto.Message):
                 proto.STRING,
                 number=6,
             )
-            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = (
-                proto.Field(
-                    proto.MESSAGE,
-                    number=7,
-                    message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
-                )
+            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = proto.Field(
+                proto.MESSAGE,
+                number=7,
+                message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
             )
             use_semantic_chunks: bool = proto.Field(
                 proto.BOOL,
@@ -1373,12 +1367,10 @@ class SearchRequest(proto.Message):
             number=3,
             message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
         )
-        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = (
-            proto.Field(
-                proto.ENUM,
-                number=4,
-                enum="SearchRequest.ContentSearchSpec.SearchResultMode",
-            )
+        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="SearchRequest.ContentSearchSpec.SearchResultMode",
         )
         chunk_spec: "SearchRequest.ContentSearchSpec.ChunkSpec" = proto.Field(
             proto.MESSAGE,
@@ -1857,9 +1849,7 @@ class SearchResponse(proto.Message):
                 proto.FLOAT,
                 number=32,
             )
-            custom_signals: MutableSequence[
-                "SearchResponse.SearchResult.RankSignals.CustomSignal"
-            ] = proto.RepeatedField(
+            custom_signals: MutableSequence["SearchResponse.SearchResult.RankSignals.CustomSignal"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=33,
                 message="SearchResponse.SearchResult.RankSignals.CustomSignal",
@@ -1951,9 +1941,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        values: MutableSequence[
-            "SearchResponse.Facet.FacetValue"
-        ] = proto.RepeatedField(
+        values: MutableSequence["SearchResponse.Facet.FacetValue"] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="SearchResponse.Facet.FacetValue",
@@ -2094,9 +2082,7 @@ class SearchResponse(proto.Message):
                     Citations for segments.
             """
 
-            citations: MutableSequence[
-                "SearchResponse.Summary.Citation"
-            ] = proto.RepeatedField(
+            citations: MutableSequence["SearchResponse.Summary.Citation"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=1,
                 message="SearchResponse.Summary.Citation",
@@ -2123,9 +2109,7 @@ class SearchResponse(proto.Message):
                 proto.INT64,
                 number=2,
             )
-            sources: MutableSequence[
-                "SearchResponse.Summary.CitationSource"
-            ] = proto.RepeatedField(
+            sources: MutableSequence["SearchResponse.Summary.CitationSource"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="SearchResponse.Summary.CitationSource",
@@ -2197,9 +2181,7 @@ class SearchResponse(proto.Message):
                 proto.STRING,
                 number=3,
             )
-            chunk_contents: MutableSequence[
-                "SearchResponse.Summary.Reference.ChunkContent"
-            ] = proto.RepeatedField(
+            chunk_contents: MutableSequence["SearchResponse.Summary.Reference.ChunkContent"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=4,
                 message="SearchResponse.Summary.Reference.ChunkContent",
@@ -2226,9 +2208,7 @@ class SearchResponse(proto.Message):
                 number=2,
                 message="SearchResponse.Summary.CitationMetadata",
             )
-            references: MutableSequence[
-                "SearchResponse.Summary.Reference"
-            ] = proto.RepeatedField(
+            references: MutableSequence["SearchResponse.Summary.Reference"] = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="SearchResponse.Summary.Reference",
@@ -2238,9 +2218,7 @@ class SearchResponse(proto.Message):
             proto.STRING,
             number=1,
         )
-        summary_skipped_reasons: MutableSequence[
-            "SearchResponse.Summary.SummarySkippedReason"
-        ] = proto.RepeatedField(
+        summary_skipped_reasons: MutableSequence["SearchResponse.Summary.SummarySkippedReason"] = proto.RepeatedField(
             proto.ENUM,
             number=2,
             enum="SearchResponse.Summary.SummarySkippedReason",
@@ -2250,12 +2228,10 @@ class SearchResponse(proto.Message):
             number=3,
             message="SearchResponse.Summary.SafetyAttributes",
         )
-        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = (
-            proto.Field(
-                proto.MESSAGE,
-                number=4,
-                message="SearchResponse.Summary.SummaryWithMetadata",
-            )
+        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message="SearchResponse.Summary.SummaryWithMetadata",
         )
 
     class QueryExpansionInfo(proto.Message):
@@ -2360,9 +2336,7 @@ class SearchResponse(proto.Message):
         number=19,
         message=SessionInfo,
     )
-    search_link_promotions: MutableSequence[
-        common.SearchLinkPromotion
-    ] = proto.RepeatedField(
+    search_link_promotions: MutableSequence[common.SearchLinkPromotion] = proto.RepeatedField(
         proto.MESSAGE,
         number=23,
         message=common.SearchLinkPromotion,

@@ -75,9 +75,7 @@ class WebhookRequest(proto.Message):
         number=2,
         message=gcd_session.QueryResult,
     )
-    alternative_query_results: MutableSequence[
-        gcd_session.QueryResult
-    ] = proto.RepeatedField(
+    alternative_query_results: MutableSequence[gcd_session.QueryResult] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=gcd_session.QueryResult,
@@ -206,9 +204,7 @@ class WebhookResponse(proto.Message):
         proto.BOOL,
         number=8,
     )
-    session_entity_types: MutableSequence[
-        session_entity_type.SessionEntityType
-    ] = proto.RepeatedField(
+    session_entity_types: MutableSequence[session_entity_type.SessionEntityType] = proto.RepeatedField(
         proto.MESSAGE,
         number=10,
         message=session_entity_type.SessionEntityType,

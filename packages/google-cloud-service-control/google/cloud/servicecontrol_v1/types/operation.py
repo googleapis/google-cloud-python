@@ -161,9 +161,7 @@ class Operation(proto.Message):
         proto.STRING,
         number=6,
     )
-    metric_value_sets: MutableSequence[
-        metric_value.MetricValueSet
-    ] = proto.RepeatedField(
+    metric_value_sets: MutableSequence[metric_value.MetricValueSet] = proto.RepeatedField(
         proto.MESSAGE,
         number=7,
         message=metric_value.MetricValueSet,

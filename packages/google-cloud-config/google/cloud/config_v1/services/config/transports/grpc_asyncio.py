@@ -51,13 +51,9 @@ except ImportError:  # pragma: NO COVER
 _LOGGER = std_logging.getLogger(__name__)
 
 
-class _LoggingClientAIOInterceptor(
-    grpc.aio.UnaryUnaryClientInterceptor
-):  # pragma: NO COVER
+class _LoggingClientAIOInterceptor(grpc.aio.UnaryUnaryClientInterceptor):  # pragma: NO COVER
     async def intercept_unary_unary(self, continuation, client_call_details, request):
-        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-            std_logging.DEBUG
-        )
+        logging_enabled = CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(std_logging.DEBUG)
         if logging_enabled:  # pragma: NO COVER
             request_metadata = client_call_details.metadata
             if isinstance(request, proto.Message):
@@ -67,10 +63,7 @@ class _LoggingClientAIOInterceptor(
             else:
                 request_payload = f"{type(request).__name__}: {pickle.dumps(request)}"
 
-            request_metadata = {
-                key: value.decode("utf-8") if isinstance(value, bytes) else value
-                for key, value in request_metadata
-            }
+            request_metadata = {key: value.decode("utf-8") if isinstance(value, bytes) else value for key, value in request_metadata}
             grpc_request = {
                 "payload": request_payload,
                 "requestMethod": "grpc",
@@ -89,11 +82,7 @@ class _LoggingClientAIOInterceptor(
         if logging_enabled:  # pragma: NO COVER
             response_metadata = await response.trailing_metadata()
             # Convert gRPC metadata `<class 'grpc.aio._metadata.Metadata'>` to list of tuples
-            metadata = (
-                dict([(k, str(v)) for k, v in response_metadata])
-                if response_metadata
-                else None
-            )
+            metadata = dict([(k, str(v)) for k, v in response_metadata]) if response_metadata else None
             result = await response
             if isinstance(result, proto.Message):
                 response_payload = type(result).to_json(result)
@@ -274,18 +263,14 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
                 # default SSL credentials.
                 if client_cert_source:
                     cert, key = client_cert_source()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
                 else:
                     self._ssl_channel_credentials = SslCredentials().ssl_credentials
 
             else:
                 if client_cert_source_for_mtls and not ssl_channel_credentials:
                     cert, key = client_cert_source_for_mtls()
-                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(
-                        certificate_chain=cert, private_key=key
-                    )
+                    self._ssl_channel_credentials = grpc.ssl_channel_credentials(certificate_chain=cert, private_key=key)
 
         # The base transport sets the host, credentials and scopes
         super().__init__(
@@ -321,9 +306,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         self._interceptor = _LoggingClientAIOInterceptor()
         self._grpc_channel._unary_unary_interceptors.append(self._interceptor)
         self._logged_channel = self._grpc_channel
-        self._wrap_with_kind = (
-            "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
-        )
+        self._wrap_with_kind = "kind" in inspect.signature(gapic_v1.method_async.wrap_method).parameters
         # Wrap messages. This must be done after self._logged_channel exists
         self._prep_wrapped_messages(client_info)
 
@@ -346,19 +329,13 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         """
         # Quick check: Only create a new client if we do not already have one.
         if self._operations_client is None:
-            self._operations_client = operations_v1.OperationsAsyncClient(
-                self._logged_channel
-            )
+            self._operations_client = operations_v1.OperationsAsyncClient(self._logged_channel)
 
         # Return the client from cache.
         return self._operations_client
 
     @property
-    def list_deployments(
-        self,
-    ) -> Callable[
-        [config.ListDeploymentsRequest], Awaitable[config.ListDeploymentsResponse]
-    ]:
+    def list_deployments(self) -> Callable[[config.ListDeploymentsRequest], Awaitable[config.ListDeploymentsResponse]]:
         r"""Return a callable for the list deployments method over gRPC.
 
         Lists [Deployment][google.cloud.config.v1.Deployment]s in a
@@ -383,9 +360,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_deployments"]
 
     @property
-    def get_deployment(
-        self,
-    ) -> Callable[[config.GetDeploymentRequest], Awaitable[config.Deployment]]:
+    def get_deployment(self) -> Callable[[config.GetDeploymentRequest], Awaitable[config.Deployment]]:
         r"""Return a callable for the get deployment method over gRPC.
 
         Gets details about a
@@ -410,11 +385,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_deployment"]
 
     @property
-    def create_deployment(
-        self,
-    ) -> Callable[
-        [config.CreateDeploymentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def create_deployment(self) -> Callable[[config.CreateDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create deployment method over gRPC.
 
         Creates a [Deployment][google.cloud.config.v1.Deployment].
@@ -438,11 +409,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["create_deployment"]
 
     @property
-    def update_deployment(
-        self,
-    ) -> Callable[
-        [config.UpdateDeploymentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def update_deployment(self) -> Callable[[config.UpdateDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the update deployment method over gRPC.
 
         Updates a [Deployment][google.cloud.config.v1.Deployment].
@@ -466,11 +433,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["update_deployment"]
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[
-        [config.DeleteDeploymentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def delete_deployment(self) -> Callable[[config.DeleteDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete deployment method over gRPC.
 
         Deletes a [Deployment][google.cloud.config.v1.Deployment].
@@ -494,11 +457,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["delete_deployment"]
 
     @property
-    def list_revisions(
-        self,
-    ) -> Callable[
-        [config.ListRevisionsRequest], Awaitable[config.ListRevisionsResponse]
-    ]:
+    def list_revisions(self) -> Callable[[config.ListRevisionsRequest], Awaitable[config.ListRevisionsResponse]]:
         r"""Return a callable for the list revisions method over gRPC.
 
         Lists [Revision][google.cloud.config.v1.Revision]s of a
@@ -523,9 +482,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_revisions"]
 
     @property
-    def get_revision(
-        self,
-    ) -> Callable[[config.GetRevisionRequest], Awaitable[config.Revision]]:
+    def get_revision(self) -> Callable[[config.GetRevisionRequest], Awaitable[config.Revision]]:
         r"""Return a callable for the get revision method over gRPC.
 
         Gets details about a
@@ -550,9 +507,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_revision"]
 
     @property
-    def get_resource(
-        self,
-    ) -> Callable[[config.GetResourceRequest], Awaitable[config.Resource]]:
+    def get_resource(self) -> Callable[[config.GetResourceRequest], Awaitable[config.Resource]]:
         r"""Return a callable for the get resource method over gRPC.
 
         Gets details about a [Resource][google.cloud.config.v1.Resource]
@@ -577,11 +532,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_resource"]
 
     @property
-    def list_resources(
-        self,
-    ) -> Callable[
-        [config.ListResourcesRequest], Awaitable[config.ListResourcesResponse]
-    ]:
+    def list_resources(self) -> Callable[[config.ListResourcesRequest], Awaitable[config.ListResourcesResponse]]:
         r"""Return a callable for the list resources method over gRPC.
 
         Lists [Resources][google.cloud.config.v1.Resource] in a given
@@ -606,11 +557,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_resources"]
 
     @property
-    def export_deployment_statefile(
-        self,
-    ) -> Callable[
-        [config.ExportDeploymentStatefileRequest], Awaitable[config.Statefile]
-    ]:
+    def export_deployment_statefile(self) -> Callable[[config.ExportDeploymentStatefileRequest], Awaitable[config.Statefile]]:
         r"""Return a callable for the export deployment statefile method over gRPC.
 
         Exports Terraform state file from a given deployment.
@@ -626,9 +573,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
         if "export_deployment_statefile" not in self._stubs:
-            self._stubs[
-                "export_deployment_statefile"
-            ] = self._logged_channel.unary_unary(
+            self._stubs["export_deployment_statefile"] = self._logged_channel.unary_unary(
                 "/google.cloud.config.v1.Config/ExportDeploymentStatefile",
                 request_serializer=config.ExportDeploymentStatefileRequest.serialize,
                 response_deserializer=config.Statefile.deserialize,
@@ -636,9 +581,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["export_deployment_statefile"]
 
     @property
-    def export_revision_statefile(
-        self,
-    ) -> Callable[[config.ExportRevisionStatefileRequest], Awaitable[config.Statefile]]:
+    def export_revision_statefile(self) -> Callable[[config.ExportRevisionStatefileRequest], Awaitable[config.Statefile]]:
         r"""Return a callable for the export revision statefile method over gRPC.
 
         Exports Terraform state file from a given revision.
@@ -662,9 +605,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["export_revision_statefile"]
 
     @property
-    def import_statefile(
-        self,
-    ) -> Callable[[config.ImportStatefileRequest], Awaitable[config.Statefile]]:
+    def import_statefile(self) -> Callable[[config.ImportStatefileRequest], Awaitable[config.Statefile]]:
         r"""Return a callable for the import statefile method over gRPC.
 
         Imports Terraform state file in a given deployment.
@@ -690,9 +631,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["import_statefile"]
 
     @property
-    def delete_statefile(
-        self,
-    ) -> Callable[[config.DeleteStatefileRequest], Awaitable[empty_pb2.Empty]]:
+    def delete_statefile(self) -> Callable[[config.DeleteStatefileRequest], Awaitable[empty_pb2.Empty]]:
         r"""Return a callable for the delete statefile method over gRPC.
 
         Deletes Terraform state file in a given deployment.
@@ -716,9 +655,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["delete_statefile"]
 
     @property
-    def lock_deployment(
-        self,
-    ) -> Callable[[config.LockDeploymentRequest], Awaitable[operations_pb2.Operation]]:
+    def lock_deployment(self) -> Callable[[config.LockDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the lock deployment method over gRPC.
 
         Locks a deployment.
@@ -742,11 +679,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["lock_deployment"]
 
     @property
-    def unlock_deployment(
-        self,
-    ) -> Callable[
-        [config.UnlockDeploymentRequest], Awaitable[operations_pb2.Operation]
-    ]:
+    def unlock_deployment(self) -> Callable[[config.UnlockDeploymentRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the unlock deployment method over gRPC.
 
         Unlocks a locked deployment.
@@ -770,9 +703,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["unlock_deployment"]
 
     @property
-    def export_lock_info(
-        self,
-    ) -> Callable[[config.ExportLockInfoRequest], Awaitable[config.LockInfo]]:
+    def export_lock_info(self) -> Callable[[config.ExportLockInfoRequest], Awaitable[config.LockInfo]]:
         r"""Return a callable for the export lock info method over gRPC.
 
         Exports the lock info on a locked deployment.
@@ -796,9 +727,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["export_lock_info"]
 
     @property
-    def create_preview(
-        self,
-    ) -> Callable[[config.CreatePreviewRequest], Awaitable[operations_pb2.Operation]]:
+    def create_preview(self) -> Callable[[config.CreatePreviewRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the create preview method over gRPC.
 
         Creates a [Preview][google.cloud.config.v1.Preview].
@@ -822,9 +751,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["create_preview"]
 
     @property
-    def get_preview(
-        self,
-    ) -> Callable[[config.GetPreviewRequest], Awaitable[config.Preview]]:
+    def get_preview(self) -> Callable[[config.GetPreviewRequest], Awaitable[config.Preview]]:
         r"""Return a callable for the get preview method over gRPC.
 
         Gets details about a [Preview][google.cloud.config.v1.Preview].
@@ -848,9 +775,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_preview"]
 
     @property
-    def list_previews(
-        self,
-    ) -> Callable[[config.ListPreviewsRequest], Awaitable[config.ListPreviewsResponse]]:
+    def list_previews(self) -> Callable[[config.ListPreviewsRequest], Awaitable[config.ListPreviewsResponse]]:
         r"""Return a callable for the list previews method over gRPC.
 
         Lists [Preview][google.cloud.config.v1.Preview]s in a given
@@ -875,9 +800,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_previews"]
 
     @property
-    def delete_preview(
-        self,
-    ) -> Callable[[config.DeletePreviewRequest], Awaitable[operations_pb2.Operation]]:
+    def delete_preview(self) -> Callable[[config.DeletePreviewRequest], Awaitable[operations_pb2.Operation]]:
         r"""Return a callable for the delete preview method over gRPC.
 
         Deletes a [Preview][google.cloud.config.v1.Preview].
@@ -901,12 +824,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["delete_preview"]
 
     @property
-    def export_preview_result(
-        self,
-    ) -> Callable[
-        [config.ExportPreviewResultRequest],
-        Awaitable[config.ExportPreviewResultResponse],
-    ]:
+    def export_preview_result(self) -> Callable[[config.ExportPreviewResultRequest], Awaitable[config.ExportPreviewResultResponse]]:
         r"""Return a callable for the export preview result method over gRPC.
 
         Export [Preview][google.cloud.config.v1.Preview] results.
@@ -930,12 +848,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["export_preview_result"]
 
     @property
-    def list_terraform_versions(
-        self,
-    ) -> Callable[
-        [config.ListTerraformVersionsRequest],
-        Awaitable[config.ListTerraformVersionsResponse],
-    ]:
+    def list_terraform_versions(self) -> Callable[[config.ListTerraformVersionsRequest], Awaitable[config.ListTerraformVersionsResponse]]:
         r"""Return a callable for the list terraform versions method over gRPC.
 
         Lists
@@ -961,11 +874,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_terraform_versions"]
 
     @property
-    def get_terraform_version(
-        self,
-    ) -> Callable[
-        [config.GetTerraformVersionRequest], Awaitable[config.TerraformVersion]
-    ]:
+    def get_terraform_version(self) -> Callable[[config.GetTerraformVersionRequest], Awaitable[config.TerraformVersion]]:
         r"""Return a callable for the get terraform version method over gRPC.
 
         Gets details about a
@@ -990,12 +899,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_terraform_version"]
 
     @property
-    def list_resource_changes(
-        self,
-    ) -> Callable[
-        [config.ListResourceChangesRequest],
-        Awaitable[config.ListResourceChangesResponse],
-    ]:
+    def list_resource_changes(self) -> Callable[[config.ListResourceChangesRequest], Awaitable[config.ListResourceChangesResponse]]:
         r"""Return a callable for the list resource changes method over gRPC.
 
         Lists ResourceChanges for a given preview.
@@ -1019,9 +923,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_resource_changes"]
 
     @property
-    def get_resource_change(
-        self,
-    ) -> Callable[[config.GetResourceChangeRequest], Awaitable[config.ResourceChange]]:
+    def get_resource_change(self) -> Callable[[config.GetResourceChangeRequest], Awaitable[config.ResourceChange]]:
         r"""Return a callable for the get resource change method over gRPC.
 
         Get a ResourceChange for a given preview.
@@ -1045,11 +947,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["get_resource_change"]
 
     @property
-    def list_resource_drifts(
-        self,
-    ) -> Callable[
-        [config.ListResourceDriftsRequest], Awaitable[config.ListResourceDriftsResponse]
-    ]:
+    def list_resource_drifts(self) -> Callable[[config.ListResourceDriftsRequest], Awaitable[config.ListResourceDriftsResponse]]:
         r"""Return a callable for the list resource drifts method over gRPC.
 
         List ResourceDrifts for a given preview.
@@ -1073,9 +971,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
         return self._stubs["list_resource_drifts"]
 
     @property
-    def get_resource_drift(
-        self,
-    ) -> Callable[[config.GetResourceDriftRequest], Awaitable[config.ResourceDrift]]:
+    def get_resource_drift(self) -> Callable[[config.GetResourceDriftRequest], Awaitable[config.ResourceDrift]]:
         r"""Return a callable for the get resource drift method over gRPC.
 
         Get a ResourceDrift for a given preview.
@@ -1349,9 +1245,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
     @property
     def list_operations(
         self,
-    ) -> Callable[
-        [operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse
-    ]:
+    ) -> Callable[[operations_pb2.ListOperationsRequest], operations_pb2.ListOperationsResponse]:
         r"""Return a callable for the list_operations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1368,9 +1262,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], locations_pb2.ListLocationsResponse]:
         r"""Return a callable for the list locations method over gRPC."""
         # Generate a "stub function" on-the-fly which will actually make
         # the request.
@@ -1455,10 +1347,7 @@ class ConfigGrpcAsyncIOTransport(ConfigTransport):
     @property
     def test_iam_permissions(
         self,
-    ) -> Callable[
-        [iam_policy_pb2.TestIamPermissionsRequest],
-        iam_policy_pb2.TestIamPermissionsResponse,
-    ]:
+    ) -> Callable[[iam_policy_pb2.TestIamPermissionsRequest], iam_policy_pb2.TestIamPermissionsResponse]:
         r"""Return a callable for the test iam permissions method over gRPC.
         Tests the specified permissions against the IAM access control
         policy for a function. If the function does not exist, this will

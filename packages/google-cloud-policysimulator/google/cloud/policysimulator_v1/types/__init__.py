@@ -13,13 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .explanations import (
-    AccessState,
-    AccessTuple,
-    BindingExplanation,
-    ExplainedPolicy,
-    HeuristicRelevance,
-)
+from .explanations import AccessState, AccessTuple, BindingExplanation, ExplainedPolicy, HeuristicRelevance
 from .orgpolicy import (
     CreateOrgPolicyViolationsPreviewOperationMetadata,
     CreateOrgPolicyViolationsPreviewRequest,

@@ -233,9 +233,7 @@ class DiskRestoreProperties(proto.Message):
         proto.STRING,
         number=4,
     )
-    guest_os_feature: MutableSequence[
-        backupvault_gce.GuestOsFeature
-    ] = proto.RepeatedField(
+    guest_os_feature: MutableSequence[backupvault_gce.GuestOsFeature] = proto.RepeatedField(
         proto.MESSAGE,
         number=5,
         message=backupvault_gce.GuestOsFeature,
@@ -380,9 +378,7 @@ class DiskBackupProperties(proto.Message):
         proto.STRING,
         number=2,
     )
-    guest_os_feature: MutableSequence[
-        backupvault_gce.GuestOsFeature
-    ] = proto.RepeatedField(
+    guest_os_feature: MutableSequence[backupvault_gce.GuestOsFeature] = proto.RepeatedField(
         proto.MESSAGE,
         number=3,
         message=backupvault_gce.GuestOsFeature,

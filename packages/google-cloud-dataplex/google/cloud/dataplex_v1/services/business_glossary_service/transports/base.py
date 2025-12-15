@@ -33,9 +33,7 @@ from google.protobuf import empty_pb2  # type: ignore
 from google.cloud.dataplex_v1 import gapic_version as package_version
 from google.cloud.dataplex_v1.types import business_glossary
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -97,23 +95,15 @@ class BusinessGlossaryServiceTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -262,37 +252,25 @@ class BusinessGlossaryServiceTransport(abc.ABC):
     @property
     def create_glossary(
         self,
-    ) -> Callable[
-        [business_glossary.CreateGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[business_glossary.CreateGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_glossary(
         self,
-    ) -> Callable[
-        [business_glossary.UpdateGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[business_glossary.UpdateGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_glossary(
         self,
-    ) -> Callable[
-        [business_glossary.DeleteGlossaryRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[business_glossary.DeleteGlossaryRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def get_glossary(
         self,
-    ) -> Callable[
-        [business_glossary.GetGlossaryRequest],
-        Union[business_glossary.Glossary, Awaitable[business_glossary.Glossary]],
-    ]:
+    ) -> Callable[[business_glossary.GetGlossaryRequest], Union[business_glossary.Glossary, Awaitable[business_glossary.Glossary]]]:
         raise NotImplementedError()
 
     @property
@@ -300,10 +278,7 @@ class BusinessGlossaryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [business_glossary.ListGlossariesRequest],
-        Union[
-            business_glossary.ListGlossariesResponse,
-            Awaitable[business_glossary.ListGlossariesResponse],
-        ],
+        Union[business_glossary.ListGlossariesResponse, Awaitable[business_glossary.ListGlossariesResponse]],
     ]:
         raise NotImplementedError()
 
@@ -311,11 +286,7 @@ class BusinessGlossaryServiceTransport(abc.ABC):
     def create_glossary_category(
         self,
     ) -> Callable[
-        [business_glossary.CreateGlossaryCategoryRequest],
-        Union[
-            business_glossary.GlossaryCategory,
-            Awaitable[business_glossary.GlossaryCategory],
-        ],
+        [business_glossary.CreateGlossaryCategoryRequest], Union[business_glossary.GlossaryCategory, Awaitable[business_glossary.GlossaryCategory]]
     ]:
         raise NotImplementedError()
 
@@ -323,32 +294,21 @@ class BusinessGlossaryServiceTransport(abc.ABC):
     def update_glossary_category(
         self,
     ) -> Callable[
-        [business_glossary.UpdateGlossaryCategoryRequest],
-        Union[
-            business_glossary.GlossaryCategory,
-            Awaitable[business_glossary.GlossaryCategory],
-        ],
+        [business_glossary.UpdateGlossaryCategoryRequest], Union[business_glossary.GlossaryCategory, Awaitable[business_glossary.GlossaryCategory]]
     ]:
         raise NotImplementedError()
 
     @property
     def delete_glossary_category(
         self,
-    ) -> Callable[
-        [business_glossary.DeleteGlossaryCategoryRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    ) -> Callable[[business_glossary.DeleteGlossaryCategoryRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_glossary_category(
         self,
     ) -> Callable[
-        [business_glossary.GetGlossaryCategoryRequest],
-        Union[
-            business_glossary.GlossaryCategory,
-            Awaitable[business_glossary.GlossaryCategory],
-        ],
+        [business_glossary.GetGlossaryCategoryRequest], Union[business_glossary.GlossaryCategory, Awaitable[business_glossary.GlossaryCategory]]
     ]:
         raise NotImplementedError()
 
@@ -357,53 +317,30 @@ class BusinessGlossaryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [business_glossary.ListGlossaryCategoriesRequest],
-        Union[
-            business_glossary.ListGlossaryCategoriesResponse,
-            Awaitable[business_glossary.ListGlossaryCategoriesResponse],
-        ],
+        Union[business_glossary.ListGlossaryCategoriesResponse, Awaitable[business_glossary.ListGlossaryCategoriesResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def create_glossary_term(
         self,
-    ) -> Callable[
-        [business_glossary.CreateGlossaryTermRequest],
-        Union[
-            business_glossary.GlossaryTerm, Awaitable[business_glossary.GlossaryTerm]
-        ],
-    ]:
+    ) -> Callable[[business_glossary.CreateGlossaryTermRequest], Union[business_glossary.GlossaryTerm, Awaitable[business_glossary.GlossaryTerm]]]:
         raise NotImplementedError()
 
     @property
     def update_glossary_term(
         self,
-    ) -> Callable[
-        [business_glossary.UpdateGlossaryTermRequest],
-        Union[
-            business_glossary.GlossaryTerm, Awaitable[business_glossary.GlossaryTerm]
-        ],
-    ]:
+    ) -> Callable[[business_glossary.UpdateGlossaryTermRequest], Union[business_glossary.GlossaryTerm, Awaitable[business_glossary.GlossaryTerm]]]:
         raise NotImplementedError()
 
     @property
-    def delete_glossary_term(
-        self,
-    ) -> Callable[
-        [business_glossary.DeleteGlossaryTermRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
+    def delete_glossary_term(self) -> Callable[[business_glossary.DeleteGlossaryTermRequest], Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]]]:
         raise NotImplementedError()
 
     @property
     def get_glossary_term(
         self,
-    ) -> Callable[
-        [business_glossary.GetGlossaryTermRequest],
-        Union[
-            business_glossary.GlossaryTerm, Awaitable[business_glossary.GlossaryTerm]
-        ],
-    ]:
+    ) -> Callable[[business_glossary.GetGlossaryTermRequest], Union[business_glossary.GlossaryTerm, Awaitable[business_glossary.GlossaryTerm]]]:
         raise NotImplementedError()
 
     @property
@@ -411,10 +348,7 @@ class BusinessGlossaryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [business_glossary.ListGlossaryTermsRequest],
-        Union[
-            business_glossary.ListGlossaryTermsResponse,
-            Awaitable[business_glossary.ListGlossaryTermsResponse],
-        ],
+        Union[business_glossary.ListGlossaryTermsResponse, Awaitable[business_glossary.ListGlossaryTermsResponse]],
     ]:
         raise NotImplementedError()
 
@@ -423,20 +357,14 @@ class BusinessGlossaryServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -454,22 +382,13 @@ class BusinessGlossaryServiceTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property

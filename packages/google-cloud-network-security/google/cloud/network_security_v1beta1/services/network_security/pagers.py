@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from typing import (
-    Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
-    Iterator,
-    Optional,
-    Sequence,
-    Tuple,
-    Union,
-)
+from typing import Any, AsyncIterator, Awaitable, Callable, Iterator, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
@@ -31,18 +21,12 @@ from google.api_core import retry_async as retries_async
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
-    OptionalAsyncRetry = Union[
-        retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None
-    ]
+    OptionalAsyncRetry = Union[retries_async.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
     OptionalAsyncRetry = Union[retries_async.AsyncRetry, object, None]  # type: ignore
 
-from google.cloud.network_security_v1beta1.types import (
-    authorization_policy,
-    client_tls_policy,
-    server_tls_policy,
-)
+from google.cloud.network_security_v1beta1.types import authorization_policy, client_tls_policy, server_tls_policy
 
 
 class ListAuthorizationPoliciesPager:
@@ -105,12 +89,7 @@ class ListAuthorizationPoliciesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[authorization_policy.AuthorizationPolicy]:
@@ -141,9 +120,7 @@ class ListAuthorizationPoliciesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[authorization_policy.ListAuthorizationPoliciesResponse]
-        ],
+        method: Callable[..., Awaitable[authorization_policy.ListAuthorizationPoliciesResponse]],
         request: authorization_policy.ListAuthorizationPoliciesRequest,
         response: authorization_policy.ListAuthorizationPoliciesResponse,
         *,
@@ -179,18 +156,11 @@ class ListAuthorizationPoliciesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[authorization_policy.ListAuthorizationPoliciesResponse]:
+    async def pages(self) -> AsyncIterator[authorization_policy.ListAuthorizationPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[authorization_policy.AuthorizationPolicy]:
@@ -265,12 +235,7 @@ class ListServerTlsPoliciesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[server_tls_policy.ServerTlsPolicy]:
@@ -301,9 +266,7 @@ class ListServerTlsPoliciesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[server_tls_policy.ListServerTlsPoliciesResponse]
-        ],
+        method: Callable[..., Awaitable[server_tls_policy.ListServerTlsPoliciesResponse]],
         request: server_tls_policy.ListServerTlsPoliciesRequest,
         response: server_tls_policy.ListServerTlsPoliciesResponse,
         *,
@@ -339,18 +302,11 @@ class ListServerTlsPoliciesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[server_tls_policy.ListServerTlsPoliciesResponse]:
+    async def pages(self) -> AsyncIterator[server_tls_policy.ListServerTlsPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[server_tls_policy.ServerTlsPolicy]:
@@ -425,12 +381,7 @@ class ListClientTlsPoliciesPager:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __iter__(self) -> Iterator[client_tls_policy.ClientTlsPolicy]:
@@ -461,9 +412,7 @@ class ListClientTlsPoliciesAsyncPager:
 
     def __init__(
         self,
-        method: Callable[
-            ..., Awaitable[client_tls_policy.ListClientTlsPoliciesResponse]
-        ],
+        method: Callable[..., Awaitable[client_tls_policy.ListClientTlsPoliciesResponse]],
         request: client_tls_policy.ListClientTlsPoliciesRequest,
         response: client_tls_policy.ListClientTlsPoliciesResponse,
         *,
@@ -499,18 +448,11 @@ class ListClientTlsPoliciesAsyncPager:
         return getattr(self._response, name)
 
     @property
-    async def pages(
-        self,
-    ) -> AsyncIterator[client_tls_policy.ListClientTlsPoliciesResponse]:
+    async def pages(self) -> AsyncIterator[client_tls_policy.ListClientTlsPoliciesResponse]:
         yield self._response
         while self._response.next_page_token:
             self._request.page_token = self._response.next_page_token
-            self._response = await self._method(
-                self._request,
-                retry=self._retry,
-                timeout=self._timeout,
-                metadata=self._metadata,
-            )
+            self._response = await self._method(self._request, retry=self._retry, timeout=self._timeout, metadata=self._metadata)
             yield self._response
 
     def __aiter__(self) -> AsyncIterator[client_tls_policy.ClientTlsPolicy]:

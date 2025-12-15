@@ -18,18 +18,10 @@ from google.cloud.dataqna import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.async_client import (
-    AutoSuggestionServiceAsyncClient,
-)
-from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.client import (
-    AutoSuggestionServiceClient,
-)
-from google.cloud.dataqna_v1alpha.services.question_service.async_client import (
-    QuestionServiceAsyncClient,
-)
-from google.cloud.dataqna_v1alpha.services.question_service.client import (
-    QuestionServiceClient,
-)
+from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.async_client import AutoSuggestionServiceAsyncClient
+from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.client import AutoSuggestionServiceClient
+from google.cloud.dataqna_v1alpha.services.question_service.async_client import QuestionServiceAsyncClient
+from google.cloud.dataqna_v1alpha.services.question_service.client import QuestionServiceClient
 from google.cloud.dataqna_v1alpha.types.annotated_string import AnnotatedString
 from google.cloud.dataqna_v1alpha.types.auto_suggestion_service import (
     Suggestion,

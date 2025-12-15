@@ -144,12 +144,8 @@ class SiteServiceRestInterceptor:
     """
 
     def pre_batch_create_sites(
-        self,
-        request: site_service.BatchCreateSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchCreateSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: site_service.BatchCreateSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchCreateSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_create_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -157,9 +153,7 @@ class SiteServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_create_sites(
-        self, response: site_service.BatchCreateSitesResponse
-    ) -> site_service.BatchCreateSitesResponse:
+    def post_batch_create_sites(self, response: site_service.BatchCreateSitesResponse) -> site_service.BatchCreateSitesResponse:
         """Post-rpc interceptor for batch_create_sites
 
         DEPRECATED. Please use the `post_batch_create_sites_with_metadata`
@@ -173,12 +167,8 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_batch_create_sites_with_metadata(
-        self,
-        response: site_service.BatchCreateSitesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchCreateSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: site_service.BatchCreateSitesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchCreateSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_create_sites
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -194,13 +184,8 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_deactivate_sites(
-        self,
-        request: site_service.BatchDeactivateSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchDeactivateSitesRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: site_service.BatchDeactivateSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchDeactivateSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_deactivate_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -208,9 +193,7 @@ class SiteServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_deactivate_sites(
-        self, response: site_service.BatchDeactivateSitesResponse
-    ) -> site_service.BatchDeactivateSitesResponse:
+    def post_batch_deactivate_sites(self, response: site_service.BatchDeactivateSitesResponse) -> site_service.BatchDeactivateSitesResponse:
         """Post-rpc interceptor for batch_deactivate_sites
 
         DEPRECATED. Please use the `post_batch_deactivate_sites_with_metadata`
@@ -224,13 +207,8 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_batch_deactivate_sites_with_metadata(
-        self,
-        response: site_service.BatchDeactivateSitesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchDeactivateSitesResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: site_service.BatchDeactivateSitesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchDeactivateSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_deactivate_sites
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -246,13 +224,8 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_submit_sites_for_approval(
-        self,
-        request: site_service.BatchSubmitSitesForApprovalRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchSubmitSitesForApprovalRequest,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, request: site_service.BatchSubmitSitesForApprovalRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchSubmitSitesForApprovalRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_submit_sites_for_approval
 
         Override in a subclass to manipulate the request or metadata
@@ -276,13 +249,8 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_batch_submit_sites_for_approval_with_metadata(
-        self,
-        response: site_service.BatchSubmitSitesForApprovalResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchSubmitSitesForApprovalResponse,
-        Sequence[Tuple[str, Union[str, bytes]]],
-    ]:
+        self, response: site_service.BatchSubmitSitesForApprovalResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchSubmitSitesForApprovalResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_submit_sites_for_approval
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -298,12 +266,8 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_batch_update_sites(
-        self,
-        request: site_service.BatchUpdateSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchUpdateSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: site_service.BatchUpdateSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchUpdateSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for batch_update_sites
 
         Override in a subclass to manipulate the request or metadata
@@ -311,9 +275,7 @@ class SiteServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_batch_update_sites(
-        self, response: site_service.BatchUpdateSitesResponse
-    ) -> site_service.BatchUpdateSitesResponse:
+    def post_batch_update_sites(self, response: site_service.BatchUpdateSitesResponse) -> site_service.BatchUpdateSitesResponse:
         """Post-rpc interceptor for batch_update_sites
 
         DEPRECATED. Please use the `post_batch_update_sites_with_metadata`
@@ -327,12 +289,8 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_batch_update_sites_with_metadata(
-        self,
-        response: site_service.BatchUpdateSitesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        site_service.BatchUpdateSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, response: site_service.BatchUpdateSitesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[site_service.BatchUpdateSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for batch_update_sites
 
         Override in a subclass to read or manipulate the response or metadata after it
@@ -348,9 +306,7 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_create_site(
-        self,
-        request: site_service.CreateSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: site_service.CreateSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_service.CreateSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for create_site
 
@@ -373,9 +329,7 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_create_site_with_metadata(
-        self,
-        response: site_messages.Site,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: site_messages.Site, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_messages.Site, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for create_site
 
@@ -392,9 +346,7 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_get_site(
-        self,
-        request: site_service.GetSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: site_service.GetSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_service.GetSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_site
 
@@ -417,9 +369,7 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_get_site_with_metadata(
-        self,
-        response: site_messages.Site,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: site_messages.Site, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_messages.Site, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for get_site
 
@@ -436,9 +386,7 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_list_sites(
-        self,
-        request: site_service.ListSitesRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: site_service.ListSitesRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_service.ListSitesRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for list_sites
 
@@ -447,9 +395,7 @@ class SiteServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_list_sites(
-        self, response: site_service.ListSitesResponse
-    ) -> site_service.ListSitesResponse:
+    def post_list_sites(self, response: site_service.ListSitesResponse) -> site_service.ListSitesResponse:
         """Post-rpc interceptor for list_sites
 
         DEPRECATED. Please use the `post_list_sites_with_metadata`
@@ -463,9 +409,7 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_list_sites_with_metadata(
-        self,
-        response: site_service.ListSitesResponse,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: site_service.ListSitesResponse, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_service.ListSitesResponse, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for list_sites
 
@@ -482,9 +426,7 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_update_site(
-        self,
-        request: site_service.UpdateSiteRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, request: site_service.UpdateSiteRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_service.UpdateSiteRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for update_site
 
@@ -507,9 +449,7 @@ class SiteServiceRestInterceptor:
         return response
 
     def post_update_site_with_metadata(
-        self,
-        response: site_messages.Site,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
+        self, response: site_messages.Site, metadata: Sequence[Tuple[str, Union[str, bytes]]]
     ) -> Tuple[site_messages.Site, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Post-rpc interceptor for update_site
 
@@ -526,12 +466,8 @@ class SiteServiceRestInterceptor:
         return response, metadata
 
     def pre_get_operation(
-        self,
-        request: operations_pb2.GetOperationRequest,
-        metadata: Sequence[Tuple[str, Union[str, bytes]]],
-    ) -> Tuple[
-        operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]
-    ]:
+        self, request: operations_pb2.GetOperationRequest, metadata: Sequence[Tuple[str, Union[str, bytes]]]
+    ) -> Tuple[operations_pb2.GetOperationRequest, Sequence[Tuple[str, Union[str, bytes]]]]:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
@@ -539,9 +475,7 @@ class SiteServiceRestInterceptor:
         """
         return request, metadata
 
-    def post_get_operation(
-        self, response: operations_pb2.Operation
-    ) -> operations_pb2.Operation:
+    def post_get_operation(self, response: operations_pb2.Operation) -> operations_pb2.Operation:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
@@ -630,30 +564,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
             url_scheme=url_scheme,
             api_audience=api_audience,
         )
-        self._session = AuthorizedSession(
-            self._credentials, default_host=self.DEFAULT_HOST
-        )
+        self._session = AuthorizedSession(self._credentials, default_host=self.DEFAULT_HOST)
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or SiteServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _BatchCreateSites(
-        _BaseSiteServiceRestTransport._BaseBatchCreateSites, SiteServiceRestStub
-    ):
+    class _BatchCreateSites(_BaseSiteServiceRestTransport._BaseBatchCreateSites, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.BatchCreateSites")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -693,32 +615,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                     Response object for ``BatchCreateSites`` method.
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_create_sites(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_create_sites(request, metadata)
+            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseBatchCreateSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -742,13 +650,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._BatchCreateSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -764,16 +666,10 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_batch_create_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_create_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_create_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = site_service.BatchCreateSitesResponse.to_json(
-                        response
-                    )
+                    response_payload = site_service.BatchCreateSitesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -792,22 +688,12 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
             return resp
 
-    class _BatchDeactivateSites(
-        _BaseSiteServiceRestTransport._BaseBatchDeactivateSites, SiteServiceRestStub
-    ):
+    class _BatchDeactivateSites(_BaseSiteServiceRestTransport._BaseBatchDeactivateSites, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.BatchDeactivateSites")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -847,32 +733,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                     Response object for ``BatchDeactivateSites`` method.
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_deactivate_sites(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_deactivate_sites(request, metadata)
+            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseBatchDeactivateSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -896,13 +768,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._BatchDeactivateSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -918,16 +784,10 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_batch_deactivate_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_deactivate_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_deactivate_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        site_service.BatchDeactivateSitesResponse.to_json(response)
-                    )
+                    response_payload = site_service.BatchDeactivateSitesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -946,23 +806,12 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
             return resp
 
-    class _BatchSubmitSitesForApproval(
-        _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval,
-        SiteServiceRestStub,
-    ):
+    class _BatchSubmitSitesForApproval(_BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.BatchSubmitSitesForApproval")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1006,32 +855,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_submit_sites_for_approval(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_submit_sites_for_approval(request, metadata)
+            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseBatchSubmitSitesForApproval._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1054,16 +889,8 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
 
             # Send the request
-            response = (
-                SiteServiceRestTransport._BatchSubmitSitesForApproval._get_response(
-                    self._host,
-                    metadata,
-                    query_params,
-                    self._session,
-                    timeout,
-                    transcoded_request,
-                    body,
-                )
+            response = SiteServiceRestTransport._BatchSubmitSitesForApproval._get_response(
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1079,21 +906,10 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_batch_submit_sites_for_approval(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            (
-                resp,
-                _,
-            ) = self._interceptor.post_batch_submit_sites_for_approval_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_submit_sites_for_approval_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = (
-                        site_service.BatchSubmitSitesForApprovalResponse.to_json(
-                            response
-                        )
-                    )
+                    response_payload = site_service.BatchSubmitSitesForApprovalResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1112,22 +928,12 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
             return resp
 
-    class _BatchUpdateSites(
-        _BaseSiteServiceRestTransport._BaseBatchUpdateSites, SiteServiceRestStub
-    ):
+    class _BatchUpdateSites(_BaseSiteServiceRestTransport._BaseBatchUpdateSites, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.BatchUpdateSites")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1167,32 +973,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                     Response object for ``BatchUpdateSites`` method.
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_http_options()
 
-            request, metadata = self._interceptor.pre_batch_update_sites(
-                request, metadata
-            )
-            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_transcoded_request(
-                http_options, request
-            )
+            request, metadata = self._interceptor.pre_batch_update_sites(request, metadata)
+            transcoded_request = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_query_params_json(
-                transcoded_request
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseBatchUpdateSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1216,13 +1008,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._BatchUpdateSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1238,16 +1024,10 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_batch_update_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_batch_update_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_batch_update_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
-                    response_payload = site_service.BatchUpdateSitesResponse.to_json(
-                        response
-                    )
+                    response_payload = site_service.BatchUpdateSitesResponse.to_json(response)
                 except:
                     response_payload = None
                 http_response = {
@@ -1266,22 +1046,12 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
             return resp
 
-    class _CreateSite(
-        _BaseSiteServiceRestTransport._BaseCreateSite, SiteServiceRestStub
-    ):
+    class _CreateSite(_BaseSiteServiceRestTransport._BaseCreateSite, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.CreateSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1327,34 +1097,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseCreateSite._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseCreateSite._get_http_options()
 
             request, metadata = self._interceptor.pre_create_site(request, metadata)
-            transcoded_request = (
-                _BaseSiteServiceRestTransport._BaseCreateSite._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSiteServiceRestTransport._BaseCreateSite._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteServiceRestTransport._BaseCreateSite._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteServiceRestTransport._BaseCreateSite._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSiteServiceRestTransport._BaseCreateSite._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseCreateSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1378,13 +1132,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._CreateSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1400,12 +1148,8 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_create_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_create_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_create_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = site_messages.Site.to_json(response)
                 except:
@@ -1431,15 +1175,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
             return hash("SiteServiceRestTransport.GetSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1484,30 +1220,16 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseGetSite._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseGetSite._get_http_options()
 
             request, metadata = self._interceptor.pre_get_site(request, metadata)
-            transcoded_request = (
-                _BaseSiteServiceRestTransport._BaseGetSite._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSiteServiceRestTransport._BaseGetSite._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSiteServiceRestTransport._BaseGetSite._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseGetSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1530,14 +1252,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
 
             # Send the request
-            response = SiteServiceRestTransport._GetSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-            )
+            response = SiteServiceRestTransport._GetSite._get_response(self._host, metadata, query_params, self._session, timeout, transcoded_request)
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
             # subclass.
@@ -1552,12 +1267,8 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_get_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_get_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_get_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = site_messages.Site.to_json(response)
                 except:
@@ -1583,15 +1294,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
             return hash("SiteServiceRestTransport.ListSites")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1632,30 +1335,16 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseListSites._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseListSites._get_http_options()
 
             request, metadata = self._interceptor.pre_list_sites(request, metadata)
-            transcoded_request = (
-                _BaseSiteServiceRestTransport._BaseListSites._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSiteServiceRestTransport._BaseListSites._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSiteServiceRestTransport._BaseListSites._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseListSites._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1679,12 +1368,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._ListSites._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1700,12 +1384,8 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_list_sites(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_list_sites_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_list_sites_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = site_service.ListSitesResponse.to_json(response)
                 except:
@@ -1726,22 +1406,12 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 )
             return resp
 
-    class _UpdateSite(
-        _BaseSiteServiceRestTransport._BaseUpdateSite, SiteServiceRestStub
-    ):
+    class _UpdateSite(_BaseSiteServiceRestTransport._BaseUpdateSite, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.UpdateSite")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -1787,34 +1457,18 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseUpdateSite._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseUpdateSite._get_http_options()
 
             request, metadata = self._interceptor.pre_update_site(request, metadata)
-            transcoded_request = (
-                _BaseSiteServiceRestTransport._BaseUpdateSite._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSiteServiceRestTransport._BaseUpdateSite._get_transcoded_request(http_options, request)
 
-            body = _BaseSiteServiceRestTransport._BaseUpdateSite._get_request_body_json(
-                transcoded_request
-            )
+            body = _BaseSiteServiceRestTransport._BaseUpdateSite._get_request_body_json(transcoded_request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSiteServiceRestTransport._BaseUpdateSite._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseUpdateSite._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = type(request).to_json(request)
@@ -1838,13 +1492,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._UpdateSite._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
-                body,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request, body
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -1860,12 +1508,8 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             resp = self._interceptor.post_update_site(resp)
             response_metadata = [(k, str(v)) for k, v in response.headers.items()]
-            resp, _ = self._interceptor.post_update_site_with_metadata(
-                resp, response_metadata
-            )
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            resp, _ = self._interceptor.post_update_site_with_metadata(resp, response_metadata)
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = site_messages.Site.to_json(response)
                 except:
@@ -1887,22 +1531,13 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
             return resp
 
     @property
-    def batch_create_sites(
-        self,
-    ) -> Callable[
-        [site_service.BatchCreateSitesRequest], site_service.BatchCreateSitesResponse
-    ]:
+    def batch_create_sites(self) -> Callable[[site_service.BatchCreateSitesRequest], site_service.BatchCreateSitesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchCreateSites(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_deactivate_sites(
-        self,
-    ) -> Callable[
-        [site_service.BatchDeactivateSitesRequest],
-        site_service.BatchDeactivateSitesResponse,
-    ]:
+    def batch_deactivate_sites(self) -> Callable[[site_service.BatchDeactivateSitesRequest], site_service.BatchDeactivateSitesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchDeactivateSites(self._session, self._host, self._interceptor)  # type: ignore
@@ -1910,28 +1545,19 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
     @property
     def batch_submit_sites_for_approval(
         self,
-    ) -> Callable[
-        [site_service.BatchSubmitSitesForApprovalRequest],
-        site_service.BatchSubmitSitesForApprovalResponse,
-    ]:
+    ) -> Callable[[site_service.BatchSubmitSitesForApprovalRequest], site_service.BatchSubmitSitesForApprovalResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchSubmitSitesForApproval(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def batch_update_sites(
-        self,
-    ) -> Callable[
-        [site_service.BatchUpdateSitesRequest], site_service.BatchUpdateSitesResponse
-    ]:
+    def batch_update_sites(self) -> Callable[[site_service.BatchUpdateSitesRequest], site_service.BatchUpdateSitesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._BatchUpdateSites(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def create_site(
-        self,
-    ) -> Callable[[site_service.CreateSiteRequest], site_messages.Site]:
+    def create_site(self) -> Callable[[site_service.CreateSiteRequest], site_messages.Site]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateSite(self._session, self._host, self._interceptor)  # type: ignore
@@ -1943,17 +1569,13 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
         return self._GetSite(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def list_sites(
-        self,
-    ) -> Callable[[site_service.ListSitesRequest], site_service.ListSitesResponse]:
+    def list_sites(self) -> Callable[[site_service.ListSitesRequest], site_service.ListSitesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListSites(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
-    def update_site(
-        self,
-    ) -> Callable[[site_service.UpdateSiteRequest], site_messages.Site]:
+    def update_site(self) -> Callable[[site_service.UpdateSiteRequest], site_messages.Site]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateSite(self._session, self._host, self._interceptor)  # type: ignore
@@ -1962,22 +1584,12 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(
-        _BaseSiteServiceRestTransport._BaseGetOperation, SiteServiceRestStub
-    ):
+    class _GetOperation(_BaseSiteServiceRestTransport._BaseGetOperation, SiteServiceRestStub):
         def __hash__(self):
             return hash("SiteServiceRestTransport.GetOperation")
 
         @staticmethod
-        def _get_response(
-            host,
-            metadata,
-            query_params,
-            session,
-            timeout,
-            transcoded_request,
-            body=None,
-        ):
+        def _get_response(host, metadata, query_params, session, timeout, transcoded_request, body=None):
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
             headers = dict(metadata)
@@ -2015,30 +1627,16 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
                 operations_pb2.Operation: Response from GetOperation method.
             """
 
-            http_options = (
-                _BaseSiteServiceRestTransport._BaseGetOperation._get_http_options()
-            )
+            http_options = _BaseSiteServiceRestTransport._BaseGetOperation._get_http_options()
 
             request, metadata = self._interceptor.pre_get_operation(request, metadata)
-            transcoded_request = (
-                _BaseSiteServiceRestTransport._BaseGetOperation._get_transcoded_request(
-                    http_options, request
-                )
-            )
+            transcoded_request = _BaseSiteServiceRestTransport._BaseGetOperation._get_transcoded_request(http_options, request)
 
             # Jsonify the query params
-            query_params = (
-                _BaseSiteServiceRestTransport._BaseGetOperation._get_query_params_json(
-                    transcoded_request
-                )
-            )
+            query_params = _BaseSiteServiceRestTransport._BaseGetOperation._get_query_params_json(transcoded_request)
 
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
-                request_url = "{host}{uri}".format(
-                    host=self._host, uri=transcoded_request["uri"]
-                )
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
+                request_url = "{host}{uri}".format(host=self._host, uri=transcoded_request["uri"])
                 method = transcoded_request["method"]
                 try:
                     request_payload = json_format.MessageToJson(request)
@@ -2062,12 +1660,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
 
             # Send the request
             response = SiteServiceRestTransport._GetOperation._get_response(
-                self._host,
-                metadata,
-                query_params,
-                self._session,
-                timeout,
-                transcoded_request,
+                self._host, metadata, query_params, self._session, timeout, transcoded_request
             )
 
             # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
@@ -2079,9 +1672,7 @@ class SiteServiceRestTransport(_BaseSiteServiceRestTransport):
             resp = operations_pb2.Operation()
             resp = json_format.Parse(content, resp)
             resp = self._interceptor.post_get_operation(resp)
-            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(
-                logging.DEBUG
-            ):  # pragma: NO COVER
+            if CLIENT_LOGGING_SUPPORTED and _LOGGER.isEnabledFor(logging.DEBUG):  # pragma: NO COVER
                 try:
                     response_payload = json_format.MessageToJson(resp)
                 except:

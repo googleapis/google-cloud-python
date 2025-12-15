@@ -30,9 +30,7 @@ import google.protobuf
 from google.cloud.gdchardwaremanagement_v1alpha import gapic_version as package_version
 from google.cloud.gdchardwaremanagement_v1alpha.types import resources, service
 
-DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-    gapic_version=package_version.__version__
-)
+DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(gapic_version=package_version.__version__)
 
 if hasattr(DEFAULT_CLIENT_INFO, "protobuf_runtime_version"):  # pragma: NO COVER
     DEFAULT_CLIENT_INFO.protobuf_runtime_version = google.protobuf.__version__
@@ -94,23 +92,15 @@ class GDCHardwareManagementTransport(abc.ABC):
         # If no credentials are provided, then determine the appropriate
         # defaults.
         if credentials and credentials_file:
-            raise core_exceptions.DuplicateCredentialArgs(
-                "'credentials_file' and 'credentials' are mutually exclusive"
-            )
+            raise core_exceptions.DuplicateCredentialArgs("'credentials_file' and 'credentials' are mutually exclusive")
 
         if credentials_file is not None:
-            credentials, _ = google.auth.load_credentials_from_file(
-                credentials_file, **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.load_credentials_from_file(credentials_file, **scopes_kwargs, quota_project_id=quota_project_id)
         elif credentials is None and not self._ignore_credentials:
-            credentials, _ = google.auth.default(
-                **scopes_kwargs, quota_project_id=quota_project_id
-            )
+            credentials, _ = google.auth.default(**scopes_kwargs, quota_project_id=quota_project_id)
             # Don't apply audience if the credentials file passed from user.
             if hasattr(credentials, "with_gdch_audience"):
-                credentials = credentials.with_gdch_audience(
-                    api_audience if api_audience else host
-                )
+                credentials = credentials.with_gdch_audience(api_audience if api_audience else host)
 
         # If the credentials are service account credentials, then always try to use self signed JWT.
         if (
@@ -619,338 +609,167 @@ class GDCHardwareManagementTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def list_orders(
-        self,
-    ) -> Callable[
-        [service.ListOrdersRequest],
-        Union[service.ListOrdersResponse, Awaitable[service.ListOrdersResponse]],
-    ]:
+    def list_orders(self) -> Callable[[service.ListOrdersRequest], Union[service.ListOrdersResponse, Awaitable[service.ListOrdersResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_order(
-        self,
-    ) -> Callable[
-        [service.GetOrderRequest], Union[resources.Order, Awaitable[resources.Order]]
-    ]:
+    def get_order(self) -> Callable[[service.GetOrderRequest], Union[resources.Order, Awaitable[resources.Order]]]:
         raise NotImplementedError()
 
     @property
-    def create_order(
-        self,
-    ) -> Callable[
-        [service.CreateOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_order(self) -> Callable[[service.CreateOrderRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_order(
-        self,
-    ) -> Callable[
-        [service.UpdateOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_order(self) -> Callable[[service.UpdateOrderRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_order(
-        self,
-    ) -> Callable[
-        [service.DeleteOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_order(self) -> Callable[[service.DeleteOrderRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def submit_order(
-        self,
-    ) -> Callable[
-        [service.SubmitOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def submit_order(self) -> Callable[[service.SubmitOrderRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def cancel_order(
-        self,
-    ) -> Callable[
-        [service.CancelOrderRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def cancel_order(self) -> Callable[[service.CancelOrderRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_sites(
-        self,
-    ) -> Callable[
-        [service.ListSitesRequest],
-        Union[service.ListSitesResponse, Awaitable[service.ListSitesResponse]],
-    ]:
+    def list_sites(self) -> Callable[[service.ListSitesRequest], Union[service.ListSitesResponse, Awaitable[service.ListSitesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_site(
-        self,
-    ) -> Callable[
-        [service.GetSiteRequest], Union[resources.Site, Awaitable[resources.Site]]
-    ]:
+    def get_site(self) -> Callable[[service.GetSiteRequest], Union[resources.Site, Awaitable[resources.Site]]]:
         raise NotImplementedError()
 
     @property
-    def create_site(
-        self,
-    ) -> Callable[
-        [service.CreateSiteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_site(self) -> Callable[[service.CreateSiteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_site(
-        self,
-    ) -> Callable[
-        [service.UpdateSiteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_site(self) -> Callable[[service.UpdateSiteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_site(
-        self,
-    ) -> Callable[
-        [service.DeleteSiteRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_site(self) -> Callable[[service.DeleteSiteRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def list_hardware_groups(
         self,
-    ) -> Callable[
-        [service.ListHardwareGroupsRequest],
-        Union[
-            service.ListHardwareGroupsResponse,
-            Awaitable[service.ListHardwareGroupsResponse],
-        ],
-    ]:
+    ) -> Callable[[service.ListHardwareGroupsRequest], Union[service.ListHardwareGroupsResponse, Awaitable[service.ListHardwareGroupsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_hardware_group(
-        self,
-    ) -> Callable[
-        [service.GetHardwareGroupRequest],
-        Union[resources.HardwareGroup, Awaitable[resources.HardwareGroup]],
-    ]:
+    def get_hardware_group(self) -> Callable[[service.GetHardwareGroupRequest], Union[resources.HardwareGroup, Awaitable[resources.HardwareGroup]]]:
         raise NotImplementedError()
 
     @property
     def create_hardware_group(
         self,
-    ) -> Callable[
-        [service.CreateHardwareGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.CreateHardwareGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def update_hardware_group(
         self,
-    ) -> Callable[
-        [service.UpdateHardwareGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.UpdateHardwareGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def delete_hardware_group(
         self,
-    ) -> Callable[
-        [service.DeleteHardwareGroupRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.DeleteHardwareGroupRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_hardware(
-        self,
-    ) -> Callable[
-        [service.ListHardwareRequest],
-        Union[service.ListHardwareResponse, Awaitable[service.ListHardwareResponse]],
-    ]:
+    def list_hardware(self) -> Callable[[service.ListHardwareRequest], Union[service.ListHardwareResponse, Awaitable[service.ListHardwareResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_hardware(
-        self,
-    ) -> Callable[
-        [service.GetHardwareRequest],
-        Union[resources.Hardware, Awaitable[resources.Hardware]],
-    ]:
+    def get_hardware(self) -> Callable[[service.GetHardwareRequest], Union[resources.Hardware, Awaitable[resources.Hardware]]]:
         raise NotImplementedError()
 
     @property
-    def create_hardware(
-        self,
-    ) -> Callable[
-        [service.CreateHardwareRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_hardware(self) -> Callable[[service.CreateHardwareRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_hardware(
-        self,
-    ) -> Callable[
-        [service.UpdateHardwareRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_hardware(self) -> Callable[[service.UpdateHardwareRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_hardware(
-        self,
-    ) -> Callable[
-        [service.DeleteHardwareRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_hardware(self) -> Callable[[service.DeleteHardwareRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def list_comments(
-        self,
-    ) -> Callable[
-        [service.ListCommentsRequest],
-        Union[service.ListCommentsResponse, Awaitable[service.ListCommentsResponse]],
-    ]:
+    def list_comments(self) -> Callable[[service.ListCommentsRequest], Union[service.ListCommentsResponse, Awaitable[service.ListCommentsResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_comment(
-        self,
-    ) -> Callable[
-        [service.GetCommentRequest],
-        Union[resources.Comment, Awaitable[resources.Comment]],
-    ]:
+    def get_comment(self) -> Callable[[service.GetCommentRequest], Union[resources.Comment, Awaitable[resources.Comment]]]:
         raise NotImplementedError()
 
     @property
-    def create_comment(
-        self,
-    ) -> Callable[
-        [service.CreateCommentRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_comment(self) -> Callable[[service.CreateCommentRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def record_action_on_comment(
-        self,
-    ) -> Callable[
-        [service.RecordActionOnCommentRequest],
-        Union[resources.Comment, Awaitable[resources.Comment]],
-    ]:
+    def record_action_on_comment(self) -> Callable[[service.RecordActionOnCommentRequest], Union[resources.Comment, Awaitable[resources.Comment]]]:
         raise NotImplementedError()
 
     @property
     def list_change_log_entries(
         self,
     ) -> Callable[
-        [service.ListChangeLogEntriesRequest],
-        Union[
-            service.ListChangeLogEntriesResponse,
-            Awaitable[service.ListChangeLogEntriesResponse],
-        ],
+        [service.ListChangeLogEntriesRequest], Union[service.ListChangeLogEntriesResponse, Awaitable[service.ListChangeLogEntriesResponse]]
     ]:
         raise NotImplementedError()
 
     @property
     def get_change_log_entry(
         self,
-    ) -> Callable[
-        [service.GetChangeLogEntryRequest],
-        Union[resources.ChangeLogEntry, Awaitable[resources.ChangeLogEntry]],
-    ]:
+    ) -> Callable[[service.GetChangeLogEntryRequest], Union[resources.ChangeLogEntry, Awaitable[resources.ChangeLogEntry]]]:
         raise NotImplementedError()
 
     @property
-    def list_skus(
-        self,
-    ) -> Callable[
-        [service.ListSkusRequest],
-        Union[service.ListSkusResponse, Awaitable[service.ListSkusResponse]],
-    ]:
+    def list_skus(self) -> Callable[[service.ListSkusRequest], Union[service.ListSkusResponse, Awaitable[service.ListSkusResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_sku(
-        self,
-    ) -> Callable[
-        [service.GetSkuRequest], Union[resources.Sku, Awaitable[resources.Sku]]
-    ]:
+    def get_sku(self) -> Callable[[service.GetSkuRequest], Union[resources.Sku, Awaitable[resources.Sku]]]:
         raise NotImplementedError()
 
     @property
-    def list_zones(
-        self,
-    ) -> Callable[
-        [service.ListZonesRequest],
-        Union[service.ListZonesResponse, Awaitable[service.ListZonesResponse]],
-    ]:
+    def list_zones(self) -> Callable[[service.ListZonesRequest], Union[service.ListZonesResponse, Awaitable[service.ListZonesResponse]]]:
         raise NotImplementedError()
 
     @property
-    def get_zone(
-        self,
-    ) -> Callable[
-        [service.GetZoneRequest], Union[resources.Zone, Awaitable[resources.Zone]]
-    ]:
+    def get_zone(self) -> Callable[[service.GetZoneRequest], Union[resources.Zone, Awaitable[resources.Zone]]]:
         raise NotImplementedError()
 
     @property
-    def create_zone(
-        self,
-    ) -> Callable[
-        [service.CreateZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def create_zone(self) -> Callable[[service.CreateZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def update_zone(
-        self,
-    ) -> Callable[
-        [service.UpdateZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def update_zone(self) -> Callable[[service.UpdateZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def delete_zone(
-        self,
-    ) -> Callable[
-        [service.DeleteZoneRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def delete_zone(self) -> Callable[[service.DeleteZoneRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
-    def signal_zone_state(
-        self,
-    ) -> Callable[
-        [service.SignalZoneStateRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    def signal_zone_state(self) -> Callable[[service.SignalZoneStateRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
     def request_order_date_change(
         self,
-    ) -> Callable[
-        [service.RequestOrderDateChangeRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[service.RequestOrderDateChangeRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]]]:
         raise NotImplementedError()
 
     @property
@@ -958,20 +777,14 @@ class GDCHardwareManagementTransport(abc.ABC):
         self,
     ) -> Callable[
         [operations_pb2.ListOperationsRequest],
-        Union[
-            operations_pb2.ListOperationsResponse,
-            Awaitable[operations_pb2.ListOperationsResponse],
-        ],
+        Union[operations_pb2.ListOperationsResponse, Awaitable[operations_pb2.ListOperationsResponse]],
     ]:
         raise NotImplementedError()
 
     @property
     def get_operation(
         self,
-    ) -> Callable[
-        [operations_pb2.GetOperationRequest],
-        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
-    ]:
+    ) -> Callable[[operations_pb2.GetOperationRequest], Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],]:
         raise NotImplementedError()
 
     @property
@@ -989,22 +802,13 @@ class GDCHardwareManagementTransport(abc.ABC):
     @property
     def get_location(
         self,
-    ) -> Callable[
-        [locations_pb2.GetLocationRequest],
-        Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],
-    ]:
+    ) -> Callable[[locations_pb2.GetLocationRequest], Union[locations_pb2.Location, Awaitable[locations_pb2.Location]],]:
         raise NotImplementedError()
 
     @property
     def list_locations(
         self,
-    ) -> Callable[
-        [locations_pb2.ListLocationsRequest],
-        Union[
-            locations_pb2.ListLocationsResponse,
-            Awaitable[locations_pb2.ListLocationsResponse],
-        ],
-    ]:
+    ) -> Callable[[locations_pb2.ListLocationsRequest], Union[locations_pb2.ListLocationsResponse, Awaitable[locations_pb2.ListLocationsResponse]],]:
         raise NotImplementedError()
 
     @property
